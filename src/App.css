@@ -17,28 +17,38 @@
 .mainBody {
     grid-area: mainBody;
     background: white;
+    padding: 15px 15px 15px 15px;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+.mainBody .itemsList {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, 250px);
     grid-auto-rows: 250px;
     grid-gap: 15px;
-    box-sizing: border-box;
-    overflow-y: auto;
     justify-content: center;
-    padding: 15px 15px 15px 15px;
 }
-.mainBody div {
+.mainBody .itemsList div {
     background: black;
     box-sizing: border-box;
 }
-.mainBody div.wide {
+.mainBody .itemsList div.wide {
     grid-column: span 2;
 }
-.mainBody div.tall {
+.mainBody .itemsList div.tall {
     grid-row: span 2;
 }
-.mainBody div.large {
+.mainBody .itemsList div.large {
     grid-row: span 2;
     grid-column: span 2;
+}
+.mainBody .divider {
+    margin: 15px 0 15px 0 !important;
+}
+.mainBody .itemsList.hiddenItems {
+    transition: max-height 2s linear;
+    overflow: hidden;
 }
 
 .sidebarHeader {
