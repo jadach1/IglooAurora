@@ -12,10 +12,10 @@ import {split} from "apollo-link"
 import {getMainDefinition} from "apollo-utilities"
 
 const bearer =
-    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1MTQ2NDAyNTEsInVzZXJJZCI6IjBiMGEwNDZjLWE2ZjAtNDUxMC05MTRjLTUxM2Y4YzUxMDU5NiJ9.osk32koebLZ12Pf7gvOKmVb00JACs_eyw7hok4a1ky54ZJA7Es40G2qF_kAmnjOySEWtQA1U4geoeDGofOLSWg"
+    "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1MTUyNDk2NjksInVzZXJJZCI6IjM2OWIwYjhmLTEwYWQtNDM3MS1iN2RlLWUxNjYyZDJhNTZlMSJ9.b5n-pLyEgjiIQVo8dZ_Yx2pNEzSK8H85U6OVw3XL1j1Kq64uCFg2C1Jyj1wrLF_rvNb1PnLDOo4Eccsn7kX6rQ"
 
 const wsLink = new WebSocketLink({
-    uri: `ws://localhost:3000/subscriptions`,
+    uri: `wss://iglooql.herokuapp.com/subscriptions`,
     options: {
         reconnect: true,
         connectionParams: {
@@ -25,7 +25,7 @@ const wsLink = new WebSocketLink({
 })
 
 const httpLink = new HttpLink({
-    uri: "http://localhost:3000/graphql",
+    uri: "https://iglooql.herokuapp.com/graphql",
     headers: {
         Authorization: "Bearer " + bearer,
     },

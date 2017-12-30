@@ -50,9 +50,6 @@ class Sidebar extends Component {
                 {user.devices.map(device => (
                     <div
                         key={device.id}
-                        onClick={() =>
-                            CreateFloatValue({variables: {deviceId: device.id}})
-                        }
                     >
                         {device.customName}
                     </div>
