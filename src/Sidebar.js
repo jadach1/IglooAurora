@@ -10,6 +10,7 @@ import ContentDrafts from "material-ui/svg-icons/content/drafts";
 import Divider from "material-ui/Divider";
 import ActionInfo from "material-ui/svg-icons/action/info";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import CircularProgress from "material-ui/CircularProgress";
 
 class Sidebar extends Component {
   componentDidMount() {
@@ -47,7 +48,7 @@ class Sidebar extends Component {
     const { userData: { loading, error, user }, CreateFloatValue } = this.props;
 
     if (loading) {
-      return <p>Loading ...</p>;
+      return <CircularProgress />;
     }
     if (error) {
       return <p>{error.message}</p>;
