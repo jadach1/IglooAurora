@@ -7,12 +7,13 @@ import {
     ToolbarTitle,
 } from "material-ui/Toolbar"
 import IconButton from "material-ui/IconButton"
+import ReadOnlyBooleanTile from "./tiles/ReadOnlyBooleanTile"
 
 class Tile extends Component {
     render() {
         const valueTitle = this.props.title
         const valueHidden = this.props.hidden
-
+        const value = this.props.value
         return (
             <Paper className={this.props.className || ""} zDepth={2}>
                 <Toolbar>
@@ -38,6 +39,7 @@ class Tile extends Component {
                         />
                     </ToolbarGroup>
                 </Toolbar>
+                <ReadOnlyBooleanTile value={value} />
             </Paper>
         )
     }

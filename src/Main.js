@@ -5,6 +5,8 @@ import Tile from "./Tile"
 import AppBar from "material-ui/AppBar"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import FlatButton from "material-ui/FlatButton"
+import "./App.css"
+import "./Tiles.css"
 
 class Main extends Component {
     constructor() {
@@ -17,26 +19,26 @@ class Main extends Component {
 
     render() {
         const visibleItems = [
-            <Tile hidden={false} title="Test" className="large" />,
-            <Tile hidden={false} title="ABC" />,
-            <Tile hidden={false} title="Ehi" className="tall" />,
-            <Tile hidden={false} title="Dumb" className="wide" />,
-            <Tile hidden={false} title="Clone" className="tall" />,
-            <Tile hidden={false} title="Tall" className="tall" />,
-            <Tile hidden={false} title="Wide" className="wide" />,
-            <Tile hidden={false} title="Small" />,
-            <Tile hidden={false} title="Still readin?" />,
-            <Tile hidden={false} title="Man!!" />,
-            <Tile hidden={false} title="Stop" />,
-            <Tile hidden={false} title="This is" />,
-            <Tile hidden={false} title="too long" />,
+            <Tile value={true} hidden={false} title="Test" className="large" />,
+            <Tile value={true} hidden={false} title="ABC" />,
+            <Tile value={false} hidden={false} title="Ehi" className="tall" />,
+            <Tile value={false} hidden={false} title="Dumb" className="wide" />,
+            <Tile value={true} hidden={false} title="Clone" className="tall" />,
+            <Tile value={false} hidden={false} title="Tall" className="tall" />,
+            <Tile value={true} hidden={false} title="Wide" className="wide" />,
+            <Tile value={true} hidden={false} title="Small" />,
+            <Tile value={false} hidden={false} title="Still readin?" />,
+            <Tile value={true} hidden={false} title="Man!!" />,
+            <Tile value={false} hidden={false} title="Stop" />,
+            <Tile value={false} hidden={false} title="This is" />,
+            <Tile value={false} hidden={false} title="too long" />,
         ]
 
         const hiddenItems = [
-            <Tile hidden={true} title="As you" />,
-            <Tile hidden={true} title="can see" />,
-            <Tile hidden={true} title="this values" />,
-            <Tile hidden={true} title="are hidden" />,
+            <Tile value={false} hidden={true} title="As you" />,
+            <Tile value={true} hidden={true} title="can see" />,
+            <Tile value={true} hidden={true} title="this values" />,
+            <Tile value={false} hidden={true} title="are hidden" />,
         ]
 
         return (

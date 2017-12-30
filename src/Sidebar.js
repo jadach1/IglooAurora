@@ -1,5 +1,4 @@
 import React, {Component} from "react"
-import "./App.css"
 import {graphql} from "react-apollo"
 import gql from "graphql-tag"
 import {List, ListItem} from "material-ui/List"
