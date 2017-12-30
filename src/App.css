@@ -1,28 +1,52 @@
-.App {
-  text-align: center;
+.main {
+    width: 100%;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: [start] 350px [mid] auto [end];
+    grid-template-rows: [start] 60px [mid] auto [end];
+    grid-template-areas: "sidebarHeader mainBodyHeader" "sidebar mainBody";
 }
 
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 80px;
+.sidebar {
+    grid-area: sidebar;
+    background: orange;
+    box-sizing: border-box;
+    overflow-y: auto;
 }
 
-.App-header {
-  background-color: #222;
-  height: 150px;
-  padding: 20px;
-  color: white;
+.mainBody {
+    grid-area: mainBody;
+    background: green;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, 250px);
+    grid-auto-rows: 250px;
+    grid-gap: 15px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    justify-content: center;
+    padding: 15px 15px 0 15px;
+}
+.mainBody div {
+    background: black;
+    box-sizing: border-box;
+}
+.mainBody div.wide {
+    grid-column: span 2;
+}
+.mainBody div.tall {
+    grid-row: span 2;
+}
+.mainBody div.large {
+    grid-row: span 2;
+    grid-column: span 2;
 }
 
-.App-title {
-  font-size: 1.5em;
+.sidebarHeader {
+    background: red;
+    box-sizing: border-box;
 }
 
-.App-intro {
-  font-size: large;
-}
-
-@keyframes App-logo-spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+.mainBodyHeader {
+    background: yellow;
+    box-sizing: border-box;
 }
