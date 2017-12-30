@@ -55,20 +55,18 @@ class Sidebar extends Component {
     }
 
     return (
-      <MuiThemeProvider>
-        <div>
-          {user.devices.map(device => (
-            <div key={device.id}>
-              <List>
-                <ListItem
-                  primaryText={device.customName}
-                  leftIcon={<ActionGrade />}
-                />
-              </List>
-            </div>
-          ))}
-        </div>
-      </MuiThemeProvider>
+      <div>
+        {user.devices.map(device => (
+          <div key={device.id}>
+            <List>
+              <ListItem
+                primaryText={device.customName}
+                leftIcon={<ActionGrade />}
+              />
+            </List>
+          </div>
+        ))}
+      </div>
     );
   }
 }
