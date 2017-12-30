@@ -1,0 +1,24 @@
+.readOnlyBooleanTile {
+    width: 100%;
+    height: calc(100% - 56px);
+}
+.readOnlyBooleanTile svg {
+    height: 100px;
+    padding: 47px 75px 47px 75px;
+}
+.wide .readOnlyBooleanTile svg {
+    padding: 47px 207px 47px 207px;
+}
+.tall .readOnlyBooleanTile svg {
+    padding: 160px 75px 160px 75px;
+}
+.large .readOnlyBooleanTile svg {
+    height: 200px;
+    padding: 130px 157px 130px 157px;
+}
+.readOnlyBooleanTile svg {
+    color: red;
+}
+.readOnlyBooleanTile.active svg {
+    color: green;
+}
