@@ -63,3 +63,11 @@
 .logo {
     padding-left: 10px;
 }
+
+.mainBody {
+    background-image: url("/assets/logofiller.png");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: contain;
+    background-position: calc(50% + 175px) 50%;
+}
