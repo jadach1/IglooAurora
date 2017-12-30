@@ -1,6 +1,9 @@
 import React, { Component } from "react";
 import Sidebar from "./Sidebar";
 import SidebarHeader from "./SidebarHeader";
+import AppBar from "material-ui/AppBar";
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
+import FlatButton from "material-ui/FlatButton";
 
 class Main extends Component {
   constructor() {
@@ -29,22 +32,39 @@ class Main extends Component {
       <div />
     ];
 
-    const hiddenItem = [<div />, <div />, <div />, <div />, <div />];
+    const hiddenItems = [<div />, <div />, <div />, <div />, <div />];
 
     return (
-      <div className="main">
-        <div className="sidebarHeader">
-          <SidebarHeader />
+      <MuiThemeProvider>
+        <div className="main">
+          <div className="sidebarHeader" />
+          <div className="sidebar">
+            <Sidebar />
+          </div>
+          <div className="mainBodyHeader" />
+          <div className="mainBody">
+            <div className="itemsList">{visibleItems}</div>
+            <FlatButton
+              onClick={() =>
+                this.setState(oldState => ({
+                  showHidden: !oldState.showHidden
+                }))
+              }
+              label="Show more"
+              fullWidth={true}
+              className="divider"
+            />
+            <div
+              className="itemsList hiddenItems"
+              style={{
+                maxHeight: this.state.showHidden ? "100000px" : "0"
+              }}
+            >
+              {this.state.showHidden ? hiddenItems : ""}
+            </div>
+          </div>
         </div>
-        <div className="sidebar">
-          <Sidebar />
-        </div>
-        <div className="mainBodyHeader" />
-        <div className="mainBody">
-          {visibleItems}
-          <div className="divider" />
-        </div>
-      </div>
+      </MuiThemeProvider>
     );
   }
 }
