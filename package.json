@@ -7,6 +7,7 @@
     "apollo-link-ws": "^1.0.4",
     "graphql": "^0.12.3",
     "graphql-tag": "^2.6.1",
+    "material-design-icons": "^3.0.1",
     "material-ui": "^0.20.0",
     "react": "^16.2.0",
     "react-apollo": "^2.0.4",
