@@ -65,7 +65,7 @@
 }
 
 .mainBody {
-    background-image: url("/assets/logofiller.png");
+    background-image: url("/assets/logoBG.svg");
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-size: contain;
