@@ -5,11 +5,15 @@ import Main from "./Main"
 import registerServiceWorker from "./registerServiceWorker"
 import {ApolloClient} from "apollo-client"
 import {HttpLink} from "apollo-link-http"
-import {InMemoryCache} from "apollo-cache-inmemory"
+import {
+    InMemoryCache,
+    IntrospectionFragmentMatcher,
+} from "apollo-cache-inmemory"
 import {ApolloProvider} from "react-apollo"
 import {WebSocketLink} from "apollo-link-ws"
 import {split} from "apollo-link"
 import {getMainDefinition} from "apollo-utilities"
+import introspectionQueryResultData from "./fragmentTypes.json"
 
 const bearer =
     "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJleHAiOjE1MTUyNDk2NjksInVzZXJJZCI6IjM2OWIwYjhmLTEwYWQtNDM3MS1iN2RlLWUxNjYyZDJhNTZlMSJ9.b5n-pLyEgjiIQVo8dZ_Yx2pNEzSK8H85U6OVw3XL1j1Kq64uCFg2C1Jyj1wrLF_rvNb1PnLDOo4Eccsn7kX6rQ"
@@ -41,11 +45,15 @@ const link = split(
     httpLink
 )
 
+const fragmentMatcher = new IntrospectionFragmentMatcher({
+    introspectionQueryResultData,
+})
+
 const client = new ApolloClient({
     // By default, this client will send queries to the
     //  `/graphql` endpoint on the same host
     link,
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({fragmentMatcher}),
 })
 
 ReactDOM.render(
