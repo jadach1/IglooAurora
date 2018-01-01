@@ -80,3 +80,9 @@ body {
     background-size: contain;
     background-position: calc(50% + 175px) 50%;
 }
+
+.deviceIcon {
+    width: 24px;
+    height: 24px;
+    margin: 12px;
+}
