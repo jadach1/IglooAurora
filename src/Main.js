@@ -22,7 +22,7 @@ class Main extends Component {
         return (
             <MuiThemeProvider>
                 <div className="main">
-                    <SidebarHeader />
+                    <SidebarHeader logOut={this.props.logOut} />
                     <div className="sidebar">
                         <Sidebar
                             selectDevice={id =>

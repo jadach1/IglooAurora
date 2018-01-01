@@ -81,6 +81,12 @@ body {
     margin: 0 5px 0 5px;
     vertical-align: middle;
 }
+.logoutButton {
+    vertical-align: middle;
+}
+.logoutButton svg {
+    color: white !important;
+}
 
 .mainBodyHeader {
     background: #40a2ff;

@@ -18,7 +18,12 @@ class App extends Component {
                 />
             )
         } else {
-            return <AuthenticatedApp bearer={this.state.token} />
+            return (
+                <AuthenticatedApp
+                    bearer={this.state.token}
+                    logOut={() => this.setState({token: ""})}
+                />
+            )
         }
     }
 }
