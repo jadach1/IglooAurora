@@ -9,7 +9,7 @@ import ContentDrafts from "material-ui/svg-icons/content/drafts"
 import Divider from "material-ui/Divider"
 import ActionInfo from "material-ui/svg-icons/action/info"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
-import CircularProgress from "material-ui/CircularProgress"
+import CenteredSpinner from "./CenteredSpinner"
 
 class Sidebar extends Component {
     componentDidMount() {
@@ -47,7 +47,7 @@ class Sidebar extends Component {
         const {userData: {loading, error, user}, CreateFloatValue} = this.props
 
         if (loading) {
-            return <CircularProgress />
+            return <CenteredSpinner />
         }
         if (error) {
             return <p>{error.message}</p>
@@ -59,6 +59,7 @@ class Sidebar extends Component {
                     <ListItem
                         primaryText={device.customName}
                         leftIcon={<ActionGrade />}
+                        onClick={() => this.props.selectDevice(device.id)}
                     />
                 ))}
             </List>

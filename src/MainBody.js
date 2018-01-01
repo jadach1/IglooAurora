@@ -1,10 +1,10 @@
 import React, {Component} from "react"
 import Tile from "./Tile"
+import CenteredSpinner from "./CenteredSpinner"
 import FlatButton from "material-ui/FlatButton"
 import PropTypes from "prop-types"
 import {graphql} from "react-apollo"
 import gql from "graphql-tag"
-import CircularProgress from "material-ui/CircularProgress"
 
 class MainBody extends Component {
     constructor() {
@@ -18,7 +18,7 @@ class MainBody extends Component {
         const {loading, error, device} = this.props.deviceData
 
         if (loading) {
-            return <CircularProgress />
+            return <CenteredSpinner />
         }
         if (error) {
             return <p>{error.message}</p>

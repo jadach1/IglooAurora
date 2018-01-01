@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import Sidebar from "./Sidebar"
 import SidebarHeader from "./SidebarHeader"
 import MainBody from "./MainBody"
+import MainBodyHeader from "./MainBodyHeader"
 import AppBar from "material-ui/AppBar"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import "./App.css"
@@ -13,6 +14,7 @@ class Main extends Component {
 
         this.state = {
             showHidden: false,
+            selectedDevice: "",
         }
     }
 
@@ -24,10 +26,24 @@ class Main extends Component {
                         <SidebarHeader />
                     </div>
                     <div className="sidebar">
-                        <Sidebar />
+                        <Sidebar
+                            selectDevice={id =>
+                                this.setState({selectedDevice: id})
+                            }
+                        />
                     </div>
-                    <div className="mainBodyHeader" />
-                    <MainBody deviceId="03f5f343-6b27-4605-aff9-f2c4d9e3fd56" />
+
+                    {this.state.selectedDevice !== ""
+                        ? [
+                              <MainBodyHeader
+                                  deviceId={this.state.selectedDevice}
+                              />,
+                              <MainBody deviceId={this.state.selectedDevice} />,
+                          ]
+                        : [
+                              <div className="mainBodyHeader" />,
+                              <div className="mainBody" />,
+                          ]}
                 </div>
             </MuiThemeProvider>
         )
