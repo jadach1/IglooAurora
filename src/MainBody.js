@@ -46,9 +46,10 @@ class MainBody extends Component {
         visibleTiles = visibleTiles.map(renderTile)
         hiddenTiles = hiddenTiles.map(renderTile)
 
-        return (
-            <div className="mainBody">
-                <div className="itemsList">{visibleTiles}</div>
+        let hiddenTilesUI = ""
+
+        if (hiddenTiles.length !== 0) {
+            hiddenTilesUI = [
                 <FlatButton
                     onClick={() =>
                         this.setState(oldState => ({
@@ -58,10 +59,33 @@ class MainBody extends Component {
                     label={this.state.showHidden ? "Show less" : "Show more"}
                     fullWidth={true}
                     className="divider"
-                />
+                />,
                 <div className="itemsList hiddenItems">
                     {this.state.showHidden ? hiddenTiles : ""}
+                </div>,
+            ]
+        }
+
+        let noItemsUI = ""
+        if (hiddenTiles.length + visibleTiles.length === 0) {
+            noItemsUI = (
+                <div
+                    style={{
+                        width: "100%",
+                        textAlign: "center",
+                        marginTop: "15px",
+                    }}
+                >
+                    This device has no values :(
                 </div>
+            )
+        }
+
+        return (
+            <div className="mainBody">
+                {noItemsUI}
+                <div className="itemsList">{visibleTiles}</div>
+                {hiddenTilesUI}
             </div>
         )
     }
