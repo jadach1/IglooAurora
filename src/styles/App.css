@@ -90,6 +90,11 @@ body {
     padding-left: 20px;
     vertical-align: middle;
 }
+.mainBodyHeader .rightSide {
+    display: inline-block;
+    float: right;
+    margin-right: 15px;
+}
 
 .logo {
     padding: 0 10px;
