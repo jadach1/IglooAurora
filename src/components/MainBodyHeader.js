@@ -2,6 +2,7 @@ import React, {Component} from "react"
 import {graphql} from "react-apollo"
 import gql from "graphql-tag"
 import ActionGrade from "material-ui/svg-icons/action/grade"
+import ActionHistory from "material-ui/svg-icons/action/history"
 
 class MainBodyHeader extends Component {
     constructor() {
@@ -27,6 +28,9 @@ class MainBodyHeader extends Component {
                     <ActionGrade />
                 )}
                 {device.customName}
+                <div className="rightSide">
+                    <ActionHistory />
+                </div>
             </div>
         )
     }
