@@ -58,6 +58,9 @@
 .mainBodyHeader {
     background: #40a2ff;
     box-sizing: border-box;
+    line-height: 60px;
+    font-size: 30px;
+    padding-left: 20px;
 }
 
 .logo {
