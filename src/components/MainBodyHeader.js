@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import {graphql} from "react-apollo"
 import gql from "graphql-tag"
+import ActionGrade from "material-ui/svg-icons/action/grade"
 
 class MainBodyHeader extends Component {
     constructor() {
@@ -18,7 +19,16 @@ class MainBodyHeader extends Component {
             return <div className="mainBodyHeader" />
         }
 
-        return <div className="mainBodyHeader">{device.customName}</div>
+        return (
+            <div className="mainBodyHeader">
+                {device.icon ? (
+                    <img className="deviceIconBig" src={device.icon} />
+                ) : (
+                    <ActionGrade />
+                )}
+                {device.customName}
+            </div>
+        )
     }
 }
 
