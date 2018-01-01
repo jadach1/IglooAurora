@@ -58,6 +58,7 @@ class Sidebar extends Component {
             <List>
                 {user.devices.map(device => (
                     <ListItem
+                        className="notSelectable"
                         primaryText={device.customName}
                         leftIcon={
                             device.icon ? (
