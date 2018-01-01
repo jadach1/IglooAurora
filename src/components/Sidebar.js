@@ -59,7 +59,13 @@ class Sidebar extends Component {
                 {user.devices.map(device => (
                     <ListItem
                         primaryText={device.customName}
-                        leftIcon={<ActionGrade />}
+                        leftIcon={
+                            device.icon ? (
+                                <img className="deviceIcon" src={device.icon} />
+                            ) : (
+                                <ActionGrade />
+                            )
+                        }
                         onClick={() => this.props.selectDevice(device.id)}
                     />
                 ))}
