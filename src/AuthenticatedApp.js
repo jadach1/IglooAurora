@@ -62,7 +62,7 @@ class AuthenticatedApp extends Component {
     render() {
         return (
             <ApolloProvider client={this.client}>
-                <Main />
+                <Main logOut={this.props.logOut} />
             </ApolloProvider>
         )
     }
