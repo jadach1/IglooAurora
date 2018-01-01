@@ -129,3 +129,38 @@ body {
     -ms-user-select: none;
     user-select: none;
 }
+
+.loginBackground {
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    padding: 45px 0 0 0;
+    background: #f2f2f2;
+    box-sizing: border-box;
+}
+
+.loginForm {
+    width: 816px;
+    height: 600px;
+    margin: 0 auto 0 auto;
+    text-align: center;
+    display: grid;
+    grid-template-columns: [start] 500px [mid] 316px [end];
+}
+.loginForm .leftSide {
+    grid-column: start mid;
+    background: #0083ff;
+    color: white;
+    font-size: 23px;
+}
+.loginForm .rightSide {
+    padding: 15px 30px 15px 30px;
+    grid-column: mid end;
+}
+.loginForm .logo {
+    display: block;
+    margin: 15px auto 0 auto;
+}
+.loginForm h1 {
+    color: #0083ff;
+}
