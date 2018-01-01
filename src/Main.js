@@ -1,12 +1,12 @@
 import React, {Component} from "react"
-import Sidebar from "./Sidebar"
-import SidebarHeader from "./SidebarHeader"
-import MainBody from "./MainBody"
-import MainBodyHeader from "./MainBodyHeader"
+import Sidebar from "./components/Sidebar"
+import SidebarHeader from "./components/SidebarHeader"
+import MainBody from "./components/MainBody"
+import MainBodyHeader from "./components/MainBodyHeader"
 import AppBar from "material-ui/AppBar"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
-import "./App.css"
-import "./Tiles.css"
+import "./styles/App.css"
+import "./styles/Tiles.css"
 
 class Main extends Component {
     constructor() {

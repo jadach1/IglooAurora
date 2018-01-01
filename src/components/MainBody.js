@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import Tile from "./Tile"
+import Tile from "./tiles/Tile"
 import CenteredSpinner from "./CenteredSpinner"
 import FlatButton from "material-ui/FlatButton"
 import PropTypes from "prop-types"

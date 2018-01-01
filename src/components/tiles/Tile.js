@@ -7,7 +7,7 @@ import {
     ToolbarTitle,
 } from "material-ui/Toolbar"
 import IconButton from "material-ui/IconButton"
-import ReadOnlyBooleanTile from "./tiles/ReadOnlyBooleanTile"
+import ReadOnlyBooleanTile from "./ReadOnlyBooleanTile"
 
 class Tile extends Component {
     render() {
