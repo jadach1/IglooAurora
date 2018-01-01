@@ -18,6 +18,7 @@ class Sidebar extends Component {
                 deviceCreated {
                     id
                     customName
+                    icon
                 }
             }
         `
@@ -90,6 +91,7 @@ export default graphql(
                     devices {
                         id
                         customName
+                        icon
                     }
                 }
             }
