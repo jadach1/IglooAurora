@@ -22,9 +22,7 @@ class Main extends Component {
         return (
             <MuiThemeProvider>
                 <div className="main">
-                    <div className="sidebarHeader">
-                        <SidebarHeader />
-                    </div>
+                    <SidebarHeader />
                     <div className="sidebar">
                         <Sidebar
                             selectDevice={id =>
