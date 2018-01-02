@@ -27,8 +27,15 @@ class UnAuthenticatedApp extends Component {
         })
 
         this.signIn = this.signIn.bind(this)
+
+        let email = ""
+
+        if (typeof Storage !== "undefined") {
+            email = localStorage.getItem("email") || ""
+        }
+
         this.state = {
-            email: "",
+            email,
             emailError: "",
             password: "",
             passwordError: "",
@@ -51,6 +58,11 @@ class UnAuthenticatedApp extends Component {
                     password: this.state.password,
                 },
             })
+
+            if (typeof Storage !== "undefined") {
+                localStorage.setItem("email", this.state.email)
+            }
+
             this.props.signIn(loginMutation.data.AuthenticateUser.token)
         } catch (e) {
             if (e.message === "GraphQL error: Wrong password") {
