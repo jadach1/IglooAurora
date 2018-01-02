@@ -13,11 +13,13 @@ class App extends Component {
             bearer = localStorage.getItem("bearer") || ""
 
             // ask for a new token 1 day before the expiration date
-            const expirationDate = jwt.decode(bearer).exp
-            const tomorrow = Math.floor(new Date() / 1000) + 86400
-            if (expirationDate < tomorrow) {
-                bearer = ""
-                localStorage.setItem("bearer", "")
+            if (bearer !== "") {
+                const expirationDate = jwt.decode(bearer).exp
+                const tomorrow = Math.floor(new Date() / 1000) + 86400
+                if (expirationDate < tomorrow) {
+                    bearer = ""
+                    localStorage.setItem("bearer", "")
+                }
             }
         }
         this.state = {
