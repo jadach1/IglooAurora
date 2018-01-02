@@ -108,6 +108,8 @@ class UnAuthenticatedApp extends Component {
                                 onKeyPress={event => {
                                     if (event.key === "Enter") this.signIn()
                                 }}
+                                floatingLabelShrinkStyle={{color: "#0083ff"}}
+                                underlineFocusStyle={{borderColor: "#0083ff"}}
                             />
                             <br />
                             <TextField
@@ -124,6 +126,8 @@ class UnAuthenticatedApp extends Component {
                                 onKeyPress={event => {
                                     if (event.key === "Enter") this.signIn()
                                 }}
+                                floatingLabelShrinkStyle={{color: "#0083ff"}}
+                                underlineFocusStyle={{borderColor: "#0083ff"}}
                             />
                             <br />
                             <br />
