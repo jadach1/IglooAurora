@@ -172,3 +172,6 @@ body {
 .loginForm h1 {
     color: #0083ff;
 }
+.loginButton {
+    background: #0083ff !important;
+}
