@@ -5,11 +5,12 @@ import {
     InMemoryCache,
     IntrospectionFragmentMatcher,
 } from "apollo-cache-inmemory"
-import gql from "graphql-tag"
 import Paper from "material-ui/Paper"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import TextField from "material-ui/TextField"
 import FlatButton from "material-ui/FlatButton"
+import Login from "./components/Login"
+import Signup from "./components/Signup"
 
 class UnAuthenticatedApp extends Component {
     constructor() {
@@ -26,60 +27,15 @@ class UnAuthenticatedApp extends Component {
             cache: new InMemoryCache(),
         })
 
-        this.signIn = this.signIn.bind(this)
-
-        let email = ""
-
-        if (typeof Storage !== "undefined") {
-            email = localStorage.getItem("email") || ""
+        let ui = "signUp"
+        if (typeof Storage !== "undefined" && localStorage.getItem("email")) {
+            ui = "logIn"
         }
-
         this.state = {
-            email,
-            emailError: "",
-            password: "",
-            passwordError: "",
+            ui,
         }
     }
 
-    async signIn() {
-        try {
-            const loginMutation = await this.client.mutate({
-                mutation: gql`
-                    mutation($email: String!, $password: String!) {
-                        AuthenticateUser(email: $email, password: $password) {
-                            id
-                            token
-                        }
-                    }
-                `,
-                variables: {
-                    email: this.state.email,
-                    password: this.state.password,
-                },
-            })
-
-            if (typeof Storage !== "undefined") {
-                localStorage.setItem("email", this.state.email)
-            }
-
-            this.props.signIn(loginMutation.data.AuthenticateUser.token)
-        } catch (e) {
-            if (e.message === "GraphQL error: Wrong password") {
-                this.setState({passwordError: "Incorrect password"})
-            } else if (
-                e.message ===
-                "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
-            ) {
-                this.setState({
-                    emailError:
-                        "This account does not exist, maybe you want to Sign Up?",
-                })
-            } else {
-                console.log(e)
-            }
-        }
-    }
     render() {
         return (
             <MuiThemeProvider>
@@ -95,49 +51,19 @@ class UnAuthenticatedApp extends Component {
                             One platform for all your devices <br />
                             [phrase in progress]
                         </div>
-                        <div className="rightSide">
-                            <h1>Welcome back</h1>
-                            <TextField
-                                hintText="Email"
-                                floatingLabelText="Email"
-                                errorText={this.state.emailError}
-                                value={this.state.email}
-                                onChange={event =>
-                                    this.setState({email: event.target.value})
-                                }
-                                onKeyPress={event => {
-                                    if (event.key === "Enter") this.signIn()
-                                }}
-                                floatingLabelShrinkStyle={{color: "#0083ff"}}
-                                underlineFocusStyle={{borderColor: "#0083ff"}}
+                        {this.state.ui === "logIn" ? (
+                            <Login
+                                client={this.client}
+                                signIn={this.props.signIn}
+                                goToSignup={() => this.setState({ui: "signUp"})}
                             />
-                            <br />
-                            <TextField
-                                hintText="Password"
-                                floatingLabelText="Password"
-                                errorText={this.state.passwordError}
-                                type="password"
-                                value={this.state.password}
-                                onChange={event =>
-                                    this.setState({
-                                        password: event.target.value,
-                                    })
-                                }
-                                onKeyPress={event => {
-                                    if (event.key === "Enter") this.signIn()
-                                }}
-                                floatingLabelShrinkStyle={{color: "#0083ff"}}
-                                underlineFocusStyle={{borderColor: "#0083ff"}}
+                        ) : (
+                            <Signup
+                                client={this.client}
+                                signIn={this.props.signIn}
+                                goToLogin={() => this.setState({ui: "logIn"})}
                             />
-                            <br />
-                            <br />
-                            <br />
-                            <FlatButton
-                                label="Sign in"
-                                fullWidth={true}
-                                onClick={this.signIn}
-                            />
-                        </div>
+                        )}
                     </Paper>
                 </div>
             </MuiThemeProvider>
