@@ -62,11 +62,13 @@ body {
 }
 
 .sidebarHeader {
-  background: #0083ff;
-  box-sizing: border-box;
-  color: white;
   vertical-align: middle;
   line-height: 60px;
+}
+
+.sidebarHeaderBackground {
+  background: #0083ff;
+  width: 350px;
 }
 
 .sidebarHeader .rightSide {
