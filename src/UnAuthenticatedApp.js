@@ -40,7 +40,7 @@ class UnAuthenticatedApp extends Component {
     return (
       <MuiThemeProvider>
         <div className="loginBackground">
-          <Paper className="loginForm" zDepth={3}>
+          <Paper className="loginForm" zDepth={1}>
             <div className="leftSide">
               <img
                 src="/assets/logo.svg"
