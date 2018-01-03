@@ -99,7 +99,6 @@ class Login extends Component {
         <br />
         <br />
         <RaisedButton
-          className="loginButton"
           label="Log in"
           primary={true}
           fullWidth={true}
