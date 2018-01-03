@@ -25,18 +25,21 @@ class MainBody extends Component {
         }
 
         const values = device.values
-        let visibleTiles = values.filter(value => value.relevance === "NORMAL")
+        let visibleTiles = values.filter(value => value.relevance === "VISIBLE")
 
         let hiddenTiles = values.filter(value => value.relevance === "HIDDEN")
 
         const renderTile = value => {
-            if (value.__typename === "BooleanValue") {
+            if (
+                value.__typename === "BooleanValue" &&
+                value.permission === "READ_ONLY"
+            ) {
                 return (
                     <Tile
                         value={value.boolValue}
                         hidden={value.relevance === "NORMAL"}
-                        title="implement value.title"
-                        className="large"
+                        title={value.customName}
+                        className={value.tileSize.toLowerCase()}
                     />
                 )
             } else {
@@ -105,6 +108,8 @@ export default graphql(
                     permission
                     relevance
                     valueDetails
+                    tileSize
+                    customName
                     ... on FloatValue {
                         floatValue: value
                         precision
