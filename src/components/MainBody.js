@@ -137,8 +137,9 @@ class MainBody extends Component {
           label={this.state.showHidden ? "Show less" : "Show more"}
           fullWidth={true}
           className="divider"
+          key="showMoreLessButton"
         />,
-        <div className="itemsList hiddenItems">
+        <div className="itemsList hiddenItems" key="hiddenTilesContainer">
           {this.state.showHidden ? hiddenTiles : ""}
         </div>,
       ]
@@ -153,6 +154,7 @@ class MainBody extends Component {
             textAlign: "center",
             marginTop: "15px",
           }}
+          key="noTilesUI"
         >
           This device has no values :(
         </div>
@@ -162,7 +164,9 @@ class MainBody extends Component {
     return (
       <div className="mainBody">
         {noItemsUI}
-        <div className="itemsList">{visibleTiles}</div>
+        <div className="itemsList" key="visibleTilesContainer">
+          {visibleTiles}
+        </div>
         {hiddenTilesUI}
       </div>
     )

@@ -21,6 +21,7 @@
 }
 .tileHeader .tileHeaderButtons {
   grid-area: buttons;
+  padding-top: 4px;
 }
 
 .readOnlyBooleanTile,
