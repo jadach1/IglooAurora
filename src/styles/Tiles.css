@@ -26,7 +26,8 @@
 
 .readOnlyBooleanTile,
 .readOnlyColourTile,
-.readWriteBooleanTile {
+.readWriteBooleanTile,
+.readWriteColourTile {
   width: 100%;
   height: calc(100% - 56px);
 }
@@ -100,4 +101,30 @@
 
 .readWriteBooleanTile .boolToggle:active {
   box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 10px;
+}
+
+.readWriteColourTile {
+  display: grid;
+  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas: ". . ." ". picker ." ". . .";
+  vertical-align: middle;
+  line-height: 100%;
+}
+
+.wide .readWriteColourTile {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+
+.readWriteColourTile .colourPicker {
+  vertical-align: middle;
+  width: initial !important;
+  grid-area: picker !important;
+  box-shadow: unset !important;
+  border-radius: unset !important;
+  display: inline-block;
+}
+
+.readWriteColourTile .colourPicker > div {
+  border-radius: unset !important;
 }
