@@ -90,6 +90,7 @@ body {
 
 .mainBodyHeader {
   background: #40a2ff;
+  color: white;
   box-sizing: border-box;
   line-height: 60px;
   font-size: 30px;
