@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import Paper from "material-ui/Paper"
-import { Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui/Toolbar"
 import IconButton from "material-ui/IconButton"
 import ReadOnlyBooleanTile from "./ReadOnlyBooleanTile"
 import ReadWriteBooleanTile from "./ReadWriteBooleanTile"
@@ -45,11 +44,11 @@ class Tile extends Component {
 
     return (
       <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
-        <Toolbar>
-          <ToolbarGroup>
-            <ToolbarTitle text={valueTitle} />
-          </ToolbarGroup>
-          <ToolbarGroup lastChild={true}>
+        <div className="tileHeader">
+          <div className="tileTitle" title={valueTitle}>
+            {valueTitle}
+          </div>
+          <div className="tileHeaderButtons">
             {valueHidden ? (
               <IconButton iconClassName="fas fa-eye" tooltip="Hide" />
             ) : (
@@ -60,8 +59,8 @@ class Tile extends Component {
               iconClassName="fas fa-expand-arrows-alt"
               tooltip="Expand"
             />
-          </ToolbarGroup>
-        </Toolbar>
+          </div>
+        </div>
         {specificTile}
       </Paper>
     )
