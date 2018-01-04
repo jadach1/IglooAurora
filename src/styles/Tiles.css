@@ -1,5 +1,6 @@
 .readOnlyBooleanTile,
-.readOnlyColourTile {
+.readOnlyColourTile,
+.readWriteBooleanTile {
   width: 100%;
   height: calc(100% - 56px);
 }
@@ -57,4 +58,20 @@
   width: 150px;
   height: 150px;
   border-radius: 75px;
+}
+
+.readWriteBooleanTile .boolToggle {
+  margin: 22px auto 22px auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 75px;
+  padding: 25px;
+  color: white;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 20px;
+  cursor: pointer;
+  transition: box-shadow 0.2s linear;
+}
+
+.readWriteBooleanTile .boolToggle:active {
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 10px;
 }

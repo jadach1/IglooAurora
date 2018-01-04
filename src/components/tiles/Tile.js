@@ -3,6 +3,7 @@ import Paper from "material-ui/Paper"
 import { Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui/Toolbar"
 import IconButton from "material-ui/IconButton"
 import ReadOnlyBooleanTile from "./ReadOnlyBooleanTile"
+import ReadWriteBooleanTile from "./ReadWriteBooleanTile"
 import BoundedFloatTile from "./BoundedFloatTile"
 import ReadOnlyColourTile from "./ReadOnlyColourTile"
 
@@ -18,6 +19,11 @@ class Tile extends Component {
       value.permission === "READ_ONLY"
     ) {
       specificTile = <ReadOnlyBooleanTile value={value.boolValue} />
+    } else if (
+      value.__typename === "BooleanValue" &&
+      value.permission === "READ_WRITE"
+    ) {
+      specificTile = <ReadWriteBooleanTile value={value.boolValue} />
     } else if (value.__typename === "FloatValue" && value.boundaries) {
       specificTile = (
         <BoundedFloatTile
