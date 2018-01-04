@@ -64,11 +64,9 @@ body {
 .sidebarHeader {
   vertical-align: middle;
   line-height: 60px;
-}
-
-.sidebarHeaderBackground {
   background: #0083ff;
-  width: 350px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 5px;
+  z-index: 1000;
 }
 
 .sidebarHeader .rightSide {
@@ -97,6 +95,8 @@ body {
   font-size: 30px;
   padding-left: 20px;
   vertical-align: middle;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 5px;
+  z-index: 1000;
 }
 .mainBodyHeader .rightSide {
   display: inline-block;
