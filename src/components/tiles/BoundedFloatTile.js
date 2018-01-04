@@ -30,6 +30,7 @@ class ReadOnlyBooleanTile extends Component {
           onDragStop={() => {
             /* use this even to trigger the mutation */
           }}
+          disabled={this.props.disabled}
         />
         <div className="max">{this.props.max}</div>
         <input
@@ -40,6 +41,7 @@ class ReadOnlyBooleanTile extends Component {
           onChange={e => this.setState({ value: parseFloat(e.target.value) })}
           className="number"
           type="number"
+          disabled={this.props.disabled}
         />
       </div>
     )
