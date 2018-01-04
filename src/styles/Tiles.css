@@ -1,52 +1,60 @@
-.readOnlyBooleanTile {
-    width: 100%;
-    height: calc(100% - 56px);
+.readOnlyBooleanTile,
+.readOnlyColourTile {
+  width: 100%;
+  height: calc(100% - 56px);
 }
 .readOnlyBooleanTile svg {
-    height: 100px;
-    padding: 47px 75px 47px 75px;
+  height: 100px;
+  padding: 47px 75px 47px 75px;
 }
 .wide .readOnlyBooleanTile svg {
-    padding: 47px 207px 47px 207px;
+  padding: 47px 207px 47px 207px;
 }
 .tall .readOnlyBooleanTile svg {
-    padding: 160px 75px 160px 75px;
+  padding: 160px 75px 160px 75px;
 }
 .large .readOnlyBooleanTile svg {
-    height: 200px;
-    padding: 130px 157px 130px 157px;
+  height: 200px;
+  padding: 130px 157px 130px 157px;
 }
 .readOnlyBooleanTile svg {
-    color: red;
+  color: red;
 }
 .readOnlyBooleanTile.active svg {
-    color: green;
+  color: green;
 }
 
 .readWriteBoundedFloatTile {
-    width: 100%;
-    height: calc(100% - 56px);
+  width: 100%;
+  height: calc(100% - 56px);
 
-    display: grid;
-    grid-template-columns: 15px 25px 10px auto 10px 25px 15px;
-    grid-template-rows: auto 50px 30px auto;
-    grid-template-areas: ". . . . . . ." ". min . slider . max ." ". . . number . . ." ". . . . . . .";
+  display: grid;
+  grid-template-columns: 15px 25px 10px auto 10px 25px 15px;
+  grid-template-rows: auto 50px 30px auto;
+  grid-template-areas: ". . . . . . ." ". min . slider . max ." ". . . number . . ." ". . . . . . .";
 }
 
 .readWriteBoundedFloatTile .min {
-    line-height: 50px;
-    grid-area: min;
+  line-height: 50px;
+  grid-area: min;
 }
 .readWriteBoundedFloatTile .max {
-    line-height: 50px;
-    grid-area: max;
+  line-height: 50px;
+  grid-area: max;
 }
 .readWriteBoundedFloatTile .slider {
-    padding-top: 16px;
-    grid-area: slider;
+  padding-top: 16px;
+  grid-area: slider;
 }
 .readWriteBoundedFloatTile .number {
-    grid-area: number;
-    text-align: center;
-    line-height: 30px;
+  grid-area: number;
+  text-align: center;
+  line-height: 30px;
+}
+
+.readOnlyColourTile .colourDot {
+  margin: 22px auto 22px auto;
+  width: 150px;
+  height: 150px;
+  border-radius: 75px;
 }

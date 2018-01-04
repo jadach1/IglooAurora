@@ -4,6 +4,7 @@ import { Toolbar, ToolbarGroup, ToolbarTitle } from "material-ui/Toolbar"
 import IconButton from "material-ui/IconButton"
 import ReadOnlyBooleanTile from "./ReadOnlyBooleanTile"
 import ReadWriteBoundedFloatTile from "./ReadWriteBoundedFloatTile"
+import ReadOnlyColourTile from "./ReadOnlyColourTile"
 
 class Tile extends Component {
   render() {
@@ -29,6 +30,11 @@ class Tile extends Component {
           step={value.precision || undefined} // avoid passing null, pass undefined instead
         />
       )
+    } else if (
+      value.__typename === "ColourValue" &&
+      value.permission === "READ_ONLY"
+    ) {
+      specificTile = <ReadOnlyColourTile colour={value.colourValue} />
     } else {
       specificTile = ""
     }
