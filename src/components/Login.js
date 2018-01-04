@@ -1,30 +1,30 @@
-import React, { Component } from "react";
-import TextField from "material-ui/TextField";
-import RaisedButton from "material-ui/RaisedButton";
-import gql from "graphql-tag";
+import React, { Component } from "react"
+import TextField from "material-ui/TextField"
+import RaisedButton from "material-ui/RaisedButton"
+import gql from "graphql-tag"
 
 class Login extends Component {
   constructor() {
-    super();
-    let email = "";
+    super()
+    let email = ""
 
     if (typeof Storage !== "undefined") {
-      email = localStorage.getItem("email") || "";
+      email = localStorage.getItem("email") || ""
     }
 
     this.state = {
       email,
       emailError: "",
       password: "",
-      passwordError: ""
-    };
+      passwordError: "",
+    }
 
-    this.signIn = this.signIn.bind(this);
+    this.signIn = this.signIn.bind(this)
   }
 
   async signIn() {
     try {
-      this.setState({ emailError: "", passwordError: "" });
+      this.setState({ emailError: "", passwordError: "" })
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!) {
@@ -36,27 +36,27 @@ class Login extends Component {
         `,
         variables: {
           email: this.state.email,
-          password: this.state.password
-        }
-      });
+          password: this.state.password,
+        },
+      })
 
       if (typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.state.email);
+        localStorage.setItem("email", this.state.email)
       }
 
-      this.props.signIn(loginMutation.data.AuthenticateUser.token);
+      this.props.signIn(loginMutation.data.AuthenticateUser.token)
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
-        this.setState({ passwordError: "Incorrect password" });
+        this.setState({ passwordError: "Incorrect password" })
       } else if (
         e.message ===
         "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
       ) {
         this.setState({
-          emailError: "This account does not exist, maybe you want to Sign Up?"
-        });
+          emailError: "This account does not exist, maybe you want to sign up?",
+        })
       } else {
-        console.log(e);
+        console.log(e)
       }
     }
   }
@@ -72,7 +72,7 @@ class Login extends Component {
           value={this.state.email}
           onChange={event => this.setState({ email: event.target.value })}
           onKeyPress={event => {
-            if (event.key === "Enter") this.signIn();
+            if (event.key === "Enter") this.signIn()
           }}
           floatingLabelShrinkStyle={{ color: "#0083ff" }}
           underlineFocusStyle={{ borderColor: "#0083ff" }}
@@ -86,11 +86,11 @@ class Login extends Component {
           value={this.state.password}
           onChange={event =>
             this.setState({
-              password: event.target.value
+              password: event.target.value,
             })
           }
           onKeyPress={event => {
-            if (event.key === "Enter") this.signIn();
+            if (event.key === "Enter") this.signIn()
           }}
           floatingLabelShrinkStyle={{ color: "#0083ff" }}
           underlineFocusStyle={{ borderColor: "#0083ff" }}
@@ -111,8 +111,8 @@ class Login extends Component {
           Create one!
         </span>
       </div>
-    );
+    )
   }
 }
 
-export default Login;
+export default Login
