@@ -1,39 +1,34 @@
-import React, { Component } from "react";
-import { ApolloClient } from "apollo-client";
-import { HttpLink } from "apollo-link-http";
-import {
-  InMemoryCache,
-  IntrospectionFragmentMatcher
-} from "apollo-cache-inmemory";
-import Paper from "material-ui/Paper";
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
-import Login from "./components/Login";
-import Signup from "./components/Signup";
+import React, { Component } from "react"
+import { ApolloClient } from "apollo-client"
+import { HttpLink } from "apollo-link-http"
+import { InMemoryCache } from "apollo-cache-inmemory"
+import Paper from "material-ui/Paper"
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
+import Login from "./components/Login"
+import Signup from "./components/Signup"
 
 class UnAuthenticatedApp extends Component {
   constructor() {
-    super();
+    super()
 
     const link = new HttpLink({
-      uri: "https://iglooql.herokuapp.com/graphql"
-    });
+      uri: "https://iglooql.herokuapp.com/graphql",
+    })
 
     this.client = new ApolloClient({
       // By default, this client will send queries to the
       //  `/graphql` endpoint on the same host
       link,
-      cache: new InMemoryCache()
-    });
+      cache: new InMemoryCache(),
+    })
 
-    let ui = "signUp";
+    let ui = "signUp"
     if (typeof Storage !== "undefined" && localStorage.getItem("email")) {
-      ui = "logIn";
+      ui = "logIn"
     }
     this.state = {
-      ui
-    };
+      ui,
+    }
   }
 
   render() {
@@ -43,6 +38,7 @@ class UnAuthenticatedApp extends Component {
           <Paper className="loginForm" zDepth={1}>
             <div className="leftSide">
               <img
+                alt="igloo logo"
                 src="/assets/logo.svg"
                 width="400"
                 height="400"
@@ -70,8 +66,8 @@ class UnAuthenticatedApp extends Component {
           </Paper>
         </div>
       </MuiThemeProvider>
-    );
+    )
   }
 }
 
-export default UnAuthenticatedApp;
+export default UnAuthenticatedApp
