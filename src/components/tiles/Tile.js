@@ -11,6 +11,7 @@ class Tile extends Component {
     const { value } = this.props
     const valueTitle = value.customName
     const valueHidden = value.relevance === "HIDDEN"
+
     let specificTile
     if (
       value.__typename === "BooleanValue" &&
@@ -40,7 +41,7 @@ class Tile extends Component {
     }
 
     return (
-      <Paper className={this.props.className || ""} zDepth={2}>
+      <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
         <Toolbar>
           <ToolbarGroup>
             <ToolbarTitle text={valueTitle} />
