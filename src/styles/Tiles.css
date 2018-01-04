@@ -25,9 +25,13 @@
   padding-top: 4px;
 }
 
+.readWriteBooleanTile {
+  margin-left: 106px;
+  margin-top: 70px;
+}
+
 .readOnlyBooleanTile,
 .readOnlyColourTile,
-.readWriteBooleanTile,
 .readWriteColourTile {
   width: 100%;
   height: calc(100% - 56px);
