@@ -181,3 +181,10 @@ body {
 .loginForm h1 {
   color: #0083ff;
 }
+
+.errorBody {
+  margin-top: 15%;
+  text-align: center;
+  color: #0083ff;
+  font-weight: bold;
+}

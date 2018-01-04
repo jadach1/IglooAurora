@@ -111,7 +111,21 @@ class MainBody extends Component {
       return <CenteredSpinner />
     }
     if (error) {
-      return <p>{error.message}</p>
+      return (
+        <div className="errorBody">
+          <font size="6">You are not connected, try again in a while</font>
+          <br />
+          <font size="5">In the meantime why don't you have a nap?</font>
+          <br />
+          <img
+            alt="Sleeping Polar Bear"
+            src="/assets/polarBear.svg"
+            width="400"
+            height="400"
+            className="logo notSelectable"
+          />
+        </div>
+      )
     }
 
     const values = device.values
