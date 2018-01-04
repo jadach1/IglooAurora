@@ -22,8 +22,11 @@ class Main extends Component {
         return (
             <MuiThemeProvider>
                 <div className="main">
-                    <SidebarHeader logOut={this.props.logOut} />
-                    <div className="sidebar">
+                    <SidebarHeader
+                        logOut={this.props.logOut}
+                        key="sidebarHeader"
+                    />
+                    <div className="sidebar" key="sidebar">
                         <Sidebar
                             selectDevice={id =>
                                 this.setState({selectedDevice: id})
@@ -35,12 +38,19 @@ class Main extends Component {
                         ? [
                               <MainBodyHeader
                                   deviceId={this.state.selectedDevice}
+                                  key="mainBodyHeader"
                               />,
-                              <MainBody deviceId={this.state.selectedDevice} />,
+                              <MainBody
+                                  deviceId={this.state.selectedDevice}
+                                  key="mainBody"
+                              />,
                           ]
                         : [
-                              <div className="mainBodyHeader" />,
-                              <div className="mainBody" />,
+                              <div
+                                  className="mainBodyHeader"
+                                  key="mainBodyHeader"
+                              />,
+                              <div className="mainBody" key="mainBody" />,
                           ]}
                 </div>
             </MuiThemeProvider>

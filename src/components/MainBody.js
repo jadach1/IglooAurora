@@ -29,23 +29,8 @@ class MainBody extends Component {
 
         let hiddenTiles = values.filter(value => value.relevance === "HIDDEN")
 
-        const renderTile = value => {
-            if (
-                value.__typename === "BooleanValue" &&
-                value.permission === "READ_ONLY"
-            ) {
-                return (
-                    <Tile
-                        value={value.boolValue}
-                        hidden={value.relevance === "NORMAL"}
-                        title={value.customName}
-                        className={value.tileSize.toLowerCase()}
-                    />
-                )
-            } else {
-                return ""
-            }
-        }
+        const renderTile = value => <Tile value={value} key={value.id} />
+
         visibleTiles = visibleTiles.map(renderTile)
         hiddenTiles = hiddenTiles.map(renderTile)
 
