@@ -18,6 +18,12 @@ body {
   grid-template-areas: "sidebarHeader mainBodyHeader" "sidebar mainBody";
 }
 
+@media screen and (max-width: 1050px) {
+  .main {
+    grid-template-columns: [start] 1fr [mid] 2fr [end];
+  }
+}
+
 .sidebar {
   grid-area: sidebar;
   background: #f2f2f2;
