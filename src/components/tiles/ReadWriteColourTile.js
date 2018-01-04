@@ -17,6 +17,10 @@ class ReadWriteColourTile extends Component {
           color={this.state.value}
           disableAlpha={true}
           className="colourPicker"
+          onChange={({ hex }) => this.setState({ value: hex })}
+          onChangeComplete={({ hex }) => {
+            /* use this to trigger mutation*/
+          }}
         />
       </div>
     )
