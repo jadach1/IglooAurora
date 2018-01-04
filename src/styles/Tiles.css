@@ -22,3 +22,31 @@
 .readOnlyBooleanTile.active svg {
     color: green;
 }
+
+.readWriteBoundedFloatTile {
+    width: 100%;
+    height: calc(100% - 56px);
+
+    display: grid;
+    grid-template-columns: 15px 25px 10px auto 10px 25px 15px;
+    grid-template-rows: auto 50px 30px auto;
+    grid-template-areas: ". . . . . . ." ". min . slider . max ." ". . . number . . ." ". . . . . . .";
+}
+
+.readWriteBoundedFloatTile .min {
+    line-height: 50px;
+    grid-area: min;
+}
+.readWriteBoundedFloatTile .max {
+    line-height: 50px;
+    grid-area: max;
+}
+.readWriteBoundedFloatTile .slider {
+    padding-top: 16px;
+    grid-area: slider;
+}
+.readWriteBoundedFloatTile .number {
+    grid-area: number;
+    text-align: center;
+    line-height: 30px;
+}
