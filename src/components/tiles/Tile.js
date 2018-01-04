@@ -5,6 +5,7 @@ import ReadOnlyBooleanTile from "./ReadOnlyBooleanTile"
 import ReadWriteBooleanTile from "./ReadWriteBooleanTile"
 import BoundedFloatTile from "./BoundedFloatTile"
 import ReadOnlyColourTile from "./ReadOnlyColourTile"
+import ReadWriteColourTile from "./ReadWriteColourTile"
 
 class Tile extends Component {
   render() {
@@ -38,6 +39,11 @@ class Tile extends Component {
       value.permission === "READ_ONLY"
     ) {
       specificTile = <ReadOnlyColourTile colour={value.colourValue} />
+    } else if (
+      value.__typename === "ColourValue" &&
+      value.permission === "READ_WRITE"
+    ) {
+      specificTile = <ReadWriteColourTile value={value.colourValue} />
     } else {
       specificTile = ""
     }
