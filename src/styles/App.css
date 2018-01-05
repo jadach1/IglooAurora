@@ -193,7 +193,7 @@ body {
   background: unset;
 }
 
-.invisbleHeader {
+.invisibleHeader {
   grid-row: start / mid;
   grid-column: start / end;
   background: transparent;
