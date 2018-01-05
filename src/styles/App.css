@@ -182,9 +182,13 @@ body {
   color: #0083ff;
 }
 
-.errorBody {
+.offlineBody {
   margin-top: 15%;
   text-align: center;
   color: #0083ff;
   font-weight: bold;
+}
+
+.mainBody.offlineBody {
+  background: unset;
 }

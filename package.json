@@ -15,6 +15,7 @@
     "react": "^16.2.0",
     "react-apollo": "^2.0.4",
     "react-color": "^2.13.8",
+    "react-detect-offline": "^1.0.6",
     "react-dom": "^16.2.0",
     "react-scripts": "1.0.17",
     "subscriptions-transport-ws": "^0.9.4"
