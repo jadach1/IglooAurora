@@ -21,70 +21,52 @@ class Main extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <div className="main">
-          <div className="invisbleHeader" key="invisibleHeader" />
-          <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
-          <div className="sidebar" key="sidebar">
-            <Sidebar
-              selectDevice={id => this.setState({ selectedDevice: id })}
-            />
+        <Online>
+          <div className="main">
+            <div className="invisibleHeader" key="invisibleHeader" />
+            <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
+            <div className="sidebar" key="sidebar">
+              <Sidebar
+                selectDevice={id => this.setState({ selectedDevice: id })}
+              />
+            </div>
+            {this.state.selectedDevice !== "" ? (
+              <MainBodyHeader
+                deviceId={this.state.selectedDevice}
+                key="mainBodyHeader"
+              />
+            ) : (
+              <div className="mainBodyHeader" key="mainBodyHeader" />
+            )}
+            {this.state.selectedDevice !== "" ? (
+              <MainBody deviceId={this.state.selectedDevice} />
+            ) : (
+              <div className="mainBody" />
+            )}
           </div>
+        </Online>
 
-          {this.state.selectedDevice !== ""
-            ? [
-                <MainBodyHeader
-                  deviceId={this.state.selectedDevice}
-                  key="mainBodyHeader"
-                />,
-                <Online key="mainBody">
-                  <MainBody deviceId={this.state.selectedDevice} />
-                </Online>,
-                <Offline key="offlineMainBody">
-                  <div className="offlineBody mainBody">
-                    <font size="6">
-                      You are not connected, try again in a while
-                    </font>
-                    <br />
-                    <font size="5">
-                      In the meantime why don't you have a nap?
-                    </font>
-                    <br />
-                    <img
-                      alt="Sleeping Polar Bear"
-                      src="/assets/polarBear.svg"
-                      width="400"
-                      height="400"
-                      className="logo notSelectable"
-                    />
-                  </div>
-                </Offline>,
-              ]
-            : [
-                <div className="mainBodyHeader" key="mainBodyHeader" />,
-                <Online key="mainBody">
-                  <div className="mainBody" />
-                </Online>,
-                <Offline key="offlineMainBody">
-                  <div className="offlineBody mainBody">
-                    <font size="6">
-                      You are not connected, try again in a while
-                    </font>
-                    <br />
-                    <font size="5">
-                      In the meantime why don't you have a nap?
-                    </font>
-                    <br />
-                    <img
-                      alt="Sleeping Polar Bear"
-                      src="/assets/polarBear.svg"
-                      width="400"
-                      height="400"
-                      className="logo notSelectable"
-                    />
-                  </div>
-                </Offline>,
-              ]}
-        </div>
+        <Offline key="offlineMainBody">
+          <div className="main">
+            <div className="invisibleHeader" key="invisibleHeader" />
+            <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
+            <div className="sidebar" key="sidebar" />
+            <div className="mainBodyHeader" key="mainBodyHeader" />
+            <div className="offlineBody mainBody">
+              <font size="6">You are not connected, try again in a while</font>
+              <br />
+              <font size="5">In the meantime why don't you have a nap?</font>
+              <br />
+              <img
+                alt="Sleeping Polar Bear"
+                src="/assets/polarBear.svg"
+                width="400"
+                height="400"
+                className="logo notSelectable"
+              />
+            </div>
+          </div>
+        </Offline>
       </MuiThemeProvider>
     )
   }
