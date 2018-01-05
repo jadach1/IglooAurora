@@ -22,6 +22,7 @@ class Main extends Component {
     return (
       <MuiThemeProvider>
         <div className="main">
+          <div className="invisbleHeader" key="invisibleHeader" />
           <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
           <div className="sidebar" key="sidebar">
             <Sidebar
