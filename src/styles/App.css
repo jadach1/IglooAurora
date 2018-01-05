@@ -68,10 +68,10 @@ body {
 }
 
 .sidebarHeader {
+  grid-area: sidebarHeader;
   vertical-align: middle;
   line-height: 60px;
   background: #0083ff;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 5px;
   z-index: 1000;
 }
 
@@ -95,6 +95,7 @@ body {
 }
 
 .mainBodyHeader {
+  grid-area: mainBodyHeader;
   background: #40a2ff;
   color: white;
   box-sizing: border-box;
@@ -102,7 +103,6 @@ body {
   font-size: 30px;
   padding-left: 20px;
   vertical-align: middle;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 5px;
   z-index: 1000;
 }
 .mainBodyHeader .rightSide {
@@ -191,4 +191,12 @@ body {
 
 .mainBody.offlineBody {
   background: unset;
+}
+
+.invisbleHeader {
+  grid-row: start / mid;
+  grid-column: start / end;
+  background: transparent;
+  z-index: 1;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 5px;
 }
