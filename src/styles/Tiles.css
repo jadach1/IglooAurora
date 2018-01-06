@@ -32,7 +32,8 @@
 
 .readOnlyBooleanTile,
 .readOnlyColourTile,
-.readWriteColourTile {
+.readWriteColourTile,
+.readOnlyFloatTile {
   width: 100%;
   height: calc(100% - 56px);
 }
@@ -132,4 +133,19 @@
 
 .readWriteColourTile .colourPicker > div {
   border-radius: unset !important;
+}
+
+.readOnlyFloatTile {
+  display: grid;
+  grid-template-rows: auto 50px auto;
+  grid-template-columns: auto;
+  grid-template-areas: "." "number" ".";
+}
+
+.readOnlyFloatTile .number {
+  grid-area: number;
+  margin-top: auto;
+  margin-bottom: auto;
+  font-size: 50px;
+  text-align: center;
 }
