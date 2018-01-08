@@ -1,25 +1,25 @@
-import React, { Component } from "react";
-import TextField from "material-ui/TextField";
-import FlatButton from "material-ui/FlatButton";
-import gql from "graphql-tag";
+import React, { Component } from "react"
+import TextField from "material-ui/TextField"
+import RaisedButton from "material-ui/RaisedButton"
+import gql from "graphql-tag"
 
 class Login extends Component {
   constructor() {
-    super();
+    super()
 
     this.state = {
       email: "",
       emailError: "",
       password: "",
-      passwordError: ""
-    };
+      passwordError: "",
+    }
 
-    this.signUp = this.signUp.bind(this);
+    this.signUp = this.signUp.bind(this)
   }
 
   async signUp() {
     try {
-      this.setState({ emailError: "", passwordError: "" });
+      this.setState({ emailError: "", passwordError: "" })
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!) {
@@ -31,24 +31,24 @@ class Login extends Component {
         `,
         variables: {
           email: this.state.email,
-          password: this.state.password
-        }
-      });
+          password: this.state.password,
+        },
+      })
 
       if (typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.state.email);
+        localStorage.setItem("email", this.state.email)
       }
 
-      this.props.signIn(loginMutation.data.SignupUser.token);
+      this.props.signIn(loginMutation.data.SignupUser.token)
     } catch (e) {
       if (
         e.message === "GraphQL error: A user with this email already exists"
       ) {
         this.setState({
-          emailError: "This email is already taken, maybe you want to sign in?"
-        });
+          emailError: "This email is already taken, maybe you want to sign in?",
+        })
       } else {
-        console.log(e);
+        console.log(e)
       }
     }
   }
@@ -64,7 +64,7 @@ class Login extends Component {
           value={this.state.email}
           onChange={event => this.setState({ email: event.target.value })}
           onKeyPress={event => {
-            if (event.key === "Enter") this.signUp();
+            if (event.key === "Enter") this.signUp()
           }}
           floatingLabelShrinkStyle={{ color: "#0083ff" }}
           underlineFocusStyle={{ borderColor: "#0083ff" }}
@@ -78,11 +78,11 @@ class Login extends Component {
           value={this.state.password}
           onChange={event =>
             this.setState({
-              password: event.target.value
+              password: event.target.value,
             })
           }
           onKeyPress={event => {
-            if (event.key === "Enter") this.signUp();
+            if (event.key === "Enter") this.signUp()
           }}
           floatingLabelShrinkStyle={{ color: "#0083ff" }}
           underlineFocusStyle={{ borderColor: "#0083ff" }}
@@ -90,7 +90,13 @@ class Login extends Component {
         <br />
         <br />
         <br />
-        <FlatButton label="Sign up" fullWidth={true} onClick={this.signUp} />
+        <RaisedButton
+          label="Sign up"
+          fullWidth={true}
+          primary={true}
+          onClick={this.signUp}
+          buttonStyle={{ backgroundColor: "#0083ff" }}
+        />
         <br />
         <br />
         You already have an account?<br />
@@ -98,8 +104,8 @@ class Login extends Component {
           Log in here
         </span>
       </div>
-    );
+    )
   }
 }
 
-export default Login;
+export default Login
