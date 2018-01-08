@@ -7,7 +7,8 @@ class ReadWriteBooleanTile extends Component {
       <div>
         <Toggle
           thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-          trackSwitchedStyle={{ backgroundColor: "#40a2ff" }}
+          trackSwitchedStyle={{ backgroundColor: "#93ceff" }}
+          rippleStyle={{ color: "#0083ff" }}
         />
       </div>
     )
