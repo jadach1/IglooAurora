@@ -55,7 +55,7 @@ class Login extends Component {
 
   render() {
     return (
-      <div className="rightSide">
+      <div className="rightSide notSelectable">
         <h1>Nice to meet you!</h1>
         <TextField
           hintText="Email"

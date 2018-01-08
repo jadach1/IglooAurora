@@ -36,7 +36,7 @@ class UnAuthenticatedApp extends Component {
       <MuiThemeProvider>
         <div className="loginBackground">
           <Paper className="loginForm" zDepth={1}>
-            <div className="leftSide">
+            <div className="leftSide notSelectable">
               <img
                 alt="igloo logo"
                 src="/assets/logo.svg"
