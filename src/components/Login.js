@@ -103,6 +103,7 @@ class Login extends Component {
           primary={true}
           fullWidth={true}
           onClick={this.signIn}
+          buttonStyle={{ backgroundColor: "#0083ff" }}
         />
         <br />
         <br />

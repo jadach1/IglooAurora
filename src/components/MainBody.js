@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import Tile from "./tiles/Tile"
-import CenteredSpinner from "./CenteredSpinner"
+import LargeCenteredSpinner from "./LargeCenteredSpinner"
 import FlatButton from "material-ui/FlatButton"
 import PropTypes from "prop-types"
 import { graphql } from "react-apollo"
@@ -108,7 +108,7 @@ class MainBody extends Component {
     const { loading, error, device } = this.props.deviceData
 
     if (loading) {
-      return <CenteredSpinner />
+      return <LargeCenteredSpinner />
     }
     if (error) {
       return <div className="mainBody">An unexpected error occurred</div>
