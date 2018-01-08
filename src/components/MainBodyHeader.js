@@ -17,7 +17,7 @@ class MainBodyHeader extends Component {
     }
 
     return (
-      <div className="mainBodyHeader">
+      <div className="mainBodyHeader notSelectable">
         {device.icon ? (
           <img className="deviceIconBig" src={device.icon} alt="device logo" />
         ) : (
