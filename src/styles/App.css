@@ -7,6 +7,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: Roboto, Segoe UI, sans-serif;
+  -ms-content-zooming: none;
+  touch-action: none;
 }
 
 .main {
