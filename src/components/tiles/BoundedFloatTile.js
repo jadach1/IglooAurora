@@ -9,6 +9,8 @@ class ReadOnlyBooleanTile extends Component {
     this.state = {
       value: props.defaultValue,
     }
+
+    this.timeout = null
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,7 +55,26 @@ class ReadOnlyBooleanTile extends Component {
           max={this.props.max}
           step={this.props.step}
           value={this.state.value}
-          onChange={e => this.setState({ value: parseFloat(e.target.value) })}
+          onChange={e => {
+            this.setState({ value: parseFloat(e.target.value) })
+            if (this.timeout) clearTimeout(this.timeout)
+            this.timeout = setTimeout(() => {
+              this.props.mutate({
+                variables: {
+                  id: this.props.id,
+                  value: this.state.value,
+                },
+                optimisticResponse: {
+                  __typename: "Mutation",
+                  floatValue: {
+                    __typename: "FloatValue",
+                    id: this.props.id,
+                    value: this.state.value,
+                  },
+                },
+              })
+            }, 100)
+          }}
           className="number"
           type="number"
           disabled={this.props.disabled}
