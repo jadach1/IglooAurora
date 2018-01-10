@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import { ChromePicker } from "react-color"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 class ReadWriteColourTile extends Component {
   constructor(props) {
@@ -19,7 +21,20 @@ class ReadWriteColourTile extends Component {
           className="colourPicker"
           onChange={({ hex }) => this.setState({ value: hex })}
           onChangeComplete={({ hex }) => {
-            /* use this to trigger mutation*/
+            this.props.mutate({
+              variables: {
+                id: this.props.id,
+                value: hex,
+              },
+              optimisticResponse: {
+                __typename: "Mutation",
+                colourValue: {
+                  __typename: "ColourValue",
+                  id: this.props.id,
+                  value: hex,
+                },
+              },
+            })
           }}
         />
       </div>
@@ -27,4 +42,13 @@ class ReadWriteColourTile extends Component {
   }
 }
 
-export default ReadWriteColourTile
+const updateColourValue = gql`
+  mutation colourValue($id: ID!, $value: String!) {
+    colourValue(id: $id, value: $value) {
+      id
+      value
+    }
+  }
+`
+
+export default graphql(updateColourValue)(ReadWriteColourTile)
