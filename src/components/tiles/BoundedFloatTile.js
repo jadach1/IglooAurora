@@ -32,7 +32,7 @@ class ReadOnlyBooleanTile extends Component {
           onDragStop={e => {
             this.props.mutate({
               variables: {
-                id: this.props.id + "aa",
+                id: this.props.id,
                 value: this.state.value,
               },
               optimisticResponse: {

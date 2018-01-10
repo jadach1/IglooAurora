@@ -24,7 +24,9 @@ class Tile extends Component {
       value.__typename === "BooleanValue" &&
       value.permission === "READ_WRITE"
     ) {
-      specificTile = <ReadWriteBooleanTile value={value.boolValue} />
+      specificTile = (
+        <ReadWriteBooleanTile value={value.boolValue} id={value.id} />
+      )
     } else if (value.__typename === "FloatValue" && value.boundaries) {
       specificTile = (
         <BoundedFloatTile
