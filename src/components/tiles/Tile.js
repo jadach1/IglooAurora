@@ -53,7 +53,9 @@ class Tile extends Component {
       value.__typename === "ColourValue" &&
       value.permission === "READ_WRITE"
     ) {
-      specificTile = <ReadWriteColourTile value={value.colourValue} />
+      specificTile = (
+        <ReadWriteColourTile value={value.colourValue} id={value.id} />
+      )
     } else {
       specificTile = ""
     }
