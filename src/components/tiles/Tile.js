@@ -28,6 +28,7 @@ class Tile extends Component {
     } else if (value.__typename === "FloatValue" && value.boundaries) {
       specificTile = (
         <BoundedFloatTile
+          id={value.id}
           min={value.boundaries[0]}
           max={value.boundaries[1]}
           defaultValue={value.floatValue}

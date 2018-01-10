@@ -1,5 +1,7 @@
 import React, { Component } from "react"
 import Slider from "material-ui/Slider"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 class ReadOnlyBooleanTile extends Component {
   constructor(props) {
@@ -27,8 +29,21 @@ class ReadOnlyBooleanTile extends Component {
           className="slider"
           sliderStyle={{ marginTop: "0", marginBottom: "0" }}
           onChange={(e, newValue) => this.setState({ value: newValue })}
-          onDragStop={() => {
-            /* use this even to trigger the mutation */
+          onDragStop={e => {
+            this.props.mutate({
+              variables: {
+                id: this.props.id + "aa",
+                value: this.state.value,
+              },
+              optimisticResponse: {
+                __typename: "Mutation",
+                floatValue: {
+                  __typename: "FloatValue",
+                  id: this.props.id,
+                  value: this.state.value,
+                },
+              },
+            })
           }}
           disabled={this.props.disabled}
         />
@@ -48,4 +63,13 @@ class ReadOnlyBooleanTile extends Component {
   }
 }
 
-export default ReadOnlyBooleanTile
+const updateFloatValue = gql`
+  mutation floatValue($id: ID!, $value: Float!) {
+    floatValue(id: $id, value: $value) {
+      id
+      value
+    }
+  }
+`
+
+export default graphql(updateFloatValue)(ReadOnlyBooleanTile)
