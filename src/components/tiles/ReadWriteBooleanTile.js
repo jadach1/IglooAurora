@@ -4,7 +4,7 @@ import Toggle from "material-ui/Toggle"
 class ReadWriteBooleanTile extends Component {
   render() {
     return (
-      <div>
+      <div className="readWriteBooleanTile">
         <Toggle
           thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
           trackSwitchedStyle={{ backgroundColor: "#93ceff" }}

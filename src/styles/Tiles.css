@@ -93,22 +93,6 @@
   border-radius: 75px;
 }
 
-.readWriteBooleanTile .boolToggle {
-  margin: 22px auto 22px auto;
-  width: 150px;
-  height: 150px;
-  border-radius: 75px;
-  padding: 25px;
-  color: white;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 6px 20px;
-  cursor: pointer;
-  transition: box-shadow 0.2s linear;
-}
-
-.readWriteBooleanTile .boolToggle:active {
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 10px;
-}
-
 .readWriteColourTile {
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
@@ -147,5 +131,19 @@
   margin-top: auto;
   margin-bottom: auto;
   font-size: 50px;
+  text-align: center;
+}
+
+.readWriteBooleanTile {
+  display: grid;
+  grid-template-rows: auto 50px auto;
+  grid-template-columns: auto;
+  grid-template-areas: "." "switch" ".";
+}
+
+.readWriteBooleanTile .switch {
+  grid-area: switch;
+  margin-top: auto;
+  margin-bottom: auto;
   text-align: center;
 }
