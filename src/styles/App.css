@@ -89,10 +89,10 @@ body {
   margin: 0 5px 0 5px;
   vertical-align: middle;
 }
-.logoutButton {
+.sidebarHeaderButton {
   vertical-align: middle;
 }
-.logoutButton svg {
+.sidebarHeaderButton svg {
   color: white !important;
 }
 

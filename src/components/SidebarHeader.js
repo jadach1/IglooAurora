@@ -5,6 +5,14 @@ import IconButton from "material-ui/IconButton"
 import NotificationIcon from "material-ui/svg-icons/social/notifications"
 
 class SidebarHeader extends Component {
+  openSettingsDialog = () => {
+    this.setState({ areSettingsOpen: true })
+  }
+
+  closeSettingsDialog = () => {
+    this.setState({ areSettingsOpen: false })
+  }
+
   render() {
     return (
       <div className="sidebarHeader">
@@ -16,8 +24,29 @@ class SidebarHeader extends Component {
           className="logo notSelectable"
         />
         <div className="rightSide">
-          <NotificationIcon className="icon" />
-          <SettingsIcon className="icon" />
+          <IconButton
+            style={{
+              padding: "0",
+              margin: "0 5px 0 5px",
+              width: "24px",
+              height: "24px",
+            }}
+            className="sidebarHeaderButton"
+          >
+            <NotificationIcon />
+          </IconButton>
+          <IconButton
+            onClick={this.openSettingsDialog}
+            style={{
+              padding: "0",
+              margin: "0 5px 0 5px",
+              width: "24px",
+              height: "24px",
+            }}
+            className="sidebarHeaderButton"
+          >
+            <SettingsIcon />
+          </IconButton>
           <IconButton
             onClick={this.props.logOut}
             style={{
@@ -26,7 +55,7 @@ class SidebarHeader extends Component {
               width: "24px",
               height: "24px",
             }}
-            className="logoutButton"
+            className="sidebarHeaderButton"
           >
             <LogOutIcon />
           </IconButton>
