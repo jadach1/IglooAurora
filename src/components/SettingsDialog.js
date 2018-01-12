@@ -3,14 +3,12 @@ import Dialog from "material-ui/Dialog"
 import FlatButton from "material-ui/FlatButton"
 
 export default class SettingsDialog extends React.Component {
-  state = {}
-
   render() {
     const actions = [
       <FlatButton
         label="Close"
         primary={true}
-        onClick={this.closeSettingsDialog}
+        onClick={this.props.closeSettingsDialog}
       />,
     ]
 
@@ -19,8 +17,8 @@ export default class SettingsDialog extends React.Component {
         title="Settings"
         actions={actions}
         modal={false}
-        areSettingsOpen={this.state.areSettingsOpen}
-        onRequestClose={this.closeSettingsDialog}
+        open={this.props.isOpen}
+        onRequestClose={this.props.closeSettingsDialog}
       >
         Lorem ipsum
       </Dialog>
