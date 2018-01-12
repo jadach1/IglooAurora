@@ -5,14 +5,6 @@ import IconButton from "material-ui/IconButton"
 import NotificationIcon from "material-ui/svg-icons/social/notifications"
 
 class SidebarHeader extends Component {
-  openSettingsDialog = () => {
-    this.setState({ areSettingsOpen: true })
-  }
-
-  closeSettingsDialog = () => {
-    this.setState({ areSettingsOpen: false })
-  }
-
   render() {
     return (
       <div className="sidebarHeader">
@@ -36,7 +28,7 @@ class SidebarHeader extends Component {
             <NotificationIcon />
           </IconButton>
           <IconButton
-            onClick={this.openSettingsDialog}
+            onClick={this.props.openSettingsDialog}
             style={{
               padding: "0",
               margin: "0 5px 0 5px",

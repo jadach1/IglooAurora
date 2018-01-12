@@ -27,9 +27,20 @@ class Main extends Component {
         <Online>
           <div className="main">
             <NotificationPopover />
-            <SettingsDialog />
+            <SettingsDialog
+              isOpen={this.state.areSettingsOpen}
+              closeSettingsDialog={() => {
+                this.setState({ areSettingsOpen: false })
+              }}
+            />
             <div className="invisibleHeader" key="invisibleHeader" />
-            <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
+            <SidebarHeader
+              logOut={this.props.logOut}
+              key="sidebarHeader"
+              openSettingsDialog={() => {
+                this.setState({ areSettingsOpen: true })
+              }}
+            />
             <div className="sidebar" key="sidebar">
               <Sidebar
                 selectDevice={id => this.setState({ selectedDevice: id })}
