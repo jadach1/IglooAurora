@@ -108,7 +108,7 @@ class Login extends Component {
         <br />
         <br />
         No account?<br />
-        <span style={{ color: "#0083ff" }} onClick={this.props.goToSignup}>
+        <span className="goToSignup" onClick={this.props.goToSignup}>
           Create one!
         </span>
       </div>
