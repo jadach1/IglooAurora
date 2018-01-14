@@ -1,8 +1,5 @@
 import React, { Component } from "react"
-import SettingsIcon from "material-ui/svg-icons/action/settings"
-import LogOutIcon from "material-ui/svg-icons/action/exit-to-app"
 import IconButton from "material-ui/IconButton"
-import NotificationIcon from "material-ui/svg-icons/social/notifications"
 
 class SidebarHeader extends Component {
   render() {
