@@ -25,7 +25,7 @@ class SidebarHeader extends Component {
             }}
             className="sidebarHeaderButton"
           >
-            <NotificationIcon />
+            <i class="material-icons">notifications_none</i>
           </IconButton>
           <IconButton
             onClick={this.props.openSettingsDialog}
@@ -37,7 +37,7 @@ class SidebarHeader extends Component {
             }}
             className="sidebarHeaderButton"
           >
-            <SettingsIcon />
+            <i class="material-icons">settings</i>
           </IconButton>
           <IconButton
             onClick={this.props.logOut}
@@ -49,7 +49,7 @@ class SidebarHeader extends Component {
             }}
             className="sidebarHeaderButton"
           >
-            <LogOutIcon />
+            <i class="material-icons">exit_to_app</i>{" "}
           </IconButton>
         </div>
       </div>

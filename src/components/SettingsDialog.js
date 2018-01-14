@@ -65,11 +65,15 @@ export default class SettingsDialog extends React.Component {
       >
         <Tabs>
           <Tab
-            icon={<FontIcon className="material-icons">favorite</FontIcon>}
-            label="General"
+            icon={<FontIcon className="material-icons">dashboard</FontIcon>}
+            label="Interface"
             buttonStyle={{ backgroundColor: "#0083ff" }}
           />
-          <Tab label="Account" buttonStyle={{ backgroundColor: "#0083ff" }}>
+          <Tab
+            icon={<FontIcon className="material-icons">account_box</FontIcon>}
+            label="Account"
+            buttonStyle={{ backgroundColor: "#0083ff" }}
+          >
             <div>
               <h2 style={styles.headline}>Change your password</h2>
               <TextField
@@ -91,6 +95,16 @@ export default class SettingsDialog extends React.Component {
               <br />
               <RaisedButton
                 label="Change your password"
+                primary={true}
+                buttonStyle={{ backgroundColor: "#0083ff" }}
+              />
+              <br />
+              <h2 style={styles.headline}>Two-factor authentication</h2>
+              Status: <b> {this.is2FAEnabled}</b>
+              <br />
+              <br />
+              <RaisedButton
+                label={this.twoFactorButtonText}
                 primary={true}
                 buttonStyle={{ backgroundColor: "#0083ff" }}
               />
