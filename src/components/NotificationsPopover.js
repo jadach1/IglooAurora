@@ -1,5 +1,4 @@
 import React from "react"
-import RaisedButton from "material-ui/RaisedButton"
 import Popover from "material-ui/Popover"
 
 export default class NotificationPopover extends React.Component {
