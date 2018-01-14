@@ -4,6 +4,7 @@ import FlatButton from "material-ui/FlatButton"
 import RaisedButton from "material-ui/RaisedButton"
 import { Tabs, Tab } from "material-ui/Tabs"
 import TextField from "material-ui/TextField"
+import FontIcon from "material-ui/FontIcon"
 
 const styles = {
   headline: {
@@ -63,18 +64,36 @@ export default class SettingsDialog extends React.Component {
         onRequestClose={this.props.closeSettingsDialog}
       >
         <Tabs>
-          <Tab label="General">
-            <div>
-              <h2 style={styles.headline}>Tab One</h2>
-            </div>
-          </Tab>
-          <Tab label="Account">
+          <Tab
+            icon={<FontIcon className="material-icons">favorite</FontIcon>}
+            label="General"
+            buttonStyle={{ backgroundColor: "#0083ff" }}
+          />
+          <Tab label="Account" buttonStyle={{ backgroundColor: "#0083ff" }}>
             <div>
               <h2 style={styles.headline}>Change your password</h2>
-              <TextField hintText="Old Password" />
+              <TextField
+                hintText="Old Password"
+                floatingLabelShrinkStyle={{ color: "#0083ff" }}
+                underlineFocusStyle={{ borderColor: "#0083ff" }}
+                floatingLabelText="Old Password"
+                type="password"
+              />
+              <br />
+              <TextField
+                hintText="New Password"
+                floatingLabelShrinkStyle={{ color: "#0083ff" }}
+                underlineFocusStyle={{ borderColor: "#0083ff" }}
+                floatingLabelText="New Password"
+                type="password"
+              />
               <br />
               <br />
-              <TextField hintText="New Password" />
+              <RaisedButton
+                label="Change your password"
+                primary={true}
+                buttonStyle={{ backgroundColor: "#0083ff" }}
+              />
               <h2 style={styles.headline}>Delete your account</h2>
               <RaisedButton
                 label="Delete your account"
