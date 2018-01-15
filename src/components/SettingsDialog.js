@@ -5,6 +5,7 @@ import RaisedButton from "material-ui/RaisedButton"
 import { Tabs, Tab } from "material-ui/Tabs"
 import TextField from "material-ui/TextField"
 import FontIcon from "material-ui/FontIcon"
+import Toggle from "material-ui/Toggle"
 
 const styles = {
   headline: {
@@ -64,19 +65,44 @@ export default class SettingsDialog extends React.Component {
         onRequestClose={this.props.closeSettingsDialog}
         bodyStyle={{ padding: "0" }}
         repositionOnUpdate={true}
+        contentStyle={{ width: "600px" }}
       >
         <Tabs>
           <Tab
             icon={<FontIcon className="material-icons">dashboard</FontIcon>}
             label="Interface"
             buttonStyle={{ backgroundColor: "#0083ff" }}
-          />
+          >
+            <div
+              style={{
+                overflowY: "scroll",
+                height: "500px",
+                paddingLeft: "30px",
+                paddingRight: "30px",
+              }}
+            >
+              <h2 style={styles.headline}>Tiles</h2>
+              Enable advanced options for color selector
+              <Toggle
+                thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                trackSwitchedStyle={{ backgroundColor: "#93ceff" }}
+                rippleStyle={{ color: "#0083ff" }}
+              />
+            </div>
+          </Tab>
           <Tab
             icon={<FontIcon className="material-icons">account_box</FontIcon>}
             label="Account"
             buttonStyle={{ backgroundColor: "#0083ff" }}
           >
-            <div>
+            <div
+              style={{
+                overflowY: "scroll",
+                height: "500px",
+                paddingLeft: "30px",
+                paddingRight: "30px",
+              }}
+            >
               <h2 style={styles.headline}>Change your password</h2>
               <TextField
                 hintText="Old Password"
@@ -102,13 +128,10 @@ export default class SettingsDialog extends React.Component {
               />
               <br />
               <h2 style={styles.headline}>Two-factor authentication</h2>
-              Status: <b> {this.is2FAEnabled}</b>
-              <br />
-              <br />
-              <RaisedButton
-                label={this.twoFactorButtonText}
-                primary={true}
-                buttonStyle={{ backgroundColor: "#0083ff" }}
+              <Toggle
+                thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                trackSwitchedStyle={{ backgroundColor: "#93ceff" }}
+                rippleStyle={{ color: "#0083ff" }}
               />
               <h2 style={styles.headline}>Delete your account</h2>
               <RaisedButton
