@@ -62,6 +62,8 @@ export default class SettingsDialog extends React.Component {
         modal={false}
         open={this.props.isOpen}
         onRequestClose={this.props.closeSettingsDialog}
+        bodyStyle={{ padding: "0" }}
+        repositionOnUpdate={true}
       >
         <Tabs>
           <Tab
@@ -94,7 +96,7 @@ export default class SettingsDialog extends React.Component {
               <br />
               <br />
               <RaisedButton
-                label="Change your password"
+                label="Change password"
                 primary={true}
                 buttonStyle={{ backgroundColor: "#0083ff" }}
               />
