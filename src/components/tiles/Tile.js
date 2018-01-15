@@ -68,15 +68,18 @@ class Tile extends Component {
           </div>
           <div className="tileHeaderButtons">
             {valueHidden ? (
-              <IconButton iconClassName="fas fa-eye" tooltip="Hide" />
+              <IconButton tooltip="Hide">
+                <i class="material-icons">visibility</i>
+              </IconButton>
             ) : (
-              <IconButton iconClassName="fas fa-eye-slash" tooltip="Show" />
+              <IconButton tooltip="Show">
+                <i class="material-icons">visibility_off</i>{" "}
+              </IconButton>
             )}
 
-            <IconButton
-              iconClassName="fas fa-expand-arrows-alt"
-              tooltip="Expand"
-            />
+            <IconButton tooltip="Expand">
+              <i class="material-icons">fullscreen</i>
+            </IconButton>
           </div>
         </div>
         {specificTile}
