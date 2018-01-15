@@ -21,6 +21,7 @@ class SidebarHeader extends Component {
               height: "24px",
             }}
             className="sidebarHeaderButton"
+            tooltip="Notifications"
           >
             <i class="material-icons sidebarHeaderIcons">notifications_none</i>
           </IconButton>
@@ -33,6 +34,7 @@ class SidebarHeader extends Component {
               height: "24px",
             }}
             className="sidebarHeaderButton"
+            tooltip="Settings"
           >
             <i class="material-icons sidebarHeaderIcons">settings</i>
           </IconButton>
@@ -45,6 +47,7 @@ class SidebarHeader extends Component {
               height: "24px",
             }}
             className="sidebarHeaderButton"
+            tooltip="Log out"
           >
             <i class="material-icons sidebarHeaderIcons">exit_to_app</i>{" "}
           </IconButton>
