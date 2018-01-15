@@ -10,6 +10,6 @@ export default props => (
         : { width: "100%", textAlign: "center" }
     }
   >
-    <CircularProgress color="#0083ff" style={{ margin: "15px 0 0 0" }} />
+    <CircularProgress color="#0083ff" style={{ margin: "20px 0 0 0" }} />
   </div>
 )
