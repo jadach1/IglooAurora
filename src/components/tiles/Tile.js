@@ -73,11 +73,11 @@ class Tile extends Component {
               </IconButton>
             ) : (
               <IconButton tooltip="Show">
-                <i class="material-icons">visibility_off</i>{" "}
+                <i class="material-icons">visibility_off</i>
               </IconButton>
             )}
 
-            <IconButton tooltip="Expand">
+            <IconButton tooltip="Expand" onClick={this.props.enableFullScreen}>
               <i class="material-icons">fullscreen</i>
             </IconButton>
           </div>

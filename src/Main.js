@@ -6,6 +6,7 @@ import MainBodyHeader from "./components/MainBodyHeader"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import SettingsDialog from "./components/SettingsDialog"
 import NotificationPopover from "./components/NotificationsPopover"
+import FullScreenTile from "./components/tiles/FullScreenTile"
 import { Offline, Online } from "react-detect-offline"
 import "./styles/App.css"
 import "./styles/Tiles.css"
@@ -18,6 +19,7 @@ class Main extends Component {
       showHidden: false,
       selectedDevice: "",
       areSettingsOpen: false,
+      isTileFullScreen: false,
     }
   }
 
@@ -26,6 +28,7 @@ class Main extends Component {
       <MuiThemeProvider>
         <Online>
           <div className="main">
+            <FullScreenTile fullScreen={this.state.isTileFullScreen} />
             <NotificationPopover />
             <SettingsDialog
               isOpen={this.state.areSettingsOpen}
@@ -55,7 +58,12 @@ class Main extends Component {
               <div className="mainBodyHeader" key="mainBodyHeader" />
             )}
             {this.state.selectedDevice !== "" ? (
-              <MainBody deviceId={this.state.selectedDevice} />
+              <MainBody
+                deviceId={this.state.selectedDevice}
+                enableFullScreen={() => {
+                  this.setState({ isTileFullScreen: true })
+                }}
+              />
             ) : (
               <div className="mainBody" />
             )}

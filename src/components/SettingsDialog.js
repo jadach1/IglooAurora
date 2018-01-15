@@ -23,19 +23,25 @@ const deleteDialogContentStyle = {
 export default class SettingsDialog extends React.Component {
   state = {
     deleteDialogOpen: false,
+    isDeleteDisabled: true,
   }
 
   handleDeleteDialogOpen = () => {
     this.setState({ deleteDialogOpen: true })
+    setTimeout(this.timer, 5000)
   }
 
   handleDeleteDialogClose = () => {
     this.setState({ deleteDialogOpen: false })
   }
 
+  timer = () => {
+    this.setState({ isDeleteDisabled: false })
+  }
+
   render() {
     const actions = [
-      <FlatButton label="Discard" primary={true} />,
+      <FlatButton label="Discard" />,
       <RaisedButton
         label="Apply"
         primary={true}
@@ -46,7 +52,6 @@ export default class SettingsDialog extends React.Component {
     const deleteDialogActions = [
       <FlatButton
         label="Discard"
-        primary={true}
         keyboardFocused={true}
         onClick={this.handleDeleteDialogClose}
       />,
@@ -54,6 +59,7 @@ export default class SettingsDialog extends React.Component {
         label="Delete"
         primary={true}
         buttonStyle={{ backgroundColor: "#F44336" }}
+        disabled={this.state.isDeleteDisabled}
       />,
     ]
 
