@@ -148,6 +148,9 @@ body {
 }
 
 .loginBackground {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   min-height: 100vh;
   width: 100%;
   margin: 0;
@@ -161,7 +164,7 @@ body {
 .loginForm {
   width: 816px;
   height: 600px;
-  margin: 0 auto 0 auto;
+  margin: auto auto auto auto;
   text-align: center;
   display: grid;
   grid-template-columns: [start] 500px [mid] 316px [end];

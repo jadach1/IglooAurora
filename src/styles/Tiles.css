@@ -25,15 +25,11 @@
   padding-top: 4px;
 }
 
-.readWriteBooleanTile {
-  margin-left: 106px;
-  margin-top: 70px;
-}
-
 .readOnlyBooleanTile,
 .readOnlyColourTile,
 .readWriteColourTile,
-.readOnlyFloatTile {
+.readOnlyFloatTile,
+.readWriteBooleanTile {
   width: 100%;
   height: calc(100% - 56px);
 }
@@ -136,14 +132,11 @@
 
 .readWriteBooleanTile {
   display: grid;
-  grid-template-rows: auto 50px auto;
-  grid-template-columns: auto;
-  grid-template-areas: "." "switch" ".";
+  grid-template-rows: auto 24px auto;
+  grid-template-columns: auto 50px auto;
+  grid-template-areas: ". . ." ". switch ." ". . .";
 }
 
 .readWriteBooleanTile .switch {
   grid-area: switch;
-  margin-top: auto;
-  margin-bottom: auto;
-  text-align: center;
 }

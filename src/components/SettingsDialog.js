@@ -81,7 +81,7 @@ export default class SettingsDialog extends React.Component {
           >
             <div
               style={{
-                overflowY: "scroll",
+                overflowY: "auto",
                 height: "500px",
                 paddingLeft: "30px",
                 paddingRight: "30px",
@@ -103,7 +103,7 @@ export default class SettingsDialog extends React.Component {
           >
             <div
               style={{
-                overflowY: "scroll",
+                overflowY: "auto",
                 height: "500px",
                 paddingLeft: "30px",
                 paddingRight: "30px",

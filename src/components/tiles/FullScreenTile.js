@@ -7,15 +7,18 @@ export default class FullScreenTile extends React.Component {
     const actions = [
       <FlatButton label="Close" onClick={this.props.handleClose} />,
     ]
+    const { value } = this.props
+    const valueTitle = value.customName
 
     return (
       <Dialog
+        title={valueTitle}
         actions={actions}
         modal={false}
         open={this.props.fullScreen}
         onRequestClose={this.props.handleClose}
       >
-        Lorem Ipsum
+        {this.props.specificTile}
       </Dialog>
     )
   }
