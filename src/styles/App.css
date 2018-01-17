@@ -73,7 +73,7 @@ body {
   grid-area: sidebarHeader;
   vertical-align: middle;
   line-height: 60px;
-  background: #0083ff;
+  background: #0057cb;
   z-index: 1000;
 }
 
@@ -98,7 +98,7 @@ body {
 
 .mainBodyHeader {
   grid-area: mainBodyHeader;
-  background: #40a2ff;
+  background: #0083ff;
   color: white;
   box-sizing: border-box;
   line-height: 60px;

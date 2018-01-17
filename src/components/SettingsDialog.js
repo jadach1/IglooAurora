@@ -93,7 +93,7 @@ export default class SettingsDialog extends React.Component {
           <Tab
             icon={<FontIcon className="material-icons">dashboard</FontIcon>}
             label="Interface"
-            buttonStyle={{ backgroundColor: "#0083ff" }}
+            buttonStyle={{ backgroundColor: "#0057cb" }}
           >
             <div
               style={{
@@ -115,7 +115,7 @@ export default class SettingsDialog extends React.Component {
           <Tab
             icon={<FontIcon className="material-icons">account_box</FontIcon>}
             label="Account"
-            buttonStyle={{ backgroundColor: "#0083ff" }}
+            buttonStyle={{ backgroundColor: "#0057cb" }}
           >
             <div
               style={{
