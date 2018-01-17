@@ -80,23 +80,32 @@ class Tile extends Component {
             {valueTitle}
           </div>
           <div className="tileHeaderButtons">
-            {valueHidden ? (
-              <IconButton tooltip="Show">
-                <i class="material-icons">visibility</i>
-              </IconButton>
-            ) : (
-              <IconButton tooltip="Hide">
-                <i class="material-icons">visibility_off</i>
-              </IconButton>
-            )}
-
             <IconButton
               tooltip="Expand"
               onClick={() => {
                 this.setState({ isTileFullScreen: true })
               }}
+              style={{
+                padding: "0",
+                width: "30px",
+                height: "30px",
+                marginTop: "9px",
+                marginBottom: "9px",
+              }}
             >
               <i class="material-icons">fullscreen</i>
+            </IconButton>
+            <IconButton
+              tooltip="More"
+              style={{
+                padding: "0",
+                width: "30px",
+                height: "30px",
+                marginTop: "9px",
+                marginBottom: "9px",
+              }}
+            >
+              <i class="material-icons">more_vert</i>
             </IconButton>
           </div>
         </div>
