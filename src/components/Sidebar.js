@@ -4,6 +4,7 @@ import gql from "graphql-tag"
 import { List, ListItem } from "material-ui/List"
 import ActionGrade from "material-ui/svg-icons/action/grade"
 import CenteredSpinner from "./CenteredSpinner"
+import FloatingActionButton from "material-ui/FloatingActionButton"
 
 class Sidebar extends Component {
   componentDidMount() {
@@ -49,27 +50,38 @@ class Sidebar extends Component {
     }
 
     return (
-      <List>
-        {user.devices.map(device => (
-          <ListItem
-            className="notSelectable"
-            primaryText={device.customName}
-            leftIcon={
-              device.icon ? (
-                <img
-                  className="deviceIcon"
-                  src={device.icon}
-                  alt="device logo"
-                />
-              ) : (
-                <ActionGrade />
-              )
-            }
-            key={device.id}
-            onClick={() => this.props.selectDevice(device.id)}
-          />
-        ))}
-      </List>
+      <div style={{ height: "100%" }}>
+        <List>
+          {user.devices.map(device => (
+            <ListItem
+              className="notSelectable"
+              primaryText={device.customName}
+              leftIcon={
+                device.icon ? (
+                  <img
+                    className="deviceIcon"
+                    src={device.icon}
+                    alt="device logo"
+                  />
+                ) : (
+                  <ActionGrade />
+                )
+              }
+              key={device.id}
+              onClick={() => this.props.selectDevice(device.id)}
+            />
+          ))}
+        </List>
+        <FloatingActionButton
+          backgroundColor="#0083ff"
+          style={{
+            position: "absolute",
+            bottom: "20px",
+          }}
+        >
+          <i className="material-icons">mode_edit</i>{" "}
+        </FloatingActionButton>
+      </div>
     )
   }
 }
