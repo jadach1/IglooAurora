@@ -8,10 +8,29 @@ import ReadOnlyColourTile from "./ReadOnlyColourTile"
 import ReadWriteColourTile from "./ReadWriteColourTile"
 import ReadOnlyFloatTile from "./ReadOnlyFloatTile"
 import FullScreenTile from "./FullScreenTile"
+import Popover from "material-ui/Popover"
+import Menu from "material-ui/Menu"
+import MenuItem from "material-ui/MenuItem"
 
 class Tile extends Component {
   state = {
     isTileFullScreen: false,
+  }
+
+  handleClick = event => {
+    // This prevents ghost click.
+    event.preventDefault()
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    })
+  }
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+    })
   }
 
   render() {
@@ -97,6 +116,7 @@ class Tile extends Component {
             </IconButton>
             <IconButton
               tooltip="More"
+              onClick={this.handleClick}
               style={{
                 padding: "0",
                 width: "30px",
@@ -107,6 +127,19 @@ class Tile extends Component {
             >
               <i class="material-icons">more_vert</i>
             </IconButton>
+            <Popover
+              open={this.state.open}
+              anchorEl={this.state.anchorEl}
+              anchorOrigin={{ horizontal: "right", vertical: "top" }}
+              targetOrigin={{ horizontal: "right", vertical: "top" }}
+              onRequestClose={this.handleRequestClose}
+            >
+              <Menu>
+                <MenuItem primaryText="Show" />
+                <MenuItem primaryText="Resize" />
+                <MenuItem primaryText="Settings" />
+              </Menu>
+            </Popover>
           </div>
         </div>
         {specificTile}
