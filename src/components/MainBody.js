@@ -5,7 +5,6 @@ import FlatButton from "material-ui/FlatButton"
 import PropTypes from "prop-types"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import FullScreenTile from "./tiles/FullScreenTile"
 
 class MainBody extends Component {
   constructor() {
@@ -120,15 +119,7 @@ class MainBody extends Component {
 
     let hiddenTiles = values.filter(value => value.relevance === "HIDDEN")
 
-    const renderTile = value => (
-      <Tile
-        value={value}
-        key={value.id}
-        enableFullScreen={() => {
-          this.setState({ isTileFullScreen: true })
-        }}
-      />
-    )
+    const renderTile = value => <Tile value={value} key={value.id} />
 
     visibleTiles = visibleTiles.map(renderTile)
     hiddenTiles = hiddenTiles.map(renderTile)
@@ -172,12 +163,6 @@ class MainBody extends Component {
 
     return (
       <div className="mainBody">
-        <FullScreenTile
-          fullScreen={this.state.isTileFullScreen}
-          handleClose={() => {
-            this.setState({ isTileFullScreen: false })
-          }}
-        />
         {noItemsUI}
         <div className="itemsList" key="visibleTilesContainer">
           {visibleTiles}

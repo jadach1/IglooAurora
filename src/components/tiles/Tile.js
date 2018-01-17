@@ -7,8 +7,13 @@ import BoundedFloatTile from "./BoundedFloatTile"
 import ReadOnlyColourTile from "./ReadOnlyColourTile"
 import ReadWriteColourTile from "./ReadWriteColourTile"
 import ReadOnlyFloatTile from "./ReadOnlyFloatTile"
+import FullScreenTile from "./FullScreenTile"
 
 class Tile extends Component {
+  state = {
+    isTileFullScreen: false,
+  }
+
   render() {
     const { value } = this.props
     const valueTitle = value.customName
@@ -62,22 +67,35 @@ class Tile extends Component {
 
     return (
       <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
+        <FullScreenTile
+          fullScreen={this.state.isTileFullScreen}
+          handleClose={() => {
+            this.setState({ isTileFullScreen: false })
+          }}
+          value={value}
+          specificTile={specificTile}
+        />
         <div className="tileHeader">
           <div className="tileTitle" title={valueTitle}>
             {valueTitle}
           </div>
           <div className="tileHeaderButtons">
             {valueHidden ? (
-              <IconButton tooltip="Hide">
+              <IconButton tooltip="Show">
                 <i class="material-icons">visibility</i>
               </IconButton>
             ) : (
-              <IconButton tooltip="Show">
+              <IconButton tooltip="Hide">
                 <i class="material-icons">visibility_off</i>
               </IconButton>
             )}
 
-            <IconButton tooltip="Expand" onClick={this.props.enableFullScreen}>
+            <IconButton
+              tooltip="Expand"
+              onClick={() => {
+                this.setState({ isTileFullScreen: true })
+              }}
+            >
               <i class="material-icons">fullscreen</i>
             </IconButton>
           </div>
