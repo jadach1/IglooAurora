@@ -135,9 +135,25 @@ class Tile extends Component {
               onRequestClose={this.handleRequestClose}
             >
               <Menu>
-                <MenuItem primaryText="Show" />
-                <MenuItem primaryText="Resize" />
-                <MenuItem primaryText="Settings" />
+                <MenuItem
+                  primaryText="Hide"
+                  leftIcon={<i class="material-icons">visibility_off</i>}
+                />
+                <MenuItem
+                  primaryText="Resize"
+                  leftIcon={<i class="material-icons">aspect_ratio</i>}
+                  rightIcon={<i class="material-icons">navigate_next</i>}
+                  menuItems={[
+                    <MenuItem primaryText="Small" />,
+                    <MenuItem primaryText="Wide" />,
+                    <MenuItem primaryText="Tall" />,
+                    <MenuItem primaryText="Large" />,
+                  ]}
+                />
+                <MenuItem
+                  primaryText="Settings"
+                  leftIcon={<i class="material-icons">settings</i>}
+                />
               </Menu>
             </Popover>
           </div>
