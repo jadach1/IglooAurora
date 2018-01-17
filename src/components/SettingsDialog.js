@@ -24,42 +24,58 @@ export default class SettingsDialog extends React.Component {
   state = {
     deleteDialogOpen: false,
     isDeleteDisabled: true,
+    timer: 5,
+    labelName: "Delete",
   }
 
   handleDeleteDialogOpen = () => {
     this.setState({ deleteDialogOpen: true })
-    setTimeout(this.timer, 5000)
+    setTimeout(this.secondsTimer, 1000)
+    this.state.timer = 5
+    this.setState({ isDeleteDisabled: true })
+    this.setState({
+      labelName: "Delete (" + this.state.timer + ")",
+    })
   }
 
   handleDeleteDialogClose = () => {
     this.setState({ deleteDialogOpen: false })
   }
 
-  timer = () => {
-    this.setState({ isDeleteDisabled: false })
+  secondsTimer = () => {
+    if (this.state.timer > 1) {
+      this.setState(({ timer }) => ({ timer: timer - 1 }))
+      setTimeout(this.secondsTimer, 1000)
+      this.setState({ isDeleteDisabled: true })
+      this.setState({
+        labelName: "Delete (" + this.state.timer + ")",
+      })
+    } else {
+      this.setState({ isDeleteDisabled: false })
+      this.state.timer = 5
+      this.setState({
+        labelName: "Delete",
+      })
+    }
   }
 
   render() {
     const actions = [
-      <FlatButton label="Discard" />,
-      <RaisedButton
-        label="Apply"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-      />,
+      <FlatButton label="Close" onClick={this.props.closeSettingsDialog} />,
     ]
 
     const deleteDialogActions = [
       <FlatButton
-        label="Discard"
+        label="Never mind"
         keyboardFocused={true}
         onClick={this.handleDeleteDialogClose}
       />,
       <RaisedButton
-        label="Delete"
+        label={this.state.labelName}
         primary={true}
         buttonStyle={{ backgroundColor: "#F44336" }}
         disabled={this.state.isDeleteDisabled}
+        style={{ width: "182" }}
       />,
     ]
 
