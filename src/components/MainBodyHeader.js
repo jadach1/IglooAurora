@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import ActionGrade from "material-ui/svg-icons/action/grade"
 import ActionHistory from "material-ui/svg-icons/action/history"
 
 class MainBodyHeader extends Component {
@@ -21,11 +20,11 @@ class MainBodyHeader extends Component {
         {device.icon ? (
           <img className="deviceIconBig" src={device.icon} alt="device logo" />
         ) : (
-          <ActionGrade />
+          <i class="material-icons">lightbulb_outline</i>
         )}
         {device.customName}
         <div className="rightSide">
-          <ActionHistory />
+          <i class="material-icons">chat_bubble_outline</i>{" "}
         </div>
       </div>
     )

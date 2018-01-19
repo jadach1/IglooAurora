@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { List, ListItem } from "material-ui/List"
-import ActionGrade from "material-ui/svg-icons/action/grade"
 import CenteredSpinner from "./CenteredSpinner"
 import FloatingActionButton from "material-ui/FloatingActionButton"
 
@@ -64,7 +63,7 @@ class Sidebar extends Component {
                     alt="device logo"
                   />
                 ) : (
-                  <ActionGrade />
+                  <i class="material-icons">lightbulb_outline</i>
                 )
               }
               key={device.id}
