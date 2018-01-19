@@ -10,7 +10,7 @@ class ReadWriteBooleanTile extends Component {
         <Toggle
           className="switch"
           thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-          trackSwitchedStyle={{ backgroundColor: "#93ceff" }}
+          trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
           rippleStyle={{ color: "#0083ff" }}
           toggled={this.props.value}
           onToggle={(e, isInputChecked) => {

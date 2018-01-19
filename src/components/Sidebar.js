@@ -73,7 +73,7 @@ class Sidebar extends Component {
           ))}
         </List>
         <FloatingActionButton
-          backgroundColor="#0083ff"
+          backgroundColor="#ff4081 "
           style={{
             position: "absolute",
             bottom: "20px",
