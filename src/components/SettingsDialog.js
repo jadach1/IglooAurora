@@ -74,8 +74,11 @@ export default class SettingsDialog extends React.Component {
         label={this.state.labelName}
         primary={true}
         buttonStyle={{ backgroundColor: "#F44336" }}
+        labelStyle={{
+          color: "#ffffff",
+        }}
         disabled={this.state.isDeleteDisabled}
-        style={{ width: "182" }}
+        style={{ width: "120px" }}
       />,
     ]
 
@@ -89,7 +92,13 @@ export default class SettingsDialog extends React.Component {
         repositionOnUpdate={true}
         contentStyle={{ width: "600px" }}
       >
-        <Tabs>
+        <Tabs
+          inkBarStyle={{
+            background: "ff4081 ",
+            height: "3px",
+            marginTop: "-3px",
+          }}
+        >
           <Tab
             icon={<FontIcon className="material-icons">dashboard</FontIcon>}
             label="Interface"
@@ -107,7 +116,7 @@ export default class SettingsDialog extends React.Component {
               Enable advanced options for color selector
               <Toggle
                 thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                trackSwitchedStyle={{ backgroundColor: "#93ceff" }}
+                trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
                 rippleStyle={{ color: "#0083ff" }}
               />
             </div>
@@ -152,7 +161,7 @@ export default class SettingsDialog extends React.Component {
               <h2 style={styles.headline}>Two-factor authentication</h2>
               <Toggle
                 thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                trackSwitchedStyle={{ backgroundColor: "#93ceff" }}
+                trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
                 rippleStyle={{ color: "#0083ff" }}
               />
               <h2 style={styles.headline}>Delete your account</h2>
