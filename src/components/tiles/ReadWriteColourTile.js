@@ -14,7 +14,7 @@ class ReadWriteColourTile extends Component {
 
   render() {
     return (
-      <div className="readWriteColourTile">
+      <div className="readWriteColourTile notSelectable">
         <ChromePicker
           color={this.state.value}
           disableAlpha={true}

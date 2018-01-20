@@ -11,6 +11,7 @@ import FullScreenTile from "./FullScreenTile"
 import Popover from "material-ui/Popover"
 import Menu from "material-ui/Menu"
 import MenuItem from "material-ui/MenuItem"
+import IconMenu from "material-ui/IconMenu"
 
 class Tile extends Component {
   state = {
@@ -98,7 +99,7 @@ class Tile extends Component {
           <div className="tileTitle" title={valueTitle}>
             {valueTitle}
           </div>
-          <div className="tileHeaderButtons">
+          <div className="tileHeaderButtons notSelectable">
             <IconButton
               tooltip="Expand"
               onClick={() => {
@@ -114,48 +115,34 @@ class Tile extends Component {
             >
               <i class="material-icons">fullscreen</i>
             </IconButton>
-            <IconButton
-              tooltip="More"
-              onClick={this.handleClick}
+            <IconMenu
               style={{
                 padding: "0",
                 width: "30px",
                 height: "30px",
-                marginTop: "9px",
-                marginBottom: "9px",
               }}
-            >
-              <i class="material-icons">more_vert</i>
-            </IconButton>
-            <Popover
-              open={this.state.open}
-              anchorEl={this.state.anchorEl}
+              tooltip="More"
+              iconButtonElement={
+                <IconButton>
+                  <i class="material-icons">more_vert</i>
+                </IconButton>
+              }
               anchorOrigin={{ horizontal: "right", vertical: "top" }}
               targetOrigin={{ horizontal: "right", vertical: "top" }}
-              onRequestClose={this.handleRequestClose}
             >
-              <Menu>
-                <MenuItem
-                  primaryText="Hide"
-                  leftIcon={<i class="material-icons">visibility_off</i>}
-                />
-                <MenuItem
-                  primaryText="Resize"
-                  leftIcon={<i class="material-icons">aspect_ratio</i>}
-                  rightIcon={<i class="material-icons">navigate_next</i>}
-                  menuItems={[
-                    <MenuItem primaryText="Small" />,
-                    <MenuItem primaryText="Wide" />,
-                    <MenuItem primaryText="Tall" />,
-                    <MenuItem primaryText="Large" />,
-                  ]}
-                />
-                <MenuItem
-                  primaryText="Settings"
-                  leftIcon={<i class="material-icons">settings</i>}
-                />
-              </Menu>
-            </Popover>
+              <MenuItem primaryText="Hide" />
+              <MenuItem
+                primaryText="Resize"
+                rightIcon={<i class="material-icons">navigate_next</i>}
+                menuItems={[
+                  <MenuItem primaryText="Small" />,
+                  <MenuItem primaryText="Wide" />,
+                  <MenuItem primaryText="Tall" />,
+                  <MenuItem primaryText="Large" />,
+                ]}
+              />
+              <MenuItem primaryText="Settings" />
+            </IconMenu>
           </div>
         </div>
         {specificTile}

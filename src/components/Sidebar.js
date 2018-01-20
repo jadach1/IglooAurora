@@ -72,6 +72,7 @@ class Sidebar extends Component {
           ))}
         </List>
         <FloatingActionButton
+          className="notSelectable"
           backgroundColor="#ff4081 "
           style={{
             position: "absolute",

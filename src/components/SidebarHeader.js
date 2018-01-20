@@ -12,7 +12,7 @@ class SidebarHeader extends Component {
           height="60px"
           className="logo notSelectable"
         />
-        <div className="rightSide">
+        <div className="rightSide notSelectable">
           <IconButton
             style={{
               padding: "0",
