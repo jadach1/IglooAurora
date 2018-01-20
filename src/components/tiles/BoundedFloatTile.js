@@ -21,7 +21,7 @@ class ReadOnlyBooleanTile extends Component {
 
   render() {
     return (
-      <div className="readWriteBoundedFloatTile">
+      <div className="readWriteBoundedFloatTile notSelectable">
         <div className="min">{this.props.min}</div>
         <Slider
           min={this.props.min}

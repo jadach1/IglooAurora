@@ -58,7 +58,6 @@ class Login extends Component {
       <div className="rightSide notSelectable">
         <h1>Nice to meet you!</h1>
         <TextField
-          hintText="Email"
           floatingLabelText="Email"
           errorText={this.state.emailError}
           value={this.state.email}
@@ -71,7 +70,6 @@ class Login extends Component {
         />
         <br />
         <TextField
-          hintText="Password"
           floatingLabelText="Password"
           errorText={this.state.passwordError}
           type="password"

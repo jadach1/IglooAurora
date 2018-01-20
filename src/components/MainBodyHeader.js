@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import ActionHistory from "material-ui/svg-icons/action/history"
+import IconButton from "material-ui/IconButton"
 
 class MainBodyHeader extends Component {
   render() {
@@ -24,7 +24,11 @@ class MainBodyHeader extends Component {
         )}
         {device.customName}
         <div className="rightSide">
-          <i class="material-icons">chat_bubble_outline</i>{" "}
+          <IconButton>
+            <i className="material-icons mainHeaderIcons">
+              chat_bubble_outline
+            </i>{" "}
+          </IconButton>
         </div>
       </div>
     )
