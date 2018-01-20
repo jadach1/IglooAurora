@@ -10,6 +10,7 @@ import { List, ListItem } from "material-ui/List"
 import Subheader from "material-ui/Subheader"
 import Divider from "material-ui/Divider"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
+import SwipeableViews from "react-swipeable-views"
 
 const styles = {
   headline: {
@@ -47,6 +48,7 @@ export default class SettingsDialog extends React.Component {
     timer: 5,
     labelName: "Delete",
     stepIndex: 0,
+    slideIndex: 0,
   }
 
   handleDeleteDialogOpen = () => {
@@ -77,6 +79,12 @@ export default class SettingsDialog extends React.Component {
 
   handlePasswordDialogClose = () => {
     this.setState({ passwordDialogOpen: false })
+  }
+
+  handleChange = value => {
+    this.setState({
+      slideIndex: value,
+    })
   }
 
   secondsTimer = () => {
@@ -188,75 +196,82 @@ export default class SettingsDialog extends React.Component {
             height: "3px",
             marginTop: "-3px",
           }}
+          onChange={this.handleChange}
+          value={this.state.slideIndex}
         >
           <Tab
             icon={<FontIcon className="material-icons">dashboard</FontIcon>}
             label="Interface"
             buttonStyle={{ backgroundColor: "#0057cb" }}
-          >
-            <div
-              style={{
-                overflowY: "auto",
-                height: "500px",
-              }}
-            >
-              <div style={listStyles.root}>
-                <List style={{ width: "100%" }}>
-                  <Subheader>Controls</Subheader>
-                  <ListItem
-                    primaryText="Enable advanced options for color selector"
-                    rightToggle={
-                      <Toggle
-                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                        rippleStyle={{ color: "#0083ff" }}
-                      />
-                    }
-                  />
-                </List>
-              </div>
-            </div>
-          </Tab>
+            value={0}
+          />
           <Tab
             icon={<FontIcon className="material-icons">account_box</FontIcon>}
             label="Account"
             buttonStyle={{ backgroundColor: "#0057cb" }}
+            value={1}
+          />
+        </Tabs>
+        <SwipeableViews
+          index={this.state.slideIndex}
+          onChangeIndex={this.handleChange}
+        >
+          <div
+            style={{
+              overflowY: "auto",
+              height: "500px",
+            }}
           >
-            <div
-              style={{
-                overflowY: "auto",
-                height: "500px",
-              }}
-            >
-              <List>
-                <Subheader>Authentication</Subheader>
+            <div style={listStyles.root}>
+              <List style={{ width: "100%" }}>
+                <Subheader>Controls</Subheader>
                 <ListItem
-                  primaryText="Change password"
-                  onClick={this.handlePasswordDialogOpen}
-                />
-                <ListItem
-                  primaryText="Two-factor authentication"
-                  secondaryText="Make your account safer by verifying it is actually you"
+                  primaryText="Enable advanced options for color selector"
                   rightToggle={
                     <Toggle
                       thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
                       trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
                       rippleStyle={{ color: "#0083ff" }}
-                      onToggle={this.handleTwoFactorDialogOpen}
                     />
                   }
                 />
-                <Divider />
-                <Subheader>Account management</Subheader>
-                <ListItem
-                  primaryText="Delete your account"
-                  onClick={this.handleDeleteDialogOpen}
-                  style={{ color: "#F44336 " }}
-                />
               </List>
             </div>
-          </Tab>
-        </Tabs>
+          </div>
+          <div
+            style={{
+              overflowY: "auto",
+              height: "500px",
+            }}
+          >
+            <List>
+              <Subheader>Authentication</Subheader>
+              <ListItem
+                primaryText="Change password"
+                onClick={this.handlePasswordDialogOpen}
+              />
+              <ListItem
+                primaryText="Two-factor authentication"
+                secondaryText="Make your account safer by verifying it is actually you"
+                rightToggle={
+                  <Toggle
+                    thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                    trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                    rippleStyle={{ color: "#0083ff" }}
+                    onToggle={this.handleTwoFactorDialogOpen}
+                  />
+                }
+              />
+              <Divider />
+              <Subheader>Account management</Subheader>
+              <ListItem
+                primaryText="Delete your account"
+                onClick={this.handleDeleteDialogOpen}
+                style={{ color: "#F44336 " }}
+              />
+            </List>
+          </div>
+        </SwipeableViews>
         <Dialog
           title="Are you sure you want to delete your account?"
           actions={deleteDialogActions}
