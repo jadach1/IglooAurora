@@ -41,6 +41,28 @@ const twoFactorDialogContentStyle = {
   width: "420px",
 }
 
+const StepActions = ({ step, handleNext, handlePrev }) => (
+  <div style={{ margin: "12px 0" }}>
+    <RaisedButton
+      label="Next"
+      buttonStyle={{ backgroundColor: "#0083ff" }}
+      disableTouchRipple={true}
+      disableFocusRipple={true}
+      primary={true}
+      onClick={handleNext}
+      style={{ marginRight: 12 }}
+    />
+    {step > 0 && (
+      <FlatButton
+        label="Back"
+        disableTouchRipple={true}
+        disableFocusRipple={true}
+        onClick={handlePrev}
+      />
+    )}
+  </div>
+)
+
 export default class SettingsDialog extends React.Component {
   state = {
     deleteDialogOpen: false,
@@ -53,11 +75,11 @@ export default class SettingsDialog extends React.Component {
   }
 
   handleDeleteDialogOpen = () => {
-    this.setState({ deleteDialogOpen: true })
     setTimeout(this.secondsTimer, 1000)
-    this.state.timer = 5
-    this.setState({ isDeleteDisabled: true })
     this.setState({
+      deleteDialogOpen: true,
+      isDeleteDisabled: true,
+      timer: 5,
       labelName: "Delete (" + this.state.timer + ")",
     })
   }
@@ -89,58 +111,28 @@ export default class SettingsDialog extends React.Component {
   }
 
   secondsTimer = () => {
-    if (this.state.timer > 1) {
-      this.setState(({ timer }) => ({ timer: timer - 1 }))
-      setTimeout(this.secondsTimer, 1000)
-      this.setState({ isDeleteDisabled: true })
-      this.setState({
-        labelName: "Delete (" + this.state.timer + ")",
-      })
-    } else {
-      this.setState({ isDeleteDisabled: false })
-      this.state.timer = 5
-      this.setState({
-        labelName: "Delete",
-      })
-    }
+    this.setState(({ timer }) => {
+      if (timer > 1) {
+        setTimeout(this.secondsTimer, 1000)
+      }
+
+      return {
+        timer: timer - 1 || 5,
+        isDeleteDisabled: timer > 1,
+      }
+    })
   }
 
   handleNext = () => {
-    const { stepIndex } = this.state
-    if (stepIndex < 3) {
-      this.setState({ stepIndex: stepIndex + 1 })
-    }
+    this.setState(({ stepIndex }) => ({
+      stepIndex: stepIndex < 3 ? stepIndex + 1 : stepIndex,
+    }))
   }
 
   handlePrev = () => {
-    const { stepIndex } = this.state
-    if (stepIndex > 0) {
-      this.setState({ stepIndex: stepIndex - 1 })
-    }
-  }
-
-  renderStepActions(step) {
-    return (
-      <div style={{ margin: "12px 0" }}>
-        <RaisedButton
-          label="Next"
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          disableTouchRipple={true}
-          disableFocusRipple={true}
-          primary={true}
-          onClick={this.handleNext}
-          style={{ marginRight: 12 }}
-        />
-        {step > 0 && (
-          <FlatButton
-            label="Back"
-            disableTouchRipple={true}
-            disableFocusRipple={true}
-            onClick={this.handlePrev}
-          />
-        )}
-      </div>
-    )
+    this.setState(({ stepIndex }) => ({
+      stepIndex: stepIndex > 0 ? stepIndex - 1 : stepIndex,
+    }))
   }
 
   render() {
@@ -155,7 +147,11 @@ export default class SettingsDialog extends React.Component {
         onClick={this.handleDeleteDialogClose}
       />,
       <RaisedButton
-        label={this.state.labelName}
+        label={
+          this.state.isDeleteDisabled
+            ? "Delete (" + this.state.timer + ")"
+            : "Delete"
+        }
         primary={true}
         buttonStyle={{ backgroundColor: "#F44336" }}
         disabled={this.state.isDeleteDisabled}
@@ -365,7 +361,13 @@ export default class SettingsDialog extends React.Component {
                     type="password"
                     style={{ width: "100%" }}
                   />
-                  {this.renderStepActions(0)}
+                  {
+                    <StepActions
+                      step={0}
+                      handlePrev={this.handlePrev}
+                      handleNext={this.handleNext}
+                    />
+                  }
                 </StepContent>
               </Step>
               <Step>
@@ -389,20 +391,42 @@ export default class SettingsDialog extends React.Component {
                     label="Print"
                     icon={<i class="material-icons">print</i>}
                   />
-                  {this.renderStepActions(1)}
+                  {
+                    <StepActions
+                      step={1}
+                      handlePrev={this.handlePrev}
+                      handleNext={this.handleNext}
+                    />
+                  }
                 </StepContent>
               </Step>
               <Step>
                 <StepButton onClick={() => this.setState({ stepIndex: 2 })}>
                   Scan the barcode on your app
                 </StepButton>
-                <StepContent>{this.renderStepActions(2)}</StepContent>
+                <StepContent>
+                  {
+                    <StepActions
+                      step={2}
+                      handlePrev={this.handlePrev}
+                      handleNext={this.handleNext}
+                    />
+                  }
+                </StepContent>
               </Step>
               <Step>
                 <StepButton onClick={() => this.setState({ stepIndex: 3 })}>
                   Enter the six-digit code
                 </StepButton>
-                <StepContent>{this.renderStepActions(3)}</StepContent>
+                <StepContent>
+                  {
+                    <StepActions
+                      step={3}
+                      handlePrev={this.handlePrev}
+                      handleNext={this.handleNext}
+                    />
+                  }
+                </StepContent>
               </Step>
             </Stepper>
           </div>

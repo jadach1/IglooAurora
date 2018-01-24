@@ -109,8 +109,8 @@ class Tile extends Component {
                 padding: "0",
                 width: "30px",
                 height: "30px",
-                marginTop: "9px",
-                marginBottom: "9px",
+                marginTop: "13px",
+                marginBottom: "13px",
               }}
             >
               <i class="material-icons">fullscreen</i>
@@ -120,10 +120,18 @@ class Tile extends Component {
                 padding: "0",
                 width: "30px",
                 height: "30px",
+                marginTop: "13px",
+                marginBottom: "13px",
               }}
               tooltip="More"
               iconButtonElement={
-                <IconButton>
+                <IconButton
+                  style={{
+                    padding: "0",
+                    width: "30px",
+                    height: "30px",
+                  }}
+                >
                   <i class="material-icons">more_vert</i>
                 </IconButton>
               }
