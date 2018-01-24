@@ -20,12 +20,6 @@ body {
   grid-template-areas: "sidebarHeader mainBodyHeader" "sidebar mainBody";
 }
 
-@media screen and (max-width: 1050px) {
-  .main {
-    grid-template-columns: [start] 1fr [mid] 2fr [end];
-  }
-}
-
 .sidebar {
   grid-area: sidebar;
   background: #f2f2f2;
@@ -217,4 +211,20 @@ body {
 
 .mainHeaderIcons {
   color: #ffffff;
+}
+
+.deviceEditFab {
+  position: absolute;
+  left: 275px;
+  bottom: 20px;
+}
+
+@media screen and (max-width: 1050px) {
+  .main {
+    grid-template-columns: [start] 33% [mid] 67% [end];
+  }
+
+  .deviceEditFab {
+    left: calc(33vw - 75px);
+  }
 }
