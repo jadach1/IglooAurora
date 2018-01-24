@@ -11,6 +11,7 @@ import Subheader from "material-ui/Subheader"
 import Divider from "material-ui/Divider"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import SwipeableViews from "react-swipeable-views"
+import { graphql } from "react-apollo"
 
 const styles = {
   headline: {
@@ -123,6 +124,7 @@ export default class SettingsDialog extends React.Component {
       <div style={{ margin: "12px 0" }}>
         <RaisedButton
           label="Next"
+          buttonStyle={{ backgroundColor: "#0083ff" }}
           disableTouchRipple={true}
           disableFocusRipple={true}
           primary={true}
@@ -206,15 +208,22 @@ export default class SettingsDialog extends React.Component {
             value={0}
           />
           <Tab
+            icon={<i class="material-icons">notifications</i>}
+            label="Notifications"
+            buttonStyle={{ backgroundColor: "#0057cb" }}
+            value={1}
+          />
+          <Tab
             icon={<FontIcon className="material-icons">account_box</FontIcon>}
             label="Account"
             buttonStyle={{ backgroundColor: "#0057cb" }}
-            value={1}
+            value={2}
           />
         </Tabs>
         <SwipeableViews
           index={this.state.slideIndex}
           onChangeIndex={this.handleChange}
+          enableMouseEvents
         >
           <div
             style={{
@@ -235,6 +244,30 @@ export default class SettingsDialog extends React.Component {
                     />
                   }
                 />
+              </List>
+            </div>
+          </div>
+          <div
+            style={{
+              overflowY: "auto",
+              height: "500px",
+            }}
+          >
+            <div style={listStyles.root}>
+              <List style={{ width: "100%" }}>
+                <Subheader>Lorem Ipsum</Subheader>
+                <ListItem
+                  primaryText="Quiet mode"
+                  secondaryText="Mute all notifications"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                    />
+                  }
+                />
+                <Subheader>Lorem Ipsum</Subheader>
               </List>
             </div>
           </div>
@@ -313,7 +346,12 @@ export default class SettingsDialog extends React.Component {
           onRequestClose={this.handleTwoFactorDialogClose}
           className="notSelectable"
         >
-          <div style={{ height: 400, margin: "auto" }}>
+          <div
+            style={{
+              height: 400,
+              margin: "auto",
+            }}
+          >
             <Stepper activeStep={this.state.stepIndex} orientation="vertical">
               <Step>
                 <StepButton onClick={() => this.setState({ stepIndex: 0 })}>

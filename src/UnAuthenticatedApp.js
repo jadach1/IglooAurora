@@ -48,7 +48,7 @@ class UnAuthenticatedApp extends Component {
                 <font size="12">Igloo Cloud Remote</font>
               </b>
               <br />
-              [SLOGAN]
+              Redefining connection
             </div>
             {this.state.ui === "logIn" ? (
               <Login
