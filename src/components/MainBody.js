@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import Tile from "./tiles/Tile"
 import LargeCenteredSpinner from "./LargeCenteredSpinner"
 import FlatButton from "material-ui/FlatButton"
-import PropTypes from "prop-types"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -171,10 +170,6 @@ class MainBody extends Component {
       </div>
     )
   }
-}
-
-MainBody.propTypes = {
-  deviceId: PropTypes.string.isRequired,
 }
 
 export default graphql(
