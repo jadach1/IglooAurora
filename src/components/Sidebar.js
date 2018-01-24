@@ -6,6 +6,8 @@ import CenteredSpinner from "./CenteredSpinner"
 import FloatingActionButton from "material-ui/FloatingActionButton"
 
 class Sidebar extends Component {
+  state = { selectedItem: null }
+
   componentDidMount() {
     const subscriptionQuery = gql`
       subscription {
@@ -38,6 +40,11 @@ class Sidebar extends Component {
     })
   }
 
+  listItemClick = device => {
+    this.props.selectDevice(device.id)
+    this.setState({ selectedItem: device.id })
+  }
+
   render() {
     const { userData: { loading, error, user } } = this.props
 
@@ -55,6 +62,11 @@ class Sidebar extends Component {
             <ListItem
               className="notSelectable"
               primaryText={device.customName}
+              style={
+                this.state.selectedItem == device.id
+                  ? { backgroundColor: "##e3e3e3" }
+                  : { backgroundColor: "transparent" }
+              }
               leftIcon={
                 device.icon ? (
                   <img
@@ -67,7 +79,7 @@ class Sidebar extends Component {
                 )
               }
               key={device.id}
-              onClick={() => this.props.selectDevice(device.id)}
+              onClick={() => this.listItemClick(device)}
             />
           ))}
         </List>

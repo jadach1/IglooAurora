@@ -4,6 +4,12 @@ import gql from "graphql-tag"
 import IconButton from "material-ui/IconButton"
 
 class MainBodyHeader extends Component {
+  state = { open: false }
+
+  openDrawer = () => this.setState({ open: true })
+
+  handleClose = () => this.setState({ open: false })
+
   render() {
     const { loading, error, device } = this.props.data
     if (loading) {
@@ -23,13 +29,6 @@ class MainBodyHeader extends Component {
           <i class="material-icons">lightbulb_outline</i>
         )}
         {device.customName}
-        <div className="rightSide">
-          <IconButton>
-            <i className="material-icons mainHeaderIcons">
-              chat_bubble_outline
-            </i>{" "}
-          </IconButton>
-        </div>
       </div>
     )
   }
