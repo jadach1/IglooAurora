@@ -26,9 +26,9 @@ class MainBodyHeader extends Component {
         {device.icon ? (
           <img className="deviceIconBig" src={device.icon} alt="device logo" />
         ) : (
-          <i class="material-icons">lightbulb_outline</i>
+          <i class="deviceIconBig material-icons">lightbulb_outline</i>
         )}
-        {device.customName}
+        <p className="title">{device.customName}</p>
       </div>
     )
   }

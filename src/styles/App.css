@@ -99,11 +99,22 @@ body {
   font-size: 30px;
   vertical-align: middle;
   z-index: 1000;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 15px 40px 15px auto;
+  grid-template-areas: ". icon . title";
 }
-.mainBodyHeader .rightSide {
-  display: inline-block;
-  float: right;
-  margin-right: 15px;
+
+.deviceIconBig {
+  grid-area: icon;
+  font-size: 35px;
+  vertical-align: middle;
+  line-height: 60px;
+  text-align: center;
+}
+.title {
+  grid-area: title;
+  margin: 0;
 }
 
 .logo {
@@ -123,12 +134,6 @@ body {
   width: 24px;
   height: 24px;
   margin: 12px;
-}
-.deviceIconBig {
-  width: 48px;
-  height: 48px;
-  vertical-align: middle;
-  margin-right: 15px;
 }
 
 .notSelectable {
