@@ -16,7 +16,7 @@ class Main extends Component {
 
     this.state = {
       showHidden: false,
-      selectedDevice: "",
+      selectedDevice: null,
       areSettingsOpen: false,
       isTileFullScreen: false,
     }
@@ -47,7 +47,7 @@ class Main extends Component {
                 selectDevice={id => this.setState({ selectedDevice: id })}
               />
             </div>
-            {this.state.selectedDevice !== "" ? (
+            {this.state.selectedDevice !== null ? (
               <MainBodyHeader
                 deviceId={this.state.selectedDevice}
                 key="mainBodyHeader"
@@ -55,7 +55,7 @@ class Main extends Component {
             ) : (
               <div className="mainBodyHeader" key="mainBodyHeader" />
             )}
-            {this.state.selectedDevice !== "" ? (
+            {this.state.selectedDevice !== null ? (
               <MainBody deviceId={this.state.selectedDevice} />
             ) : (
               <div className="mainBody" />
