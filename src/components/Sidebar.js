@@ -41,8 +41,14 @@ class Sidebar extends Component {
   }
 
   listItemClick = device => {
-    this.props.selectDevice(device.id)
-    this.setState({ selectedItem: device.id })
+    if (this.state.selectedItem != device.id) {
+      this.props.selectDevice(device.id)
+
+      this.setState({ selectedItem: device.id })
+    } else {
+      this.props.selectDevice(null)
+      this.setState({ selectedItem: null })
+    }
   }
 
   render() {
@@ -63,8 +69,8 @@ class Sidebar extends Component {
               className="notSelectable"
               primaryText={device.customName}
               style={
-                this.state.selectedItem == device.id
-                  ? { backgroundColor: "##e3e3e3" }
+                this.state.selectedItem === device.id
+                  ? { backgroundColor: "#d4d4d4" }
                   : { backgroundColor: "transparent" }
               }
               leftIcon={
