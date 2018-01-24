@@ -47,7 +47,7 @@ class Login extends Component {
       this.props.signIn(loginMutation.data.AuthenticateUser.token)
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
-        this.setState({ passwordError: "Incorrect password" })
+        this.setState({ passwordError: "Wrong password" })
       } else if (
         e.message ===
         "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
