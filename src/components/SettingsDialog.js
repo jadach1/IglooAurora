@@ -125,7 +125,7 @@ export default class SettingsDialog extends React.Component {
 
   handleNext = () => {
     this.setState(({ stepIndex }) => ({
-      stepIndex: stepIndex < 3 ? stepIndex + 1 : stepIndex,
+      stepIndex: stepIndex < 4 ? stepIndex + 1 : stepIndex,
     }))
   }
 
@@ -402,7 +402,7 @@ export default class SettingsDialog extends React.Component {
               </Step>
               <Step>
                 <StepButton onClick={() => this.setState({ stepIndex: 2 })}>
-                  Scan the barcode on your app
+                  Get the app
                 </StepButton>
                 <StepContent>
                   {
@@ -416,12 +416,26 @@ export default class SettingsDialog extends React.Component {
               </Step>
               <Step>
                 <StepButton onClick={() => this.setState({ stepIndex: 3 })}>
-                  Enter the six-digit code
+                  Scan the barcode on your app
                 </StepButton>
                 <StepContent>
                   {
                     <StepActions
                       step={3}
+                      handlePrev={this.handlePrev}
+                      handleNext={this.handleNext}
+                    />
+                  }
+                </StepContent>
+              </Step>
+              <Step>
+                <StepButton onClick={() => this.setState({ stepIndex: 4 })}>
+                  Enter the six-digit code
+                </StepButton>
+                <StepContent>
+                  {
+                    <StepActions
+                      step={4}
                       handlePrev={this.handlePrev}
                       handleNext={this.handleNext}
                     />
