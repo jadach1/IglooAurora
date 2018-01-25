@@ -5,7 +5,6 @@ import MainBody from "./components/MainBody"
 import MainBodyHeader from "./components/MainBodyHeader"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import SettingsDialog from "./components/SettingsDialog"
-import NotificationPopover from "./components/NotificationsPopover"
 import { Offline, Online } from "react-detect-offline"
 import "./styles/App.css"
 import "./styles/Tiles.css"
@@ -27,7 +26,6 @@ class Main extends Component {
       <MuiThemeProvider>
         <Online>
           <div className="main">
-            <NotificationPopover />
             <SettingsDialog
               isOpen={this.state.areSettingsOpen}
               closeSettingsDialog={() => {

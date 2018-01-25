@@ -17,6 +17,7 @@ export default class FullScreenTile extends React.Component {
         modal={false}
         open={this.props.fullScreen}
         onRequestClose={this.props.handleClose}
+        className="notSelectable"
       >
         {this.props.specificTile}
       </Dialog>
