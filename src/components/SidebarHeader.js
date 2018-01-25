@@ -1,7 +1,29 @@
 import React, { Component } from "react"
 import IconButton from "material-ui/IconButton"
+import Popover from "material-ui/Popover"
+import Menu from "material-ui/Menu"
+import MenuItem from "material-ui/MenuItem"
 
 class SidebarHeader extends Component {
+  state = {
+    open: false,
+  }
+
+  handleClick = event => {
+    event.preventDefault()
+
+    this.setState({
+      open: true,
+      anchorEl: event.currentTarget,
+    })
+  }
+
+  handleRequestClose = () => {
+    this.setState({
+      open: false,
+    })
+  }
+
   render() {
     return (
       <div className="sidebarHeader">
@@ -20,6 +42,7 @@ class SidebarHeader extends Component {
               width: "24px",
               height: "24px",
             }}
+            onClick={this.handleClick}
             className="sidebarHeaderButton"
             tooltip="Notifications"
           >
@@ -54,6 +77,15 @@ class SidebarHeader extends Component {
             <i className="material-icons sidebarHeaderIcons">exit_to_app</i>{" "}
           </IconButton>
         </div>
+        <Popover
+          open={this.state.open}
+          anchorEl={this.state.anchorEl}
+          anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}
+          targetOrigin={{ horizontal: "middle", vertical: "top" }}
+          onRequestClose={this.handleRequestClose}
+        >
+          <Menu />
+        </Popover>
       </div>
     )
   }

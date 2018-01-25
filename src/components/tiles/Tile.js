@@ -14,6 +14,7 @@ import MenuItem from "material-ui/MenuItem"
 import IconMenu from "material-ui/IconMenu"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right"
 
 class Tile extends Component {
   state = {
@@ -210,7 +211,7 @@ class Tile extends Component {
               />
               <MenuItem
                 primaryText="Resize"
-                rightIcon={<i class="material-icons">navigate_next</i>}
+                rightIcon={<ArrowDropRight />}
                 menuItems={[
                   <MenuItem
                     primaryText="Small"
