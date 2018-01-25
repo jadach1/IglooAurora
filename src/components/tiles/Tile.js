@@ -15,10 +15,21 @@ import IconMenu from "material-ui/IconMenu"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right"
+import Dialog from "material-ui/Dialog"
+import FlatButton from "material-ui/FlatButton"
 
 class Tile extends Component {
   state = {
     isTileFullScreen: false,
+    open: false,
+  }
+
+  handleOpen = () => {
+    this.setState({ open: true })
+  }
+
+  handleClose = () => {
+    this.setState({ open: false })
   }
 
   handleClick = event => {
@@ -41,6 +52,7 @@ class Tile extends Component {
     const { value } = this.props
     const valueTitle = value.customName
     const valueHidden = value.relevance === "HIDDEN"
+    const actions = [<FlatButton label="Close" onClick={this.handleClose} />]
 
     let specificTile
     if (
@@ -231,11 +243,21 @@ class Tile extends Component {
                   />,
                 ]}
               />
-              <MenuItem primaryText="Settings" />
+              <MenuItem primaryText="Settings" onClick={this.handleOpen} />
             </IconMenu>
           </div>
         </div>
         {specificTile}
+        <Dialog
+          title={valueTitle + " - Settings"}
+          actions={actions}
+          modal={false}
+          open={this.state.open}
+          onRequestClose={this.handleClose}
+          className="notSelectable"
+        >
+          [FILL WITH SETTINGS]
+        </Dialog>
       </Paper>
     )
   }
