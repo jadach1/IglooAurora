@@ -67,6 +67,7 @@ export default class SettingsDialog extends React.Component {
   state = {
     deleteDialogOpen: false,
     passwordDialogOpen: false,
+    deleteConfirmedDialogOpen: false,
     isDeleteDisabled: true,
     timer: 5,
     labelName: "Delete",
@@ -82,6 +83,10 @@ export default class SettingsDialog extends React.Component {
       timer: 5,
       labelName: "Delete (" + this.state.timer + ")",
     })
+  }
+
+  handleDeleteConfirmedOpen = () => {
+    this.setState({ deleteConfirmedDialogOpen: true })
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -102,6 +107,10 @@ export default class SettingsDialog extends React.Component {
 
   handlePasswordDialogClose = () => {
     this.setState({ passwordDialogOpen: false })
+  }
+
+  handleDeleteConfirmedClose = () => {
+    this.setState({ deleteConfirmedDialogOpen: false })
   }
 
   handleChange = value => {
@@ -135,9 +144,27 @@ export default class SettingsDialog extends React.Component {
     }))
   }
 
+  deleteConfirmed = () => {
+    this.handleDeleteDialogClose()
+    this.handleDeleteConfirmedOpen()
+  }
+
   render() {
     const actions = [
       <FlatButton label="Close" onClick={this.props.closeSettingsDialog} />,
+    ]
+
+    const deleteConfimedActions = [
+      <FlatButton
+        label="Never mind"
+        onClick={this.handleDeleteConfirmedClose}
+        keyboardFocused={true}
+      />,
+      <RaisedButton
+        label="Delete"
+        primary={true}
+        buttonStyle={{ backgroundColor: "#F44336" }}
+      />,
     ]
 
     const deleteDialogActions = [
@@ -157,6 +184,7 @@ export default class SettingsDialog extends React.Component {
         disabled={this.state.isDeleteDisabled}
         style={{ width: "120px" }}
         disabledLabelColor="#751f19"
+        onClick={this.deleteConfirmed}
       />,
     ]
 
@@ -330,6 +358,22 @@ export default class SettingsDialog extends React.Component {
             floatingLabelShrinkStyle={{ color: "#0083ff" }}
             underlineFocusStyle={{ borderColor: "#0083ff" }}
             floatingLabelText="New Password"
+            type="password"
+            style={{ width: "100%" }}
+          />
+        </Dialog>
+        <Dialog
+          title="Type your password"
+          actions={deleteConfimedActions}
+          open={this.state.deleteConfirmedDialogOpen}
+          contentStyle={passwordDialogContentStyle}
+          onRequestClose={this.handleDeleteConfirmedClose}
+          className="notSelectable"
+        >
+          <TextField
+            floatingLabelShrinkStyle={{ color: "#0083ff" }}
+            underlineFocusStyle={{ borderColor: "#0083ff" }}
+            floatingLabelText="Password"
             type="password"
             style={{ width: "100%" }}
           />

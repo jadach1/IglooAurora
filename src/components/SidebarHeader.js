@@ -83,8 +83,18 @@ class SidebarHeader extends Component {
           anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}
           targetOrigin={{ horizontal: "middle", vertical: "top" }}
           onRequestClose={this.handleRequestClose}
+          style={{ width: "300px" }}
         >
-          <Menu />
+          <IconButton tooltip="Clear all">
+            <i class="material-icons">clear_all</i>
+          </IconButton>
+          {this.props.areThereNotifications ? (
+            <Menu />
+          ) : (
+            <div>
+              <br /> No new notifications
+            </div>
+          )}
         </Popover>
       </div>
     )
