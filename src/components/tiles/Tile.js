@@ -198,7 +198,6 @@ class Tile extends Component {
                 marginTop: "13px",
                 marginBottom: "13px",
               }}
-              tooltip="More"
               iconButtonElement={
                 <IconButton
                   style={{
@@ -206,6 +205,7 @@ class Tile extends Component {
                     width: "30px",
                     height: "30px",
                   }}
+                  tooltip="More"
                 >
                   <i class="material-icons">more_vert</i>
                 </IconButton>

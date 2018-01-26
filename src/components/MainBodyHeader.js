@@ -43,6 +43,7 @@ class MainBodyHeader extends Component {
           onClick={this.handleOpen}
           className="mainBodyHeaderIcon"
           style={{ marginTop: "6px" }}
+          tooltip="Rearrange tiles"
         >
           <i class="material-icons">mode_edit</i>
         </IconButton>

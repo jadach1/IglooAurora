@@ -101,8 +101,8 @@ body {
   z-index: 1000;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 15px 40px 15px auto 48px 15px;
-  grid-template-areas: ". icon . title button .";
+  grid-template-columns: 15px 40px 15px auto 48px;
+  grid-template-areas: ". icon . title button";
 }
 
 .deviceIconBig {
