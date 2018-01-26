@@ -70,7 +70,9 @@ class Main extends Component {
             <div className="offlineBody mainBody">
               <font size="6">You are not connected, try again in a while</font>
               <br />
-              <font size="5">In the meantime why don't you have a nap?</font>
+              <br />
+
+              <font size="5">In the meantime, why don't you have a nap?</font>
               <br />
               <img
                 alt="Sleeping Polar Bear"
