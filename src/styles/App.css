@@ -101,8 +101,8 @@ body {
   z-index: 1000;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 15px 40px 15px auto;
-  grid-template-areas: ". icon . title";
+  grid-template-columns: 15px 40px 15px auto 48px 15px;
+  grid-template-areas: ". icon . title button .";
 }
 
 .deviceIconBig {
@@ -115,6 +115,11 @@ body {
 .title {
   grid-area: title;
   margin: 0;
+}
+
+.mainBodyHeaderIcon {
+  grid-area: button;
+  color: white;
 }
 
 .logo {
@@ -211,10 +216,6 @@ body {
 }
 
 .sidebarHeaderIcons {
-  color: #ffffff;
-}
-
-.mainHeaderIcons {
   color: #ffffff;
 }
 
