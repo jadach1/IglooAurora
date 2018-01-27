@@ -107,7 +107,11 @@ class MainBody extends Component {
     const { loading, error, device } = this.props.deviceData
 
     if (loading) {
-      return <LargeCenteredSpinner />
+      return (
+        <div className="mainBody">
+          <LargeCenteredSpinner />
+        </div>
+      )
     }
     if (error) {
       return <div className="mainBody">An unexpected error occurred</div>
