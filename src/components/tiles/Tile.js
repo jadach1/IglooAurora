@@ -17,11 +17,23 @@ import gql from "graphql-tag"
 import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right"
 import Dialog from "material-ui/Dialog"
 import FlatButton from "material-ui/FlatButton"
+import { List, ListItem } from "material-ui/List"
+import Toggle from "material-ui/Toggle"
+import Subheader from "material-ui/Subheader"
+import DropDownMenu from "material-ui/DropDownMenu"
+
+const listStyles = {
+  root: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
+}
 
 class Tile extends Component {
   state = {
     isTileFullScreen: false,
     open: false,
+    value: 1,
   }
 
   handleOpen = () => {
@@ -48,6 +60,8 @@ class Tile extends Component {
     })
   }
 
+  handleChange = (event, index, value) => this.setState({ value })
+
   render() {
     const { value } = this.props
     const valueTitle = value.customName
@@ -55,6 +69,7 @@ class Tile extends Component {
     const actions = [<FlatButton label="Close" onClick={this.handleClose} />]
 
     let specificTile
+    let specificSettings
     if (
       value.__typename === "BooleanValue" &&
       value.permission === "READ_ONLY"
@@ -78,12 +93,57 @@ class Tile extends Component {
           disabled={value.permission === "READ_ONLY"}
         />
       )
+      specificSettings = (
+        <div style={listStyles.root}>
+          <List style={{ width: "100%" }}>
+            <Subheader>Controls</Subheader>
+            <ListItem
+              primaryText="Default control"
+              secondaryText="Choose how the data is visualized"
+            >
+              <DropDownMenu
+                value={this.state.value}
+                onChange={this.handleChange}
+                style={{
+                  width: "150px",
+                }}
+              >
+                <MenuItem value={1} primaryText="Number" />
+                <MenuItem value={2} primaryText="Gauge" />
+                <MenuItem value={3} primaryText="Graph" />
+              </DropDownMenu>
+            </ListItem>
+          </List>
+        </div>
+      )
     } else if (
       value.__typename === "FloatValue" &&
       !value.boundaries &&
       value.permission === "READ_ONLY"
     ) {
       specificTile = <ReadOnlyFloatTile value={value.floatValue} />
+      specificSettings = (
+        <div style={listStyles.root}>
+          <List style={{ width: "100%" }}>
+            <Subheader>Controls</Subheader>
+            <ListItem
+              primaryText="Default control"
+              secondaryText="Choose how the data is visualized"
+            >
+              <DropDownMenu
+                value={this.state.value}
+                onChange={this.handleChange}
+                style={{
+                  width: "150px",
+                }}
+              >
+                <MenuItem value={1} primaryText="Number" />
+                <MenuItem value={3} primaryText="Graph" />
+              </DropDownMenu>
+            </ListItem>
+          </List>
+        </div>
+      )
     } else if (
       value.__typename === "ColourValue" &&
       value.permission === "READ_ONLY"
@@ -255,8 +315,10 @@ class Tile extends Component {
           open={this.state.open}
           onRequestClose={this.handleClose}
           className="notSelectable"
+          contentStyle={{ width: "520px" }}
+          bodyStyle={{ padding: "0" }}
         >
-          [FILL WITH SETTINGS]
+          {specificSettings}
         </Dialog>
       </Paper>
     )
