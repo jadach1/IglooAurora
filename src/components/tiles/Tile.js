@@ -74,6 +74,7 @@ class Tile extends Component {
 
     let specificTile
     let specificInterfaceSettings
+    let specificDataSettings
     if (
       value.__typename === "BooleanValue" &&
       value.permission === "READ_ONLY"
@@ -117,6 +118,13 @@ class Tile extends Component {
                 <MenuItem value={3} primaryText="Graph" />
               </DropDownMenu>
             </ListItem>
+          </List>
+        </div>
+      )
+      specificDataSettings = (
+        <div style={listStyles.root}>
+          <List style={{ width: "100%" }}>
+            <Subheader>Visualization</Subheader>
           </List>
         </div>
       )
