@@ -3,7 +3,8 @@ import Paper from "material-ui/Paper"
 import IconButton from "material-ui/IconButton"
 import ReadOnlyBooleanTile from "./ReadOnlyBooleanTile"
 import ReadWriteBooleanTile from "./ReadWriteBooleanTile"
-import BoundedFloatTile from "./BoundedFloatTile"
+import ReadWriteBoundedFloatTile from "./ReadWriteBoundedFloatTile"
+import ReadOnlyBoundedFloatTile from "./ReadOnlyBoundedFloatTile"
 import ReadOnlyColourTile from "./ReadOnlyColourTile"
 import ReadWriteColourTile from "./ReadWriteColourTile"
 import ReadOnlyFloatTile from "./ReadOnlyFloatTile"
@@ -24,6 +25,7 @@ import DropDownMenu from "material-ui/DropDownMenu"
 import { Tabs, Tab } from "material-ui/Tabs"
 import SwipeableViews from "react-swipeable-views"
 import FontIcon from "material-ui/FontIcon"
+import TileSettings from "./TileSettings"
 
 const listStyles = {
   root: {
@@ -64,13 +66,10 @@ class Tile extends Component {
     })
   }
 
-  handleChange = (event, index, value) => this.setState({ value })
-
   render() {
     const { value } = this.props
     const valueTitle = value.customName
     const valueHidden = value.relevance === "HIDDEN"
-    const actions = [<FlatButton label="Close" onClick={this.handleClose} />]
 
     let specificTile
     let specificInterfaceSettings
@@ -87,9 +86,13 @@ class Tile extends Component {
       specificTile = (
         <ReadWriteBooleanTile value={value.boolValue} id={value.id} />
       )
-    } else if (value.__typename === "FloatValue" && value.boundaries) {
+    } else if (
+      value.__typename === "FloatValue" &&
+      value.boundaries &&
+      value.permission === "READ_WRITE"
+    ) {
       specificTile = (
-        <BoundedFloatTile
+        <ReadWriteBoundedFloatTile
           id={value.id}
           min={value.boundaries[0]}
           max={value.boundaries[1]}
@@ -124,9 +127,23 @@ class Tile extends Component {
       specificDataSettings = (
         <div style={listStyles.root}>
           <List style={{ width: "100%" }}>
-            <Subheader>Visualization</Subheader>
+            <Subheader>Lorem Ipsum</Subheader>
           </List>
         </div>
+      )
+    } else if (
+      value.__typename === "FloatValue" &&
+      value.boundaries &&
+      value.permission === "READ_ONLY"
+    ) {
+      specificTile = (
+        <ReadOnlyBoundedFloatTile
+          id={value.id}
+          min={value.boundaries[0]}
+          max={value.boundaries[1]}
+          defaultValue={value.floatValue}
+          step={value.precision || undefined} // avoid passing null, pass undefined instead
+        />
       )
     } else if (
       value.__typename === "FloatValue" &&
@@ -320,49 +337,12 @@ class Tile extends Component {
           </div>
         </div>
         {specificTile}
-        <Dialog
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-          className="notSelectable"
-          contentStyle={{ width: "520px" }}
-          bodyStyle={{ padding: "0" }}
-        >
-          <Tabs
-            inkBarStyle={{
-              background: "ff4081 ",
-              height: "3px",
-              marginTop: "-3px",
-            }}
-            onChange={this.handleChange}
-            value={this.state.slideIndex}
-          >
-            <Tab
-              icon={<FontIcon className="material-icons">dashboard</FontIcon>}
-              label="Interface"
-              buttonStyle={{ backgroundColor: "#0057cb" }}
-              value={0}
-            />
-            <Tab
-              icon={<i class="material-icons">import_export</i>}
-              label="Data"
-              buttonStyle={{ backgroundColor: "#0057cb" }}
-              value={1}
-            />
-          </Tabs>
-          <SwipeableViews
-            index={this.state.slideIndex}
-            onChangeIndex={this.handleChange}
-            enableMouseEvents
-            style={{
-              overflowY: "auto",
-              height: "500px",
-            }}
-          >
-            {specificInterfaceSettings}
-          </SwipeableViews>
-        </Dialog>
+        <TileSettings
+          interface={specificInterfaceSettings}
+          data={specificDataSettings}
+          isOpen={this.state.open}
+          handleClose={this.handleClose}
+        />
       </Paper>
     )
   }
