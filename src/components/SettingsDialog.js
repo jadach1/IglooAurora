@@ -12,6 +12,7 @@ import Divider from "material-ui/Divider"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import SwipeableViews from "react-swipeable-views"
 import { graphql } from "react-apollo"
+import TwoFactorDialog from "./settings/Enabled2FA"
 
 const styles = {
   headline: {
@@ -37,32 +38,6 @@ const passwordDialogContentStyle = {
   width: "350px",
 }
 
-const twoFactorDialogContentStyle = {
-  width: "420px",
-}
-
-const StepActions = ({ step, handleNext, handlePrev }) => (
-  <div style={{ margin: "12px 0" }}>
-    <RaisedButton
-      label="Next"
-      buttonStyle={{ backgroundColor: "#0083ff" }}
-      disableTouchRipple={true}
-      disableFocusRipple={true}
-      primary={true}
-      onClick={handleNext}
-      style={{ marginRight: 12 }}
-    />
-    {step > 0 && (
-      <FlatButton
-        label="Back"
-        disableTouchRipple={true}
-        disableFocusRipple={true}
-        onClick={handlePrev}
-      />
-    )}
-  </div>
-)
-
 export default class SettingsDialog extends React.Component {
   state = {
     deleteDialogOpen: false,
@@ -73,6 +48,14 @@ export default class SettingsDialog extends React.Component {
     labelName: "Delete",
     stepIndex: 0,
     slideIndex: 0,
+  }
+
+  handleTwoFactorDialogOpen = () => {
+    this.setState({ twoFactorDialogOpen: true })
+  }
+
+  handleTwoFactorDialogClose = () => {
+    this.setState({ twoFactorDialogOpen: false })
   }
 
   handleDeleteDialogOpen = () => {
@@ -87,14 +70,6 @@ export default class SettingsDialog extends React.Component {
 
   handleDeleteConfirmedOpen = () => {
     this.setState({ deleteConfirmedDialogOpen: true })
-  }
-
-  handleTwoFactorDialogOpen = () => {
-    this.setState({ twoFactorDialogOpen: true })
-  }
-
-  handleTwoFactorDialogClose = () => {
-    this.setState({ twoFactorDialogOpen: false })
   }
 
   handlePasswordDialogOpen = () => {
@@ -130,18 +105,6 @@ export default class SettingsDialog extends React.Component {
         isDeleteDisabled: timer > 1,
       }
     })
-  }
-
-  handleNext = () => {
-    this.setState(({ stepIndex }) => ({
-      stepIndex: stepIndex < 4 ? stepIndex + 1 : stepIndex,
-    }))
-  }
-
-  handlePrev = () => {
-    this.setState(({ stepIndex }) => ({
-      stepIndex: stepIndex > 0 ? stepIndex - 1 : stepIndex,
-    }))
   }
 
   deleteConfirmed = () => {
@@ -199,10 +162,6 @@ export default class SettingsDialog extends React.Component {
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
       />,
-    ]
-
-    const twoFactorDialogActions = [
-      <FlatButton label="Close" onClick={this.handleTwoFactorDialogClose} />,
     ]
 
     return (
@@ -378,117 +337,11 @@ export default class SettingsDialog extends React.Component {
             style={{ width: "100%" }}
           />
         </Dialog>
-        <Dialog
-          title="Enable two-factor authentication"
-          actions={twoFactorDialogActions}
-          open={this.state.twoFactorDialogOpen}
-          contentStyle={twoFactorDialogContentStyle}
-          onRequestClose={this.handleTwoFactorDialogClose}
-          className="notSelectable"
-        >
-          <div
-            style={{
-              height: 400,
-              margin: "auto",
-            }}
-          >
-            <Stepper activeStep={this.state.stepIndex} orientation="vertical">
-              <Step>
-                <StepButton onClick={() => this.setState({ stepIndex: 0 })}>
-                  Type in your password
-                </StepButton>
-                <StepContent>
-                  <TextField
-                    floatingLabelShrinkStyle={{ color: "#0083ff" }}
-                    underlineFocusStyle={{ borderColor: "#0083ff" }}
-                    floatingLabelText="Password"
-                    type="password"
-                    style={{ width: "100%" }}
-                  />
-                  {
-                    <StepActions
-                      step={0}
-                      handlePrev={this.handlePrev}
-                      handleNext={this.handleNext}
-                    />
-                  }
-                </StepContent>
-              </Step>
-              <Step>
-                <StepButton onClick={() => this.setState({ stepIndex: 1 })}>
-                  Save your recovery codes
-                </StepButton>
-                <StepContent>
-                  <br />
-                  aaaaa-11111
-                  <br />
-                  <br />
-                  <FlatButton
-                    label="Save"
-                    icon={<i className="material-icons">file_download</i>}
-                  />
-                  <FlatButton
-                    label="Copy"
-                    icon={<i className="material-icons">content_copy</i>}
-                  />
-                  <FlatButton
-                    label="Print"
-                    icon={<i className="material-icons">print</i>}
-                  />
-                  {
-                    <StepActions
-                      step={1}
-                      handlePrev={this.handlePrev}
-                      handleNext={this.handleNext}
-                    />
-                  }
-                </StepContent>
-              </Step>
-              <Step>
-                <StepButton onClick={() => this.setState({ stepIndex: 2 })}>
-                  Get the app
-                </StepButton>
-                <StepContent>
-                  {
-                    <StepActions
-                      step={2}
-                      handlePrev={this.handlePrev}
-                      handleNext={this.handleNext}
-                    />
-                  }
-                </StepContent>
-              </Step>
-              <Step>
-                <StepButton onClick={() => this.setState({ stepIndex: 3 })}>
-                  Scan the barcode on your app
-                </StepButton>
-                <StepContent>
-                  {
-                    <StepActions
-                      step={3}
-                      handlePrev={this.handlePrev}
-                      handleNext={this.handleNext}
-                    />
-                  }
-                </StepContent>
-              </Step>
-              <Step>
-                <StepButton onClick={() => this.setState({ stepIndex: 4 })}>
-                  Enter the six-digit code
-                </StepButton>
-                <StepContent>
-                  {
-                    <StepActions
-                      step={4}
-                      handlePrev={this.handlePrev}
-                      handleNext={this.handleNext}
-                    />
-                  }
-                </StepContent>
-              </Step>
-            </Stepper>
-          </div>
-        </Dialog>
+        <TwoFactorDialog
+          isOpen={this.state.twoFactorDialogOpen}
+          handleTwoFactorDialogOpen={this.handleTwoFactorDialogOpen}
+          handleTwoFactorDialogClose={this.handleTwoFactorDialogClose}
+        />
       </Dialog>
     )
   }
