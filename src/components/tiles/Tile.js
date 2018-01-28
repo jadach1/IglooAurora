@@ -101,12 +101,26 @@ class Tile extends Component {
           disabled={value.permission === "READ_ONLY"}
         />
       )
+    } else if (
+      value.__typename === "FloatValue" &&
+      value.boundaries &&
+      value.permission === "READ_ONLY"
+    ) {
+      specificTile = (
+        <ReadOnlyBoundedFloatTile
+          id={value.id}
+          min={value.boundaries[0]}
+          max={value.boundaries[1]}
+          defaultValue={value.floatValue}
+          step={value.precision || undefined} // avoid passing null, pass undefined instead
+        />
+      )
       specificInterfaceSettings = (
         <div style={listStyles.root}>
           <List style={{ width: "100%" }}>
             <Subheader>Visualization</Subheader>
             <ListItem
-              primaryText="Default visualization"
+              primaryText="Default control"
               secondaryText="Choose how the data is visualized"
             >
               <DropDownMenu
@@ -124,27 +138,6 @@ class Tile extends Component {
           </List>
         </div>
       )
-      specificDataSettings = (
-        <div style={listStyles.root}>
-          <List style={{ width: "100%" }}>
-            <Subheader>Lorem Ipsum</Subheader>
-          </List>
-        </div>
-      )
-    } else if (
-      value.__typename === "FloatValue" &&
-      value.boundaries &&
-      value.permission === "READ_ONLY"
-    ) {
-      specificTile = (
-        <ReadOnlyBoundedFloatTile
-          id={value.id}
-          min={value.boundaries[0]}
-          max={value.boundaries[1]}
-          defaultValue={value.floatValue}
-          step={value.precision || undefined} // avoid passing null, pass undefined instead
-        />
-      )
     } else if (
       value.__typename === "FloatValue" &&
       !value.boundaries &&
@@ -154,7 +147,7 @@ class Tile extends Component {
       specificInterfaceSettings = (
         <div style={listStyles.root}>
           <List style={{ width: "100%" }}>
-            <Subheader>Controls</Subheader>
+            <Subheader>Visualization</Subheader>
             <ListItem
               primaryText="Default control"
               secondaryText="Choose how the data is visualized"
@@ -167,7 +160,7 @@ class Tile extends Component {
                 }}
               >
                 <MenuItem value={1} primaryText="Number" />
-                <MenuItem value={3} primaryText="Graph" />
+                <MenuItem value={2} primaryText="Graph" />
               </DropDownMenu>
             </ListItem>
           </List>
@@ -178,12 +171,48 @@ class Tile extends Component {
       value.permission === "READ_ONLY"
     ) {
       specificTile = <ReadOnlyColourTile colour={value.colourValue} />
+      specificInterfaceSettings = (
+        <div style={listStyles.root}>
+          <List style={{ width: "100%" }}>
+            <Subheader>Visualization</Subheader>
+            <ListItem
+              primaryText="Show advanced options for the color picker"
+              secondaryText="Show RGB, HEX and HSL color codes"
+              rightToggle={
+                <Toggle
+                  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                  rippleStyle={{ color: "#0083ff" }}
+                />
+              }
+            />
+          </List>
+        </div>
+      )
     } else if (
       value.__typename === "ColourValue" &&
       value.permission === "READ_WRITE"
     ) {
       specificTile = (
         <ReadWriteColourTile value={value.colourValue} id={value.id} />
+      )
+      specificInterfaceSettings = (
+        <div style={listStyles.root}>
+          <List style={{ width: "100%" }}>
+            <Subheader>Visualization</Subheader>
+            <ListItem
+              primaryText="Show advanced options for the color picker"
+              secondaryText="Show RGB, HEX and HSL color codes"
+              rightToggle={
+                <Toggle
+                  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                  rippleStyle={{ color: "#0083ff" }}
+                />
+              }
+            />
+          </List>
+        </div>
       )
     } else {
       specificTile = ""
@@ -250,100 +279,102 @@ class Tile extends Component {
       })
 
     return (
-      <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
-        <FullScreenTile
-          fullScreen={this.state.isTileFullScreen}
-          handleClose={() => {
-            this.setState({ isTileFullScreen: false })
-          }}
-          value={value}
-          specificTile={specificTile}
-        />
-        <div className="tileHeader">
-          <div className="tileTitle" title={valueTitle}>
-            {valueTitle}
-          </div>
-          <div className="tileHeaderButtons notSelectable">
-            <IconButton
-              tooltip="Expand"
-              onClick={() => {
-                this.setState({ isTileFullScreen: true })
-              }}
-              style={{
-                padding: "0",
-                width: "30px",
-                height: "30px",
-                marginTop: "13px",
-                marginBottom: "13px",
-              }}
-            >
-              <i className="material-icons">fullscreen</i>
-            </IconButton>
-            <IconMenu
-              style={{
-                padding: "0",
-                width: "30px",
-                height: "30px",
-                marginTop: "13px",
-                marginBottom: "13px",
-              }}
-              iconButtonElement={
-                <IconButton
-                  style={{
-                    padding: "0",
-                    width: "30px",
-                    height: "30px",
-                  }}
-                  tooltip="More"
-                >
-                  <i className="material-icons">more_vert</i>
-                </IconButton>
-              }
-              anchorOrigin={{ horizontal: "right", vertical: "top" }}
-              targetOrigin={{ horizontal: "right", vertical: "top" }}
-            >
-              <MenuItem
-                primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}
-                onClick={
-                  value.relevance === "VISIBLE"
-                    ? updateShown(false)
-                    : updateShown(true)
+      <React.Fragment>
+        <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
+          <FullScreenTile
+            fullScreen={this.state.isTileFullScreen}
+            handleClose={() => {
+              this.setState({ isTileFullScreen: false })
+            }}
+            value={value}
+            specificTile={specificTile}
+          />
+          <div className="tileHeader">
+            <div className="tileTitle" title={valueTitle}>
+              {valueTitle}
+            </div>
+            <div className="tileHeaderButtons notSelectable">
+              <IconButton
+                tooltip="Expand"
+                onClick={() => {
+                  this.setState({ isTileFullScreen: true })
+                }}
+                style={{
+                  padding: "0",
+                  width: "30px",
+                  height: "30px",
+                  marginTop: "13px",
+                  marginBottom: "13px",
+                }}
+              >
+                <i className="material-icons">fullscreen</i>
+              </IconButton>
+              <IconMenu
+                style={{
+                  padding: "0",
+                  width: "30px",
+                  height: "30px",
+                  marginTop: "13px",
+                  marginBottom: "13px",
+                }}
+                iconButtonElement={
+                  <IconButton
+                    style={{
+                      padding: "0",
+                      width: "30px",
+                      height: "30px",
+                    }}
+                    tooltip="More"
+                  >
+                    <i className="material-icons">more_vert</i>
+                  </IconButton>
                 }
-              />
-              <MenuItem
-                primaryText="Resize"
-                rightIcon={<ArrowDropRight />}
-                menuItems={[
-                  <MenuItem
-                    primaryText="Small"
-                    onClick={updateTileMutation("NORMAL")}
-                  />,
-                  <MenuItem
-                    primaryText="Wide"
-                    onClick={updateTileMutation("WIDE")}
-                  />,
-                  <MenuItem
-                    primaryText="Tall"
-                    onClick={updateTileMutation("TALL")}
-                  />,
-                  <MenuItem
-                    primaryText="Large"
-                    onClick={updateTileMutation("LARGE")}
-                  />,
-                ]}
-              />
-              <MenuItem primaryText="Settings" onClick={this.handleOpen} />
-            </IconMenu>
+                anchorOrigin={{ horizontal: "right", vertical: "top" }}
+                targetOrigin={{ horizontal: "right", vertical: "top" }}
+              >
+                <MenuItem
+                  primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}
+                  onClick={
+                    value.relevance === "VISIBLE"
+                      ? updateShown(false)
+                      : updateShown(true)
+                  }
+                />
+                <MenuItem
+                  primaryText="Resize"
+                  rightIcon={<ArrowDropRight />}
+                  menuItems={[
+                    <MenuItem
+                      primaryText="Small"
+                      onClick={updateTileMutation("NORMAL")}
+                    />,
+                    <MenuItem
+                      primaryText="Wide"
+                      onClick={updateTileMutation("WIDE")}
+                    />,
+                    <MenuItem
+                      primaryText="Tall"
+                      onClick={updateTileMutation("TALL")}
+                    />,
+                    <MenuItem
+                      primaryText="Large"
+                      onClick={updateTileMutation("LARGE")}
+                    />,
+                  ]}
+                />
+                <MenuItem primaryText="Settings" onClick={this.handleOpen} />
+              </IconMenu>
+            </div>
           </div>
-        </div>
-        {specificTile}
+          {specificTile}
+        </Paper>
         <TileSettings
           interface={specificInterfaceSettings}
           data={specificDataSettings}
           isOpen={this.state.open}
           handleClose={this.handleClose}
         />
-      </Paper>
+      </React.Fragment>
     )
   }
 }

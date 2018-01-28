@@ -13,6 +13,8 @@ import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import SwipeableViews from "react-swipeable-views"
 import { graphql } from "react-apollo"
 import TwoFactorDialog from "./settings/Enabled2FA"
+import DeleteAccountDialog from "./settings/DeleteAccount"
+import Snackbar from "material-ui/Snackbar"
 
 const styles = {
   headline: {
@@ -48,6 +50,7 @@ export default class SettingsDialog extends React.Component {
     labelName: "Delete",
     stepIndex: 0,
     slideIndex: 0,
+    pwdSnackOpen: false,
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -66,6 +69,11 @@ export default class SettingsDialog extends React.Component {
       timer: 5,
       labelName: "Delete (" + this.state.timer + ")",
     })
+  }
+
+  deleteConfirmed = () => {
+    this.handleDeleteDialogClose()
+    this.handleDeleteConfirmedOpen()
   }
 
   handleDeleteConfirmedOpen = () => {
@@ -107,48 +115,21 @@ export default class SettingsDialog extends React.Component {
     })
   }
 
-  deleteConfirmed = () => {
-    this.handleDeleteDialogClose()
-    this.handleDeleteConfirmedOpen()
+  handlePwdSnackOpen = () => {
+    this.setState({
+      pwdSnackOpen: true,
+    })
+  }
+
+  handlePwdSnackClose = () => {
+    this.setState({
+      pwdSnackOpen: false,
+    })
   }
 
   render() {
     const actions = [
       <FlatButton label="Close" onClick={this.props.closeSettingsDialog} />,
-    ]
-
-    const deleteConfimedActions = [
-      <FlatButton
-        label="Never mind"
-        onClick={this.handleDeleteConfirmedClose}
-        keyboardFocused={true}
-      />,
-      <RaisedButton
-        label="Delete"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#F44336" }}
-      />,
-    ]
-
-    const deleteDialogActions = [
-      <FlatButton
-        label="Never mind"
-        keyboardFocused={true}
-        onClick={this.handleDeleteDialogClose}
-      />,
-      <RaisedButton
-        label={
-          this.state.isDeleteDisabled
-            ? "Delete (" + this.state.timer + ")"
-            : "Delete"
-        }
-        primary={true}
-        buttonStyle={{ backgroundColor: "#F44336" }}
-        disabled={this.state.isDeleteDisabled}
-        style={{ width: "120px" }}
-        disabledLabelColor="#751f19"
-        onClick={this.deleteConfirmed}
-      />,
     ]
 
     const passwordDialogActions = [
@@ -161,142 +142,136 @@ export default class SettingsDialog extends React.Component {
         label="Change"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
+        onClick={this.handlePwdSnackOpen}
       />,
     ]
 
     return (
-      <Dialog
-        actions={actions}
-        modal={false}
-        open={this.props.isOpen}
-        onRequestClose={this.props.closeSettingsDialog}
-        bodyStyle={{ padding: "0" }}
-        repositionOnUpdate={true}
-        contentStyle={{ width: "520px" }}
-        className="notSelectable"
-      >
-        <Tabs
-          inkBarStyle={{
-            background: "ff4081 ",
-            height: "3px",
-            marginTop: "-3px",
-          }}
-          onChange={this.handleChange}
-          value={this.state.slideIndex}
-        >
-          <Tab
-            icon={<FontIcon className="material-icons">dashboard</FontIcon>}
-            label="Interface"
-            buttonStyle={{ backgroundColor: "#0057cb" }}
-            value={0}
-          />
-          <Tab
-            icon={<i className="material-icons">notifications</i>}
-            label="Notifications"
-            buttonStyle={{ backgroundColor: "#0057cb" }}
-            value={1}
-          />
-          <Tab
-            icon={<FontIcon className="material-icons">account_box</FontIcon>}
-            label="Account"
-            buttonStyle={{ backgroundColor: "#0057cb" }}
-            value={2}
-          />
-        </Tabs>
-        <SwipeableViews
-          index={this.state.slideIndex}
-          onChangeIndex={this.handleChange}
-          enableMouseEvents
-        >
-          <div
-            style={{
-              overflowY: "auto",
-              height: "500px",
-            }}
-          >
-            <div style={listStyles.root}>
-              <List style={{ width: "100%" }}>
-                <Subheader>Controls</Subheader>
-                <ListItem
-                  primaryText="Enable advanced options for color selector"
-                  rightToggle={
-                    <Toggle
-                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                      rippleStyle={{ color: "#0083ff" }}
-                    />
-                  }
-                />
-              </List>
-            </div>
-          </div>
-          <div
-            style={{
-              overflowY: "auto",
-              height: "500px",
-            }}
-          >
-            <div style={listStyles.root}>
-              <List style={{ width: "100%" }}>
-                <Subheader>Lorem Ipsum</Subheader>
-                <ListItem
-                  primaryText="Quiet mode"
-                  secondaryText="Mute all notifications"
-                  rightToggle={
-                    <Toggle
-                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                      rippleStyle={{ color: "#0083ff" }}
-                    />
-                  }
-                />
-                <Subheader>Lorem Ipsum</Subheader>
-              </List>
-            </div>
-          </div>
-          <div
-            style={{
-              overflowY: "auto",
-              height: "500px",
-            }}
-          >
-            <List>
-              <Subheader>Authentication</Subheader>
-              <ListItem
-                primaryText="Change password"
-                onClick={this.handlePasswordDialogOpen}
-              />
-              <ListItem
-                primaryText="Two-factor authentication"
-                secondaryText="Make your account safer by verifying it is actually you"
-                rightToggle={
-                  <Toggle
-                    thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                    trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                    rippleStyle={{ color: "#0083ff" }}
-                    onToggle={this.handleTwoFactorDialogOpen}
-                  />
-                }
-              />
-              <Divider />
-              <Subheader>Account management</Subheader>
-              <ListItem
-                primaryText="Delete your account"
-                onClick={this.handleDeleteDialogOpen}
-                style={{ color: "#F44336 " }}
-              />
-            </List>
-          </div>
-        </SwipeableViews>
+      <React.Fragment>
         <Dialog
-          title="Are you sure you want to delete your account?"
-          actions={deleteDialogActions}
-          open={this.state.deleteDialogOpen}
-          contentStyle={deleteDialogContentStyle}
-          onRequestClose={this.handleDeleteDialogClose}
+          actions={actions}
+          modal={false}
+          open={this.props.isOpen}
+          onRequestClose={this.props.closeSettingsDialog}
+          bodyStyle={{ padding: "0" }}
+          repositionOnUpdate={true}
+          contentStyle={{ width: "520px" }}
           className="notSelectable"
         >
-          Be careful, your data will be erased permanently
+          <Tabs
+            inkBarStyle={{
+              background: "ff4081 ",
+              height: "3px",
+              marginTop: "-3px",
+            }}
+            onChange={this.handleChange}
+            value={this.state.slideIndex}
+          >
+            <Tab
+              icon={<FontIcon className="material-icons">dashboard</FontIcon>}
+              label="Interface"
+              buttonStyle={{ backgroundColor: "#0057cb" }}
+              value={0}
+            />
+            <Tab
+              icon={<i className="material-icons">notifications</i>}
+              label="Notifications"
+              buttonStyle={{ backgroundColor: "#0057cb" }}
+              value={1}
+            />
+            <Tab
+              icon={<FontIcon className="material-icons">account_box</FontIcon>}
+              label="Account"
+              buttonStyle={{ backgroundColor: "#0057cb" }}
+              value={2}
+            />
+          </Tabs>
+          <SwipeableViews
+            index={this.state.slideIndex}
+            onChangeIndex={this.handleChange}
+            enableMouseEvents
+          >
+            <div
+              style={{
+                overflowY: "auto",
+                height: "500px",
+              }}
+            >
+              <div style={listStyles.root}>
+                <List style={{ width: "100%" }}>
+                  <Subheader>Controls</Subheader>
+                  <ListItem
+                    primaryText="Show advanced options for the color picker"
+                    secondaryText="Show RGB, HEX and HSL color codes"
+                    rightToggle={
+                      <Toggle
+                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                        rippleStyle={{ color: "#0083ff" }}
+                      />
+                    }
+                  />
+                </List>
+              </div>
+            </div>
+            <div
+              style={{
+                overflowY: "auto",
+                height: "500px",
+              }}
+            >
+              <div style={listStyles.root}>
+                <List style={{ width: "100%" }}>
+                  <Subheader>Lorem Ipsum</Subheader>
+                  <ListItem
+                    primaryText="Quiet mode"
+                    secondaryText="Mute all notifications"
+                    rightToggle={
+                      <Toggle
+                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                        rippleStyle={{ color: "#0083ff" }}
+                      />
+                    }
+                  />
+                  <Subheader>Lorem Ipsum</Subheader>
+                </List>
+              </div>
+            </div>
+            <div
+              style={{
+                overflowY: "auto",
+                height: "500px",
+              }}
+            >
+              <List>
+                <Subheader>Authentication</Subheader>
+                <ListItem
+                  primaryText="Change password"
+                  onClick={this.handlePasswordDialogOpen}
+                />
+                <ListItem
+                  primaryText="Two-factor authentication"
+                  secondaryText="Make your account safer by verifying it is actually you"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                      onToggle={this.handleTwoFactorDialogOpen}
+                    />
+                  }
+                />
+                <Divider />
+                <Subheader>Account management</Subheader>
+                <ListItem
+                  primaryText="Delete your account"
+                  onClick={this.handleDeleteDialogOpen}
+                  style={{ color: "#F44336 " }}
+                />
+              </List>
+            </div>
+          </SwipeableViews>
         </Dialog>
         <Dialog
           title="Change your password"
@@ -321,28 +296,27 @@ export default class SettingsDialog extends React.Component {
             style={{ width: "100%" }}
           />
         </Dialog>
-        <Dialog
-          title="Type your password"
-          actions={deleteConfimedActions}
-          open={this.state.deleteConfirmedDialogOpen}
-          contentStyle={passwordDialogContentStyle}
-          onRequestClose={this.handleDeleteConfirmedClose}
-          className="notSelectable"
-        >
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="Password"
-            type="password"
-            style={{ width: "100%" }}
-          />
-        </Dialog>
         <TwoFactorDialog
           isOpen={this.state.twoFactorDialogOpen}
           handleTwoFactorDialogOpen={this.handleTwoFactorDialogOpen}
           handleTwoFactorDialogClose={this.handleTwoFactorDialogClose}
         />
-      </Dialog>
+        <Snackbar
+          open={this.state.pwdSnackOpen}
+          message="You successfully changed your password"
+          autoHideDuration={4000}
+          onRequestClose={this.handlePwdSnackClose}
+        />
+        <DeleteAccountDialog
+          deleteOpen={this.state.deleteDialogOpen}
+          deleteConfirmedOpen={this.state.deleteConfirmedDialogOpen}
+          isDeleteDisabled={this.state.isDeleteDisabled}
+          timer={this.state.timer}
+          deleteConfirmed={this.deleteConfirmed}
+          closeDeleteConfirmed={this.handleDeleteConfirmedClose}
+          closeDelete={this.handleDeleteDialogClose}
+        />
+      </React.Fragment>
     )
   }
 }
