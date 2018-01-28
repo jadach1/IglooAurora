@@ -36,7 +36,7 @@ class MainBodyHeader extends Component {
         {device.icon ? (
           <img className="deviceIconBig" src={device.icon} alt="device logo" />
         ) : (
-          <i class="deviceIconBig material-icons">lightbulb_outline</i>
+          <i className="deviceIconBig material-icons">lightbulb_outline</i>
         )}
         <p className="title">{device.customName}</p>
         <IconButton
@@ -45,7 +45,7 @@ class MainBodyHeader extends Component {
           style={{ marginTop: "6px" }}
           tooltip="Rearrange tiles"
         >
-          <i class="material-icons">mode_edit</i>
+          <i className="material-icons">mode_edit</i>
         </IconButton>
         <Dialog
           title="Rearrange tiles"

@@ -81,7 +81,7 @@ class Sidebar extends Component {
                     alt="device logo"
                   />
                 ) : (
-                  <i class="material-icons">lightbulb_outline</i>
+                  <i className="material-icons">lightbulb_outline</i>
                 )
               }
               key={device.id}

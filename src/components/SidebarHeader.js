@@ -86,7 +86,7 @@ class SidebarHeader extends Component {
           style={{ width: "300px" }}
         >
           <IconButton tooltip="Clear all">
-            <i class="material-icons">clear_all</i>
+            <i className="material-icons">clear_all</i>
           </IconButton>
           {this.props.areThereNotifications ? (
             <Menu />

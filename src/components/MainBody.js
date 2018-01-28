@@ -140,9 +140,9 @@ class MainBody extends Component {
           label={this.state.showHidden ? "Show less" : "Show more"}
           icon={
             this.state.showHidden ? (
-              <i class="material-icons">keyboard_arrow_up</i>
+              <i className="material-icons">keyboard_arrow_up</i>
             ) : (
-              <i class="material-icons">keyboard_arrow_down</i>
+              <i className="material-icons">keyboard_arrow_down</i>
             )
           }
           fullWidth={true}
