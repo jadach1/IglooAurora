@@ -232,7 +232,7 @@ export default class SettingsDialog extends React.Component {
             value={0}
           />
           <Tab
-            icon={<i class="material-icons">notifications</i>}
+            icon={<i className="material-icons">notifications</i>}
             label="Notifications"
             buttonStyle={{ backgroundColor: "#0057cb" }}
             value={1}
@@ -425,15 +425,15 @@ export default class SettingsDialog extends React.Component {
                   <br />
                   <FlatButton
                     label="Save"
-                    icon={<i class="material-icons">file_download</i>}
+                    icon={<i className="material-icons">file_download</i>}
                   />
                   <FlatButton
                     label="Copy"
-                    icon={<i class="material-icons">content_copy</i>}
+                    icon={<i className="material-icons">content_copy</i>}
                   />
                   <FlatButton
                     label="Print"
-                    icon={<i class="material-icons">print</i>}
+                    icon={<i className="material-icons">print</i>}
                   />
                   {
                     <StepActions

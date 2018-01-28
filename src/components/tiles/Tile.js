@@ -21,6 +21,9 @@ import { List, ListItem } from "material-ui/List"
 import Toggle from "material-ui/Toggle"
 import Subheader from "material-ui/Subheader"
 import DropDownMenu from "material-ui/DropDownMenu"
+import { Tabs, Tab } from "material-ui/Tabs"
+import SwipeableViews from "react-swipeable-views"
+import FontIcon from "material-ui/FontIcon"
 
 const listStyles = {
   root: {
@@ -34,6 +37,7 @@ class Tile extends Component {
     isTileFullScreen: false,
     open: false,
     value: 1,
+    slideIndex: 0,
   }
 
   handleOpen = () => {
@@ -69,7 +73,7 @@ class Tile extends Component {
     const actions = [<FlatButton label="Close" onClick={this.handleClose} />]
 
     let specificTile
-    let specificSettings
+    let specificInterfaceSettings
     if (
       value.__typename === "BooleanValue" &&
       value.permission === "READ_ONLY"
@@ -93,12 +97,12 @@ class Tile extends Component {
           disabled={value.permission === "READ_ONLY"}
         />
       )
-      specificSettings = (
+      specificInterfaceSettings = (
         <div style={listStyles.root}>
           <List style={{ width: "100%" }}>
-            <Subheader>Controls</Subheader>
+            <Subheader>Visualization</Subheader>
             <ListItem
-              primaryText="Default control"
+              primaryText="Default visualization"
               secondaryText="Choose how the data is visualized"
             >
               <DropDownMenu
@@ -122,7 +126,7 @@ class Tile extends Component {
       value.permission === "READ_ONLY"
     ) {
       specificTile = <ReadOnlyFloatTile value={value.floatValue} />
-      specificSettings = (
+      specificInterfaceSettings = (
         <div style={listStyles.root}>
           <List style={{ width: "100%" }}>
             <Subheader>Controls</Subheader>
@@ -248,7 +252,7 @@ class Tile extends Component {
                 marginBottom: "13px",
               }}
             >
-              <i class="material-icons">fullscreen</i>
+              <i className="material-icons">fullscreen</i>
             </IconButton>
             <IconMenu
               style={{
@@ -267,7 +271,7 @@ class Tile extends Component {
                   }}
                   tooltip="More"
                 >
-                  <i class="material-icons">more_vert</i>
+                  <i className="material-icons">more_vert</i>
                 </IconButton>
               }
               anchorOrigin={{ horizontal: "right", vertical: "top" }}
@@ -309,7 +313,6 @@ class Tile extends Component {
         </div>
         {specificTile}
         <Dialog
-          title={valueTitle + " - Settings"}
           actions={actions}
           modal={false}
           open={this.state.open}
@@ -318,7 +321,39 @@ class Tile extends Component {
           contentStyle={{ width: "520px" }}
           bodyStyle={{ padding: "0" }}
         >
-          {specificSettings}
+          <Tabs
+            inkBarStyle={{
+              background: "ff4081 ",
+              height: "3px",
+              marginTop: "-3px",
+            }}
+            onChange={this.handleChange}
+            value={this.state.slideIndex}
+          >
+            <Tab
+              icon={<FontIcon className="material-icons">dashboard</FontIcon>}
+              label="Interface"
+              buttonStyle={{ backgroundColor: "#0057cb" }}
+              value={0}
+            />
+            <Tab
+              icon={<i class="material-icons">import_export</i>}
+              label="Data"
+              buttonStyle={{ backgroundColor: "#0057cb" }}
+              value={1}
+            />
+          </Tabs>
+          <SwipeableViews
+            index={this.state.slideIndex}
+            onChangeIndex={this.handleChange}
+            enableMouseEvents
+            style={{
+              overflowY: "auto",
+              height: "500px",
+            }}
+          >
+            {specificInterfaceSettings}
+          </SwipeableViews>
         </Dialog>
       </Paper>
     )
