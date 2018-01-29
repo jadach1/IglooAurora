@@ -15,6 +15,7 @@ import { graphql } from "react-apollo"
 import TwoFactorDialog from "./settings/Enabled2FA"
 import DeleteAccountDialog from "./settings/DeleteAccount"
 import Snackbar from "material-ui/Snackbar"
+import ChangePasswordDialog from "./settings/ChangePassword"
 
 const styles = {
   headline: {
@@ -36,10 +37,6 @@ const deleteDialogContentStyle = {
   width: "360px",
 }
 
-const passwordDialogContentStyle = {
-  width: "350px",
-}
-
 export default class SettingsDialog extends React.Component {
   state = {
     deleteDialogOpen: false,
@@ -50,7 +47,6 @@ export default class SettingsDialog extends React.Component {
     labelName: "Delete",
     stepIndex: 0,
     slideIndex: 0,
-    pwdSnackOpen: false,
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -115,35 +111,9 @@ export default class SettingsDialog extends React.Component {
     })
   }
 
-  handlePwdSnackOpen = () => {
-    this.setState({
-      pwdSnackOpen: true,
-    })
-  }
-
-  handlePwdSnackClose = () => {
-    this.setState({
-      pwdSnackOpen: false,
-    })
-  }
-
   render() {
     const actions = [
       <FlatButton label="Close" onClick={this.props.closeSettingsDialog} />,
-    ]
-
-    const passwordDialogActions = [
-      <FlatButton
-        label="Never mind"
-        keyboardFocused={true}
-        onClick={this.handlePasswordDialogClose}
-      />,
-      <RaisedButton
-        label="Change"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-        onClick={this.handlePwdSnackOpen}
-      />,
     ]
 
     return (
@@ -273,39 +243,10 @@ export default class SettingsDialog extends React.Component {
             </div>
           </SwipeableViews>
         </Dialog>
-        <Dialog
-          title="Change your password"
-          actions={passwordDialogActions}
-          open={this.state.passwordDialogOpen}
-          contentStyle={passwordDialogContentStyle}
-          onRequestClose={this.handlePasswordDialogClose}
-          className="notSelectable"
-        >
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="Old Password"
-            type="password"
-            style={{ width: "100%" }}
-          />
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="New Password"
-            type="password"
-            style={{ width: "100%" }}
-          />
-        </Dialog>
         <TwoFactorDialog
           isOpen={this.state.twoFactorDialogOpen}
           handleTwoFactorDialogOpen={this.handleTwoFactorDialogOpen}
           handleTwoFactorDialogClose={this.handleTwoFactorDialogClose}
-        />
-        <Snackbar
-          open={this.state.pwdSnackOpen}
-          message="You successfully changed your password"
-          autoHideDuration={4000}
-          onRequestClose={this.handlePwdSnackClose}
         />
         <DeleteAccountDialog
           deleteOpen={this.state.deleteDialogOpen}
@@ -315,6 +256,10 @@ export default class SettingsDialog extends React.Component {
           deleteConfirmed={this.deleteConfirmed}
           closeDeleteConfirmed={this.handleDeleteConfirmedClose}
           closeDelete={this.handleDeleteDialogClose}
+        />
+        <ChangePasswordDialog
+          passwordDialogOpen={this.state.passwordDialogOpen}
+          handlePasswordDialogClose={this.handlePasswordDialogClose}
         />
       </React.Fragment>
     )
