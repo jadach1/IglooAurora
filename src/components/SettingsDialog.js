@@ -204,6 +204,16 @@ export default class SettingsDialog extends React.Component {
                       />
                     }
                   />
+                  <ListItem
+                    primaryText="Receive notifications from hidden devices"
+                    rightToggle={
+                      <Toggle
+                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                        rippleStyle={{ color: "#0083ff" }}
+                      />
+                    }
+                  />
                   <Subheader>Lorem Ipsum</Subheader>
                 </List>
               </div>

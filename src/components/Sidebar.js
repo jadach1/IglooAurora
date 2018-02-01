@@ -62,41 +62,43 @@ class Sidebar extends Component {
     }
 
     return (
-      <div style={{ height: "100%" }}>
-        <List>
-          {user.devices.map(device => (
-            <ListItem
-              className="notSelectable"
-              primaryText={device.customName}
-              style={
-                this.state.selectedItem === device.id
-                  ? { backgroundColor: "#d4d4d4" }
-                  : { backgroundColor: "transparent" }
-              }
-              leftIcon={
-                device.icon ? (
-                  <img
-                    className="deviceIcon"
-                    src={device.icon}
-                    alt="device logo"
-                  />
-                ) : (
-                  <i className="material-icons">lightbulb_outline</i>
-                )
-              }
-              key={device.id}
-              onClick={() => this.listItemClick(device)}
-            />
-          ))}
-        </List>
+      <React.Fragment>
+        <div style={{ height: "100%" }}>
+          <List>
+            {user.devices.map(device => (
+              <ListItem
+                className="notSelectable"
+                primaryText={device.customName}
+                style={
+                  this.state.selectedItem === device.id
+                    ? { backgroundColor: "#d4d4d4" }
+                    : { backgroundColor: "transparent" }
+                }
+                leftIcon={
+                  device.icon ? (
+                    <img
+                      className="deviceIcon"
+                      src={device.icon}
+                      alt="device logo"
+                    />
+                  ) : (
+                    <i className="material-icons">lightbulb_outline</i>
+                  )
+                }
+                key={device.id}
+                onClick={() => this.listItemClick(device)}
+              />
+            ))}
+          </List>
+        </div>
         <FloatingActionButton
           className="notSelectable deviceEditFab"
           backgroundColor="#ff4081"
           style={{ transition: "left 0s linear" }}
         >
-          <i className="material-icons">mode_edit</i>{" "}
+          <i className="material-icons">mode_edit</i>
         </FloatingActionButton>
-      </div>
+      </React.Fragment>
     )
   }
 }

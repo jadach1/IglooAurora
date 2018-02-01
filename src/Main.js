@@ -60,7 +60,6 @@ class Main extends Component {
             )}
           </div>
         </Online>
-
         <Offline key="offlineMainBody">
           <div className="main">
             <div className="invisibleHeader" key="invisibleHeader" />
