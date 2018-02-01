@@ -2,6 +2,7 @@ import React, { Component } from "react"
 import { ChromePicker } from "react-color"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import ColorPicker from "coloreact"
 
 class ReadWriteColourTile extends Component {
   constructor(props) {
@@ -15,6 +16,10 @@ class ReadWriteColourTile extends Component {
   render() {
     return (
       <div className="readWriteColourTile notSelectable">
+        <ColorPicker
+          color="#408fa3"
+          onChange={color => console.log(color.hex)}
+        />
         <ChromePicker
           color={this.state.value}
           disableAlpha={true}
