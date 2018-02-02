@@ -32,32 +32,38 @@ class MainBodyHeader extends Component {
     }
 
     return (
-      <div className="mainBodyHeader notSelectable">
-        {device.icon ? (
-          <img className="deviceIconBig" src={device.icon} alt="device logo" />
-        ) : (
-          <i className="deviceIconBig material-icons">lightbulb_outline</i>
-        )}
-        <p className="title">{device.customName}</p>
-        <IconButton
-          onClick={this.handleOpen}
-          className="mainBodyHeaderIcon"
-          style={{ marginTop: "6px" }}
-          tooltip="Rearrange tiles"
-        >
-          <i className="material-icons">mode_edit</i>
-        </IconButton>
+      <React.Fragment>
+        <div className="mainBodyHeader notSelectable">
+          {device.icon ? (
+            <img
+              className="deviceIconBig"
+              src={device.icon}
+              alt="device logo"
+            />
+          ) : (
+            <i className="deviceIconBig material-icons">lightbulb_outline</i>
+          )}
+          <p className="title">{device.customName}</p>
+          <IconButton
+            onClick={this.handleOpen}
+            className="mainBodyHeaderIcon"
+            style={{ marginTop: "6px" }}
+            tooltip="Rearrange tiles"
+          >
+            <i className="material-icons">mode_edit</i>
+          </IconButton>
+        </div>
         <Dialog
           title="Rearrange tiles"
           actions={actions}
           modal={false}
           open={this.state.open}
           onRequestClose={this.handleClose}
-          className="notSelectable "
+          className="notSelectable"
         >
           [FILL WITH DRAG 'N' DROPPABLE LIST]
         </Dialog>
-      </div>
+      </React.Fragment>
     )
   }
 }
