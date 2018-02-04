@@ -19,6 +19,7 @@
     "react-color": "^2.13.8",
     "react-detect-offline": "^1.0.6",
     "react-dom": "^16.2.0",
+    "react-md": "^1.2.11",
     "react-scripts": "1.0.17",
     "react-swipeable-views": "^0.12.12",
     "subscriptions-transport-ws": "^0.9.4"

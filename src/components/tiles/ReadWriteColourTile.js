@@ -17,15 +17,7 @@ class ReadWriteColourTile extends Component {
     return (
       <div className="readWriteColourTile notSelectable">
         <ColorPicker
-          className="colourPicker"
-          style={{
-            position: "relative",
-            height: "100%",
-            width: "100%",
-            paddingLeft: "1.3em",
-          }}
-          color="#408fa3"
-          onChange={color => console.log("single-example color:", color.hex)}
+          style={{ position: "relative", width: "100%", height: "100%" }}
         />
         {/* <ChromePicker
           color={this.state.value}

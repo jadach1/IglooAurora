@@ -22,7 +22,6 @@ class ReadOnlyBooleanTile extends Component {
   render() {
     return (
       <div className="readWriteBoundedFloatTile notSelectable">
-        Replace with gauge
         <div className="min">{this.props.min}</div>
         <Slider
           min={this.props.min}
