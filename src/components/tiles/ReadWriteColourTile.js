@@ -17,9 +17,30 @@ class ReadWriteColourTile extends Component {
     return (
       <div className="readWriteColourTile notSelectable">
         <ColorPicker
-          style={{ position: "relative", width: "100%", height: "100%" }}
+          style={{ position: "relative" }}
+          className="colorPicker"
+          color={this.state.value}
+          onChange={({ hex }) => this.setState({ value: hex })}
+          onComplete={({ hex }) => {
+            this.props.mutate({
+              variables: {
+                id: this.props.id,
+                value: hex,
+              },
+              optimisticResponse: {
+                __typename: "Mutation",
+                colourValue: {
+                  __typename: "ColourValue",
+                  id: this.props.id,
+                  value: hex,
+                },
+              },
+            })
+          }}
         />
-        {/* <ChromePicker
+        {/* 
+        OLD COLOR PICKER, KEEPING AS POSSIBLE ADVANCED VIEW
+        <ChromePicker
           color={this.state.value}
           disableAlpha={true}
           className="colourPicker"
