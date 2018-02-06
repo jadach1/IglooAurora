@@ -90,15 +90,15 @@
 
 .readWriteColourTile {
   display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 20px 1fr 0;
+  grid-template-rows: 20px 1fr 0;
   grid-template-areas: ". . ." ". picker ." ". . .";
   vertical-align: middle;
   line-height: 100%;
 }
 
-.wide .readWriteColourTile {
-  grid-template-columns: 1fr 1fr 1fr;
+.readWriteColourTile .colorPicker {
+  grid-area: picker;
 }
 
 .readWriteColourTile .colourPicker {

@@ -94,7 +94,10 @@ class Sidebar extends Component {
         <FloatingActionButton
           className="notSelectable deviceEditFab"
           backgroundColor="#ff4081"
-          style={{ transition: "left 0s linear" }}
+          style={{
+            transition:
+              "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+          }}
         >
           <i className="material-icons">mode_edit</i>
         </FloatingActionButton>
