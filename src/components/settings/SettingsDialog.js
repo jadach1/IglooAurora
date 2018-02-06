@@ -11,11 +11,11 @@ import Subheader from "material-ui/Subheader"
 import Divider from "material-ui/Divider"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import SwipeableViews from "react-swipeable-views"
-import { graphql } from "react-apollo"
-import TwoFactorDialog from "./settings/Enabled2FA"
-import DeleteAccountDialog from "./settings/DeleteAccount"
 import Snackbar from "material-ui/Snackbar"
-import ChangePasswordDialog from "./settings/ChangePassword"
+import { graphql } from "react-apollo"
+import TwoFactorDialog from "./Enabled2FA"
+import DeleteAccountDialog from "./DeleteAccount"
+import ChangePasswordDialog from "./ChangePassword"
 
 const styles = {
   headline: {
@@ -100,7 +100,7 @@ export default class SettingsDialog extends React.Component {
 
   secondsTimer = () => {
     this.setState(({ timer }) => {
-      if (timer > 1) {
+      if (timer > 1 && this.state.deleteDialogOpen) {
         setTimeout(this.secondsTimer, 1000)
       }
 
