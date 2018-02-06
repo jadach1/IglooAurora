@@ -15,6 +15,7 @@ import Snackbar from "material-ui/Snackbar"
 import { graphql } from "react-apollo"
 import TwoFactorDialog from "./Enabled2FA"
 import DeleteAccountDialog from "./DeleteAccount"
+import ChangeEmailDialog from "./ChangeEmail"
 import ChangePasswordDialog from "./ChangePassword"
 
 const styles = {
@@ -41,12 +42,14 @@ export default class SettingsDialog extends React.Component {
   state = {
     deleteDialogOpen: false,
     passwordDialogOpen: false,
+    emailDialogOpen: false,
     deleteConfirmedDialogOpen: false,
     isDeleteDisabled: true,
     timer: 5,
     labelName: "Delete",
     stepIndex: 0,
     slideIndex: 0,
+    showHidden: false,
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -55,6 +58,14 @@ export default class SettingsDialog extends React.Component {
 
   handleTwoFactorDialogClose = () => {
     this.setState({ twoFactorDialogOpen: false })
+  }
+
+  handleEmailDialogOpen = () => {
+    this.setState({ emailDialogOpen: true })
+  }
+
+  handleEmailDialogClose = () => {
+    this.setState({ emailDialogOpen: false })
   }
 
   handleDeleteDialogOpen = () => {
@@ -181,6 +192,9 @@ export default class SettingsDialog extends React.Component {
                       />
                     }
                   />
+                  <Divider />
+                  <Subheader>Localization</Subheader>
+                  <ListItem primaryText="Change language" />
                 </List>
               </div>
             </div>
@@ -193,6 +207,16 @@ export default class SettingsDialog extends React.Component {
               <div style={listStyles.root}>
                 <List style={{ width: "100%" }}>
                   <Subheader>Lorem Ipsum</Subheader>
+                  <ListItem
+                    primaryText="Enable desktop notifications"
+                    rightToggle={
+                      <Toggle
+                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                        rippleStyle={{ color: "#0083ff" }}
+                      />
+                    }
+                  />
                   <ListItem
                     primaryText="Quiet mode"
                     secondaryText="Mute all notifications"
@@ -227,6 +251,10 @@ export default class SettingsDialog extends React.Component {
               <List>
                 <Subheader>Authentication</Subheader>
                 <ListItem
+                  primaryText="Change email"
+                  onClick={this.handleEmailDialogOpen}
+                />
+                <ListItem
                   primaryText="Change password"
                   onClick={this.handlePasswordDialogOpen}
                 />
@@ -241,6 +269,12 @@ export default class SettingsDialog extends React.Component {
                       onToggle={this.handleTwoFactorDialogOpen}
                     />
                   }
+                />
+                <Divider />
+                <Subheader>Lorem Ipsum</Subheader>
+                <ListItem
+                  primaryText="Manage authorization"
+                  secondaryText="Lorem Ipsum"
                 />
                 <Divider />
                 <Subheader>Account management</Subheader>
@@ -270,6 +304,9 @@ export default class SettingsDialog extends React.Component {
         <ChangePasswordDialog
           passwordDialogOpen={this.state.passwordDialogOpen}
           handlePasswordDialogClose={this.handlePasswordDialogClose}
+        />
+        <ChangeEmailDialog
+          confirmationDialogOpen={this.state.emailDialogOpen}
         />
       </React.Fragment>
     )
