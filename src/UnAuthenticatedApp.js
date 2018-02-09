@@ -41,14 +41,14 @@ class UnAuthenticatedApp extends Component {
                 alt="igloo logo"
                 src="/assets/logo.svg"
                 width="400"
-                height="400"
+                height="300"
                 className="logo notSelectable"
               />
               <b>
-                <font size="12">Igloo Cloud Remote</font>
+                <font className="leftSideIgloo">IGLOO</font>
+                <br />
+                <font className="leftSideCloudRemote">Cloud Remote</font>
               </b>
-              <br />
-              [SLOGAN]
             </div>
             {this.state.ui === "logIn" ? (
               <Login

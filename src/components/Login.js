@@ -95,6 +95,9 @@ class Login extends Component {
         />
         <br />
         <br />
+        <div style={{ textAlign: "right" }}>
+          <font className="loginForgotPassoword">Forgot password?</font>
+        </div>
         <br />
         <RaisedButton
           label="Log in"

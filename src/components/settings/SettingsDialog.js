@@ -273,7 +273,7 @@ export default class SettingsDialog extends React.Component {
                 <Divider />
                 <Subheader>Lorem Ipsum</Subheader>
                 <ListItem
-                  primaryText="Manage authorization"
+                  primaryText="Manage authorizations"
                   secondaryText="Lorem Ipsum"
                 />
                 <Divider />
@@ -307,6 +307,7 @@ export default class SettingsDialog extends React.Component {
         />
         <ChangeEmailDialog
           confirmationDialogOpen={this.state.emailDialogOpen}
+          handleEmailDialogClose={this.handleEmailDialogClose}
         />
       </React.Fragment>
     )
