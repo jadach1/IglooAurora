@@ -30,11 +30,11 @@ class SidebarHeader extends Component {
       <React.Fragment>
         <div className="sidebarHeader">
           <img
-            alt="igloo logo"
+            alt="Igloo Logo"
             src="/assets/logo.svg"
             width="60px"
             height="60px"
-            className="logo notSelectable"
+            className="miniLogo notSelectable"
           />
           <div className="rightSide notSelectable">
             <IconButton

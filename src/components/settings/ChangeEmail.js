@@ -15,11 +15,20 @@ export default class ChangeMailDialog extends React.Component {
     mailDialogOpen: false,
   }
 
+  openMailDialog = () => {
+    this.setState({ mailDialogOpen: true })
+    this.props.handleEmailDialogClose()
+  }
+
+  closeMailDialog = () => {
+    this.setState({ mailDialogOpen: false })
+  }
+
   handleMailSnackOpen = () => {
     this.setState({
       mailSnackOpen: true,
     })
-    this.props.handleMailDialogClose()
+    this.closeMailDialog()
   }
 
   handleMailSnackClose = () => {
@@ -33,24 +42,26 @@ export default class ChangeMailDialog extends React.Component {
       <FlatButton
         label="Never mind"
         keyboardFocused={true}
-        onClick={this.props.handlePasswordDialogClose}
+        onClick={this.props.handleEmailDialogClose}
       />,
       <RaisedButton
         label="Continue"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
+        onClick={this.openMailDialog}
       />,
     ]
     const mailDialogActions = [
       <FlatButton
         label="Never mind"
         keyboardFocused={true}
-        onClick={this.props.handlePasswordDialogClose}
+        onClick={this.closeMailDialog}
       />,
       <RaisedButton
         label="Change"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
+        onClick={this.handleMailSnackOpen}
       />,
     ]
 
@@ -61,7 +72,7 @@ export default class ChangeMailDialog extends React.Component {
           actions={confirmationDialogActions}
           open={this.props.confirmationDialogOpen}
           contentStyle={mailDialogContentStyle}
-          onRequestClose={this.props.handleMailDialogClose}
+          onRequestClose={this.props.handleEmailDialogClose}
           className="notSelectable"
         >
           <TextField
@@ -77,7 +88,7 @@ export default class ChangeMailDialog extends React.Component {
           actions={mailDialogActions}
           open={this.state.mailDialogOpen}
           contentStyle={mailDialogContentStyle}
-          onRequestClose={this.props.handleMailDialogClose}
+          onRequestClose={this.closeMailDialog}
           className="notSelectable"
         >
           <TextField
