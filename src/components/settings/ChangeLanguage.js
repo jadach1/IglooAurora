@@ -79,7 +79,7 @@ export default class ChangeLanguageDialog extends React.Component {
           actions={languageDialogActions}
           open={this.props.languageDialogOpen}
           contentStyle={languageDialogContentStyle}
-          bodyStyle={{ padding: "8px" }}
+          bodyStyle={{ paddingLeft: "8px", paddingRight: "8px" }}
           onRequestClose={this.props.handleLanguageDialogClose}
           className="notSelectable"
         >
