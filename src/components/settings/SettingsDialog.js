@@ -17,6 +17,7 @@ import TwoFactorDialog from "./Enabled2FA"
 import DeleteAccountDialog from "./DeleteAccount"
 import ChangeEmailDialog from "./ChangeEmail"
 import ChangePasswordDialog from "./ChangePassword"
+import ChangeLanguageDialog from "./ChangeLanguage"
 
 const styles = {
   headline: {
@@ -101,6 +102,14 @@ export default class SettingsDialog extends React.Component {
 
   handleDeleteConfirmedClose = () => {
     this.setState({ deleteConfirmedDialogOpen: false })
+  }
+
+  handleLanguageDialogOpen = () => {
+    this.setState({ languageDialogOpen: true })
+  }
+
+  handleLanguageDialogClose = () => {
+    this.setState({ languageDialogOpen: false })
   }
 
   handleChange = value => {
@@ -194,7 +203,10 @@ export default class SettingsDialog extends React.Component {
                   />
                   <Divider />
                   <Subheader>Localization</Subheader>
-                  <ListItem primaryText="Change language" />
+                  <ListItem
+                    primaryText="Change language"
+                    onClick={this.handleLanguageDialogOpen}
+                  />
                 </List>
               </div>
             </div>
@@ -308,6 +320,10 @@ export default class SettingsDialog extends React.Component {
         <ChangeEmailDialog
           confirmationDialogOpen={this.state.emailDialogOpen}
           handleEmailDialogClose={this.handleEmailDialogClose}
+        />
+        <ChangeLanguageDialog
+          handleLanguageDialogClose={this.handleLanguageDialogClose}
+          languageDialogOpen={this.state.languageDialogOpen}
         />
       </React.Fragment>
     )

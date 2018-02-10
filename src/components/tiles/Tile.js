@@ -281,14 +281,6 @@ class Tile extends Component {
     return (
       <React.Fragment>
         <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
-          <FullScreenTile
-            fullScreen={this.state.isTileFullScreen}
-            handleClose={() => {
-              this.setState({ isTileFullScreen: false })
-            }}
-            value={value}
-            specificTile={specificTile}
-          />
           <div className="tileHeader">
             <div className="tileTitle" title={valueTitle}>
               {valueTitle}
@@ -373,6 +365,14 @@ class Tile extends Component {
           data={specificDataSettings}
           isOpen={this.state.open}
           handleClose={this.handleClose}
+        />
+        <FullScreenTile
+          fullScreen={this.state.isTileFullScreen}
+          handleClose={() => {
+            this.setState({ isTileFullScreen: false })
+          }}
+          value={value}
+          specificTile={specificTile}
         />
       </React.Fragment>
     )

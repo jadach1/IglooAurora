@@ -101,7 +101,7 @@ body {
   z-index: 1000;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 15px 40px 15px auto 66px;
+  grid-template-columns: 15px 40px 15px auto 54px;
   grid-template-areas: ". icon . title buttons";
 }
 
@@ -211,7 +211,7 @@ body {
   grid-column: start / end;
   background: transparent;
   z-index: 1;
-  box-shadow: rgba(0, 0, 0, 0.5) 0px 3px 5px;
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 2px 5px;
 }
 
 .goToLogin,
@@ -243,6 +243,27 @@ body {
 .loginForgotPassoword {
   cursor: pointer;
   color: #0083ff;
+}
+
+.notificationsLeftSide {
+  grid-area: leftSide;
+  color: #ffffff;
+}
+
+.notificationsRightSide {
+  grid-area: rightSide;
+  color: #ffffff;
+}
+
+.notificationsTopBar {
+  background: #0083ff;
+  width: 100%;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 6px 48px auto 48px 6px;
+  grid-template-areas: ". leftSide . rightSide .";
 }
 
 @media screen and (max-width: 1050px) {
