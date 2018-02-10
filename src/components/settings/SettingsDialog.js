@@ -220,7 +220,8 @@ export default class SettingsDialog extends React.Component {
                 <List style={{ width: "100%" }}>
                   <Subheader>Lorem Ipsum</Subheader>
                   <ListItem
-                    primaryText="Enable desktop notifications"
+                    primaryText="Quiet mode"
+                    secondaryText="Mute all notifications"
                     rightToggle={
                       <Toggle
                         thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
@@ -230,8 +231,7 @@ export default class SettingsDialog extends React.Component {
                     }
                   />
                   <ListItem
-                    primaryText="Quiet mode"
-                    secondaryText="Mute all notifications"
+                    primaryText="Enable desktop notifications"
                     rightToggle={
                       <Toggle
                         thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
