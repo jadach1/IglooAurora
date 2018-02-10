@@ -139,3 +139,7 @@
 .readWriteBooleanTile .switch {
   grid-area: switch;
 }
+
+.details {
+  opacity: 0.6;
+}
