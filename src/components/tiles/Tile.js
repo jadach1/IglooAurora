@@ -143,7 +143,12 @@ class Tile extends Component {
       !value.boundaries &&
       value.permission === "READ_ONLY"
     ) {
-      specificTile = <ReadOnlyFloatTile value={value.floatValue} />
+      specificTile = (
+        <ReadOnlyFloatTile
+          value={value.floatValue}
+          valueDetails={value.valueDetails}
+        />
+      )
       specificInterfaceSettings = (
         <div style={listStyles.root}>
           <List style={{ width: "100%" }}>
