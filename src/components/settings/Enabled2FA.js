@@ -51,7 +51,7 @@ export default class TwoFactorDialog extends React.Component {
         title="Enable two-factor authentication"
         actions={[
           <FlatButton
-            label="Close"
+            label="Never mind"
             onClick={this.props.handleTwoFactorDialogClose}
           />,
         ]}
@@ -59,6 +59,7 @@ export default class TwoFactorDialog extends React.Component {
         contentStyle={twoFactorDialogContentStyle}
         onRequestClose={this.props.handleTwoFactorDialogClose}
         className="notSelectable"
+        bodyStyle={{ padding: "8px" }}
       >
         <div
           style={{
