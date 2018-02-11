@@ -17,13 +17,14 @@ export default class DeleteAccountDialog extends React.Component {
     const deleteConfimedActions = [
       <FlatButton
         label="Never mind"
-        onClick={this.props.closeDeleteConfirmed}
         keyboardFocused={true}
+        onClick={this.props.closeDelete}
       />,
       <RaisedButton
-        label="Delete"
+        label="Proceed"
         primary={true}
         buttonStyle={{ backgroundColor: "#F44336" }}
+        onClick={this.props.deleteConfirmed}
       />,
     ]
 
@@ -35,7 +36,7 @@ export default class DeleteAccountDialog extends React.Component {
             <FlatButton
               label="Never mind"
               keyboardFocused={true}
-              onClick={this.props.closeDelete}
+              onClick={this.props.closeDeleteConfirmed}
             />,
             <RaisedButton
               label={
@@ -48,12 +49,11 @@ export default class DeleteAccountDialog extends React.Component {
               disabled={this.props.isDeleteDisabled}
               style={{ width: "120px" }}
               disabledLabelColor="#751f19"
-              onClick={this.props.deleteConfirmed}
             />,
           ]}
-          open={this.props.deleteOpen}
+          open={this.props.deleteConfirmedOpen}
           contentStyle={deleteDialogContentStyle}
-          onRequestClose={this.props.closeDelete}
+          onRequestClose={this.props.closeDeleteConfirmed}
           className="notSelectable"
         >
           Be careful, your data will be erased permanently
@@ -61,9 +61,9 @@ export default class DeleteAccountDialog extends React.Component {
         <Dialog
           title="Type your password"
           actions={deleteConfimedActions}
-          open={this.props.deleteConfirmedOpen}
+          open={this.props.deleteOpen}
           contentStyle={passwordDialogContentStyle}
-          onRequestClose={this.props.closeDeleteConfirmed}
+          onRequestClose={this.props.closeDelete}
           className="notSelectable"
         >
           <TextField
@@ -72,6 +72,9 @@ export default class DeleteAccountDialog extends React.Component {
             floatingLabelText="Password"
             type="password"
             style={{ width: "100%" }}
+            onKeyPress={event => {
+              if (event.key === "Enter") this.props.deleteConfirmed()
+            }}
           />
         </Dialog>
       </React.Fragment>

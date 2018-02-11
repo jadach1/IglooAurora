@@ -120,7 +120,7 @@ export default class SettingsDialog extends React.Component {
 
   secondsTimer = () => {
     this.setState(({ timer }) => {
-      if (timer > 1 && this.state.deleteDialogOpen) {
+      if (timer > 1 && this.state.deleteConfirmedDialogOpen) {
         setTimeout(this.secondsTimer, 1000)
       }
 
@@ -189,7 +189,7 @@ export default class SettingsDialog extends React.Component {
             >
               <div style={listStyles.root}>
                 <List style={{ width: "100%" }}>
-                  <Subheader>Controls</Subheader>
+                  <Subheader>Cards</Subheader>
                   <ListItem
                     primaryText="Show advanced options for the color picker"
                     secondaryText="Show RGB, HEX and HSL color codes"
@@ -263,7 +263,8 @@ export default class SettingsDialog extends React.Component {
               <List>
                 <Subheader>Authentication</Subheader>
                 <ListItem
-                  primaryText="Change email"
+                  primaryText="Manage emails"
+                  secondaryText="Add or delete emails you use to log in"
                   onClick={this.handleEmailDialogOpen}
                 />
                 <ListItem

@@ -4,6 +4,7 @@ import FlatButton from "material-ui/FlatButton"
 import TextField from "material-ui/TextField"
 import RaisedButton from "material-ui/RaisedButton"
 import Snackbar from "material-ui/Snackbar"
+import { List, ListItem } from "material-ui/List"
 
 const mailDialogContentStyle = {
   width: "350px",
@@ -41,11 +42,10 @@ export default class ChangeMailDialog extends React.Component {
     const confirmationDialogActions = [
       <FlatButton
         label="Never mind"
-        keyboardFocused={true}
         onClick={this.props.handleEmailDialogClose}
       />,
       <RaisedButton
-        label="Continue"
+        label="Proceed"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
         onClick={this.openMailDialog}
@@ -81,30 +81,23 @@ export default class ChangeMailDialog extends React.Component {
             floatingLabelText="Password"
             type="password"
             style={{ width: "100%" }}
+            onKeyPress={event => {
+              if (event.key === "Enter") this.openMailDialog()
+            }}
           />
         </Dialog>
         <Dialog
-          title="Change your email"
+          title="Manage your emails"
           actions={mailDialogActions}
           open={this.state.mailDialogOpen}
           contentStyle={mailDialogContentStyle}
           onRequestClose={this.closeMailDialog}
           className="notSelectable"
+          bodyStyle={{ padding: "8px" }}
         >
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="Old Password"
-            type="password"
-            style={{ width: "100%" }}
-          />
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="New Password"
-            type="password"
-            style={{ width: "100%" }}
-          />
+          <List>
+            <ListItem primaryText="Email1" />
+          </List>
         </Dialog>
         <Snackbar
           open={this.state.mailSnackOpen}
