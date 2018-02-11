@@ -53,7 +53,7 @@ class MainBodyHeader extends Component {
           </IconButton>
         </div>
         <Dialog
-          title="Rearrange tiles"
+          title="Rearrange cards"
           actions={actions}
           modal={false}
           open={this.state.open}

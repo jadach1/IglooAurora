@@ -31,7 +31,6 @@ export default class ChangePasswordDialog extends React.Component {
     const passwordDialogActions = [
       <FlatButton
         label="Never mind"
-        keyboardFocused={true}
         onClick={this.props.handlePasswordDialogClose}
       />,
       <RaisedButton
@@ -65,6 +64,9 @@ export default class ChangePasswordDialog extends React.Component {
             floatingLabelText="New Password"
             type="password"
             style={{ width: "100%" }}
+            onKeyPress={event => {
+              if (event.key === "Enter") this.handlePwdSnackOpen()
+            }}
           />
         </Dialog>
         <Snackbar
