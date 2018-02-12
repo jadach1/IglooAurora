@@ -33,7 +33,6 @@ export default class NotificationsPopover extends React.Component {
           width: "300px",
           height: "300px",
         }}
-        className="notificationsMenu"
         menutype="notifications"
       >
         <div className="notificationsTopBar notSelectable">
