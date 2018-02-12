@@ -4,10 +4,52 @@ import Menu from "material-ui/Menu"
 import MenuItem from "material-ui/MenuItem"
 import IconButton from "material-ui/IconButton"
 import IconMenu from "material-ui/IconMenu"
-import { each } from "async"
+import CenteredSpinner from "./CenteredSpinner"
+import { List, ListItem } from "material-ui/List"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
-export default class NotificationsPopover extends React.Component {
+class NotificationsPopover extends React.Component {
   render() {
+    const { userData: { loading, error, user } } = this.props
+
+    let notifications = "No notifications"
+
+    if (error) notifications = "Unexpected error bear"
+
+    if (loading) notifications = <CenteredSpinner />
+
+    if (user)
+      notifications = (
+        <List>
+          {user.notifications.map(notification => (
+            <ListItem
+              className="notSelectable"
+              primaryText={
+                <span>
+                  <b>{notification.device.customName}</b>:{" "}
+                  {notification.content}
+                </span>
+              }
+              style={{
+                backgroundColor: "transparent",
+              }}
+              leftIcon={
+                notification.device.icon ? (
+                  <img
+                    className="deviceIcon"
+                    src={notification.device.icon}
+                    alt="device logo"
+                  />
+                ) : (
+                  <i className="material-icons">lightbulb_outline</i>
+                )
+              }
+            />
+          ))}
+        </List>
+      )
+
     return (
       <IconMenu
         iconButtonElement={
@@ -40,15 +82,32 @@ export default class NotificationsPopover extends React.Component {
             <i className="material-icons">clear_all</i>
           </IconButton>
           <IconButton className="notificationsRightSide">
-            <i class="material-icons">notifications_off</i>
+            <i className="material-icons">notifications_off</i>
           </IconButton>
         </div>
-        {this.props.areThereNotifications ? (
-          <Menu />
-        ) : (
-          <div className="notSelectable">No notifications</div>
-        )}
+        <div className="notSelectable">{notifications}</div>
       </IconMenu>
     )
   }
 }
+
+export default graphql(
+  gql`
+    query {
+      user {
+        notifications {
+          id
+          content
+          date
+          visualized
+          device {
+            id
+            icon
+            customName
+          }
+        }
+      }
+    }
+  `,
+  { name: "userData" }
+)(NotificationsPopover)

@@ -287,9 +287,7 @@ class Tile extends Component {
       <React.Fragment>
         <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
           <div className="tileHeader">
-            <div className="tileTitle" title={valueTitle}>
-              {valueTitle}
-            </div>
+            <div className="tileTitle">{valueTitle}</div>
             <div className="tileHeaderButtons notSelectable">
               <IconButton
                 tooltip="Expand"
