@@ -3,17 +3,38 @@ import Popover from "material-ui/Popover"
 import Menu from "material-ui/Menu"
 import MenuItem from "material-ui/MenuItem"
 import IconButton from "material-ui/IconButton"
+import IconMenu from "material-ui/IconMenu"
+import { each } from "async"
 
 export default class NotificationsPopover extends React.Component {
   render() {
     return (
-      <Popover
-        open={this.props.open}
-        anchorEl={this.props.anchorEl}
+      <IconMenu
+        iconButtonElement={
+          <IconButton
+            style={{
+              padding: "0",
+              margin: "0 5px 0 5px",
+              width: "24px",
+              height: "24px",
+            }}
+            onClick={this.handleClick}
+            className="sidebarHeaderButton"
+            tooltip="Notifications"
+          >
+            <i className="material-icons sidebarHeaderIcons">
+              notifications_none
+            </i>
+          </IconButton>
+        }
         anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}
         targetOrigin={{ horizontal: "middle", vertical: "top" }}
-        onRequestClose={this.props.handleRequestClose}
-        style={{ width: "300px", minHeight: "300px" }}
+        menuStyle={{
+          width: "300px",
+          height: "300px",
+        }}
+        className="notificationsMenu"
+        menutype="notifications"
       >
         <div className="notificationsTopBar notSelectable">
           <IconButton className="notificationsLeftSide">
@@ -26,9 +47,9 @@ export default class NotificationsPopover extends React.Component {
         {this.props.areThereNotifications ? (
           <Menu />
         ) : (
-          <div className="notSelectable">Bear looking at phone</div>
+          <div className="notSelectable">No notifications</div>
         )}
-      </Popover>
+      </IconMenu>
     )
   }
 }
