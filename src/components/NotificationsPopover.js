@@ -73,11 +73,11 @@ class NotificationsPopover extends React.Component {
         targetOrigin={{ horizontal: "middle", vertical: "top" }}
         menuStyle={{
           width: "300px",
-          height: "300px",
+          height: "50vh",
         }}
         menutype="notifications"
       >
-        <div className="notificationsTopBar notSelectable">
+        <div className="notificationsTopBar notSelectable invisibleHeader">
           <IconButton className="notificationsLeftSide">
             <i className="material-icons">clear_all</i>
           </IconButton>

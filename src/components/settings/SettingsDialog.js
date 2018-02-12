@@ -12,12 +12,14 @@ import Divider from "material-ui/Divider"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import SwipeableViews from "react-swipeable-views"
 import Snackbar from "material-ui/Snackbar"
-import { graphql } from "react-apollo"
 import TwoFactorDialog from "./Enabled2FA"
 import DeleteAccountDialog from "./DeleteAccount"
 import ChangeEmailDialog from "./ChangeEmail"
 import ChangePasswordDialog from "./ChangePassword"
 import ChangeLanguageDialog from "./ChangeLanguage"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
+import CenteredSpinner from "../CenteredSpinner"
 
 const styles = {
   headline: {
@@ -39,7 +41,7 @@ const deleteDialogContentStyle = {
   width: "360px",
 }
 
-export default class SettingsDialog extends React.Component {
+class SettingsDialog extends React.Component {
   state = {
     deleteDialogOpen: false,
     passwordDialogOpen: false,
@@ -132,6 +134,48 @@ export default class SettingsDialog extends React.Component {
   }
 
   render() {
+    const { userData: { loading, error, user } } = this.props
+
+    let deviceList = "No devices"
+
+    if (error) deviceList = "Unexpected error bear"
+
+    if (loading) deviceList = <CenteredSpinner />
+
+    if (user)
+      deviceList = (
+        <List>
+          {user.devices.map(device => (
+            <ListItem
+              className="notSelectable"
+              primaryText={device.customName}
+              style={{
+                backgroundColor: "transparent",
+              }}
+              leftIcon={
+                device.icon ? (
+                  <img
+                    className="deviceIcon"
+                    src={device.icon}
+                    alt="device logo"
+                  />
+                ) : (
+                  <i className="material-icons">lightbulb_outline</i>
+                )
+              }
+              rightToggle={
+                <Toggle
+                  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                  rippleStyle={{ color: "#0083ff" }}
+                  defaultToggled={true}
+                />
+              }
+            />
+          ))}
+        </List>
+      )
+
     const actions = [
       <FlatButton label="Close" onClick={this.props.closeSettingsDialog} />,
     ]
@@ -241,6 +285,7 @@ export default class SettingsDialog extends React.Component {
                     }
                   />
                   <Subheader>Lorem Ipsum</Subheader>
+                  {deviceList}
                 </List>
               </div>
             </div>
@@ -320,3 +365,18 @@ export default class SettingsDialog extends React.Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    query {
+      user {
+        devices {
+          id
+          customName
+          icon
+        }
+      }
+    }
+  `,
+  { name: "userData" }
+)(SettingsDialog)
