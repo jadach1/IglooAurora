@@ -75,7 +75,7 @@ export default class ChangeLanguageDialog extends React.Component {
     return (
       <React.Fragment>
         <Dialog
-          title="Change your language"
+          title="Change language"
           actions={languageDialogActions}
           open={this.props.languageDialogOpen}
           contentStyle={languageDialogContentStyle}
