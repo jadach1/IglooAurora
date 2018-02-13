@@ -37,17 +37,24 @@ class UnAuthenticatedApp extends Component {
         <div className="loginBackground">
           <Paper className="loginForm">
             <div className="leftSide notSelectable">
+              <br />
+              <br />
               <img
-                alt="igloo logo"
+                alt="Igloo Logo"
                 src="/assets/logo.svg"
-                width="400"
-                height="300"
+                width="300"
                 className="logo notSelectable"
               />
+              <br />
+              <br />
+
               <b>
-                <font className="leftSideIgloo">IGLOO</font>
-                <br />
-                <font className="leftSideCloudRemote">Cloud Remote</font>
+                <img
+                  alt="Igloo"
+                  src="/assets/iglooTitle.svg"
+                  width="300"
+                  className="unauthenticatedTitle notSelectable"
+                />
               </b>
             </div>
             {this.state.ui === "logIn" ? (

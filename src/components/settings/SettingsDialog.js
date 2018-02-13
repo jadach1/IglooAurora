@@ -49,7 +49,6 @@ class SettingsDialog extends React.Component {
     deleteConfirmedDialogOpen: false,
     isDeleteDisabled: true,
     timer: 5,
-    labelName: "Delete",
     stepIndex: 0,
     slideIndex: 0,
     showHidden: false,
@@ -72,18 +71,17 @@ class SettingsDialog extends React.Component {
   }
 
   handleDeleteDialogOpen = () => {
-    setTimeout(this.secondsTimer, 1000)
     this.setState({
       deleteDialogOpen: true,
       isDeleteDisabled: true,
       timer: 5,
-      labelName: "Delete (" + this.state.timer + ")",
     })
   }
 
   deleteConfirmed = () => {
     this.handleDeleteDialogClose()
     this.handleDeleteConfirmedOpen()
+    setTimeout(this.secondsTimer, 1000)
   }
 
   handleDeleteConfirmedOpen = () => {
@@ -320,6 +318,10 @@ class SettingsDialog extends React.Component {
                 />
                 <Divider />
                 <Subheader>Lorem Ipsum</Subheader>
+                <ListItem
+                  primaryText="Manage roles"
+                  secondaryText="Lorem Ipsum"
+                />
                 <ListItem
                   primaryText="Manage authorizations"
                   secondaryText="Lorem Ipsum"
