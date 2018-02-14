@@ -247,7 +247,12 @@ class SettingsDialog extends React.Component {
                   <Subheader>Localization</Subheader>
                   <ListItem
                     primaryText="Change language"
+                    secondaryText="English"
                     onClick={this.handleLanguageDialogOpen}
+                  />
+                  <ListItem
+                    primaryText="Change time zone"
+                    secondaryText="UTC+01:00"
                   />
                 </List>
               </div>
