@@ -17,6 +17,8 @@ import DeleteAccountDialog from "./DeleteAccount"
 import ChangeEmailDialog from "./ChangeEmail"
 import ChangePasswordDialog from "./ChangePassword"
 import ChangeLanguageDialog from "./ChangeLanguage"
+import TimeFormatDialog from "./TimeFormat"
+import TimeZoneDialog from "./TimeZone"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
@@ -110,6 +112,14 @@ class SettingsDialog extends React.Component {
 
   handleLanguageDialogClose = () => {
     this.setState({ languageDialogOpen: false })
+  }
+
+  handleTimeDialogOpen = () => {
+    this.setState({ timeZoneDialogOpen: true })
+  }
+
+  handleTimeDialogClose = () => {
+    this.setState({ timeZoneDialogOpen: false })
   }
 
   handleChange = value => {
@@ -231,19 +241,6 @@ class SettingsDialog extends React.Component {
             >
               <div style={listStyles.root}>
                 <List style={{ width: "100%" }}>
-                  <Subheader>Cards</Subheader>
-                  <ListItem
-                    primaryText="Show advanced options for the color picker"
-                    secondaryText="Show RGB, HEX and HSL color codes"
-                    rightToggle={
-                      <Toggle
-                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                        rippleStyle={{ color: "#0083ff" }}
-                      />
-                    }
-                  />
-                  <Divider />
                   <Subheader>Localization</Subheader>
                   <ListItem
                     primaryText="Change language"
@@ -253,6 +250,11 @@ class SettingsDialog extends React.Component {
                   <ListItem
                     primaryText="Change time zone"
                     secondaryText="UTC+01:00"
+                    onClick={this.handleTimeDialogOpen}
+                  />
+                  <ListItem
+                    primaryText="Change time format"
+                    secondaryText="DD/MM/YYYY, hh:mm:ss"
                   />
                 </List>
               </div>
@@ -367,6 +369,10 @@ class SettingsDialog extends React.Component {
         <ChangeLanguageDialog
           handleLanguageDialogClose={this.handleLanguageDialogClose}
           languageDialogOpen={this.state.languageDialogOpen}
+        />
+        <TimeZoneDialog
+          handleTimeDialogClose={this.handleTimeDialogClose}
+          timeZoneDialogOpen={this.state.timeZoneDialogOpen}
         />
       </React.Fragment>
     )

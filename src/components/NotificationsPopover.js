@@ -12,8 +12,20 @@ import Snackbar from "material-ui/Snackbar"
 
 var moment = require("moment")
 
+let notificationsCounter = 0
+
 class NotificationsPopover extends React.Component {
-  state = { notificationsCounter: 0 }
+  state = { snackOpen: true, notificationsCounter: 0 }
+
+  handleActionClick = () => {
+    this.setState({
+      snackOpen: false,
+    })
+  }
+
+  countNotifications = () => {
+    notificationsCounter++
+  }
 
   render() {
     const { userData: { loading, error, user } } = this.props
@@ -22,7 +34,7 @@ class NotificationsPopover extends React.Component {
 
     let notificationsIcon = "notifications_none"
 
-    let notificationsSnackBar = ""
+    var notificationsSnackBar = new Array()
 
     if (error) notifications = "Unexpected error bear"
 
@@ -36,7 +48,7 @@ class NotificationsPopover extends React.Component {
               className="notSelectable"
               primaryText={
                 <span>
-                  <b>{notification.device.customName}</b>:{" "}
+                  <b>{notification.device.customName}:</b>{" "}
                   {notification.content}
                 </span>
               }
@@ -66,18 +78,15 @@ class NotificationsPopover extends React.Component {
         ? "notifications"
         : "notifications_none"
 
-      notificationsSnackBar = user.notifications.map(notification => (
-        <Snackbar
-          open={true}
-          message={
-            <span>
-              <b>{notification.device.customName}</b>: {notification.content}
-            </span>
-          }
-          autoHideDuration={10000}
-          action="Close"
-        />
-      ))
+      user.notifications.map(notification =>
+        notificationsSnackBar.push(
+          <span>
+            <b>{notification.device.customName}:</b> {notification.content}
+          </span>
+        )
+      )
+
+      notificationsSnackBar.forEach(this.countNotifications)
     }
 
     return (
@@ -119,7 +128,13 @@ class NotificationsPopover extends React.Component {
           </div>
           <div className="notSelectable">{notifications}</div>
         </IconMenu>
-        {notificationsSnackBar}
+        <Snackbar
+          open={this.state.snackOpen}
+          message={notificationsSnackBar[notificationsCounter - 1]}
+          autoHideDuration={10000}
+          action="Close"
+          onActionClick={this.handleActionClick}
+        />{" "}
       </React.Fragment>
     )
   }
