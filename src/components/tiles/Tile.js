@@ -120,7 +120,7 @@ class Tile extends Component {
           <List style={{ width: "100%" }}>
             <Subheader>Visualization</Subheader>
             <ListItem
-              primaryText="Default control"
+              primaryText="Default card"
               secondaryText="Choose how the data is visualized"
             >
               <DropDownMenu
@@ -154,7 +154,7 @@ class Tile extends Component {
           <List style={{ width: "100%" }}>
             <Subheader>Visualization</Subheader>
             <ListItem
-              primaryText="Default control"
+              primaryText="Default card"
               secondaryText="Choose how the data is visualized"
             >
               <DropDownMenu
