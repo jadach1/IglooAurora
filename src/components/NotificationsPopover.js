@@ -1,7 +1,4 @@
 import React from "react"
-import Popover from "material-ui/Popover"
-import Menu from "material-ui/Menu"
-import MenuItem from "material-ui/MenuItem"
 import IconButton from "material-ui/IconButton"
 import IconMenu from "material-ui/IconMenu"
 import CenteredSpinner from "./CenteredSpinner"
@@ -15,8 +12,6 @@ var moment = require("moment")
 let notificationsCounter = 0
 
 class NotificationsPopover extends React.Component {
-  state = { snackOpen: true, notificationsCounter: 0 }
-
   handleActionClick = () => {
     this.setState({
       snackOpen: false,
@@ -34,7 +29,7 @@ class NotificationsPopover extends React.Component {
 
     let notificationsIcon = "notifications_none"
 
-    var notificationsSnackBar = new Array()
+    var notificationsSnackBar = []
 
     if (error) notifications = "Unexpected error bear"
 
@@ -96,7 +91,6 @@ class NotificationsPopover extends React.Component {
             <IconButton
               style={{
                 padding: "0",
-                margin: "0 5px 0 5px",
                 width: "24px",
                 height: "24px",
               }}
@@ -129,12 +123,12 @@ class NotificationsPopover extends React.Component {
           <div className="notSelectable">{notifications}</div>
         </IconMenu>
         <Snackbar
-          open={this.state.snackOpen}
+          open={notificationsSnackBar[notificationsCounter - 1]}
           message={notificationsSnackBar[notificationsCounter - 1]}
           autoHideDuration={10000}
           action="Close"
           onActionClick={this.handleActionClick}
-        />{" "}
+        />
       </React.Fragment>
     )
   }

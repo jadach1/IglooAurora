@@ -1,7 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
 import FlatButton from "material-ui/FlatButton"
-import TextField from "material-ui/TextField"
 import RaisedButton from "material-ui/RaisedButton"
 import { List, ListItem, makeSelectable } from "material-ui/List"
 
