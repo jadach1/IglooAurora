@@ -6,7 +6,10 @@ import RaisedButton from "material-ui/RaisedButton"
 export default class TimeFormatDialog extends React.Component {
   render() {
     const timeFormatActions = [
-      <FlatButton label="Never mind" />,
+      <FlatButton
+        label="Never mind"
+        onClick={this.props.handleTimeFormatDialogClose}
+      />,
       <RaisedButton
         label="Change"
         primary={true}

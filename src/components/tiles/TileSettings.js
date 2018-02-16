@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import Dialog from "material-ui/Dialog"
 import FlatButton from "material-ui/FlatButton"
 import { Tabs, Tab } from "material-ui/Tabs"
@@ -9,7 +9,6 @@ export default class TileSettings extends React.Component {
   state = {
     slideIndex: 0,
     value: 1,
-    slideIndex: 0,
   }
 
   handleChange = value => {

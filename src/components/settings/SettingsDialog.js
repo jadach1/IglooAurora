@@ -1,17 +1,13 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
 import FlatButton from "material-ui/FlatButton"
-import RaisedButton from "material-ui/RaisedButton"
 import { Tabs, Tab } from "material-ui/Tabs"
-import TextField from "material-ui/TextField"
 import FontIcon from "material-ui/FontIcon"
 import Toggle from "material-ui/Toggle"
 import { List, ListItem } from "material-ui/List"
 import Subheader from "material-ui/Subheader"
 import Divider from "material-ui/Divider"
-import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import SwipeableViews from "react-swipeable-views"
-import Snackbar from "material-ui/Snackbar"
 import TwoFactorDialog from "./Enabled2FA"
 import DeleteAccountDialog from "./DeleteAccount"
 import ChangeEmailDialog from "./ChangeEmail"
@@ -23,24 +19,11 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
 
-const styles = {
-  headline: {
-    fontSize: 24,
-    paddingTop: 16,
-    marginBottom: 12,
-    fontWeight: 400,
-  },
-}
-
 const listStyles = {
   root: {
     display: "flex",
     flexWrap: "wrap",
   },
-}
-
-const deleteDialogContentStyle = {
-  width: "360px",
 }
 
 class SettingsDialog extends React.Component {
@@ -54,6 +37,10 @@ class SettingsDialog extends React.Component {
     stepIndex: 0,
     slideIndex: 0,
     showHidden: false,
+    twoFactorDialogOpen: false,
+    languageDialogOpen: false,
+    timeZoneDialogOpen: false,
+    timeFormatDialogOpen: false,
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -120,6 +107,14 @@ class SettingsDialog extends React.Component {
 
   handleTimeDialogClose = () => {
     this.setState({ timeZoneDialogOpen: false })
+  }
+
+  handleTimeFormatDialogOpen = () => {
+    this.setState({ timeFormatDialogOpen: true })
+  }
+
+  handleTimeFormatDialogClose = () => {
+    this.setState({ timeFormatDialogOpen: false })
   }
 
   handleChange = value => {
@@ -255,6 +250,7 @@ class SettingsDialog extends React.Component {
                   <ListItem
                     primaryText="Change time format"
                     secondaryText="DD/MM/YYYY, hh:mm:ss"
+                    onClick={this.handleTimeFormatDialogOpen}
                   />
                 </List>
               </div>
@@ -373,6 +369,10 @@ class SettingsDialog extends React.Component {
         <TimeZoneDialog
           handleTimeDialogClose={this.handleTimeDialogClose}
           timeZoneDialogOpen={this.state.timeZoneDialogOpen}
+        />
+        <TimeFormatDialog
+          handleTimeFormatDialogClose={this.handleTimeFormatDialogClose}
+          timeFormatDialogOpen={this.state.timeFormatDialogOpen}
         />
       </React.Fragment>
     )

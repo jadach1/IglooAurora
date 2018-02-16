@@ -1,7 +1,5 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import Checkbox from "material-ui/Checkbox"
-import { List, ListItem } from "material-ui/List"
 import FlatButton from "material-ui/FlatButton"
 import RaisedButton from "material-ui/RaisedButton"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"

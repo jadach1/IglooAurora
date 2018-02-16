@@ -1,8 +1,5 @@
 import React, { Component } from "react"
 import IconButton from "material-ui/IconButton"
-import Popover from "material-ui/Popover"
-import Menu from "material-ui/Menu"
-import MenuItem from "material-ui/MenuItem"
 import NotificationsPopover from "./NotificationsPopover"
 
 class SidebarHeader extends Component {

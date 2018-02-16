@@ -9,22 +9,15 @@ import ReadOnlyColourTile from "./ReadOnlyColourTile"
 import ReadWriteColourTile from "./ReadWriteColourTile"
 import ReadOnlyFloatTile from "./ReadOnlyFloatTile"
 import FullScreenTile from "./FullScreenTile"
-import Popover from "material-ui/Popover"
-import Menu from "material-ui/Menu"
 import MenuItem from "material-ui/MenuItem"
 import IconMenu from "material-ui/IconMenu"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right"
-import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
 import { List, ListItem } from "material-ui/List"
 import Toggle from "material-ui/Toggle"
 import Subheader from "material-ui/Subheader"
 import DropDownMenu from "material-ui/DropDownMenu"
-import { Tabs, Tab } from "material-ui/Tabs"
-import SwipeableViews from "react-swipeable-views"
-import FontIcon from "material-ui/FontIcon"
 import TileSettings from "./TileSettings"
 
 const listStyles = {
@@ -69,7 +62,6 @@ class Tile extends Component {
   render() {
     const { value } = this.props
     const valueTitle = value.customName
-    const valueHidden = value.relevance === "HIDDEN"
 
     let specificTile
     let specificInterfaceSettings

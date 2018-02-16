@@ -52,11 +52,7 @@ export default class ChangeMailDialog extends React.Component {
       />,
     ]
     const mailDialogActions = [
-      <FlatButton
-        label="Never mind"
-        keyboardFocused={true}
-        onClick={this.closeMailDialog}
-      />,
+      <FlatButton label="Never mind" onClick={this.closeMailDialog} />,
       <RaisedButton
         label="Change"
         primary={true}

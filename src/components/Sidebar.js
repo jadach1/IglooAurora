@@ -41,7 +41,7 @@ class Sidebar extends Component {
   }
 
   listItemClick = device => {
-    if (this.state.selectedItem != device.id) {
+    if (this.state.selectedItem !== device.id) {
       this.props.selectDevice(device.id)
 
       this.setState({ selectedItem: device.id })

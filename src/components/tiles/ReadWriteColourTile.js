@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import { ChromePicker } from "react-color"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import ColorPicker from "coloreact"
