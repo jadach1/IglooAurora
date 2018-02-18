@@ -91,6 +91,7 @@ class NotificationsPopover extends React.Component {
             <IconButton
               style={{
                 padding: "0",
+                marginRight: "4px",
                 width: "24px",
                 height: "24px",
               }}
@@ -126,7 +127,7 @@ class NotificationsPopover extends React.Component {
           open={notificationsSnackBar[notificationsCounter - 1]}
           message={notificationsSnackBar[notificationsCounter - 1]}
           autoHideDuration={10000}
-          action="Close"
+          action="Dismiss"
           onActionClick={this.handleActionClick}
         />
       </React.Fragment>
