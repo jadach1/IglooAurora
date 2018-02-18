@@ -13,7 +13,7 @@ export default class UnitOfMeasumentDialog extends React.Component {
     const unitActions = [
       <FlatButton
         label="Never mind"
-        onClick={this.props.handleTimeDialogClose}
+        onClick={this.props.handleUnitDialogClose}
       />,
       <RaisedButton
         label="Change"
@@ -43,6 +43,13 @@ export default class UnitOfMeasumentDialog extends React.Component {
               marginBottom: 16,
             }}
             onClick={() => this.setState({ menuDisabled: true })}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
           />
           <RadioButton
             value="Imperial"
@@ -51,6 +58,13 @@ export default class UnitOfMeasumentDialog extends React.Component {
             style={{
               marginBottom: 16,
             }}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
           />
         </RadioButtonGroup>
         <br />
@@ -63,6 +77,13 @@ export default class UnitOfMeasumentDialog extends React.Component {
               marginTop: 12,
               marginBottom: 16,
             }}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
           />
           <RadioButton
             value="Fahrenheit"
@@ -70,6 +91,13 @@ export default class UnitOfMeasumentDialog extends React.Component {
             style={{
               marginBottom: 16,
             }}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
           />
         </RadioButtonGroup>
       </Dialog>
