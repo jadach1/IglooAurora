@@ -19,6 +19,7 @@ import Toggle from "material-ui/Toggle"
 import Subheader from "material-ui/Subheader"
 import DropDownMenu from "material-ui/DropDownMenu"
 import TileSettings from "./TileSettings"
+import { PopoverAnimationVertical } from "material-ui/Popover"
 
 const listStyles = {
   root: {
@@ -318,6 +319,7 @@ class Tile extends Component {
                 }
                 anchorOrigin={{ horizontal: "right", vertical: "top" }}
                 targetOrigin={{ horizontal: "right", vertical: "top" }}
+                animation={PopoverAnimationVertical}
               >
                 <MenuItem
                   primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}

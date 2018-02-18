@@ -258,14 +258,26 @@ class SettingsDialog extends React.Component {
                     onClick={this.handleTimeDialogOpen}
                   />
                   <ListItem
-                    primaryText="Change time format"
-                    secondaryText="DD/MM/YYYY, hh:mm:ss"
+                    primaryText="Change date and time format"
+                    secondaryText="DD/MM/YYYY, 24-hour clock"
                     onClick={this.handleTimeFormatDialogOpen}
                   />
                   <ListItem
                     primaryText="Change unit of measurement"
                     secondaryText="SI, Celsius"
                     onClick={this.handleUnitDialogOpen}
+                  />
+                  <Subheader>Accessibility</Subheader>
+                  <ListItem
+                    primaryText="Colorblind mode"
+                    secondaryText="Improve color contrast"
+                    rightToggle={
+                      <Toggle
+                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                        rippleStyle={{ color: "#0083ff" }}
+                      />
+                    }
                   />
                 </List>
               </div>

@@ -22,6 +22,8 @@ class NotificationsPopover extends React.Component {
     notificationsCounter++
   }
 
+  handleNotificationClick = notification => {}
+
   render() {
     const { userData: { loading, error, user } } = this.props
 
@@ -65,6 +67,7 @@ class NotificationsPopover extends React.Component {
                   <i className="material-icons">lightbulb_outline</i>
                 )
               }
+              onClick={this.handleNotificationClick(notification)}
             />
           ))}
         </List>

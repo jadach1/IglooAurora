@@ -45,6 +45,13 @@ export default class TimeZoneDialog extends React.Component {
               marginBottom: 16,
             }}
             onClick={() => this.setState({ menuDisabled: true })}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
           />
           <RadioButton
             value="manual"
@@ -53,6 +60,13 @@ export default class TimeZoneDialog extends React.Component {
             style={{
               marginBottom: 16,
             }}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
           />
         </RadioButtonGroup>
         <DropDownMenu
