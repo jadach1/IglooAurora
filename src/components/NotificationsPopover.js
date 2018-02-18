@@ -109,7 +109,6 @@ class NotificationsPopover extends React.Component {
           menuStyle={{
             width: "300px",
             height: "50vh",
-            minHeight: "350px",
           }}
           menutype="notifications"
         >
