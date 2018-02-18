@@ -15,6 +15,7 @@ import ChangePasswordDialog from "./ChangePassword"
 import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
 import TimeZoneDialog from "./TimeZone"
+import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
@@ -41,6 +42,7 @@ class SettingsDialog extends React.Component {
     languageDialogOpen: false,
     timeZoneDialogOpen: false,
     timeFormatDialogOpen: false,
+    unitDialogOpen: false,
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -115,6 +117,14 @@ class SettingsDialog extends React.Component {
 
   handleTimeFormatDialogClose = () => {
     this.setState({ timeFormatDialogOpen: false })
+  }
+
+  handleUnitDialogOpen = () => {
+    this.setState({ unitDialogOpen: true })
+  }
+
+  handleUnitDialogClose = () => {
+    this.setState({ unitDialogOpen: false })
   }
 
   handleChange = value => {
@@ -252,6 +262,11 @@ class SettingsDialog extends React.Component {
                     secondaryText="DD/MM/YYYY, hh:mm:ss"
                     onClick={this.handleTimeFormatDialogOpen}
                   />
+                  <ListItem
+                    primaryText="Change unit of measurement"
+                    secondaryText="SI, Celsius"
+                    onClick={this.handleUnitDialogOpen}
+                  />
                 </List>
               </div>
             </div>
@@ -373,6 +388,10 @@ class SettingsDialog extends React.Component {
         <TimeFormatDialog
           handleTimeFormatDialogClose={this.handleTimeFormatDialogClose}
           timeFormatDialogOpen={this.state.timeFormatDialogOpen}
+        />
+        <UnitOfMeasumentDialog
+          handleUnitDialogClose={this.handleUnitDialogClose}
+          unitDialogOpen={this.state.unitDialogOpen}
         />
       </React.Fragment>
     )
