@@ -53,6 +53,7 @@ export default class UnitOfMeasumentDialog extends React.Component {
             }}
           />
         </RadioButtonGroup>
+        <br />
         Temperature
         <RadioButtonGroup name="temperature" defaultSelected="auto">
           <RadioButton
