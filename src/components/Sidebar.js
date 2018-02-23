@@ -25,11 +25,39 @@ class Sidebar extends Component {
         if (!subscriptionData.data) {
           return prev
         }
-        console.log(prev)
         const newDevices = [
           ...prev.user.devices,
           subscriptionData.data.deviceCreated,
         ]
+        return {
+          user: {
+            ...prev.user,
+            devices: newDevices,
+          },
+        }
+      },
+    })
+
+    const updateQuery = gql`
+      subscription {
+        deviceUpdated {
+          id
+          customName
+          icon
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: updateQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newDevice = subscriptionData.deviceUpdated
+        const newDevices = prev.user.devices.map(
+          device => (device.id === newDevice.id ? newDevice : device)
+        )
         return {
           user: {
             ...prev.user,

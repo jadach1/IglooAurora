@@ -24,8 +24,83 @@ class NotificationsPopover extends React.Component {
 
   handleNotificationClick = notification => {}
 
+  componentDidMount() {
+    const subscriptionQuery = gql`
+      subscription {
+        notificationCreated {
+          id
+          content
+          date
+          visualized
+          device {
+            id
+            icon
+            customName
+          }
+        }
+      }
+    `
+
+    this.props.notifications.subscribeToMore({
+      document: subscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newNotifications = [
+          ...prev.user.notifications,
+          subscriptionData.data.notificationCreated,
+        ]
+        return {
+          user: {
+            ...prev.user,
+            notifications: newNotifications,
+          },
+        }
+      },
+    })
+
+    const updateQuery = gql`
+      subscription {
+        notificationUpdated {
+          id
+          content
+          date
+          visualized
+          device {
+            id
+            icon
+            customName
+          }
+        }
+      }
+    `
+
+    this.props.notifications.subscribeToMore({
+      document: updateQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newNotification = subscriptionData.notificationUpdated
+        const newNotifications = prev.user.notifications.map(
+          notification =>
+            notification.id === newNotification.id
+              ? newNotification
+              : notification
+        )
+        return {
+          user: {
+            ...prev.user,
+            notifications: newNotifications,
+          },
+        }
+      },
+    })
+  }
+
   render() {
-    const { userData: { loading, error, user } } = this.props
+    const { notifications: { loading, error, user } } = this.props
 
     let notifications = "No notifications"
 
@@ -155,5 +230,5 @@ export default graphql(
       }
     }
   `,
-  { name: "userData" }
+  { name: "notifications" }
 )(NotificationsPopover)
