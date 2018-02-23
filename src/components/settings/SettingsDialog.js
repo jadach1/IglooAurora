@@ -325,9 +325,7 @@ class SettingsDialog extends React.Component {
             >
               <List>
                 <Subheader>Authentication</Subheader>
-                <ListItem
-                  primaryText="Change user name"
-                />
+                <ListItem primaryText="Change user name" />
                 <ListItem
                   primaryText="Manage emails"
                   secondaryText="Add or delete emails you use to log in"
