@@ -115,36 +115,38 @@ class NotificationsPopover extends React.Component {
     if (user) {
       notifications = (
         <List>
-          {user.notifications.map(notification => (
-            <ListItem
-              className="notSelectable"
-              primaryText={
-                <span>
-                  <b>{notification.device.customName}:</b>{" "}
-                  {notification.content}
-                </span>
-              }
-              secondaryText={moment(
-                notification.date.split(".")[0],
-                "YYYY-MM-DDTh:mm:ss"
-              ).fromNow()}
-              style={{
-                backgroundColor: "transparent",
-              }}
-              leftIcon={
-                notification.device.icon ? (
-                  <img
-                    className="deviceIcon"
-                    src={notification.device.icon}
-                    alt="device logo"
-                  />
-                ) : (
-                  <i className="material-icons">lightbulb_outline</i>
-                )
-              }
-              onClick={this.handleNotificationClick(notification)}
-            />
-          ))}
+          {user.notifications
+            .map(notification => (
+              <ListItem
+                className="notSelectable"
+                primaryText={
+                  <span>
+                    <b>{notification.device.customName}:</b>{" "}
+                    {notification.content}
+                  </span>
+                }
+                secondaryText={moment(
+                  notification.date.split(".")[0],
+                  "YYYY-MM-DDTh:mm:ss"
+                ).fromNow()}
+                style={{
+                  backgroundColor: "transparent",
+                }}
+                leftIcon={
+                  notification.device.icon ? (
+                    <img
+                      className="deviceIcon"
+                      src={notification.device.icon}
+                      alt="device logo"
+                    />
+                  ) : (
+                    <i className="material-icons">lightbulb_outline</i>
+                  )
+                }
+                onClick={this.handleNotificationClick(notification)}
+              />
+            ))
+            .reverse()}
         </List>
       )
       notificationsIcon = user.notifications
