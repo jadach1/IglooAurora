@@ -8,6 +8,10 @@ import { List, ListItem } from "material-ui/List"
 import Subheader from "material-ui/Subheader"
 import Divider from "material-ui/Divider"
 import SwipeableViews from "react-swipeable-views"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
+import CenteredSpinner from "../CenteredSpinner"
+import ChangeNameDialog from "./ChangeName"
 import TwoFactorDialog from "./Enabled2FA"
 import DeleteAccountDialog from "./DeleteAccount"
 import ChangeEmailDialog from "./ChangeEmail"
@@ -16,9 +20,6 @@ import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
 import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
-import { graphql } from "react-apollo"
-import gql from "graphql-tag"
-import CenteredSpinner from "../CenteredSpinner"
 
 const listStyles = {
   root: {
@@ -43,6 +44,7 @@ class SettingsDialog extends React.Component {
     timeZoneDialogOpen: false,
     timeFormatDialogOpen: false,
     unitDialogOpen: false,
+    nameDialogOpen: false,
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -125,6 +127,14 @@ class SettingsDialog extends React.Component {
 
   handleUnitDialogClose = () => {
     this.setState({ unitDialogOpen: false })
+  }
+
+  handleNameDialogOpen = () => {
+    this.setState({ nameDialogOpen: true })
+  }
+
+  handleNameDialogClose = () => {
+    this.setState({ nameDialogOpen: false })
   }
 
   handleChange = value => {
@@ -325,7 +335,10 @@ class SettingsDialog extends React.Component {
             >
               <List>
                 <Subheader>Authentication</Subheader>
-                <ListItem primaryText="Change user name" />
+                <ListItem
+                  primaryText="Change user name"
+                  onClick={this.handleNameDialogOpen}
+                />
                 <ListItem
                   primaryText="Manage emails"
                   secondaryText="Add or delete emails you use to log in"
@@ -405,6 +418,10 @@ class SettingsDialog extends React.Component {
         <UnitOfMeasumentDialog
           handleUnitDialogClose={this.handleUnitDialogClose}
           unitDialogOpen={this.state.unitDialogOpen}
+        />
+        <ChangeNameDialog
+          handleNameDialogClose={this.handleNameDialogClose}
+          confirmationDialogOpen={this.state.nameDialogOpen}
         />
       </React.Fragment>
     )
