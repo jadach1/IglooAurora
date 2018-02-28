@@ -6,23 +6,37 @@ import { List, ListItem } from "material-ui/List"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Snackbar from "material-ui/Snackbar"
+import ReactCSSTransitionGroup from "react-addons-css-transition-group"
 
 var moment = require("moment")
 
-let notificationsCounter = 0
+const sleep = time =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve(), time)
+  })
+
+const NOTIFICATION_VIEW_TIME = 1000
 
 class NotificationsPopover extends React.Component {
+  state = {
+    open: false,
+    snackOpen: false,
+    notificationCounter: 0,
+  }
+
   handleActionClick = () => {
     this.setState({
       snackOpen: false,
     })
   }
 
-  countNotifications = () => {
-    notificationsCounter++
-  }
+  loopNotifications = async notification => {
+    await sleep(NOTIFICATION_VIEW_TIME)
 
-  handleNotificationClick = notification => {}
+    this.setState(({ notificationCounter }) => ({
+      notificationCounter: notificationCounter + 1,
+    }))
+  }
 
   componentDidMount() {
     const subscriptionQuery = gql`
@@ -106,7 +120,7 @@ class NotificationsPopover extends React.Component {
 
     let notificationsIcon = "notifications_none"
 
-    var notificationsSnackBar = []
+    let notificationsSnackBar
 
     if (error) notifications = "Unexpected error bear"
 
@@ -115,53 +129,63 @@ class NotificationsPopover extends React.Component {
     if (user) {
       notifications = (
         <List>
-          {user.notifications
-            .map(notification => (
-              <ListItem
-                className="notSelectable"
-                primaryText={
-                  <span>
-                    <b>{notification.device.customName}:</b>{" "}
-                    {notification.content}
-                  </span>
-                }
-                secondaryText={moment(
-                  notification.date.split(".")[0],
-                  "YYYY-MM-DDTh:mm:ss"
-                ).fromNow()}
-                style={{
-                  backgroundColor: "transparent",
-                }}
-                leftIcon={
-                  notification.device.icon ? (
-                    <img
-                      className="deviceIcon"
-                      src={notification.device.icon}
-                      alt="device logo"
-                    />
-                  ) : (
-                    <i className="material-icons">lightbulb_outline</i>
-                  )
-                }
-                onClick={this.handleNotificationClick(notification)}
-              />
-            ))
-            .reverse()}
+          <ReactCSSTransitionGroup
+            transitionName="notification"
+            transitionEnterTimeout={5000}
+            transitionLeaveTimeout={3000}
+          >
+            {user.notifications
+              .map(notification => (
+                <ListItem
+                  className="notSelectable"
+                  primaryText={
+                    <span>
+                      <b>{notification.device.customName}:</b>{" "}
+                      {notification.content}
+                    </span>
+                  }
+                  secondaryText={moment(
+                    notification.date.split(".")[0],
+                    "YYYY-MM-DDTh:mm:ss"
+                  ).fromNow()}
+                  style={{
+                    backgroundColor: "transparent",
+                  }}
+                  leftIcon={
+                    notification.device.icon ? (
+                      <img
+                        className="deviceIcon"
+                        src={notification.device.icon}
+                        alt="device logo"
+                      />
+                    ) : (
+                      <i className="material-icons">lightbulb_outline</i>
+                    )
+                  }
+                  onClick={() => {
+                    this.props.selectDevice(notification.device.id)
+                    this.setState({ open: false })
+                  }}
+                  id={notification.id}
+                />
+              ))
+              .reverse()}
+          </ReactCSSTransitionGroup>
         </List>
       )
       notificationsIcon = user.notifications
         ? "notifications"
         : "notifications_none"
 
-      user.notifications.map(notification =>
-        notificationsSnackBar.push(
+      notificationsSnackBar = user.notifications
+        .filter(notification => !notification.visualized)
+        .map(notification => (
           <span>
             <b>{notification.device.customName}:</b> {notification.content}
           </span>
-        )
-      )
+        ))
 
-      notificationsSnackBar.forEach(this.countNotifications)
+      this.loopNotifications(notificationsSnackBar)
     }
 
     return (
@@ -175,7 +199,7 @@ class NotificationsPopover extends React.Component {
                 width: "24px",
                 height: "24px",
               }}
-              onClick={this.handleClick}
+              onClick={() => this.setState({ open: true })}
               className="sidebarHeaderButton"
               tooltip="Notifications"
             >
@@ -189,8 +213,11 @@ class NotificationsPopover extends React.Component {
           menuStyle={{
             width: "300px",
             height: "50vh",
+            overflowY: "hidden",
           }}
           menutype="notifications"
+          open={this.state.open}
+          onRequestChange={open => this.setState({ open })}
         >
           <div className="notificationsTopBar notSelectable invisibleHeader">
             <IconButton className="notificationsLeftSide">
@@ -200,15 +227,22 @@ class NotificationsPopover extends React.Component {
               <i className="material-icons">notifications_off</i>
             </IconButton>
           </div>
-          <div className="notSelectable">{notifications}</div>
+          <div
+            className="notSelectable"
+            style={{ overflowY: "auto", height: "100%" }}
+          >
+            {notifications}
+          </div>
         </IconMenu>
-        <Snackbar
-          open={notificationsSnackBar[notificationsCounter - 1]}
-          message={notificationsSnackBar[notificationsCounter - 1]}
-          autoHideDuration={10000}
-          action="Dismiss"
-          onActionClick={this.handleActionClick}
-        />
+        {notificationsSnackBar && (
+          <Snackbar
+            open={notificationsSnackBar[this.state.notificationCounter - 1]}
+            message={notificationsSnackBar[this.state.notificationCounter - 1]}
+            autoHideDuration={10000}
+            action="Dismiss"
+            onActionClick={this.handleActionClick}
+          />
+        )}
       </React.Fragment>
     )
   }
