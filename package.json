@@ -17,6 +17,7 @@
     "node-fetch": "^1.7.3",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
+    "react-addons-css-transition-group": "^15.6.2",
     "react-apollo": "^2.0.4",
     "react-color": "^2.13.8",
     "react-detect-offline": "^1.0.6",

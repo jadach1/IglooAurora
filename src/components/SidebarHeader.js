@@ -15,7 +15,7 @@ class SidebarHeader extends Component {
           className="miniLogo notSelectable"
         />
         <div className="rightSide notSelectable">
-          <NotificationsPopover />
+          <NotificationsPopover selectDevice={this.props.selectDevice} />
           <IconButton
             onClick={this.props.openSettingsDialog}
             style={{

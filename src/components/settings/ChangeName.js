@@ -89,7 +89,6 @@ export default class ChangeNameDialog extends React.Component {
           contentStyle={nameDialogContentStyle}
           onRequestClose={this.closeNameDialog}
           className="notSelectable"
-          bodyStyle={{ padding: "8px" }}
         >
           <TextField
             floatingLabelShrinkStyle={{ color: "#0083ff" }}
