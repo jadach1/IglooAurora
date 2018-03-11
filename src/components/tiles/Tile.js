@@ -20,6 +20,7 @@ import Subheader from "material-ui/Subheader"
 import DropDownMenu from "material-ui/DropDownMenu"
 import TileSettings from "./TileSettings"
 import { PopoverAnimationVertical } from "material-ui/Popover"
+import Divider from "material-ui/Divider"
 
 const listStyles = {
   root: {
@@ -320,9 +321,17 @@ class Tile extends Component {
                 anchorOrigin={{ horizontal: "right", vertical: "top" }}
                 targetOrigin={{ horizontal: "right", vertical: "top" }}
                 animation={PopoverAnimationVertical}
+                desktop={true}
               >
                 <MenuItem
                   primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}
+                  leftIcon={
+                    value.relevance === "VISIBLE" ? (
+                      <i class="material-icons">visibility_off</i>
+                    ) : (
+                      <i class="material-icons">visibility</i>
+                    )
+                  }
                   onClick={
                     value.relevance === "VISIBLE"
                       ? updateShown(false)
@@ -332,6 +341,8 @@ class Tile extends Component {
                 <MenuItem
                   primaryText="Resize"
                   rightIcon={<ArrowDropRight />}
+                  animation={PopoverAnimationVertical}
+                  leftIcon={<i class="material-icons">aspect_ratio</i>}
                   menuItems={[
                     <MenuItem
                       primaryText="Small"
@@ -351,7 +362,20 @@ class Tile extends Component {
                     />,
                   ]}
                 />
-                <MenuItem primaryText="Settings" onClick={this.handleOpen} />
+                <MenuItem
+                  primaryText="Settings"
+                  onClick={this.handleOpen}
+                  leftIcon={<i class="material-icons">settings</i>}
+                />
+                <Divider />
+                <MenuItem
+                  primaryText="Rename"
+                  leftIcon={<i class="material-icons">create</i>}
+                />
+                <MenuItem
+                  primaryText="Delete"
+                  leftIcon={<i class="material-icons">delete</i>}
+                />
               </IconMenu>
             </div>
           </div>
