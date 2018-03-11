@@ -15,7 +15,7 @@ const sleep = time =>
     setTimeout(() => resolve(), time)
   })
 
-const NOTIFICATION_VIEW_TIME = 1000
+const NOTIFICATION_VIEW_TIME = 5000
 
 class NotificationsPopover extends React.Component {
   state = {
@@ -238,7 +238,7 @@ class NotificationsPopover extends React.Component {
           <Snackbar
             open={notificationsSnackBar[this.state.notificationCounter - 1]}
             message={notificationsSnackBar[this.state.notificationCounter - 1]}
-            autoHideDuration={10000}
+            autoHideDuration={4000}
             action="Dismiss"
             onActionClick={this.handleActionClick}
           />
