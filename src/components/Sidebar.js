@@ -6,8 +6,6 @@ import CenteredSpinner from "./CenteredSpinner"
 import FloatingActionButton from "material-ui/FloatingActionButton"
 
 class Sidebar extends Component {
-  state = { selectedItem: null }
-
   componentDidMount() {
     const subscriptionQuery = gql`
       subscription {
@@ -69,13 +67,10 @@ class Sidebar extends Component {
   }
 
   listItemClick = device => {
-    if (this.state.selectedItem !== device.id) {
+    if (this.props.selectedDevice !== device.id) {
       this.props.selectDevice(device.id)
-
-      this.setState({ selectedItem: device.id })
     } else {
       this.props.selectDevice(null)
-      this.setState({ selectedItem: null })
     }
   }
 
@@ -98,7 +93,7 @@ class Sidebar extends Component {
                 className="notSelectable"
                 primaryText={device.customName}
                 style={
-                  this.state.selectedItem === device.id
+                  this.props.selectedDevice === device.id
                     ? { backgroundColor: "#d4d4d4" }
                     : { backgroundColor: "transparent" }
                 }

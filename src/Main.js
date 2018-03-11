@@ -44,6 +44,7 @@ class Main extends Component {
             <div className="sidebar" key="sidebar">
               <Sidebar
                 selectDevice={id => this.setState({ selectedDevice: id })}
+                selectedDevice={this.state.selectedDevice}
               />
             </div>
             {this.state.selectedDevice !== null ? (
