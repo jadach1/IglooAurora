@@ -87,6 +87,7 @@ export default class ChangeLanguageDialog extends React.Component {
             <ListItem primaryText="English" value={2} />
             <ListItem primaryText="Español" value={3} />
             <ListItem primaryText="Italiano" value={4} />
+            <ListItem primaryText="中文 (简体)" value={5} />
           </SelectableList>
         </Dialog>
       </React.Fragment>

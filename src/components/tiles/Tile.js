@@ -21,6 +21,7 @@ import DropDownMenu from "material-ui/DropDownMenu"
 import TileSettings from "./TileSettings"
 import { PopoverAnimationVertical } from "material-ui/Popover"
 import Divider from "material-ui/Divider"
+import RenameTileDialog from "./RenameTile"
 
 const listStyles = {
   root: {
@@ -35,6 +36,7 @@ class Tile extends Component {
     open: false,
     value: 1,
     slideIndex: 0,
+    renameTileOpen: false,
   }
 
   handleOpen = () => {
@@ -59,6 +61,10 @@ class Tile extends Component {
     this.setState({
       open: false,
     })
+  }
+
+  handleRenameTileDialogClose = () => {
+    this.setState({ renameTileOpen: false })
   }
 
   render() {
@@ -279,6 +285,11 @@ class Tile extends Component {
 
     return (
       <React.Fragment>
+        <RenameTileDialog
+          renameTileOpen={this.state.renameTileOpen}
+          handleRenameTileDialogClose={this.handleRenameTileDialogClose}
+          tileName={valueTitle}
+        />
         <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
           <div className="tileHeader">
             <div className="tileTitle">{valueTitle}</div>
@@ -371,6 +382,7 @@ class Tile extends Component {
                 <MenuItem
                   primaryText="Rename"
                   leftIcon={<i class="material-icons">create</i>}
+                  onClick={() => this.setState({ renameTileOpen: true })}
                 />
                 <MenuItem
                   primaryText="Delete"
