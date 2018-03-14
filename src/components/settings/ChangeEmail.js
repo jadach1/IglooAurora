@@ -5,6 +5,7 @@ import TextField from "material-ui/TextField"
 import RaisedButton from "material-ui/RaisedButton"
 import Snackbar from "material-ui/Snackbar"
 import { List, ListItem } from "material-ui/List"
+import IconButton from "material-ui/IconButton"
 
 const mailDialogContentStyle = {
   width: "350px",
@@ -52,13 +53,7 @@ export default class ChangeMailDialog extends React.Component {
       />,
     ]
     const mailDialogActions = [
-      <FlatButton label="Never mind" onClick={this.closeMailDialog} />,
-      <RaisedButton
-        label="Change"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-        onClick={this.handleMailSnackOpen}
-      />,
+      <FlatButton label="Close" onClick={this.closeMailDialog} />,
     ]
 
     return (
@@ -92,7 +87,19 @@ export default class ChangeMailDialog extends React.Component {
           bodyStyle={{ padding: "8px" }}
         >
           <List>
-            <ListItem primaryText="Email1" />
+            <ListItem
+              primaryText="showcase@igloo.io"
+              leftIcon={<i class="material-icons">mail_outline</i>}
+              rightIconButton={
+                <IconButton>
+                  <i class="material-icons">delete</i>
+                </IconButton>
+              }
+            />
+            <ListItem
+              primaryText="Add a new email"
+              leftIcon={<i class="material-icons">add</i>}
+            />
           </List>
         </Dialog>
         <Snackbar
