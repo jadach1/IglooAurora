@@ -4,7 +4,7 @@ import RaisedButton from "material-ui/RaisedButton"
 import FlatButton from "material-ui/FlatButton"
 import TextField from "material-ui/TextField"
 
-export default class TimeZoneDialog extends React.Component {
+export default class RenameTileDialog extends React.Component {
   render() {
     const renameTileActions = [
       <FlatButton

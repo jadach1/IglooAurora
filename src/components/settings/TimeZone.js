@@ -12,6 +12,8 @@ export default class TimeZoneDialog extends React.Component {
     menuDisabled: true,
   }
 
+  handleChange = (event, index, value) => this.setState({ value })
+
   render() {
     const timeZoneActions = [
       <FlatButton
@@ -39,7 +41,7 @@ export default class TimeZoneDialog extends React.Component {
         <RadioButtonGroup name="Time Zone" defaultSelected="auto">
           <RadioButton
             value="auto"
-            label="Auto"
+            label="Auto (GMT+01:00)"
             style={{
               marginTop: 12,
               marginBottom: 16,
@@ -73,11 +75,127 @@ export default class TimeZoneDialog extends React.Component {
           value={this.state.value}
           onChange={this.handleChange}
           disabled={this.state.menuDisabled}
+          onChange={this.handleChange}
         >
-          <MenuItem value={1} primaryText="UTC" />
-          <MenuItem value={2} primaryText="UTC+01:00" />
-          <MenuItem value={3} primaryText="UTC+02:00" />
+          <MenuItem value={1} primaryText="(GMT-11:00) Niue" />
+          <MenuItem value={2} primaryText="(GMT-11:00) Pago Pago" />
+          <MenuItem value={3} primaryText="(GMT-10:00) Hawaii Time" />
+          <MenuItem value={4} primaryText="(GMT-10:00) Rarotonga" />
+          <MenuItem value={5} primaryText="(GMT-10:00) Tahiti" />
+          <MenuItem value={6} primaryText="(GMT-09:30) Marquesas" />
+          <MenuItem value={7} primaryText="(GMT-09:00) Gambier" />
+          <MenuItem value={8} primaryText="(GMT-08:00) Alaska Time" />
+          <MenuItem value={9} primaryText="(GMT-08:00) Pitcairn" />
+          <MenuItem
+            value={10}
+            primaryText="(GMT-07:00) Mountain Time - Arizona"
+          />
+          <MenuItem
+            value={11}
+            primaryText="(GMT-07:00) Mountain Time - Chihuahua, Mazatlan"
+          />
+          <MenuItem
+            value={12}
+            primaryText="(GMT-07:00) Mountain Time - Dawson Creek"
+          />
+          <MenuItem
+            value={13}
+            primaryText="(GMT-07:00) Mountain Time - Hermosillo"
+          />
+          <MenuItem value={14} primaryText="(GMT-07:00) Pacific Time" />
+          <MenuItem
+            value={15}
+            primaryText="(GMT-07:00) Pacific Time - Tijuana"
+          />
+          <MenuItem
+            value={16}
+            primaryText="(GMT-07:00) Pacific Time - Vancouver"
+          />
+          <MenuItem
+            value={17}
+            primaryText="(GMT-07:00) Pacific Time - Whitehorse"
+          />
+          <MenuItem value={18} primaryText="(GMT-06:00) Belize" />
+          <MenuItem
+            value={19}
+            primaryText="(GMT-06:00) Central Time - Mexico City"
+          />
+          <MenuItem
+            value={20}
+            primaryText="(GMT-06:00) Central Time - Regina"
+          />
+          <MenuItem
+            value={21}
+            primaryText="(GMT-06:00) Central Time - Tegucigalpa"
+          />
+          <MenuItem value={22} primaryText="(GMT-06:00) Costa Rica" />
+          <MenuItem value={23} primaryText="(GMT-06:00) El Salvador" />
+          <MenuItem value={24} primaryText="(GMT-06:00) Galapagos" />
+          <MenuItem value={25} primaryText="(GMT-06:00) Guatemala" />
+          <MenuItem value={26} primaryText="(GMT-06:00) Managua" />
+          <MenuItem value={27} primaryText="(GMT-06:00) Mountain Time" />
+          <MenuItem
+            value={28}
+            primaryText="(GMT-06:00) Mountain Time - Edmonton"
+          />
+          <MenuItem
+            value={29}
+            primaryText="(GMT-06:00) Mountain Time - Yellowknife"
+          />
+          <MenuItem value={30} primaryText="(GMT-05:00) America Cancun" />
+          <MenuItem value={31} primaryText="(GMT-05:00) Bogota" />
+          <MenuItem value={32} primaryText="(GMT-05:00) Central Time" />
+          <MenuItem
+            value={32}
+            primaryText="(GMT-05:00) Central Time - Winnipeg"
+          />
+          <MenuItem value={33} primaryText="(GMT-05:00) Easter Island" />
+          <MenuItem value={34} primaryText="(GMT-05:00) Guayaquil" />
+          <MenuItem value={34} primaryText="(GMT-05:00) Jamaica" />
+          <MenuItem value={35} primaryText="(GMT-05:00) Lima" />
+          <MenuItem value={36} primaryText="(GMT-05:00) Panama" />
+          <MenuItem value={37} primaryText="(GMT-05:00) Rio Branco" />
+          <MenuItem value={38} primaryText="(GMT-04:00) Barbados" />
+          <MenuItem value={39} primaryText="(GMT-04:00) Boa Vista" />
+          <MenuItem value={40} primaryText="(GMT-04:00) Campo Grande" />
+          <MenuItem value={41} primaryText="(GMT-04:00) Caracas" />
+          <MenuItem value={42} primaryText="(GMT-04:00) Cuiaba" />
+          <MenuItem value={43} primaryText="(GMT-04:00) Curacao" />
+          <MenuItem value={44} primaryText="(GMT-04:00) Eastern Time" />
+          <MenuItem
+            value={45}
+            primaryText="(GMT-04:00) Eastern Time - Iqaluit"
+          />
+          <MenuItem
+            value={46}
+            primaryText="(GMT-04:00) Eastern Time - Toronto"
+          />
+          <MenuItem value={47} primaryText="(GMT-04:00) Grand Turk" />
+          <MenuItem value={48} primaryText="(GMT-04:00) Guyana" />
+          <MenuItem value={49} primaryText="(GMT-04:00) Havana" />
+          <MenuItem value={50} primaryText="(GMT-04:00) La Paz" />
+          <MenuItem value={51} primaryText="(GMT-04:00) Manaus" />
+          <MenuItem value={52} primaryText="(GMT-04:00) Martinique" />
+          <MenuItem value={53} primaryText="(GMT-04:00) Nassau" />
+          <MenuItem value={54} primaryText="(GMT-04:00) Port of Spain" />
+          <MenuItem value={55} primaryText="(GMT-04:00) Port-au-Prince" />
+          <MenuItem value={56} primaryText="(GMT-04:00) Porto Velho" />
+          <MenuItem value={57} primaryText="(GMT-04:00) Puerto Rico" />
+          <MenuItem value={58} primaryText="(GMT-04:00) Santo Domingo" />
+          <MenuItem value={59} primaryText="(GMT-03:00) Araguaina" />
+          <MenuItem value={60} primaryText="(GMT-03:00) Asuncion" />
+          <MenuItem
+            value={61}
+            primaryText="(GMT-03:00) Atlantic Time - Halifax"
+          />
+          <MenuItem value={62} primaryText="(GMT-03:00) Belem" />
+          <MenuItem value={63} primaryText="(GMT-03:00) Bermuda" />
+          <MenuItem value={64} primaryText="(GMT-03:00) Buenos Aires" />
+          <MenuItem value={65} primaryText="(GMT-03:00) Cayenne" />
+          <MenuItem value={66} primaryText="(GMT-03:00) Fortaleza" />
+          <MenuItem value={67} primaryText="(GMT-03:00) Godthab" />
         </DropDownMenu>
+        <br />
       </Dialog>
     )
   }

@@ -22,6 +22,7 @@ import TileSettings from "./TileSettings"
 import { PopoverAnimationVertical } from "material-ui/Popover"
 import Divider from "material-ui/Divider"
 import RenameTileDialog from "./RenameTile"
+import DeleteTileDialog from "./DeleteTile"
 
 const listStyles = {
   root: {
@@ -34,9 +35,9 @@ class Tile extends Component {
   state = {
     isTileFullScreen: false,
     open: false,
-    value: 1,
     slideIndex: 0,
     renameTileOpen: false,
+    deleteTileOpen: false,
   }
 
   handleOpen = () => {
@@ -65,6 +66,14 @@ class Tile extends Component {
 
   handleRenameTileDialogClose = () => {
     this.setState({ renameTileOpen: false })
+  }
+
+  handleDeleteTileDialogClose = () => {
+    this.setState({ deleteTileOpen: false })
+  }
+
+  deleteClick = () => {
+    this.setState({ deleteTileOpen: true })
   }
 
   render() {
@@ -116,27 +125,17 @@ class Tile extends Component {
         />
       )
       specificInterfaceSettings = (
-        <div style={listStyles.root}>
-          <List style={{ width: "100%" }}>
-            <Subheader>Visualization</Subheader>
-            <ListItem
-              primaryText="Default card"
-              secondaryText="Choose how the data is visualized"
-            >
-              <DropDownMenu
-                value={this.state.value}
-                onChange={this.handleChange}
-                style={{
-                  width: "150px",
-                }}
-              >
-                <MenuItem value={1} primaryText="Number" />
-                <MenuItem value={2} primaryText="Gauge" />
-                <MenuItem value={3} primaryText="Graph" />
-              </DropDownMenu>
-            </ListItem>
-          </List>
-        </div>
+        <React.Fragment>
+          <div style={listStyles.root}>
+            <List style={{ width: "100%" }}>
+              <Subheader>Visualization</Subheader>
+              <ListItem
+                primaryText="Choose how the data is visualized"
+                secondaryText="Number"
+              />
+            </List>
+          </div>
+        </React.Fragment>
       )
     } else if (
       value.__typename === "FloatValue" &&
@@ -154,20 +153,9 @@ class Tile extends Component {
           <List style={{ width: "100%" }}>
             <Subheader>Visualization</Subheader>
             <ListItem
-              primaryText="Default card"
-              secondaryText="Choose how the data is visualized"
-            >
-              <DropDownMenu
-                value={this.state.value}
-                onChange={this.handleChange}
-                style={{
-                  width: "150px",
-                }}
-              >
-                <MenuItem value={1} primaryText="Number" />
-                <MenuItem value={2} primaryText="Graph" />
-              </DropDownMenu>
-            </ListItem>
+              primaryText="Choose how the data is visualized"
+              secondaryText="Number"
+            />
           </List>
         </div>
       )
@@ -290,6 +278,13 @@ class Tile extends Component {
           handleRenameTileDialogClose={this.handleRenameTileDialogClose}
           tileName={valueTitle}
         />
+        <DeleteTileDialog
+          deleteTileOpen={this.state.deleteTileOpen}
+          handleDeleteTileDialogClose={this.handleDeleteTileDialogClose}
+          tileName={valueTitle}
+          timer={this.state.timer}
+          isDeleteDisabled={this.state.isDeleteDisabled}
+        />
         <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
           <div className="tileHeader">
             <div className="tileTitle">{valueTitle}</div>
@@ -387,6 +382,8 @@ class Tile extends Component {
                 <MenuItem
                   primaryText="Delete"
                   leftIcon={<i class="material-icons">delete</i>}
+                  innerDivStyle={{ color: "#f44336" }}
+                  onClick={this.deleteClick}
                 />
               </IconMenu>
             </div>
