@@ -264,23 +264,11 @@ class SettingsDialog extends React.Component {
                   />
                   <ListItem
                     primaryText="Change time zone"
-                    secondaryText="UTC+01:00"
+                    secondaryText="Auto (GMT+01:00)"
                     onClick={this.handleTimeDialogOpen}
                   />
                   <ListItem
-                    primaryText="Change date and time format"
-                    secondaryText="DD/MM/YYYY, 24-hour clock"
-                    onClick={this.handleTimeFormatDialogOpen}
-                  />
-                  <ListItem
-                    primaryText="Change unit of measurement"
-                    secondaryText="SI, Celsius"
-                    onClick={this.handleUnitDialogOpen}
-                  />
-                  <Subheader>Accessibility</Subheader>
-                  <ListItem
-                    primaryText="Colorblind mode"
-                    secondaryText="Improve color contrast"
+                    primaryText="Adjust for daylight saving time"
                     rightToggle={
                       <Toggle
                         thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
@@ -288,6 +276,16 @@ class SettingsDialog extends React.Component {
                         rippleStyle={{ color: "#0083ff" }}
                       />
                     }
+                  />
+                  <ListItem
+                    primaryText="Change date and time format"
+                    secondaryText="DD/MM/YYYY, 24-hour clock"
+                    onClick={this.handleTimeFormatDialogOpen}
+                  />
+                  <ListItem
+                    primaryText="Change units of measurement"
+                    secondaryText="SI, Celsius"
+                    onClick={this.handleUnitDialogOpen}
                   />
                 </List>
               </div>
