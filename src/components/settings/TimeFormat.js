@@ -8,13 +8,8 @@ export default class TimeFormatDialog extends React.Component {
   render() {
     const timeFormatActions = [
       <FlatButton
-        label="Never mind"
+        label="Close"
         onClick={this.props.handleTimeFormatDialogClose}
-      />,
-      <RaisedButton
-        label="Change"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
       />,
     ]
 
@@ -27,6 +22,9 @@ export default class TimeFormatDialog extends React.Component {
         className="notSelectable"
         contentStyle={{
           width: "350px",
+        }}
+        bodyStyle={{
+          paddingBottom: "0px",
         }}
       >
         Date
