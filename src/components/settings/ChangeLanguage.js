@@ -60,14 +60,8 @@ export default class ChangeLanguageDialog extends React.Component {
   render() {
     const languageDialogActions = [
       <FlatButton
-        label="Never mind"
+        label="Close"
         onClick={this.props.handleLanguageDialogClose}
-      />,
-      <RaisedButton
-        label="Change"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-        onClick={this.handleLanguageSnackOpen}
       />,
     ]
 
@@ -78,11 +72,15 @@ export default class ChangeLanguageDialog extends React.Component {
           actions={languageDialogActions}
           open={this.props.languageDialogOpen}
           contentStyle={languageDialogContentStyle}
-          bodyStyle={{ paddingLeft: "8px", paddingRight: "8px" }}
+          bodyStyle={{
+            paddingLeft: "8px",
+            paddingRight: "8px",
+            paddingBottom: "0px",
+          }}
           onRequestClose={this.props.handleLanguageDialogClose}
           className="notSelectable"
         >
-          <SelectableList defaultValue={2}>
+          <SelectableList defaultValue={2} style={{ paddingBottom: "0px" }}>
             <ListItem primaryText="Deutsch" value={1} />
             <ListItem primaryText="English" value={2} />
             <ListItem primaryText="Español" value={3} />

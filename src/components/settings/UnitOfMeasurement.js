@@ -11,15 +11,7 @@ export default class UnitOfMeasumentDialog extends React.Component {
 
   render() {
     const unitActions = [
-      <FlatButton
-        label="Never mind"
-        onClick={this.props.handleUnitDialogClose}
-      />,
-      <RaisedButton
-        label="Change"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-      />,
+      <FlatButton label="Close" onClick={this.props.handleUnitDialogClose} />,
     ]
 
     return (
@@ -31,6 +23,9 @@ export default class UnitOfMeasumentDialog extends React.Component {
         className="notSelectable"
         contentStyle={{
           width: "350px",
+        }}
+        bodyStyle={{
+          paddingBottom: "0px",
         }}
       >
         Lenght and mass

@@ -51,7 +51,7 @@ export default class TwoFactorDialog extends React.Component {
         title="Enable two-factor authentication"
         actions={[
           <FlatButton
-            label="Never mind"
+            label="Close"
             onClick={this.props.handleTwoFactorDialogClose}
           />,
         ]}

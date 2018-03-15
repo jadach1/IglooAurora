@@ -16,15 +16,7 @@ export default class TimeZoneDialog extends React.Component {
 
   render() {
     const timeZoneActions = [
-      <FlatButton
-        label="Never mind"
-        onClick={this.props.handleTimeDialogClose}
-      />,
-      <RaisedButton
-        label="Change"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-      />,
+      <FlatButton label="Close" onClick={this.props.handleTimeDialogClose} />,
     ]
 
     return (
@@ -36,6 +28,9 @@ export default class TimeZoneDialog extends React.Component {
         className="notSelectable"
         contentStyle={{
           width: "350px",
+        }}
+        bodyStyle={{
+          paddingBottom: "0px",
         }}
       >
         <RadioButtonGroup name="Time Zone" defaultSelected="auto">
@@ -77,6 +72,9 @@ export default class TimeZoneDialog extends React.Component {
           disabled={this.state.menuDisabled}
           onChange={this.handleChange}
           maxHeight={250}
+          style={{ width: "302px" }}
+          anchorOrigin={{ horizontal: "middle", vertical: "top" }}
+          targetOrigin={{ horizontal: "middle", vertical: "top" }}
         >
           <MenuItem value={1} primaryText="(GMT-11:00) Niue" />
           <MenuItem value={2} primaryText="(GMT-11:00) Pago Pago" />
@@ -159,13 +157,27 @@ export default class TimeZoneDialog extends React.Component {
           <MenuItem value={77} primaryText="(GMT-03:00) Sao Paulo" />
           <MenuItem value={78} primaryText="(GMT-03:00) Stanley" />
           <MenuItem value={79} primaryText="(GMT-03:00) Thule" />
-          <MenuItem value={80} primaryText="(GMT-20:30) St. Johns" />
+          <MenuItem value={80} primaryText="(GMT-02:30) St. Johns" />
           <MenuItem value={81} primaryText="(GMT-02:00) Miquelon" />
           <MenuItem value={82} primaryText="(GMT-02:00) Noronha" />
           <MenuItem value={83} primaryText="(GMT-02:00) South Georgia" />
           <MenuItem value={84} primaryText="(GMT-01:00) Azores" />
           <MenuItem value={85} primaryText="(GMT-01:00) Cape Verde" />
           <MenuItem value={86} primaryText="(GMT-01:00) Scoresbysund" />
+          <MenuItem value={87} primaryText="(GMT+00:00) Abidjan" />
+          <MenuItem value={88} primaryText="(GMT+00:00) Accra" />
+          <MenuItem value={89} primaryText="(GMT+00:00) Bissau" />
+          <MenuItem value={90} primaryText="(GMT+00:00) Canary Islands" />
+          <MenuItem value={91} primaryText="(GMT+00:00) Casablanca" />
+          <MenuItem value={92} primaryText="(GMT+00:00) Danmarkshavn" />
+          <MenuItem value={92} primaryText="(GMT+00:00) Dublin" />
+          <MenuItem value={93} primaryText="(GMT+00:00) El Aaiun" />
+          <MenuItem value={94} primaryText="(GMT+00:00) Faeroe" />
+          <MenuItem value={95} primaryText="(GMT+00:00) Lisbon" />
+          <MenuItem value={96} primaryText="(GMT+00:00) London" />
+          <MenuItem value={97} primaryText="(GMT+00:00) Monrovia" />
+          <MenuItem value={95} primaryText="(GMT+00:00) Reykjavik" />
+          <MenuItem value={96} primaryText="UTC" />
         </DropDownMenu>
         <br />
       </Dialog>

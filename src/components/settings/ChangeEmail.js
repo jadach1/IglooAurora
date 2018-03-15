@@ -84,7 +84,11 @@ export default class ChangeMailDialog extends React.Component {
           contentStyle={mailDialogContentStyle}
           onRequestClose={this.closeMailDialog}
           className="notSelectable"
-          bodyStyle={{ padding: "8px" }}
+          bodyStyle={{
+            paddingLeft: "8px",
+            paddingRight: "8px",
+            paddingBottom: "0px",
+          }}
         >
           <List>
             <ListItem
