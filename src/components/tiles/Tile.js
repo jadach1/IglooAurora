@@ -23,6 +23,8 @@ import { PopoverAnimationVertical } from "material-ui/Popover"
 import Divider from "material-ui/Divider"
 import RenameTileDialog from "./RenameTile"
 import DeleteTileDialog from "./DeleteTile"
+import DataVisualizationSettings from "./DataVisualizationSettings"
+import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
 
 const listStyles = {
   root: {
@@ -38,6 +40,7 @@ class Tile extends Component {
     slideIndex: 0,
     renameTileOpen: false,
     deleteTileOpen: false,
+    dataVisualizationDialogOpen: false,
   }
 
   handleOpen = () => {
@@ -76,13 +79,23 @@ class Tile extends Component {
     this.setState({ deleteTileOpen: true })
   }
 
+  dataVisualizationDialogOpen = () => {
+    this.setState({ dataVisualizationDialogOpen: true })
+  }
+
+  dataVisualizationDialogClose = () => {
+    this.setState({ dataVisualizationDialogOpen: false })
+  }
+
   render() {
     const { value } = this.props
     const valueTitle = value.customName
 
     let specificTile
     let specificInterfaceSettings
+    let specificVisualizationSettings
     let specificDataSettings
+
     if (
       value.__typename === "BooleanValue" &&
       value.permission === "READ_ONLY"
@@ -137,6 +150,53 @@ class Tile extends Component {
           </div>
         </React.Fragment>
       )
+      specificVisualizationSettings = (
+        <RadioButtonGroup name="Data visualization">
+          <RadioButton
+            value="number"
+            label="Number"
+            style={{
+              marginTop: 12,
+              marginBottom: 16,
+            }}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+          />
+          <RadioButton
+            value="graph"
+            label="Graph"
+            style={{
+              marginBottom: 16,
+            }}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+          />
+          <RadioButton
+            value="gauge"
+            label="Gauge"
+            style={{
+              marginBottom: 16,
+            }}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+          />
+        </RadioButtonGroup>
+      )
     } else if (
       value.__typename === "FloatValue" &&
       !value.boundaries &&
@@ -155,9 +215,43 @@ class Tile extends Component {
             <ListItem
               primaryText="Choose how the data is visualized"
               secondaryText="Number"
+              onClick={this.dataVisualizationDialogOpen}
             />
           </List>
         </div>
+      )
+      specificVisualizationSettings = (
+        <RadioButtonGroup name="Data visualization">
+          <RadioButton
+            value="number"
+            label="Number"
+            style={{
+              marginTop: 12,
+              marginBottom: 16,
+            }}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+          />
+          <RadioButton
+            value="graph"
+            label="Graph"
+            style={{
+              marginBottom: 16,
+            }}
+            rippleStyle={{ color: "#0083ff" }}
+            checkedIcon={
+              <i class="material-icons" style={{ color: "#0083ff" }}>
+                radio_button_checked
+              </i>
+            }
+            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+          />
+        </RadioButtonGroup>
       )
     } else if (
       value.__typename === "ColourValue" &&
@@ -273,18 +367,6 @@ class Tile extends Component {
 
     return (
       <React.Fragment>
-        <RenameTileDialog
-          renameTileOpen={this.state.renameTileOpen}
-          handleRenameTileDialogClose={this.handleRenameTileDialogClose}
-          tileName={valueTitle}
-        />
-        <DeleteTileDialog
-          deleteTileOpen={this.state.deleteTileOpen}
-          handleDeleteTileDialogClose={this.handleDeleteTileDialogClose}
-          tileName={valueTitle}
-          timer={this.state.timer}
-          isDeleteDisabled={this.state.isDeleteDisabled}
-        />
         <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
           <div className="tileHeader">
             <div className="tileTitle">{valueTitle}</div>
@@ -403,6 +485,23 @@ class Tile extends Component {
           }}
           value={value}
           specificTile={specificTile}
+        />
+        <DataVisualizationSettings
+          dataVisualizationDialogOpen={this.state.dataVisualizationDialogOpen}
+          dataVisualizationDialogClose={this.dataVisualizationDialogClose}
+          specificVisualizationSettings={specificVisualizationSettings}
+        />
+        <RenameTileDialog
+          renameTileOpen={this.state.renameTileOpen}
+          handleRenameTileDialogClose={this.handleRenameTileDialogClose}
+          tileName={valueTitle}
+        />
+        <DeleteTileDialog
+          deleteTileOpen={this.state.deleteTileOpen}
+          handleDeleteTileDialogClose={this.handleDeleteTileDialogClose}
+          tileName={valueTitle}
+          timer={this.state.timer}
+          isDeleteDisabled={this.state.isDeleteDisabled}
         />
       </React.Fragment>
     )

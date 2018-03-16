@@ -263,6 +263,13 @@ class SettingsDialog extends React.Component {
                     onClick={this.handleLanguageDialogOpen}
                   />
                   <ListItem
+                    primaryText="Change units of measurement"
+                    secondaryText="SI, Celsius"
+                    onClick={this.handleUnitDialogOpen}
+                  />
+                  <Divider />
+                  <Subheader>Time</Subheader>
+                  <ListItem
                     primaryText="Change time zone"
                     secondaryText="Auto (GMT+01:00)"
                     onClick={this.handleTimeDialogOpen}
@@ -281,11 +288,6 @@ class SettingsDialog extends React.Component {
                     primaryText="Change date and time format"
                     secondaryText="DD/MM/YYYY, 24-hour clock"
                     onClick={this.handleTimeFormatDialogOpen}
-                  />
-                  <ListItem
-                    primaryText="Change units of measurement"
-                    secondaryText="SI, Celsius"
-                    onClick={this.handleUnitDialogOpen}
                   />
                 </List>
               </div>
@@ -320,6 +322,7 @@ class SettingsDialog extends React.Component {
                       />
                     }
                   />
+                  <Divider />
                   <Subheader>Lorem Ipsum</Subheader>
                   {deviceList}
                 </List>

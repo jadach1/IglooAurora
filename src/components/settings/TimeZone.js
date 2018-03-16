@@ -33,7 +33,7 @@ export default class TimeZoneDialog extends React.Component {
           paddingBottom: "0px",
         }}
       >
-        <RadioButtonGroup name="Time Zone" defaultSelected="auto">
+        <RadioButtonGroup name="Time Zone">
           <RadioButton
             value="auto"
             label="Auto (GMT+01:00)"
@@ -176,8 +176,14 @@ export default class TimeZoneDialog extends React.Component {
           <MenuItem value={95} primaryText="(GMT+00:00) Lisbon" />
           <MenuItem value={96} primaryText="(GMT+00:00) London" />
           <MenuItem value={97} primaryText="(GMT+00:00) Monrovia" />
-          <MenuItem value={95} primaryText="(GMT+00:00) Reykjavik" />
-          <MenuItem value={96} primaryText="UTC" />
+          <MenuItem value={98} primaryText="(GMT+00:00) Reykjavik" />
+          <MenuItem value={99} primaryText="UTC" />
+          <MenuItem value={100} primaryText="(GMT+01:00) Algiers" />
+          <MenuItem value={101} primaryText="(GMT+01:00) Amsterdam" />
+          <MenuItem value={102} primaryText="(GMT+01:00) Andorra" />
+          <MenuItem value={103} primaryText="(GMT+01:00) Berlin" />
+          <MenuItem value={104} primaryText="(GMT+01:00) Brussels" />
+          <MenuItem value={105} primaryText="(GMT+01:00) Budapest" />
         </DropDownMenu>
         <br />
       </Dialog>
