@@ -9,7 +9,6 @@ export default class DeleteTileDialog extends React.Component {
     const deleteTileActions = [
       <FlatButton
         label="Never mind"
-        keyboardFocused={true}
         onClick={this.props.handleDeleteTileDialogClose}
       />,
       <RaisedButton
