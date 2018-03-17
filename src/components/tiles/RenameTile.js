@@ -3,8 +3,44 @@ import Dialog from "material-ui/Dialog"
 import RaisedButton from "material-ui/RaisedButton"
 import FlatButton from "material-ui/FlatButton"
 import TextField from "material-ui/TextField"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
-export default class RenameTileDialog extends React.Component {
+class RenameTileDialog extends React.Component {
+  state = { customName: "" }
+
+  rename = () => {
+    this.props[
+      this.props.value.__typename === "FloatValue"
+        ? "RenameFloatValue"
+        : this.props.value.__typename === "StringValue"
+          ? "RenameStringValue"
+          : this.props.value.__typename === "ColourValue"
+            ? "RenameColourValue"
+            : "RenameBooleanValue"
+    ]({
+      variables: {
+        id: this.props.value.id,
+        customName: this.state.customName,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        [this.props.value.__typename === "FloatValue"
+          ? "floatValue"
+          : this.props.value.__typename === "StringValue"
+            ? "stringValue"
+            : this.props.value.__typename === "ColourValue"
+              ? "colourValue"
+              : "booleanValue"]: {
+          __typename: this.props.value.__typename,
+          id: this.props.value.id,
+          customName: this.state.customName,
+        },
+      },
+    })
+    this.props.handleRenameTileDialogClose()
+  }
+
   render() {
     const renameTileActions = [
       <FlatButton
@@ -15,7 +51,7 @@ export default class RenameTileDialog extends React.Component {
         label="Rename"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
-        onClick={this.props.renameTile}
+        onClick={this.rename}
       />,
     ]
 
@@ -36,9 +72,10 @@ export default class RenameTileDialog extends React.Component {
           floatingLabelShrinkStyle={{ color: "#0083ff" }}
           underlineFocusStyle={{ borderColor: "#0083ff" }}
           style={{ width: "100%" }}
+          onChange={event => this.setState({ customName: event.target.value })}
           onKeyPress={event => {
             if (event.key === "Enter") {
-              this.openNameDialog()
+              this.rename()
             }
           }}
         />
@@ -46,3 +83,59 @@ export default class RenameTileDialog extends React.Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    mutation Rename($id: ID!, $customName: String) {
+      floatValue(id: $id, customName: $customName) {
+        id
+        customName
+      }
+    }
+  `,
+  {
+    name: "RenameFloatValue",
+  }
+)(
+  graphql(
+    gql`
+      mutation Rename($id: ID!, $customName: String) {
+        floatValue(id: $id, customName: $customName) {
+          id
+          customName
+        }
+      }
+    `,
+    {
+      name: "RenameStringValue",
+    }
+  )(
+    graphql(
+      gql`
+        mutation Rename($id: ID!, $customName: String) {
+          floatValue(id: $id, customName: $customName) {
+            id
+            customName
+          }
+        }
+      `,
+      {
+        name: "RenameColourValue",
+      }
+    )(
+      graphql(
+        gql`
+          mutation Rename($id: ID!, $customName: String) {
+            floatValue(id: $id, customName: $customName) {
+              id
+              customName
+            }
+          }
+        `,
+        {
+          name: "RenameBooleanValue",
+        }
+      )(RenameTileDialog)
+    )
+  )
+)
