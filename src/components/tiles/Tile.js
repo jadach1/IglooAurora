@@ -495,6 +495,7 @@ class Tile extends Component {
           renameTileOpen={this.state.renameTileOpen}
           handleRenameTileDialogClose={this.handleRenameTileDialogClose}
           tileName={valueTitle}
+          value={value}
         />
         <DeleteTileDialog
           deleteTileOpen={this.state.deleteTileOpen}
