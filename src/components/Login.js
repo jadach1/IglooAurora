@@ -101,7 +101,6 @@ class Login extends Component {
         <br />
         <Button
           variant="raised"
-          color="primary"
           primary={true}
           fullWidth={true}
           onClick={this.signIn}

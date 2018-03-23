@@ -6,8 +6,12 @@ import Paper from "material-ui/Paper"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
+import Tabs, { Tab } from "material-ui-next/Tabs"
+import SwipeableViews from "react-swipeable-views"
 
 class UnAuthenticatedApp extends Component {
+  state = { slideIndex: 0 }
+
   constructor() {
     super()
 
@@ -29,6 +33,14 @@ class UnAuthenticatedApp extends Component {
     this.state = {
       ui,
     }
+  }
+
+  handleChange = (event, value) => {
+    this.setState({ value })
+  }
+
+  handleChangeIndex = index => {
+    this.setState({ value: index })
   }
 
   render() {
@@ -57,19 +69,36 @@ class UnAuthenticatedApp extends Component {
                 />
               </b>
             </div>
-            {this.state.ui === "logIn" ? (
-              <Login
-                client={this.client}
-                signIn={this.props.signIn}
-                goToSignup={() => this.setState({ ui: "signUp" })}
-              />
-            ) : (
-              <Signup
-                client={this.client}
-                signIn={this.props.signIn}
-                goToLogin={() => this.setState({ ui: "logIn" })}
-              />
-            )}
+            <div>
+              <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
+                <Tab
+                  label="Sign up"
+                  buttonStyle={{ backgroundColor: "#0083ff" }}
+                  value={0}
+                />
+                <Tab
+                  label="Log in"
+                  buttonStyle={{ backgroundColor: "#0083ff" }}
+                  value={1}
+                />
+              </Tabs>
+              <SwipeableViews
+                index={this.state.value}
+                onChangeIndex={this.handleChangeIndex}
+                enableMouseEvents
+              >
+                <Signup
+                  client={this.client}
+                  signIn={this.props.signIn}
+                  goToLogin={() => this.setState({ slideIndex: 1 })}
+                />
+                <Login
+                  client={this.client}
+                  signIn={this.props.signIn}
+                  goToSignup={() => this.setState({ slideIndex: 0 })}
+                />
+              </SwipeableViews>
+            </div>
           </Paper>
         </div>
       </MuiThemeProvider>
