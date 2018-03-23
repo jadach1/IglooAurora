@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import TextField from "material-ui/TextField"
-import RaisedButton from "material-ui/RaisedButton"
+import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
 
 class Login extends Component {
@@ -88,7 +88,9 @@ class Login extends Component {
         <br />
         <br />
         <br />
-        <RaisedButton
+        <Button
+          variant="raised"
+          color="primary"
           label="Sign up"
           fullWidth={true}
           primary={true}

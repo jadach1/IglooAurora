@@ -1,8 +1,7 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
+import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
-import RaisedButton from "material-ui/RaisedButton"
 import Snackbar from "material-ui/Snackbar"
 
 const passwordDialogContentStyle = {
@@ -29,16 +28,18 @@ export default class ChangePasswordDialog extends React.Component {
 
   render() {
     const passwordDialogActions = [
-      <FlatButton
-        label="Never mind"
-        onClick={this.props.handlePasswordDialogClose}
-      />,
-      <RaisedButton
-        label="Change"
+      <Button onClick={this.props.handlePasswordDialogClose}>
+        Never mind
+      </Button>,
+      <Button
+        variant="raised"
+        color="primary"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
         onClick={this.handlePwdSnackOpen}
-      />,
+      >
+        Change
+      </Button>,
     ]
 
     return (

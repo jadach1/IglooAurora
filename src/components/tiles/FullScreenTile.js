@@ -1,11 +1,11 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
+import Button from "material-ui-next/Button"
 
 export default class FullScreenTile extends React.Component {
   render() {
     const actions = [
-      <FlatButton label="Close" onClick={this.props.handleClose} />,
+      <Button label="Close" onClick={this.props.handleClose} />,
     ]
     const { value } = this.props
     const valueTitle = value.customName

@@ -1,7 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
-import RaisedButton from "material-ui/RaisedButton"
+import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 
 const passwordDialogContentStyle = {
@@ -15,12 +14,14 @@ const deleteDialogContentStyle = {
 export default class DeleteAccountDialog extends React.Component {
   render() {
     const deleteConfimedActions = [
-      <FlatButton
+      <Button
         label="Never mind"
         keyboardFocused={true}
         onClick={this.props.closeDelete}
       />,
-      <RaisedButton
+      <Button
+        variant="raised"
+        color="primary"
         label="Proceed"
         primary={true}
         buttonStyle={{ backgroundColor: "#F44336" }}
@@ -33,12 +34,14 @@ export default class DeleteAccountDialog extends React.Component {
         <Dialog
           title="Are you sure you want to delete your account?"
           actions={[
-            <FlatButton
+            <Button
               label="Never mind"
               keyboardFocused={true}
               onClick={this.props.closeDeleteConfirmed}
             />,
-            <RaisedButton
+            <Button
+              variant="raised"
+              color="primary"
               label={
                 this.props.isDeleteDisabled
                   ? "Delete (" + this.props.timer + ")"

@@ -1,6 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
+import Button from "material-ui-next/Button"
 import { Tabs, Tab } from "material-ui/Tabs"
 import FontIcon from "material-ui/FontIcon"
 import Toggle from "material-ui/Toggle"
@@ -200,7 +200,7 @@ class SettingsDialog extends React.Component {
       )
 
     const actions = [
-      <FlatButton label="Close" onClick={this.props.closeSettingsDialog} />,
+      <Button onClick={this.props.closeSettingsDialog}>Close</Button>,
     ]
 
     return (

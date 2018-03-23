@@ -299,7 +299,6 @@ div[style^="color: rgba(0, 0, 0, 0.87); background-color: rgb(255, 255, 255); tr
   opacity: 1;
   transition: opacity 500ms ease-in;
 }
-
 .notification-leave {
   opacity: 1;
 }

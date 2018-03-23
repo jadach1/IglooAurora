@@ -1,8 +1,7 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
+import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
-import RaisedButton from "material-ui/RaisedButton"
 import Snackbar from "material-ui/Snackbar"
 import { List, ListItem } from "material-ui/List"
 
@@ -40,25 +39,29 @@ export default class ChangeNameDialog extends React.Component {
 
   render() {
     const confirmationDialogActions = [
-      <FlatButton
-        label="Never mind"
-        onClick={this.props.handleNameDialogClose}
-      />,
-      <RaisedButton
-        label="Proceed"
+      <Button onClick={this.props.handleNameDialogClose}>Never mind</Button>,
+      <Button
+        variant="raised"
+        color="primary"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
         onClick={this.openNameDialog}
-      />,
+      >
+        Proceed
+      </Button>,
     ]
     const nameDialogActions = [
-      <FlatButton label="Never mind" onClick={this.closeNameDialog} />,
-      <RaisedButton
+      <Button onClick={this.closeNameDialog}>Never mind</Button>,
+      <Button
+        variant="raised"
+        color="primary"
         label="Change"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
         onClick={this.handleNameSnackOpen}
-      />,
+      >
+        Change
+      </Button>,
     ]
 
     return (

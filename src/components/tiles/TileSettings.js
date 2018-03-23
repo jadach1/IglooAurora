@@ -1,6 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
+import Button from "material-ui-next/Button"
 import { Tabs, Tab } from "material-ui/Tabs"
 import FontIcon from "material-ui/FontIcon"
 import SwipeableViews from "react-swipeable-views"
@@ -20,7 +20,7 @@ export default class TileSettings extends React.Component {
     return (
       <Dialog
         actions={[
-          <FlatButton label="Close" onClick={this.props.handleClose} />,
+          <Button label="Close" onClick={this.props.handleClose} />,
         ]}
         modal={false}
         open={this.props.isOpen}

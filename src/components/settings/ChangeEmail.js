@@ -1,8 +1,7 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
+import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
-import RaisedButton from "material-ui/RaisedButton"
 import Snackbar from "material-ui/Snackbar"
 import { List, ListItem } from "material-ui/List"
 import IconButton from "material-ui/IconButton"
@@ -41,19 +40,13 @@ export default class ChangeMailDialog extends React.Component {
 
   render() {
     const confirmationDialogActions = [
-      <FlatButton
-        label="Never mind"
-        onClick={this.props.handleEmailDialogClose}
-      />,
-      <RaisedButton
-        label="Proceed"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-        onClick={this.openMailDialog}
-      />,
+      <Button onClick={this.props.handleEmailDialogClose}>Never Mind</Button>,
+      <Button variant="raised" color="primary" onClick={this.openMailDialog}>
+        Proceed
+      </Button>,
     ]
     const mailDialogActions = [
-      <FlatButton label="Close" onClick={this.closeMailDialog} />,
+      <Button onClick={this.closeMailDialog}>Close</Button>,
     ]
 
     return (

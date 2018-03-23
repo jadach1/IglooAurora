@@ -6,7 +6,10 @@ import { List, ListItem } from "material-ui/List"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Snackbar from "material-ui/Snackbar"
+import Badge from "material-ui-next/Badge"
 import ReactCSSTransitionGroup from "react-addons-css-transition-group"
+import Tooltip from "material-ui-next/Tooltip"
+import { createMuiTheme } from "material-ui-next/styles"
 
 var moment = require("moment")
 
@@ -192,21 +195,28 @@ class NotificationsPopover extends React.Component {
       <React.Fragment>
         <IconMenu
           iconButtonElement={
-            <IconButton
-              style={{
-                padding: "0",
-                marginRight: "4px",
-                width: "24px",
-                height: "24px",
-              }}
-              onClick={() => this.setState({ open: true })}
-              className="sidebarHeaderButton"
-              tooltip="Notifications"
+            <Tooltip
+              id="tooltip-bottom"
+              title="Notifications"
+              placement="bottom"
             >
-              <i className="material-icons sidebarHeaderIcons">
-                {notificationsIcon}
-              </i>
-            </IconButton>
+              <Badge badgeContent={4} color="primary">
+                <IconButton
+                  style={{
+                    padding: "0",
+                    marginRight: "4px",
+                    width: "24px",
+                    height: "24px",
+                  }}
+                  onClick={() => this.setState({ open: true })}
+                  className="sidebarHeaderButton"
+                >
+                  <i className="material-icons sidebarHeaderIcons">
+                    {notificationsIcon}
+                  </i>
+                </IconButton>
+              </Badge>
+            </Tooltip>
           }
           anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}
           targetOrigin={{ horizontal: "middle", vertical: "top" }}
@@ -221,10 +231,18 @@ class NotificationsPopover extends React.Component {
         >
           <div className="notificationsTopBar notSelectable invisibleHeader">
             <IconButton className="notificationsLeftSide">
-              <i className="material-icons">clear_all</i>
+              <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
+                <i className="material-icons">clear_all</i>
+              </Tooltip>
             </IconButton>
             <IconButton className="notificationsRightSide">
-              <i className="material-icons">notifications_off</i>
+              <Tooltip
+                id="tooltip-bottom"
+                title="Enable quiet mode"
+                placement="bottom"
+              >
+                <i className="material-icons">notifications_off</i>
+              </Tooltip>
             </IconButton>
           </div>
           <div

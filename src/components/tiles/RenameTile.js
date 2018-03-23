@@ -1,7 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import RaisedButton from "material-ui/RaisedButton"
-import FlatButton from "material-ui/FlatButton"
+import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
@@ -43,11 +42,13 @@ class RenameTileDialog extends React.Component {
 
   render() {
     const renameTileActions = [
-      <FlatButton
+      <Button
         label="Never mind"
         onClick={this.props.handleRenameTileDialogClose}
       />,
-      <RaisedButton
+      <Button
+        variant="raised"
+        color="primary"
         label="Rename"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
