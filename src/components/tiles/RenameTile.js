@@ -7,7 +7,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
 class RenameTileDialog extends React.Component {
-  state = { customName: "" }
+  state = { customName: null }
 
   rename = () => {
     this.props[
