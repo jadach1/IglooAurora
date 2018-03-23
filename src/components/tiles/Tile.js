@@ -25,6 +25,7 @@ import RenameTileDialog from "./RenameTile"
 import DeleteTileDialog from "./DeleteTile"
 import DataVisualizationSettings from "./DataVisualizationSettings"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
+import Tooltip from "material-ui-next/Tooltip"
 
 const listStyles = {
   root: {
@@ -372,7 +373,6 @@ class Tile extends Component {
             <div className="tileTitle">{valueTitle}</div>
             <div className="tileHeaderButtons notSelectable">
               <IconButton
-                tooltip="Expand"
                 onClick={() => {
                   this.setState({ isTileFullScreen: true })
                 }}
@@ -384,7 +384,13 @@ class Tile extends Component {
                   marginBottom: "13px",
                 }}
               >
-                <i className="material-icons">fullscreen</i>
+                <Tooltip
+                  id="tooltip-bottom"
+                  title="Fullscreen"
+                  placement="bottom"
+                >
+                  <i className="material-icons">fullscreen</i>
+                </Tooltip>
               </IconButton>
               <IconMenu
                 style={{
@@ -401,9 +407,14 @@ class Tile extends Component {
                       width: "30px",
                       height: "30px",
                     }}
-                    tooltip="More"
                   >
-                    <i className="material-icons">more_vert</i>
+                    <Tooltip
+                      id="tooltip-bottom"
+                      title="More"
+                      placement="bottom"
+                    >
+                      <i className="material-icons">more_vert</i>
+                    </Tooltip>
                   </IconButton>
                 }
                 anchorOrigin={{ horizontal: "right", vertical: "top" }}

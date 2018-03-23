@@ -4,6 +4,7 @@ import gql from "graphql-tag"
 import { List, ListItem } from "material-ui/List"
 import CenteredSpinner from "./CenteredSpinner"
 import FloatingActionButton from "material-ui/FloatingActionButton"
+import Tooltip from "material-ui-next/Tooltip"
 
 class Sidebar extends Component {
   componentDidMount() {
@@ -114,16 +115,18 @@ class Sidebar extends Component {
             ))}
           </List>
         </div>
-        <FloatingActionButton
-          className="notSelectable deviceEditFab"
-          backgroundColor="#ff4081"
-          style={{
-            transition:
-              "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
-          }}
-        >
-          <i className="material-icons">mode_edit</i>
-        </FloatingActionButton>
+        <Tooltip id="tooltip-bottom" title="Edit list" placement="bottom">
+          <FloatingActionButton
+            className="notSelectable deviceEditFab"
+            backgroundColor="#ff4081"
+            style={{
+              transition:
+                "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+            }}
+          >
+            <i className="material-icons">mode_edit</i>
+          </FloatingActionButton>
+        </Tooltip>
       </React.Fragment>
     )
   }

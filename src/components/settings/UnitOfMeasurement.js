@@ -1,7 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
-import RaisedButton from "material-ui/RaisedButton"
+import Button from "material-ui-next/Button"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
 
 export default class UnitOfMeasumentDialog extends React.Component {
@@ -11,7 +10,7 @@ export default class UnitOfMeasumentDialog extends React.Component {
 
   render() {
     const unitActions = [
-      <FlatButton label="Close" onClick={this.props.handleUnitDialogClose} />,
+      <Button label="Close" onClick={this.props.handleUnitDialogClose} />,
     ]
 
     return (

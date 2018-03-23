@@ -3,7 +3,8 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import IconButton from "material-ui/IconButton"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
+import Button from "material-ui-next/Button"
+import Tooltip from "material-ui-next/Tooltip"
 
 class MainBodyHeader extends Component {
   state = {
@@ -19,7 +20,7 @@ class MainBodyHeader extends Component {
   }
 
   render() {
-    const actions = [<FlatButton label="Close" onClick={this.handleClose} />]
+    const actions = [<Button label="Close" onClick={this.handleClose} />]
 
     const { loading, error, device } = this.props.data
     if (loading) {
@@ -49,7 +50,13 @@ class MainBodyHeader extends Component {
             className="mainBodyHeaderIcon"
             style={{ marginTop: "6px" }}
           >
-            <i className="material-icons">mode_edit</i>
+            <Tooltip
+              id="tooltip-bottom"
+              title="Rearrange tiles"
+              placement="bottom"
+            >
+              <i className="material-icons">mode_edit</i>
+            </Tooltip>
           </IconButton>
         </div>
         <Dialog

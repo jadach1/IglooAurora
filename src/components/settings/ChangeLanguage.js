@@ -1,7 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
-import RaisedButton from "material-ui/RaisedButton"
+import Button from "material-ui-next/Button"
 import { List, ListItem, makeSelectable } from "material-ui/List"
 
 const languageDialogContentStyle = {
@@ -59,10 +58,7 @@ export default class ChangeLanguageDialog extends React.Component {
 
   render() {
     const languageDialogActions = [
-      <FlatButton
-        label="Close"
-        onClick={this.props.handleLanguageDialogClose}
-      />,
+      <Button onClick={this.props.handleLanguageDialogClose}>Close</Button>,
     ]
 
     return (

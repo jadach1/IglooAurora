@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import IconButton from "material-ui/IconButton"
 import NotificationsPopover from "./NotificationsPopover"
+import Tooltip from "material-ui-next/Tooltip"
 
 class SidebarHeader extends Component {
   render() {
@@ -16,32 +17,34 @@ class SidebarHeader extends Component {
         />
         <div className="rightSide notSelectable">
           <NotificationsPopover selectDevice={this.props.selectDevice} />
-          <IconButton
-            onClick={this.props.openSettingsDialog}
-            style={{
-              padding: "0",
-              margin: "0 5px 0 5px",
-              width: "24px",
-              height: "24px",
-            }}
-            className="sidebarHeaderButton"
-            tooltip="Settings"
-          >
-            <i className="material-icons sidebarHeaderIcons">settings</i>
-          </IconButton>
-          <IconButton
-            onClick={this.props.logOut}
-            style={{
-              padding: "0",
-              margin: "0 5px 0 5px",
-              width: "24px",
-              height: "24px",
-            }}
-            className="sidebarHeaderButton"
-            tooltip="Log out"
-          >
-            <i className="material-icons sidebarHeaderIcons">exit_to_app</i>
-          </IconButton>
+          <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
+            <IconButton
+              onClick={this.props.openSettingsDialog}
+              style={{
+                padding: "0",
+                margin: "0 5px 0 5px",
+                width: "24px",
+                height: "24px",
+              }}
+              className="sidebarHeaderButton"
+            >
+              <i className="material-icons sidebarHeaderIcons">settings</i>
+            </IconButton>
+          </Tooltip>
+          <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
+            <IconButton
+              onClick={this.props.logOut}
+              style={{
+                padding: "0",
+                margin: "0 5px 0 5px",
+                width: "24px",
+                height: "24px",
+              }}
+              className="sidebarHeaderButton"
+            >
+              <i className="material-icons sidebarHeaderIcons">exit_to_app</i>
+            </IconButton>
+          </Tooltip>
         </div>
       </div>
     )

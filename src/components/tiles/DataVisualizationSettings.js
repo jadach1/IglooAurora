@@ -1,8 +1,7 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
 import TextField from "material-ui/TextField"
-import RaisedButton from "material-ui/RaisedButton"
+import Button from "material-ui-next/Button"
 import Snackbar from "material-ui/Snackbar"
 
 const dataVisualizationDialogContentStyle = {
@@ -12,7 +11,7 @@ const dataVisualizationDialogContentStyle = {
 export default class ReadOnlyFloatTileDialog extends React.Component {
   render() {
     const dataVisualizationDialogActions = [
-      <FlatButton
+      <Button
         label="Close"
         onClick={this.props.dataVisualizationDialogClose}
       />,

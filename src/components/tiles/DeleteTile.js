@@ -1,17 +1,18 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import RaisedButton from "material-ui/RaisedButton"
-import FlatButton from "material-ui/FlatButton"
+import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 
 export default class DeleteTileDialog extends React.Component {
   render() {
     const deleteTileActions = [
-      <FlatButton
+      <Button
         label="Never mind"
         onClick={this.props.handleDeleteTileDialogClose}
       />,
-      <RaisedButton
+      <Button
+        variant="raised"
+        color="primary"
         label="Delete"
         primary={true}
         buttonStyle={{ backgroundColor: "#f44336" }}

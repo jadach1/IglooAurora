@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import TextField from "material-ui/TextField"
-import RaisedButton from "material-ui/RaisedButton"
+import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
 
 class Login extends Component {
@@ -99,13 +99,16 @@ class Login extends Component {
           <font className="loginForgotPassoword">Forgot password?</font>
         </div>
         <br />
-        <RaisedButton
-          label="Log in"
+        <Button
+          variant="raised"
+          color="primary"
           primary={true}
           fullWidth={true}
           onClick={this.signIn}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-        />
+          color="primary"
+        >
+          Log in
+        </Button>
         <br />
         <br />
         No account?<br />

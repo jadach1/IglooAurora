@@ -1,7 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
-import RaisedButton from "material-ui/RaisedButton"
+import Button from "material-ui-next/Button"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import TextField from "material-ui/TextField"
 
@@ -11,7 +10,8 @@ const twoFactorDialogContentStyle = {
 
 const StepActions = ({ step, handleNext, handlePrev }) => (
   <div style={{ margin: "12px 0" }}>
-    <RaisedButton
+    <Button
+      variant="raised" color="primary" 
       label="Next"
       buttonStyle={{ backgroundColor: "#0083ff" }}
       disableTouchRipple={true}
@@ -21,7 +21,7 @@ const StepActions = ({ step, handleNext, handlePrev }) => (
       style={{ marginRight: 12 }}
     />
     {step > 0 && (
-      <FlatButton
+      <Button
         label="Back"
         disableTouchRipple={true}
         disableFocusRipple={true}
@@ -50,7 +50,7 @@ export default class TwoFactorDialog extends React.Component {
       <Dialog
         title="Enable two-factor authentication"
         actions={[
-          <FlatButton
+          <Button
             label="Close"
             onClick={this.props.handleTwoFactorDialogClose}
           />,
@@ -98,15 +98,15 @@ export default class TwoFactorDialog extends React.Component {
                 aaaaa-11111
                 <br />
                 <br />
-                <FlatButton
+                <Button
                   label="Save"
                   icon={<i className="material-icons">file_download</i>}
                 />
-                <FlatButton
+                <Button
                   label="Copy"
                   icon={<i className="material-icons">content_copy</i>}
                 />
-                <FlatButton
+                <Button
                   label="Print"
                   icon={<i className="material-icons">print</i>}
                 />

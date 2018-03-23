@@ -1,7 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import FlatButton from "material-ui/FlatButton"
-import RaisedButton from "material-ui/RaisedButton"
+import Button from "material-ui-next/Button"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
 import DropDownMenu from "material-ui/DropDownMenu"
 import MenuItem from "material-ui/MenuItem"
@@ -16,7 +15,7 @@ export default class TimeZoneDialog extends React.Component {
 
   render() {
     const timeZoneActions = [
-      <FlatButton label="Close" onClick={this.props.handleTimeDialogClose} />,
+      <Button label="Close" onClick={this.props.handleTimeDialogClose} />,
     ]
 
     return (
