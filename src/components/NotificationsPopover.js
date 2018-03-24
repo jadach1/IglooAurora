@@ -200,22 +200,25 @@ class NotificationsPopover extends React.Component {
               title="Notifications"
               placement="bottom"
             >
-              <Badge badgeContent={4} color="primary">
-                <IconButton
-                  style={{
-                    padding: "0",
-                    marginRight: "4px",
-                    width: "24px",
-                    height: "24px",
-                  }}
-                  onClick={() => this.setState({ open: true })}
-                  className="sidebarHeaderButton"
+              <IconButton
+                style={{
+                  padding: "0",
+                  marginRight: "4px",
+                  width: "24px",
+                  height: "24px",
+                }}
+                onClick={() => this.setState({ open: true })}
+                className="sidebarHeaderButton"
+              >
+                <Badge
+                  badgeContent={this.state.notificationCounter}
+                  color="secondary"
                 >
                   <i className="material-icons sidebarHeaderIcons">
                     {notificationsIcon}
                   </i>
-                </IconButton>
-              </Badge>
+                </Badge>
+              </IconButton>
             </Tooltip>
           }
           anchorOrigin={{ horizontal: "middle", vertical: "bottom" }}

@@ -6,8 +6,11 @@ import Paper from "material-ui/Paper"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
-import Tabs, { Tab } from "material-ui-next/Tabs"
+import Tabs, { Tab } from "material-ui/Tabs"
 import SwipeableViews from "react-swipeable-views"
+import BottomNavigation, {
+  BottomNavigationAction,
+} from "material-ui-next/BottomNavigation"
 
 class UnAuthenticatedApp extends Component {
   state = { slideIndex: 0 }
@@ -26,21 +29,21 @@ class UnAuthenticatedApp extends Component {
       cache: new InMemoryCache(),
     })
 
-    let ui = "signUp"
+    let slideIndex = 0
     if (typeof Storage !== "undefined" && localStorage.getItem("email")) {
-      ui = "logIn"
+      slideIndex = 1
     }
     this.state = {
-      ui,
+      slideIndex,
     }
   }
 
   handleChange = (event, value) => {
-    this.setState({ value })
+    this.setState({ slideIndex: value })
   }
 
   handleChangeIndex = index => {
-    this.setState({ value: index })
+    this.setState({ slideIndex: index })
   }
 
   render() {
@@ -70,22 +73,25 @@ class UnAuthenticatedApp extends Component {
               </b>
             </div>
             <div>
-              <Tabs onChange={this.handleChange} value={this.state.slideIndex}>
-                <Tab
+              <BottomNavigation
+                onChange={this.handleChange}
+                value={this.state.slideIndex}
+                showLabels
+              >
+                <BottomNavigationAction
                   label="Sign up"
-                  buttonStyle={{ backgroundColor: "#0083ff" }}
-                  value={0}
+                  icon={<i class="material-icons">person_add</i>}
                 />
-                <Tab
+                <BottomNavigationAction
                   label="Log in"
-                  buttonStyle={{ backgroundColor: "#0083ff" }}
-                  value={1}
+                  icon={<i class="material-icons">person</i>}
                 />
-              </Tabs>
+              </BottomNavigation>
               <SwipeableViews
-                index={this.state.value}
+                index={this.state.slideIndex}
                 onChangeIndex={this.handleChangeIndex}
                 enableMouseEvents
+                className="loginScreen"
               >
                 <Signup
                   client={this.client}

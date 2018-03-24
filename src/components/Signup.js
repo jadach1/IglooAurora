@@ -88,21 +88,17 @@ class Login extends Component {
         <br />
         <br />
         <br />
+        <br />
         <Button
           variant="raised"
           color="primary"
-          label="Sign up"
           fullWidth={true}
           primary={true}
           onClick={this.signUp}
           buttonStyle={{ backgroundColor: "#0083ff" }}
-        />
-        <br />
-        <br />
-        Already have an account?<br />
-        <span className="goToSignup" onClick={this.props.goToLogin}>
-          Log in here
-        </span>
+        >
+          Sign up
+        </Button>
       </div>
     )
   }

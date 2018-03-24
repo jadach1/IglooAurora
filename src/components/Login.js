@@ -108,12 +108,6 @@ class Login extends Component {
         >
           Log in
         </Button>
-        <br />
-        <br />
-        No account?<br />
-        <span className="goToSignup" onClick={this.props.goToSignup}>
-          Create one!
-        </span>
       </div>
     )
   }
