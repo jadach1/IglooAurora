@@ -267,6 +267,10 @@ body {
   grid-template-areas: ". leftSide . rightSide .";
 }
 
+.loginScreen {
+  height: calc(100% - 48px);
+}
+
 div[menutype="notifications"] {
   padding: 0px !important;
   background-color: white;

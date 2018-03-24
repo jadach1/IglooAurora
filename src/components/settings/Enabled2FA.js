@@ -11,22 +11,25 @@ const twoFactorDialogContentStyle = {
 const StepActions = ({ step, handleNext, handlePrev }) => (
   <div style={{ margin: "12px 0" }}>
     <Button
-      variant="raised" color="primary" 
-      label="Next"
+      variant="raised"
+      color="primary"
       buttonStyle={{ backgroundColor: "#0083ff" }}
       disableTouchRipple={true}
       disableFocusRipple={true}
       primary={true}
       onClick={handleNext}
       style={{ marginRight: 12 }}
-    />
+    >
+      Next
+    </Button>
     {step > 0 && (
       <Button
-        label="Back"
         disableTouchRipple={true}
         disableFocusRipple={true}
         onClick={handlePrev}
-      />
+      >
+        Back
+      </Button>
     )}
   </div>
 )
@@ -50,10 +53,9 @@ export default class TwoFactorDialog extends React.Component {
       <Dialog
         title="Enable two-factor authentication"
         actions={[
-          <Button
-            label="Close"
-            onClick={this.props.handleTwoFactorDialogClose}
-          />,
+          <Button onClick={this.props.handleTwoFactorDialogClose}>
+            Close
+          </Button>,
         ]}
         open={this.props.isOpen}
         contentStyle={twoFactorDialogContentStyle}

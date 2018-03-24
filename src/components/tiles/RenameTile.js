@@ -42,18 +42,18 @@ class RenameTileDialog extends React.Component {
 
   render() {
     const renameTileActions = [
-      <Button
-        label="Never mind"
-        onClick={this.props.handleRenameTileDialogClose}
-      />,
+      <Button onClick={this.props.handleRenameTileDialogClose}>
+        Never mind
+      </Button>,
       <Button
         variant="raised"
         color="primary"
-        label="Rename"
         primary={true}
         buttonStyle={{ backgroundColor: "#0083ff" }}
         onClick={this.rename}
-      />,
+      >
+        Rename
+      </Button>,
     ]
 
     return (
