@@ -4,6 +4,13 @@ import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import Snackbar from "material-ui/Snackbar"
 import { List, ListItem } from "material-ui/List"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
 
 const nameDialogContentStyle = {
   width: "350px",
@@ -28,7 +35,7 @@ export default class ChangeNameDialog extends React.Component {
     this.setState({
       nameSnackOpen: true,
     })
-    this.closeNameDialog()
+    this.props.handleNameDialogClose()
   }
 
   handleNameSnackClose = () => {
@@ -39,36 +46,40 @@ export default class ChangeNameDialog extends React.Component {
 
   render() {
     const confirmationDialogActions = [
-      <Button onClick={this.props.handleNameDialogClose}>Never mind</Button>,
-      <Button
-        variant="raised"
-        color="primary"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-        onClick={this.openNameDialog}
-      >
-        Proceed
-      </Button>,
+      <MuiThemeProvider theme={theme}>
+        <Button onClick={this.props.handleNameDialogClose}>Never mind</Button>
+        <Button
+          variant="raised"
+          color="primary"
+          primary={true}
+          buttonStyle={{ backgroundColor: "#0083ff" }}
+          onClick={this.openNameDialog}
+        >
+          Proceed
+        </Button>
+      </MuiThemeProvider>,
     ]
     const nameDialogActions = [
-      <Button onClick={this.closeNameDialog}>Never mind</Button>,
-      <Button
-        variant="raised"
-        color="primary"
-        label="Change"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-        onClick={this.handleNameSnackOpen}
-      >
-        Change
-      </Button>,
+      <MuiThemeProvider theme={theme}>
+        <Button onClick={this.props.handleNameDialogClose}>Never mind</Button>
+        <Button
+          variant="raised"
+          color="primary"
+          label="Change"
+          primary={true}
+          buttonStyle={{ backgroundColor: "#0083ff" }}
+          onClick={this.handleNameSnackOpen}
+        >
+          Change
+        </Button>
+      </MuiThemeProvider>,
     ]
 
     return (
       <React.Fragment>
         <Dialog
-          title="Type your password"
-          actions={confirmationDialogActions}
+          title="Change your user name"
+          actions={nameDialogActions}
           open={this.props.confirmationDialogOpen}
           contentStyle={nameDialogContentStyle}
           onRequestClose={this.props.handleNameDialogClose}
@@ -77,26 +88,7 @@ export default class ChangeNameDialog extends React.Component {
           <TextField
             floatingLabelShrinkStyle={{ color: "#0083ff" }}
             underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="Password"
-            type="password"
-            style={{ width: "100%" }}
-            onKeyPress={event => {
-              if (event.key === "Enter") this.openNameDialog()
-            }}
-          />
-        </Dialog>
-        <Dialog
-          title="Change your user name"
-          actions={nameDialogActions}
-          open={this.state.nameDialogOpen}
-          contentStyle={nameDialogContentStyle}
-          onRequestClose={this.closeNameDialog}
-          className="notSelectable"
-        >
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            value="UserName1"
+            value=""
             floatingLabelText="User name"
             style={{ width: "100%" }}
             onKeyPress={event => {

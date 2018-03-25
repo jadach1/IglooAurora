@@ -2,6 +2,13 @@ import React, { Component } from "react"
 import TextField from "material-ui/TextField"
 import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
 
 class Login extends Component {
   constructor() {
@@ -99,15 +106,17 @@ class Login extends Component {
           <font className="loginForgotPassoword">Forgot password?</font>
         </div>
         <br />
-        <Button
-          variant="raised"
-          primary={true}
-          fullWidth={true}
-          onClick={this.signIn}
-          color="primary"
-        >
-          Log in
-        </Button>
+        <MuiThemeProvider theme={theme}>
+          <Button
+            variant="raised"
+            primary={true}
+            fullWidth={true}
+            onClick={this.signIn}
+            color="primary"
+          >
+            Log in
+          </Button>
+        </MuiThemeProvider>
       </div>
     )
   }

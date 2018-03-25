@@ -3,35 +3,44 @@ import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import TextField from "material-ui/TextField"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
 
 const twoFactorDialogContentStyle = {
   width: "420px",
 }
 
 const StepActions = ({ step, handleNext, handlePrev }) => (
-  <div style={{ margin: "12px 0" }}>
-    <Button
-      variant="raised"
-      color="primary"
-      buttonStyle={{ backgroundColor: "#0083ff" }}
-      disableTouchRipple={true}
-      disableFocusRipple={true}
-      primary={true}
-      onClick={handleNext}
-      style={{ marginRight: 12 }}
-    >
-      Next
-    </Button>
-    {step > 0 && (
+  <MuiThemeProvider theme={theme}>
+    <div style={{ margin: "12px 0" }}>
       <Button
+        variant="raised"
+        color="primary"
+        buttonStyle={{ backgroundColor: "#0083ff" }}
         disableTouchRipple={true}
         disableFocusRipple={true}
-        onClick={handlePrev}
+        primary={true}
+        onClick={handleNext}
+        style={{ marginRight: 12 }}
       >
-        Back
+        Next
       </Button>
-    )}
-  </div>
+      {step > 0 && (
+        <Button
+          disableTouchRipple={true}
+          disableFocusRipple={true}
+          onClick={handlePrev}
+        >
+          Back
+        </Button>
+      )}
+    </div>
+  </MuiThemeProvider>
 )
 
 export default class TwoFactorDialog extends React.Component {
@@ -100,18 +109,15 @@ export default class TwoFactorDialog extends React.Component {
                 aaaaa-11111
                 <br />
                 <br />
-                <Button
-                  label="Save"
-                  icon={<i className="material-icons">file_download</i>}
-                />
-                <Button
-                  label="Copy"
-                  icon={<i className="material-icons">content_copy</i>}
-                />
-                <Button
-                  label="Print"
-                  icon={<i className="material-icons">print</i>}
-                />
+                <Button icon={<i className="material-icons">file_download</i>}>
+                  Save
+                </Button>
+                <Button icon={<i className="material-icons">content_copy</i>}>
+                  Copy
+                </Button>
+                <Button icon={<i className="material-icons">print</i>}>
+                  Print
+                </Button>
                 {
                   <StepActions
                     step={1}

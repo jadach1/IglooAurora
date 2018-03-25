@@ -11,10 +11,7 @@ const dataVisualizationDialogContentStyle = {
 export default class ReadOnlyFloatTileDialog extends React.Component {
   render() {
     const dataVisualizationDialogActions = [
-      <Button
-        label="Close"
-        onClick={this.props.dataVisualizationDialogClose}
-      />,
+      <Button onClick={this.props.dataVisualizationDialogClose}>Close</Button>,
     ]
 
     return (

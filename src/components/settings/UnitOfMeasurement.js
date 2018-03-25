@@ -10,7 +10,7 @@ export default class UnitOfMeasumentDialog extends React.Component {
 
   render() {
     const unitActions = [
-      <Button label="Close" onClick={this.props.handleUnitDialogClose} />,
+      <Button onClick={this.props.handleUnitDialogClose}>Close</Button>,
     ]
 
     return (

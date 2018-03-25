@@ -6,7 +6,7 @@ import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
 export default class TimeFormatDialog extends React.Component {
   render() {
     const timeFormatActions = [
-      <Button label="Close" onClick={this.props.handleTimeFormatDialogClose} />,
+      <Button onClick={this.props.handleTimeFormatDialogClose}>Close</Button>,
     ]
 
     return (

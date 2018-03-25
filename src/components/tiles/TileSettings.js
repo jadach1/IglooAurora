@@ -19,9 +19,7 @@ export default class TileSettings extends React.Component {
   render() {
     return (
       <Dialog
-        actions={[
-          <Button label="Close" onClick={this.props.handleClose} />,
-        ]}
+        actions={[<Button onClick={this.props.handleClose}>Close</Button>]}
         modal={false}
         open={this.props.isOpen}
         onRequestClose={this.props.handleClose}

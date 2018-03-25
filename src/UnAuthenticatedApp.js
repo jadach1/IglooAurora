@@ -81,10 +81,20 @@ class UnAuthenticatedApp extends Component {
                 <BottomNavigationAction
                   label="Sign up"
                   icon={<i class="material-icons">person_add</i>}
+                  style={
+                    this.state.slideIndex
+                      ? { color: "#757575" }
+                      : { color: "#0083ff" }
+                  }
                 />
                 <BottomNavigationAction
                   label="Log in"
                   icon={<i class="material-icons">person</i>}
+                  style={
+                    this.state.slideIndex
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
+                  }
                 />
               </BottomNavigation>
               <SwipeableViews

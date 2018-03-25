@@ -50,13 +50,7 @@ class MainBodyHeader extends Component {
             className="mainBodyHeaderIcon"
             style={{ marginTop: "6px" }}
           >
-            <Tooltip
-              id="tooltip-bottom"
-              title="Rearrange tiles"
-              placement="bottom"
-            >
-              <i className="material-icons">mode_edit</i>
-            </Tooltip>
+            <i className="material-icons">mode_edit</i>
           </IconButton>
         </div>
         <Dialog
