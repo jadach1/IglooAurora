@@ -20,7 +20,7 @@ class MainBodyHeader extends Component {
   }
 
   render() {
-    const actions = [<Button label="Close" onClick={this.handleClose} />]
+    const actions = [<Button onClick={this.handleClose}>Close</Button>]
 
     const { loading, error, device } = this.props.data
     if (loading) {
