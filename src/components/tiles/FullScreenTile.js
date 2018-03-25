@@ -4,9 +4,7 @@ import Button from "material-ui-next/Button"
 
 export default class FullScreenTile extends React.Component {
   render() {
-    const actions = [
-      <Button label="Close" onClick={this.props.handleClose} />,
-    ]
+    const actions = [<Button onClick={this.props.handleClose}>Close</Button>]
     const { value } = this.props
     const valueTitle = value.customName
 
