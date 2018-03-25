@@ -4,7 +4,14 @@ import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import Snackbar from "material-ui/Snackbar"
 import { List, ListItem } from "material-ui/List"
-import IconButton from "material-ui/IconButton"
+import IconButton from "material-ui-next/IconButton"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
 
 const mailDialogContentStyle = {
   width: "350px",
@@ -40,13 +47,17 @@ export default class ChangeMailDialog extends React.Component {
 
   render() {
     const confirmationDialogActions = [
-      <Button onClick={this.props.handleEmailDialogClose}>Never Mind</Button>,
-      <Button variant="raised" color="primary" onClick={this.openMailDialog}>
-        Proceed
-      </Button>,
+      <MuiThemeProvider theme={theme}>
+        <Button onClick={this.props.handleEmailDialogClose}>Never Mind</Button>
+        <Button variant="raised" color="primary" onClick={this.openMailDialog}>
+          Proceed
+        </Button>
+      </MuiThemeProvider>,
     ]
     const mailDialogActions = [
-      <Button onClick={this.closeMailDialog}>Close</Button>,
+      <MuiThemeProvider theme={theme}>
+        <Button onClick={this.closeMailDialog}>Close</Button>,
+      </MuiThemeProvider>,
     ]
 
     return (

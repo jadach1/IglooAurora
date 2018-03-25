@@ -4,6 +4,13 @@ import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
 
 class RenameTileDialog extends React.Component {
   state = { customName: null }
@@ -42,18 +49,20 @@ class RenameTileDialog extends React.Component {
 
   render() {
     const renameTileActions = [
-      <Button onClick={this.props.handleRenameTileDialogClose}>
-        Never mind
-      </Button>,
-      <Button
-        variant="raised"
-        color="primary"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-        onClick={this.rename}
-      >
-        Rename
-      </Button>,
+      <MuiThemeProvider theme={theme}>
+        <Button onClick={this.props.handleRenameTileDialogClose}>
+          Never mind
+        </Button>
+        <Button
+          variant="raised"
+          color="primary"
+          primary={true}
+          buttonStyle={{ backgroundColor: "#0083ff" }}
+          onClick={this.rename}
+        >
+          Rename
+        </Button>,
+      </MuiThemeProvider>,
     ]
 
     return (

@@ -2,6 +2,19 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#f44336" },
+  },
+})
+
+const theme2 = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
 
 const passwordDialogContentStyle = {
   width: "350px",
@@ -14,19 +27,20 @@ const deleteDialogContentStyle = {
 export default class DeleteAccountDialog extends React.Component {
   render() {
     const deleteConfimedActions = [
-      <Button
-        label="Never mind"
-        keyboardFocused={true}
-        onClick={this.props.closeDelete}
-      />,
-      <Button
-        variant="raised"
-        color="primary"
-        label="Proceed"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#F44336" }}
-        onClick={this.props.deleteConfirmed}
-      />,
+      <MuiThemeProvider theme={theme2}>
+        <Button keyboardFocused={true} onClick={this.props.closeDelete}>
+          Never mind
+        </Button>
+        <Button
+          variant="raised"
+          color="primary"
+          primary={true}
+          buttonStyle={{ backgroundColor: "#F44336" }}
+          onClick={this.props.deleteConfirmed}
+        >
+          Proceed
+        </Button>
+      </MuiThemeProvider>,
     ]
 
     return (
@@ -34,25 +48,27 @@ export default class DeleteAccountDialog extends React.Component {
         <Dialog
           title="Are you sure you want to delete your account?"
           actions={[
-            <Button
-              label="Never mind"
-              keyboardFocused={true}
-              onClick={this.props.closeDeleteConfirmed}
-            />,
-            <Button
-              variant="raised"
-              color="primary"
-              label={
-                this.props.isDeleteDisabled
+            <MuiThemeProvider theme={theme}>
+              <Button
+                keyboardFocused={true}
+                onClick={this.props.closeDeleteConfirmed}
+              >
+                Never mind
+              </Button>
+              <Button
+                variant="raised"
+                color="primary"
+                primary={true}
+                buttonStyle={{ backgroundColor: "#F44336" }}
+                disabled={this.props.isDeleteDisabled}
+                style={{ width: "120px" }}
+                disabledLabelColor="#751f19"
+              >
+                {this.props.isDeleteDisabled
                   ? "Delete (" + this.props.timer + ")"
-                  : "Delete"
-              }
-              primary={true}
-              buttonStyle={{ backgroundColor: "#F44336" }}
-              disabled={this.props.isDeleteDisabled}
-              style={{ width: "120px" }}
-              disabledLabelColor="#751f19"
-            />,
+                  : "Delete"}
+              </Button>
+            </MuiThemeProvider>,
           ]}
           open={this.props.deleteConfirmedOpen}
           contentStyle={deleteDialogContentStyle}

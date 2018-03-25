@@ -3,6 +3,13 @@ import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import Snackbar from "material-ui/Snackbar"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
 
 const passwordDialogContentStyle = {
   width: "350px",
@@ -28,18 +35,20 @@ export default class ChangePasswordDialog extends React.Component {
 
   render() {
     const passwordDialogActions = [
-      <Button onClick={this.props.handlePasswordDialogClose}>
-        Never mind
-      </Button>,
-      <Button
-        variant="raised"
-        color="primary"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#0083ff" }}
-        onClick={this.handlePwdSnackOpen}
-      >
-        Change
-      </Button>,
+      <MuiThemeProvider theme={theme}>
+        <Button onClick={this.props.handlePasswordDialogClose}>
+          Never mind
+        </Button>
+        <Button
+          variant="raised"
+          color="primary"
+          primary={true}
+          buttonStyle={{ backgroundColor: "#0083ff" }}
+          onClick={this.handlePwdSnackOpen}
+        >
+          Change
+        </Button>
+      </MuiThemeProvider>,
     ]
 
     return (

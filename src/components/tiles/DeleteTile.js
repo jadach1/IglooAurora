@@ -2,22 +2,31 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#f44336" },
+  },
+})
 
 export default class DeleteTileDialog extends React.Component {
   render() {
     const deleteTileActions = [
-      <Button
-        label="Never mind"
-        onClick={this.props.handleDeleteTileDialogClose}
-      />,
-      <Button
-        variant="raised"
-        color="primary"
-        label="Delete"
-        primary={true}
-        buttonStyle={{ backgroundColor: "#f44336" }}
-        onClick={this.props.deleteTile}
-      />,
+      <MuiThemeProvider theme={theme}>
+        <Button onClick={this.props.handleDeleteTileDialogClose}>
+          Never mind
+        </Button>
+        <Button
+          variant="raised"
+          color="primary"
+          primary={true}
+          buttonStyle={{ backgroundColor: "#f44336" }}
+          onClick={this.props.deleteTile}
+        >
+          Delete
+        </Button>
+      </MuiThemeProvider>,
     ]
 
     return (

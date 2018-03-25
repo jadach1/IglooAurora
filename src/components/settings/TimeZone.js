@@ -15,7 +15,7 @@ export default class TimeZoneDialog extends React.Component {
 
   render() {
     const timeZoneActions = [
-      <Button label="Close" onClick={this.props.handleTimeDialogClose} />,
+      <Button onClick={this.props.handleTimeDialogClose}>Close</Button>,
     ]
 
     return (
