@@ -16,7 +16,6 @@ class SidebarHeader extends Component {
           className="miniLogo notSelectable"
         />
         <div className="rightSide notSelectable">
-          <NotificationsPopover selectDevice={this.props.selectDevice} />
           <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
             <IconButton
               onClick={this.props.openSettingsDialog}

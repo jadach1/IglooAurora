@@ -14,6 +14,12 @@ class Sidebar extends Component {
           id
           customName
           icon
+          notifications {
+            id
+            content
+            date
+            visualized
+          }
         }
       }
     `
@@ -43,6 +49,12 @@ class Sidebar extends Component {
           id
           customName
           icon
+          notifications {
+            id
+            content
+            date
+            visualized
+          }
         }
       }
     `
@@ -93,6 +105,11 @@ class Sidebar extends Component {
               <ListItem
                 className="notSelectable"
                 primaryText={device.customName}
+                /*                 secondaryText={
+                  device.notifications
+                    .map(notification => notification.content)
+                    .reverse()[0]
+                } */
                 style={
                   this.props.selectedDevice === device.id
                     ? { backgroundColor: "#d4d4d4" }
@@ -140,6 +157,12 @@ export default graphql(
           id
           customName
           icon
+          notifications {
+            id
+            content
+            date
+            visualized
+          }
         }
       }
     }
