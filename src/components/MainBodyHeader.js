@@ -5,10 +5,12 @@ import IconButton from "material-ui/IconButton"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import Tooltip from "material-ui-next/Tooltip"
+import NotificationsDrawer from "./NotificationsDrawer"
 
 class MainBodyHeader extends Component {
   state = {
     open: false,
+    drawer: false,
   }
 
   handleOpen = () => {
@@ -48,10 +50,24 @@ class MainBodyHeader extends Component {
           <IconButton
             onClick={this.handleOpen}
             className="mainBodyHeaderIcon"
-            style={{ marginTop: "6px" }}
+            style={{
+              padding: "0",
+              width: "24px",
+              height: "24px",
+              marginTop: "18px",
+            }}
           >
             <i className="material-icons">mode_edit</i>
           </IconButton>
+          <NotificationsDrawer
+            changeDrawerState={() =>
+              this.setState(
+                this.state.drawer ? { drawer: false } : { drawer: true }
+              )
+            }
+            open={this.state.drawer}
+            device={device}
+          />
         </div>
         <Dialog
           title="Rearrange cards"
