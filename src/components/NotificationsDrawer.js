@@ -11,8 +11,89 @@ import ReactCSSTransitionGroup from "react-addons-css-transition-group"
 import Tooltip from "material-ui-next/Tooltip"
 import { createMuiTheme } from "material-ui-next/styles"
 import Drawer from "material-ui-next/Drawer"
+import { withStyles } from "material-ui-next/styles"
 
 var moment = require("moment")
+
+const drawerWidth = 320
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  appFrame: {
+    height: 430,
+    zIndex: 1,
+    overflow: "hidden",
+    position: "relative",
+    display: "flex",
+    width: "100%",
+  },
+  appBar: {
+    position: "absolute",
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  appBarShift: {
+    width: `calc(100% - ${drawerWidth}px)`,
+    transition: theme.transitions.create(["margin", "width"], {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  "appBarShift-left": {
+    marginLeft: drawerWidth,
+  },
+  "appBarShift-right": {
+    marginRight: drawerWidth,
+  },
+  menuButton: {
+    marginLeft: 12,
+    marginRight: 20,
+  },
+  hide: {
+    display: "none",
+  },
+  drawerPaper: {
+    width: drawerWidth,
+  },
+  drawerHeader: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    padding: "0 8px",
+    ...theme.mixins.toolbar,
+  },
+  content: {
+    flexGrow: 1,
+    backgroundColor: theme.palette.background.default,
+    padding: theme.spacing.unit * 3,
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+  },
+  "content-left": {
+    marginLeft: -drawerWidth,
+  },
+  "content-right": {
+    marginRight: -drawerWidth,
+  },
+  contentShift: {
+    transition: theme.transitions.create("margin", {
+      easing: theme.transitions.easing.easeOut,
+      duration: theme.transitions.duration.enteringScreen,
+    }),
+  },
+  "contentShift-left": {
+    marginLeft: 0,
+  },
+  "contentShift-right": {
+    marginRight: 0,
+  },
+})
 
 class NotificationsDrawer extends React.Component {
   state = {
@@ -95,6 +176,8 @@ class NotificationsDrawer extends React.Component {
   }
 
   render() {
+    const { classes, theme } = this.props
+
     const { notifications: { loading, error, user } } = this.props
 
     let notifications = "No notifications"
@@ -114,6 +197,9 @@ class NotificationsDrawer extends React.Component {
             transitionLeaveTimeout={3000}
           >
             {user.notifications
+              .filter(
+                notification => notification.device.id === this.props.device.id
+              )
               .map(notification => (
                 <ListItem
                   className="notSelectable"
@@ -132,7 +218,12 @@ class NotificationsDrawer extends React.Component {
           </ReactCSSTransitionGroup>
         </List>
       )
-      notificationsIcon = user.notifications
+
+      const notificationCount = user.notifications.filter(
+        notification => notification.device.id === this.props.device.id
+      ).length
+
+      notificationsIcon = notificationCount
         ? "notifications"
         : "notifications_none"
     }
@@ -161,12 +252,15 @@ class NotificationsDrawer extends React.Component {
           anchor="right"
           open={this.state.drawer}
           onClose={this.props.changeDrawerState}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
         >
           <div
             className="notSelectable"
             style={{ overflowY: "auto", height: "100%" }}
           >
-            {notifications}
+            {this.state.drawer && notifications}
           </div>
         </Drawer>
       </React.Fragment>
@@ -193,4 +287,4 @@ export default graphql(
     }
   `,
   { name: "notifications" }
-)(NotificationsDrawer)
+)(withStyles(styles)(NotificationsDrawer))

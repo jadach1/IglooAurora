@@ -514,6 +514,7 @@ class Tile extends Component {
           tileName={valueTitle}
           timer={this.state.timer}
           isDeleteDisabled={this.state.isDeleteDisabled}
+          deleteTile={this.deleteTile}
         />
       </React.Fragment>
     )
