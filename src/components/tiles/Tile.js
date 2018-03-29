@@ -512,9 +512,8 @@ class Tile extends Component {
           deleteTileOpen={this.state.deleteTileOpen}
           handleDeleteTileDialogClose={this.handleDeleteTileDialogClose}
           tileName={valueTitle}
-          timer={this.state.timer}
-          isDeleteDisabled={this.state.isDeleteDisabled}
           deleteTile={this.deleteTile}
+          value={value}
         />
       </React.Fragment>
     )

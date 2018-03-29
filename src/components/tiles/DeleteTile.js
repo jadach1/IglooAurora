@@ -3,6 +3,8 @@ import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 const theme = createMuiTheme({
   palette: {
@@ -10,7 +12,22 @@ const theme = createMuiTheme({
   },
 })
 
-export default class DeleteTileDialog extends React.Component {
+class DeleteTileDialog extends React.Component {
+  deleteValueMutation = () => {
+    this.props["DeleteValue"]({
+      variables: {
+        id: this.props.value.id,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        deleteValue: {
+          id: this.props.value.id,
+        },
+      },
+    })
+    this.props.handleDeleteTileDialogClose()
+  }
+
   render() {
     const deleteTileActions = [
       <MuiThemeProvider theme={theme}>
@@ -22,7 +39,7 @@ export default class DeleteTileDialog extends React.Component {
           color="primary"
           primary={true}
           buttonStyle={{ backgroundColor: "#f44336" }}
-          onClick={this.props.deleteTile}
+          onClick={this.deleteValueMutation}
         >
           Delete
         </Button>
@@ -45,3 +62,14 @@ export default class DeleteTileDialog extends React.Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    mutation DeleteValue($id: ID!) {
+      deleteValue(id: $id)
+    }
+  `,
+  {
+    name: "DeleteValue",
+  }
+)(DeleteTileDialog)
