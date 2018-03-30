@@ -103,6 +103,7 @@ class NotificationsDrawer extends React.Component {
 
     let notificationsIcon = "notifications_none"
 
+    let noNotificationsUI = ""
     let readNotificationsUI = ""
 
     if (error) notifications = "Unexpected error"
@@ -183,6 +184,10 @@ class NotificationsDrawer extends React.Component {
       notificationsIcon = notificationCount
         ? "notifications"
         : "notifications_none"
+
+      if (!notificationCount) {
+        noNotificationsUI = "No new notifications"
+      }
 
       if (readNotificationCount) {
         readNotificationsUI = (
@@ -266,7 +271,8 @@ class NotificationsDrawer extends React.Component {
             className="notSelectable"
             style={{ overflowY: "auto", height: "100%", width: "320px" }}
           >
-            {notifications.length ? notifications : "No new notifications"}
+            {noNotificationsUI}
+            {notifications}
             {readNotificationsUI}
             {readNotificationsUI
               ? this.state.showVisualized ? readNotifications : ""
