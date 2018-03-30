@@ -11,89 +11,9 @@ import ReactCSSTransitionGroup from "react-addons-css-transition-group"
 import Tooltip from "material-ui-next/Tooltip"
 import { createMuiTheme } from "material-ui-next/styles"
 import Drawer from "material-ui-next/Drawer"
-import { withStyles } from "material-ui-next/styles"
+import FlatButton from "material-ui/FlatButton"
 
 var moment = require("moment")
-
-const drawerWidth = 320
-
-const styles = theme => ({
-  root: {
-    flexGrow: 1,
-  },
-  appFrame: {
-    height: 430,
-    zIndex: 1,
-    overflow: "hidden",
-    position: "relative",
-    display: "flex",
-    width: "100%",
-  },
-  appBar: {
-    position: "absolute",
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  "appBarShift-left": {
-    marginLeft: drawerWidth,
-  },
-  "appBarShift-right": {
-    marginRight: drawerWidth,
-  },
-  menuButton: {
-    marginLeft: 12,
-    marginRight: 20,
-  },
-  hide: {
-    display: "none",
-  },
-  drawerPaper: {
-    width: drawerWidth,
-  },
-  drawerHeader: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-    padding: "0 8px",
-    ...theme.mixins.toolbar,
-  },
-  content: {
-    flexGrow: 1,
-    backgroundColor: theme.palette.background.default,
-    padding: theme.spacing.unit * 3,
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  "content-left": {
-    marginLeft: -drawerWidth,
-  },
-  "content-right": {
-    marginRight: -drawerWidth,
-  },
-  contentShift: {
-    transition: theme.transitions.create("margin", {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
-  },
-  "contentShift-left": {
-    marginLeft: 0,
-  },
-  "contentShift-right": {
-    marginRight: 0,
-  },
-})
 
 class NotificationsDrawer extends React.Component {
   state = {
@@ -176,13 +96,14 @@ class NotificationsDrawer extends React.Component {
   }
 
   render() {
-    const { classes, theme } = this.props
-
     const { notifications: { loading, error, user } } = this.props
 
-    let notifications = "No notifications"
+    let notifications = ""
+    let readNotifications = ""
 
     let notificationsIcon = "notifications_none"
+
+    let readNotificationsUI = ""
 
     if (error) notifications = "Unexpected error"
 
@@ -200,6 +121,7 @@ class NotificationsDrawer extends React.Component {
               .filter(
                 notification => notification.device.id === this.props.device.id
               )
+              .filter(notification => notification.visualized === false)
               .map(notification => (
                 <ListItem
                   className="notSelectable"
@@ -219,13 +141,80 @@ class NotificationsDrawer extends React.Component {
         </List>
       )
 
-      const notificationCount = user.notifications.filter(
-        notification => notification.device.id === this.props.device.id
-      ).length
+      readNotifications = (
+        <List>
+          <ReactCSSTransitionGroup
+            transitionName="notification"
+            transitionEnterTimeout={5000}
+            transitionLeaveTimeout={3000}
+          >
+            {user.notifications
+              .filter(
+                notification => notification.device.id === this.props.device.id
+              )
+              .filter(notification => notification.visualized === true)
+              .map(notification => (
+                <ListItem
+                  className="notSelectable"
+                  primaryText={notification.content}
+                  secondaryText={moment(
+                    notification.date.split(".")[0],
+                    "YYYY-MM-DDTh:mm:ss"
+                  ).fromNow()}
+                  style={{
+                    backgroundColor: "transparent",
+                  }}
+                  id={notification.id}
+                />
+              ))
+              .reverse()}
+          </ReactCSSTransitionGroup>
+        </List>
+      )
+
+      const notificationCount = user.notifications
+        .filter(notification => notification.device.id === this.props.device.id)
+        .filter(notification => notification.visualized === false).length
+
+      const readNotificationCount = user.notifications
+        .filter(notification => notification.device.id === this.props.device.id)
+        .filter(notification => notification.visualized === true).length
 
       notificationsIcon = notificationCount
         ? "notifications"
         : "notifications_none"
+
+      if (readNotificationCount) {
+        readNotificationsUI = (
+          <FlatButton
+            onClick={() =>
+              this.setState(oldState => ({
+                showVisualized: !oldState.showVisualized,
+              }))
+            }
+            label={
+              this.state.showVisualized
+                ? "Hide read notifications"
+                : "Show read notifications"
+            }
+            icon={
+              this.state.showVisualized ? (
+                <i className="material-icons">keyboard_arrow_up</i>
+              ) : (
+                <i className="material-icons">keyboard_arrow_down</i>
+              )
+            }
+            fullWidth={true}
+            className="divider"
+            key="showMoreLessButton"
+            style={
+              this.state.showVisualized
+                ? { backgroundColor: "#d4d4d4" }
+                : { backgroundColor: "transparent" }
+            }
+          />
+        )
+      }
     }
 
     return (
@@ -248,19 +237,40 @@ class NotificationsDrawer extends React.Component {
           <i class="material-icons">{notificationsIcon}</i>
         </IconButton>
         <Drawer
-          variant="persistent"
+          variant="temporary"
           anchor="right"
           open={this.state.drawer}
-          onClose={this.props.changeDrawerState}
-          classes={{
-            paper: classes.drawerPaper,
-          }}
+          onClose={() =>
+            this.setState(
+              this.state.drawer ? { drawer: false } : { drawer: true }
+            )
+          }
         >
+          <div className="notificationsTopBar notSelectable invisibleHeader">
+            <IconButton className="notificationsLeftSide">
+              <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
+                <i className="material-icons">clear_all</i>
+              </Tooltip>
+            </IconButton>
+            <IconButton className="notificationsRightSide">
+              <Tooltip
+                id="tooltip-bottom"
+                title="Mute device"
+                placement="bottom"
+              >
+                <i className="material-icons">notifications_off</i>
+              </Tooltip>
+            </IconButton>
+          </div>
           <div
             className="notSelectable"
-            style={{ overflowY: "auto", height: "100%" }}
+            style={{ overflowY: "auto", height: "100%", width: "320px" }}
           >
-            {this.state.drawer && notifications}
+            {notifications.length ? notifications : "No new notifications"}
+            {readNotificationsUI}
+            {readNotificationsUI
+              ? this.state.showVisualized ? readNotifications : ""
+              : ""}
           </div>
         </Drawer>
       </React.Fragment>
@@ -287,4 +297,4 @@ export default graphql(
     }
   `,
   { name: "notifications" }
-)(withStyles(styles)(NotificationsDrawer))
+)(NotificationsDrawer)
