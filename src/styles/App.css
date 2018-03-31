@@ -251,6 +251,11 @@ body {
   color: #ffffff;
 }
 
+.notificationsRightSide2 {
+  grid-area: rightSide2;
+  color: #ffffff;
+}
+
 .notificationsRightSide {
   grid-area: rightSide;
   color: #ffffff;
@@ -263,8 +268,8 @@ body {
   padding-bottom: 6px;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 6px 48px auto 48px 6px;
-  grid-template-areas: ". leftSide . rightSide .";
+  grid-template-columns: 6px 48px auto 48px 0px 48px 6px;
+  grid-template-areas: ". leftSide . rightSide2 . rightSide .";
 }
 
 .loginScreen {
