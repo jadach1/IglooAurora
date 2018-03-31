@@ -244,9 +244,9 @@ class NotificationsDrawer extends React.Component {
           className="mainBodyHeaderIcon"
           style={{
             padding: "0",
-            width: "24px",
-            height: "24px",
-            marginTop: "18px",
+            width: "32px",
+            height: "32px",
+            marginTop: "14px",
             left: "34px",
           }}
           onClick={() =>
@@ -271,6 +271,11 @@ class NotificationsDrawer extends React.Component {
             <IconButton
               className="notificationsLeftSide"
               onClick={() => this.setState({ drawer: false })}
+              style={{
+                padding: "0",
+                width: "32px",
+                height: "32px",
+              }}
             >
               <Tooltip
                 id="tooltip-bottom"
@@ -282,13 +287,24 @@ class NotificationsDrawer extends React.Component {
             </IconButton>
             <IconButton
               className="notificationsRightSide2"
-              style={{ marginRight: "60px" }}
+              style={{
+                padding: "0",
+                width: "32px",
+                height: "32px",
+              }}
             >
               <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
                 <i className="material-icons">clear_all</i>
               </Tooltip>
             </IconButton>
-            <IconButton className="notificationsRightSide">
+            <IconButton
+              className="notificationsRightSide"
+              style={{
+                padding: "0",
+                width: "32px",
+                height: "32px",
+              }}
+            >
               <Tooltip
                 id="tooltip-bottom"
                 title="Mute device"
