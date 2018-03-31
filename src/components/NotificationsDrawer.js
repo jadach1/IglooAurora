@@ -98,6 +98,21 @@ class NotificationsDrawer extends React.Component {
   render() {
     const { notifications: { loading, error, user } } = this.props
 
+    let clearNotification = id => {
+      this.props["ClearNotification"]({
+        variables: {
+          id: id,
+        },
+        optimisticResponse: {
+          __typename: "Mutation",
+          notification: {
+            id: id,
+            visualized: true,
+          },
+        },
+      })
+    }
+
     let notifications = ""
     let readNotifications = ""
 
@@ -135,6 +150,7 @@ class NotificationsDrawer extends React.Component {
                     backgroundColor: "transparent",
                   }}
                   id={notification.id}
+                  onClick={() => clearNotification(notification.id)}
                 />
               ))
               .reverse()}
@@ -252,7 +268,22 @@ class NotificationsDrawer extends React.Component {
           }
         >
           <div className="notificationsTopBar notSelectable invisibleHeader">
-            <IconButton className="notificationsLeftSide">
+            <IconButton
+              className="notificationsLeftSide"
+              onClick={() => this.setState({ drawer: false })}
+            >
+              <Tooltip
+                id="tooltip-bottom"
+                title="Close drawer"
+                placement="bottom"
+              >
+                <i class="material-icons">chevron_right</i>
+              </Tooltip>
+            </IconButton>
+            <IconButton
+              className="notificationsRightSide2"
+              style={{ marginRight: "60px" }}
+            >
               <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
                 <i className="material-icons">clear_all</i>
               </Tooltip>
@@ -303,4 +334,17 @@ export default graphql(
     }
   `,
   { name: "notifications" }
-)(NotificationsDrawer)
+)(
+  graphql(
+    gql`
+      mutation ClearNotification($id: ID!) {
+        notification(id: $id, visualized: true) {
+          id
+        }
+      }
+    `,
+    {
+      name: "ClearNotification",
+    }
+  )(NotificationsDrawer)
+)
