@@ -378,10 +378,10 @@ class Tile extends Component {
                 }}
                 style={{
                   padding: "0",
-                  width: "30px",
-                  height: "30px",
-                  marginTop: "13px",
-                  marginBottom: "13px",
+                  width: "32px",
+                  height: "32px",
+                  marginTop: "14px",
+                  marginBottom: "14px",
                 }}
               >
                 <Tooltip
@@ -393,19 +393,12 @@ class Tile extends Component {
                 </Tooltip>
               </IconButton>
               <IconMenu
-                style={{
-                  padding: "0",
-                  width: "30px",
-                  height: "30px",
-                  marginTop: "13px",
-                  marginBottom: "13px",
-                }}
                 iconButtonElement={
                   <IconButton
                     style={{
                       padding: "0",
-                      width: "30px",
-                      height: "30px",
+                      width: "32px",
+                      height: "32px",
                     }}
                   >
                     <Tooltip

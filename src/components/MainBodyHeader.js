@@ -79,9 +79,9 @@ class MainBodyHeader extends Component {
             className="mainBodyHeaderIcon"
             style={{
               padding: "0",
-              width: "24px",
-              height: "24px",
-              marginTop: "18px",
+              width: "32px",
+              height: "32px",
+              marginTop: "14px",
             }}
           >
             <i className="material-icons">mode_edit</i>

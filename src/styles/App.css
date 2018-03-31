@@ -75,7 +75,7 @@ body {
   color: white;
   display: inline-block;
   float: right;
-  margin-right: 15px;
+  margin-right: 14px;
 }
 
 .sidebarHeader .rightSide .icon {
@@ -264,11 +264,11 @@ body {
 .notificationsTopBar {
   background: #0083ff;
   width: 100%;
-  padding-top: 6px;
-  padding-bottom: 6px;
+  padding-top: 14px;
+  padding-bottom: 14px;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 6px 48px auto 48px 0px 48px 6px;
+  grid-template-columns: 14px 32px auto 32px 7px 32px 14px;
   grid-template-areas: ". leftSide . rightSide2 . rightSide .";
 }
 
