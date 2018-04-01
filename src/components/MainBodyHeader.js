@@ -84,7 +84,13 @@ class MainBodyHeader extends Component {
               marginTop: "14px",
             }}
           >
-            <i className="material-icons">mode_edit</i>
+            <Tooltip
+              id="tooltip-bottom"
+              title="Rearrange cards"
+              placement="bottom"
+            >
+              <i className="material-icons">mode_edit</i>
+            </Tooltip>
           </IconButton>
           <NotificationsDrawer
             changeDrawerState={() =>
