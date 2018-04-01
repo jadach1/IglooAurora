@@ -9,11 +9,17 @@ import Snackbar from "material-ui/Snackbar"
 import Badge from "material-ui-next/Badge"
 import ReactCSSTransitionGroup from "react-addons-css-transition-group"
 import Tooltip from "material-ui-next/Tooltip"
-import { createMuiTheme } from "material-ui-next/styles"
-import Drawer from "material-ui-next/Drawer"
+import SwipeableDrawer from "material-ui-next/SwipeableDrawer"
 import FlatButton from "material-ui/FlatButton"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 
 var moment = require("moment")
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#ff4081" },
+  },
+})
 
 class NotificationsDrawer extends React.Component {
   state = {
@@ -118,6 +124,8 @@ class NotificationsDrawer extends React.Component {
 
     let notificationsIcon = "notifications_none"
 
+    let notificationCount = ""
+
     let noNotificationsUI = ""
     let readNotificationsUI = ""
 
@@ -189,7 +197,7 @@ class NotificationsDrawer extends React.Component {
         </List>
       )
 
-      const notificationCount = user.notifications
+      notificationCount = user.notifications
         .filter(notification => notification.device.id === this.props.device.id)
         .filter(notification => notification.visualized === false).length
 
@@ -255,9 +263,13 @@ class NotificationsDrawer extends React.Component {
             )
           }
         >
-          <i class="material-icons">{notificationsIcon}</i>
+          <MuiThemeProvider theme={theme}>
+            <Badge badgeContent={notificationCount} color="primary">
+              <i class="material-icons">{notificationsIcon}</i>
+            </Badge>
+          </MuiThemeProvider>
         </IconButton>
-        <Drawer
+        <SwipeableDrawer
           variant="temporary"
           anchor="right"
           open={this.state.drawer}
@@ -266,6 +278,9 @@ class NotificationsDrawer extends React.Component {
               this.state.drawer ? { drawer: false } : { drawer: true }
             )
           }
+          swipeAreaWidth={0}
+          disableBackdropTransition={false}
+          disableDiscovery={true}
         >
           <div className="notificationsTopBar notSelectable invisibleHeader">
             <IconButton
@@ -325,7 +340,7 @@ class NotificationsDrawer extends React.Component {
               ? this.state.showVisualized ? readNotifications : ""
               : ""}
           </div>
-        </Drawer>
+        </SwipeableDrawer>
       </React.Fragment>
     )
   }
