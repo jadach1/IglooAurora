@@ -248,27 +248,29 @@ class NotificationsDrawer extends React.Component {
 
     return (
       <React.Fragment>
-        <IconButton
-          className="mainBodyHeaderIcon"
-          style={{
-            padding: "0",
-            width: "32px",
-            height: "32px",
-            marginTop: "14px",
-            left: "34px",
-          }}
-          onClick={() =>
-            this.setState(
-              this.state.drawer ? { drawer: false } : { drawer: true }
-            )
-          }
-        >
-          <MuiThemeProvider theme={theme}>
-            <Badge badgeContent={notificationCount} color="primary">
-              <i class="material-icons">{notificationsIcon}</i>
-            </Badge>
-          </MuiThemeProvider>
-        </IconButton>
+        <Tooltip title="Notifications" placement="bottom">
+          <IconButton
+            className="mainBodyHeaderIcon"
+            style={{
+              padding: "0",
+              width: "32px",
+              height: "32px",
+              marginTop: "14px",
+              left: "34px",
+            }}
+            onClick={() =>
+              this.setState(
+                this.state.drawer ? { drawer: false } : { drawer: true }
+              )
+            }
+          >
+            <MuiThemeProvider theme={theme}>
+              <Badge badgeContent={notificationCount} color="primary">
+                <i class="material-icons">{notificationsIcon}</i>
+              </Badge>
+            </MuiThemeProvider>
+          </IconButton>
+        </Tooltip>
         <SwipeableDrawer
           variant="temporary"
           anchor="right"
@@ -283,51 +285,47 @@ class NotificationsDrawer extends React.Component {
           disableDiscovery={true}
         >
           <div className="notificationsTopBar notSelectable invisibleHeader">
-            <IconButton
-              className="notificationsLeftSide"
-              onClick={() => this.setState({ drawer: false })}
-              style={{
-                padding: "0",
-                width: "32px",
-                height: "32px",
-              }}
+            <Tooltip
+              id="tooltip-bottom"
+              title="Close drawer"
+              placement="bottom"
             >
-              <Tooltip
-                id="tooltip-bottom"
-                title="Close drawer"
-                placement="bottom"
+              <IconButton
+                className="notificationsLeftSide"
+                onClick={() => this.setState({ drawer: false })}
+                style={{
+                  padding: "0",
+                  width: "32px",
+                  height: "32px",
+                }}
               >
                 <i class="material-icons">chevron_right</i>
-              </Tooltip>
-            </IconButton>
-            <IconButton
-              className="notificationsRightSide2"
-              style={{
-                padding: "0",
-                width: "32px",
-                height: "32px",
-              }}
-            >
-              <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
+              </IconButton>
+            </Tooltip>
+            <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
+              <IconButton
+                className="notificationsRightSide2"
+                style={{
+                  padding: "0",
+                  width: "32px",
+                  height: "32px",
+                }}
+              >
                 <i className="material-icons">clear_all</i>
-              </Tooltip>
-            </IconButton>
-            <IconButton
-              className="notificationsRightSide"
-              style={{
-                padding: "0",
-                width: "32px",
-                height: "32px",
-              }}
-            >
-              <Tooltip
-                id="tooltip-bottom"
-                title="Mute device"
-                placement="bottom"
+              </IconButton>
+            </Tooltip>
+            <Tooltip id="tooltip-bottom" title="Mute device" placement="bottom">
+              <IconButton
+                className="notificationsRightSide"
+                style={{
+                  padding: "0",
+                  width: "32px",
+                  height: "32px",
+                }}
               >
                 <i className="material-icons">notifications_off</i>
-              </Tooltip>
-            </IconButton>
+              </IconButton>
+            </Tooltip>
           </div>
           <div
             className="notSelectable"

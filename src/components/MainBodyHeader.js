@@ -74,24 +74,24 @@ class MainBodyHeader extends Component {
             <i className="deviceIconBig material-icons">lightbulb_outline</i>
           )}
           <p className="title">{device.customName}</p>
-          <IconButton
-            onClick={this.handleOpen}
-            className="mainBodyHeaderIcon"
-            style={{
-              padding: "0",
-              width: "32px",
-              height: "32px",
-              marginTop: "14px",
-            }}
+          <Tooltip
+            id="tooltip-bottom"
+            title="Rearrange cards"
+            placement="bottom"
           >
-            <Tooltip
-              id="tooltip-bottom"
-              title="Rearrange cards"
-              placement="bottom"
+            <IconButton
+              onClick={this.handleOpen}
+              className="mainBodyHeaderIcon"
+              style={{
+                padding: "0",
+                width: "32px",
+                height: "32px",
+                marginTop: "14px",
+              }}
             >
               <i className="material-icons">mode_edit</i>
-            </Tooltip>
-          </IconButton>
+            </IconButton>
+          </Tooltip>
           <NotificationsDrawer
             changeDrawerState={() =>
               this.setState(
