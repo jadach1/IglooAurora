@@ -2,8 +2,10 @@ import React, { Component } from "react"
 import Slider from "material-ui/Slider"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
+import getMuiTheme from "material-ui/styles/getMuiTheme"
 
-class ReadOnlyBooleanTile extends Component {
+class ReadWriteBooleanTile extends Component {
   constructor(props) {
     super()
     this.state = {
@@ -20,35 +22,44 @@ class ReadOnlyBooleanTile extends Component {
   }
 
   render() {
+    const theme1 = getMuiTheme({
+      slider: {
+        selectionColor: "#0083ff",
+        rippleColor: "#0083ff",
+      },
+    })
+
     return (
       <div className="readWriteBoundedFloatTile notSelectable">
         <div className="min">{this.props.min}</div>
-        <Slider
-          min={this.props.min}
-          max={this.props.max}
-          step={this.props.step}
-          value={this.state.value}
-          className="slider"
-          sliderStyle={{ marginTop: "0", marginBottom: "0" }}
-          onChange={(e, newValue) => this.setState({ value: newValue })}
-          onDragStop={e => {
-            this.props.mutate({
-              variables: {
-                id: this.props.id,
-                value: this.state.value,
-              },
-              optimisticResponse: {
-                __typename: "Mutation",
-                floatValue: {
-                  __typename: "FloatValue",
+        <MuiThemeProvider muiTheme={theme1}>
+          <Slider
+            min={this.props.min}
+            max={this.props.max}
+            step={this.props.step}
+            value={this.state.value}
+            className="slider"
+            sliderStyle={{ marginTop: "0", marginBottom: "0" }}
+            onChange={(e, newValue) => this.setState({ value: newValue })}
+            onDragStop={e => {
+              this.props.mutate({
+                variables: {
                   id: this.props.id,
                   value: this.state.value,
                 },
-              },
-            })
-          }}
-          disabled={this.props.disabled}
-        />
+                optimisticResponse: {
+                  __typename: "Mutation",
+                  floatValue: {
+                    __typename: "FloatValue",
+                    id: this.props.id,
+                    value: this.state.value,
+                  },
+                },
+              })
+            }}
+            disabled={this.props.disabled}
+          />
+        </MuiThemeProvider>
         <div className="max">{this.props.max}</div>
         <input
           min={this.props.min}
@@ -93,4 +104,4 @@ const updateFloatValue = gql`
   }
 `
 
-export default graphql(updateFloatValue)(ReadOnlyBooleanTile)
+export default graphql(updateFloatValue)(ReadWriteBooleanTile)
