@@ -35,8 +35,8 @@ class SidebarHeader extends Component {
               style={{
                 padding: "0",
                 margin: "0 5px 0 5px",
-                width: "24px",
-                height: "24px",
+                width: "32px",
+                height: "32px",
               }}
               className="sidebarHeaderButton"
             >
