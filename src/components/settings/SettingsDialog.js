@@ -289,6 +289,17 @@ class SettingsDialog extends React.Component {
                     secondaryText="DD/MM/YYYY, 24-hour clock"
                     onClick={this.handleTimeFormatDialogOpen}
                   />
+                  <Subheader>Lorem Ipsum</Subheader>
+                  <ListItem
+                    primaryText="Show notifications in the sidebar"
+                    rightToggle={
+                      <Toggle
+                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                        rippleStyle={{ color: "#0083ff" }}
+                      />
+                    }
+                  />
                 </List>
               </div>
             </div>
