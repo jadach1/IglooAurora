@@ -119,6 +119,29 @@ class NotificationsDrawer extends React.Component {
       })
     }
 
+    var i
+
+    let clearAllNotifications = () => {
+      for (
+        i = 0;
+        i <
+        user.notifications
+          .filter(
+            notification => notification.device.id === this.props.device.id
+          )
+          .filter(notification => notification.visualized === false).length;
+        i++
+      ) {
+        clearNotification(
+          user.notifications
+            .filter(
+              notification => notification.device.id === this.props.device.id
+            )
+            .filter(notification => notification.visualized === false)[i].id
+        )
+      }
+    }
+
     let notifications = ""
     let readNotifications = ""
 
@@ -309,6 +332,9 @@ class NotificationsDrawer extends React.Component {
                   padding: "0",
                   width: "32px",
                   height: "32px",
+                }}
+                onClick={() => {
+                  clearAllNotifications()
                 }}
               >
                 <i className="material-icons">clear_all</i>
