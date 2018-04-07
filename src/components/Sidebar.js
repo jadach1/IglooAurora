@@ -1,10 +1,24 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { List, ListItem } from "material-ui/List"
+import List, {
+  ListItem,
+  ListItemAvatar,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  ListItemText,
+} from "material-ui-next/List"
 import CenteredSpinner from "./CenteredSpinner"
 import FloatingActionButton from "material-ui/FloatingActionButton"
 import Tooltip from "material-ui-next/Tooltip"
+import Badge from "material-ui-next/Badge"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#ff4081" },
+  },
+})
 
 class Sidebar extends Component {
   componentDidMount() {
@@ -103,20 +117,18 @@ class Sidebar extends Component {
           <List>
             {user.devices.map(device => (
               <ListItem
+                button
                 className="notSelectable"
-                primaryText={device.customName}
-                /*                 secondaryText={
-                  device.notifications
-                    .map(notification => notification.content)
-                    .reverse()[0]
-                } */
                 style={
                   this.props.selectedDevice === device.id
                     ? { backgroundColor: "#d4d4d4" }
                     : { backgroundColor: "transparent" }
                 }
-                leftIcon={
-                  device.icon ? (
+                key={device.id}
+                onClick={() => this.listItemClick(device)}
+              >
+                <ListItemIcon>
+                  {device.icon ? (
                     <img
                       className="deviceIcon"
                       src={device.icon}
@@ -124,11 +136,39 @@ class Sidebar extends Component {
                     />
                   ) : (
                     <i className="material-icons">lightbulb_outline</i>
-                  )
-                }
-                key={device.id}
-                onClick={() => this.listItemClick(device)}
-              />
+                  )}
+                </ListItemIcon>
+                <ListItemText
+                  primary={device.customName}
+                  secondary={
+                    device.notifications
+                      .filter(notification => notification.visualized === false)
+                      .map(notification => notification.content)
+                      .reverse()[0]
+                      ? device.notifications
+                          .filter(
+                            notification => notification.visualized === false
+                          )
+                          .map(notification => notification.content)
+                          .reverse()[0]
+                      : "No new notifications"
+                  }
+                />
+                <ListItemSecondaryAction>
+                  <MuiThemeProvider theme={theme}>
+                    <Badge
+                      badgeContent={
+                        1
+                        /*       device.notifications.filter(
+                          notification => notification.visualized === false
+                        ).lenght */
+                      }
+                      color="primary"
+                      style={{ marginRight: "16px" }}
+                    />
+                  </MuiThemeProvider>
+                </ListItemSecondaryAction>
+              </ListItem>
             ))}
           </List>
         </div>
