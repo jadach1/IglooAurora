@@ -104,6 +104,8 @@ class Sidebar extends Component {
   render() {
     const { userData: { loading, error, user } } = this.props
 
+    let notificationCount = ""
+
     if (loading) {
       return <CenteredSpinner />
     }
@@ -151,23 +153,34 @@ class Sidebar extends Component {
                           )
                           .map(notification => notification.content)
                           .reverse()[0]
-                      : "No new notifications"
+                      : device.notifications
+                          .filter(
+                            notification => notification.visualized === true
+                          )
+                          .map(notification => notification.content)
+                          .reverse()[0]
+                        ? "No unread notifications"
+                        : "No notifications"
                   }
                 />
-                <ListItemSecondaryAction>
-                  <MuiThemeProvider theme={theme}>
-                    <Badge
-                      badgeContent={
-                        1
-                        /*       device.notifications.filter(
-                          notification => notification.visualized === false
-                        ).lenght */
-                      }
-                      color="primary"
-                      style={{ marginRight: "16px" }}
-                    />
-                  </MuiThemeProvider>
-                </ListItemSecondaryAction>
+                {device.notifications
+                  .filter(notification => notification.visualized === false)
+                  .map(notification => notification.content)
+                  .reverse()[0] ? (
+                  <ListItemSecondaryAction>
+                    <MuiThemeProvider theme={theme}>
+                      <Badge
+                        badgeContent={
+                          device.notifications.filter(
+                            notification => notification.visualized === false
+                          ).length
+                        }
+                        color="primary"
+                        style={{ marginRight: "24px" }}
+                      />
+                    </MuiThemeProvider>
+                  </ListItemSecondaryAction>
+                ) : null}
               </ListItem>
             ))}
           </List>
