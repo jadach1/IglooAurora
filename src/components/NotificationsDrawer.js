@@ -2,7 +2,11 @@ import React from "react"
 import IconButton from "material-ui/IconButton"
 import IconMenu from "material-ui/IconMenu"
 import CenteredSpinner from "./CenteredSpinner"
-import { List, ListItem } from "material-ui/List"
+import List, {
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+} from "material-ui-next/List"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Snackbar from "material-ui/Snackbar"
@@ -172,17 +176,20 @@ class NotificationsDrawer extends React.Component {
               .map(notification => (
                 <ListItem
                   className="notSelectable"
-                  primaryText={notification.content}
-                  secondaryText={moment(
-                    notification.date.split(".")[0],
-                    "YYYY-MM-DDTh:mm:ss"
-                  ).fromNow()}
-                  style={{
-                    backgroundColor: "transparent",
-                  }}
                   id={notification.id}
                   onClick={() => clearNotification(notification.id)}
-                />
+                >
+                  <ListItemText
+                    primary={notification.content}
+                    secondary={moment(
+                      notification.date.split(".")[0],
+                      "YYYY-MM-DDTh:mm:ss"
+                    ).fromNow()}
+                    style={{
+                      backgroundColor: "transparent",
+                    }}
+                  />
+                </ListItem>
               ))
               .reverse()}
           </ReactCSSTransitionGroup>
@@ -203,17 +210,24 @@ class NotificationsDrawer extends React.Component {
               .filter(notification => notification.visualized === true)
               .map(notification => (
                 <ListItem
+                  button
                   className="notSelectable"
-                  primaryText={notification.content}
-                  secondaryText={moment(
-                    notification.date.split(".")[0],
-                    "YYYY-MM-DDTh:mm:ss"
-                  ).fromNow()}
                   style={{
                     backgroundColor: "transparent",
                   }}
                   id={notification.id}
-                />
+                >
+                  <ListItemText
+                    primary={notification.content}
+                    secondary={moment(
+                      notification.date.split(".")[0],
+                      "YYYY-MM-DDTh:mm:ss"
+                    ).fromNow()}
+                    style={{
+                      backgroundColor: "transparent",
+                    }}
+                  />
+                </ListItem>
               ))
               .reverse()}
           </ReactCSSTransitionGroup>

@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://hellowitlab.github.io/iglooQLRemote/",
   "dependencies": {
+    "@material-ui/lab": "^1.0.0-alpha.0",
     "apollo-client-preset": "^1.0.5",
     "apollo-link-ws": "^1.0.4",
     "coloreact": "^0.2.4",
