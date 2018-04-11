@@ -276,6 +276,10 @@ body {
   height: calc(100% - 48px);
 }
 
+.sidebarBadge {
+  cursor: pointer;
+}
+
 div[menutype="notifications"] {
   padding: 0px !important;
   background-color: white;

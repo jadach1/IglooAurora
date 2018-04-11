@@ -176,7 +176,11 @@ class Sidebar extends Component {
                           ).length
                         }
                         color="primary"
+                        className="notSelectable sidebarBadge"
                         style={{ marginRight: "24px" }}
+                        onClick={() => {
+                          this.listItemClick(device)
+                        }}
                       />
                     </MuiThemeProvider>
                   </ListItemSecondaryAction>

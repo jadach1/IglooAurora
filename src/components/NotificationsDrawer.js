@@ -88,7 +88,8 @@ class NotificationsDrawer extends React.Component {
         if (!subscriptionData.data) {
           return prev
         }
-        const newNotification = subscriptionData.notificationUpdated
+        const newNotification = subscriptionData.data.notificationUpdated
+
         const newNotifications = prev.user.notifications.map(
           notification =>
             notification.id === newNotification.id
@@ -118,38 +119,26 @@ class NotificationsDrawer extends React.Component {
           notification: {
             id: id,
             visualized: true,
+            __typename: "Notification",
           },
         },
       })
     }
 
-    var i
-
     let clearAllNotifications = () => {
-      for (
-        i = 0;
-        i <
-        user.notifications
-          .filter(
-            notification => notification.device.id === this.props.device.id
-          )
-          .filter(notification => notification.visualized === false).length;
-        i++
-      ) {
-        clearNotification(
-          user.notifications
-            .filter(
-              notification => notification.device.id === this.props.device.id
-            )
-            .filter(notification => notification.visualized === false)[i].id
-        )
+      const notificationsToFlush = user.notifications.filter(
+        notification =>
+          notification.device.id === this.props.device.id &&
+          notification.visualized === false
+      )
+
+      for (let i = 0; i < notificationsToFlush.length; i++) {
+        clearNotification(notificationsToFlush[i].id)
       }
     }
 
     let notifications = ""
     let readNotifications = ""
-
-    let notificationsIcon = "notifications_none"
 
     let notificationCount = ""
 
@@ -242,10 +231,6 @@ class NotificationsDrawer extends React.Component {
         .filter(notification => notification.device.id === this.props.device.id)
         .filter(notification => notification.visualized === true).length
 
-      notificationsIcon = notificationCount
-        ? "notifications"
-        : "notifications_none"
-
       if (!notificationCount) {
         noNotificationsUI = "No new notifications"
       }
@@ -302,9 +287,13 @@ class NotificationsDrawer extends React.Component {
             }
           >
             <MuiThemeProvider theme={theme}>
-              <Badge badgeContent={notificationCount} color="primary">
-                <i class="material-icons">{notificationsIcon}</i>
-              </Badge>
+              {notificationCount ? (
+                <Badge badgeContent={notificationCount} color="primary">
+                  <i class="material-icons">notifications</i>
+                </Badge>
+              ) : (
+                <i class="material-icons">notifications_none</i>
+              )}
             </MuiThemeProvider>
           </IconButton>
         </Tooltip>
@@ -312,11 +301,12 @@ class NotificationsDrawer extends React.Component {
           variant="temporary"
           anchor="right"
           open={this.state.drawer}
-          onClose={() =>
+          onClose={() => {
             this.setState(
               this.state.drawer ? { drawer: false } : { drawer: true }
             )
-          }
+            clearAllNotifications()
+          }}
           swipeAreaWidth={0}
           disableBackdropTransition={false}
           disableDiscovery={true}
@@ -329,7 +319,10 @@ class NotificationsDrawer extends React.Component {
             >
               <IconButton
                 className="notificationsLeftSide"
-                onClick={() => this.setState({ drawer: false })}
+                onClick={() => {
+                  this.setState({ drawer: false })
+                  clearAllNotifications()
+                }}
                 style={{
                   padding: "0",
                   width: "32px",
@@ -339,7 +332,7 @@ class NotificationsDrawer extends React.Component {
                 <i class="material-icons">chevron_right</i>
               </IconButton>
             </Tooltip>
-            <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
+            {/*  <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
               <IconButton
                 className="notificationsRightSide2"
                 style={{
@@ -353,7 +346,7 @@ class NotificationsDrawer extends React.Component {
               >
                 <i className="material-icons">clear_all</i>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip id="tooltip-bottom" title="Mute device" placement="bottom">
               <IconButton
                 className="notificationsRightSide"
@@ -409,6 +402,7 @@ export default graphql(
       mutation ClearNotification($id: ID!) {
         notification(id: $id, visualized: true) {
           id
+          visualized
         }
       }
     `,

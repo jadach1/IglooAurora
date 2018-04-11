@@ -101,6 +101,32 @@ class MainBody extends Component {
     this.props.deviceData.subscribeToMore({
       document: subscribeToValueUpdates,
     })
+
+    const subscribeToValuesDeletes = gql`
+      subscription {
+        valueDeleted
+      }
+    `
+
+    this.props.deviceData.subscribeToMore({
+      document: subscribeToValuesDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newValues = prev.device.values.filter(
+          value => value.id !== subscriptionData.data.valueDeleted
+        )
+
+        return {
+          device: {
+            ...prev.device,
+            values: newValues,
+          },
+        }
+      },
+    })
   }
 
   render() {
