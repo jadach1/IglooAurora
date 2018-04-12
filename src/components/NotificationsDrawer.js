@@ -30,7 +30,6 @@ const sleep = time =>
     setTimeout(() => resolve(), time)
   })
 
-
 class NotificationsDrawer extends React.Component {
   state = {
     drawer: false,
