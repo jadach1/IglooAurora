@@ -25,6 +25,12 @@ const theme = createMuiTheme({
   },
 })
 
+const sleep = time =>
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve(), time)
+  })
+
+
 class NotificationsDrawer extends React.Component {
   state = {
     drawer: false,
@@ -301,10 +307,11 @@ class NotificationsDrawer extends React.Component {
           variant="temporary"
           anchor="right"
           open={this.state.drawer}
-          onClose={() => {
+          onClose={async time => {
             this.setState(
               this.state.drawer ? { drawer: false } : { drawer: true }
             )
+            await sleep(200)
             clearAllNotifications()
           }}
           swipeAreaWidth={0}
