@@ -1,8 +1,20 @@
 import React, { Component } from "react"
 import IconButton from "material-ui/IconButton"
 import Tooltip from "material-ui-next/Tooltip"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 class SidebarHeader extends Component {
+  hot_keys = {
+    "alt+,": {
+      priority: 1,
+      handler: event => this.props.changeSettingsState(),
+    },
+    "alt+q": {
+      priority: 1,
+      handler: event => this.props.logOut(),
+    },
+  }
+
   render() {
     return (
       <div className="sidebarHeader">
@@ -49,4 +61,4 @@ class SidebarHeader extends Component {
   }
 }
 
-export default SidebarHeader
+export default hotkeys(SidebarHeader)
