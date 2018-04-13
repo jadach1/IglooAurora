@@ -309,3 +309,11 @@ div[menutype="notifications"] {
   opacity: 0.01;
   transition: opacity 300ms ease-in;
 }
+
+input[type="text"]::-ms-clear {
+  display: none;
+}
+
+input[type="password"]::-ms-reveal {
+  display: none;
+}
