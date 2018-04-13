@@ -39,6 +39,11 @@ class Main extends Component {
               openSettingsDialog={() => {
                 this.setState({ areSettingsOpen: true })
               }}
+              changeSettingsState={() =>
+                this.setState(oldState => ({
+                  areSettingsOpen: !oldState.areSettingsOpen,
+                }))
+              }
               selectDevice={id => this.setState({ selectedDevice: id })}
             />
             <div className="sidebar" key="sidebar">

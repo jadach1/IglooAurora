@@ -16,6 +16,7 @@ import Tooltip from "material-ui-next/Tooltip"
 import SwipeableDrawer from "material-ui-next/SwipeableDrawer"
 import FlatButton from "material-ui/FlatButton"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 var moment = require("moment")
 
@@ -33,6 +34,17 @@ const sleep = time =>
 class NotificationsDrawer extends React.Component {
   state = {
     drawer: false,
+  }
+
+  hot_keys = {
+    "alt+n": {
+      priority: 1,
+      handler: event => {
+        this.setState(oldState => ({
+          drawer: !oldState.drawer,
+        }))
+      },
+    },
   }
 
   componentDidMount() {
@@ -286,9 +298,9 @@ class NotificationsDrawer extends React.Component {
               left: "34px",
             }}
             onClick={() =>
-              this.setState(
-                this.state.drawer ? { drawer: false } : { drawer: true }
-              )
+              this.setState(oldState => ({
+                drawer: !oldState.drawer,
+              }))
             }
           >
             <MuiThemeProvider theme={theme}>
@@ -415,5 +427,5 @@ export default graphql(
     {
       name: "ClearNotification",
     }
-  )(NotificationsDrawer)
+  )(hotkeys(NotificationsDrawer))
 )

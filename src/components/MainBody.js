@@ -4,6 +4,7 @@ import LargeCenteredSpinner from "./LargeCenteredSpinner"
 import FlatButton from "material-ui/FlatButton"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 class MainBody extends Component {
   constructor() {
@@ -12,6 +13,18 @@ class MainBody extends Component {
       showHidden: false,
     }
   }
+
+  hot_keys = {
+    "alt+s": {
+      priority: 1,
+      handler: event => {
+        this.setState(oldState => ({
+          showHidden: !oldState.showHidden,
+        }))
+      },
+    },
+  }
+
   componentDidMount() {
     const subscribeToNewValues = gql`
       subscription {
@@ -196,8 +209,9 @@ class MainBody extends Component {
             marginTop: "15px",
           }}
           key="noTilesUI"
+          className="notSelectable"
         >
-          This device has no values :(
+          This device has no values
         </div>
       )
     }
@@ -249,4 +263,4 @@ export default graphql(
     name: "deviceData",
     options: ({ deviceId }) => ({ variables: { id: deviceId } }),
   }
-)(MainBody)
+)(hotkeys(MainBody))

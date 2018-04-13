@@ -20,6 +20,7 @@ import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
 import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
+import Shortcuts from "./Shortcuts"
 
 const listStyles = {
   root: {
@@ -45,6 +46,7 @@ class SettingsDialog extends React.Component {
     timeFormatDialogOpen: false,
     unitDialogOpen: false,
     nameDialogOpen: false,
+    shortcutDialogOpen: false,
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -61,6 +63,14 @@ class SettingsDialog extends React.Component {
 
   handleEmailDialogClose = () => {
     this.setState({ emailDialogOpen: false })
+  }
+
+  handleShortcutDialogOpen = () => {
+    this.setState({ shortcutDialogOpen: true })
+  }
+
+  handleShortcutDialogClose = () => {
+    this.setState({ shortcutDialogOpen: false })
   }
 
   handleDeleteDialogOpen = () => {
@@ -289,6 +299,11 @@ class SettingsDialog extends React.Component {
                     secondaryText="DD/MM/YYYY, 24-hour clock"
                     onClick={this.handleTimeFormatDialogOpen}
                   />
+                  <Subheader>Lorem Ipsum</Subheader>
+                  <ListItem
+                    primaryText="Keyboard shortcuts"
+                    onClick={this.handleShortcutDialogOpen}
+                  />
                 </List>
               </div>
             </div>
@@ -423,6 +438,10 @@ class SettingsDialog extends React.Component {
         <ChangeNameDialog
           handleNameDialogClose={this.handleNameDialogClose}
           confirmationDialogOpen={this.state.nameDialogOpen}
+        />
+        <Shortcuts
+          handleShortcutDialogClose={this.handleShortcutDialogClose}
+          shortcutDialogOpen={this.state.shortcutDialogOpen}
         />
       </React.Fragment>
     )
