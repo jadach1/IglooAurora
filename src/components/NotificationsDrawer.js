@@ -124,7 +124,9 @@ class NotificationsDrawer extends React.Component {
   }
 
   render() {
-    const { notifications: { loading, error, user } } = this.props
+    const {
+      notifications: { loading, error, user },
+    } = this.props
 
     let clearNotification = id => {
       this.props["ClearNotification"]({
@@ -386,7 +388,9 @@ class NotificationsDrawer extends React.Component {
             {notifications}
             {readNotificationsUI}
             {readNotificationsUI
-              ? this.state.showVisualized ? readNotifications : ""
+              ? this.state.showVisualized
+                ? readNotifications
+                : ""
               : ""}
           </div>
         </SwipeableDrawer>

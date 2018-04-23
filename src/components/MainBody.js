@@ -248,12 +248,14 @@ export default graphql(
           ... on StringValue {
             stringValue: value
             maxChars
+            allowedValues
           }
           ... on BooleanValue {
             boolValue: value
           }
           ... on ColourValue {
             colourValue: value
+            allowedValues
           }
         }
       }
