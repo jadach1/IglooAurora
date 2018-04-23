@@ -8,6 +8,8 @@ import ReadOnlyBoundedFloatTile from "./ReadOnlyBoundedFloatTile"
 import ReadOnlyColourTile from "./ReadOnlyColourTile"
 import ReadWriteColourTile from "./ReadWriteColourTile"
 import ReadOnlyFloatTile from "./ReadOnlyFloatTile"
+import ReadWriteStringTile from "./ReadOnlyStringTile"
+import ReadWriteAllowedStringTile from "./ReadWriteAllowedStringTile"
 import FullScreenTile from "./FullScreenTile"
 import MenuItem from "material-ui/MenuItem"
 import IconMenu from "material-ui/IconMenu"
@@ -302,6 +304,27 @@ class Tile extends Component {
           </List>
         </div>
       )
+    } else if (
+      value.__typename === "StringValue" &&
+      value.permission === "READ_ONLY"
+    ) {
+      specificTile = (
+        <ReadWriteStringTile value={value.stringValue} id={value.id} />
+      )
+      specificInterfaceSettings = ""
+    } else if (
+      value.__typename === "StringValue" &&
+      value.permission === "READ_WRITE" &&
+      !!value.allowedValues
+    ) {
+      specificTile = (
+        <ReadWriteAllowedStringTile
+          customName={value.customName}
+          value={value.allowedValues}
+          id={value.id}
+        />
+      )
+      specificInterfaceSettings = ""
     } else {
       specificTile = ""
     }

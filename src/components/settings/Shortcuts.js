@@ -29,7 +29,7 @@ export default class ChangeShortcutDialog extends React.Component {
           onRequestClose={this.props.handleShortcutDialogClose}
           className="notSelectable"
         >
-          <Paper elevation="0">
+          <Paper>
             <Table>
               <TableHead>
                 <TableRow>

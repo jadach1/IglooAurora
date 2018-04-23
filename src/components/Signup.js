@@ -63,79 +63,91 @@ class Login extends Component {
     }
   }
 
+  handleClickShowPassword = () => {
+    this.setState({ showPassword: !this.state.showPassword })
+  }
+
+  handleMouseDownPassword = event => {
+    event.preventDefault()
+  }
+
+  handleClickCancelEmail = () => {
+    this.setState({ email: "" })
+  }
+
   render() {
     return (
       <div className="rightSide notSelectable">
         <h1>Nice to meet you!</h1>
-        <FormControl style={{ width: "100%" }}>
-          <InputLabel htmlFor="adornment-email">Email</InputLabel>
-          <Input
-            id="adornment-email"
-            value={this.state.email}
-            onChange={event => this.setState({ email: event.target.value })}
-            onKeyPress={event => {
-              if (event.key === "Enter") this.signUp()
-            }}
-            endAdornment={
-              this.state.email ? (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="Toggle password visibility"
-                    onClick={this.handleClickCancelEmail}
-                    onMouseDown={this.handleMouseDownPassword}
-                  >
-                    <i class="material-icons">clear</i>
-                  </IconButton>
-                </InputAdornment>
-              ) : null
-            }
-          />
-          <FormHelperText id="name-error-text">
-            {this.state.emailError}
-          </FormHelperText>
-        </FormControl>
-        <br />
-        <FormControl style={{ width: "100%" }}>
-          <InputLabel htmlFor="adornment-password">Password</InputLabel>
-          <Input
-            id="adornment-password"
-            type={this.state.showPassword ? "text" : "password"}
-            value={this.state.password}
-            onChange={event =>
-              this.setState({
-                password: event.target.value,
-              })
-            }
-            onKeyPress={event => {
-              if (event.key === "Enter") this.signUp()
-            }}
-            endAdornment={
-              this.state.password ? (
-                <InputAdornment position="end">
-                  <IconButton
-                    aria-label="Toggle password visibility"
-                    onClick={this.handleClickShowPassword}
-                    onMouseDown={this.handleMouseDownPassword}
-                  >
-                    {this.state.showPassword ? (
-                      <i class="material-icons">visibility_off</i>
-                    ) : (
-                      <i class="material-icons">visibility</i>
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              ) : null
-            }
-          />
-          <FormHelperText id="name-error-text">
-            {this.state.passwordError}
-          </FormHelperText>
-        </FormControl>
-        <br />
-        <br />
-        <br />
-        <br />
         <MuiThemeProvider theme={theme}>
+          <FormControl style={{ width: "100%" }}>
+            <InputLabel htmlFor="adornment-email">Email</InputLabel>
+            <Input
+              id="adornment-email"
+              value={this.state.email}
+              onChange={event => this.setState({ email: event.target.value })}
+              onKeyPress={event => {
+                if (event.key === "Enter") this.signUp()
+              }}
+              endAdornment={
+                this.state.email ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.handleClickCancelEmail}
+                      onMouseDown={this.handleMouseDownPassword}
+                    >
+                      <i class="material-icons">clear</i>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+            <FormHelperText id="name-error-text">
+              {this.state.emailError}
+            </FormHelperText>
+          </FormControl>
+          <br />
+          <FormControl style={{ width: "100%" }}>
+            <InputLabel htmlFor="adornment-password">Password</InputLabel>
+            <Input
+              id="adornment-password"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password}
+              onChange={event =>
+                this.setState({
+                  password: event.target.value,
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter") this.signUp()
+              }}
+              endAdornment={
+                this.state.password ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="Toggle password visibility"
+                      onClick={this.handleClickShowPassword}
+                      onMouseDown={this.handleMouseDownPassword}
+                    >
+                      {this.state.showPassword ? (
+                        <i class="material-icons">visibility_off</i>
+                      ) : (
+                        <i class="material-icons">visibility</i>
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+            <FormHelperText id="name-error-text">
+              {this.state.passwordError}
+            </FormHelperText>
+          </FormControl>
+          <br />
+          <br />
+          <br />
+          <br />
           <Button
             variant="raised"
             color="primary"
