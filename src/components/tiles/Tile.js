@@ -8,8 +8,10 @@ import ReadOnlyBoundedFloatTile from "./ReadOnlyBoundedFloatTile"
 import ReadOnlyColourTile from "./ReadOnlyColourTile"
 import ReadWriteColourTile from "./ReadWriteColourTile"
 import ReadOnlyFloatTile from "./ReadOnlyFloatTile"
-import ReadWriteStringTile from "./ReadOnlyStringTile"
+import ReadOnlyStringTile from "./ReadOnlyStringTile"
 import ReadWriteAllowedStringTile from "./ReadWriteAllowedStringTile"
+import ReadWriteStringTile from "./ReadWriteStringTile"
+import ReadWriteBoundedStringTile from "./ReadWriteBoundedStringTile"
 import FullScreenTile from "./FullScreenTile"
 import MenuItem from "material-ui/MenuItem"
 import IconMenu from "material-ui/IconMenu"
@@ -309,7 +311,7 @@ class Tile extends Component {
       value.permission === "READ_ONLY"
     ) {
       specificTile = (
-        <ReadWriteStringTile value={value.stringValue} id={value.id} />
+        <ReadOnlyStringTile value={value.stringValue} id={value.id} />
       )
       specificInterfaceSettings = ""
     } else if (
@@ -320,8 +322,39 @@ class Tile extends Component {
       specificTile = (
         <ReadWriteAllowedStringTile
           customName={value.customName}
-          value={value.allowedValues}
+          values={value.allowedValues}
           id={value.id}
+          stringValue={value.stringValue}
+        />
+      )
+      specificInterfaceSettings = ""
+    } else if (
+      value.__typename === "StringValue" &&
+      value.permission === "READ_WRITE" &&
+      !value.allowedValues &&
+      !value.maxChars
+    ) {
+      specificTile = (
+        <ReadWriteStringTile
+          customName={value.customName}
+          values={value.allowedValues}
+          id={value.id}
+          stringValue={value.stringValue}
+        />
+      )
+      specificInterfaceSettings = ""
+    } else if (
+      value.__typename === "StringValue" &&
+      value.permission === "READ_WRITE" &&
+      value.maxChars
+    ) {
+      specificTile = (
+        <ReadWriteBoundedStringTile
+          customName={value.customName}
+          values={value.allowedValues}
+          id={value.id}
+          stringValue={value.stringValue}
+          maxChars={value.maxChars}
         />
       )
       specificInterfaceSettings = ""

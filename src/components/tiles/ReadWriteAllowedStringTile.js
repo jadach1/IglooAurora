@@ -15,14 +15,14 @@ class ReadWriteAllowedStringTile extends Component {
     this.props.mutate({
       variables: {
         id: this.props.id,
-        value: this.state.selectedValue,
+        stringValue: this.state.selectedValue,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        floatValue: {
+        stringValue: {
           __typename: "StringValue",
           id: this.props.id,
-          value: this.state.selectedValue,
+          stringValue: this.state.selectedValue,
         },
       },
     })
@@ -33,11 +33,11 @@ class ReadWriteAllowedStringTile extends Component {
       <div className="readWriteBooleanTile">
         <FormControl>
           <InputLabel>{this.props.customName}</InputLabel>
-          <Select value={this.state.selectedValue} onChange={this.handleChange}>
+          <Select value={this.props.stringValue} onChange={this.handleChange}>
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            {this.props.value.map(value => (
+            {this.props.values.map(value => (
               <MenuItem value={value}>{value}</MenuItem>
             ))}
           </Select>
@@ -49,9 +49,9 @@ class ReadWriteAllowedStringTile extends Component {
 
 const updateStringValue = gql`
   mutation stringValue($id: ID!, $value: String!) {
-    stringValue(id: $id, value: $value) {
+    stringValue(id: $id, stringValue: $stringValue) {
       id
-      value
+      stringValue
     }
   }
 `
