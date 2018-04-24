@@ -51,7 +51,7 @@ class ReadWriteBoundedStringTile extends Component {
             <Input
               value={this.state.text}
               endAdornment={
-                <InputAdornment>
+                <InputAdornment style={{ cursor: "default" }}>
                   {this.state.text.lenght}/{this.props.maxChars}
                 </InputAdornment>
               }

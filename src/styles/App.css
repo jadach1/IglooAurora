@@ -317,3 +317,12 @@ input[type="text"]::-ms-clear {
 input[type="password"]::-ms-reveal {
   display: none;
 }
+
+::selection {
+  background: #0057cb; /* WebKit/Blink Browsers */
+  color: #fff;
+}
+::-moz-selection {
+  background: #0057cb; /* Gecko Browsers */
+  color: #fff;
+}
