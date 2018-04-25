@@ -21,8 +21,6 @@ import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right"
 import { List, ListItem } from "material-ui/List"
 import Toggle from "material-ui/Toggle"
 import Subheader from "material-ui/Subheader"
-import DropDownMenu from "material-ui/DropDownMenu"
-import TileSettings from "./TileSettings"
 import { PopoverAnimationVertical } from "material-ui/Popover"
 import Divider from "material-ui/Divider"
 import RenameTileDialog from "./RenameTile"
@@ -41,19 +39,10 @@ const listStyles = {
 class Tile extends Component {
   state = {
     isTileFullScreen: false,
-    open: false,
     slideIndex: 0,
     renameTileOpen: false,
     deleteTileOpen: false,
     dataVisualizationDialogOpen: false,
-  }
-
-  handleOpen = () => {
-    this.setState({ open: true })
-  }
-
-  handleClose = () => {
-    this.setState({ open: false })
   }
 
   handleClick = event => {
@@ -97,9 +86,6 @@ class Tile extends Component {
     const valueTitle = value.customName
 
     let specificTile
-    let specificInterfaceSettings
-    let specificVisualizationSettings
-    let specificDataSettings
 
     if (
       value.__typename === "BooleanValue" &&
@@ -142,66 +128,6 @@ class Tile extends Component {
           step={value.precision || undefined} // avoid passing null, pass undefined instead
         />
       )
-      specificInterfaceSettings = (
-        <React.Fragment>
-          <div style={listStyles.root}>
-            <List style={{ width: "100%" }}>
-              <Subheader>Visualization</Subheader>
-              <ListItem
-                primaryText="Choose how the data is visualized"
-                secondaryText="Number"
-              />
-            </List>
-          </div>
-        </React.Fragment>
-      )
-      specificVisualizationSettings = (
-        <RadioButtonGroup name="Data visualization">
-          <RadioButton
-            value="number"
-            label="Number"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
-            }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
-          />
-          <RadioButton
-            value="graph"
-            label="Graph"
-            style={{
-              marginBottom: 16,
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
-            }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
-          />
-          <RadioButton
-            value="gauge"
-            label="Gauge"
-            style={{
-              marginBottom: 16,
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
-            }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
-          />
-        </RadioButtonGroup>
-      )
     } else if (
       value.__typename === "FloatValue" &&
       !value.boundaries &&
@@ -213,98 +139,17 @@ class Tile extends Component {
           valueDetails={value.valueDetails}
         />
       )
-      specificInterfaceSettings = (
-        <div style={listStyles.root}>
-          <List style={{ width: "100%" }}>
-            <Subheader>Visualization</Subheader>
-            <ListItem
-              primaryText="Choose how the data is visualized"
-              secondaryText="Number"
-              onClick={this.dataVisualizationDialogOpen}
-            />
-          </List>
-        </div>
-      )
-      specificVisualizationSettings = (
-        <RadioButtonGroup name="Data visualization">
-          <RadioButton
-            value="number"
-            label="Number"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
-            }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
-          />
-          <RadioButton
-            value="graph"
-            label="Graph"
-            style={{
-              marginBottom: 16,
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
-            }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
-          />
-        </RadioButtonGroup>
-      )
     } else if (
       value.__typename === "ColourValue" &&
       value.permission === "READ_ONLY"
     ) {
       specificTile = <ReadOnlyColourTile colour={value.colourValue} />
-      specificInterfaceSettings = (
-        <div style={listStyles.root}>
-          <List style={{ width: "100%" }}>
-            <Subheader>Visualization</Subheader>
-            <ListItem
-              primaryText="Show advanced options for the color picker"
-              secondaryText="Show RGB, HEX and HSL color codes"
-              rightToggle={
-                <Toggle
-                  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                  rippleStyle={{ color: "#0083ff" }}
-                />
-              }
-            />
-          </List>
-        </div>
-      )
     } else if (
       value.__typename === "ColourValue" &&
       value.permission === "READ_WRITE"
     ) {
       specificTile = (
         <ReadWriteColourTile value={value.colourValue} id={value.id} />
-      )
-      specificInterfaceSettings = (
-        <div style={listStyles.root}>
-          <List style={{ width: "100%" }}>
-            <Subheader>Visualization</Subheader>
-            <ListItem
-              primaryText="Show advanced options for the color picker"
-              secondaryText="Show RGB, HEX and HSL color codes"
-              rightToggle={
-                <Toggle
-                  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                  rippleStyle={{ color: "#0083ff" }}
-                />
-              }
-            />
-          </List>
-        </div>
       )
     } else if (
       value.__typename === "StringValue" &&
@@ -313,7 +158,6 @@ class Tile extends Component {
       specificTile = (
         <ReadOnlyStringTile value={value.stringValue} id={value.id} />
       )
-      specificInterfaceSettings = ""
     } else if (
       value.__typename === "StringValue" &&
       value.permission === "READ_WRITE" &&
@@ -327,7 +171,6 @@ class Tile extends Component {
           stringValue={value.stringValue}
         />
       )
-      specificInterfaceSettings = ""
     } else if (
       value.__typename === "StringValue" &&
       value.permission === "READ_WRITE" &&
@@ -342,7 +185,6 @@ class Tile extends Component {
           stringValue={value.stringValue}
         />
       )
-      specificInterfaceSettings = ""
     } else if (
       value.__typename === "StringValue" &&
       value.permission === "READ_WRITE" &&
@@ -357,7 +199,6 @@ class Tile extends Component {
           maxChars={value.maxChars}
         />
       )
-      specificInterfaceSettings = ""
     } else {
       specificTile = ""
     }
@@ -513,9 +354,27 @@ class Tile extends Component {
                   ]}
                 />
                 <MenuItem
-                  primaryText="Settings"
-                  onClick={this.handleOpen}
-                  leftIcon={<i class="material-icons">settings</i>}
+                  primaryText="Data"
+                  leftIcon={<i class="material-icons">timeline</i>}
+                  rightIcon={<ArrowDropRight />}
+                  menuItems={[
+                    <MenuItem
+                      primaryText="Visualization"
+                      rightIcon={<ArrowDropRight />}
+                      menuItems={[
+                        <MenuItem primaryText="Lorem Ipsum A" />,
+                        <MenuItem primaryText="Lorem Ipsum B" />,
+                      ]}
+                    />,
+                    <MenuItem
+                      primaryText="Unit of measurement"
+                      rightIcon={<ArrowDropRight />}
+                      menuItems={[
+                        <MenuItem primaryText="Lorem Ipsum A" />,
+                        <MenuItem primaryText="Lorem Ipsum B" />,
+                      ]}
+                    />,
+                  ]}
                 />
                 <Divider />
                 <MenuItem
@@ -534,12 +393,6 @@ class Tile extends Component {
           </div>
           {specificTile}
         </Paper>
-        <TileSettings
-          interface={specificInterfaceSettings}
-          data={specificDataSettings}
-          isOpen={this.state.open}
-          handleClose={this.handleClose}
-        />
         <FullScreenTile
           fullScreen={this.state.isTileFullScreen}
           handleClose={() => {
@@ -547,11 +400,6 @@ class Tile extends Component {
           }}
           value={value}
           specificTile={specificTile}
-        />
-        <DataVisualizationSettings
-          dataVisualizationDialogOpen={this.state.dataVisualizationDialogOpen}
-          dataVisualizationDialogClose={this.dataVisualizationDialogClose}
-          specificVisualizationSettings={specificVisualizationSettings}
         />
         <RenameTileDialog
           renameTileOpen={this.state.renameTileOpen}
