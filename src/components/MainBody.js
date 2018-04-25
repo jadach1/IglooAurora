@@ -53,6 +53,13 @@ class MainBody extends Component {
           ... on ColourValue {
             colourValue: value
           }
+          ... on PlotValue {
+            plotValue: value {
+              id
+              value
+              timestamp
+            }
+          }
         }
       }
     `
@@ -106,6 +113,13 @@ class MainBody extends Component {
           }
           ... on ColourValue {
             colourValue: value
+          }
+          ... on PlotValue {
+            plotValue: value {
+              id
+              value
+              timestamp
+            }
           }
         }
       }
@@ -256,6 +270,13 @@ export default graphql(
           ... on ColourValue {
             colourValue: value
             allowedValues
+          }
+          ... on PlotValue {
+            plotValue: value {
+              id
+              value
+              timestamp
+            }
           }
         }
       }

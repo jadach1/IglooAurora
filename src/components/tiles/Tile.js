@@ -12,6 +12,7 @@ import ReadOnlyStringTile from "./Strings/ReadOnlyStringTile"
 import ReadWriteAllowedStringTile from "./Strings/ReadWriteAllowedStringTile"
 import ReadWriteStringTile from "./Strings/ReadWriteStringTile"
 import ReadWriteBoundedStringTile from "./Strings/ReadWriteBoundedStringTile"
+import PlotTile from "./PlotTile.js"
 import FullScreenTile from "./FullScreenTile"
 import MenuItem from "material-ui/MenuItem"
 import IconMenu from "material-ui/IconMenu"
@@ -199,6 +200,8 @@ class Tile extends Component {
           maxChars={value.maxChars}
         />
       )
+    } else if (value.__typename === "PlotValue") {
+      specificTile = <PlotTile value={value.plotValue} />
     } else {
       specificTile = ""
     }

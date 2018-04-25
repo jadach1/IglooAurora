@@ -319,10 +319,10 @@ input[type="password"]::-ms-reveal {
 }
 
 ::selection {
-  background: #0057cb; /* WebKit/Blink Browsers */
+  background: #0083ff; /* WebKit/Blink Browsers */
   color: #fff;
 }
 ::-moz-selection {
-  background: #0057cb; /* Gecko Browsers */
+  background: #0083ff; /* Gecko Browsers */
   color: #fff;
 }
