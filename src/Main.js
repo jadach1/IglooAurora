@@ -18,12 +18,8 @@ class Main extends Component {
       selectedDevice: null,
       areSettingsOpen: false,
       isTileFullScreen: false,
-      drawer: false,
     }
   }
-
-  changeDrawerState = () =>
-    this.setState(this.state.drawer ? { drawer: false } : { drawer: true })
 
   render() {
     return (
