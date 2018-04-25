@@ -360,15 +360,37 @@ class Tile extends Component {
                     leftIcon={<i class="material-icons">timeline</i>}
                     rightIcon={<ArrowDropRight />}
                     menuItems={[
-                      ...(value.__typename === "FloatValue" ||
-                      value.__typename === "ColourValue"
+                      ...(value.__typename === "FloatValue" &&
+                      value.boundaries &&
+                      value.boundaries.length !== 0
                         ? [
                             <MenuItem
                               primaryText="Visualization"
                               rightIcon={<ArrowDropRight />}
                               menuItems={[
-                                <MenuItem primaryText="Lorem Ipsum A" />,
-                                <MenuItem primaryText="Lorem Ipsum B" />,
+                                value.permission === "READ_ONLY" ? (
+                                  <React.Fragment>
+                                    <MenuItem primaryText="Gauge" />
+                                    <MenuItem primaryText="Number" />
+                                  </React.Fragment>
+                                ) : (
+                                  <React.Fragment>
+                                    <MenuItem primaryText="Slider" />
+                                    <MenuItem primaryText="Input" />
+                                  </React.Fragment>
+                                ),
+                              ]}
+                            />,
+                          ]
+                        : []),
+                      ...(value.__typename === "ColourValue"
+                        ? [
+                            <MenuItem
+                              primaryText="Visualization"
+                              rightIcon={<ArrowDropRight />}
+                              menuItems={[
+                                <MenuItem primaryText="Normal" />,
+                                <MenuItem primaryText="Advanced" />,
                               ]}
                             />,
                           ]
