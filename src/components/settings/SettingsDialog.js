@@ -170,9 +170,9 @@ class SettingsDialog extends React.Component {
     })
   }
 
-  getDerivedStateFromProps(nextProps) {
-    console.log(nextProps)
-    return allDialogsClosed
+  // TODO: update react to next version and change this to getDerivedStateFromProps
+  componentWillReceiveProps(nextProps) {
+    this.setState(allDialogsClosed)
   }
 
   render() {
