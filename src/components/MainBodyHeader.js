@@ -46,9 +46,16 @@ class MainBodyHeader extends Component {
               alt="device logo"
             />
           ) : (
-            <i className="deviceIconBig material-icons">lightbulb_outline</i>
+            <i
+              className="deviceIconBig material-icons"
+              style={{ cursor: "default" }}
+            >
+              lightbulb_outline
+            </i>
           )}
-          <p className="title">{device.customName}</p>
+          <p className="title" style={{ cursor: "default" }}>
+            {device.customName}
+          </p>
           <Tooltip
             id="tooltip-bottom"
             title="Rearrange cards"
@@ -67,15 +74,7 @@ class MainBodyHeader extends Component {
               <i className="material-icons">mode_edit</i>
             </IconButton>
           </Tooltip>
-          <NotificationsDrawer
-            changeDrawerState={() =>
-              this.setState(
-                this.state.drawer ? { drawer: false } : { drawer: true }
-              )
-            }
-            open={this.state.drawer}
-            device={device}
-          />
+          <NotificationsDrawer />
         </div>
         <Dialog
           title="Rearrange cards"

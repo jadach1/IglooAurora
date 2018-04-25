@@ -29,17 +29,26 @@ class ReadWriteAllowedStringTile extends Component {
   }
 
   render() {
+    let noneAllowed = false
+
+    const menuItems = this.props.values.filter(value => {
+      const allowed = value !== ""
+
+      noneAllowed = noneAllowed || !allowed
+      return allowed
+    })
+
     return (
       <div className="readWriteBooleanTile">
         <FormControl>
           <InputLabel>{this.props.customName}</InputLabel>
           <Select value={this.props.stringValue} onChange={this.handleChange}>
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {this.props.values.map(value => (
-              <MenuItem value={value}>{value}</MenuItem>
-            ))}
+            {noneAllowed && (
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+            )}
+            {menuItems.map(value => <MenuItem value={value}>{value}</MenuItem>)}
           </Select>
         </FormControl>
       </div>

@@ -29,24 +29,28 @@ const listStyles = {
   },
 }
 
+const allDialogsClosed = {
+  deleteDialogOpen: false,
+  passwordDialogOpen: false,
+  emailDialogOpen: false,
+  deleteConfirmedDialogOpen: false,
+  twoFactorDialogOpen: false,
+  languageDialogOpen: false,
+  timeZoneDialogOpen: false,
+  timeFormatDialogOpen: false,
+  unitDialogOpen: false,
+  nameDialogOpen: false,
+  shortcutDialogOpen: false,
+}
+
 class SettingsDialog extends React.Component {
   state = {
-    deleteDialogOpen: false,
-    passwordDialogOpen: false,
-    emailDialogOpen: false,
-    deleteConfirmedDialogOpen: false,
     isDeleteDisabled: true,
     timer: 5,
     stepIndex: 0,
     slideIndex: 0,
     showHidden: false,
-    twoFactorDialogOpen: false,
-    languageDialogOpen: false,
-    timeZoneDialogOpen: false,
-    timeFormatDialogOpen: false,
-    unitDialogOpen: false,
-    nameDialogOpen: false,
-    shortcutDialogOpen: false,
+    ...allDialogsClosed,
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -166,8 +170,15 @@ class SettingsDialog extends React.Component {
     })
   }
 
+  getDerivedStateFromProps(nextProps) {
+    console.log(nextProps)
+    return allDialogsClosed
+  }
+
   render() {
-    const { userData: { loading, error, user } } = this.props
+    const {
+      userData: { loading, error, user },
+    } = this.props
 
     let deviceList = "No devices"
 
@@ -266,7 +277,9 @@ class SettingsDialog extends React.Component {
             >
               <div style={listStyles.root}>
                 <List style={{ width: "100%" }}>
-                  <Subheader>Localization</Subheader>
+                  <Subheader style={{ cursor: "default" }}>
+                    Localization
+                  </Subheader>
                   <ListItem
                     primaryText="Change language"
                     secondaryText="English"
@@ -278,7 +291,7 @@ class SettingsDialog extends React.Component {
                     onClick={this.handleUnitDialogOpen}
                   />
                   <Divider />
-                  <Subheader>Time</Subheader>
+                  <Subheader style={{ cursor: "default" }}>Time</Subheader>
                   <ListItem
                     primaryText="Change time zone"
                     secondaryText="Auto (GMT+01:00)"
@@ -299,7 +312,9 @@ class SettingsDialog extends React.Component {
                     secondaryText="DD/MM/YYYY, 24-hour clock"
                     onClick={this.handleTimeFormatDialogOpen}
                   />
-                  <Subheader>Lorem Ipsum</Subheader>
+                  <Subheader style={{ cursor: "default" }}>
+                    Lorem Ipsum
+                  </Subheader>
                   <ListItem
                     primaryText="Keyboard shortcuts"
                     onClick={this.handleShortcutDialogOpen}
@@ -315,7 +330,9 @@ class SettingsDialog extends React.Component {
             >
               <div style={listStyles.root}>
                 <List style={{ width: "100%" }}>
-                  <Subheader>Lorem Ipsum</Subheader>
+                  <Subheader style={{ cursor: "default" }}>
+                    Lorem Ipsum
+                  </Subheader>
                   <ListItem
                     primaryText="Quiet mode"
                     secondaryText="Mute all notifications"
@@ -338,7 +355,9 @@ class SettingsDialog extends React.Component {
                     }
                   />
                   <Divider />
-                  <Subheader>Lorem Ipsum</Subheader>
+                  <Subheader style={{ cursor: "default" }}>
+                    Lorem Ipsum
+                  </Subheader>
                   {deviceList}
                 </List>
               </div>
@@ -350,7 +369,9 @@ class SettingsDialog extends React.Component {
               }}
             >
               <List>
-                <Subheader>Authentication</Subheader>
+                <Subheader style={{ cursor: "default" }}>
+                  Authentication
+                </Subheader>
                 <ListItem
                   primaryText="Change user name"
                   onClick={this.handleNameDialogOpen}
@@ -377,7 +398,7 @@ class SettingsDialog extends React.Component {
                   }
                 />
                 <Divider />
-                <Subheader>Lorem Ipsum</Subheader>
+                <Subheader style={{ cursor: "default" }}>Lorem Ipsum</Subheader>
                 <ListItem
                   primaryText="Manage roles"
                   secondaryText="Lorem Ipsum"
@@ -387,7 +408,9 @@ class SettingsDialog extends React.Component {
                   secondaryText="Lorem Ipsum"
                 />
                 <Divider />
-                <Subheader>Account management</Subheader>
+                <Subheader style={{ cursor: "default" }}>
+                  Account management
+                </Subheader>
                 <ListItem
                   primaryText="Delete your account"
                   onClick={this.handleDeleteDialogOpen}
@@ -398,12 +421,12 @@ class SettingsDialog extends React.Component {
           </SwipeableViews>
         </Dialog>
         <TwoFactorDialog
-          isOpen={this.state.twoFactorDialogOpen}
+          isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}
           handleTwoFactorDialogOpen={this.handleTwoFactorDialogOpen}
           handleTwoFactorDialogClose={this.handleTwoFactorDialogClose}
         />
         <DeleteAccountDialog
-          deleteOpen={this.state.deleteDialogOpen}
+          deleteOpen={this.props.isOpen && this.state.deleteDialogOpen}
           deleteConfirmedOpen={this.state.deleteConfirmedDialogOpen}
           isDeleteDisabled={this.state.isDeleteDisabled}
           timer={this.state.timer}
@@ -412,36 +435,50 @@ class SettingsDialog extends React.Component {
           closeDelete={this.handleDeleteDialogClose}
         />
         <ChangePasswordDialog
-          passwordDialogOpen={this.state.passwordDialogOpen}
+          passwordDialogOpen={
+            this.props.isOpen && this.state.passwordDialogOpen
+          }
           handlePasswordDialogClose={this.handlePasswordDialogClose}
         />
         <ChangeEmailDialog
-          confirmationDialogOpen={this.state.emailDialogOpen}
+          confirmationDialogOpen={
+            this.props.isOpen && this.state.emailDialogOpen
+          }
           handleEmailDialogClose={this.handleEmailDialogClose}
         />
         <ChangeLanguageDialog
           handleLanguageDialogClose={this.handleLanguageDialogClose}
-          languageDialogOpen={this.state.languageDialogOpen}
+          languageDialogOpen={
+            this.props.isOpen && this.state.languageDialogOpen
+          }
         />
         <TimeZoneDialog
           handleTimeDialogClose={this.handleTimeDialogClose}
-          timeZoneDialogOpen={this.state.timeZoneDialogOpen}
+          timeZoneDialogOpen={
+            this.props.isOpen && this.state.timeZoneDialogOpen
+          }
         />
         <TimeFormatDialog
           handleTimeFormatDialogClose={this.handleTimeFormatDialogClose}
-          timeFormatDialogOpen={this.state.timeFormatDialogOpen}
+          timeFormatDialogOpen={
+            this.props.isOpen && this.state.timeFormatDialogOpen
+          }
         />
         <UnitOfMeasumentDialog
           handleUnitDialogClose={this.handleUnitDialogClose}
-          unitDialogOpen={this.state.unitDialogOpen}
+          unitDialogOpen={this.props.isOpen && this.state.unitDialogOpen}
         />
         <ChangeNameDialog
           handleNameDialogClose={this.handleNameDialogClose}
-          confirmationDialogOpen={this.state.nameDialogOpen}
+          confirmationDialogOpen={
+            this.props.isOpen && this.state.nameDialogOpen
+          }
         />
         <Shortcuts
           handleShortcutDialogClose={this.handleShortcutDialogClose}
-          shortcutDialogOpen={this.state.shortcutDialogOpen}
+          shortcutDialogOpen={
+            this.props.isOpen && this.state.shortcutDialogOpen
+          }
         />
       </React.Fragment>
     )

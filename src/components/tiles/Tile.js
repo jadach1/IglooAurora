@@ -1,17 +1,17 @@
 import React, { Component } from "react"
 import Paper from "material-ui/Paper"
 import IconButton from "material-ui/IconButton"
-import ReadOnlyBooleanTile from "./ReadOnlyBooleanTile"
-import ReadWriteBooleanTile from "./ReadWriteBooleanTile"
-import ReadWriteBoundedFloatTile from "./ReadWriteBoundedFloatTile"
-import ReadOnlyBoundedFloatTile from "./ReadOnlyBoundedFloatTile"
-import ReadOnlyColourTile from "./ReadOnlyColourTile"
-import ReadWriteColourTile from "./ReadWriteColourTile"
-import ReadOnlyFloatTile from "./ReadOnlyFloatTile"
-import ReadOnlyStringTile from "./ReadOnlyStringTile"
-import ReadWriteAllowedStringTile from "./ReadWriteAllowedStringTile"
-import ReadWriteStringTile from "./ReadWriteStringTile"
-import ReadWriteBoundedStringTile from "./ReadWriteBoundedStringTile"
+import ReadOnlyBooleanTile from "./Booleans/ReadOnlyBooleanTile"
+import ReadWriteBooleanTile from "./Booleans/ReadWriteBooleanTile"
+import ReadWriteBoundedFloatTile from "./Floats/ReadWriteBoundedFloatTile"
+import ReadOnlyBoundedFloatTile from "./Floats/ReadOnlyBoundedFloatTile"
+import ReadOnlyColourTile from "./Colors/ReadOnlyColourTile"
+import ReadWriteColourTile from "./Colors/ReadWriteColourTile"
+import ReadOnlyFloatTile from "./Floats/ReadOnlyFloatTile"
+import ReadOnlyStringTile from "./Strings/ReadOnlyStringTile"
+import ReadWriteAllowedStringTile from "./Strings/ReadWriteAllowedStringTile"
+import ReadWriteStringTile from "./Strings/ReadWriteStringTile"
+import ReadWriteBoundedStringTile from "./Strings/ReadWriteBoundedStringTile"
 import FullScreenTile from "./FullScreenTile"
 import MenuItem from "material-ui/MenuItem"
 import IconMenu from "material-ui/IconMenu"
@@ -426,7 +426,9 @@ class Tile extends Component {
       <React.Fragment>
         <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
           <div className="tileHeader">
-            <div className="tileTitle">{valueTitle}</div>
+            <div className="tileTitle" style={{ cursor: "default" }}>
+              {valueTitle}
+            </div>
             <div className="tileHeaderButtons notSelectable">
               <IconButton
                 onClick={() => {

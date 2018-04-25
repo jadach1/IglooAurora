@@ -20,21 +20,23 @@ class ReadWriteStringTile extends Component {
   }
 
   handleChange = event => {
+    const newValue = event.target.value
+
     this.setState({
-      text: event.target.value,
+      text: newValue,
     })
 
     this.props.mutate({
       variables: {
         id: this.props.id,
-        stringValue: this.state.text,
+        stringValue: newValue,
       },
       optimisticResponse: {
         __typename: "Mutation",
         stringValue: {
           __typename: "StringValue",
           id: this.props.id,
-          stringValue: this.state.text,
+          stringValue: newValue,
         },
       },
     })
@@ -56,10 +58,10 @@ class ReadWriteStringTile extends Component {
 }
 
 const updateStringValue = gql`
-  mutation stringValue($id: ID!, $value: String!) {
-    stringValue(id: $id, stringValue: $stringValue) {
+  mutation stringValue($id: ID!, $stringValue: String!) {
+    stringValue(id: $id, value: $stringValue) {
       id
-      stringValue
+      value
     }
   }
 `

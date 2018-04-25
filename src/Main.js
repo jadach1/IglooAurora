@@ -18,8 +18,12 @@ class Main extends Component {
       selectedDevice: null,
       areSettingsOpen: false,
       isTileFullScreen: false,
+      drawer: false,
     }
   }
+
+  changeDrawerState = () =>
+    this.setState(this.state.drawer ? { drawer: false } : { drawer: true })
 
   render() {
     return (
@@ -61,7 +65,10 @@ class Main extends Component {
               <div className="mainBodyHeader" key="mainBodyHeader" />
             )}
             {this.state.selectedDevice !== null ? (
-              <MainBody deviceId={this.state.selectedDevice} />
+              <MainBody
+                deviceId={this.state.selectedDevice}
+                drawer={this.state.drawer}
+              />
             ) : (
               <div className="mainBody" />
             )}
