@@ -43,6 +43,8 @@ class ReadWriteBoundedStringTile extends Component {
   }
 
   render() {
+    const charCount = this.state.text
+
     return (
       <div className="readOnlyFloatTile notSelectable">
         <MuiThemeProvider theme={theme}>
@@ -52,7 +54,7 @@ class ReadWriteBoundedStringTile extends Component {
               value={this.state.text}
               endAdornment={
                 <InputAdornment style={{ cursor: "default" }}>
-                  {this.state.text.lenght}/{this.props.maxChars}
+                  {charCount.length}/{this.props.maxChars}
                 </InputAdornment>
               }
             />

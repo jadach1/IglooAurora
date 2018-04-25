@@ -6,6 +6,12 @@
   version "1.0.0-alpha.0"
   resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-1.0.0-alpha.0.tgz#6815d124d2c159cae39d81b42073b65dfdc467a3"
 
+"@quentin-sommer/react-useragent@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.yarnpkg.com/@quentin-sommer/react-useragent/-/react-useragent-1.2.5.tgz#8dc9eb420f2e224606030990c7acc4b109ec19c0"
+  dependencies:
+    ua-parser-js "^0.7.13"
+
 "@types/async@2.0.45":
   version "2.0.45"
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.45.tgz#0cfe971d7ed5542695740338e0455c91078a0e83"
@@ -6964,7 +6970,7 @@ typedarray@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
 
-ua-parser-js@^0.7.9:
+ua-parser-js@^0.7.13, ua-parser-js@^0.7.9:
   version "0.7.17"
   resolved "https://registry.yarnpkg.com/ua-parser-js/-/ua-parser-js-0.7.17.tgz#e9ec5f9498b9ec910e7ae3ac626a805c4d09ecac"
 
