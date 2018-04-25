@@ -353,29 +353,43 @@ class Tile extends Component {
                     />,
                   ]}
                 />
-                <MenuItem
-                  primaryText="Data"
-                  leftIcon={<i class="material-icons">timeline</i>}
-                  rightIcon={<ArrowDropRight />}
-                  menuItems={[
-                    <MenuItem
-                      primaryText="Visualization"
-                      rightIcon={<ArrowDropRight />}
-                      menuItems={[
-                        <MenuItem primaryText="Lorem Ipsum A" />,
-                        <MenuItem primaryText="Lorem Ipsum B" />,
-                      ]}
-                    />,
-                    <MenuItem
-                      primaryText="Unit of measurement"
-                      rightIcon={<ArrowDropRight />}
-                      menuItems={[
-                        <MenuItem primaryText="Lorem Ipsum A" />,
-                        <MenuItem primaryText="Lorem Ipsum B" />,
-                      ]}
-                    />,
-                  ]}
-                />
+                {value.__typename === "FloatValue" ||
+                value.__typename === "ColourValue" ? (
+                  <MenuItem
+                    primaryText="Data"
+                    leftIcon={<i class="material-icons">timeline</i>}
+                    rightIcon={<ArrowDropRight />}
+                    menuItems={[
+                      ...(value.__typename === "FloatValue" ||
+                      value.__typename === "ColourValue"
+                        ? [
+                            <MenuItem
+                              primaryText="Visualization"
+                              rightIcon={<ArrowDropRight />}
+                              menuItems={[
+                                <MenuItem primaryText="Lorem Ipsum A" />,
+                                <MenuItem primaryText="Lorem Ipsum B" />,
+                              ]}
+                            />,
+                          ]
+                        : []),
+                      ...(value.__typename === "FloatValue"
+                        ? [
+                            <MenuItem
+                              primaryText="Unit of measurement"
+                              rightIcon={<ArrowDropRight />}
+                              menuItems={[
+                                <MenuItem primaryText="Lorem Ipsum A" />,
+                                <MenuItem primaryText="Lorem Ipsum B" />,
+                              ]}
+                            />,
+                          ]
+                        : []),
+                    ]}
+                  />
+                ) : (
+                  ""
+                )}
                 <Divider />
                 <MenuItem
                   primaryText="Rename"
