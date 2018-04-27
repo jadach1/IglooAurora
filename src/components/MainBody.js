@@ -4,7 +4,6 @@ import LargeCenteredSpinner from "./LargeCenteredSpinner"
 import FlatButton from "material-ui/FlatButton"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { hotkeys } from "react-keyboard-shortcuts"
 
 class MainBody extends Component {
   constructor() {
@@ -12,17 +11,6 @@ class MainBody extends Component {
     this.state = {
       showHidden: false,
     }
-  }
-
-  hot_keys = {
-    "alt+s": {
-      priority: 1,
-      handler: event => {
-        this.setState(oldState => ({
-          showHidden: !oldState.showHidden,
-        }))
-      },
-    },
   }
 
   componentDidMount() {
@@ -185,14 +173,15 @@ class MainBody extends Component {
     if (hiddenTiles.length !== 0) {
       hiddenTilesUI = [
         <FlatButton
-          onClick={() =>
+          onClick={() => {
             this.setState(oldState => ({
               showHidden: !oldState.showHidden,
             }))
-          }
-          label={this.state.showHidden ? "Show less" : "Show more"}
+            this.props.changeShowHiddenState()
+          }}
+          label={this.props.showHidden ? "Show less" : "Show more"}
           icon={
-            this.state.showHidden ? (
+            this.props.showHidden ? (
               <i className="material-icons">keyboard_arrow_up</i>
             ) : (
               <i className="material-icons">keyboard_arrow_down</i>
@@ -202,13 +191,13 @@ class MainBody extends Component {
           className="divider"
           key="showMoreLessButton"
           style={
-            this.state.showHidden
+            this.props.showHidden
               ? { backgroundColor: "#d4d4d4" }
               : { backgroundColor: "transparent" }
           }
         />,
         <div className="itemsList hiddenItems" key="hiddenTilesContainer">
-          {this.state.showHidden ? hiddenTiles : ""}
+          {this.props.showHidden ? hiddenTiles : ""}
         </div>,
       ]
     }
@@ -286,4 +275,4 @@ export default graphql(
     name: "deviceData",
     options: ({ deviceId }) => ({ variables: { id: deviceId } }),
   }
-)(hotkeys(MainBody))
+)(MainBody)

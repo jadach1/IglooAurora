@@ -75,6 +75,8 @@ class MainBodyHeader extends Component {
             device={device}
             drawer={this.props.drawer}
             changeDrawerState={this.props.changeDrawerState}
+            hiddenNotifications={this.props.hiddenNotifications}
+            showHiddenNotifications={this.props.showHiddenNotifications}
           />
         </div>
         <Dialog
