@@ -10,6 +10,14 @@ import "./styles/App.css"
 import "./styles/Tiles.css"
 
 class Main extends Component {
+  state = { drawer: false }
+
+  changeDrawerState = () => {
+    this.setState(oldState => ({
+      drawer: !oldState.drawer,
+    }))
+  }
+
   constructor() {
     super()
 
@@ -50,21 +58,21 @@ class Main extends Component {
               <Sidebar
                 selectDevice={id => this.setState({ selectedDevice: id })}
                 selectedDevice={this.state.selectedDevice}
+                changeDrawerState={this.changeDrawerState}
               />
             </div>
             {this.state.selectedDevice !== null ? (
               <MainBodyHeader
                 deviceId={this.state.selectedDevice}
                 key="mainBodyHeader"
+                drawer={this.state.drawer}
+                changeDrawerState={this.changeDrawerState}
               />
             ) : (
               <div className="mainBodyHeader" key="mainBodyHeader" />
             )}
             {this.state.selectedDevice !== null ? (
-              <MainBody
-                deviceId={this.state.selectedDevice}
-                drawer={this.state.drawer}
-              />
+              <MainBody deviceId={this.state.selectedDevice} />
             ) : (
               <div className="mainBody" />
             )}

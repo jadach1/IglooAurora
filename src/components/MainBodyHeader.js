@@ -10,7 +10,6 @@ import NotificationsDrawer from "./NotificationsDrawer"
 class MainBodyHeader extends Component {
   state = {
     open: false,
-    drawer: false,
   }
 
   handleOpen = () => {
@@ -72,7 +71,11 @@ class MainBodyHeader extends Component {
               <i className="material-icons">mode_edit</i>
             </IconButton>
           </Tooltip>
-          <NotificationsDrawer device={device} />
+          <NotificationsDrawer
+            device={device}
+            drawer={this.props.drawer}
+            changeDrawerState={this.props.changeDrawerState}
+          />
         </div>
         <Dialog
           title="Rearrange cards"

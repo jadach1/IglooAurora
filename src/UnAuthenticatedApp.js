@@ -11,9 +11,21 @@ import SwipeableViews from "react-swipeable-views"
 import BottomNavigation, {
   BottomNavigationAction,
 } from "material-ui-next/BottomNavigation"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 class UnAuthenticatedApp extends Component {
   state = { slideIndex: 0 }
+
+  hot_keys = {
+    "alt+1": {
+      priority: 1,
+      handler: event => this.setState({ slideIndex: 0 }),
+    },
+    "alt+2": {
+      priority: 1,
+      handler: event => this.setState({ slideIndex: 1 }),
+    },
+  }
 
   constructor() {
     super()
@@ -122,4 +134,4 @@ class UnAuthenticatedApp extends Component {
   }
 }
 
-export default UnAuthenticatedApp
+export default hotkeys(UnAuthenticatedApp)

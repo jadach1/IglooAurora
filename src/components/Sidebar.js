@@ -102,7 +102,9 @@ class Sidebar extends Component {
   }
 
   render() {
-    const { userData: { loading, error, user } } = this.props
+    const {
+      userData: { loading, error, user },
+    } = this.props
 
     let notificationCount = ""
 
@@ -179,6 +181,7 @@ class Sidebar extends Component {
                         className="notSelectable sidebarBadge"
                         style={{ marginRight: "24px" }}
                         onClick={() => {
+                          this.props.changeDrawerState()
                           this.listItemClick(device)
                         }}
                       />
