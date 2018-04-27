@@ -21,6 +21,7 @@ import TimeFormatDialog from "./TimeFormat"
 import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import Shortcuts from "./Shortcuts"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 const listStyles = {
   root: {
@@ -51,6 +52,33 @@ class SettingsDialog extends React.Component {
     slideIndex: 0,
     showHidden: false,
     ...allDialogsClosed,
+  }
+
+  hot_keys = {
+    "alt+1": {
+      priority: 1,
+      handler: event => {
+        if (this.props.isOpen) {
+          this.setState({ slideIndex: 0 })
+        }
+      },
+    },
+    "alt+2": {
+      priority: 1,
+      handler: event => {
+        if (this.props.isOpen) {
+          this.setState({ slideIndex: 1 })
+        }
+      },
+    },
+    "alt+3": {
+      priority: 1,
+      handler: event => {
+        if (this.props.isOpen) {
+          this.setState({ slideIndex: 2 })
+        }
+      },
+    },
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -498,4 +526,4 @@ export default graphql(
     }
   `,
   { name: "userData" }
-)(SettingsDialog)
+)(hotkeys(SettingsDialog))

@@ -32,17 +32,12 @@ const sleep = time =>
   })
 
 class NotificationsDrawer extends React.Component {
-  state = {
-    drawer: false,
-  }
-
+  state = { showVisualized: false }
   hot_keys = {
     "alt+n": {
       priority: 1,
       handler: event => {
-        this.setState(oldState => ({
-          drawer: !oldState.drawer,
-        }))
+        this.props.changeDrawerState()
       },
     },
   }
@@ -299,11 +294,7 @@ class NotificationsDrawer extends React.Component {
               marginTop: "14px",
               left: "34px",
             }}
-            onClick={() =>
-              this.setState(oldState => ({
-                drawer: !oldState.drawer,
-              }))
-            }
+            onClick={() => this.props.changeDrawerState()}
           >
             <MuiThemeProvider theme={theme}>
               {notificationCount ? (
@@ -319,11 +310,9 @@ class NotificationsDrawer extends React.Component {
         <SwipeableDrawer
           variant="temporary"
           anchor="right"
-          open={this.state.drawer}
+          open={this.props.drawer}
           onClose={async time => {
-            this.setState(
-              this.state.drawer ? { drawer: false } : { drawer: true }
-            )
+            this.props.changeDrawerState()
             await sleep(200)
             clearAllNotifications()
           }}
@@ -340,7 +329,7 @@ class NotificationsDrawer extends React.Component {
               <IconButton
                 className="notificationsLeftSide"
                 onClick={() => {
-                  this.setState({ drawer: false })
+                  this.props.changeDrawerState()
                   clearAllNotifications()
                 }}
                 style={{
