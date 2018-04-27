@@ -8,14 +8,30 @@ import SettingsDialog from "./components/settings/SettingsDialog"
 import { Offline, Online } from "react-detect-offline"
 import "./styles/App.css"
 import "./styles/Tiles.css"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 class Main extends Component {
-  state = { drawer: false }
+  state = { drawer: false, showMainHidden: false, hiddenNotifications: false }
 
   changeDrawerState = () => {
     this.setState(oldState => ({
       drawer: !oldState.drawer,
     }))
+  }
+
+  hot_keys = {
+    "alt+s": {
+      priority: 1,
+      handler: event => {
+        !this.state.drawer
+          ? this.setState(oldState => ({
+              showMainHidden: !oldState.showMainHidden,
+            }))
+          : this.setState(oldState => ({
+              hiddenNotifications: !oldState.hiddenNotifications,
+            }))
+      },
+    },
   }
 
   constructor() {
@@ -28,6 +44,16 @@ class Main extends Component {
       isTileFullScreen: false,
     }
   }
+
+  changeShowHiddenState = () =>
+    this.setState(oldState => ({
+      showMainHidden: !oldState.showMainHidden,
+    }))
+
+  showHiddenNotifications = () =>
+    this.setState(oldState => ({
+      hiddenNotifications: !oldState.hiddenNotifications,
+    }))
 
   render() {
     return (
@@ -67,12 +93,18 @@ class Main extends Component {
                 key="mainBodyHeader"
                 drawer={this.state.drawer}
                 changeDrawerState={this.changeDrawerState}
+                hiddenNotifications={this.state.hiddenNotifications}
+                showHiddenNotifications={this.showHiddenNotifications}
               />
             ) : (
               <div className="mainBodyHeader" key="mainBodyHeader" />
             )}
             {this.state.selectedDevice !== null ? (
-              <MainBody deviceId={this.state.selectedDevice} />
+              <MainBody
+                deviceId={this.state.selectedDevice}
+                showHidden={this.state.showMainHidden}
+                changeShowHiddenState={this.changeShowHiddenState}
+              />
             ) : (
               <div className="mainBody" />
             )}
@@ -106,4 +138,4 @@ class Main extends Component {
   }
 }
 
-export default Main
+export default hotkeys(Main)

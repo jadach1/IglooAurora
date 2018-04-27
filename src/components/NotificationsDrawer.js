@@ -252,18 +252,14 @@ class NotificationsDrawer extends React.Component {
       if (readNotificationCount) {
         readNotificationsUI = (
           <FlatButton
-            onClick={() =>
-              this.setState(oldState => ({
-                showVisualized: !oldState.showVisualized,
-              }))
-            }
+            onClick={() => this.props.showHiddenNotifications()}
             label={
-              this.state.showVisualized
+              this.props.hiddenNotifications
                 ? "Hide read notifications"
                 : "Show read notifications"
             }
             icon={
-              this.state.showVisualized ? (
+              this.props.hiddenNotifications ? (
                 <i className="material-icons">keyboard_arrow_up</i>
               ) : (
                 <i className="material-icons">keyboard_arrow_down</i>
@@ -273,7 +269,7 @@ class NotificationsDrawer extends React.Component {
             className="divider"
             key="showMoreLessButton"
             style={
-              this.state.showVisualized
+              this.props.hiddenNotifications
                 ? { backgroundColor: "#d4d4d4" }
                 : { backgroundColor: "transparent" }
             }
@@ -377,7 +373,7 @@ class NotificationsDrawer extends React.Component {
             {notifications}
             {readNotificationsUI}
             {readNotificationsUI
-              ? this.state.showVisualized
+              ? this.props.hiddenNotifications
                 ? readNotifications
                 : ""
               : ""}
