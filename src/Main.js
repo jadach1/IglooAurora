@@ -9,14 +9,23 @@ import { Offline, Online } from "react-detect-offline"
 import "./styles/App.css"
 import "./styles/Tiles.css"
 import { hotkeys } from "react-keyboard-shortcuts"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 class Main extends Component {
-  state = { drawer: false, showMainHidden: false, hiddenNotifications: false }
+  state = {
+    drawer: false,
+    showMainHidden: false,
+    hiddenNotifications: false,
+    slideIndex: 0,
+    areSettingsOpen: false,
+  }
 
   changeDrawerState = () => {
-    this.setState(oldState => ({
-      drawer: !oldState.drawer,
-    }))
+    if (!this.state.areSettingsOpen)
+      this.setState(oldState => ({
+        drawer: !oldState.drawer,
+      }))
   }
 
   hot_keys = {
@@ -32,6 +41,114 @@ class Main extends Component {
             }))
       },
     },
+    "alt+1": {
+      priority: 1,
+      handler: event => {
+        if (
+          this.props.userData.user.devices[0] &&
+          !this.state.areSettingsOpen
+        ) {
+          this.selectDevice(this.props.userData.user.devices[0].id)
+        }
+        if (this.state.areSettingsOpen) {
+          this.setState({ slideIndex: 0 })
+        }
+      },
+    },
+    "alt+2": {
+      priority: 1,
+      handler: event => {
+        if (
+          this.props.userData.user.devices[1] &&
+          !this.state.areSettingsOpen
+        ) {
+          this.selectDevice(this.props.userData.user.devices[1].id)
+        }
+        if (this.state.areSettingsOpen) {
+          this.setState({ slideIndex: 1 })
+        }
+      },
+    },
+    "alt+3": {
+      priority: 1,
+      handler: event => {
+        if (
+          this.props.userData.user.devices[2] &&
+          !this.state.areSettingsOpen
+        ) {
+          this.selectDevice(this.props.userData.user.devices[2].id)
+        }
+        if (this.state.areSettingsOpen) {
+          this.setState({ slideIndex: 2 })
+        }
+      },
+    },
+    "alt+4": {
+      priority: 1,
+      handler: event => {
+        if (
+          this.props.userData.user.devices[3] &&
+          !this.state.areSettingsOpen
+        ) {
+          this.selectDevice(this.props.userData.user.devices[3].id)
+        }
+      },
+    },
+    "alt+5": {
+      priority: 1,
+      handler: event => {
+        if (
+          this.props.userData.user.devices[4] &&
+          !this.state.areSettingsOpen
+        ) {
+          this.selectDevice(this.props.userData.user.devices[4].id)
+        }
+      },
+    },
+    "alt+6": {
+      priority: 1,
+      handler: event => {
+        if (
+          this.props.userData.user.devices[5] &&
+          !this.state.areSettingsOpen
+        ) {
+          this.selectDevice(this.props.userData.user.devices[5].id)
+        }
+      },
+    },
+    "alt+7": {
+      priority: 1,
+      handler: event => {
+        if (
+          this.props.userData.user.devices[6] &&
+          !this.state.areSettingsOpen
+        ) {
+          this.selectDevice(this.props.userData.user.devices[6].id)
+        }
+      },
+    },
+    "alt+8": {
+      priority: 1,
+      handler: event => {
+        if (
+          this.props.userData.user.devices[7] &&
+          !this.state.areSettingsOpen
+        ) {
+          this.selectDevice(this.props.userData.user.devices[7].id)
+        }
+      },
+    },
+    "alt+9": {
+      priority: 1,
+      handler: event => {
+        if (
+          this.props.userData.user.devices[8] &&
+          !this.state.areSettingsOpen
+        ) {
+          this.selectDevice(this.props.userData.user.devices[8].id)
+        }
+      },
+    },
   }
 
   constructor() {
@@ -45,6 +162,45 @@ class Main extends Component {
     }
   }
 
+  selectDevice = id => this.setState({ selectedDevice: id })
+
+  componentDidMount() {
+    const subscriptionQuery = gql`
+      subscription {
+        deviceCreated {
+          id
+          customName
+          icon
+          notifications {
+            id
+            content
+            date
+            visualized
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newDevices = [
+          ...prev.user.devices,
+          subscriptionData.data.deviceCreated,
+        ]
+        return {
+          user: {
+            ...prev.user,
+            devices: newDevices,
+          },
+        }
+      },
+    })
+  }
+
   changeShowHiddenState = () =>
     this.setState(oldState => ({
       showMainHidden: !oldState.showMainHidden,
@@ -54,6 +210,12 @@ class Main extends Component {
     this.setState(oldState => ({
       hiddenNotifications: !oldState.hiddenNotifications,
     }))
+
+  handleSettingsTabChanged = value => {
+    this.setState({
+      slideIndex: value,
+    })
+  }
 
   render() {
     return (
@@ -65,6 +227,8 @@ class Main extends Component {
               closeSettingsDialog={() => {
                 this.setState({ areSettingsOpen: false })
               }}
+              handleChange={this.handleSettingsTabChanged}
+              slideIndex={this.state.slideIndex}
             />
             <div className="invisibleHeader" key="invisibleHeader" />
             <SidebarHeader
@@ -76,6 +240,7 @@ class Main extends Component {
               changeSettingsState={() =>
                 this.setState(oldState => ({
                   areSettingsOpen: !oldState.areSettingsOpen,
+                  drawer: false,
                 }))
               }
               selectDevice={id => this.setState({ selectedDevice: id })}
@@ -138,4 +303,23 @@ class Main extends Component {
   }
 }
 
-export default hotkeys(Main)
+export default graphql(
+  gql`
+    query {
+      user {
+        devices {
+          id
+          customName
+          icon
+          notifications {
+            id
+            content
+            date
+            visualized
+          }
+        }
+      }
+    }
+  `,
+  { name: "userData" }
+)(hotkeys(Main))
