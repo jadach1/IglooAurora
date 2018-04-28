@@ -6,6 +6,7 @@ import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import Tooltip from "material-ui-next/Tooltip"
 import NotificationsDrawer from "./NotificationsDrawer"
+import Icon from "material-ui-next/Icon"
 
 class MainBodyHeader extends Component {
   state = {
@@ -68,7 +69,7 @@ class MainBodyHeader extends Component {
                 marginTop: "14px",
               }}
             >
-              <i className="material-icons">mode_edit</i>
+              <Icon>mode_edit</Icon>
             </IconButton>
           </Tooltip>
           <NotificationsDrawer

@@ -14,6 +14,7 @@ import Tooltip from "material-ui-next/Tooltip"
 import Badge from "material-ui-next/Badge"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import { hotkeys } from "react-keyboard-shortcuts"
+import Icon from "material-ui-next/Icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -22,8 +23,6 @@ const theme = createMuiTheme({
 })
 
 class Sidebar extends Component {
- 
-
   componentDidMount() {
     const subscriptionQuery = gql`
       subscription {
@@ -142,7 +141,7 @@ class Sidebar extends Component {
                       alt="device logo"
                     />
                   ) : (
-                    <i className="material-icons">lightbulb_outline</i>
+                    <Icon>lightbulb_outline</Icon>
                   )}
                 </ListItemIcon>
                 <ListItemText
@@ -204,7 +203,7 @@ class Sidebar extends Component {
                 "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
             }}
           >
-            <i className="material-icons">mode_edit</i>
+            <Icon>mode_edit</Icon>
           </FloatingActionButton>
         </Tooltip>
       </React.Fragment>

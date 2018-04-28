@@ -29,6 +29,7 @@ import DeleteTileDialog from "./DeleteTile"
 import DataVisualizationSettings from "./DataVisualizationSettings"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
 import Tooltip from "material-ui-next/Tooltip"
+import Icon from "material-ui-next/Icon"
 
 const listStyles = {
   root: {
@@ -291,7 +292,7 @@ class Tile extends Component {
                   title="Fullscreen"
                   placement="bottom"
                 >
-                  <i className="material-icons">fullscreen</i>
+                  <Icon>fullscreen</Icon>
                 </Tooltip>
               </IconButton>
               <IconMenu
@@ -308,7 +309,7 @@ class Tile extends Component {
                       title="More"
                       placement="bottom"
                     >
-                      <i className="material-icons">more_vert</i>
+                      <Icon>more_vert</Icon>
                     </Tooltip>
                   </IconButton>
                 }

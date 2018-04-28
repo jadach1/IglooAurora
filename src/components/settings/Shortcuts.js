@@ -39,6 +39,10 @@ export default class ChangeShortcutDialog extends React.Component {
               </TableHead>
               <TableBody>
                 <TableRow>
+                  <TableCell>Alt/Option + Number</TableCell>
+                  <TableCell>Select a device/Scroll through settings</TableCell>
+                </TableRow>
+                <TableRow>
                   <TableCell>Alt/Option + ,</TableCell>
                   <TableCell>Settings</TableCell>
                 </TableRow>
@@ -48,7 +52,7 @@ export default class ChangeShortcutDialog extends React.Component {
                 </TableRow>
                 <TableRow>
                   <TableCell>Alt/Option + S</TableCell>
-                  <TableCell>Show hidden cards</TableCell>
+                  <TableCell>Show hidden cards/notifications</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Alt/Option + Q</TableCell>

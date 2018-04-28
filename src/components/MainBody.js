@@ -4,6 +4,7 @@ import LargeCenteredSpinner from "./LargeCenteredSpinner"
 import FlatButton from "material-ui/FlatButton"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import Icon from "material-ui-next/Icon"
 
 class MainBody extends Component {
   constructor() {
@@ -182,9 +183,9 @@ class MainBody extends Component {
           label={this.props.showHidden ? "Show less" : "Show more"}
           icon={
             this.props.showHidden ? (
-              <i className="material-icons">keyboard_arrow_up</i>
+              <Icon>keyboard_arrow_up</Icon>
             ) : (
-              <i className="material-icons">keyboard_arrow_down</i>
+              <Icon>keyboard_arrow_down</Icon>
             )
           }
           fullWidth={true}
