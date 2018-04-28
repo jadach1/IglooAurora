@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import IconButton from "material-ui/IconButton"
 import Tooltip from "material-ui-next/Tooltip"
 import { hotkeys } from "react-keyboard-shortcuts"
-
+import Icon from "material-ui-next/Icon"
 class SidebarHeader extends Component {
   hot_keys = {
     "alt+,": {
@@ -38,7 +38,7 @@ class SidebarHeader extends Component {
               }}
               className="sidebarHeaderButton"
             >
-              <i className="material-icons sidebarHeaderIcons">settings</i>
+              <Icon>settings</Icon>
             </IconButton>
           </Tooltip>
           <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
@@ -52,7 +52,7 @@ class SidebarHeader extends Component {
               }}
               className="sidebarHeaderButton"
             >
-              <i className="material-icons sidebarHeaderIcons">exit_to_app</i>
+              <Icon>exit_to_app</Icon>
             </IconButton>
           </Tooltip>
         </div>

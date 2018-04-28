@@ -22,6 +22,7 @@ import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import Shortcuts from "./Shortcuts"
 import { hotkeys } from "react-keyboard-shortcuts"
+import Icon from "material-ui-next/Icon"
 
 const listStyles = {
   root: {
@@ -198,7 +199,7 @@ class SettingsDialog extends React.Component {
                     alt="device logo"
                   />
                 ) : (
-                  <i className="material-icons">lightbulb_outline</i>
+                  <Icon>lightbulb_outline</Icon>
                 )
               }
               rightToggle={
@@ -240,19 +241,19 @@ class SettingsDialog extends React.Component {
             value={this.props.slideIndex}
           >
             <Tab
-              icon={<FontIcon className="material-icons">dashboard</FontIcon>}
+              icon={<Icon>dashboard</Icon>}
               label="Interface"
               buttonStyle={{ backgroundColor: "#0057cb" }}
               value={0}
             />
             <Tab
-              icon={<i className="material-icons">notifications</i>}
+              icon={<Icon>notifications</Icon>}
               label="Notifications"
               buttonStyle={{ backgroundColor: "#0057cb" }}
               value={1}
             />
             <Tab
-              icon={<FontIcon className="material-icons">account_box</FontIcon>}
+              icon={<Icon>account_box</Icon>}
               label="Account"
               buttonStyle={{ backgroundColor: "#0057cb" }}
               value={2}

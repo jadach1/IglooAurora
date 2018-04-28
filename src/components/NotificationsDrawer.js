@@ -17,6 +17,7 @@ import SwipeableDrawer from "material-ui-next/SwipeableDrawer"
 import FlatButton from "material-ui/FlatButton"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import { hotkeys } from "react-keyboard-shortcuts"
+import Icon from "material-ui-next/Icon"
 
 var moment = require("moment")
 
@@ -260,9 +261,9 @@ class NotificationsDrawer extends React.Component {
             }
             icon={
               this.props.hiddenNotifications ? (
-                <i className="material-icons">keyboard_arrow_up</i>
+                <Icon>keyboard_arrow_up</Icon>
               ) : (
-                <i className="material-icons">keyboard_arrow_down</i>
+                <Icon>keyboard_arrow_down</Icon>
               )
             }
             fullWidth={true}
@@ -361,7 +362,7 @@ class NotificationsDrawer extends React.Component {
                   height: "32px",
                 }}
               >
-                <i className="material-icons">notifications_off</i>
+                <Icon>notifications_off</Icon>
               </IconButton>
             </Tooltip>
           </div>

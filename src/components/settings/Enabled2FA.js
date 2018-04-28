@@ -4,6 +4,7 @@ import Button from "material-ui-next/Button"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import TextField from "material-ui/TextField"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import Icon from "material-ui-next/Icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -109,15 +110,9 @@ export default class TwoFactorDialog extends React.Component {
                 aaaaa-11111
                 <br />
                 <br />
-                <Button icon={<i className="material-icons">file_download</i>}>
-                  Save
-                </Button>
-                <Button icon={<i className="material-icons">content_copy</i>}>
-                  Copy
-                </Button>
-                <Button icon={<i className="material-icons">print</i>}>
-                  Print
-                </Button>
+                <Button icon={<Icon>file_download</Icon>}>Save</Button>
+                <Button icon={<Icon>content_copy</Icon>}>Copy</Button>
+                <Button icon={<Icon>print</Icon>}>Print</Button>
                 {
                   <StepActions
                     step={1}
