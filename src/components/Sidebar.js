@@ -22,62 +22,7 @@ const theme = createMuiTheme({
 })
 
 class Sidebar extends Component {
-  hot_keys = {
-    "alt+1": {
-      priority: 1,
-      handler: event => {
-        this.props.selectDevice(this.props.userData.user.devices[0].id)
-      },
-    },
-    "alt+2": {
-      priority: 1,
-      handler: event => {
-        this.props.selectDevice(this.props.userData.user.devices[1].id)
-      },
-    },
-    "alt+3": {
-      priority: 1,
-      handler: event => {
-        this.props.selectDevice(this.props.userData.user.devices[2].id)
-      },
-    },
-    "alt+4": {
-      priority: 1,
-      handler: event => {
-        this.props.selectDevice(this.props.userData.user.devices[3].id)
-      },
-    },
-    "alt+5": {
-      priority: 1,
-      handler: event => {
-        this.props.selectDevice(this.props.userData.user.devices[4].id)
-      },
-    },
-    "alt+6": {
-      priority: 1,
-      handler: event => {
-        this.props.selectDevice(this.props.userData.user.devices[5].id)
-      },
-    },
-    "alt+7": {
-      priority: 1,
-      handler: event => {
-        this.props.selectDevice(this.props.userData.user.devices[6].id)
-      },
-    },
-    "alt+8": {
-      priority: 1,
-      handler: event => {
-        this.props.selectDevice(this.props.userData.user.devices[7].id)
-      },
-    },
-    "alt+9": {
-      priority: 1,
-      handler: event => {
-        this.props.selectDevice(this.props.userData.user.devices[8].id)
-      },
-    },
-  }
+ 
 
   componentDidMount() {
     const subscriptionQuery = gql`

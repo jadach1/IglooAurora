@@ -49,36 +49,8 @@ class SettingsDialog extends React.Component {
     isDeleteDisabled: true,
     timer: 5,
     stepIndex: 0,
-    slideIndex: 0,
     showHidden: false,
     ...allDialogsClosed,
-  }
-
-  hot_keys = {
-    "alt+1": {
-      priority: 1,
-      handler: event => {
-        if (this.props.isOpen) {
-          this.setState({ slideIndex: 0 })
-        }
-      },
-    },
-    "alt+2": {
-      priority: 1,
-      handler: event => {
-        if (this.props.isOpen) {
-          this.setState({ slideIndex: 1 })
-        }
-      },
-    },
-    "alt+3": {
-      priority: 1,
-      handler: event => {
-        if (this.props.isOpen) {
-          this.setState({ slideIndex: 2 })
-        }
-      },
-    },
   }
 
   handleTwoFactorDialogOpen = () => {
@@ -179,12 +151,6 @@ class SettingsDialog extends React.Component {
     this.setState({ nameDialogOpen: false })
   }
 
-  handleChange = value => {
-    this.setState({
-      slideIndex: value,
-    })
-  }
-
   secondsTimer = () => {
     this.setState(({ timer }) => {
       if (timer > 1 && this.state.deleteConfirmedDialogOpen) {
@@ -270,8 +236,8 @@ class SettingsDialog extends React.Component {
               height: "3px",
               marginTop: "-3px",
             }}
-            onChange={this.handleChange}
-            value={this.state.slideIndex}
+            onChange={this.props.handleChange}
+            value={this.props.slideIndex}
           >
             <Tab
               icon={<FontIcon className="material-icons">dashboard</FontIcon>}
@@ -293,8 +259,8 @@ class SettingsDialog extends React.Component {
             />
           </Tabs>
           <SwipeableViews
-            index={this.state.slideIndex}
-            onChangeIndex={this.handleChange}
+            index={this.props.slideIndex}
+            onChangeIndex={this.props.handleChange}
             enableMouseEvents
           >
             <div
