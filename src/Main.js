@@ -49,6 +49,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           this.selectDevice(this.props.userData.user.devices[0].id)
+          this.setState({ drawer: false })
         }
         if (this.state.areSettingsOpen) {
           this.setState({ slideIndex: 0 })
@@ -63,6 +64,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           this.selectDevice(this.props.userData.user.devices[1].id)
+          this.setState({ drawer: false })
         }
         if (this.state.areSettingsOpen) {
           this.setState({ slideIndex: 1 })
@@ -77,6 +79,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           this.selectDevice(this.props.userData.user.devices[2].id)
+          this.setState({ drawer: false })
         }
         if (this.state.areSettingsOpen) {
           this.setState({ slideIndex: 2 })
@@ -91,6 +94,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           this.selectDevice(this.props.userData.user.devices[3].id)
+          this.setState({ drawer: false })
         }
       },
     },
@@ -102,6 +106,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           this.selectDevice(this.props.userData.user.devices[4].id)
+          this.setState({ drawer: false })
         }
       },
     },
@@ -113,6 +118,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           this.selectDevice(this.props.userData.user.devices[5].id)
+          this.setState({ drawer: false })
         }
       },
     },
@@ -124,6 +130,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           this.selectDevice(this.props.userData.user.devices[6].id)
+          this.setState({ drawer: false })
         }
       },
     },
@@ -135,6 +142,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           this.selectDevice(this.props.userData.user.devices[7].id)
+          this.setState({ drawer: false })
         }
       },
     },
@@ -146,6 +154,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           this.selectDevice(this.props.userData.user.devices[8].id)
+          this.setState({ drawer: false })
         }
       },
     },
@@ -159,10 +168,11 @@ class Main extends Component {
       selectedDevice: null,
       areSettingsOpen: false,
       isTileFullScreen: false,
+      drawer: false,
     }
   }
 
-  selectDevice = id => this.setState({ selectedDevice: id })
+  selectDevice = id => this.setState({ selectedDevice: id, drawer: false })
 
   componentDidMount() {
     const subscriptionQuery = gql`
@@ -221,84 +231,85 @@ class Main extends Component {
     return (
       <MuiThemeProvider>
         <React.Fragment>
-        <Online>
-          <div className="main">
-            <SettingsDialog
-              isOpen={this.state.areSettingsOpen}
-              closeSettingsDialog={() => {
-                this.setState({ areSettingsOpen: false })
-              }}
-              handleChange={this.handleSettingsTabChanged}
-              slideIndex={this.state.slideIndex}
-            />
-            <div className="invisibleHeader" key="invisibleHeader" />
-            <SidebarHeader
-              logOut={this.props.logOut}
-              key="sidebarHeader"
-              openSettingsDialog={() => {
-                this.setState({ areSettingsOpen: true })
-              }}
-              changeSettingsState={() =>
-                this.setState(oldState => ({
-                  areSettingsOpen: !oldState.areSettingsOpen,
-                  drawer: false,
-                }))
-              }
-              selectDevice={id => this.setState({ selectedDevice: id })}
-            />
-            <div className="sidebar" key="sidebar">
-              <Sidebar
-                selectDevice={id => this.setState({ selectedDevice: id })}
-                selectedDevice={this.state.selectedDevice}
-                changeDrawerState={this.changeDrawerState}
+          <Online>
+            <div className="main">
+              <SettingsDialog
+                isOpen={this.state.areSettingsOpen}
+                closeSettingsDialog={() => {
+                  this.setState({ areSettingsOpen: false })
+                }}
+                handleChange={this.handleSettingsTabChanged}
+                slideIndex={this.state.slideIndex}
               />
+              <div className="invisibleHeader" key="invisibleHeader" />
+              <SidebarHeader
+                logOut={this.props.logOut}
+                key="sidebarHeader"
+                openSettingsDialog={() => {
+                  this.setState({ areSettingsOpen: true })
+                }}
+                changeSettingsState={() =>
+                  this.setState(oldState => ({
+                    areSettingsOpen: !oldState.areSettingsOpen,
+                    drawer: false,
+                  }))
+                }
+              />
+              <div className="sidebar" key="sidebar">
+                <Sidebar
+                  selectDevice={id => this.setState({ selectedDevice: id })}
+                  selectedDevice={this.state.selectedDevice}
+                  changeDrawerState={this.changeDrawerState}
+                />
+              </div>
+              {this.state.selectedDevice !== null ? (
+                <MainBodyHeader
+                  deviceId={this.state.selectedDevice}
+                  key="mainBodyHeader"
+                  drawer={this.state.drawer}
+                  changeDrawerState={this.changeDrawerState}
+                  hiddenNotifications={this.state.hiddenNotifications}
+                  showHiddenNotifications={this.showHiddenNotifications}
+                />
+              ) : (
+                <div className="mainBodyHeader" key="mainBodyHeader" />
+              )}
+              {this.state.selectedDevice !== null ? (
+                <MainBody
+                  deviceId={this.state.selectedDevice}
+                  showHidden={this.state.showMainHidden}
+                  changeShowHiddenState={this.changeShowHiddenState}
+                />
+              ) : (
+                <div className="mainBody" />
+              )}
             </div>
-            {this.state.selectedDevice !== null ? (
-              <MainBodyHeader
-                deviceId={this.state.selectedDevice}
-                key="mainBodyHeader"
-                drawer={this.state.drawer}
-                changeDrawerState={this.changeDrawerState}
-                hiddenNotifications={this.state.hiddenNotifications}
-                showHiddenNotifications={this.showHiddenNotifications}
-              />
-            ) : (
+          </Online>
+          <Offline key="offlineMainBody">
+            <div className="main">
+              <div className="invisibleHeader" key="invisibleHeader" />
+              <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
+              <div className="sidebar" key="sidebar" />
               <div className="mainBodyHeader" key="mainBodyHeader" />
-            )}
-            {this.state.selectedDevice !== null ? (
-              <MainBody
-                deviceId={this.state.selectedDevice}
-                showHidden={this.state.showMainHidden}
-                changeShowHiddenState={this.changeShowHiddenState}
-              />
-            ) : (
-              <div className="mainBody" />
-            )}
-          </div>
-        </Online>
-        <Offline key="offlineMainBody">
-          <div className="main">
-            <div className="invisibleHeader" key="invisibleHeader" />
-            <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
-            <div className="sidebar" key="sidebar" />
-            <div className="mainBodyHeader" key="mainBodyHeader" />
-            <div className="offlineBody mainBody">
-              <font size="6">You are not connected, try again in a while</font>
-              <br />
-              <br />
+              <div className="offlineBody mainBody">
+                <font size="6">
+                  You are not connected, try again in a while
+                </font>
+                <br />
+                <br />
 
-              <font size="5">In the meantime, why don't you have a nap?</font>
-              <br />
-              <img
-                alt="Sleeping Polar Bear"
-                src="/assets/polarBear.svg"
-                width="400"
-                height="400"
-                className="logo notSelectable"
-              />
+                <font size="5">In the meantime, why don't you have a nap?</font>
+                <br />
+                <img
+                  alt="Sleeping Polar Bear"
+                  src="/assets/polarBear.svg"
+                  width="400"
+                  height="400"
+                  className="logo notSelectable"
+                />
+              </div>
             </div>
-          </div>
-        </Offline>
+          </Offline>
         </React.Fragment>
       </MuiThemeProvider>
     )
