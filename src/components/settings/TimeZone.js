@@ -69,7 +69,6 @@ export default class TimeZoneDialog extends React.Component {
           value={this.state.value}
           onChange={this.handleChange}
           disabled={this.state.menuDisabled}
-          onChange={this.handleChange}
           maxHeight={250}
           style={{ width: "302px" }}
           anchorOrigin={{ horizontal: "middle", vertical: "top" }}

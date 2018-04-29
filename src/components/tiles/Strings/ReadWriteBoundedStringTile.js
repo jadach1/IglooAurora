@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import TextField from "material-ui-next/TextField"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Input, { InputLabel, InputAdornment } from "material-ui-next/Input"

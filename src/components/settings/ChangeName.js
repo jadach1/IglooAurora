@@ -3,7 +3,6 @@ import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import Snackbar from "material-ui/Snackbar"
-import { List, ListItem } from "material-ui/List"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 
 const theme = createMuiTheme({
@@ -45,20 +44,6 @@ export default class ChangeNameDialog extends React.Component {
   }
 
   render() {
-    const confirmationDialogActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.handleNameDialogClose}>Never mind</Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.openNameDialog}
-        >
-          Proceed
-        </Button>
-      </MuiThemeProvider>,
-    ]
     const nameDialogActions = [
       <MuiThemeProvider theme={theme}>
         <Button onClick={this.props.handleNameDialogClose}>Never mind</Button>

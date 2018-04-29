@@ -19,24 +19,12 @@ import IconMenu from "material-ui/IconMenu"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right"
-import { List, ListItem } from "material-ui/List"
-import Toggle from "material-ui/Toggle"
-import Subheader from "material-ui/Subheader"
 import { PopoverAnimationVertical } from "material-ui/Popover"
 import Divider from "material-ui/Divider"
 import RenameTileDialog from "./RenameTile"
 import DeleteTileDialog from "./DeleteTile"
-import DataVisualizationSettings from "./DataVisualizationSettings"
-import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
 import Tooltip from "material-ui-next/Tooltip"
 import Icon from "material-ui-next/Icon"
-
-const listStyles = {
-  root: {
-    display: "flex",
-    flexWrap: "wrap",
-  },
-}
 
 class Tile extends Component {
   state = {

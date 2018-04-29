@@ -220,6 +220,7 @@ class Main extends Component {
   render() {
     return (
       <MuiThemeProvider>
+        <React.Fragment>
         <Online>
           <div className="main">
             <SettingsDialog
@@ -298,6 +299,7 @@ class Main extends Component {
             </div>
           </div>
         </Offline>
+        </React.Fragment>
       </MuiThemeProvider>
     )
   }
