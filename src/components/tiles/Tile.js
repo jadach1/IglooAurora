@@ -263,26 +263,26 @@ class Tile extends Component {
               {valueTitle}
             </div>
             <div className="tileHeaderButtons notSelectable">
-              <IconButton
-                onClick={() => {
-                  this.setState({ isTileFullScreen: true })
-                }}
-                style={{
-                  padding: "0",
-                  width: "32px",
-                  height: "32px",
-                  marginTop: "14px",
-                  marginBottom: "14px",
-                }}
+              <Tooltip
+                id="tooltip-bottom"
+                title="Fullscreen"
+                placement="bottom"
               >
-                <Tooltip
-                  id="tooltip-bottom"
-                  title="Fullscreen"
-                  placement="bottom"
+                <IconButton
+                  onClick={() => {
+                    this.setState({ isTileFullScreen: true })
+                  }}
+                  style={{
+                    padding: "0",
+                    width: "32px",
+                    height: "32px",
+                    marginTop: "14px",
+                    marginBottom: "14px",
+                  }}
                 >
                   <Icon>fullscreen</Icon>
-                </Tooltip>
-              </IconButton>
+                </IconButton>
+              </Tooltip>
               <IconMenu
                 iconButtonElement={
                   <IconButton
@@ -305,9 +305,17 @@ class Tile extends Component {
                 targetOrigin={{ horizontal: "right", vertical: "top" }}
                 animation={PopoverAnimationVertical}
                 desktop={true}
+                className="notSelectable"
               >
                 <MenuItem
+                  primaryText={"See on the map"}
+                  className="notSelectable"
+                  leftIcon={<Icon>place</Icon>}
+                />
+                <Divider />
+                <MenuItem
                   primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}
+                  className="notSelectable"
                   leftIcon={
                     value.relevance === "VISIBLE" ? (
                       <Icon>visibility_off</Icon>
@@ -324,24 +332,29 @@ class Tile extends Component {
                 <MenuItem
                   primaryText="Resize"
                   rightIcon={<ArrowDropRight />}
+                  className="notSelectable"
                   animation={PopoverAnimationVertical}
                   leftIcon={<Icon>aspect_ratio</Icon>}
                   menuItems={[
                     <MenuItem
                       primaryText="Small"
                       onClick={updateTileMutation("NORMAL")}
+                      className="notSelectable"
                     />,
                     <MenuItem
                       primaryText="Wide"
                       onClick={updateTileMutation("WIDE")}
+                      className="notSelectable"
                     />,
                     <MenuItem
                       primaryText="Tall"
                       onClick={updateTileMutation("TALL")}
+                      className="notSelectable"
                     />,
                     <MenuItem
                       primaryText="Large"
                       onClick={updateTileMutation("LARGE")}
+                      className="notSelectable"
                     />,
                   ]}
                 />
@@ -350,6 +363,7 @@ class Tile extends Component {
                   <MenuItem
                     primaryText="Data"
                     leftIcon={<Icon>timeline</Icon>}
+                    className="notSelectable"
                     rightIcon={<ArrowDropRight />}
                     menuItems={[
                       ...(value.__typename === "FloatValue" &&
@@ -359,16 +373,29 @@ class Tile extends Component {
                             <MenuItem
                               primaryText="Visualization"
                               rightIcon={<ArrowDropRight />}
+                              className="notSelectable"
                               menuItems={[
                                 value.permission === "READ_ONLY" ? (
                                   <React.Fragment>
-                                    <MenuItem primaryText="Gauge" />
-                                    <MenuItem primaryText="Number" />
+                                    <MenuItem
+                                      primaryText="Gauge"
+                                      className="notSelectable"
+                                    />
+                                    <MenuItem
+                                      primaryText="Number"
+                                      className="notSelectable"
+                                    />
                                   </React.Fragment>
                                 ) : (
                                   <React.Fragment>
-                                    <MenuItem primaryText="Slider" />
-                                    <MenuItem primaryText="Input" />
+                                    <MenuItem
+                                      primaryText="Slider"
+                                      className="notSelectable"
+                                    />
+                                    <MenuItem
+                                      primaryText="Input"
+                                      className="notSelectable"
+                                    />
                                   </React.Fragment>
                                 ),
                               ]}
@@ -379,10 +406,17 @@ class Tile extends Component {
                         ? [
                             <MenuItem
                               primaryText="Visualization"
+                              className="notSelectable"
                               rightIcon={<ArrowDropRight />}
                               menuItems={[
-                                <MenuItem primaryText="Normal" />,
-                                <MenuItem primaryText="Advanced" />,
+                                <MenuItem
+                                  primaryText="Normal"
+                                  className="notSelectable"
+                                />,
+                                <MenuItem
+                                  primaryText="Advanced"
+                                  className="notSelectable"
+                                />,
                               ]}
                             />,
                           ]
@@ -391,10 +425,17 @@ class Tile extends Component {
                         ? [
                             <MenuItem
                               primaryText="Unit of measurement"
+                              className="notSelectable"
                               rightIcon={<ArrowDropRight />}
                               menuItems={[
-                                <MenuItem primaryText="Lorem Ipsum A" />,
-                                <MenuItem primaryText="Lorem Ipsum B" />,
+                                <MenuItem
+                                  primaryText="Lorem Ipsum A"
+                                  className="notSelectable"
+                                />,
+                                <MenuItem
+                                  primaryText="Lorem Ipsum B"
+                                  className="notSelectable"
+                                />,
                               ]}
                             />,
                           ]
@@ -407,11 +448,13 @@ class Tile extends Component {
                 <Divider />
                 <MenuItem
                   primaryText="Rename"
+                  className="notSelectable"
                   leftIcon={<Icon>create</Icon>}
                   onClick={() => this.setState({ renameTileOpen: true })}
                 />
                 <MenuItem
                   primaryText="Delete"
+                  className="notSelectable"
                   leftIcon={<Icon>delete</Icon>}
                   innerDivStyle={{ color: "#f44336" }}
                   onClick={this.deleteClick}

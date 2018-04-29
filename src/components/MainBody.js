@@ -7,13 +7,6 @@ import gql from "graphql-tag"
 import Icon from "material-ui-next/Icon"
 
 class MainBody extends Component {
-  constructor() {
-    super()
-    this.state = {
-      showHidden: false,
-    }
-  }
-
   componentDidMount() {
     const subscribeToNewValues = gql`
       subscription {
@@ -175,9 +168,6 @@ class MainBody extends Component {
       hiddenTilesUI = [
         <FlatButton
           onClick={() => {
-            this.setState(oldState => ({
-              showHidden: !oldState.showHidden,
-            }))
             this.props.changeShowHiddenState()
           }}
           label={this.props.showHidden ? "Show less" : "Show more"}

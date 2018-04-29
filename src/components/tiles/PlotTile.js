@@ -73,7 +73,13 @@ class PlotTile extends Component {
     ))
 
     return (
-      <svg height="230" width="420" fill="none" stroke="black">
+      <svg
+        height="230"
+        width="420"
+        fill="none"
+        stroke="black"
+        className="notSelectable"
+      >
         {xTicks.map(tick => (
           <React.Fragment>
             <line

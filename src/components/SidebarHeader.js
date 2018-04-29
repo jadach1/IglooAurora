@@ -25,7 +25,7 @@ class SidebarHeader extends Component {
 
   render() {
     return (
-      <div className="sidebarHeader">
+      <div className="sidebarHeader notSelectable">
         <img
           alt="Igloo Logo"
           src="/assets/logo.svg"
@@ -36,6 +36,23 @@ class SidebarHeader extends Component {
         />
         <div className="rightSide notSelectable">
           <MuiThemeProvider theme={theme}>
+            <Tooltip
+              id="tooltip-bottom"
+              title="Igloo Magellano"
+              placement="bottom"
+            >
+              <IconButton
+                style={{
+                  padding: "0",
+                  margin: "0 5px 0 5px",
+                  width: "32px",
+                  height: "32px",
+                }}
+                className="sidebarHeaderButton"
+              >
+                <Icon color="primary">map</Icon>
+              </IconButton>
+            </Tooltip>
             <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
               <IconButton
                 onClick={this.props.openSettingsDialog}
