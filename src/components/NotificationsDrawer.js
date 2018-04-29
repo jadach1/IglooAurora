@@ -174,6 +174,7 @@ class NotificationsDrawer extends React.Component {
               .map(notification => (
                 <ListItem
                   className="notSelectable"
+                  key={notification.id}
                   id={notification.id}
                   onClick={() => clearNotification(notification.id)}
                 >
@@ -209,6 +210,7 @@ class NotificationsDrawer extends React.Component {
               .map(notification => (
                 <ListItem
                   button
+                  key={notification.id}
                   className="notSelectable"
                   style={{
                     backgroundColor: "transparent",
