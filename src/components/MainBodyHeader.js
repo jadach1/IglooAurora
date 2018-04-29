@@ -54,31 +54,50 @@ class MainBodyHeader extends Component {
           <p className="title" style={{ cursor: "default" }}>
             {device.customName}
           </p>
-          <Tooltip
-            id="tooltip-bottom"
-            title="Rearrange cards"
-            placement="bottom"
-          >
-            <IconButton
-              onClick={this.handleOpen}
-              className="mainBodyHeaderIcon"
-              style={{
-                padding: "0",
-                width: "32px",
-                height: "32px",
-                marginTop: "14px",
-              }}
+          <div className="mainBodyHeaderIcon">
+            <Tooltip
+              id="tooltip-bottom"
+              title="See on the map"
+              placement="bottom"
             >
-              <Icon>mode_edit</Icon>
-            </IconButton>
-          </Tooltip>
-          <NotificationsDrawer
-            device={device}
-            drawer={this.props.drawer}
-            changeDrawerState={this.props.changeDrawerState}
-            hiddenNotifications={this.props.hiddenNotifications}
-            showHiddenNotifications={this.props.showHiddenNotifications}
-          />
+              <IconButton
+                className="mainBodyHeaderIcon"
+                style={{
+                  padding: "0",
+                  margin: "0 5px 0 5px",
+                  width: "32px",
+                  height: "32px",
+                }}
+              >
+                <Icon>place</Icon>
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              id="tooltip-bottom"
+              title="Rearrange cards"
+              placement="bottom"
+            >
+              <IconButton
+                onClick={this.handleOpen}
+                className="mainBodyHeaderIcon"
+                style={{
+                  padding: "0",
+                  margin: "0 5px 0 5px",
+                  width: "32px",
+                  height: "32px",
+                }}
+              >
+                <Icon>mode_edit</Icon>
+              </IconButton>
+            </Tooltip>
+            <NotificationsDrawer
+              device={device}
+              drawer={this.props.drawer}
+              changeDrawerState={this.props.changeDrawerState}
+              hiddenNotifications={this.props.hiddenNotifications}
+              showHiddenNotifications={this.props.showHiddenNotifications}
+            />
+          </div>
         </div>
         <Dialog
           title="Rearrange cards"

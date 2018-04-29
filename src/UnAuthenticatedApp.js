@@ -91,7 +91,7 @@ class UnAuthenticatedApp extends Component {
                 showLabels
               >
                 <BottomNavigationAction
-                  label="Sign up"
+                  label="SIGN UP"
                   icon={<Icon>person_add</Icon>}
                   style={
                     this.state.slideIndex
@@ -100,7 +100,7 @@ class UnAuthenticatedApp extends Component {
                   }
                 />
                 <BottomNavigationAction
-                  label="Log in"
+                  label="LOG IN"
                   icon={<Icon>person</Icon>}
                   style={
                     this.state.slideIndex

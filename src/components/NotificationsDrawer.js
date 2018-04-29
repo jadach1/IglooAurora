@@ -282,10 +282,9 @@ class NotificationsDrawer extends React.Component {
             className="mainBodyHeaderIcon"
             style={{
               padding: "0",
+              margin: "0 5px 0 5px",
               width: "32px",
               height: "32px",
-              marginTop: "14px",
-              left: "34px",
             }}
             onClick={() => this.props.changeDrawerState()}
           >
