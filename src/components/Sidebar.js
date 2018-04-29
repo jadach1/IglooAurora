@@ -3,7 +3,6 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import List, {
   ListItem,
-  ListItemAvatar,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
@@ -13,7 +12,6 @@ import FloatingActionButton from "material-ui/FloatingActionButton"
 import Tooltip from "material-ui-next/Tooltip"
 import Badge from "material-ui-next/Badge"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
 
 const theme = createMuiTheme({
@@ -107,8 +105,6 @@ class Sidebar extends Component {
     const {
       userData: { loading, error, user },
     } = this.props
-
-    let notificationCount = ""
 
     if (loading) {
       return <CenteredSpinner />
@@ -230,4 +226,4 @@ export default graphql(
     }
   `,
   { name: "userData" }
-)(hotkeys(Sidebar))
+)(Sidebar)

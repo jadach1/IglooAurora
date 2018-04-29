@@ -2,7 +2,6 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { Tabs, Tab } from "material-ui/Tabs"
-import FontIcon from "material-ui/FontIcon"
 import Toggle from "material-ui/Toggle"
 import { List, ListItem } from "material-ui/List"
 import Subheader from "material-ui/Subheader"
@@ -21,7 +20,6 @@ import TimeFormatDialog from "./TimeFormat"
 import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import Shortcuts from "./Shortcuts"
-import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
 
 const listStyles = {
@@ -188,6 +186,7 @@ class SettingsDialog extends React.Component {
             <ListItem
               className="notSelectable"
               primaryText={device.customName}
+              key={device.id}
               style={{
                 backgroundColor: "transparent",
               }}
@@ -493,4 +492,4 @@ export default graphql(
     }
   `,
   { name: "userData" }
-)(hotkeys(SettingsDialog))
+)(SettingsDialog)

@@ -1,7 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
-import TextField from "material-ui/TextField"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"

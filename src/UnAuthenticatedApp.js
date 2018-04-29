@@ -6,7 +6,6 @@ import Paper from "material-ui/Paper"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
-import Tabs, { Tab } from "material-ui/Tabs"
 import SwipeableViews from "react-swipeable-views"
 import BottomNavigation, {
   BottomNavigationAction,

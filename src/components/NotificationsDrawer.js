@@ -1,15 +1,9 @@
 import React from "react"
 import IconButton from "material-ui/IconButton"
-import IconMenu from "material-ui/IconMenu"
 import CenteredSpinner from "./CenteredSpinner"
-import List, {
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "material-ui-next/List"
+import List, { ListItem, ListItemText } from "material-ui-next/List"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import Snackbar from "material-ui/Snackbar"
 import Badge from "material-ui-next/Badge"
 import ReactCSSTransitionGroup from "react-addons-css-transition-group"
 import Tooltip from "material-ui-next/Tooltip"
