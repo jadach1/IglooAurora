@@ -93,7 +93,6 @@ class Login extends Component {
                 this.state.email ? (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="Toggle password visibility"
                       onClick={this.handleClickCancelEmail}
                       onMouseDown={this.handleMouseDownPassword}
                     >
@@ -126,7 +125,6 @@ class Login extends Component {
                 this.state.password ? (
                   <InputAdornment position="end">
                     <IconButton
-                      aria-label="Toggle password visibility"
                       onClick={this.handleClickShowPassword}
                       onMouseDown={this.handleMouseDownPassword}
                     >

@@ -376,27 +376,26 @@ class Tile extends Component {
                               className="notSelectable"
                               menuItems={[
                                 value.permission === "READ_ONLY" ? (
-                                  <React.Fragment>
-                                    <MenuItem
-                                      primaryText="Gauge"
-                                      className="notSelectable"
-                                    />
-                                    <MenuItem
-                                      primaryText="Number"
-                                      className="notSelectable"
-                                    />
-                                  </React.Fragment>
+                                  <MenuItem
+                                    primaryText="Gauge"
+                                    className="notSelectable"
+                                  />
                                 ) : (
-                                  <React.Fragment>
-                                    <MenuItem
-                                      primaryText="Slider"
-                                      className="notSelectable"
-                                    />
-                                    <MenuItem
-                                      primaryText="Input"
-                                      className="notSelectable"
-                                    />
-                                  </React.Fragment>
+                                  <MenuItem
+                                    primaryText="Slider"
+                                    className="notSelectable"
+                                  />
+                                ),
+                                value.permission === "READ_ONLY" ? (
+                                  <MenuItem
+                                    primaryText="Number"
+                                    className="notSelectable"
+                                  />
+                                ) : (
+                                  <MenuItem
+                                    primaryText="Input"
+                                    className="notSelectable"
+                                  />
                                 ),
                               ]}
                             />,
