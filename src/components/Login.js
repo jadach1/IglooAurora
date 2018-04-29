@@ -5,6 +5,7 @@ import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import Input, { InputLabel, InputAdornment } from "material-ui-next/Input"
 import { FormControl, FormHelperText } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
+import Icon from "material-ui-next/Icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -104,7 +105,7 @@ class Login extends Component {
                       onClick={this.handleClickCancelEmail}
                       onMouseDown={this.handleMouseDownPassword}
                     >
-                      <i class="material-icons">clear</i>
+                      <Icon>clear</Icon>
                     </IconButton>
                   </InputAdornment>
                 ) : null
@@ -138,9 +139,9 @@ class Login extends Component {
                       onMouseDown={this.handleMouseDownPassword}
                     >
                       {this.state.showPassword ? (
-                        <i class="material-icons">visibility_off</i>
+                        <Icon>visibility_off</Icon>
                       ) : (
-                        <i class="material-icons">visibility</i>
+                        <Icon>visibility</Icon>
                       )}
                     </IconButton>
                   </InputAdornment>

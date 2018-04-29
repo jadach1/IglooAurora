@@ -310,9 +310,9 @@ class Tile extends Component {
                   primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}
                   leftIcon={
                     value.relevance === "VISIBLE" ? (
-                      <i class="material-icons">visibility_off</i>
+                      <Icon>visibility_off</Icon>
                     ) : (
-                      <i class="material-icons">visibility</i>
+                      <Icon>visibility</Icon>
                     )
                   }
                   onClick={
@@ -325,7 +325,7 @@ class Tile extends Component {
                   primaryText="Resize"
                   rightIcon={<ArrowDropRight />}
                   animation={PopoverAnimationVertical}
-                  leftIcon={<i class="material-icons">aspect_ratio</i>}
+                  leftIcon={<Icon>aspect_ratio</Icon>}
                   menuItems={[
                     <MenuItem
                       primaryText="Small"
@@ -349,7 +349,7 @@ class Tile extends Component {
                 value.__typename === "ColourValue" ? (
                   <MenuItem
                     primaryText="Data"
-                    leftIcon={<i class="material-icons">timeline</i>}
+                    leftIcon={<Icon>timeline</Icon>}
                     rightIcon={<ArrowDropRight />}
                     menuItems={[
                       ...(value.__typename === "FloatValue" &&
@@ -407,12 +407,12 @@ class Tile extends Component {
                 <Divider />
                 <MenuItem
                   primaryText="Rename"
-                  leftIcon={<i class="material-icons">create</i>}
+                  leftIcon={<Icon>create</Icon>}
                   onClick={() => this.setState({ renameTileOpen: true })}
                 />
                 <MenuItem
                   primaryText="Delete"
-                  leftIcon={<i class="material-icons">delete</i>}
+                  leftIcon={<Icon>delete</Icon>}
                   innerDivStyle={{ color: "#f44336" }}
                   onClick={this.deleteClick}
                 />

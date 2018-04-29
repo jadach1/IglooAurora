@@ -11,6 +11,7 @@ import BottomNavigation, {
   BottomNavigationAction,
 } from "material-ui-next/BottomNavigation"
 import { hotkeys } from "react-keyboard-shortcuts"
+import Icon from "material-ui-next/Icon"
 
 class UnAuthenticatedApp extends Component {
   state = { slideIndex: 0 }
@@ -91,7 +92,7 @@ class UnAuthenticatedApp extends Component {
               >
                 <BottomNavigationAction
                   label="Sign up"
-                  icon={<i class="material-icons">person_add</i>}
+                  icon={<Icon>person_add</Icon>}
                   style={
                     this.state.slideIndex
                       ? { color: "#757575" }
@@ -100,7 +101,7 @@ class UnAuthenticatedApp extends Component {
                 />
                 <BottomNavigationAction
                   label="Log in"
-                  icon={<i class="material-icons">person</i>}
+                  icon={<Icon>person</Icon>}
                   style={
                     this.state.slideIndex
                       ? { color: "#0083ff" }

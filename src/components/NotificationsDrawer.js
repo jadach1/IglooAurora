@@ -290,10 +290,10 @@ class NotificationsDrawer extends React.Component {
             <MuiThemeProvider theme={theme}>
               {notificationCount ? (
                 <Badge badgeContent={notificationCount} color="primary">
-                  <i class="material-icons">notifications</i>
+                  <Icon>notifications</Icon>
                 </Badge>
               ) : (
-                <i class="material-icons">notifications_none</i>
+                <Icon>notifications_none</Icon>
               )}
             </MuiThemeProvider>
           </IconButton>
@@ -329,7 +329,7 @@ class NotificationsDrawer extends React.Component {
                   height: "32px",
                 }}
               >
-                <i class="material-icons">chevron_right</i>
+                <Icon>chevron_right</Icon>
               </IconButton>
             </Tooltip>
             {/*  <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">

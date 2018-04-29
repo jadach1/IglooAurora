@@ -2,6 +2,7 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
+import Icon from "material-ui-next/Icon"
 
 export default class TimeFormatDialog extends React.Component {
   render() {
@@ -34,11 +35,9 @@ export default class TimeFormatDialog extends React.Component {
             }}
             rippleStyle={{ color: "#0083ff" }}
             checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
+              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
             }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
           <RadioButton
             value="mdy"
@@ -48,11 +47,9 @@ export default class TimeFormatDialog extends React.Component {
             }}
             rippleStyle={{ color: "#0083ff" }}
             checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
+              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
             }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
           <RadioButton
             value="ymd"
@@ -62,11 +59,9 @@ export default class TimeFormatDialog extends React.Component {
             }}
             rippleStyle={{ color: "#0083ff" }}
             checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
+              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
             }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
           <RadioButton
             value="ydm"
@@ -76,11 +71,9 @@ export default class TimeFormatDialog extends React.Component {
             }}
             rippleStyle={{ color: "#0083ff" }}
             checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
+              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
             }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
         </RadioButtonGroup>
         <br />
@@ -95,11 +88,9 @@ export default class TimeFormatDialog extends React.Component {
             }}
             rippleStyle={{ color: "#0083ff" }}
             checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
+              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
             }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
           <RadioButton
             value="12"
@@ -109,11 +100,9 @@ export default class TimeFormatDialog extends React.Component {
             }}
             rippleStyle={{ color: "#0083ff" }}
             checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
+              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
             }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
         </RadioButtonGroup>
       </Dialog>

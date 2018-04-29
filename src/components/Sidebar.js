@@ -180,7 +180,9 @@ class Sidebar extends Component {
                         style={{ marginRight: "24px" }}
                         onClick={() => {
                           this.props.changeDrawerState()
-                          this.listItemClick(device)
+                          if (this.props.selectedDevice !== device.id) {
+                            this.listItemClick(device)
+                          }
                         }}
                       />
                     </MuiThemeProvider>

@@ -4,6 +4,7 @@ import Button from "material-ui-next/Button"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
 import DropDownMenu from "material-ui/DropDownMenu"
 import MenuItem from "material-ui/MenuItem"
+import Icon from "material-ui-next/Icon"
 
 export default class TimeZoneDialog extends React.Component {
   state = {
@@ -43,11 +44,9 @@ export default class TimeZoneDialog extends React.Component {
             onClick={() => this.setState({ menuDisabled: true })}
             rippleStyle={{ color: "#0083ff" }}
             checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
+              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
             }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
           <RadioButton
             value="manual"
@@ -58,11 +57,9 @@ export default class TimeZoneDialog extends React.Component {
             }}
             rippleStyle={{ color: "#0083ff" }}
             checkedIcon={
-              <i class="material-icons" style={{ color: "#0083ff" }}>
-                radio_button_checked
-              </i>
+              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
             }
-            uncheckedIcon={<i class="material-icons">radio_button_unchecked</i>}
+            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
         </RadioButtonGroup>
         <DropDownMenu

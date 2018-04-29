@@ -6,6 +6,7 @@ import Snackbar from "material-ui/Snackbar"
 import { List, ListItem } from "material-ui/List"
 import IconButton from "material-ui-next/IconButton"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import Icon from "material-ui-next/Icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -97,16 +98,16 @@ export default class ChangeMailDialog extends React.Component {
           <List>
             <ListItem
               primaryText="showcase@igloo.io"
-              leftIcon={<i class="material-icons">mail_outline</i>}
+              leftIcon={<Icon>mail_outline</Icon>}
               rightIconButton={
                 <IconButton>
-                  <i class="material-icons">delete</i>
+                  <Icon>delete</Icon>
                 </IconButton>
               }
             />
             <ListItem
               primaryText="Add a new email"
-              leftIcon={<i class="material-icons">add</i>}
+              leftIcon={<Icon>add</Icon>}
             />
           </List>
         </Dialog>

@@ -44,7 +44,7 @@ class ReadWriteStringTile extends Component {
 
   render() {
     return (
-      <div className="readOnlyFloatTile notSelectable">
+      <div className="readWriteStringTile notSelectable">
         <MuiThemeProvider theme={theme}>
           <TextField
             label={this.props.customName}
