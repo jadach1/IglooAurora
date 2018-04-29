@@ -13,6 +13,9 @@ import Tooltip from "material-ui-next/Tooltip"
 import Badge from "material-ui-next/Badge"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import Icon from "material-ui-next/Icon"
+import TextField from "material-ui-next/TextField"
+import { InputAdornment } from "material-ui-next/Input"
+import IconButton from "material-ui-next/IconButton"
 
 const theme = createMuiTheme({
   palette: {
@@ -20,7 +23,15 @@ const theme = createMuiTheme({
   },
 })
 
+const theme2 = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
+
 class Sidebar extends Component {
+  state = { searchText: "" }
+
   componentDidMount() {
     const subscriptionQuery = gql`
       subscription {
@@ -101,6 +112,14 @@ class Sidebar extends Component {
     }
   }
 
+  handleMouseDownSearch = event => {
+    event.preventDefault()
+  }
+
+  handleClickCancelSearch = () => {
+    this.setState({ searchText: "" })
+  }
+
   render() {
     const {
       userData: { loading, error, user },
@@ -116,6 +135,37 @@ class Sidebar extends Component {
     return (
       <React.Fragment>
         <div style={{ height: "100%" }}>
+          <MuiThemeProvider theme={theme2}>
+            <TextField
+              placeholder="Search devices"
+              color="primary"
+              style={{
+                width: "calc(100% - 32px)",
+                margin: "8px 16px 0 16px",
+              }}
+              value={this.state.searchText}
+              onChange={event =>
+                this.setState({ searchText: event.target.value })
+              }
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Icon>search</Icon>
+                  </InputAdornment>
+                ),
+                endAdornment: this.state.searchText ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={this.handleClickCancelSearch}
+                      onMouseDown={this.handleMouseDownSearch}
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null,
+              }}
+            />
+          </MuiThemeProvider>
           <List>
             {user.devices.map(device => (
               <ListItem
@@ -124,7 +174,7 @@ class Sidebar extends Component {
                 style={
                   this.props.selectedDevice === device.id
                     ? { backgroundColor: "#d4d4d4" }
-                    : { backgroundColor: "transparent" }
+                    : null
                 }
                 key={device.id}
                 onClick={() => this.listItemClick(device)}

@@ -184,9 +184,6 @@ class NotificationsDrawer extends React.Component {
                       notification.date.split(".")[0],
                       "YYYY-MM-DDTh:mm:ss"
                     ).fromNow()}
-                    style={{
-                      backgroundColor: "transparent",
-                    }}
                   />
                 </ListItem>
               ))
@@ -212,9 +209,6 @@ class NotificationsDrawer extends React.Component {
                   button
                   key={notification.id}
                   className="notSelectable"
-                  style={{
-                    backgroundColor: "transparent",
-                  }}
                   id={notification.id}
                 >
                   <ListItemText
@@ -223,9 +217,6 @@ class NotificationsDrawer extends React.Component {
                       notification.date.split(".")[0],
                       "YYYY-MM-DDTh:mm:ss"
                     ).fromNow()}
-                    style={{
-                      backgroundColor: "transparent",
-                    }}
                   />
                 </ListItem>
               ))
@@ -268,7 +259,7 @@ class NotificationsDrawer extends React.Component {
             style={
               this.props.hiddenNotifications
                 ? { backgroundColor: "#d4d4d4" }
-                : { backgroundColor: "transparent" }
+                : null
             }
           />
         )
@@ -282,7 +273,8 @@ class NotificationsDrawer extends React.Component {
             className="mainBodyHeaderIcon"
             style={{
               padding: "0",
-              margin: "0 5px 0 5px",
+              position: "absolute",
+              marginTop: "14px",
               width: "32px",
               height: "32px",
             }}
