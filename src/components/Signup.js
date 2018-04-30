@@ -95,6 +95,7 @@ class Login extends Component {
                     <IconButton
                       onClick={this.handleClickCancelEmail}
                       onMouseDown={this.handleMouseDownPassword}
+                      style={{ width: "32px", height: "32px" }}
                     >
                       <Icon>clear</Icon>
                     </IconButton>
@@ -127,6 +128,7 @@ class Login extends Component {
                     <IconButton
                       onClick={this.handleClickShowPassword}
                       onMouseDown={this.handleMouseDownPassword}
+                      style={{ width: "32px", height: "32px" }}
                     >
                       {this.state.showPassword ? (
                         <Icon>visibility_off</Icon>
