@@ -47,8 +47,6 @@ class NotificationsDrawer extends React.Component {
           visualized
           device {
             id
-            icon
-            customName
           }
         }
       }
@@ -82,8 +80,6 @@ class NotificationsDrawer extends React.Component {
           visualized
           device {
             id
-            icon
-            customName
           }
         }
       }
@@ -383,8 +379,6 @@ export default graphql(
           visualized
           device {
             id
-            icon
-            customName
           }
         }
       }

@@ -11,6 +11,7 @@ import "./styles/Tiles.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import NotificationsSnackbar from "./components/NotificationsSnackbar"
 
 class Main extends Component {
   state = {
@@ -284,6 +285,7 @@ class Main extends Component {
                 <div className="mainBody" />
               )}
             </div>
+          <NotificationsSnackbar /> 
           </Online>
           <Offline key="offlineMainBody">
             <div className="main">

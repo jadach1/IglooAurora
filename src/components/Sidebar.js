@@ -158,6 +158,7 @@ class Sidebar extends Component {
                     <IconButton
                       onClick={this.handleClickCancelSearch}
                       onMouseDown={this.handleMouseDownSearch}
+                      style={{ width: "32px", height: "32px" }}
                     >
                       <Icon>clear</Icon>
                     </IconButton>
