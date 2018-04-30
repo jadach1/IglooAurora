@@ -168,79 +168,87 @@ class Sidebar extends Component {
             />
           </MuiThemeProvider>
           <List>
-            {user.devices.map(device => (
-              <ListItem
-                button
-                className="notSelectable"
-                style={
-                  this.props.selectedDevice === device.id
-                    ? { backgroundColor: "#d4d4d4" }
-                    : null
-                }
-                key={device.id}
-                onClick={() => this.listItemClick(device)}
-              >
-                <ListItemIcon>
-                  {device.icon ? (
-                    <img
-                      className="deviceIcon"
-                      src={device.icon}
-                      alt="device logo"
-                    />
-                  ) : (
-                    <Icon>lightbulb_outline</Icon>
-                  )}
-                </ListItemIcon>
-                <ListItemText
-                  primary={device.customName}
-                  secondary={
-                    device.notifications
-                      .filter(notification => notification.visualized === false)
-                      .map(notification => notification.content)
-                      .reverse()[0]
-                      ? device.notifications
-                          .filter(
-                            notification => notification.visualized === false
-                          )
-                          .map(notification => notification.content)
-                          .reverse()[0]
-                      : device.notifications
-                          .filter(
-                            notification => notification.visualized === true
-                          )
-                          .map(notification => notification.content)
-                          .reverse()[0]
-                        ? "No unread notifications"
-                        : "No notifications"
+            {user.devices
+              .filter(device =>
+                device.customName
+                  .toLowerCase()
+                  .includes(this.state.searchText.toLowerCase())
+              )
+              .map(device => (
+                <ListItem
+                  button
+                  className="notSelectable"
+                  style={
+                    this.props.selectedDevice === device.id
+                      ? { backgroundColor: "#d4d4d4" }
+                      : null
                   }
-                />
-                {device.notifications
-                  .filter(notification => notification.visualized === false)
-                  .map(notification => notification.content)
-                  .reverse()[0] ? (
-                  <ListItemSecondaryAction>
-                    <MuiThemeProvider theme={theme}>
-                      <Badge
-                        badgeContent={
-                          device.notifications.filter(
-                            notification => notification.visualized === false
-                          ).length
-                        }
-                        color="primary"
-                        className="notSelectable sidebarBadge"
-                        style={{ marginRight: "24px" }}
-                        onClick={() => {
-                          this.props.changeDrawerState()
-                          if (this.props.selectedDevice !== device.id) {
-                            this.listItemClick(device)
-                          }
-                        }}
+                  key={device.id}
+                  onClick={() => this.listItemClick(device)}
+                >
+                  <ListItemIcon>
+                    {device.icon ? (
+                      <img
+                        className="deviceIcon"
+                        src={device.icon}
+                        alt="device logo"
                       />
-                    </MuiThemeProvider>
-                  </ListItemSecondaryAction>
-                ) : null}
-              </ListItem>
-            ))}
+                    ) : (
+                      <Icon>lightbulb_outline</Icon>
+                    )}
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={device.customName}
+                    secondary={
+                      device.notifications
+                        .filter(
+                          notification => notification.visualized === false
+                        )
+                        .map(notification => notification.content)
+                        .reverse()[0]
+                        ? device.notifications
+                            .filter(
+                              notification => notification.visualized === false
+                            )
+                            .map(notification => notification.content)
+                            .reverse()[0]
+                        : device.notifications
+                            .filter(
+                              notification => notification.visualized === true
+                            )
+                            .map(notification => notification.content)
+                            .reverse()[0]
+                          ? "No unread notifications"
+                          : "No notifications"
+                    }
+                  />
+                  {device.notifications
+                    .filter(notification => notification.visualized === false)
+                    .map(notification => notification.content)
+                    .reverse()[0] ? (
+                    <ListItemSecondaryAction>
+                      <MuiThemeProvider theme={theme}>
+                        <Badge
+                          badgeContent={
+                            device.notifications.filter(
+                              notification => notification.visualized === false
+                            ).length
+                          }
+                          color="primary"
+                          className="notSelectable sidebarBadge"
+                          style={{ marginRight: "24px" }}
+                          onClick={() => {
+                            this.props.changeDrawerState()
+                            if (this.props.selectedDevice !== device.id) {
+                              this.listItemClick(device)
+                            }
+                          }}
+                        />
+                      </MuiThemeProvider>
+                    </ListItemSecondaryAction>
+                  ) : null}
+                </ListItem>
+              ))}
           </List>
         </div>
         <Tooltip id="tooltip-bottom" title="Edit list" placement="bottom">
