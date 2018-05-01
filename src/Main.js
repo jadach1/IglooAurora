@@ -285,7 +285,7 @@ class Main extends Component {
                 <div className="mainBody" />
               )}
             </div>
-          <NotificationsSnackbar /> 
+            <NotificationsSnackbar />
           </Online>
           <Offline key="offlineMainBody">
             <div className="main">
@@ -304,7 +304,7 @@ class Main extends Component {
                 <br />
                 <img
                   alt="Sleeping Polar Bear"
-                  src="/assets/polarBear.svg"
+                  src="./assets/polarBear.svg"
                   width="400"
                   height="400"
                   className="logo notSelectable"
