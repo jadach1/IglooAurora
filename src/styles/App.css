@@ -133,7 +133,7 @@ body {
 }
 
 .mainBody {
-  background-image: url("/assets/logoBG.svg");
+  background-image: url("./assets/logoBG.svg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: contain;
@@ -166,7 +166,7 @@ body {
   box-sizing: border-box;
   background-color: #f2f2f2;
   background-size: cover;
-  background-image: url("/assets/loginBackground.jpg");
+  background-image: url("./assets/loginBackground.jpg");
 }
 
 .loginForm {
