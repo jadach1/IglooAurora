@@ -1,20 +1,10 @@
 import React from "react"
-import IconButton from "material-ui/IconButton"
-import CenteredSpinner from "./CenteredSpinner"
-import List, { ListItem, ListItemText } from "material-ui-next/List"
+
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import Badge from "material-ui-next/Badge"
-import ReactCSSTransitionGroup from "react-addons-css-transition-group"
-import Tooltip from "material-ui-next/Tooltip"
-import SwipeableDrawer from "material-ui-next/SwipeableDrawer"
-import FlatButton from "material-ui/FlatButton"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Icon from "material-ui-next/Icon"
 import Snackbar from "material-ui-next/Snackbar"
 import Button from "material-ui-next/Button"
-
-var moment = require("moment")
 
 const theme = createMuiTheme({
   palette: {
