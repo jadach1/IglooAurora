@@ -68,7 +68,7 @@ class UnAuthenticatedApp extends Component {
               <br />
               <img
                 alt="Igloo Logo"
-                src="/assets/logo.svg"
+                src="./assets/logo.svg"
                 width="300"
                 className="logo notSelectable"
               />
@@ -78,7 +78,7 @@ class UnAuthenticatedApp extends Component {
               <b>
                 <img
                   alt="Igloo"
-                  src="/assets/iglooTitle.svg"
+                  src="./assets/iglooTitle.svg"
                   width="300"
                   className="unauthenticatedTitle notSelectable"
                 />
