@@ -28,7 +28,7 @@ class SidebarHeader extends Component {
       <div className="sidebarHeader notSelectable">
         <img
           alt="Igloo Logo"
-          src="/assets/logo.svg"
+          src="./assets/logo.svg"
           width="48px"
           height="48px"
           style={{ marginLeft: "5px" }}
