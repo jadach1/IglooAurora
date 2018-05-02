@@ -4,8 +4,8 @@
   "theme_color": "#0083ff",
   "background_color": "#0083ff",
   "display": "standalone",
-  "Scope": "/",
-  "start_url": "/",
+  "Scope": "/iglooQLRemote/",
+  "start_url": "/iglooQLRemote/",
   "icons": [
     {
       "src": "images/icons/icon-72x72.png",
