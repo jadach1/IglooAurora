@@ -20,6 +20,7 @@ class Main extends Component {
     hiddenNotifications: false,
     slideIndex: 0,
     areSettingsOpen: false,
+    searchText: "",
   }
 
   changeDrawerState = () => {
@@ -49,7 +50,13 @@ class Main extends Component {
           this.props.userData.user.devices[0] &&
           !this.state.areSettingsOpen
         ) {
-          this.selectDevice(this.props.userData.user.devices[0].id)
+          this.selectDevice(
+            this.props.userData.user.devices.filter(device =>
+              device.customName
+                .toLowerCase()
+                .includes(this.state.searchText.toLowerCase())
+            )[0].id
+          )
           this.setState({ drawer: false })
         }
         if (this.state.areSettingsOpen) {
@@ -64,7 +71,13 @@ class Main extends Component {
           this.props.userData.user.devices[1] &&
           !this.state.areSettingsOpen
         ) {
-          this.selectDevice(this.props.userData.user.devices[1].id)
+          this.selectDevice(
+            this.props.userData.user.devices.filter(device =>
+              device.customName
+                .toLowerCase()
+                .includes(this.state.searchText.toLowerCase())
+            )[1].id
+          )
           this.setState({ drawer: false })
         }
         if (this.state.areSettingsOpen) {
@@ -79,7 +92,13 @@ class Main extends Component {
           this.props.userData.user.devices[2] &&
           !this.state.areSettingsOpen
         ) {
-          this.selectDevice(this.props.userData.user.devices[2].id)
+          this.selectDevice(
+            this.props.userData.user.devices.filter(device =>
+              device.customName
+                .toLowerCase()
+                .includes(this.state.searchText.toLowerCase())
+            )[2].id
+          )
           this.setState({ drawer: false })
         }
         if (this.state.areSettingsOpen) {
@@ -94,7 +113,13 @@ class Main extends Component {
           this.props.userData.user.devices[3] &&
           !this.state.areSettingsOpen
         ) {
-          this.selectDevice(this.props.userData.user.devices[3].id)
+          this.selectDevice(
+            this.props.userData.user.devices.filter(device =>
+              device.customName
+                .toLowerCase()
+                .includes(this.state.searchText.toLowerCase())
+            )[3].id
+          )
           this.setState({ drawer: false })
         }
       },
@@ -106,7 +131,13 @@ class Main extends Component {
           this.props.userData.user.devices[4] &&
           !this.state.areSettingsOpen
         ) {
-          this.selectDevice(this.props.userData.user.devices[4].id)
+          this.selectDevice(
+            this.props.userData.user.devices.filter(device =>
+              device.customName
+                .toLowerCase()
+                .includes(this.state.searchText.toLowerCase())
+            )[4].id
+          )
           this.setState({ drawer: false })
         }
       },
@@ -118,7 +149,13 @@ class Main extends Component {
           this.props.userData.user.devices[5] &&
           !this.state.areSettingsOpen
         ) {
-          this.selectDevice(this.props.userData.user.devices[5].id)
+          this.selectDevice(
+            this.props.userData.user.devices.filter(device =>
+              device.customName
+                .toLowerCase()
+                .includes(this.state.searchText.toLowerCase())
+            )[5].id
+          )
           this.setState({ drawer: false })
         }
       },
@@ -130,7 +167,13 @@ class Main extends Component {
           this.props.userData.user.devices[6] &&
           !this.state.areSettingsOpen
         ) {
-          this.selectDevice(this.props.userData.user.devices[6].id)
+          this.selectDevice(
+            this.props.userData.user.devices.filter(device =>
+              device.customName
+                .toLowerCase()
+                .includes(this.state.searchText.toLowerCase())
+            )[6].id
+          )
           this.setState({ drawer: false })
         }
       },
@@ -142,7 +185,13 @@ class Main extends Component {
           this.props.userData.user.devices[7] &&
           !this.state.areSettingsOpen
         ) {
-          this.selectDevice(this.props.userData.user.devices[7].id)
+          this.selectDevice(
+            this.props.userData.user.devices.filter(device =>
+              device.customName
+                .toLowerCase()
+                .includes(this.state.searchText.toLowerCase())
+            )[7].id
+          )
           this.setState({ drawer: false })
         }
       },
@@ -154,7 +203,13 @@ class Main extends Component {
           this.props.userData.user.devices[8] &&
           !this.state.areSettingsOpen
         ) {
-          this.selectDevice(this.props.userData.user.devices[8].id)
+          this.selectDevice(
+            this.props.userData.user.devices.filter(device =>
+              device.customName
+                .toLowerCase()
+                .includes(this.state.searchText.toLowerCase())
+            )[8].id
+          )
           this.setState({ drawer: false })
         }
       },
@@ -261,6 +316,8 @@ class Main extends Component {
                   selectDevice={id => this.setState({ selectedDevice: id })}
                   selectedDevice={this.state.selectedDevice}
                   changeDrawerState={this.changeDrawerState}
+                  searchText={this.state.searchText}
+                  changeText={text => this.setState({ searchText: text })}
                 />
               </div>
               {this.state.selectedDevice !== null ? (
