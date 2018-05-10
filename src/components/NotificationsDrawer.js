@@ -12,8 +12,7 @@ import FlatButton from "material-ui/FlatButton"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
-
-var moment = require("moment")
+import moment from "moment"
 
 const theme = createMuiTheme({
   palette: {
