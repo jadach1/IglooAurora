@@ -5,48 +5,116 @@
   "background_color": "#0083ff",
   "display": "standalone",
   "Scope": "/iglooQLRemote/",
-  "start_url": "/iglooQLRemote/",
+  "start_url": "https://hellowitlab.github.io/iglooQLRemote/",
   "icons": [
     {
-      "src": "images/icons/icon-72x72.png",
+      "src": "/images/images/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png"
     },
     {
-      "src": "images/icons/icon-96x96.png",
+      "src": "/images/images/icons/icon-96x96.png",
       "sizes": "96x96",
       "type": "image/png"
     },
     {
-      "src": "images/icons/icon-128x128.png",
+      "src": "/images/images/icons/icon-128x128.png",
       "sizes": "128x128",
       "type": "image/png"
     },
     {
-      "src": "images/icons/icon-144x144.png",
+      "src": "/images/images/icons/icon-144x144.png",
       "sizes": "144x144",
       "type": "image/png"
     },
     {
-      "src": "images/icons/icon-152x152.png",
+      "src": "/images/images/icons/icon-152x152.png",
       "sizes": "152x152",
       "type": "image/png"
     },
     {
-      "src": "images/icons/icon-192x192.png",
+      "src": "/images/images/icons/icon-192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "images/icons/icon-384x384.png",
+      "src": "/images/images/icons/icon-384x384.png",
       "sizes": "384x384",
       "type": "image/png"
     },
     {
-      "src": "images/icons/icon-512x512.png",
+      "src": "/images/images/icons/icon-512x512.png",
       "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/bf7cc773-da5f-d20d-1b9d-96367848cfda.webPlatform.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/29c1df86-d432-1384-972d-8cef194c6a69.webPlatform.png",
+      "sizes": "1240x600",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/4fdda9ec-30d8-6631-0fc3-8e4138839e02.webPlatform.png",
+      "sizes": "300x300",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/96f60952-1aca-b8b6-0301-cb3773445937.webPlatform.png",
+      "sizes": "150x150",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/4c119ce2-14a4-762f-317b-d2782db9244a.webPlatform.png",
+      "sizes": "88x88",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/84ae63d2-8836-257d-2c50-f45eb0ef5cfd.webPlatform.png",
+      "sizes": "24x24",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/5b1e184f-f3c6-0740-bced-869662419d33.webPlatform.png",
+      "sizes": "50x50",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/1fcfcf2a-40c3-6cfd-bef9-d362e16149ae.webPlatform.png",
+      "sizes": "620x300",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/535bb21b-fa33-2384-b66d-d3e0281890ba.webPlatform.png",
+      "sizes": "36x36",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/7ef603d3-0567-e96a-ddb4-fc892551c260.webPlatform.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/0168684e-523a-1d1b-c521-f72620b415aa.webPlatform.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/6d238b3a-b69c-f29c-355b-824b6d4c5551.webPlatform.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    },
+    {
+      "src": "/images/a8f437aa-a5e1-c06d-8f2b-2333705ff3e8.webPlatform.png",
+      "sizes": "76x76",
       "type": "image/png"
     }
   ],
-  "splash_pages": null
+  "splash_pages": null,
+  "lang": "",
+  "description": "The official client for Igloo Cloud Framework",
+  "scope": "/iglooQLRemote/"
 }
