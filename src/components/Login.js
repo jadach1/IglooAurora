@@ -91,7 +91,7 @@ class Login extends Component {
           <FormControl style={{ width: "100%" }}>
             <InputLabel htmlFor="adornment-email">Email</InputLabel>
             <Input
-              id="adornment-email"
+              id="adornment-email-login"
               value={this.state.email}
               onChange={event => this.setState({ email: event.target.value })}
               onKeyPress={event => {
@@ -111,15 +111,15 @@ class Login extends Component {
                 ) : null
               }
             />
-            <FormHelperText id="name-error-text">
+            <FormHelperText id="name-error-text-login">
               {this.state.emailError}
             </FormHelperText>
           </FormControl>
           <br />
           <FormControl style={{ width: "100%" }}>
-            <InputLabel htmlFor="adornment-password">Password</InputLabel>
+            <InputLabel htmlFor="adornment-password-login">Password</InputLabel>
             <Input
-              id="adornment-password"
+              id="adornment-password-login"
               type={this.state.showPassword ? "text" : "password"}
               value={this.state.password}
               onChange={event =>
@@ -148,7 +148,7 @@ class Login extends Component {
                 ) : null
               }
             />
-            <FormHelperText id="name-error-text">
+            <FormHelperText id="passowrd-error-text-login">
               {this.state.passwordError}
             </FormHelperText>
           </FormControl>

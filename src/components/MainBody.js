@@ -17,6 +17,8 @@ class MainBody extends Component {
           valueDetails
           tileSize
           customName
+          updatedAt
+          createdAt
           device {
             id
           }
@@ -78,6 +80,8 @@ class MainBody extends Component {
           valueDetails
           tileSize
           customName
+          updatedAt
+          createdAt
           device {
             id
           }
@@ -234,6 +238,8 @@ export default graphql(
           valueDetails
           tileSize
           customName
+          updatedAt
+          createdAt
           ... on FloatValue {
             floatValue: value
             precision

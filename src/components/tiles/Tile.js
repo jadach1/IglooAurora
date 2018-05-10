@@ -25,6 +25,7 @@ import RenameTileDialog from "./RenameTile"
 import DeleteTileDialog from "./DeleteTile"
 import Tooltip from "material-ui-next/Tooltip"
 import Icon from "material-ui-next/Icon"
+import InfoDialog from "./InfoDialog.js"
 
 class Tile extends Component {
   state = {
@@ -33,6 +34,7 @@ class Tile extends Component {
     renameTileOpen: false,
     deleteTileOpen: false,
     dataVisualizationDialogOpen: false,
+    infoOpen: false,
   }
 
   handleClick = event => {
@@ -314,6 +316,13 @@ class Tile extends Component {
                 />
                 <Divider />
                 <MenuItem
+                  primaryText={"Information"}
+                  className="notSelectable"
+                  onClick={() => this.setState({ infoOpen: true })}
+                  leftIcon={<Icon>info</Icon>}
+                />
+                <Divider />
+                <MenuItem
                   primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}
                   className="notSelectable"
                   leftIcon={
@@ -483,6 +492,12 @@ class Tile extends Component {
           tileName={valueTitle}
           deleteTile={this.deleteTile}
           value={value}
+        />
+        <InfoDialog
+          infoOpen={this.state.infoOpen}
+          handleInfoClose={() => this.setState({ infoOpen: false })}
+          createdAt={value.createdAt}
+          updatedAt={value.updatedAt}
         />
       </React.Fragment>
     )
