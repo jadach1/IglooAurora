@@ -22,6 +22,8 @@ import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import Shortcuts from "./Shortcuts"
 import Icon from "material-ui-next/Icon"
 
+var moment = require("moment-timezone")
+
 const listStyles = {
   root: {
     display: "flex",
@@ -288,7 +290,12 @@ class SettingsDialog extends React.Component {
                   <Subheader style={{ cursor: "default" }}>Time</Subheader>
                   <ListItem
                     primaryText="Change time zone"
-                    secondaryText="Auto (GMT+01:00)"
+                    secondaryText={
+                      "Auto: (GMT" +
+                      moment.tz(moment.tz.guess()).format("Z") +
+                      ") " +
+                      moment.tz.guess().split("/")[1]
+                    }
                     onClick={this.handleTimeDialogOpen}
                   />
                   <ListItem
