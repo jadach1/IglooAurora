@@ -179,6 +179,9 @@ export default class TimeZoneDialog extends React.Component {
           <MenuItem value={103} primaryText="(GMT+01:00) Berlin" />
           <MenuItem value={104} primaryText="(GMT+01:00) Brussels" />
           <MenuItem value={105} primaryText="(GMT+01:00) Budapest" />
+          <MenuItem value={106} primaryText="(GMT+01:00) Cairo" />
+          <MenuItem value={107} primaryText="(GMT+01:00) Belgrade" />
+          <MenuItem value={108} primaryText="(GMT+01:00) Prague" />
         </DropDownMenu>
         <br />
       </Dialog>

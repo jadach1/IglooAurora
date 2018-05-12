@@ -29,18 +29,16 @@ class InfoDialog extends React.Component {
           width: "350px",
         }}
       >
-        <b>Creation: </b>
-        {moment(
-          this.props.createdAt.split(".")[0],
-          "YYYY-MM-DDTh:mm:ss"
-        ).fromNow()}
+        <b>Created: </b>
+        {moment
+          .utc(this.props.createdAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+          .fromNow()}
         <br />
         <br />
-        <b>Last update: </b>
-        {moment(
-          this.props.updatedAt.split(".")[0],
-          "YYYY-MM-DDTh:mm:ss"
-        ).fromNow()}
+        <b>Last updated: </b>
+        {moment
+          .utc(this.props.updatedAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+          .fromNow()}
       </Dialog>
     )
   }

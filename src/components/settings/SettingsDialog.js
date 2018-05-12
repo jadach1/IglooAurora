@@ -292,16 +292,6 @@ class SettingsDialog extends React.Component {
                     onClick={this.handleTimeDialogOpen}
                   />
                   <ListItem
-                    primaryText="Adjust for daylight saving time"
-                    rightToggle={
-                      <Toggle
-                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                        rippleStyle={{ color: "#0083ff" }}
-                      />
-                    }
-                  />
-                  <ListItem
                     primaryText="Change date and time format"
                     secondaryText="DD/MM/YYYY, 24-hour clock"
                     onClick={this.handleTimeFormatDialogOpen}

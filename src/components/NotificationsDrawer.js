@@ -175,10 +175,12 @@ class NotificationsDrawer extends React.Component {
                 >
                   <ListItemText
                     primary={notification.content}
-                    secondary={moment(
-                      notification.date.split(".")[0],
-                      "YYYY-MM-DDTh:mm:ss"
-                    ).fromNow()}
+                    secondary={moment
+                      .utc(
+                        notification.date.split(".")[0],
+                        "YYYY-MM-DDTh:mm:ss"
+                      )
+                      .fromNow()}
                   />
                 </ListItem>
               ))
@@ -208,10 +210,12 @@ class NotificationsDrawer extends React.Component {
                 >
                   <ListItemText
                     primary={notification.content}
-                    secondary={moment(
-                      notification.date.split(".")[0],
-                      "YYYY-MM-DDTh:mm:ss"
-                    ).fromNow()}
+                    secondary={moment
+                      .utc(
+                        notification.date.split(".")[0],
+                        "YYYY-MM-DDTh:mm:ss"
+                      )
+                      .fromNow()}
                   />
                 </ListItem>
               ))

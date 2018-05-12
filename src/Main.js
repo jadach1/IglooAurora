@@ -50,7 +50,9 @@ class Main extends Component {
           this.props.userData.user.devices[0] &&
           !this.state.areSettingsOpen
         ) {
-          if (this.state.searchText !== "") {
+          if (this.state.searchText === "") {
+            this.selectDevice(this.props.userData.user.devices[0].id)
+          } else {
             this.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
@@ -58,8 +60,6 @@ class Main extends Component {
                   .includes(this.state.searchText.toLowerCase())
               )[0].id
             )
-          } else {
-            this.selectDevice(this.props.userData.user.devices[0].id)
           }
           this.setState({ drawer: false })
         }
