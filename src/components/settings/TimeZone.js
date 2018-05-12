@@ -6,6 +6,8 @@ import DropDownMenu from "material-ui/DropDownMenu"
 import MenuItem from "material-ui/MenuItem"
 import Icon from "material-ui-next/Icon"
 
+var moment = require("moment-timezone")
+
 export default class TimeZoneDialog extends React.Component {
   state = {
     value: 1,
@@ -36,7 +38,12 @@ export default class TimeZoneDialog extends React.Component {
         <RadioButtonGroup name="Time Zone">
           <RadioButton
             value="auto"
-            label="Auto (GMT+01:00)"
+            label={
+              "Auto: (GMT" +
+              moment.tz(moment.tz.guess()).format("Z") +
+              ") " +
+              moment.tz.guess().split("/")[1]
+            }
             style={{
               marginTop: 12,
               marginBottom: 16,
