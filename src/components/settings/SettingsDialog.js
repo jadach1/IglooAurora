@@ -291,7 +291,7 @@ class SettingsDialog extends React.Component {
                   <ListItem
                     primaryText="Change time zone"
                     secondaryText={
-                      "Auto: (GMT" +
+                      "Auto: (UTC" +
                       moment.tz(moment.tz.guess()).format("Z") +
                       ") " +
                       moment.tz.guess().split("/")[1]
