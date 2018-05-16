@@ -39,11 +39,25 @@ function cleanArray(arr) {
 
 export default class TimeZoneDialog extends React.Component {
   state = {
-    value: moment.tz.guess(),
+    value: moment.tz.guess().split("/")[1]
+      ? "(UTC" +
+        moment.tz(moment.tz.guess()).format("Z") +
+        ") " +
+        moment.tz
+          .guess()
+          .split("/")[1]
+          .replace(/_/g, " ")
+      : "",
     menuDisabled: true,
+    timeZone: null,
   }
 
-  handleChange = (event, index, value) => this.setState({ value })
+  handleChange = (event, index, value) => {
+    this.setState({
+      value,
+      timeZone: value.split("UTC")[1].split(")")[0],
+    })
+  }
 
   render() {
     const timeZoneActions = [
@@ -108,7 +122,11 @@ export default class TimeZoneDialog extends React.Component {
           targetOrigin={{ horizontal: "middle", vertical: "top" }}
         >
           {cleanArray(sortedTimeZones).map(timeZone => (
-            <MenuItem value={timeZone} primaryText={timeZone} />
+            <MenuItem
+              value={timeZone}
+              primaryText={timeZone}
+              className="notSelectable"
+            />
           ))}
         </DropDownMenu>
         <br />
