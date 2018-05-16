@@ -24,8 +24,8 @@
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.45.tgz#0cfe971d7ed5542695740338e0455c91078a0e83"
 
 "@types/jss@^9.3.0":
-  version "9.5.2"
-  resolved "https://registry.yarnpkg.com/@types/jss/-/jss-9.5.2.tgz#85076b2c16606a6f996aa7e20c1ec7ed6a08075f"
+  version "9.5.3"
+  resolved "https://registry.yarnpkg.com/@types/jss/-/jss-9.5.3.tgz#0c106de3fe0b324cd4173fac7dab26c12cda624e"
   dependencies:
     csstype "^2.0.0"
     indefinite-observable "^1.0.1"
@@ -1915,8 +1915,8 @@ cssom@0.3.x, "cssom@>= 0.3.2 < 0.4.0":
     cssom "0.3.x"
 
 csstype@^2.0.0, csstype@^2.2.0:
-  version "2.5.0"
-  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.0.tgz#53e1c242f422d5d976b81f42707bd9b8934492ee"
+  version "2.5.1"
+  resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.5.1.tgz#654231d1ddddfc3eb93da281a1144e7c14fc0bdc"
 
 currently-unhandled@^0.4.1:
   version "0.4.1"
@@ -5897,8 +5897,8 @@ react-language-select@^1.0.2:
     webpack "^2.6.1"
 
 react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.2:
-  version "3.0.3"
-  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.3.tgz#473820154732f1ccd762e89324abab154255da6b"
+  version "3.0.4"
+  resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
 react-md@^1.2.11:
   version "1.2.11"
