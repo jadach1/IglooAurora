@@ -337,7 +337,11 @@ class Sidebar extends Component {
         </div>
         <Tooltip id="tooltip-bottom" title="Edit list" placement="bottom">
           <FloatingActionButton
-            className="notSelectable deviceEditFab"
+            className={
+              this.props.isMobile
+                ? "notSelectable mobileDeviceEditFab"
+                : "notSelectable deviceEditFab"
+            }
             backgroundColor="#ff4081"
             style={{
               transition:
