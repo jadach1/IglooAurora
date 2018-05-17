@@ -4,18 +4,49 @@
   display: grid;
   grid-template-columns: auto;
   grid-template-rows: [start] 60px [mid] auto [end];
-  grid-template-areas: "sidebarHeader" "sidebar";
+  grid-template-areas: "header" "body";
 }
 
 .mobileSidebar {
-  grid-area: sidebar;
+  grid-area: body;
   background: #f2f2f2;
   box-sizing: border-box;
   overflow-y: auto;
 }
 
 .mobileSidebarHeader {
-  grid-area: sidebarHeader;
+  grid-area: header;
+  vertical-align: middle;
+  line-height: 60px;
+  background: #0057cb;
+  z-index: 1000;
+}
+
+.mobileMainBody {
+  grid-area: body;
+  background: white;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: 0 15px 0 15px;
+}
+
+.mobileMainBodyHeader {
+  grid-area: header;
+  background: #0083ff;
+  color: white;
+  box-sizing: border-box;
+  line-height: 60px;
+  font-size: 30px;
+  vertical-align: middle;
+  z-index: 1000;
+  display: grid;
+  grid-template-rows: auto;
+  grid-template-columns: 15px 40px 15px auto 144px;
+  grid-template-areas: ". icon . title buttons";
+}
+
+.mobileSidebarHeader {
+  grid-area: header;
   vertical-align: middle;
   line-height: 60px;
   background: #0057cb;
@@ -34,9 +65,11 @@
   margin: 0 5px 0 5px;
   vertical-align: middle;
 }
+
 .mobileSidebarHeaderButton {
   vertical-align: middle;
 }
+
 .mobileSidebarHeaderButton svg {
   color: white !important;
 }
