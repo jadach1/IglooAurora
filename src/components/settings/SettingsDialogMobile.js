@@ -1,5 +1,6 @@
 import React from "react"
 import Dialog from "material-ui-next/Dialog"
+import DialogActions from "material-ui-next/Dialog/DialogActions"
 import Button from "material-ui-next/Button"
 import { Tabs, Tab } from "material-ui/Tabs"
 import Toggle from "material-ui/Toggle"
@@ -21,6 +22,11 @@ import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import Shortcuts from "./Shortcuts"
 import Icon from "material-ui-next/Icon"
+import Slide from "material-ui-next/es/transitions/Slide"
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />
+}
 
 var moment = require("moment-timezone")
 
@@ -216,26 +222,21 @@ class SettingsDialog extends React.Component {
         </List>
       )
 
-    const actions = [
-      <Button onClick={this.props.closeSettingsDialog}>Close</Button>,
-    ]
-
     return (
       <React.Fragment>
         <Dialog
-          actions={actions}
           modal={false}
           open={this.props.isOpen}
           onRequestClose={this.props.closeSettingsDialog}
           bodyStyle={{ padding: "0" }}
           repositionOnUpdate={true}
-          contentStyle={{ width: "520px" }}
           className="notSelectable"
           fullScreen
+          TransitionComponent={Transition}
         >
           <Tabs
             inkBarStyle={{
-              background: "ff4081 ",
+              background: "ff4081",
               height: "3px",
               marginTop: "-3px",
             }}
@@ -269,7 +270,6 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "500px",
               }}
             >
               <div style={listStyles.root}>
@@ -317,7 +317,6 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "500px",
               }}
             >
               <div style={listStyles.root}>
@@ -357,7 +356,6 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "500px",
               }}
             >
               <List>
@@ -411,6 +409,9 @@ class SettingsDialog extends React.Component {
               </List>
             </div>
           </SwipeableViews>
+          <DialogActions>
+            <Button onClick={this.props.closeSettingsDialog}>Close</Button>,
+          </DialogActions>
         </Dialog>
         <TwoFactorDialog
           isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}

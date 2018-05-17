@@ -15,6 +15,7 @@ import gql from "graphql-tag"
 import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import AppBar from "material-ui-next/AppBar"
 import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
+import Slide from "material-ui-next/es/transitions/Slide"
 
 class Main extends Component {
   state = {
@@ -328,40 +329,63 @@ class Main extends Component {
         <React.Fragment>
           <Online>
             <div className="mobileMain">
-              <SettingsDialogMobile
-                isOpen={this.state.areSettingsOpen}
-                closeSettingsDialog={() => {
-                  this.setState({ areSettingsOpen: false })
-                }}
-                handleChange={this.handleSettingsTabChanged}
-                slideIndex={this.state.slideIndex}
-              />
-              <AppBar>
-                <SidebarHeader
-                  logOut={this.props.logOut}
-                  key="mobileSidebarHeader"
-                  openSettingsDialog={() => {
-                    this.setState({ areSettingsOpen: true })
-                  }}
-                  changeSettingsState={() =>
-                    this.setState(oldState => ({
-                      areSettingsOpen: !oldState.areSettingsOpen,
-                      drawer: false,
-                    }))
-                  }
-                />
-              </AppBar>
-              <div className="mobileSidebar" key="sidebar">
-                <Sidebar
-                  selectDevice={id => this.setState({ selectedDevice: id })}
-                  selectedDevice={this.state.selectedDevice}
-                  changeDrawerState={this.changeDrawerState}
-                  searchText={this.state.searchText}
-                  changeText={text => this.setState({ searchText: text })}
-                  isMobile={this.props.isMobile}
-                />
-              </div>
+              {this.state.selectedDevice == null ? (
+                <React.Fragment>
+                  <SettingsDialogMobile
+                    isOpen={this.state.areSettingsOpen}
+                    closeSettingsDialog={() => {
+                      this.setState({ areSettingsOpen: false })
+                    }}
+                    handleChange={this.handleSettingsTabChanged}
+                    slideIndex={this.state.slideIndex}
+                  />
+                  <AppBar>
+                    <SidebarHeader
+                      logOut={this.props.logOut}
+                      key="mobileSidebarHeader"
+                      openSettingsDialog={() => {
+                        this.setState({ areSettingsOpen: true })
+                      }}
+                      changeSettingsState={() =>
+                        this.setState(oldState => ({
+                          areSettingsOpen: !oldState.areSettingsOpen,
+                          drawer: false,
+                        }))
+                      }
+                    />
+                  </AppBar>
+                  <div className="mobileSidebar" key="sidebar">
+                    <Sidebar
+                      selectDevice={id => this.setState({ selectedDevice: id })}
+                      selectedDevice={this.state.selectedDevice}
+                      changeDrawerState={this.changeDrawerState}
+                      searchText={this.state.searchText}
+                      changeText={text => this.setState({ searchText: text })}
+                      isMobile={this.props.isMobile}
+                    />
+                  </div>
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <MainBodyHeader
+                    deviceId={this.state.selectedDevice}
+                    key="mobileMainBodyHeader"
+                    drawer={this.state.drawer}
+                    changeDrawerState={this.changeDrawerState}
+                    hiddenNotifications={this.state.hiddenNotifications}
+                    showHiddenNotifications={this.showHiddenNotifications}
+                  />
+                  <div className="mobileMainBody" key="mainBody">
+                    <MainBody
+                      deviceId={this.state.selectedDevice}
+                      showHidden={this.state.showMainHidden}
+                      changeShowHiddenState={this.changeShowHiddenState}
+                    />
+                  </div>
+                </React.Fragment>
+              )}
             </div>
+
             <NotificationsSnackbar />
           </Online>
           <Offline key="offlineMainBody">
