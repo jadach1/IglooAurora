@@ -1,0 +1,42 @@
+.mobileMain {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: [start] 60px [mid] auto [end];
+  grid-template-areas: "sidebarHeader" "sidebar";
+}
+
+.mobileSidebar {
+  grid-area: sidebar;
+  background: #f2f2f2;
+  box-sizing: border-box;
+  overflow-y: auto;
+}
+
+.mobileSidebarHeader {
+  grid-area: sidebarHeader;
+  vertical-align: middle;
+  line-height: 60px;
+  background: #0057cb;
+  z-index: 1000;
+}
+
+.mobileSidebarHeader .rightSide {
+  color: white;
+  display: inline-block;
+  float: right;
+  margin-right: 14px;
+}
+
+.mobileSidebarHeader .rightSide .icon {
+  color: white !important;
+  margin: 0 5px 0 5px;
+  vertical-align: middle;
+}
+.mobileSidebarHeaderButton {
+  vertical-align: middle;
+}
+.mobileSidebarHeaderButton svg {
+  color: white !important;
+}

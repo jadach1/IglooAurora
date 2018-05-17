@@ -231,6 +231,12 @@ body {
   bottom: 20px;
 }
 
+.mobileDeviceEditFab {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+}
+
 .leftSideIgloo {
   font-size: 100px;
   font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;

@@ -108,7 +108,34 @@ class App extends Component {
     }
     this.state = {
       bearer,
+      isMobile: null,
     }
+  }
+
+  /**
+   * Calculate & Update state of new dimensions
+   */
+  updateDimensions() {
+    if (window.innerWidth < 500) {
+      this.setState({ isMobile: true })
+    } else {
+      this.setState({ isMobile: false })
+    }
+  }
+
+  /**
+   * Add event listener
+   */
+  componentDidMount() {
+    this.updateDimensions()
+    window.addEventListener("resize", this.updateDimensions.bind(this))
+  }
+
+  /**
+   * Remove event listener
+   */
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this))
   }
 
   render() {
@@ -130,7 +157,13 @@ class App extends Component {
     if (this.state.bearer === "") {
       return <UnAuthenticatedApp signIn={signIn} />
     } else {
-      return <AuthenticatedApp bearer={this.state.bearer} logOut={logOut} />
+      return (
+        <AuthenticatedApp
+          bearer={this.state.bearer}
+          logOut={logOut}
+          isMobile={this.state.isMobile}
+        />
+      )
     }
   }
 }

@@ -1,5 +1,6 @@
 import React, { Component } from "react"
 import Main from "./Main"
+import MainMobile from "./MainMobile"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import {
@@ -59,7 +60,14 @@ class AuthenticatedApp extends Component {
   render() {
     return (
       <ApolloProvider client={this.client}>
-        <Main logOut={this.props.logOut} />
+        {this.props.isMobile ? (
+          <MainMobile
+            logOut={this.props.logOut}
+            isMobile={this.props.isMobile}
+          />
+        ) : (
+          <Main logOut={this.props.logOut} />
+        )}
       </ApolloProvider>
     )
   }
