@@ -1,11 +1,11 @@
 {
-  "name": "Igloo Cloud Remote",
-  "short_name": "Igloo",
+  "name": "Igloo Aurora",
+  "short_name": "Igloo Aurora",
   "theme_color": "#0083ff",
   "background_color": "#0083ff",
   "display": "standalone",
-  "Scope": "/iglooQLRemote/",
-  "start_url": "https://hellowitlab.github.io/iglooQLRemote/",
+  "Scope": "/iglooAurora/",
+  "start_url": "https://hellowitlab.github.io/iglooAurora/",
   "icons": [
     {
       "src": "/images/images/icons/icon-72x72.png",
@@ -115,6 +115,5 @@
   ],
   "splash_pages": null,
   "lang": "",
-  "description": "The official client for Igloo Cloud Framework",
-  "scope": "/iglooQLRemote/"
+  "description": "The official client for Igloo Cloud Framework"
 }

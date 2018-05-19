@@ -9,6 +9,12 @@
     core-js "^2.5.3"
     regenerator-runtime "^0.11.1"
 
+"@material-ui/icons@^1.0.0-rc.0":
+  version "1.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-1.0.0-rc.0.tgz#1c836832183d509eaac9df42aa31dbbe4dd337cb"
+  dependencies:
+    recompose "^0.26.0 || ^0.27.0"
+
 "@material-ui/lab@^1.0.0-alpha.0":
   version "1.0.0-alpha.0"
   resolved "https://registry.yarnpkg.com/@material-ui/lab/-/lab-1.0.0-alpha.0.tgz#6815d124d2c159cae39d81b42073b65dfdc467a3"

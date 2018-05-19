@@ -2,7 +2,6 @@ import React from "react"
 import Dialog from "material-ui-next/Dialog"
 import DialogActions from "material-ui-next/Dialog/DialogActions"
 import Button from "material-ui-next/Button"
-import { Tabs, Tab } from "material-ui/Tabs"
 import Toggle from "material-ui/Toggle"
 import { List, ListItem } from "material-ui/List"
 import Subheader from "material-ui/Subheader"
@@ -22,13 +21,25 @@ import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import Shortcuts from "./Shortcuts"
 import Icon from "material-ui-next/Icon"
-import Slide from "material-ui-next/es/transitions/Slide"
+import Slide from "material-ui-next/transitions/Slide"
+import BottomNavigation from "material-ui-next/BottomNavigation"
+import BottomNavigationAction from "material-ui-next/BottomNavigation/BottomNavigationAction"
+import AppBar from "material-ui-next/AppBar"
+import IconButton from "material-ui-next/IconButton"
+import Typography from "material-ui-next/Typography"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
 }
 
 var moment = require("moment-timezone")
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0057cb" },
+  },
+})
 
 const listStyles = {
   root: {
@@ -234,34 +245,20 @@ class SettingsDialog extends React.Component {
           fullScreen
           TransitionComponent={Transition}
         >
-          <Tabs
-            inkBarStyle={{
-              background: "ff4081",
-              height: "3px",
-              marginTop: "-3px",
-            }}
-            onChange={this.props.handleChange}
-            value={this.props.slideIndex}
-          >
-            <Tab
-              icon={<Icon>dashboard</Icon>}
-              label="Interface"
-              buttonStyle={{ backgroundColor: "#0057cb" }}
-              value={0}
-            />
-            <Tab
-              icon={<Icon>notifications</Icon>}
-              label="Notifications"
-              buttonStyle={{ backgroundColor: "#0057cb" }}
-              value={1}
-            />
-            <Tab
-              icon={<Icon>account_box</Icon>}
-              label="Account"
-              buttonStyle={{ backgroundColor: "#0057cb" }}
-              value={2}
-            />
-          </Tabs>
+          <MuiThemeProvider theme={theme}>
+            <AppBar>
+              <Typography variant="title" color="inherit">
+                Settings
+              </Typography>
+              <IconButton
+                color="inherit"
+                onClick={this.props.closeSettingsDialog}
+                aria-label="Close"
+              >
+                <Icon>close</Icon>
+              </IconButton>
+            </AppBar>
+          </MuiThemeProvider>
           <SwipeableViews
             index={this.props.slideIndex}
             onChangeIndex={this.props.handleChange}
@@ -409,9 +406,24 @@ class SettingsDialog extends React.Component {
               </List>
             </div>
           </SwipeableViews>
-          <DialogActions>
-            <Button onClick={this.props.closeSettingsDialog}>Close</Button>,
-          </DialogActions>
+          <BottomNavigation
+            onChange={this.props.handleChangeBTIndex}
+            value={this.props.slideIndex}
+            showLabels
+          >
+            <BottomNavigationAction
+              icon={<Icon>dashboard</Icon>}
+              label="Interface"
+            />
+            <BottomNavigationAction
+              icon={<Icon>notifications</Icon>}
+              label="Notifications"
+            />
+            <BottomNavigationAction
+              icon={<Icon>account_box</Icon>}
+              label="Account"
+            />
+          </BottomNavigation>
         </Dialog>
         <TwoFactorDialog
           isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}

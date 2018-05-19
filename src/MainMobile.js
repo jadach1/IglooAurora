@@ -4,7 +4,6 @@ import SidebarHeader from "./components/SidebarHeader"
 import MainBody from "./components/MainBody"
 import MainBodyHeader from "./components/MainBodyHeader"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
-import SettingsDialog from "./components/settings/SettingsDialog"
 import { Offline, Online } from "react-detect-offline"
 import "./styles/App.css"
 import "./styles/Tiles.css"
@@ -15,7 +14,6 @@ import gql from "graphql-tag"
 import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import AppBar from "material-ui-next/AppBar"
 import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
-import Slide from "material-ui-next/es/transitions/Slide"
 
 class Main extends Component {
   state = {
@@ -323,6 +321,10 @@ class Main extends Component {
     })
   }
 
+  handleChangeBTIndex = (event, value) => {
+    this.setState({ slideIndex: value })
+  }
+
   render() {
     return (
       <MuiThemeProvider>
@@ -338,6 +340,7 @@ class Main extends Component {
                     }}
                     handleChange={this.handleSettingsTabChanged}
                     slideIndex={this.state.slideIndex}
+                    handleChangeBTIndex={this.handleChangeBTIndex}
                   />
                   <AppBar>
                     <SidebarHeader
