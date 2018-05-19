@@ -406,24 +406,41 @@ class SettingsDialog extends React.Component {
               </List>
             </div>
           </SwipeableViews>
-          <BottomNavigation
-            onChange={this.props.handleChangeBTIndex}
-            value={this.props.slideIndex}
-            showLabels
-          >
-            <BottomNavigationAction
-              icon={<Icon>dashboard</Icon>}
-              label="Interface"
-            />
-            <BottomNavigationAction
-              icon={<Icon>notifications</Icon>}
-              label="Notifications"
-            />
-            <BottomNavigationAction
-              icon={<Icon>account_box</Icon>}
-              label="Account"
-            />
-          </BottomNavigation>
+          <AppBar color="default" position="static">
+            <BottomNavigation
+              onChange={this.props.handleChangeBTIndex}
+              value={this.props.slideIndex}
+              showLabels
+            >
+              <BottomNavigationAction
+                icon={<Icon>dashboard</Icon>}
+                label="Interface"
+                style={
+                  this.props.slideIndex === 0
+                    ? { color: "#0083ff" }
+                    : { color: "#757575" }
+                }
+              />
+              <BottomNavigationAction
+                icon={<Icon>notifications</Icon>}
+                label="Notifications"
+                style={
+                  this.props.slideIndex === 1
+                    ? { color: "#0083ff" }
+                    : { color: "#757575" }
+                }
+              />
+              <BottomNavigationAction
+                icon={<Icon>account_box</Icon>}
+                label="Account"
+                style={
+                  this.props.slideIndex === 2
+                    ? { color: "#0083ff" }
+                    : { color: "#757575" }
+                }
+              />
+            </BottomNavigation>
+          </AppBar>
         </Dialog>
         <TwoFactorDialog
           isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}
