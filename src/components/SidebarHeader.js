@@ -38,7 +38,7 @@ class SidebarHeader extends Component {
           <MuiThemeProvider theme={theme}>
             <Tooltip
               id="tooltip-bottom"
-              title="Igloo Magellano"
+              title="Go to Magellano"
               placement="bottom"
             >
               <IconButton

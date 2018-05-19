@@ -137,6 +137,7 @@ class Sidebar extends Component {
             <TextField
               placeholder="Search devices"
               color="primary"
+              className="notSelectable"
               style={{
                 width: "calc(100% - 32px)",
                 margin: "8px 16px 0 16px",
