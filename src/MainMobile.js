@@ -263,6 +263,7 @@ class Main extends Component {
       areSettingsOpen: false,
       isTileFullScreen: false,
       drawer: false,
+      slideIndex: 0,
     }
   }
 
