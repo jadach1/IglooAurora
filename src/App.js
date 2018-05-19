@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import AuthenticatedApp from "./AuthenticatedApp"
 import UnAuthenticatedApp from "./UnAuthenticatedApp"
+import UnAuthenticatedAppMobile from "./UnAuthenticatedAppMobile"
 import jwt from "jsonwebtoken"
 
 function setupWebPush(token) {
@@ -155,7 +156,11 @@ class App extends Component {
     }
 
     if (this.state.bearer === "") {
-      return <UnAuthenticatedApp signIn={signIn} />
+      return this.state.isMobile ? (
+        <UnAuthenticatedAppMobile signIn={signIn} />
+      ) : (
+        <UnAuthenticatedApp signIn={signIn} />
+      )
     } else {
       return (
         <AuthenticatedApp
