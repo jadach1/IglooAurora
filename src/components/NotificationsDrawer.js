@@ -1,7 +1,11 @@
 import React from "react"
 import IconButton from "material-ui/IconButton"
 import CenteredSpinner from "./CenteredSpinner"
-import List, { ListItem, ListItemText } from "material-ui-next/List"
+import List, {
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+} from "material-ui-next/List"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Badge from "material-ui-next/Badge"
@@ -13,6 +17,21 @@ import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
 import moment from "moment"
+
+let deleteNotification = id => {
+  this.props["DeleteNotification"]({
+    variables: {
+      id: id,
+    },
+    optimisticResponse: {
+      __typename: "Mutation",
+      deleteNotification: {
+        id: id,
+        __typename: "Notification",
+      },
+    },
+  })
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -129,6 +148,22 @@ class NotificationsDrawer extends React.Component {
       })
     }
 
+    let markAsUnread = id => {
+      this.props["MarkAsUnread"]({
+        variables: {
+          id: id,
+        },
+        optimisticResponse: {
+          __typename: "Mutation",
+          notification: {
+            id: id,
+            visualized: false,
+            __typename: "Notification",
+          },
+        },
+      })
+    }
+
     let clearAllNotifications = () => {
       const notificationsToFlush = user.notifications.filter(
         notification =>
@@ -182,6 +217,11 @@ class NotificationsDrawer extends React.Component {
                       )
                       .fromNow()}
                   />
+                  <ListItemSecondaryAction>
+                    <IconButton aria-label="Comments">
+                      <i class="material-icons">delete</i>
+                    </IconButton>
+                  </ListItemSecondaryAction>
                 </ListItem>
               ))
               .reverse()}
@@ -217,6 +257,20 @@ class NotificationsDrawer extends React.Component {
                       )
                       .fromNow()}
                   />
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      aria-label="Comments"
+                      onClick={() => markAsUnread(notification.id)}
+                    >
+                      <i class="material-icons">markunread</i>
+                    </IconButton>
+                    <IconButton
+                      aria-label="Comments"
+                      onClick={() => deleteNotification(notification.id)}
+                    >
+                      <i class="material-icons">delete</i>
+                    </IconButton>
+                  </ListItemSecondaryAction>
                 </ListItem>
               ))
               .reverse()}
@@ -401,5 +455,32 @@ export default graphql(
     {
       name: "ClearNotification",
     }
-  )(hotkeys(NotificationsDrawer))
+  )(
+    graphql(
+      gql`
+        mutation MarkAsUnread($id: ID!) {
+          notification(id: $id, visualized: false) {
+            id
+            visualized
+          }
+        }
+      `,
+      {
+        name: "MarkAsUnread",
+      }
+    )(
+      graphql(
+        gql`
+          mutation DeleteNotification($id: ID!) {
+            deleteNotification(id: $id) {
+              id
+            }
+          }
+        `,
+        {
+          name: "DeleteNotification",
+        }
+      )(hotkeys(NotificationsDrawer))
+    )
+  )
 )
