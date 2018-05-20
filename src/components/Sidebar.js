@@ -146,7 +146,7 @@ class Sidebar extends Component {
               onChange={event => this.props.changeText(event.target.value)}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment position="start" style={{cursor:"default"}}>
                     <Icon>search</Icon>
                   </InputAdornment>
                 ),

@@ -4,6 +4,10 @@ import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
 import Paper from "material-ui/Paper"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
+import {
+  createMuiTheme,
+  MuiThemeProvider as MuiThemeProviderNext,
+} from "material-ui-next/styles"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
 import SwipeableViews from "react-swipeable-views"
@@ -14,20 +18,20 @@ import Button from "material-ui-next/Button"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
 import Dialog from "material-ui-next/Dialog"
+import Slide from "material-ui-next/transitions/Slide"
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
+
+function Transition(props) {
+  return <Slide direction="up" {...props} />
+}
 
 class UnAuthenticatedApp extends Component {
-  state = { slideIndex: 0, logiIn: false, signIn: false }
-
-  hot_keys = {
-    "alt+1": {
-      priority: 1,
-      handler: event => this.setState({ slideIndex: 0 }),
-    },
-    "alt+2": {
-      priority: 1,
-      handler: event => this.setState({ slideIndex: 1 }),
-    },
-  }
+  state = { logiIn: false, signIn: false }
 
   constructor() {
     super()
@@ -63,29 +67,28 @@ class UnAuthenticatedApp extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <Paper className="loginForm">
-          <div className="leftSide notSelectable">
-            <br />
-            <br />
-            <img
-              alt="Igloo Logo"
-              src="./assets/logo.svg"
-              width="300"
-              className="logo notSelectable"
-            />
-            <br />
-            <br />
+        <div style={{ backgroundColor: "#0057cb" }}>
+          <br />
+          <br />
+          <img
+            alt="Igloo Logo"
+            src="./assets/logo.svg"
+            width="300"
+            className="logo notSelectable"
+          />
+          <br />
+          <br />
 
-            <b>
-              <img
-                alt="Igloo"
-                src="./assets/iglooTitle.svg"
-                width="300"
-                className="unauthenticatedTitle notSelectable"
-              />
-            </b>
-          </div>
-          <div>
+          <b>
+            <img
+              alt="Igloo"
+              src="./assets/iglooTitle.svg"
+              width="300"
+              className="unauthenticatedTitle notSelectable"
+            />
+          </b>
+          <br />
+          <MuiThemeProviderNext theme={theme}>
             <Button
               color="primary"
               primary={true}
@@ -103,22 +106,34 @@ class UnAuthenticatedApp extends Component {
             >
               Log in
             </Button>
-            <Dialog open={this.state.signIn}>
+          </MuiThemeProviderNext>
+          <Dialog
+            open={this.state.signIn}
+            onClose={() => this.setState({ signIn: false })}
+            TransitionComponent={Transition}
+          >
+            <div style={{ padding: "0 24px 24px 24px" }}>
               <Signup
                 client={this.client}
                 signIn={this.props.signIn}
                 goToLogin={() => this.setState({ slideIndex: 1 })}
               />
-            </Dialog>
-            <Dialog open={this.state.logIn}>
+            </div>
+          </Dialog>
+          <Dialog
+            open={this.state.logIn}
+            onClose={() => this.setState({ logIn: false })}
+            TransitionComponent={Transition}
+          >
+            <div style={{ padding: "0 24px 24px 24px" }}>
               <Login
                 client={this.client}
                 signIn={this.props.signIn}
                 goToSignup={() => this.setState({ slideIndex: 0 })}
               />
-            </Dialog>
-          </div>
-        </Paper>
+            </div>
+          </Dialog>
+        </div>
       </MuiThemeProvider>
     )
   }
