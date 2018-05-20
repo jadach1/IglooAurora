@@ -1,8 +1,8 @@
 {
-  "name": "iglooCloudRemote",
+  "name": "iglooAurora",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://hellowitlab.github.io/iglooQLRemote/",
+  "homepage": "https://hellowitlab.github.io/iglooAurora/",
   "dependencies": {
     "@material-ui/icons": "^1.0.0-rc.0",
     "@material-ui/lab": "^1.0.0-alpha.0",

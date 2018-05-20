@@ -177,7 +177,8 @@ class Sidebar extends Component {
                       button
                       className="notSelectable"
                       style={
-                        this.props.selectedDevice === device.id
+                        this.props.selectedDevice === device.id &&
+                        !this.props.isMobile
                           ? { backgroundColor: "#d4d4d4" }
                           : null
                       }

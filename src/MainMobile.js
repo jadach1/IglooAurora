@@ -14,6 +14,7 @@ import gql from "graphql-tag"
 import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import AppBar from "material-ui-next/AppBar"
 import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
+import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
 
 class Main extends Component {
   state = {
@@ -371,14 +372,17 @@ class Main extends Component {
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  <MainBodyHeader
-                    deviceId={this.state.selectedDevice}
-                    key="mobileMainBodyHeader"
-                    drawer={this.state.drawer}
-                    changeDrawerState={this.changeDrawerState}
-                    hiddenNotifications={this.state.hiddenNotifications}
-                    showHiddenNotifications={this.showHiddenNotifications}
-                  />
+                  <AppBar>
+                    <MainBodyHeaderMobile
+                      deviceId={this.state.selectedDevice}
+                      key="mobileMainBodyHeader"
+                      drawer={this.state.drawer}
+                      changeDrawerState={this.changeDrawerState}
+                      hiddenNotifications={this.state.hiddenNotifications}
+                      showHiddenNotifications={this.showHiddenNotifications}
+                      selectDevice={id => this.setState({ selectedDevice: id })}
+                    />
+                  </AppBar>
                   <div className="mobileMainBody" key="mainBody">
                     <MainBody
                       deviceId={this.state.selectedDevice}
@@ -396,7 +400,6 @@ class Main extends Component {
             <div className="main">
               <div className="offlineBody mainBody">
                 <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
-
                 <font size="6">
                   You are not connected, try again in a while
                 </font>
