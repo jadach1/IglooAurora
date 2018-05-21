@@ -18,21 +18,6 @@ import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
 import moment from "moment"
 
-let deleteNotification = id => {
-  this.props["DeleteNotification"]({
-    variables: {
-      id: id,
-    },
-    optimisticResponse: {
-      __typename: "Mutation",
-      deleteNotification: {
-        id: id,
-        __typename: "Notification",
-      },
-    },
-  })
-}
-
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#ff4081" },
@@ -164,6 +149,22 @@ class NotificationsDrawer extends React.Component {
       })
     }
 
+    let deleteNotification = id => {
+      this.props["DeleteNotification"]({
+        variables: {
+          id: id,
+        },
+        optimisticResponse: {
+          __typename: "Mutation",
+          deleteNotification: {
+            id: id,
+            __typename: "Notification",
+          },
+        },
+      })
+      console.log("dasssssssssssssssssssssssssssssssssssssssssssss")
+    }
+
     let clearAllNotifications = () => {
       const notificationsToFlush = user.notifications.filter(
         notification =>
@@ -218,8 +219,17 @@ class NotificationsDrawer extends React.Component {
                       .fromNow()}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton aria-label="Comments">
-                      <i class="material-icons">delete</i>
+                    <IconButton
+                      aria-label="Delete"
+                      onClick={() => deleteNotification(notification.id)}
+                    >
+                      <Tooltip
+                        id="tooltip-bottom"
+                        title="Delete"
+                        placement="bottom"
+                      >
+                        <i class="material-icons">delete</i>
+                      </Tooltip>
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -259,16 +269,28 @@ class NotificationsDrawer extends React.Component {
                   />
                   <ListItemSecondaryAction>
                     <IconButton
-                      aria-label="Comments"
+                      aria-label="Mark as unread"
                       onClick={() => markAsUnread(notification.id)}
                     >
-                      <i class="material-icons">markunread</i>
+                      <Tooltip
+                        id="tooltip-bottom"
+                        title="Mark as unread"
+                        placement="bottom"
+                      >
+                        <i class="material-icons">markunread</i>
+                      </Tooltip>
                     </IconButton>
                     <IconButton
-                      aria-label="Comments"
+                      aria-label="Delete"
                       onClick={() => deleteNotification(notification.id)}
                     >
-                      <i class="material-icons">delete</i>
+                      <Tooltip
+                        id="tooltip-bottom"
+                        title="Delete"
+                        placement="bottom"
+                      >
+                        <i class="material-icons">delete</i>
+                      </Tooltip>
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -472,9 +494,7 @@ export default graphql(
       graphql(
         gql`
           mutation DeleteNotification($id: ID!) {
-            deleteNotification(id: $id) {
-              id
-            }
+            deleteNotification(id: $id)
           }
         `,
         {

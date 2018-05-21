@@ -56,7 +56,7 @@ class DeleteTileDialog extends React.Component {
           width: "350px",
         }}
       >
-        Be careful, this card will be delete permanently
+        Be careful, this card will be deleted permanently
       </Dialog>
     )
   }
