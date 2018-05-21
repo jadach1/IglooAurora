@@ -3,6 +3,8 @@ import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 const theme = createMuiTheme({
   palette: {
@@ -24,7 +26,7 @@ const deleteDialogContentStyle = {
   width: "360px",
 }
 
-export default class DeleteAccountDialog extends React.Component {
+class DeleteAccountDialog extends React.Component {
   render() {
     const deleteConfimedActions = [
       <MuiThemeProvider theme={theme2}>
@@ -100,3 +102,14 @@ export default class DeleteAccountDialog extends React.Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    mutation DeleteValue($id: ID!) {
+      deleteValue(id: $id)
+    }
+  `,
+  {
+    name: "DeleteAccount",
+  }
+)(DeleteAccountDialog)

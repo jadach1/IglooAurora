@@ -2,7 +2,7 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
-import Snackbar from "material-ui/Snackbar"
+import Snackbar from "material-ui-next/Snackbar"
 import { List, ListItem } from "material-ui/List"
 import IconButton from "material-ui-next/IconButton"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
@@ -11,6 +11,7 @@ import Icon from "material-ui-next/Icon"
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#0083ff" },
+    secondary: { main: "#ff4081" },
   },
 })
 
@@ -116,6 +117,13 @@ export default class ChangeMailDialog extends React.Component {
           message="You successfully changed your email"
           autoHideDuration={4000}
           onRequestClose={this.handleMailSnackClose}
+          action={[
+            <MuiThemeProvider theme={theme}>
+              <Button key="close" color="secondary" size="small">
+                CLOSE
+              </Button>
+            </MuiThemeProvider>,
+          ]}
         />
       </React.Fragment>
     )

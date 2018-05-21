@@ -360,10 +360,6 @@ class SettingsDialog extends React.Component {
                   Authentication
                 </Subheader>
                 <ListItem
-                  primaryText="Change user name"
-                  onClick={this.handleNameDialogOpen}
-                />
-                <ListItem
                   primaryText="Manage emails"
                   secondaryText="Add or delete emails you use to log in"
                   onClick={this.handleEmailDialogOpen}
@@ -399,9 +395,17 @@ class SettingsDialog extends React.Component {
                   Account management
                 </Subheader>
                 <ListItem
+                  primaryText="Change user name"
+                  onClick={this.handleNameDialogOpen}
+                />
+                <ListItem
+                  primaryText="Download your data"
+                  secondaryText="Transfer your data to another service"
+                />
+                <ListItem
                   primaryText="Delete your account"
                   onClick={this.handleDeleteDialogOpen}
-                  style={{ color: "#F44336 " }}
+                  style={{ color: "#F44336" }}
                 />
               </List>
             </div>

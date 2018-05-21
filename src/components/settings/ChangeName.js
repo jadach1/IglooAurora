@@ -2,12 +2,13 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
-import Snackbar from "material-ui/Snackbar"
+import Snackbar from "material-ui-next/Snackbar"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#0083ff" },
+    secondary: { main: "#ff4081" },
   },
 })
 
@@ -86,6 +87,13 @@ export default class ChangeNameDialog extends React.Component {
           message="You successfully changed your user name"
           autoHideDuration={4000}
           onRequestClose={this.handleNameSnackClose}
+          action={[
+            <MuiThemeProvider theme={theme}>
+              <Button key="close" color="secondary" size="small">
+                CLOSE
+              </Button>
+            </MuiThemeProvider>,
+          ]}
         />
       </React.Fragment>
     )

@@ -93,6 +93,7 @@ class Login extends Component {
                 this.state.email ? (
                   <InputAdornment position="end">
                     <IconButton
+                      tabIndex="-1"
                       onClick={this.handleClickCancelEmail}
                       onMouseDown={this.handleMouseDownPassword}
                       style={{ width: "32px", height: "32px" }}
@@ -128,6 +129,7 @@ class Login extends Component {
                 this.state.password ? (
                   <InputAdornment position="end">
                     <IconButton
+                      tabIndex="-1"
                       onClick={this.handleClickShowPassword}
                       onMouseDown={this.handleMouseDownPassword}
                       style={{ width: "32px", height: "32px" }}

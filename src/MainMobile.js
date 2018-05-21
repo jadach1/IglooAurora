@@ -398,24 +398,21 @@ class Main extends Component {
           </Online>
           <Offline key="offlineMainBody">
             <div className="main">
-              <div className="offlineBody mainBody">
+              <AppBar>
                 <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
-                <font size="6">
-                  You are not connected, try again in a while
-                </font>
-                <br />
-                <br />
+              </AppBar>
+              <font size="6">You are not connected, try again in a while</font>
+              <br />
+              <br />
 
-                <font size="5">In the meantime, why don't you have a nap?</font>
-                <br />
-                <img
-                  alt="Sleeping Polar Bear"
-                  src="./assets/polarBear.svg"
-                  width="400"
-                  height="400"
-                  className="logo notSelectable"
-                />
-              </div>
+              <font size="5">In the meantime, why don't you have a nap?</font>
+              <br />
+              <img
+                alt="Sleeping Polar Bear"
+                src="./assets/polarBear.svg"
+                width="80vh"
+                className="logo notSelectable"
+              />
             </div>
           </Offline>
         </React.Fragment>
