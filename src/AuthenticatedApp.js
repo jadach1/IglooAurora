@@ -59,7 +59,10 @@ class AuthenticatedApp extends Component {
   render() {
     return (
       <ApolloProvider client={this.client}>
-        <GraphQLFetcher isMobile={this.props.isMobile} />
+        <GraphQLFetcher
+          isMobile={this.props.isMobile}
+          logOut={this.props.logOut}
+        />
       </ApolloProvider>
     )
   }

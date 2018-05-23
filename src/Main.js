@@ -12,6 +12,7 @@ import { hotkeys } from "react-keyboard-shortcuts"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import NotificationsSnackbar from "./components/NotificationsSnackbar"
+import StatusBar from "./components/StatusBar"
 
 class Main extends Component {
   state = {
@@ -333,11 +334,17 @@ class Main extends Component {
                 <div className="mainBodyHeader" key="mainBodyHeader" />
               )}
               {this.state.selectedDevice !== null ? (
-                <MainBody
-                  deviceId={this.state.selectedDevice}
-                  showHidden={this.state.showMainHidden}
-                  changeShowHiddenState={this.changeShowHiddenState}
-                />
+                <React.Fragment>
+                  <MainBody
+                    deviceId={this.state.selectedDevice}
+                    showHidden={this.state.showMainHidden}
+                    changeShowHiddenState={this.changeShowHiddenState}
+                  />
+                  <StatusBar
+                    userData={this.props.userData}
+                    deviceId={this.state.selectedDevice}
+                  />
+                </React.Fragment>
               ) : (
                 <div className="mainBody" />
               )}

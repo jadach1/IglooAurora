@@ -16,8 +16,12 @@ body {
   height: 100vh;
   display: grid;
   grid-template-columns: [start] 350px [mid] auto [end];
-  grid-template-rows: [start] 60px [mid] auto [end];
-  grid-template-areas: "sidebarHeader mainBodyHeader" "sidebar mainBody";
+  grid-template-rows: [start] 60px [mid] auto [mid2] 30px [end];
+  grid-template-areas: "sidebarHeader mainBodyHeader" "sidebar mainBody" "sidebar statusBar";
+}
+
+.statusBar{
+  grid-area:statusBar;
 }
 
 .sidebar {
