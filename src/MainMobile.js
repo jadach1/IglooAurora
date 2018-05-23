@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import Sidebar from "./components/Sidebar"
 import SidebarHeader from "./components/SidebarHeader"
 import MainBody from "./components/MainBody"
-import MainBodyHeader from "./components/MainBodyHeader"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import { Offline, Online } from "react-detect-offline"
 import "./styles/App.css"
@@ -388,6 +387,7 @@ class Main extends Component {
                       deviceId={this.state.selectedDevice}
                       showHidden={this.state.showMainHidden}
                       changeShowHiddenState={this.changeShowHiddenState}
+                      isMobile={true}
                     />
                   </div>
                 </React.Fragment>
