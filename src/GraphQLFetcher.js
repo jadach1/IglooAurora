@@ -12,6 +12,7 @@ class GraphQLFetcher extends Component {
           id
           customName
           icon
+          online
           notifications {
             id
             content
@@ -63,6 +64,7 @@ export default graphql(
           id
           customName
           icon
+          online
           notifications {
             id
             content
