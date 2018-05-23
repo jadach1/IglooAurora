@@ -1,7 +1,5 @@
 import React from "react"
 import Dialog from "material-ui-next/Dialog"
-import DialogActions from "material-ui-next/Dialog/DialogActions"
-import Button from "material-ui-next/Button"
 import Toggle from "material-ui/Toggle"
 import { List, ListItem } from "material-ui/List"
 import Subheader from "material-ui/Subheader"

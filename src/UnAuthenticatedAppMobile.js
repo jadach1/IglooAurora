@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
-import Paper from "material-ui/Paper"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import {
   createMuiTheme,
@@ -10,13 +9,8 @@ import {
 } from "material-ui-next/styles"
 import Login from "./components/Login"
 import Signup from "./components/Signup"
-import SwipeableViews from "react-swipeable-views"
-import BottomNavigation, {
-  BottomNavigationAction,
-} from "material-ui-next/BottomNavigation"
 import Button from "material-ui-next/Button"
 import { hotkeys } from "react-keyboard-shortcuts"
-import Icon from "material-ui-next/Icon"
 import Dialog from "material-ui-next/Dialog"
 import Slide from "material-ui-next/transitions/Slide"
 
