@@ -1,6 +1,4 @@
 import React, { Component } from "react"
-import { graphql } from "react-apollo"
-import gql from "graphql-tag"
 import List, {
   ListItem,
   ListItemIcon,
@@ -30,78 +28,6 @@ const theme2 = createMuiTheme({
 })
 
 class Sidebar extends Component {
-  componentDidMount() {
-    const subscriptionQuery = gql`
-      subscription {
-        deviceCreated {
-          id
-          customName
-          icon
-          notifications {
-            id
-            content
-            date
-            visualized
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscriptionQuery,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-        const newDevices = [
-          ...prev.user.devices,
-          subscriptionData.data.deviceCreated,
-        ]
-        return {
-          user: {
-            ...prev.user,
-            devices: newDevices,
-          },
-        }
-      },
-    })
-
-    const updateQuery = gql`
-      subscription {
-        deviceUpdated {
-          id
-          customName
-          icon
-          notifications {
-            id
-            content
-            date
-            visualized
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: updateQuery,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-        const newDevice = subscriptionData.deviceUpdated
-        const newDevices = prev.user.devices.map(
-          device => (device.id === newDevice.id ? newDevice : device)
-        )
-        return {
-          user: {
-            ...prev.user,
-            devices: newDevices,
-          },
-        }
-      },
-    })
-  }
-
   listItemClick = device => {
     if (this.props.selectedDevice !== device.id) {
       this.props.selectDevice(device.id)
@@ -146,7 +72,10 @@ class Sidebar extends Component {
               onChange={event => this.props.changeText(event.target.value)}
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start" style={{cursor:"default"}}>
+                  <InputAdornment
+                    position="start"
+                    style={{ cursor: "default" }}
+                  >
                     <Icon>search</Icon>
                   </InputAdornment>
                 ),
@@ -358,23 +287,4 @@ class Sidebar extends Component {
   }
 }
 
-export default graphql(
-  gql`
-    query {
-      user {
-        devices {
-          id
-          customName
-          icon
-          notifications {
-            id
-            content
-            date
-            visualized
-          }
-        }
-      }
-    }
-  `,
-  { name: "userData" }
-)(Sidebar)
+export default Sidebar

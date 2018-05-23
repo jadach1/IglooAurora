@@ -269,43 +269,6 @@ class Main extends Component {
 
   selectDevice = id => this.setState({ selectedDevice: id, drawer: false })
 
-  componentDidMount() {
-    const subscriptionQuery = gql`
-      subscription {
-        deviceCreated {
-          id
-          customName
-          icon
-          notifications {
-            id
-            content
-            date
-            visualized
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscriptionQuery,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-        const newDevices = [
-          ...prev.user.devices,
-          subscriptionData.data.deviceCreated,
-        ]
-        return {
-          user: {
-            ...prev.user,
-            devices: newDevices,
-          },
-        }
-      },
-    })
-  }
-
   changeShowHiddenState = () =>
     this.setState(oldState => ({
       showMainHidden: !oldState.showMainHidden,
@@ -366,6 +329,7 @@ class Main extends Component {
                       searchText={this.state.searchText}
                       changeText={text => this.setState({ searchText: text })}
                       isMobile={this.props.isMobile}
+                      userData={this.props.userData}
                     />
                   </div>
                 </React.Fragment>
@@ -421,23 +385,4 @@ class Main extends Component {
   }
 }
 
-export default graphql(
-  gql`
-    query {
-      user {
-        devices {
-          id
-          customName
-          icon
-          notifications {
-            id
-            content
-            date
-            visualized
-          }
-        }
-      }
-    }
-  `,
-  { name: "userData" }
-)(hotkeys(Main))
+export default hotkeys(Main)
