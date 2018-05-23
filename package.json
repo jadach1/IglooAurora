@@ -4,7 +4,7 @@
   "private": true,
   "homepage": "https://hellowitlab.github.io/iglooAurora/",
   "dependencies": {
-    "@material-ui/icons": "^1.0.0-rc.0",
+    "@material-ui/icons": "^1.0.0",
     "@material-ui/lab": "^1.0.0-alpha.0",
     "@quentin-sommer/react-useragent": "^1.2.5",
     "apollo-client-preset": "^1.0.5",

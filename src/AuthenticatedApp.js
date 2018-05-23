@@ -1,6 +1,4 @@
 import React, { Component } from "react"
-import Main from "./Main"
-import MainMobile from "./MainMobile"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import {
@@ -12,6 +10,7 @@ import { WebSocketLink } from "apollo-link-ws"
 import { split } from "apollo-link"
 import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "./fragmentTypes.json"
+import GraphQLFetcher from "./GraphQLFetcher"
 
 class AuthenticatedApp extends Component {
   constructor(props) {
@@ -60,14 +59,7 @@ class AuthenticatedApp extends Component {
   render() {
     return (
       <ApolloProvider client={this.client}>
-        {this.props.isMobile ? (
-          <MainMobile
-            logOut={this.props.logOut}
-            isMobile={this.props.isMobile}
-          />
-        ) : (
-          <Main logOut={this.props.logOut} />
-        )}
+        <GraphQLFetcher isMobile={this.props.isMobile} />
       </ApolloProvider>
     )
   }
