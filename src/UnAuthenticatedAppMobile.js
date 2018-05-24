@@ -61,7 +61,14 @@ class UnAuthenticatedApp extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <div style={{ backgroundColor: "#0057cb" }}>
+        <div
+          style={{
+            backgroundColor: "#0057cb",
+            textAlign: "center",
+            verticalAlign: "center",
+            height: "calc(100vh - 72px)",
+          }}
+        >
           <br />
           <br />
           <img
@@ -82,25 +89,7 @@ class UnAuthenticatedApp extends Component {
             />
           </b>
           <br />
-          <MuiThemeProviderNext theme={theme}>
-            <Button
-              color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
-              onClick={() => this.setState({ signIn: true })}
-            >
-              Sign up
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
-              onClick={() => this.setState({ logIn: true })}
-            >
-              Log in
-            </Button>
-          </MuiThemeProviderNext>
+          <br />
           <Dialog
             open={this.state.signIn}
             onClose={() => this.setState({ signIn: false })}
@@ -128,6 +117,28 @@ class UnAuthenticatedApp extends Component {
             </div>
           </Dialog>
         </div>
+        <br />
+        <MuiThemeProviderNext theme={theme}>
+          <div style={{ textAlign: "center" }}>
+            <Button
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              onClick={() => this.setState({ signIn: true })}
+            >
+              Sign up
+            </Button>{" "}
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              onClick={() => this.setState({ logIn: true })}
+            >
+              Log in
+            </Button>
+          </div>
+        </MuiThemeProviderNext>
       </MuiThemeProvider>
     )
   }

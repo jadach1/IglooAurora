@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import AppBar from "material-ui-next/AppBar"
 import Icon from "material-ui-next/Icon"
 import CenteredSpinner from "./CenteredSpinner"
 import gql from "graphql-tag"
@@ -64,11 +63,18 @@ export default class StatusBar extends Component {
 
     return (
       <div style={{ cursor: "default" }} className="notSelectable statusBar">
-        {deviceStatus}
-        <div style={{ float: "right" }}>
-          <Icon>network_wifi</Icon>
-          <Icon>battery_full</Icon>
-          97%
+        <div style={{ marginLeft: "12px" }}>
+          {deviceStatus}
+          <div
+            style={{
+              float: "right",
+              marginRight: "12px",
+            }}
+          >
+            <Icon>network_wifi</Icon>
+            <Icon>battery_full</Icon>
+            97%
+          </div>
         </div>
       </div>
     )
