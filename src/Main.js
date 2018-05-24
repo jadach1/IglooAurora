@@ -9,8 +9,6 @@ import { Offline, Online } from "react-detect-offline"
 import "./styles/App.css"
 import "./styles/Tiles.css"
 import { hotkeys } from "react-keyboard-shortcuts"
-import { graphql } from "react-apollo"
-import gql from "graphql-tag"
 import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import StatusBar from "./components/StatusBar"
 
