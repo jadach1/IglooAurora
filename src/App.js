@@ -117,7 +117,7 @@ class App extends Component {
    * Calculate & Update state of new dimensions
    */
   updateDimensions() {
-    if (window.innerWidth < 500) {
+    if (window.innerWidth < 900) {
       this.setState({ isMobile: true })
     } else {
       this.setState({ isMobile: false })

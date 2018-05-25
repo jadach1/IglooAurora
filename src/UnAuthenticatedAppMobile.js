@@ -62,83 +62,99 @@ class UnAuthenticatedApp extends Component {
     return (
       <MuiThemeProvider>
         <div
+          className="loginBackground"
           style={{
-            backgroundColor: "#0057cb",
-            textAlign: "center",
             verticalAlign: "center",
-            height: "calc(100vh - 72px)",
           }}
         >
-          <br />
-          <br />
-          <img
-            alt="Igloo Logo"
-            src="./assets/logo.svg"
-            width="300"
-            className="logo notSelectable"
-          />
-          <br />
-          <br />
-
-          <b>
+          <div
+            style={{
+              backgroundColor: "#0057cb",
+              textAlign: "center",
+              verticalAlign: "center",
+              width: "90%",
+              maxWidth: "400px",
+            }}
+          >
+            <br />
+            <br />
             <img
-              alt="Igloo"
-              src="./assets/iglooTitle.svg"
-              width="300"
-              className="unauthenticatedTitle notSelectable"
+              alt="Igloo Logo"
+              src="./assets/logo.svg"
+              width="75%"
+              className="logo notSelectable"
             />
-          </b>
-          <br />
-          <br />
-          <Dialog
-            open={this.state.signIn}
-            onClose={() => this.setState({ signIn: false })}
-            TransitionComponent={Transition}
-          >
-            <div style={{ padding: "0 24px 24px 24px" }}>
-              <Signup
-                client={this.client}
-                signIn={this.props.signIn}
-                goToLogin={() => this.setState({ slideIndex: 1 })}
+            <br />
+            <br />
+
+            <b>
+              <img
+                alt="Igloo"
+                src="./assets/iglooTitle.svg"
+                width="75%"
+                className="unauthenticatedTitle notSelectable"
               />
-            </div>
-          </Dialog>
-          <Dialog
-            open={this.state.logIn}
-            onClose={() => this.setState({ logIn: false })}
-            TransitionComponent={Transition}
-          >
-            <div style={{ padding: "0 24px 24px 24px" }}>
-              <Login
-                client={this.client}
-                signIn={this.props.signIn}
-                goToSignup={() => this.setState({ slideIndex: 0 })}
-              />
-            </div>
-          </Dialog>
-        </div>
-        <br />
-        <MuiThemeProviderNext theme={theme}>
-          <div style={{ textAlign: "center" }}>
-            <Button
-              color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
-              onClick={() => this.setState({ signIn: true })}
+            </b>
+            <br />
+            <br />
+            <MuiThemeProviderNext theme={theme}>
+              <div
+                style={{
+                  textAlign: "center",
+                  backgroundColor: "#fff",
+                  height: "60px",
+                }}
+              >
+                <Button
+                  color="primary"
+                  primary={true}
+                  buttonStyle={{ backgroundColor: "#0083ff" }}
+                  onClick={() => this.setState({ signIn: true })}
+                  style={{ marginTop: "12px" }}
+                >
+                  Sign up
+                </Button>{" "}
+                <Button
+                  variant="raised"
+                  color="primary"
+                  primary={true}
+                  buttonStyle={{ backgroundColor: "#0083ff" }}
+                  onClick={() => this.setState({ logIn: true })}
+                  style={{ marginTop: "12px" }}
+                >
+                  Log in
+                </Button>
+              </div>
+            </MuiThemeProviderNext>
+            <Dialog
+              open={this.state.signIn}
+              onClose={() => this.setState({ signIn: false })}
+              TransitionComponent={Transition}
             >
-              Sign up
-            </Button>{" "}
-            <Button
-              variant="raised"
-              color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
-              onClick={() => this.setState({ logIn: true })}
+              <div style={{ padding: "0 24px 24px 24px" }}>
+                <Signup
+                  client={this.client}
+                  signIn={this.props.signIn}
+                  goToLogin={() => this.setState({ slideIndex: 1 })}
+                />
+              </div>
+            </Dialog>
+            <Dialog
+              open={this.state.logIn}
+              onClose={() => this.setState({ logIn: false })}
+              TransitionComponent={Transition}
             >
-              Log in
-            </Button>
+              <div style={{ padding: "0 24px 24px 24px" }}>
+                <Login
+                  client={this.client}
+                  signIn={this.props.signIn}
+                  goToSignup={() => this.setState({ slideIndex: 0 })}
+                />
+              </div>
+            </Dialog>
           </div>
-        </MuiThemeProviderNext>
+          <br />
+        </div>
       </MuiThemeProvider>
     )
   }
