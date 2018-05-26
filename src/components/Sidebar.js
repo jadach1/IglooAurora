@@ -65,7 +65,7 @@ class Sidebar extends Component {
               color="primary"
               className="notSelectable"
               style={{
-                width: "calc(100% - 32px)",
+                width: "calc(100% - 80px)",
                 margin: "8px 16px 0 16px",
               }}
               value={this.props.searchText}
@@ -93,6 +93,9 @@ class Sidebar extends Component {
               }}
             />
           </MuiThemeProvider>
+          <IconButton style={{ width: "32px", height: "32px" }}>
+            <Icon>filter_list</Icon>
+          </IconButton>
           <List>
             {this.props.searchText
               ? user.devices
