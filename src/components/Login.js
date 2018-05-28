@@ -163,7 +163,13 @@ class Login extends Component {
             <div style={{ textAlign: "right" }}>
               <font
                 className="loginForgotPassoword"
-                onClick={() => this.setState({ forgotPasswordOpen: true })}
+                onClick={() => {
+                  if (this.props.isMobile) {
+                    this.props.openForgotPassword()
+                    this.props.closeMobileDialog()
+                  }
+                  this.setState({ forgotPasswordOpen: true })
+                }}
               >
                 Forgot password?
               </font>

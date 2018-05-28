@@ -13,6 +13,7 @@ import Button from "material-ui-next/Button"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Dialog from "material-ui-next/Dialog"
 import Slide from "material-ui-next/transitions/Slide"
+import ForgotPassword from "./components/ForgotPassword"
 
 const theme = createMuiTheme({
   palette: {
@@ -77,7 +78,6 @@ class UnAuthenticatedApp extends Component {
             }}
           >
             <br />
-            <br />
             <img
               alt="Igloo Logo"
               src="./assets/logo.svg"
@@ -131,7 +131,7 @@ class UnAuthenticatedApp extends Component {
               onClose={() => this.setState({ signIn: false })}
               TransitionComponent={Transition}
             >
-              <div style={{ padding: "0 24px 24px 24px" }}>
+              <div style={{ padding: "0 24px 24px 24px", width: "300px" }}>
                 <Signup
                   client={this.client}
                   signIn={this.props.signIn}
@@ -144,14 +144,23 @@ class UnAuthenticatedApp extends Component {
               onClose={() => this.setState({ logIn: false })}
               TransitionComponent={Transition}
             >
-              <div style={{ padding: "0 24px 24px 24px" }}>
+              <div style={{ padding: "0 24px 24px 24px", width: "300px" }}>
                 <Login
                   client={this.client}
                   signIn={this.props.signIn}
                   goToSignup={() => this.setState({ slideIndex: 0 })}
+                  isMobile={true}
+                  closeMobileDialog={() => this.setState({ logIn: false })}
+                  openForgotPassword={() =>
+                    this.setState({ forgotPasswordOpen: true })
+                  }
                 />
               </div>
             </Dialog>
+            <ForgotPassword
+              open={this.state.forgotPasswordOpen}
+              close={() => this.setState({ forgotPasswordOpen: false })}
+            />
           </div>
           <br />
         </div>

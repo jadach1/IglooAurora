@@ -61,9 +61,11 @@ export default class ChangeNameDialog extends React.Component {
         >
           <DialogTitle>Recover your password</DialogTitle>
           <MuiThemeProvider theme={theme}>
-            <div style={{ margin: "16px", width: "300px" }}>
+            <div style={{ margin: "24px", width: "300px" }}>
               Enter your email address and we will send you a link to reset your
               password
+              <br />
+              <br />
               <FormControl style={{ width: "100%" }}>
                 <InputLabel htmlFor="adornment-email">Email</InputLabel>
                 <Input

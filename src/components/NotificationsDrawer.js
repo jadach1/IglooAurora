@@ -162,7 +162,6 @@ class NotificationsDrawer extends React.Component {
           },
         },
       })
-      console.log("dasssssssssssssssssssssssssssssssssssssssssssss")
     }
 
     let clearAllNotifications = () => {
