@@ -13,7 +13,7 @@ const theme = createMuiTheme({
   },
 })
 
-class Login extends Component {
+class Signup extends Component {
   constructor() {
     super()
 
@@ -168,4 +168,4 @@ class Login extends Component {
   }
 }
 
-export default Login
+export default Signup
