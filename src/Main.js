@@ -282,7 +282,7 @@ class Main extends Component {
   }
 
   render() {
-    return (
+      return (
       <MuiThemeProvider>
         <React.Fragment>
           <Online>
