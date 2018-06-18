@@ -295,7 +295,7 @@ class Main extends Component {
                 handleChange={this.handleSettingsTabChanged}
                 slideIndex={this.state.slideIndex}
               />
-              <div className="invisibleHeader" key="invisibleHeader" />
+              <div className="invisibleeader" key="invisibleHeader" />
               <SidebarHeader
                 logOut={this.props.logOut}
                 key="sidebarHeader"

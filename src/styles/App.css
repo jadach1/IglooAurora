@@ -20,8 +20,8 @@ body {
   grid-template-areas: "sidebarHeader mainBodyHeader" "sidebar mainBody" "sidebar statusBar";
 }
 
-.statusBar{
-  grid-area:statusBar;
+.statusBar {
+  grid-area: statusBar;
 }
 
 .sidebar {
@@ -332,6 +332,7 @@ input[type="password"]::-ms-reveal {
   background: #0083ff; /* WebKit/Blink Browsers */
   color: #fff;
 }
+
 ::-moz-selection {
   background: #0083ff; /* Gecko Browsers */
   color: #fff;
