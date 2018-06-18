@@ -32,7 +32,11 @@ TBD
 
 ## Contributing
 
-TBD
+We are open to any contribution, just send us a pull request.
+
+## Questions
+
+If you need something that Igloo does not support at the moment, please open an issue and we will discuss whether it fits the project.
 
 ## Acknowledgments
 

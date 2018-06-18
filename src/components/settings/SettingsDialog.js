@@ -19,6 +19,7 @@ import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
 import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
+import ManageAuthorizations from "./ManageAuthorizations"
 import Shortcuts from "./Shortcuts"
 import Icon from "material-ui-next/Icon"
 
@@ -43,6 +44,7 @@ const allDialogsClosed = {
   unitDialogOpen: false,
   nameDialogOpen: false,
   shortcutDialogOpen: false,
+  authDialogOpen: false,
 }
 
 class SettingsDialog extends React.Component {
@@ -68,6 +70,14 @@ class SettingsDialog extends React.Component {
 
   handleEmailDialogClose = () => {
     this.setState({ emailDialogOpen: false })
+  }
+
+  handleAuthDialogOpen = () => {
+    this.setState({ authDialogOpen: true })
+  }
+
+  handleAuthDialogClose = () => {
+    this.setState({ authDialogOpen: false })
   }
 
   handleShortcutDialogOpen = () => {
@@ -393,6 +403,7 @@ class SettingsDialog extends React.Component {
                 <ListItem
                   primaryText="Manage authorizations"
                   secondaryText="Lorem Ipsum"
+                  onClick={this.handleAuthDialogOpen}
                 />
                 <Divider />
                 <Subheader style={{ cursor: "default" }}>
@@ -441,6 +452,12 @@ class SettingsDialog extends React.Component {
             this.props.isOpen && this.state.emailDialogOpen
           }
           handleEmailDialogClose={this.handleEmailDialogClose}
+        />
+        <ManageAuthorizations
+          confirmationDialogOpen={
+            this.props.isOpen && this.state.authDialogOpen
+          }
+          handleAuthDialogClose={this.handleAuthDialogClose}
         />
         <ChangeLanguageDialog
           handleLanguageDialogClose={this.handleLanguageDialogClose}
