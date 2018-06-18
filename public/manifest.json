@@ -6,7 +6,6 @@
   "display": "standalone",
   "Scope": "/iglooAurora/",
   "start_url": "https://hellowitlab.github.io/iglooAurora/",
-
   "icons": [
     {
       "src": "windows10/Square71x71Logo.scale-400.png",

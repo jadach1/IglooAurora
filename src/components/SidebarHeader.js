@@ -41,17 +41,19 @@ class SidebarHeader extends Component {
               title="Go to Magellan"
               placement="bottom"
             >
-              <IconButton
-                style={{
-                  padding: "0",
-                  margin: "0 5px 0 5px",
-                  width: "32px",
-                  height: "32px",
-                }}
-                className="sidebarHeaderButton"
-              >
-                <Icon color="primary">map</Icon>
-              </IconButton>
+              <a href="https://hellowitlab.github.io/iglooMagellan">
+                <IconButton
+                  style={{
+                    padding: "0",
+                    margin: "0 5px 0 5px",
+                    width: "32px",
+                    height: "32px",
+                  }}
+                  className="sidebarHeaderButton"
+                >
+                  <Icon color="primary">map</Icon>
+                </IconButton>
+              </a>
             </Tooltip>
             <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
               <IconButton
