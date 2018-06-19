@@ -395,20 +395,19 @@ class SettingsDialog extends React.Component {
                   }
                 />
                 <Divider />
-                <Subheader style={{ cursor: "default" }}>Lorem Ipsum</Subheader>
-                <ListItem
-                  primaryText="Manage roles"
-                  secondaryText="Lorem Ipsum"
-                />
+                <Subheader style={{ cursor: "default" }}>For developers</Subheader>            
                 <ListItem
                   primaryText="Manage authorizations"
-                  secondaryText="Lorem Ipsum"
+                  secondaryText="Generate, view and delete your account's access tokens"
                   onClick={this.handleAuthDialogOpen}
                 />
                 <Divider />
                 <Subheader style={{ cursor: "default" }}>
                   Account management
                 </Subheader>
+                  <ListItem
+                  primaryText="Manage roles"
+                />
                 <ListItem
                   primaryText="Change user name"
                   onClick={this.handleNameDialogOpen}
