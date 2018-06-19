@@ -24,7 +24,18 @@ TBD
 
 #### Installing
 
-TBD
+Start by cloning the repository and downloading the required libraries:
+
+```bash
+git clone https://github.com/hellowitlab/iglooHouston
+yarn
+```
+or
+
+```bash
+git clone https://github.com/hellowitlab/iglooHouston
+npm install
+```
 
 ## Documentation
 
