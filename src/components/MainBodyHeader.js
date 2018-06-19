@@ -7,10 +7,12 @@ import Button from "material-ui-next/Button"
 import Tooltip from "material-ui-next/Tooltip"
 import NotificationsDrawer from "./NotificationsDrawer"
 import Icon from "material-ui-next/Icon"
+import DeviceInfo from "./DeviceInfo"
 
 class MainBodyHeader extends Component {
   state = {
     open: false,
+    infoOpen: false,
   }
 
   handleOpen = () => {
@@ -75,6 +77,24 @@ class MainBodyHeader extends Component {
             </Tooltip>
             <Tooltip
               id="tooltip-bottom"
+              title="Device information"
+              placement="bottom"
+            >
+              <IconButton
+                className="mainBodyHeaderIcon"
+                style={{
+                  padding: "0",
+                  margin: "0 5px 0 5px",
+                  width: "32px",
+                  height: "32px",
+                }}
+                onClick={() => this.setState({ infoOpen: true })}
+              >
+                <Icon>info</Icon>
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              id="tooltip-bottom"
               title="Rearrange cards"
               placement="bottom"
             >
@@ -110,6 +130,13 @@ class MainBodyHeader extends Component {
         >
           [FILL WITH DRAG 'N' DROPPABLE LIST]
         </Dialog>
+        <DeviceInfo
+          infoOpen={this.state.infoOpen}
+          close={() => this.setState({ infoOpen: false })}
+          id={device.id}
+          updatedAt={device.updatedAt}
+          createdAt={device.createdAt}
+        />
       </React.Fragment>
     )
   }
@@ -122,6 +149,8 @@ export default graphql(
         id
         customName
         icon
+        updatedAt
+        createdAt
       }
     }
   `,

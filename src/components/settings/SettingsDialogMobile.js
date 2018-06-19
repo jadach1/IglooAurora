@@ -22,6 +22,7 @@ import Icon from "material-ui-next/Icon"
 import Slide from "material-ui-next/transitions/Slide"
 import BottomNavigation from "material-ui-next/BottomNavigation"
 import BottomNavigationAction from "material-ui-next/BottomNavigation/BottomNavigationAction"
+import ManageAuthorizations from "./ManageAuthorizations"
 import AppBar from "material-ui-next/AppBar"
 import IconButton from "material-ui-next/IconButton"
 import Typography from "material-ui-next/Typography"
@@ -165,6 +166,14 @@ class SettingsDialog extends React.Component {
 
   handleNameDialogClose = () => {
     this.setState({ nameDialogOpen: false })
+  }
+
+  handleAuthDialogOpen = () => {
+    this.setState({ authDialogOpen: true })
+  }
+
+  handleAuthDialogClose = () => {
+    this.setState({ authDialogOpen: false })
   }
 
   secondsTimer = () => {
@@ -387,6 +396,7 @@ class SettingsDialog extends React.Component {
                 <ListItem
                   primaryText="Manage authorizations"
                   secondaryText="Lorem Ipsum"
+                  onClick={this.handleAuthDialogOpen}
                 />
                 <Divider />
                 <Subheader style={{ cursor: "default" }}>
@@ -497,6 +507,12 @@ class SettingsDialog extends React.Component {
           confirmationDialogOpen={
             this.props.isOpen && this.state.nameDialogOpen
           }
+        />
+        <ManageAuthorizations
+          confirmationDialogOpen={
+            this.props.isOpen && this.state.authDialogOpen
+          }
+          handleAuthDialogClose={this.handleAuthDialogClose}
         />
         <Shortcuts
           handleShortcutDialogClose={this.handleShortcutDialogClose}
