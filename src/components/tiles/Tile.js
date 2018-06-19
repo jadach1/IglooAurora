@@ -498,6 +498,7 @@ class Tile extends Component {
           handleInfoClose={() => this.setState({ infoOpen: false })}
           createdAt={value.createdAt}
           updatedAt={value.updatedAt}
+          id={value.id}
         />
       </React.Fragment>
     )

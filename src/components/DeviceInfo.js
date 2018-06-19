@@ -12,22 +12,22 @@ const theme = createMuiTheme({
   },
 })
 
-class InfoDialog extends React.Component {
+class DeviceInfo extends React.Component {
   state = { showHidden: false }
 
   render() {
     const infoActions = [
       <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.handleInfoClose}>Close</Button>
+        <Button onClick={this.props.close}>Close</Button>
       </MuiThemeProvider>,
     ]
 
     return (
       <Dialog
-        title="Card information"
+        title="Device information"
         actions={infoActions}
         open={this.props.infoOpen}
-        onRequestClose={this.props.handleInfoClose}
+        onRequestClose={this.props.close}
         titleClassName="notSelectable"
         contentStyle={{
           width: "400px",
@@ -51,4 +51,4 @@ class InfoDialog extends React.Component {
   }
 }
 
-export default InfoDialog
+export default DeviceInfo

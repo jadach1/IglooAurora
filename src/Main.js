@@ -282,7 +282,7 @@ class Main extends Component {
   }
 
   render() {
-      return (
+    return (
       <MuiThemeProvider>
         <React.Fragment>
           <Online>
@@ -295,7 +295,7 @@ class Main extends Component {
                 handleChange={this.handleSettingsTabChanged}
                 slideIndex={this.state.slideIndex}
               />
-              <div className="invisibleeader" key="invisibleHeader" />
+              <div className="invisibleHeader" key="invisibleHeader" />
               <SidebarHeader
                 logOut={this.props.logOut}
                 key="sidebarHeader"
