@@ -81,7 +81,7 @@ class AuthDialog extends React.Component {
             this.setState({ nameOpen: false, authDialogOpen: true })
           }
         >
-          Close
+          Never mind
         </Button>
         <Button
           variant="raised"
@@ -122,6 +122,7 @@ class AuthDialog extends React.Component {
           contentStyle={authDialogContentStyle}
           onRequestClose={this.props.handleAuthDialogClose}
           className="notSelectable"
+          titleClassName="notSelectable defaultCursor"
         >
           <TextField
             floatingLabelShrinkStyle={{ color: "#0083ff" }}
@@ -146,6 +147,7 @@ class AuthDialog extends React.Component {
             paddingRight: "8px",
             paddingBottom: "0px",
           }}
+          titleClassName="notSelectable defaultCursor"
         >
           <List>
             {tokens}

@@ -28,6 +28,7 @@ export default class ChangeShortcutDialog extends React.Component {
           contentStyle={shortcutDialogContentStyle}
           onRequestClose={this.props.handleShortcutDialogClose}
           className="notSelectable"
+          titleClassName="notSelectable defaultCursor"
         >
           <Paper>
             <Table>

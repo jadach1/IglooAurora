@@ -23,6 +23,7 @@ export default class TimeFormatDialog extends React.Component {
         bodyStyle={{
           paddingBottom: "0px",
         }}
+        titleClassName="notSelectable defaultCursor"
       >
         Date
         <RadioButtonGroup name="date" defaultSelected="auto">

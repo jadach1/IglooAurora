@@ -72,6 +72,7 @@ export default class TwoFactorDialog extends React.Component {
         onRequestClose={this.props.handleTwoFactorDialogClose}
         className="notSelectable"
         bodyStyle={{ padding: "8px" }}
+        titleClassName="notSelectable defaultCursor"
       >
         <div
           style={{

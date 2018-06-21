@@ -320,6 +320,10 @@ div[menutype="notifications"] {
   transition: opacity 300ms ease-in;
 }
 
+.defaultCursor {
+  cursor: default;
+}
+
 input[type="text"]::-ms-clear {
   display: none;
 }
