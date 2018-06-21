@@ -27,6 +27,7 @@ export default class UnitOfMeasumentDialog extends React.Component {
         bodyStyle={{
           paddingBottom: "0px",
         }}
+        titleClassName="notSelectable defaultCursor"
       >
         Lenght and mass
         <RadioButtonGroup name="lenghtMass" defaultSelected="auto">

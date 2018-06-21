@@ -75,7 +75,8 @@ class DeleteAccountDialog extends React.Component {
           open={this.props.deleteConfirmedOpen}
           contentStyle={deleteDialogContentStyle}
           onRequestClose={this.props.closeDeleteConfirmed}
-          className="notSelectable"
+          className="notSelectable defaultCursor"
+          titleClassName="notSelectable defaultCursor"
         >
           Be careful, your data will be erased permanently
         </Dialog>
@@ -85,7 +86,8 @@ class DeleteAccountDialog extends React.Component {
           open={this.props.deleteOpen}
           contentStyle={passwordDialogContentStyle}
           onRequestClose={this.props.closeDelete}
-          className="notSelectable"
+          className="notSelectable defaultCursor"
+          titleClassName="notSelectable defaultCursor"
         >
           <TextField
             floatingLabelShrinkStyle={{ color: "#0083ff" }}

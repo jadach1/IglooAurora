@@ -51,10 +51,11 @@ class DeleteTileDialog extends React.Component {
         actions={deleteTileActions}
         open={this.props.deleteTileOpen}
         onRequestClose={this.props.handleDeleteTileDialogClose}
-        className="notSelectable"
+        className="notSelectable defaultCursor"
         contentStyle={{
           width: "350px",
         }}
+        titleClassName="notSelectable defaultCursor"
       >
         Be careful, this card will be deleted permanently
       </Dialog>

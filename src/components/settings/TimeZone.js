@@ -77,6 +77,7 @@ export default class TimeZoneDialog extends React.Component {
         bodyStyle={{
           paddingBottom: "0px",
         }}
+        titleClassName="notSelectable defaultCursor"
       >
         <RadioButtonGroup name="Time Zone">
           <RadioButton

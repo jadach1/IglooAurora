@@ -61,6 +61,7 @@ export default class ChangePasswordDialog extends React.Component {
           contentStyle={passwordDialogContentStyle}
           onRequestClose={this.props.handlePasswordDialogClose}
           className="notSelectable"
+          titleClassName="notSelectable defaultCursor"
         >
           <TextField
             floatingLabelShrinkStyle={{ color: "#0083ff" }}

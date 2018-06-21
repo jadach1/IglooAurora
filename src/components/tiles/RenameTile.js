@@ -75,6 +75,7 @@ class RenameTileDialog extends React.Component {
         contentStyle={{
           width: "350px",
         }}
+        titleClassName="notSelectable defaultCursor"
       >
         <TextField
           floatingLabelText="Card name"

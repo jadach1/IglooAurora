@@ -3,8 +3,6 @@ import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import moment from "moment"
-import FlatButton from "material-ui/FlatButton"
-import Icon from "material-ui-next/Icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -28,7 +26,7 @@ class DeviceInfo extends React.Component {
         actions={infoActions}
         open={this.props.infoOpen}
         onRequestClose={this.props.close}
-        titleClassName="notSelectable"
+        titleClassName="notSelectable defaultCursor"
         contentStyle={{
           width: "400px",
         }}
