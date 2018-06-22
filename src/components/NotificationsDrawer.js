@@ -279,6 +279,7 @@ class NotificationsDrawer extends React.Component {
                         <i class="material-icons">markunread</i>
                       </Tooltip>
                     </IconButton>
+
                     <IconButton
                       aria-label="Delete"
                       onClick={() => deleteNotification(notification.id)}
@@ -342,18 +343,18 @@ class NotificationsDrawer extends React.Component {
 
     return (
       <React.Fragment>
-        <Tooltip title="Notifications" placement="bottom">
-          <IconButton
-            className="mainBodyHeaderIcon"
-            style={{
-              padding: "0",
-              position: "absolute",
-              marginTop: "14px",
-              width: "32px",
-              height: "32px",
-            }}
-            onClick={() => this.props.changeDrawerState()}
-          >
+        <IconButton
+          className="mainBodyHeaderIcon"
+          style={{
+            padding: "0",
+            position: "absolute",
+            marginTop: "14px",
+            width: "32px",
+            height: "32px",
+          }}
+          onClick={() => this.props.changeDrawerState()}
+        >
+          <Tooltip title="Notifications" placement="bottom">
             <MuiThemeProvider theme={theme}>
               {notificationCount ? (
                 <Badge badgeContent={notificationCount} color="primary">
@@ -363,8 +364,8 @@ class NotificationsDrawer extends React.Component {
                 <Icon>notifications_none</Icon>
               )}
             </MuiThemeProvider>
-          </IconButton>
-        </Tooltip>
+          </Tooltip>
+        </IconButton>
         <SwipeableDrawer
           variant="temporary"
           anchor="right"
@@ -379,26 +380,26 @@ class NotificationsDrawer extends React.Component {
           disableDiscovery={true}
         >
           <div className="notificationsTopBar notSelectable invisibleHeader">
-            <Tooltip
-              id="tooltip-bottom"
-              title="Close drawer"
-              placement="bottom"
+            <IconButton
+              className="notificationsLeftSide"
+              onClick={() => {
+                this.props.changeDrawerState()
+                clearAllNotifications()
+              }}
+              style={{
+                padding: "0",
+                width: "32px",
+                height: "32px",
+              }}
             >
-              <IconButton
-                className="notificationsLeftSide"
-                onClick={() => {
-                  this.props.changeDrawerState()
-                  clearAllNotifications()
-                }}
-                style={{
-                  padding: "0",
-                  width: "32px",
-                  height: "32px",
-                }}
+              <Tooltip
+                id="tooltip-bottom"
+                title="Close drawer"
+                placement="bottom"
               >
                 <Icon>chevron_right</Icon>
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
             {/*  <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
               <IconButton
                 className="notificationsRightSide2"
@@ -414,18 +415,22 @@ class NotificationsDrawer extends React.Component {
                 <i className="material-icons">clear_all</i>
               </IconButton>
             </Tooltip> */}
-            <Tooltip id="tooltip-bottom" title="Mute device" placement="bottom">
-              <IconButton
-                className="notificationsRightSide"
-                style={{
-                  padding: "0",
-                  width: "32px",
-                  height: "32px",
-                }}
+            <IconButton
+              className="notificationsRightSide"
+              style={{
+                padding: "0",
+                width: "32px",
+                height: "32px",
+              }}
+            >
+              <Tooltip
+                id="tooltip-bottom"
+                title="Mute device"
+                placement="bottom"
               >
                 <Icon>notifications_off</Icon>
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
           </div>
           <div
             className="notSelectable"

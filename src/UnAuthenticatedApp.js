@@ -117,11 +117,13 @@ class UnAuthenticatedApp extends Component {
               >
                 <Signup
                   client={this.client}
+                  isDialog={false}
                   signIn={this.props.signIn}
                   goToLogin={() => this.setState({ slideIndex: 1 })}
                 />
                 <Login
                   client={this.client}
+                  isDialog={false}
                   signIn={this.props.signIn}
                   goToSignup={() => this.setState({ slideIndex: 0 })}
                 />

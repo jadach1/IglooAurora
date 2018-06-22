@@ -93,8 +93,12 @@ class Sidebar extends Component {
               }}
             />
           </MuiThemeProvider>
-          <IconButton style={{ width: "32px", height: "32px" }}>
-            <Icon>filter_list</Icon>
+          <IconButton
+            style={{ width: "32px", height: "32px", marginTop: "-16px" }}
+          >
+            <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
+              <Icon>filter_list</Icon>
+            </Tooltip>
           </IconButton>
           <List>
             {this.props.searchText

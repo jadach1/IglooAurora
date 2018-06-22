@@ -58,59 +58,59 @@ class MainBodyHeader extends Component {
             {device.customName}
           </p>
           <div className="mainBodyHeaderIcon">
-            <Tooltip
-              id="tooltip-bottom"
-              title="See on the map"
-              placement="bottom"
+            <IconButton
+              className="mainBodyHeaderIcon"
+              style={{
+                padding: "0",
+                margin: "0 5px 0 5px",
+                width: "32px",
+                height: "32px",
+              }}
             >
-              <IconButton
-                className="mainBodyHeaderIcon"
-                style={{
-                  padding: "0",
-                  margin: "0 5px 0 5px",
-                  width: "32px",
-                  height: "32px",
-                }}
+              <Tooltip
+                id="tooltip-bottom"
+                title="See on the map"
+                placement="bottom"
               >
                 <Icon>place</Icon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip
-              id="tooltip-bottom"
-              title="Device information"
-              placement="bottom"
+              </Tooltip>
+            </IconButton>
+            <IconButton
+              className="mainBodyHeaderIcon"
+              style={{
+                padding: "0",
+                margin: "0 5px 0 5px",
+                width: "32px",
+                height: "32px",
+              }}
+              onClick={() => this.setState({ infoOpen: true })}
             >
-              <IconButton
-                className="mainBodyHeaderIcon"
-                style={{
-                  padding: "0",
-                  margin: "0 5px 0 5px",
-                  width: "32px",
-                  height: "32px",
-                }}
-                onClick={() => this.setState({ infoOpen: true })}
+              <Tooltip
+                id="tooltip-bottom"
+                title="Device information"
+                placement="bottom"
               >
                 <Icon>info</Icon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip
-              id="tooltip-bottom"
-              title="Rearrange cards"
-              placement="bottom"
+              </Tooltip>
+            </IconButton>
+            <IconButton
+              onClick={this.handleOpen}
+              className="mainBodyHeaderIcon"
+              style={{
+                padding: "0",
+                margin: "0 5px 0 5px",
+                width: "32px",
+                height: "32px",
+              }}
             >
-              <IconButton
-                onClick={this.handleOpen}
-                className="mainBodyHeaderIcon"
-                style={{
-                  padding: "0",
-                  margin: "0 5px 0 5px",
-                  width: "32px",
-                  height: "32px",
-                }}
+              <Tooltip
+                id="tooltip-bottom"
+                title="Rearrange cards"
+                placement="bottom"
               >
                 <Icon>mode_edit</Icon>
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
             <NotificationsDrawer
               device={device}
               drawer={this.props.drawer}

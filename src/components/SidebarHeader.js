@@ -36,53 +36,53 @@ class SidebarHeader extends Component {
         />
         <div className="rightSide notSelectable">
           <MuiThemeProvider theme={theme}>
-            <Tooltip
-              id="tooltip-bottom"
-              title="Go to Magellan"
-              placement="bottom"
-            >
-              <a href="https://hellowitlab.github.io/iglooMagellan">
-                <IconButton
-                  style={{
-                    padding: "0",
-                    margin: "0 5px 0 5px",
-                    width: "32px",
-                    height: "32px",
-                  }}
-                  className="sidebarHeaderButton"
+            <a href="https://hellowitlab.github.io/iglooMagellan">
+              <IconButton
+                style={{
+                  padding: "0",
+                  margin: "0 5px 0 5px",
+                  width: "32px",
+                  height: "32px",
+                }}
+                className="sidebarHeaderButton"
+              >
+                <Tooltip
+                  id="tooltip-bottom"
+                  title="Go to Magellan"
+                  placement="bottom"
                 >
                   <Icon color="primary">map</Icon>
-                </IconButton>
-              </a>
-            </Tooltip>
-            <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
-              <IconButton
-                onClick={this.props.openSettingsDialog}
-                style={{
-                  padding: "0",
-                  margin: "0 5px 0 5px",
-                  width: "32px",
-                  height: "32px",
-                }}
-                className="sidebarHeaderButton"
-              >
+                </Tooltip>
+              </IconButton>
+            </a>
+            <IconButton
+              onClick={this.props.openSettingsDialog}
+              style={{
+                padding: "0",
+                margin: "0 5px 0 5px",
+                width: "32px",
+                height: "32px",
+              }}
+              className="sidebarHeaderButton"
+            >
+              <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
                 <Icon color="primary">settings</Icon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
-              <IconButton
-                onClick={this.props.logOut}
-                style={{
-                  padding: "0",
-                  margin: "0 5px 0 5px",
-                  width: "32px",
-                  height: "32px",
-                }}
-                className="sidebarHeaderButton"
-              >
+              </Tooltip>
+            </IconButton>
+            <IconButton
+              onClick={this.props.logOut}
+              style={{
+                padding: "0",
+                margin: "0 5px 0 5px",
+                width: "32px",
+                height: "32px",
+              }}
+              className="sidebarHeaderButton"
+            >
+              <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
                 <Icon color="primary">exit_to_app</Icon>
-              </IconButton>
-            </Tooltip>
+              </Tooltip>
+            </IconButton>
           </MuiThemeProvider>
         </div>
       </div>

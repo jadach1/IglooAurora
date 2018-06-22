@@ -73,7 +73,6 @@ export default class StatusBar extends Component {
           >
             <Icon>network_wifi</Icon>
             <Icon>battery_full</Icon>
-            97%
           </div>
         </div>
       </div>

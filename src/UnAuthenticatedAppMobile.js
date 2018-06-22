@@ -11,8 +11,7 @@ import Login from "./components/Login"
 import Signup from "./components/Signup"
 import Button from "material-ui-next/Button"
 import { hotkeys } from "react-keyboard-shortcuts"
-import Dialog from "material-ui-next/Dialog"
-import Slide from "material-ui-next/transitions/Slide"
+import Dialog from "material-ui/Dialog"
 import ForgotPassword from "./components/ForgotPassword"
 
 const theme = createMuiTheme({
@@ -20,10 +19,6 @@ const theme = createMuiTheme({
     primary: { main: "#0083ff" },
   },
 })
-
-function Transition(props) {
-  return <Slide direction="up" {...props} />
-}
 
 class UnAuthenticatedApp extends Component {
   state = { logiIn: false, signIn: false }
@@ -128,34 +123,38 @@ class UnAuthenticatedApp extends Component {
             </MuiThemeProviderNext>
             <Dialog
               open={this.state.signIn}
-              onClose={() => this.setState({ signIn: false })}
-              TransitionComponent={Transition}
+              onRequestClose={() => this.setState({ signIn: false })}
+              contentStyle={{ width: "300px" }}
+              bodyStyle={{ padding: "0 24px 24px 24px" }}
+              title={"Nice to meet you!"}
+              titleClassName="notSelectable defaultCursor"
             >
-              <div style={{ padding: "0 24px 24px 24px", width: "300px" }}>
-                <Signup
-                  client={this.client}
-                  signIn={this.props.signIn}
-                  goToLogin={() => this.setState({ slideIndex: 1 })}
-                />
-              </div>
+              <Signup
+                client={this.client}
+                signIn={this.props.signIn}
+                goToLogin={() => this.setState({ slideIndex: 1 })}
+                isDialog={true}
+              />
             </Dialog>
             <Dialog
               open={this.state.logIn}
-              onClose={() => this.setState({ logIn: false })}
-              TransitionComponent={Transition}
+              onRequestClose={() => this.setState({ logIn: false })}
+              contentStyle={{ width: "300px" }}
+              bodyStyle={{ padding: "0 24px 24px 24px" }}
+              title={"Welcome back!"}
+              titleClassName="notSelectable defaultCursor"
             >
-              <div style={{ padding: "0 24px 24px 24px", width: "300px" }}>
-                <Login
-                  client={this.client}
-                  signIn={this.props.signIn}
-                  goToSignup={() => this.setState({ slideIndex: 0 })}
-                  isMobile={true}
-                  closeMobileDialog={() => this.setState({ logIn: false })}
-                  openForgotPassword={() =>
-                    this.setState({ forgotPasswordOpen: true })
-                  }
-                />
-              </div>
+              <Login
+                client={this.client}
+                signIn={this.props.signIn}
+                goToSignup={() => this.setState({ slideIndex: 0 })}
+                isMobile={true}
+                isDialog={true}
+                closeMobileDialog={() => this.setState({ logIn: false })}
+                openForgotPassword={() =>
+                  this.setState({ forgotPasswordOpen: true })
+                }
+              />
             </Dialog>
             <ForgotPassword
               open={this.state.forgotPasswordOpen}
