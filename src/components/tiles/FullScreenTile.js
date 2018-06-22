@@ -1,7 +1,6 @@
 import React from "react"
-import Dialog from "material-ui-next/Dialog"
-import DialogTitle from "material-ui-next/Dialog/DialogTitle"
-import DialogActions from "material-ui-next/Dialog/DialogActions"
+import Dialog from "material-ui/Dialog"
+
 import Button from "material-ui-next/Button"
 import Slide from "material-ui-next/transitions/Slide"
 
@@ -17,15 +16,15 @@ export default class FullScreenTile extends React.Component {
     return (
       <Dialog
         open={this.props.fullScreen}
-        onClose={this.props.handleClose}
+        onRequestClose={this.props.handleClose}
         className="notSelectable"
         TransitionComponent={Transition}
+        title={valueTitle}
+        actions={<Button onClick={this.props.handleClose}>Close</Button>}
+        modal={false}
+        titleClassName="notSelectable defaultCursor"
       >
-        <DialogTitle>{valueTitle}</DialogTitle>
         {this.props.specificTile}
-        <DialogActions>
-          <Button onClick={this.props.handleClose}>Close</Button>
-        </DialogActions>
       </Dialog>
     )
   }

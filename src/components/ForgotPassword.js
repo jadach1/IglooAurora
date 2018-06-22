@@ -1,7 +1,5 @@
 import React from "react"
-import Dialog from "material-ui-next/Dialog"
-import DialogTitle from "material-ui-next/Dialog/DialogTitle"
-import DialogActions from "material-ui-next/Dialog/DialogActions"
+import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import Slide from "material-ui-next/transitions/Slide"
@@ -55,53 +53,53 @@ export default class ChangeNameDialog extends React.Component {
       <React.Fragment>
         <Dialog
           open={this.props.open}
-          onClose={this.props.close}
+          onRequestClose={this.props.close}
           className="notSelectable"
           TransitionComponent={Transition}
-        >
-          <DialogTitle>Recover your password</DialogTitle>
-          <MuiThemeProvider theme={theme}>
-            <div style={{ margin: "24px", width: "300px" }}>
-              Enter your email address and we will send you a link to reset your
-              password
-              <br />
-              <br />
-              <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="adornment-email">Email</InputLabel>
-                <Input
-                  id="adornment-email-login"
-                  value={this.state.email}
-                  onChange={event =>
-                    this.setState({ email: event.target.value })
-                  }
-                  onKeyPress={event => {
-                    if (event.key === "Enter") this.signIn()
-                  }}
-                  endAdornment={
-                    this.state.email ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={this.handleClickCancelEmail}
-                          onMouseDown={this.handleMouseDownPassword}
-                          style={{ width: "32px", height: "32px" }}
-                        >
-                          <Icon>clear</Icon>
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-              </FormControl>
-            </div>
-          </MuiThemeProvider>
-          <DialogActions>
-            <Button onClick={this.props.close}>Never mind</Button>
+          title={"Recover your password"}
+          contentStyle={{ width: "350px" }}
+          actions={[
+            <Button onClick={this.props.close}>Never mind</Button>,
             <MuiThemeProvider theme={theme}>
               <Button variant="raised" color="primary">
                 Recover
               </Button>
-            </MuiThemeProvider>
-          </DialogActions>
+            </MuiThemeProvider>,
+          ]}
+          titleClassName="defaultCursor"
+        >
+          <MuiThemeProvider theme={theme}>
+            <div className="defaultCursor">
+              Enter your email address and we will send you a link to reset your
+              password
+            </div>
+            <br />
+            <br />
+            <FormControl style={{ width: "100%" }}>
+              <InputLabel htmlFor="adornment-email">Email</InputLabel>
+              <Input
+                id="adornment-email-login"
+                value={this.state.email}
+                onChange={event => this.setState({ email: event.target.value })}
+                onKeyPress={event => {
+                  if (event.key === "Enter") this.signIn()
+                }}
+                endAdornment={
+                  this.state.email ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={this.handleClickCancelEmail}
+                        onMouseDown={this.handleMouseDownPassword}
+                        style={{ width: "32px", height: "32px" }}
+                      >
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
+          </MuiThemeProvider>
         </Dialog>
       </React.Fragment>
     )

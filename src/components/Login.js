@@ -89,7 +89,7 @@ class Login extends Component {
     return (
       <React.Fragment>
         <div className="rightSide notSelectable">
-          <h1>Welcome back!</h1>
+          {this.props.isDialog ? "" : <h1>Welcome back!</h1>}
           <MuiThemeProvider theme={theme}>
             <FormControl style={{ width: "100%" }}>
               <InputLabel htmlFor="adornment-email">Email</InputLabel>

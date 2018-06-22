@@ -269,6 +269,12 @@ class SettingsDialog extends React.Component {
               buttonStyle={{ backgroundColor: "#0057cb" }}
               value={2}
             />
+            <Tab
+              icon={<Icon>code</Icon>}
+              label="Development"
+              buttonStyle={{ backgroundColor: "#0057cb" }}
+              value={3}
+            />
           </Tabs>
           <SwipeableViews
             index={this.props.slideIndex}
@@ -395,7 +401,19 @@ class SettingsDialog extends React.Component {
                   }
                 />
                 <Divider />
-                <Subheader style={{ cursor: "default" }}>For developers</Subheader>            
+                <Subheader style={{ cursor: "default" }}>
+                  For developers
+                </Subheader>
+                <ListItem
+                  primaryText="Developer mode"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                    />
+                  }
+                />
                 <ListItem
                   primaryText="Manage authorizations"
                   secondaryText="Generate, view and delete your account's access tokens"
@@ -405,9 +423,7 @@ class SettingsDialog extends React.Component {
                 <Subheader style={{ cursor: "default" }}>
                   Account management
                 </Subheader>
-                  <ListItem
-                  primaryText="Manage roles"
-                />
+                <ListItem primaryText="Manage roles" />
                 <ListItem
                   primaryText="Change user name"
                   onClick={this.handleNameDialogOpen}

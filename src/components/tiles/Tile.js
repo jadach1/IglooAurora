@@ -265,26 +265,27 @@ class Tile extends Component {
               {valueTitle}
             </div>
             <div className="tileHeaderButtons notSelectable">
-              <Tooltip
-                id="tooltip-bottom"
-                title="Fullscreen"
-                placement="bottom"
+              <IconButton
+                onClick={() => {
+                  this.setState({ isTileFullScreen: true })
+                }}
+                style={{
+                  padding: "0",
+                  width: "32px",
+                  height: "32px",
+                  marginTop: "14px",
+                  marginBottom: "14px",
+                }}
               >
-                <IconButton
-                  onClick={() => {
-                    this.setState({ isTileFullScreen: true })
-                  }}
-                  style={{
-                    padding: "0",
-                    width: "32px",
-                    height: "32px",
-                    marginTop: "14px",
-                    marginBottom: "14px",
-                  }}
+                <Tooltip
+                  id="tooltip-bottom"
+                  title="Fullscreen"
+                  placement="bottom"
                 >
                   <Icon>fullscreen</Icon>
-                </IconButton>
-              </Tooltip>
+                </Tooltip>
+              </IconButton>
+
               <IconMenu
                 iconButtonElement={
                   <IconButton
