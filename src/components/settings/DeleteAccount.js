@@ -30,7 +30,11 @@ class DeleteAccountDialog extends React.Component {
   render() {
     const deleteConfimedActions = [
       <MuiThemeProvider theme={theme2}>
-        <Button keyboardFocused={true} onClick={this.props.closeDelete}>
+        <Button
+          keyboardFocused={true}
+          onClick={this.props.closeDelete}
+          style={{ marginRight: "4px" }}
+        >
           Never mind
         </Button>
         <Button

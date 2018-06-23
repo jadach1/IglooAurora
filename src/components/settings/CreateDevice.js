@@ -28,7 +28,9 @@ class CreateDevice extends React.Component {
   render() {
     const actions = [
       <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close}>Never mind</Button>
+        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+          Never mind
+        </Button>
         <Button
           variant="raised"
           color="primary"
