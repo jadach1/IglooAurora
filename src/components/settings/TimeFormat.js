@@ -26,7 +26,7 @@ export default class TimeFormatDialog extends React.Component {
         titleClassName="notSelectable defaultCursor"
       >
         Date
-        <RadioButtonGroup name="date" defaultSelected="auto">
+        <RadioButtonGroup name="date" defaultSelected="dmy">
           <RadioButton
             value="dmy"
             label="DD/MM/YYYY"

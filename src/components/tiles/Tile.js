@@ -285,7 +285,6 @@ class Tile extends Component {
                   <Icon>fullscreen</Icon>
                 </Tooltip>
               </IconButton>
-
               <IconMenu
                 iconButtonElement={
                   <IconButton

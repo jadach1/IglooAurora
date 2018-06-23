@@ -27,6 +27,8 @@ import AppBar from "material-ui-next/AppBar"
 import IconButton from "material-ui-next/IconButton"
 import Typography from "material-ui-next/Typography"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import CreateValue from "./CreateValue"
+import CreateDevice from "./CreateDevice"
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
@@ -59,6 +61,8 @@ const allDialogsClosed = {
   unitDialogOpen: false,
   nameDialogOpen: false,
   shortcutDialogOpen: false,
+  createValueOpen: false,
+  createDeviceOpen: false,
 }
 
 class SettingsDialog extends React.Component {
@@ -253,7 +257,7 @@ class SettingsDialog extends React.Component {
           TransitionComponent={Transition}
         >
           <MuiThemeProvider theme={theme}>
-            <AppBar>
+            <AppBar position="sticky">
               <Typography variant="title" color="inherit">
                 Settings
               </Typography>
@@ -388,19 +392,24 @@ class SettingsDialog extends React.Component {
                   }
                 />
                 <Divider />
-                <Subheader style={{ cursor: "default" }}>Lorem Ipsum</Subheader>
+                <Subheader style={{ cursor: "default" }}>
+                  For developers
+                </Subheader>
                 <ListItem
-                  primaryText="Manage authorizations"
-                  secondaryText="Generate, view and delete your account's access tokens"
-                  onClick={this.handleAuthDialogOpen}
+                  primaryText="Developer mode"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                    />
+                  }
                 />
                 <Divider />
                 <Subheader style={{ cursor: "default" }}>
                   Account management
                 </Subheader>
-                 <ListItem
-                  primaryText="Manage roles"
-                />
+                <ListItem primaryText="Manage roles" />
                 <ListItem
                   primaryText="Change user name"
                   onClick={this.handleNameDialogOpen}
@@ -408,11 +417,47 @@ class SettingsDialog extends React.Component {
                 <ListItem
                   primaryText="Download your data"
                   secondaryText="Transfer your data to another service"
+                  onClick={this.handleNameDialogOpen}
                 />
                 <ListItem
                   primaryText="Delete your account"
                   onClick={this.handleDeleteDialogOpen}
                   style={{ color: "#F44336" }}
+                />
+              </List>
+            </div>
+            <div
+              style={{
+                overflowY: "auto",
+              }}
+            >
+              <List>
+                <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
+                <ListItem
+                  primaryText="Manage authorizations"
+                  secondaryText="Generate, view and delete your account's access tokens"
+                  onClick={this.handleAuthDialogOpen}
+                />
+                <Subheader style={{ cursor: "default" }}>
+                  Devices and values
+                </Subheader>
+                <ListItem
+                  primaryText="Create a new device"
+                  onClick={() => this.setState({ createDeviceOpen: true })}
+                />
+                <ListItem
+                  primaryText="Create a new value"
+                  onClick={() => this.setState({ createValueOpen: true })}
+                />
+                <ListItem
+                  primaryText="Show the ID of values and devices"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                    />
+                  }
                 />
               </List>
             </div>
@@ -446,6 +491,15 @@ class SettingsDialog extends React.Component {
                 label="Account"
                 style={
                   this.props.slideIndex === 2
+                    ? { color: "#0083ff" }
+                    : { color: "#757575" }
+                }
+              />
+              <BottomNavigationAction
+                icon={<Icon>code</Icon>}
+                label="Development"
+                style={
+                  this.props.slideIndex === 3
                     ? { color: "#0083ff" }
                     : { color: "#757575" }
                 }
@@ -518,6 +572,14 @@ class SettingsDialog extends React.Component {
           shortcutDialogOpen={
             this.props.isOpen && this.state.shortcutDialogOpen
           }
+        />
+        <CreateValue
+          open={this.props.isOpen && this.state.createValueOpen}
+          close={() => this.setState({ createValueOpen: false })}
+        />
+        <CreateDevice
+          open={this.props.isOpen && this.state.createDeviceOpen}
+          close={() => this.setState({ createDeviceOpen: false })}
         />
       </React.Fragment>
     )
