@@ -27,7 +27,7 @@ const StepActions = ({ step, handleNext, handlePrev }) => (
         disableFocusRipple={true}
         primary={true}
         onClick={handleNext}
-        style={{ marginRight: 12 }}
+        style={{ marginRight: "4px" }}
       >
         Next
       </Button>
@@ -111,9 +111,15 @@ export default class TwoFactorDialog extends React.Component {
                 aaaaa-11111
                 <br />
                 <br />
-                <Button icon={<Icon>file_download</Icon>}>Save</Button>
-                <Button icon={<Icon>content_copy</Icon>}>Copy</Button>
-                <Button icon={<Icon>print</Icon>}>Print</Button>
+                <Button style={{ marginRight: "4px" }}>
+                  <Icon style={{ marginRight: "4px" }}>file_download</Icon>Save
+                </Button>
+                <Button style={{ marginRight: "4px" }}>
+                  <Icon style={{ marginRight: "4px" }}>content_copy</Icon>Copy
+                </Button>
+                <Button style={{ marginRight: "4px" }}>
+                  <Icon style={{ marginRight: "4px" }}>print</Icon>Print
+                </Button>
                 {
                   <StepActions
                     step={1}

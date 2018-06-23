@@ -50,7 +50,12 @@ export default class ChangeMailDialog extends React.Component {
   render() {
     const confirmationDialogActions = [
       <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.handleEmailDialogClose}>Never Mind</Button>
+        <Button
+          onClick={this.props.handleEmailDialogClose}
+          style={{ marginRight: "4px" }}
+        >
+          Never Mind
+        </Button>
         <Button variant="raised" color="primary" onClick={this.openMailDialog}>
           Proceed
         </Button>

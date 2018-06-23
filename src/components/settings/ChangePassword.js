@@ -37,7 +37,10 @@ export default class ChangePasswordDialog extends React.Component {
   render() {
     const passwordDialogActions = [
       <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.handlePasswordDialogClose}>
+        <Button
+          onClick={this.props.handlePasswordDialogClose}
+          style={{ marginRight: "4px" }}
+        >
           Never mind
         </Button>
         <Button

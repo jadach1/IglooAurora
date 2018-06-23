@@ -59,7 +59,9 @@ export default class ChangeNameDialog extends React.Component {
           title={"Recover your password"}
           contentStyle={{ width: "350px" }}
           actions={[
-            <Button onClick={this.props.close}>Never mind</Button>,
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>,
             <MuiThemeProvider theme={theme}>
               <Button variant="raised" color="primary">
                 Recover

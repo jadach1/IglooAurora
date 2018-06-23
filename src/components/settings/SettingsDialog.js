@@ -11,7 +11,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
 import ChangeNameDialog from "./ChangeName"
-import TwoFactorDialog from "./Enabled2FA"
+import TwoFactorDialog from "./Enable2FA"
 import DeleteAccountDialog from "./DeleteAccount"
 import ChangeEmailDialog from "./ChangeEmail"
 import ChangePasswordDialog from "./ChangePassword"
@@ -25,6 +25,7 @@ import Icon from "material-ui-next/Icon"
 import AppBar from "material-ui-next/AppBar"
 import CreateValue from "./CreateValue"
 import CreateDevice from "./CreateDevice"
+import GDPRDataDownload from "./GDPRDataDownload"
 
 var moment = require("moment-timezone")
 
@@ -50,6 +51,7 @@ const allDialogsClosed = {
   authDialogOpen: false,
   createValueOpen: false,
   createDeviceOpen: false,
+  gdprOpen: false,
 }
 
 class SettingsDialog extends React.Component {
@@ -433,7 +435,7 @@ class SettingsDialog extends React.Component {
                 <ListItem
                   primaryText="Download your data"
                   secondaryText="Transfer your data to another service"
-                  onClick={this.handleNameDialogOpen}
+                  onClick={() => this.setState({ gdprOpen: true })}
                 />
                 <ListItem
                   primaryText="Delete your account"
@@ -553,6 +555,10 @@ class SettingsDialog extends React.Component {
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
           close={() => this.setState({ createDeviceOpen: false })}
+        />
+        <GDPRDataDownload
+          open={this.props.isOpen && this.state.gdprOpen}
+          close={() => this.setState({ gdprOpen: false })}
         />
       </React.Fragment>
     )

@@ -61,7 +61,12 @@ class AuthDialog extends React.Component {
 
     const confirmationDialogActions = [
       <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.handleAuthDialogClose}>Never Mind</Button>
+        <Button
+          onClick={this.props.handleAuthDialogClose}
+          style={{ marginRight: "4px" }}
+        >
+          Never Mind
+        </Button>
         <Button variant="raised" color="primary" onClick={this.openAuthDialog}>
           Proceed
         </Button>
@@ -175,7 +180,7 @@ class AuthDialog extends React.Component {
             style={{ width: "100%" }}
             onChange={event => this.setState({ tokenName: event.target.value })}
             onKeyPress={event => {
-              if (event.key === "Enter") () => this.getPermanentToken()
+              if (event.key === "Enter") this.getPermanentToken()
             }}
           />
         </Dialog>

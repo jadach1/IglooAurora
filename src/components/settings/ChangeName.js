@@ -47,7 +47,12 @@ export default class ChangeNameDialog extends React.Component {
   render() {
     const nameDialogActions = [
       <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.handleNameDialogClose}>Never mind</Button>
+        <Button
+          onClick={this.props.handleNameDialogClose}
+          style={{ marginRight: "4px" }}
+        >
+          Never mind
+        </Button>
         <Button
           variant="raised"
           color="primary"

@@ -30,7 +30,10 @@ class DeleteTileDialog extends React.Component {
   render() {
     const deleteTileActions = [
       <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.handleDeleteTileDialogClose}>
+        <Button
+          onClick={this.props.handleDeleteTileDialogClose}
+          style={{ marginRight: "4px" }}
+        >
           Never mind
         </Button>
         <Button
