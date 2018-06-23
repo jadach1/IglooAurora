@@ -22,8 +22,8 @@ export default class ChangeNameDialog extends React.Component {
     nameDialogOpen: false,
   }
 
-  openNameDialog = () => {
-    this.setState({ nameDialogOpen: true })
+  openNameSnack = () => {
+    this.setState({ nameSnackOpen: true })
     this.props.handleNameDialogClose()
   }
 
@@ -75,11 +75,10 @@ export default class ChangeNameDialog extends React.Component {
           <TextField
             floatingLabelShrinkStyle={{ color: "#0083ff" }}
             underlineFocusStyle={{ borderColor: "#0083ff" }}
-            value=""
             floatingLabelText="User name"
             style={{ width: "100%" }}
             onKeyPress={event => {
-              if (event.key === "Enter") this.openNameDialog()
+              if (event.key === "Enter") this.openNameSnack()
             }}
           />
         </Dialog>

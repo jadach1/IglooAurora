@@ -59,9 +59,10 @@ class RenameTileDialog extends React.Component {
           primary={true}
           buttonStyle={{ backgroundColor: "#0083ff" }}
           onClick={this.rename}
+          disabled={!this.state.customName}
         >
           Rename
-        </Button>,
+        </Button>
       </MuiThemeProvider>,
     ]
 

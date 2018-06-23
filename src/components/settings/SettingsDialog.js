@@ -22,6 +22,9 @@ import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import ManageAuthorizations from "./ManageAuthorizations"
 import Shortcuts from "./Shortcuts"
 import Icon from "material-ui-next/Icon"
+import AppBar from "material-ui-next/AppBar"
+import CreateValue from "./CreateValue"
+import CreateDevice from "./CreateDevice"
 
 var moment = require("moment-timezone")
 
@@ -45,6 +48,8 @@ const allDialogsClosed = {
   nameDialogOpen: false,
   shortcutDialogOpen: false,
   authDialogOpen: false,
+  createValueOpen: false,
+  createDeviceOpen: false,
 }
 
 class SettingsDialog extends React.Component {
@@ -239,43 +244,45 @@ class SettingsDialog extends React.Component {
           onRequestClose={this.props.closeSettingsDialog}
           bodyStyle={{ padding: "0" }}
           repositionOnUpdate={true}
-          contentStyle={{ width: "520px" }}
+          contentStyle={{ width: "550px" }}
           className="notSelectable"
         >
-          <Tabs
-            inkBarStyle={{
-              background: "ff4081 ",
-              height: "3px",
-              marginTop: "-3px",
-            }}
-            onChange={this.props.handleChange}
-            value={this.props.slideIndex}
-          >
-            <Tab
-              icon={<Icon>dashboard</Icon>}
-              label="Interface"
-              buttonStyle={{ backgroundColor: "#0057cb" }}
-              value={0}
-            />
-            <Tab
-              icon={<Icon>notifications</Icon>}
-              label="Notifications"
-              buttonStyle={{ backgroundColor: "#0057cb" }}
-              value={1}
-            />
-            <Tab
-              icon={<Icon>account_box</Icon>}
-              label="Account"
-              buttonStyle={{ backgroundColor: "#0057cb" }}
-              value={2}
-            />
-            <Tab
-              icon={<Icon>code</Icon>}
-              label="Development"
-              buttonStyle={{ backgroundColor: "#0057cb" }}
-              value={3}
-            />
-          </Tabs>
+          <AppBar position="sticky">
+            <Tabs
+              inkBarStyle={{
+                background: "#ff4081",
+                height: "3px",
+                marginTop: "-3px",
+              }}
+              onChange={this.props.handleChange}
+              value={this.props.slideIndex}
+            >
+              <Tab
+                icon={<Icon>dashboard</Icon>}
+                label="Interface"
+                buttonStyle={{ backgroundColor: "#0057cb" }}
+                value={0}
+              />
+              <Tab
+                icon={<Icon>notifications</Icon>}
+                label="Notifications"
+                buttonStyle={{ backgroundColor: "#0057cb" }}
+                value={1}
+              />
+              <Tab
+                icon={<Icon>account_box</Icon>}
+                label="Account"
+                buttonStyle={{ backgroundColor: "#0057cb" }}
+                value={2}
+              />
+              <Tab
+                icon={<Icon>code</Icon>}
+                label="Development"
+                buttonStyle={{ backgroundColor: "#0057cb" }}
+                value={3}
+              />
+            </Tabs>
+          </AppBar>
           <SwipeableViews
             index={this.props.slideIndex}
             onChangeIndex={this.props.handleChange}
@@ -414,11 +421,6 @@ class SettingsDialog extends React.Component {
                     />
                   }
                 />
-                <ListItem
-                  primaryText="Manage authorizations"
-                  secondaryText="Generate, view and delete your account's access tokens"
-                  onClick={this.handleAuthDialogOpen}
-                />
                 <Divider />
                 <Subheader style={{ cursor: "default" }}>
                   Account management
@@ -437,6 +439,42 @@ class SettingsDialog extends React.Component {
                   primaryText="Delete your account"
                   onClick={this.handleDeleteDialogOpen}
                   style={{ color: "#F44336" }}
+                />
+              </List>
+            </div>
+            <div
+              style={{
+                overflowY: "auto",
+                height: "500px",
+              }}
+            >
+              <List>
+                <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
+                <ListItem
+                  primaryText="Manage authorizations"
+                  secondaryText="Generate, view and delete your account's access tokens"
+                  onClick={this.handleAuthDialogOpen}
+                />
+                <Subheader style={{ cursor: "default" }}>
+                  Devices and values
+                </Subheader>
+                <ListItem
+                  primaryText="Create a new device"
+                  onClick={() => this.setState({ createDeviceOpen: true })}
+                />
+                <ListItem
+                  primaryText="Create a new value"
+                  onClick={() => this.setState({ createValueOpen: true })}
+                />
+                <ListItem
+                  primaryText="Show the ID of values and devices"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                    />
+                  }
                 />
               </List>
             </div>
@@ -507,6 +545,14 @@ class SettingsDialog extends React.Component {
           shortcutDialogOpen={
             this.props.isOpen && this.state.shortcutDialogOpen
           }
+        />
+        <CreateValue
+          open={this.props.isOpen && this.state.createValueOpen}
+          close={() => this.setState({ createValueOpen: false })}
+        />
+        <CreateDevice
+          open={this.props.isOpen && this.state.createDeviceOpen}
+          close={() => this.setState({ createDeviceOpen: false })}
         />
       </React.Fragment>
     )
