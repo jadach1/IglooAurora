@@ -7,13 +7,8 @@ import Icon from "material-ui-next/Icon"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
 import MobileStepper from "material-ui-next/MobileStepper"
 import SwipeableViews from "react-swipeable-views"
-import { graphql } from "react-apollo"
-import gql from "graphql-tag"
-import Input from "material-ui-next/Input"
-import { InputLabel } from "material-ui-next"
-import { MenuItem } from "material-ui-next"
-import { FormControl } from "material-ui-next"
-import Select from "material-ui-next/Select"
+import DropDownMenu from "material-ui/DropDownMenu"
+import MenuItem from "material-ui/MenuItem"
 import CenteredSpinner from "../CenteredSpinner"
 
 const theme = createMuiTheme({
@@ -23,11 +18,10 @@ const theme = createMuiTheme({
   },
 })
 
-class CreateValue extends React.Component {
+export default class CreateValue extends React.Component {
   state = {
     customName: false,
     activeStep: 0,
-    device: "",
   }
 
   handleNext = () => {
@@ -46,9 +40,7 @@ class CreateValue extends React.Component {
     this.setState({ activeStep })
   }
 
-  handleChange = event => {
-    this.setState({ device: event.target.value })
-  }
+  handleChange = (event, index, value) => this.setState({ value })
 
   render() {
     const {
@@ -63,22 +55,23 @@ class CreateValue extends React.Component {
 
     if (user)
       deviceList = (
-        <FormControl>
-          <InputLabel>Device</InputLabel>
-          <Select
-            value={this.state.device}
-            onChange={this.handleChange}
-            input={<Input name="Device" />}
-            autoWidth
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            {user.devices.map(device => (
-              <MenuItem value={device.id}>{device.customName}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <DropDownMenu
+          value={this.state.value}
+          onChange={this.handleChange}
+          maxHeight={250}
+          style={{ width: "300px" }}
+          anchorOrigin={{ horizontal: "middle", vertical: "top" }}
+          targetOrigin={{ horizontal: "middle", vertical: "top" }}
+        >
+          {user.devices.map(device => (
+            <MenuItem
+              value={user.devices.indexOf(device)}
+              primaryText={device.customName}
+              style={{ width: "300px" }}
+              className="notSelectable"
+            />
+          ))}
+        </DropDownMenu>
       )
 
     const { activeStep } = this.state
@@ -97,7 +90,7 @@ class CreateValue extends React.Component {
           primary={true}
           buttonStyle={{ backgroundColor: "#0083ff" }}
           onClick={this.props.close}
-          disabled={!this.state.customName}
+          disabled={true}
         >
           Create
         </Button>
@@ -123,7 +116,7 @@ class CreateValue extends React.Component {
             index={this.state.activeStep}
             onChangeIndex={this.handleStepChange}
             enableMouseEvents
-            style={{ height: "200px" }}
+            style={{ height: "220px" }}
           >
             <div style={{ height: "200px" }}>{deviceList}</div>
             <div style={{ height: "200px" }}>
@@ -141,7 +134,91 @@ class CreateValue extends React.Component {
               />
             </div>
             <div style={{ height: "200px" }}>
-              <RadioButtonGroup name="Permission">
+              <RadioButtonGroup
+                name="Value"
+                style={{ marginLeft: "12px", marginTop: "12px" }}
+              >
+                <RadioButton
+                  value="bool"
+                  label="Boolean"
+                  style={{
+                    marginBottom: 16,
+                  }}
+                  rippleStyle={{ color: "#0083ff" }}
+                  checkedIcon={
+                    <Icon style={{ color: "#0083ff" }}>
+                      radio_button_checked
+                    </Icon>
+                  }
+                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
+                />
+                <RadioButton
+                  value="color"
+                  label="Color"
+                  style={{
+                    marginTop: 12,
+                    marginBottom: 16,
+                  }}
+                  rippleStyle={{ color: "#0083ff" }}
+                  checkedIcon={
+                    <Icon style={{ color: "#0083ff" }}>
+                      radio_button_checked
+                    </Icon>
+                  }
+                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
+                />
+                <RadioButton
+                  value="float"
+                  label="Float"
+                  style={{
+                    marginTop: 12,
+                    marginBottom: 16,
+                  }}
+                  rippleStyle={{ color: "#0083ff" }}
+                  checkedIcon={
+                    <Icon style={{ color: "#0083ff" }}>
+                      radio_button_checked
+                    </Icon>
+                  }
+                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
+                />
+                <RadioButton
+                  value="plot"
+                  label="Plot"
+                  style={{
+                    marginTop: 12,
+                    marginBottom: 16,
+                  }}
+                  rippleStyle={{ color: "#0083ff" }}
+                  checkedIcon={
+                    <Icon style={{ color: "#0083ff" }}>
+                      radio_button_checked
+                    </Icon>
+                  }
+                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
+                />
+                <RadioButton
+                  value="string"
+                  label="String"
+                  style={{
+                    marginTop: 12,
+                    marginBottom: 16,
+                  }}
+                  rippleStyle={{ color: "#0083ff" }}
+                  checkedIcon={
+                    <Icon style={{ color: "#0083ff" }}>
+                      radio_button_checked
+                    </Icon>
+                  }
+                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
+                />
+              </RadioButtonGroup>
+            </div>
+            <div style={{ height: "200px" }}>
+              <RadioButtonGroup
+                name="Permission"
+                style={{ marginLeft: "12px", marginTop: "12px" }}
+              >
                 <RadioButton
                   value="readOnly"
                   label="Read only"
@@ -174,7 +251,10 @@ class CreateValue extends React.Component {
               </RadioButtonGroup>
             </div>
             <div style={{ height: "200px" }}>
-              <RadioButtonGroup name="Permission">
+              <RadioButtonGroup
+                name="Permission"
+                style={{ marginLeft: "12px", marginTop: "12px" }}
+              >
                 <RadioButton
                   value="visible"
                   label="Visible"
@@ -221,7 +301,6 @@ class CreateValue extends React.Component {
                 />
               </RadioButtonGroup>
             </div>
-            <div style={{ height: "200px" }}>Select a value</div>
           </SwipeableViews>
           <MuiThemeProvider theme={theme}>
             <MobileStepper
@@ -256,18 +335,3 @@ class CreateValue extends React.Component {
     )
   }
 }
-
-export default graphql(
-  gql`
-    query {
-      user {
-        devices {
-          id
-          customName
-          icon
-        }
-      }
-    }
-  `,
-  { name: "userData" }
-)(CreateValue)

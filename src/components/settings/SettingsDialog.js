@@ -551,6 +551,7 @@ class SettingsDialog extends React.Component {
         <CreateValue
           open={this.props.isOpen && this.state.createValueOpen}
           close={() => this.setState({ createValueOpen: false })}
+          userData={this.props.userData}
         />
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
