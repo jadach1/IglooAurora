@@ -9,7 +9,6 @@
 
 .mobileSidebar {
   grid-area: body;
-  background: #f2f2f2;
   box-sizing: border-box;
   overflow-y: auto;
 }
@@ -24,7 +23,6 @@
 
 .mobileMainBody {
   grid-area: body;
-  background: white;
   overflow-y: auto;
   box-sizing: border-box;
   padding: 0 15px 0 15px;
@@ -41,8 +39,8 @@
   z-index: 1000;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 15px 40px 15px auto 144px;
-  grid-template-areas: ". icon . title buttons";
+  grid-template-columns: 8px 32px 8px 40px 15px auto 192px;
+  grid-template-areas: ". backIcon . icon . title buttons";
 }
 
 .mobileSidebarHeader {
@@ -72,4 +70,16 @@
 
 .mobileSidebarHeaderButton svg {
   color: white !important;
+}
+
+.mobileDeviceIconBig {
+  grid-area: icon;
+  font-size: 35px;
+  vertical-align: middle;
+  line-height: 60px;
+  text-align: center;
+}
+
+.mobileBackIcon {
+  grid-area: backIcon;
 }

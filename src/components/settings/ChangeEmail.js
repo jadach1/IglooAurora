@@ -63,7 +63,7 @@ export default class ChangeMailDialog extends React.Component {
     ]
     const mailDialogActions = [
       <MuiThemeProvider theme={theme}>
-        <Button onClick={this.closeMailDialog}>Close</Button>,
+        <Button onClick={this.closeMailDialog}>Close</Button>
       </MuiThemeProvider>,
     ]
 
@@ -96,6 +96,7 @@ export default class ChangeMailDialog extends React.Component {
           contentStyle={mailDialogContentStyle}
           onRequestClose={this.closeMailDialog}
           className="notSelectable"
+          titleClassName="notSelectable defaultCursor"
           bodyStyle={{
             paddingLeft: "8px",
             paddingRight: "8px",

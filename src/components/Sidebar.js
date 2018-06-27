@@ -76,7 +76,15 @@ class Sidebar extends Component {
                     position="start"
                     style={{ cursor: "default" }}
                   >
-                    <Icon>search</Icon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      search
+                    </Icon>
                   </InputAdornment>
                 ),
                 endAdornment: this.props.searchText ? (
@@ -86,7 +94,15 @@ class Sidebar extends Component {
                       onMouseDown={this.handleMouseDownSearch}
                       style={{ width: "32px", height: "32px" }}
                     >
-                      <Icon>clear</Icon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        clear
+                      </Icon>
                     </IconButton>
                   </InputAdornment>
                 ) : null,
@@ -97,7 +113,13 @@ class Sidebar extends Component {
             style={{ width: "32px", height: "32px", marginTop: "-16px" }}
           >
             <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
-              <Icon>filter_list</Icon>
+              <Icon
+                style={
+                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                }
+              >
+                filter_list
+              </Icon>
             </Tooltip>
           </IconButton>
           <List>
@@ -115,7 +137,9 @@ class Sidebar extends Component {
                       style={
                         this.props.selectedDevice === device.id &&
                         !this.props.isMobile
-                          ? { backgroundColor: "#d4d4d4" }
+                          ? this.props.nightMode
+                            ? { backgroundColor: "#282c34" }
+                            : { backgroundColor: "#d4d4d4" }
                           : null
                       }
                       key={device.id}
@@ -129,7 +153,15 @@ class Sidebar extends Component {
                             alt="device logo"
                           />
                         ) : (
-                          <Icon>lightbulb_outline</Icon>
+                          <Icon
+                            style={
+                              this.props.nightMode
+                                ? { color: "#c1c2c5" }
+                                : { color: "#7a7a7a" }
+                            }
+                          >
+                            lightbulb_outline
+                          </Icon>
                         )}
                       </ListItemIcon>
                       <ListItemText
@@ -197,7 +229,9 @@ class Sidebar extends Component {
                       className="notSelectable"
                       style={
                         this.props.selectedDevice === device.id
-                          ? { backgroundColor: "#d4d4d4" }
+                          ? this.props.nightMode
+                            ? { backgroundColor: "#282c34" }
+                            : { backgroundColor: "#d4d4d4" }
                           : null
                       }
                       key={device.id}
@@ -211,7 +245,15 @@ class Sidebar extends Component {
                             alt="device logo"
                           />
                         ) : (
-                          <Icon>lightbulb_outline</Icon>
+                          <Icon
+                            style={
+                              this.props.nightMode
+                                ? { color: "#c1c2c5" }
+                                : { color: "#7a7a7a" }
+                            }
+                          >
+                            lightbulb_outline
+                          </Icon>
                         )}
                       </ListItemIcon>
                       <ListItemText

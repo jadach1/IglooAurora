@@ -129,6 +129,7 @@ class Tile extends Component {
         <ReadOnlyFloatTile
           value={value.floatValue}
           valueDetails={value.valueDetails}
+          nightMode={this.props.nightMode}
         />
       )
     } else if (
@@ -259,9 +260,31 @@ class Tile extends Component {
 
     return (
       <React.Fragment>
-        <Paper className={value.tileSize.toLowerCase()} zDepth={2}>
-          <div className="tileHeader">
-            <div className="tileTitle" style={{ cursor: "default" }}>
+        <Paper
+          className={value.tileSize.toLowerCase()}
+          zDepth={2}
+          style={
+            this.props.nightMode
+              ? { background: "#2f333d" }
+              : { background: "white" }
+          }
+        >
+          <div
+            className="tileHeader"
+            style={
+              this.props.nightMode
+                ? { background: "#21252b" }
+                : { background: "#f2f2f2" }
+            }
+          >
+            <div
+              className="tileTitle"
+              style={
+                this.props.nightMode
+                  ? { cursor: "default", color: "white" }
+                  : { cursor: "default", color: "black" }
+              }
+            >
               {valueTitle}
             </div>
             <div className="tileHeaderButtons notSelectable">
@@ -269,13 +292,25 @@ class Tile extends Component {
                 onClick={() => {
                   this.setState({ isTileFullScreen: true })
                 }}
-                style={{
-                  padding: "0",
-                  width: "32px",
-                  height: "32px",
-                  marginTop: "14px",
-                  marginBottom: "14px",
-                }}
+                style={
+                  this.props.nightMode
+                    ? {
+                        padding: "0",
+                        width: "32px",
+                        height: "32px",
+                        marginTop: "14px",
+                        marginBottom: "14px",
+                        color: "white",
+                      }
+                    : {
+                        padding: "0",
+                        width: "32px",
+                        height: "32px",
+                        marginTop: "14px",
+                        marginBottom: "14px",
+                        color: "black",
+                      }
+                }
               >
                 <Tooltip
                   id="tooltip-bottom"
@@ -288,11 +323,21 @@ class Tile extends Component {
               <IconMenu
                 iconButtonElement={
                   <IconButton
-                    style={{
-                      padding: "0",
-                      width: "32px",
-                      height: "32px",
-                    }}
+                    style={
+                      this.props.nightMode
+                        ? {
+                            padding: "0",
+                            width: "32px",
+                            height: "32px",
+                            color: "white",
+                          }
+                        : {
+                            padding: "0",
+                            width: "32px",
+                            height: "32px",
+                            color: "black",
+                          }
+                    }
                   >
                     <Tooltip
                       id="tooltip-bottom"
@@ -308,20 +353,39 @@ class Tile extends Component {
                 animation={PopoverAnimationVertical}
                 desktop={true}
                 className="notSelectable"
+                menuStyle={
+                  this.props.nightMode
+                    ? { background: "#2f333d" }
+                    : { background: "white" }
+                }
               >
                 <MenuItem
-                  primaryText={"See on the map"}
+                  primaryText="See on the map"
                   className="notSelectable"
                   leftIcon={<Icon>place</Icon>}
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
                 />
-                <Divider />
+                <Divider
+                  style={this.props.nightMode ? { background: "#21252b" } : {}}
+                />
                 <MenuItem
-                  primaryText={"Information"}
+                  primaryText="Information"
                   className="notSelectable"
                   onClick={() => this.setState({ infoOpen: true })}
                   leftIcon={<Icon>info</Icon>}
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
                 />
-                <Divider />
+                <Divider
+                  style={this.props.nightMode ? { background: "#21252b" } : {}}
+                />
                 <MenuItem
                   primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}
                   className="notSelectable"
@@ -337,6 +401,11 @@ class Tile extends Component {
                       ? updateShown(false)
                       : updateShown(true)
                   }
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
                 />
                 <MenuItem
                   primaryText="Resize"
@@ -344,26 +413,51 @@ class Tile extends Component {
                   className="notSelectable"
                   animation={PopoverAnimationVertical}
                   leftIcon={<Icon>aspect_ratio</Icon>}
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
                   menuItems={[
                     <MenuItem
                       primaryText="Small"
                       onClick={updateTileMutation("NORMAL")}
                       className="notSelectable"
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
                     />,
                     <MenuItem
                       primaryText="Wide"
                       onClick={updateTileMutation("WIDE")}
                       className="notSelectable"
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
                     />,
                     <MenuItem
                       primaryText="Tall"
                       onClick={updateTileMutation("TALL")}
                       className="notSelectable"
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
                     />,
                     <MenuItem
                       primaryText="Large"
                       onClick={updateTileMutation("LARGE")}
                       className="notSelectable"
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
                     />,
                   ]}
                 />
@@ -374,6 +468,11 @@ class Tile extends Component {
                     leftIcon={<Icon>timeline</Icon>}
                     className="notSelectable"
                     rightIcon={<ArrowDropRight />}
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
                     menuItems={[
                       ...(value.__typename === "FloatValue" &&
                       value.boundaries &&
@@ -388,22 +487,42 @@ class Tile extends Component {
                                   <MenuItem
                                     primaryText="Gauge"
                                     className="notSelectable"
+                                    style={
+                                      this.props.nightMode
+                                        ? { color: "white" }
+                                        : { color: "black" }
+                                    }
                                   />
                                 ) : (
                                   <MenuItem
                                     primaryText="Slider"
                                     className="notSelectable"
+                                    style={
+                                      this.props.nightMode
+                                        ? { color: "white" }
+                                        : { color: "black" }
+                                    }
                                   />
                                 ),
                                 value.permission === "READ_ONLY" ? (
                                   <MenuItem
                                     primaryText="Number"
                                     className="notSelectable"
+                                    style={
+                                      this.props.nightMode
+                                        ? { color: "white" }
+                                        : { color: "black" }
+                                    }
                                   />
                                 ) : (
                                   <MenuItem
                                     primaryText="Input"
                                     className="notSelectable"
+                                    style={
+                                      this.props.nightMode
+                                        ? { color: "white" }
+                                        : { color: "black" }
+                                    }
                                   />
                                 ),
                               ]}
@@ -416,14 +535,29 @@ class Tile extends Component {
                               primaryText="Visualization"
                               className="notSelectable"
                               rightIcon={<ArrowDropRight />}
+                              style={
+                                this.props.nightMode
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
                               menuItems={[
                                 <MenuItem
                                   primaryText="Normal"
                                   className="notSelectable"
+                                  style={
+                                    this.props.nightMode
+                                      ? { color: "white" }
+                                      : { color: "black" }
+                                  }
                                 />,
                                 <MenuItem
                                   primaryText="Advanced"
                                   className="notSelectable"
+                                  style={
+                                    this.props.nightMode
+                                      ? { color: "white" }
+                                      : { color: "black" }
+                                  }
                                 />,
                               ]}
                             />,
@@ -435,14 +569,29 @@ class Tile extends Component {
                               primaryText="Unit of measurement"
                               className="notSelectable"
                               rightIcon={<ArrowDropRight />}
+                              style={
+                                this.props.nightMode
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
                               menuItems={[
                                 <MenuItem
                                   primaryText="Lorem Ipsum A"
                                   className="notSelectable"
+                                  style={
+                                    this.props.nightMode
+                                      ? { color: "white" }
+                                      : { color: "black" }
+                                  }
                                 />,
                                 <MenuItem
                                   primaryText="Lorem Ipsum B"
                                   className="notSelectable"
+                                  style={
+                                    this.props.nightMode
+                                      ? { color: "white" }
+                                      : { color: "black" }
+                                  }
                                 />,
                               ]}
                             />,
@@ -453,12 +602,19 @@ class Tile extends Component {
                 ) : (
                   ""
                 )}
-                <Divider />
+                <Divider
+                  style={this.props.nightMode ? { background: "#21252b" } : {}}
+                />
                 <MenuItem
                   primaryText="Rename"
                   className="notSelectable"
                   leftIcon={<Icon>create</Icon>}
                   onClick={() => this.setState({ renameTileOpen: true })}
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
                 />
                 <MenuItem
                   primaryText="Delete"
@@ -466,6 +622,11 @@ class Tile extends Component {
                   leftIcon={<Icon>delete</Icon>}
                   innerDivStyle={{ color: "#f44336" }}
                   onClick={this.deleteClick}
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
                 />
               </IconMenu>
             </div>

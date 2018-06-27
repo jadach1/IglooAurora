@@ -16,7 +16,7 @@ export default class TimeFormatDialog extends React.Component {
         actions={timeFormatActions}
         open={this.props.timeFormatDialogOpen}
         onRequestClose={this.props.handleTimeFormatDialogClose}
-        className="notSelectable"
+        className="notSelectable defaultCursor"
         contentStyle={{
           width: "350px",
         }}

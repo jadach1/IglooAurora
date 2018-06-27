@@ -62,7 +62,14 @@ export default class StatusBar extends Component {
     }
 
     return (
-      <div style={{ cursor: "default" }} className="notSelectable statusBar">
+      <div
+        style={
+          this.props.nightMode
+            ? { background: "#2f333d", color: "white" }
+            : { background: "white", color: "black" }
+        }
+        className="notSelectable statusBar defaultCursor"
+      >
         <div style={{ marginLeft: "12px" }}>
           {deviceStatus}
           <div
@@ -71,8 +78,7 @@ export default class StatusBar extends Component {
               marginRight: "12px",
             }}
           >
-            <Icon>network_wifi</Icon>
-            <Icon>battery_full</Icon>
+            <Icon>network_wifi</Icon> <Icon>battery_full</Icon>
           </div>
         </div>
       </div>

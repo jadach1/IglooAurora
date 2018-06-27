@@ -117,6 +117,7 @@ class MainBodyHeader extends Component {
               changeDrawerState={this.props.changeDrawerState}
               hiddenNotifications={this.props.hiddenNotifications}
               showHiddenNotifications={this.props.showHiddenNotifications}
+              nightMode={this.props.nightMode}
             />
           </div>
         </div>

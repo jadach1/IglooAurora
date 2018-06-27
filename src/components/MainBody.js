@@ -147,7 +147,14 @@ class MainBody extends Component {
 
     if (loading) {
       return (
-        <div className="mainBody">
+        <div
+          className="mainBody"
+          style={
+            this.props.nightMode
+              ? { background: "#2f333d" }
+              : { background: "white" }
+          }
+        >
           <LargeCenteredSpinner />
         </div>
       )
@@ -161,7 +168,9 @@ class MainBody extends Component {
 
     let hiddenTiles = values.filter(value => value.relevance === "HIDDEN")
 
-    const renderTile = value => <Tile value={value} key={value.id} />
+    const renderTile = value => (
+      <Tile value={value} key={value.id} nightMode={this.props.nightMode} />
+    )
 
     visibleTiles = visibleTiles.map(renderTile)
     hiddenTiles = hiddenTiles.map(renderTile)
@@ -187,8 +196,12 @@ class MainBody extends Component {
           key="showMoreLessButton"
           style={
             this.props.showHidden
-              ? { backgroundColor: "#d4d4d4" }
-              : { backgroundColor: "transparent" }
+              ? this.props.nightMode
+                ? { backgroundColor: "#282c34", color: "white" }
+                : { backgroundColor: "#d4d4d4", color: "black" }
+              : this.props.nightMode
+                ? { backgroundColor: "transparent", color: "white" }
+                : { backgroundColor: "transparent", color: "black" }
           }
         />,
         <div className="itemsList hiddenItems" key="hiddenTilesContainer">
@@ -215,12 +228,20 @@ class MainBody extends Component {
     }
 
     return (
-      <div className="mainBody">
-        {noItemsUI}
-        <div className="itemsList" key="visibleTilesContainer">
-          {visibleTiles}
+      <div
+        style={
+          this.props.nightMode
+            ? { background: "#2f333d" }
+            : { background: "white" }
+        }
+      >
+        <div className="mainBody" style={{ width: "100%", height: "100%" }}>
+          {noItemsUI}
+          <div className="itemsList" key="visibleTilesContainer">
+            {visibleTiles}
+          </div>
+          {hiddenTilesUI}
         </div>
-        {hiddenTilesUI}
       </div>
     )
   }
