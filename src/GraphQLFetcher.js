@@ -49,9 +49,14 @@ class GraphQLFetcher extends Component {
         logOut={this.props.logOut}
         isMobile={this.props.isMobile}
         userData={this.props.userData}
+        nightModeSetting="auto"
       />
     ) : (
-      <Main logOut={this.props.logOut} userData={this.props.userData} />
+      <Main
+        logOut={this.props.logOut}
+        userData={this.props.userData}
+        nightModeSetting="auto"
+      />
     )
   }
 }

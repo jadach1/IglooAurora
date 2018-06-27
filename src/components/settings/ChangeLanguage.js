@@ -75,6 +75,7 @@ export default class ChangeLanguageDialog extends React.Component {
           }}
           onRequestClose={this.props.handleLanguageDialogClose}
           className="notSelectable"
+          titleClassName="notSelectable defaultCursor"
         >
           <SelectableList defaultValue={2} style={{ paddingBottom: "0px" }}>
             <ListItem primaryText="Deutsch" value={1} />

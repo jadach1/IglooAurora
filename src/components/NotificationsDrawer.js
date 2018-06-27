@@ -333,7 +333,9 @@ class NotificationsDrawer extends React.Component {
             key="showMoreLessButton"
             style={
               this.props.hiddenNotifications
-                ? { backgroundColor: "#d4d4d4" }
+                ? this.props.nightMode
+                  ? { backgroundColor: "#282c34" }
+                  : { backgroundColor: "#d4d4d4" }
                 : null
             }
           />
@@ -379,28 +381,36 @@ class NotificationsDrawer extends React.Component {
           disableBackdropTransition={false}
           disableDiscovery={true}
         >
-          <div className="notificationsTopBar notSelectable invisibleHeader">
-            <IconButton
-              className="notificationsLeftSide"
-              onClick={() => {
-                this.props.changeDrawerState()
-                clearAllNotifications()
-              }}
-              style={{
-                padding: "0",
-                width: "32px",
-                height: "32px",
-              }}
-            >
-              <Tooltip
-                id="tooltip-bottom"
-                title="Close drawer"
-                placement="bottom"
-              >
-                <Icon>chevron_right</Icon>
-              </Tooltip>
-            </IconButton>
-            {/*  <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
+          <div
+            style={
+              this.props.nightMode
+                ? { background: "#2f333d", height: "100%" }
+                : { background: "white", height: "100%" }
+            }
+          >
+            <div>
+              <div className="notificationsTopBar notSelectable invisibleHeader">
+                <IconButton
+                  className="notificationsLeftSide"
+                  onClick={() => {
+                    this.props.changeDrawerState()
+                    clearAllNotifications()
+                  }}
+                  style={{
+                    padding: "0",
+                    width: "32px",
+                    height: "32px",
+                  }}
+                >
+                  <Tooltip
+                    id="tooltip-bottom"
+                    title="Close drawer"
+                    placement="bottom"
+                  >
+                    <Icon>chevron_right</Icon>
+                  </Tooltip>
+                </IconButton>
+                {/*  <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
               <IconButton
                 className="notificationsRightSide2"
                 style={{
@@ -415,35 +425,37 @@ class NotificationsDrawer extends React.Component {
                 <i className="material-icons">clear_all</i>
               </IconButton>
             </Tooltip> */}
-            <IconButton
-              className="notificationsRightSide"
-              style={{
-                padding: "0",
-                width: "32px",
-                height: "32px",
-              }}
-            >
-              <Tooltip
-                id="tooltip-bottom"
-                title="Mute device"
-                placement="bottom"
+                <IconButton
+                  className="notificationsRightSide"
+                  style={{
+                    padding: "0",
+                    width: "32px",
+                    height: "32px",
+                  }}
+                >
+                  <Tooltip
+                    id="tooltip-bottom"
+                    title="Mute device"
+                    placement="bottom"
+                  >
+                    <Icon>notifications_off</Icon>
+                  </Tooltip>
+                </IconButton>
+              </div>
+              <div
+                className="notSelectable"
+                style={{ overflowY: "auto", height: "100%", width: "320px" }}
               >
-                <Icon>notifications_off</Icon>
-              </Tooltip>
-            </IconButton>
-          </div>
-          <div
-            className="notSelectable"
-            style={{ overflowY: "auto", height: "100%", width: "320px" }}
-          >
-            {noNotificationsUI}
-            {notifications}
-            {readNotificationsUI}
-            {readNotificationsUI
-              ? this.props.hiddenNotifications
-                ? readNotifications
-                : ""
-              : ""}
+                {noNotificationsUI}
+                {notifications}
+                {readNotificationsUI}
+                {readNotificationsUI
+                  ? this.props.hiddenNotifications
+                    ? readNotifications
+                    : ""
+                  : ""}
+              </div>
+            </div>
           </div>
         </SwipeableDrawer>
       </React.Fragment>

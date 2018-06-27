@@ -26,14 +26,12 @@ body {
 
 .sidebar {
   grid-area: sidebar;
-  background: #f2f2f2;
   box-sizing: border-box;
   overflow-y: auto;
 }
 
 .mainBody {
   grid-area: mainBody;
-  background: white;
   overflow-y: auto;
   box-sizing: border-box;
   padding: 0 15px 0 15px;

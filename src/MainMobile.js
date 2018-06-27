@@ -262,6 +262,7 @@ class Main extends Component {
       isTileFullScreen: false,
       drawer: false,
       slideIndex: 0,
+      nightMode: true,
     }
   }
 
@@ -303,6 +304,7 @@ class Main extends Component {
                     handleChange={this.handleSettingsTabChanged}
                     slideIndex={this.state.slideIndex}
                     handleChangeBTIndex={this.handleChangeBTIndex}
+                    nightMode={this.state.nightMode}
                   />
                   <AppBar>
                     <SidebarHeader
@@ -319,7 +321,15 @@ class Main extends Component {
                       }
                     />
                   </AppBar>
-                  <div className="mobileSidebar" key="sidebar">
+                  <div
+                    className="mobileSidebar"
+                    key="sidebar"
+                    style={
+                      this.state.nightMode
+                        ? { background: "#21252b" }
+                        : { background: "#f2f2f2" }
+                    }
+                  >
                     <Sidebar
                       selectDevice={id => this.setState({ selectedDevice: id })}
                       selectedDevice={this.state.selectedDevice}
@@ -328,6 +338,7 @@ class Main extends Component {
                       changeText={text => this.setState({ searchText: text })}
                       isMobile={this.props.isMobile}
                       userData={this.props.userData}
+                      nightMode={this.state.nightMode}
                     />
                   </div>
                 </React.Fragment>
@@ -342,14 +353,24 @@ class Main extends Component {
                       hiddenNotifications={this.state.hiddenNotifications}
                       showHiddenNotifications={this.showHiddenNotifications}
                       selectDevice={id => this.setState({ selectedDevice: id })}
+                      nightMode={this.state.nightMode}
                     />
                   </AppBar>
-                  <div className="mobileMainBody" key="mainBody">
+                  <div
+                    className="mobileMainBody"
+                    key="mainBody"
+                    style={
+                      this.state.nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
+                    }
+                  >
                     <MainBody
                       deviceId={this.state.selectedDevice}
                       showHidden={this.state.showMainHidden}
                       changeShowHiddenState={this.changeShowHiddenState}
                       isMobile={true}
+                      nightMode={this.state.nightMode}
                     />
                   </div>
                 </React.Fragment>

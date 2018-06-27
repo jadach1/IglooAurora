@@ -4,9 +4,19 @@ class ReadOnlyFloatTile extends Component {
   render() {
     return (
       <div className="readOnlyFloatTile">
-        <div className="number">
+        <div
+          className="number"
+          style={this.props.nightMode ? { color: "white" } : {}}
+        >
           {this.props.value}{" "}
-          <font className="details"> {this.props.valueDetails}</font>
+          <font
+            style={
+              this.props.nightMode ? { color: "#c1c2c5" } : { color: "#7a7a7a" }
+            }
+          >
+            {" "}
+            {this.props.valueDetails}
+          </font>
         </div>
       </div>
     )

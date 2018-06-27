@@ -260,6 +260,7 @@ class Main extends Component {
       areSettingsOpen: false,
       isTileFullScreen: false,
       drawer: false,
+      nightMode: false,
     }
   }
 
@@ -294,6 +295,7 @@ class Main extends Component {
                 }}
                 handleChange={this.handleSettingsTabChanged}
                 slideIndex={this.state.slideIndex}
+                nightMode={this.state.nightMode}
               />
               <div className="invisibleHeader" key="invisibleHeader" />
               <SidebarHeader
@@ -309,7 +311,15 @@ class Main extends Component {
                   }))
                 }
               />
-              <div className="sidebar" key="sidebar">
+              <div
+                className="sidebar"
+                key="sidebar"
+                style={
+                  this.state.nightMode
+                    ? { background: "#21252b" }
+                    : { background: "#f2f2f2" }
+                }
+              >
                 <Sidebar
                   selectDevice={id => this.setState({ selectedDevice: id })}
                   selectedDevice={this.state.selectedDevice}
@@ -317,6 +327,7 @@ class Main extends Component {
                   searchText={this.state.searchText}
                   changeText={text => this.setState({ searchText: text })}
                   userData={this.props.userData}
+                  nightMode={this.state.nightMode}
                 />
               </div>
               {this.state.selectedDevice !== null ? (
@@ -327,6 +338,7 @@ class Main extends Component {
                   changeDrawerState={this.changeDrawerState}
                   hiddenNotifications={this.state.hiddenNotifications}
                   showHiddenNotifications={this.showHiddenNotifications}
+                  nightMode={this.state.nightMode}
                 />
               ) : (
                 <div className="mainBodyHeader" key="mainBodyHeader" />
@@ -337,14 +349,33 @@ class Main extends Component {
                     deviceId={this.state.selectedDevice}
                     showHidden={this.state.showMainHidden}
                     changeShowHiddenState={this.changeShowHiddenState}
+                    nightMode={this.state.nightMode}
                   />
                   <StatusBar
                     userData={this.props.userData}
                     deviceId={this.state.selectedDevice}
+                    nightMode={this.state.nightMode}
                   />
                 </React.Fragment>
               ) : (
-                <div className="mainBody" />
+                <React.Fragment>
+                  <div
+                    className="mainBody"
+                    style={
+                      this.state.nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
+                    }
+                  />
+                  <div
+                    className="statusBar"
+                    style={
+                      this.state.nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
+                    }
+                  />
+                </React.Fragment>
               )}
             </div>
             <NotificationsSnackbar />

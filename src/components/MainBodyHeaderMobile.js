@@ -36,30 +36,32 @@ class MainBodyHeader extends Component {
 
     return (
       <React.Fragment>
-        <IconButton
-          className="mainBodyHeaderIcon"
-          style={{
-            padding: "0",
-            margin: "0 5px 0 5px",
-            width: "32px",
-            height: "32px",
-          }}
-          onClick={() => this.props.selectDevice(null)}
-        >
-          <Tooltip id="tooltip-bottom" title="Back" placement="bottom">
-            <Icon>arrow_back_ios</Icon>
-          </Tooltip>
-        </IconButton>
-        <div className="mainBodyHeader notSelectable">
+        <div className="mobileMainBodyHeader notSelectable">
+          <IconButton
+            className="mobileBackIcon"
+            style={{
+              width: "32px",
+              height: "32px",
+              color: "white",
+              verticalAlign: "middle",
+              lineHeight: "60px",
+              textAlign: "center",
+            }}
+            onClick={() => this.props.selectDevice(null)}
+          >
+            <Tooltip id="tooltip-bottom" title="Back" placement="bottom">
+              <Icon>arrow_back_ios</Icon>
+            </Tooltip>
+          </IconButton>
           {device.icon ? (
             <img
-              className="deviceIconBig"
+              className="mobileDeviceIconBig"
               src={device.icon}
               alt="device logo"
             />
           ) : (
             <i
-              className="deviceIconBig material-icons"
+              className="mobileDeviceIconBig material-icons"
               style={{ cursor: "default" }}
             >
               lightbulb_outline
@@ -86,7 +88,24 @@ class MainBodyHeader extends Component {
                 <Icon>place</Icon>
               </Tooltip>
             </IconButton>
-
+            <IconButton
+              className="mainBodyHeaderIcon"
+              style={{
+                padding: "0",
+                margin: "0 5px 0 5px",
+                width: "32px",
+                height: "32px",
+              }}
+              onClick={() => this.setState({ infoOpen: true })}
+            >
+              <Tooltip
+                id="tooltip-bottom"
+                title="Device information"
+                placement="bottom"
+              >
+                <Icon>info</Icon>
+              </Tooltip>
+            </IconButton>
             <IconButton
               onClick={this.handleOpen}
               className="mainBodyHeaderIcon"
@@ -111,6 +130,7 @@ class MainBodyHeader extends Component {
               changeDrawerState={this.props.changeDrawerState}
               hiddenNotifications={this.props.hiddenNotifications}
               showHiddenNotifications={this.props.showHiddenNotifications}
+              nightMode={this.props.nightMode}
             />
           </div>
         </div>

@@ -20,7 +20,7 @@ export default class UnitOfMeasumentDialog extends React.Component {
         actions={unitActions}
         open={this.props.unitDialogOpen}
         onRequestClose={this.props.handleUnitDialogClose}
-        className="notSelectable"
+        className="notSelectable defaultCursor"
         contentStyle={{
           width: "350px",
         }}
