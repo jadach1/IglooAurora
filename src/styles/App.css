@@ -20,6 +20,14 @@ body {
   grid-template-areas: "sidebarHeader mainBodyHeader" "sidebar mainBody" "sidebar statusBar";
 }
 
+.offlineMain {
+  width: 100%;
+  height: 100vh;
+  display: grid;
+  grid-template-rows: [start] 60px [mid] auto [end];
+  grid-template-areas: "sidebarHeader" "mainBody";
+}
+
 .statusBar {
   grid-area: statusBar;
 }
@@ -36,6 +44,7 @@ body {
   box-sizing: border-box;
   padding: 0 15px 0 15px;
 }
+
 .mainBody .itemsList {
   padding: 15px 0 15px 0;
   width: 100%;
@@ -45,22 +54,28 @@ body {
   grid-gap: 15px;
   justify-content: center;
 }
+
 .mainBody .itemsList div {
   box-sizing: border-box;
 }
+
 .mainBody .itemsList div.wide {
   grid-column: span 2;
 }
+
 .mainBody .itemsList div.tall {
   grid-row: span 2;
 }
+
 .mainBody .itemsList div.large {
   grid-row: span 2;
   grid-column: span 2;
 }
+
 .mainBody .divider {
   margin: 15px 0 15px 0 !important;
 }
+
 .mainBody .itemsList.hiddenItems {
   overflow: hidden;
 }
@@ -77,7 +92,7 @@ body {
   color: white;
   display: inline-block;
   float: right;
-  margin-right: 14px;
+  margin-right: 16px;
 }
 
 .sidebarHeader .rightSide .icon {
@@ -103,8 +118,8 @@ body {
   z-index: 1000;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 15px 40px 15px auto 192px;
-  grid-template-areas: ". icon . title buttons";
+  grid-template-columns: 16px 40px 16px auto 160px 16px;
+  grid-template-areas: ". icon . title buttons .";
 }
 
 .deviceIconBig {
@@ -179,6 +194,21 @@ body {
   display: grid;
   grid-template-columns: [start] 500px [mid] 316px [end];
 }
+
+.offlineLoginPaper {
+  width: 550px;
+  height: 600px;
+  margin: auto auto auto auto;
+}
+
+.offlineLoginForm {
+  height: 600px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .loginForm .leftSide {
   grid-column: start mid;
   background: #0057cb;
@@ -199,7 +229,6 @@ body {
 }
 
 .offlineBody {
-  margin-top: 15%;
   text-align: center;
   color: #0083ff;
   font-weight: bold;

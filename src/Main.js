@@ -11,6 +11,7 @@ import "./styles/Tiles.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import StatusBar from "./components/StatusBar"
+import AppBar from "material-ui-next/AppBar"
 
 class Main extends Component {
   state = {
@@ -360,13 +361,17 @@ class Main extends Component {
               ) : (
                 <React.Fragment>
                   <div
-                    className="mainBody"
                     style={
                       this.state.nightMode
                         ? { background: "#2f333d" }
                         : { background: "white" }
                     }
-                  />
+                  >
+                    <div
+                      className="mainBody"
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
                   <div
                     className="statusBar"
                     style={
@@ -381,25 +386,30 @@ class Main extends Component {
             <NotificationsSnackbar />
           </Online>
           <Offline key="offlineMainBody">
-            <div className="main notSelectable" style={{ cursor: "default" }}>
-              <div className="invisibleHeader" key="invisibleHeader" />
-              <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
-              <div className="sidebar" key="sidebar" />
-              <div className="mainBodyHeader" key="mainBodyHeader" />
+            <div
+              className="offlineMain notSelectable"
+              style={{ cursor: "default" }}
+              style={
+                this.state.nightMode
+                  ? { background: "#2f333d" }
+                  : { background: "white" }
+              }
+            >
+              <AppBar position="sticky">
+                <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
+              </AppBar>
               <div className="offlineBody mainBody">
                 <font size="6">
                   You are not connected, try again in a while
                 </font>
                 <br />
                 <br />
-
                 <font size="5">In the meantime, why don't you have a nap?</font>
                 <br />
                 <img
                   alt="Sleeping Polar Bear"
                   src="./assets/polarBear.svg"
                   width="400"
-                  height="400"
                   className="logo notSelectable"
                 />
               </div>

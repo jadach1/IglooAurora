@@ -262,7 +262,7 @@ class Main extends Component {
       isTileFullScreen: false,
       drawer: false,
       slideIndex: 0,
-      nightMode: true,
+      nightMode: false,
     }
   }
 

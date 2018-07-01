@@ -61,9 +61,6 @@ class CreateDevice extends React.Component {
             underlineFocusStyle={{ borderColor: "#0083ff" }}
             floatingLabelText="Custom name"
             style={{ width: "100%" }}
-            onKeyPress={event => {
-              if (event.key === "Enter") this.openNameDialog()
-            }}
             onChange={event =>
               this.setState({ deviceType: event.target.value })
             }
@@ -73,9 +70,6 @@ class CreateDevice extends React.Component {
             underlineFocusStyle={{ borderColor: "#0083ff" }}
             floatingLabelText="Device type"
             style={{ width: "100%" }}
-            onKeyPress={event => {
-              if (event.key === "Enter") this.openNameDialog()
-            }}
             onChange={event =>
               this.setState({ customName: event.target.value })
             }

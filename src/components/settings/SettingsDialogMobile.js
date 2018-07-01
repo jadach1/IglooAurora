@@ -29,6 +29,8 @@ import Typography from "material-ui-next/Typography"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import CreateValue from "./CreateValue"
 import CreateDevice from "./CreateDevice"
+import CreateNotification from "./CreateNotification"
+import GDPRDataDownload from "./GDPRDataDownload"
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
@@ -63,6 +65,8 @@ const allDialogsClosed = {
   shortcutDialogOpen: false,
   createValueOpen: false,
   createDeviceOpen: false,
+  gdprOpen: false,
+  createNotificationOpen: false,
 }
 
 class SettingsDialog extends React.Component {
@@ -417,7 +421,7 @@ class SettingsDialog extends React.Component {
                 <ListItem
                   primaryText="Download your data"
                   secondaryText="Transfer your data to another service"
-                  onClick={this.handleNameDialogOpen}
+                  onClick={() => this.setState({ gdprOpen: true })}
                 />
                 <ListItem
                   primaryText="Delete your account"
@@ -448,6 +452,12 @@ class SettingsDialog extends React.Component {
                 <ListItem
                   primaryText="Create a new value"
                   onClick={() => this.setState({ createValueOpen: true })}
+                />
+                <ListItem
+                  primaryText="Create a new notification"
+                  onClick={() =>
+                    this.setState({ createNotificationOpen: true })
+                  }
                 />
                 <ListItem
                   primaryText="Show the ID of values and devices"
@@ -581,6 +591,15 @@ class SettingsDialog extends React.Component {
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
           close={() => this.setState({ createDeviceOpen: false })}
+        />
+        <CreateNotification
+          open={this.props.isOpen && this.state.createNotificationOpen}
+          close={() => this.setState({ createNotificationOpen: false })}
+          userData={this.props.userData}
+        />
+        <GDPRDataDownload
+          open={this.props.isOpen && this.state.gdprOpen}
+          close={() => this.setState({ gdprOpen: false })}
         />
       </React.Fragment>
     )
