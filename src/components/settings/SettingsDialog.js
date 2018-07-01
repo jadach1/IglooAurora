@@ -25,6 +25,7 @@ import Icon from "material-ui-next/Icon"
 import AppBar from "material-ui-next/AppBar"
 import CreateValue from "./CreateValue"
 import CreateDevice from "./CreateDevice"
+import CreateNotification from "./CreateNotification"
 import GDPRDataDownload from "./GDPRDataDownload"
 
 var moment = require("moment-timezone")
@@ -51,6 +52,7 @@ const allDialogsClosed = {
   authDialogOpen: false,
   createValueOpen: false,
   createDeviceOpen: false,
+  createNotificationOpen: false,
   gdprOpen: false,
 }
 
@@ -409,6 +411,18 @@ class SettingsDialog extends React.Component {
                     />
                   }
                 />
+                <ListItem
+                  primaryText="Passwordless authentication"
+                  secondaryText="Use your fingerprint, your face or an external device to log in"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                      onToggle={this.handleTwoFactorDialogOpen}
+                    />
+                  }
+                />
                 <Divider />
                 <Subheader style={{ cursor: "default" }}>
                   For developers
@@ -467,6 +481,12 @@ class SettingsDialog extends React.Component {
                 <ListItem
                   primaryText="Create a new value"
                   onClick={() => this.setState({ createValueOpen: true })}
+                />
+                <ListItem
+                  primaryText="Create a new notification"
+                  onClick={() =>
+                    this.setState({ createNotificationOpen: true })
+                  }
                 />
                 <ListItem
                   primaryText="Show the ID of values and devices"
@@ -556,6 +576,11 @@ class SettingsDialog extends React.Component {
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
           close={() => this.setState({ createDeviceOpen: false })}
+        />
+        <CreateNotification
+          open={this.props.isOpen && this.state.createNotificationOpen}
+          close={() => this.setState({ createNotificationOpen: false })}
+          userData={this.props.userData}
         />
         <GDPRDataDownload
           open={this.props.isOpen && this.state.gdprOpen}

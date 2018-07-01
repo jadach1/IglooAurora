@@ -148,14 +148,15 @@ class MainBody extends Component {
     if (loading) {
       return (
         <div
-          className="mainBody"
           style={
             this.props.nightMode
               ? { background: "#2f333d" }
               : { background: "white" }
           }
         >
-          <LargeCenteredSpinner />
+          <div className="mainBody" style={{ width: "100%", height: "100%" }}>
+            <LargeCenteredSpinner />
+          </div>
         </div>
       )
     }
@@ -231,8 +232,8 @@ class MainBody extends Component {
       <div
         style={
           this.props.nightMode
-            ? { background: "#2f333d" }
-            : { background: "white" }
+            ? { background: "#2f333d", height: "100%" }
+            : { background: "white", height: "100%" }
         }
       >
         <div className="mainBody" style={{ width: "100%", height: "100%" }}>

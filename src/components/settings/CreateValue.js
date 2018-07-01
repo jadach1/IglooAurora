@@ -125,9 +125,6 @@ export default class CreateValue extends React.Component {
                 underlineFocusStyle={{ borderColor: "#0083ff" }}
                 floatingLabelText="Value name"
                 style={{ width: "100%" }}
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.openNameDialog()
-                }}
                 onChange={event =>
                   this.setState({ customName: event.target.value })
                 }

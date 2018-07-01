@@ -39,8 +39,8 @@
   z-index: 1000;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 8px 32px 8px 40px 15px auto 192px;
-  grid-template-areas: ". backIcon . icon . title buttons";
+  grid-template-columns: 8px 32px 8px 40px 16px auto 160px 16px;
+  grid-template-areas: ". backIcon . icon . title buttons .";
 }
 
 .mobileSidebarHeader {
@@ -55,7 +55,7 @@
   color: white;
   display: inline-block;
   float: right;
-  margin-right: 14px;
+  margin-right: 16px;
 }
 
 .mobileSidebarHeader .rightSide .icon {
