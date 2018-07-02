@@ -40,7 +40,7 @@ class SidebarHeader extends Component {
               <IconButton
                 style={{
                   padding: "0",
-                  margin: "0 5px 0 5px",
+                  margin: "0 4px 0 4px",
                   width: "32px",
                   height: "32px",
                 }}
@@ -59,7 +59,7 @@ class SidebarHeader extends Component {
               onClick={this.props.openSettingsDialog}
               style={{
                 padding: "0",
-                margin: "0 5px 0 5px",
+                margin: "0 4px 0 4px",
                 width: "32px",
                 height: "32px",
               }}
@@ -73,7 +73,7 @@ class SidebarHeader extends Component {
               onClick={this.props.logOut}
               style={{
                 padding: "0",
-                margin: "0 5px 0 5px",
+                margin: "0 4px 0 4px",
                 width: "32px",
                 height: "32px",
               }}

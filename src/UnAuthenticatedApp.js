@@ -134,12 +134,12 @@ class UnAuthenticatedApp extends Component {
             </Paper>
           </div>
         </Online>
-        <Offline key="offlineMainBody">
+        <Offline key="offlineLogin">
           <div className="loginBackground">
             <Paper className="offlineLoginPaper">
               <div className="offlineLoginForm">
                 <div
-                  className="offlineBody"
+                  className="offlineBodyLogin"
                   style={{ margin: "auto", width: 400, height: 450 }}
                 >
                   <font size="6">

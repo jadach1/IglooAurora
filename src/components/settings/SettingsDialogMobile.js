@@ -31,6 +31,8 @@ import CreateValue from "./CreateValue"
 import CreateDevice from "./CreateDevice"
 import CreateNotification from "./CreateNotification"
 import GDPRDataDownload from "./GDPRDataDownload"
+import CreatePlotNode from "./CreatePlotNode"
+import Toolbar from "material-ui-next/Toolbar"
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
@@ -65,8 +67,9 @@ const allDialogsClosed = {
   shortcutDialogOpen: false,
   createValueOpen: false,
   createDeviceOpen: false,
-  gdprOpen: false,
+  createNodeOpen: false,
   createNotificationOpen: false,
+  gdprOpen: false,
 }
 
 class SettingsDialog extends React.Component {
@@ -261,17 +264,20 @@ class SettingsDialog extends React.Component {
           TransitionComponent={Transition}
         >
           <MuiThemeProvider theme={theme}>
-            <AppBar position="sticky">
-              <Typography variant="title" color="inherit">
-                Settings
-              </Typography>
-              <IconButton
-                color="inherit"
-                onClick={this.props.closeSettingsDialog}
-                aria-label="Close"
-              >
-                <Icon>close</Icon>
-              </IconButton>
+            <AppBar position="sticky" style={{ height: "60px" }}>
+              <Toolbar style={{ height: "60px" }}>
+                <Typography variant="title" color="inherit">
+                  Settings
+                </Typography>
+                <IconButton
+                  color="inherit"
+                  onClick={this.props.closeSettingsDialog}
+                  aria-label="Close"
+                  style={{ marginRight: "-10px", marginLeft: "auto" }}
+                >
+                  <Icon>close</Icon>
+                </IconButton>
+              </Toolbar>
             </AppBar>
           </MuiThemeProvider>
           <SwipeableViews
@@ -282,6 +288,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
+                height: "calc(100vh - 120px)",
               }}
             >
               <div style={listStyles.root}>
@@ -329,6 +336,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
+                height: "calc(100vh - 120px)",
               }}
             >
               <div style={listStyles.root}>
@@ -368,6 +376,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
+                height: "calc(100vh - 120px)",
               }}
             >
               <List>
@@ -433,6 +442,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
+                height: "calc(100vh - 120px)",
               }}
             >
               <List>
@@ -454,6 +464,10 @@ class SettingsDialog extends React.Component {
                   onClick={() => this.setState({ createValueOpen: true })}
                 />
                 <ListItem
+                  primaryText="Create a new plot node"
+                  onClick={() => this.setState({ createNodeOpen: true })}
+                />
+                <ListItem
                   primaryText="Create a new notification"
                   onClick={() =>
                     this.setState({ createNotificationOpen: true })
@@ -472,11 +486,16 @@ class SettingsDialog extends React.Component {
               </List>
             </div>
           </SwipeableViews>
-          <AppBar color="default" position="static">
+          <AppBar
+            color="default"
+            position="static"
+            style={{ marginBottom: "0px", marginTop: "auto", height: "60px" }}
+          >
             <BottomNavigation
               onChange={this.props.handleChangeBTIndex}
               value={this.props.slideIndex}
               showLabels
+              style={{ height: "60px" }}
             >
               <BottomNavigationAction
                 icon={<Icon>dashboard</Icon>}
@@ -591,6 +610,11 @@ class SettingsDialog extends React.Component {
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
           close={() => this.setState({ createDeviceOpen: false })}
+        />
+        <CreatePlotNode
+          open={this.props.isOpen && this.state.createNodeOpen}
+          close={() => this.setState({ createNodeOpen: false })}
+          userData={this.props.userData}
         />
         <CreateNotification
           open={this.props.isOpen && this.state.createNotificationOpen}

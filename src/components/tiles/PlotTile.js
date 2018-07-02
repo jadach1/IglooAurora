@@ -1,32 +1,13 @@
 import React, { Component } from "react"
 import { line, curveNatural, area } from "d3-shape"
-import { scaleLinear } from "d3-scale"
+import { scaleLinear, scaleTime } from "d3-scale"
 
 class PlotTile extends Component {
   render() {
-    let parsedData = [
-      [0, 12, true],
-      [1, 4, true],
-      [2, 1, true],
-      [3, 7, true],
-      [4, 13, true],
-      [5, 12, true],
-      [6, 4, true],
-      [7, 4, true],
-      [8, 5, true],
-      [9, 13, true],
-      [10, 1, true],
-      [11, 7, true],
-      [12, 12, true],
-      [13, 13, true],
-      [14, 13, true],
-      [15, 6, true],
-    ]
-
     const threshold = this.props.threshold
 
-    const xData = parsedData.map(el => el[0])
-    const yData = parsedData.map(el => el[1])
+    const xData = this.props.value.map(el => el[1])
+    const yData = this.props.value.map(el => el[2])
 
     const domainX = [Math.min(...xData), Math.max(...xData)]
     const rangeX = [40, 410]
@@ -61,12 +42,12 @@ class PlotTile extends Component {
       .defined(d => d[2])
       .curve(curveNatural)
 
-    const circles = parsedData.map(d => (
+    const circles = this.props.value.map(d => (
       <circle
-        cx={scaleX(d[0])}
-        cy={scaleY(d[1])}
+        cx={scaleX(d[1])}
+        cy={scaleY(d[2])}
         r={5}
-        fill={d[1] < threshold ? "#0057cb" : "#f44336"}
+        fill={d[2] < threshold ? "#0057cb" : "#f44336"}
         stroke="none"
         key={d}
       />
