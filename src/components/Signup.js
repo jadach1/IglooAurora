@@ -78,7 +78,7 @@ class Signup extends Component {
   render() {
     return (
       <div className="rightSide notSelectable">
-        {this.props.isDialog ? "" : <h1>Nice to meet you!</h1>}
+        {this.props.isDialog ? "" : <h1 className="defaultCursor">Nice to meet you!</h1>}
         <MuiThemeProvider theme={theme}>
           <FormControl style={{ width: "100%" }}>
             <InputLabel htmlFor="adornment-email">Email</InputLabel>

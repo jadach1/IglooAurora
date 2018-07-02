@@ -103,8 +103,8 @@ class MainBody extends Component {
           ... on PlotValue {
             plotValue: value {
               id
-              value
               timestamp
+              value       
             }
           }
         }
@@ -154,14 +154,31 @@ class MainBody extends Component {
               : { background: "white" }
           }
         >
-          <div className="mainBody" style={{ width: "100%", height: "100%" }}>
+          <div
+            className={
+              this.props.nightMode
+                ? "mainBody darkMainBodyBG"
+                : "mainBody mainBodyBG"
+            }
+            style={{ width: "100%", height: "100%" }}
+          >
             <LargeCenteredSpinner />
           </div>
         </div>
       )
     }
     if (error) {
-      return <div className="mainBody">An unexpected error occurred</div>
+      return (
+        <div
+          className={
+            this.props.nightMode
+              ? "mainBody darkMainBodyBG"
+              : "mainBody mainBodyBG"
+          }
+        >
+          An unexpected error occurred
+        </div>
+      )
     }
 
     const values = device.values
@@ -236,7 +253,14 @@ class MainBody extends Component {
             : { background: "white", height: "100%" }
         }
       >
-        <div className="mainBody" style={{ width: "100%", height: "100%" }}>
+        <div
+          className={
+            this.props.nightMode
+              ? "mainBody darkMainBodyBG"
+              : "mainBody mainBodyBG"
+          }
+          style={{ width: "100%", height: "100%" }}
+        >
           {noItemsUI}
           <div className="itemsList" key="visibleTilesContainer">
             {visibleTiles}

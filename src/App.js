@@ -9,9 +9,9 @@ function setupWebPush(token) {
     "BOZG_RBpt8yVp6J1JN08zCEPSFbYC_aHQQKNY0isQDnozk9GXZAiSHMnnXowvfacQeh38j2TQAyp9yT0qpUXS6Y"
 
   function urlB64ToUint8Array(base64String) {
-    const padding = "=".repeat((4 - base64String.length % 4) % 4)
+    const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
     const base64 = (base64String + padding)
-      .replace(/-/g, "+") ///Changed to prevent no-useless-escapes console error, was /\-/g
+      .replace(/-/g, "+") //Changed to prevent no-useless-escapes console error, was /\-/g
       .replace(/_/g, "/")
 
     const rawData = window.atob(base64)

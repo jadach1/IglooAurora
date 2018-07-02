@@ -83,3 +83,9 @@
 .mobileBackIcon {
   grid-area: backIcon;
 }
+
+.offlineLoginMobilePaper {
+  width: 400px;
+  height: 527px;
+  margin: auto auto auto auto;
+}

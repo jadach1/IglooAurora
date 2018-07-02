@@ -26,6 +26,7 @@ import AppBar from "material-ui-next/AppBar"
 import CreateValue from "./CreateValue"
 import CreateDevice from "./CreateDevice"
 import CreateNotification from "./CreateNotification"
+import CreatePlotNode from "./CreatePlotNode"
 import GDPRDataDownload from "./GDPRDataDownload"
 
 var moment = require("moment-timezone")
@@ -53,6 +54,7 @@ const allDialogsClosed = {
   createValueOpen: false,
   createDeviceOpen: false,
   createNotificationOpen: false,
+  createNodeOpen: false,
   gdprOpen: false,
 }
 
@@ -483,6 +485,10 @@ class SettingsDialog extends React.Component {
                   onClick={() => this.setState({ createValueOpen: true })}
                 />
                 <ListItem
+                  primaryText="Create a new plot node"
+                  onClick={() => this.setState({ createNodeOpen: true })}
+                />
+                <ListItem
                   primaryText="Create a new notification"
                   onClick={() =>
                     this.setState({ createNotificationOpen: true })
@@ -580,6 +586,11 @@ class SettingsDialog extends React.Component {
         <CreateNotification
           open={this.props.isOpen && this.state.createNotificationOpen}
           close={() => this.setState({ createNotificationOpen: false })}
+          userData={this.props.userData}
+        />
+        <CreatePlotNode
+          open={this.props.isOpen && this.state.createNodeOpen}
+          close={() => this.setState({ createNodeOpen: false })}
           userData={this.props.userData}
         />
         <GDPRDataDownload

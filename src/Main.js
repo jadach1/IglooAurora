@@ -368,7 +368,11 @@ class Main extends Component {
                     }
                   >
                     <div
-                      className="mainBody"
+                      className={
+                        this.state.nightMode
+                          ? "mainBody darkMainBodyBG"
+                          : "mainBody mainBodyBG"
+                      }
                       style={{ width: "100%", height: "100%" }}
                     />
                   </div>
@@ -399,19 +403,23 @@ class Main extends Component {
                 <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
               </AppBar>
               <div className="offlineBody mainBody">
-                <font size="6">
-                  You are not connected, try again in a while
-                </font>
-                <br />
-                <br />
-                <font size="5">In the meantime, why don't you have a nap?</font>
-                <br />
-                <img
-                  alt="Sleeping Polar Bear"
-                  src="./assets/polarBear.svg"
-                  width="400"
-                  className="logo notSelectable"
-                />
+                <div>
+                  <font size="6">
+                    You are not connected, try again in a while
+                  </font>
+                  <br />
+                  <br />
+                  <font size="5">
+                    In the meantime, why don't you have a nap?
+                  </font>
+                  <br />
+                  <img
+                    alt="Sleeping Polar Bear"
+                    src="./assets/polarBear.svg"
+                    width="400"
+                    className="logo notSelectable"
+                  />
+                </div>
               </div>
             </div>
           </Offline>

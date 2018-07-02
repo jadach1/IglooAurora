@@ -149,8 +149,16 @@ body {
   vertical-align: middle;
 }
 
-.mainBody {
+.mainBodyBG {
   background-image: url("./assets/logoBG.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: calc(50% + 175px) 50%;
+}
+
+.darkMainBodyBG {
+  background-image: url("./assets/darkLogoBG.svg");
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: contain;
@@ -229,6 +237,15 @@ body {
 }
 
 .offlineBody {
+  text-align: center;
+  color: #0083ff;
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.offlineBodyLogin {
   text-align: center;
   color: #0083ff;
   font-weight: bold;

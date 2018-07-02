@@ -75,7 +75,7 @@ class MainBodyHeader extends Component {
               className="mainBodyHeaderIcon"
               style={{
                 padding: "0",
-                margin: "0 5px 0 5px",
+                margin: "0 4px 0 4px",
                 width: "32px",
                 height: "32px",
               }}
@@ -92,7 +92,7 @@ class MainBodyHeader extends Component {
               className="mainBodyHeaderIcon"
               style={{
                 padding: "0",
-                margin: "0 5px 0 5px",
+                margin: "0 4px 0 4px",
                 width: "32px",
                 height: "32px",
               }}
@@ -111,7 +111,7 @@ class MainBodyHeader extends Component {
               className="mainBodyHeaderIcon"
               style={{
                 padding: "0",
-                margin: "0 5px 0 5px",
+                margin: "0 4px 0 4px",
                 width: "32px",
                 height: "32px",
               }}

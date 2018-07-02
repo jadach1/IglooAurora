@@ -13,6 +13,8 @@ import Button from "material-ui-next/Button"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Dialog from "material-ui/Dialog"
 import ForgotPassword from "./components/ForgotPassword"
+import { Offline, Online } from "react-detect-offline"
+import Paper from "material-ui/Paper"
 
 const theme = createMuiTheme({
   palette: {
@@ -57,112 +59,142 @@ class UnAuthenticatedApp extends Component {
   render() {
     return (
       <MuiThemeProvider>
-        <div
-          className="loginBackground"
-          style={{
-            verticalAlign: "center",
-          }}
-        >
+        <Online>
           <div
+            className="loginBackground"
             style={{
-              backgroundColor: "#0057cb",
-              textAlign: "center",
               verticalAlign: "center",
-              width: "90%",
-              maxWidth: "400px",
             }}
           >
-            <br />
-            <img
-              alt="Igloo Logo"
-              src="./assets/logo.svg"
-              width="75%"
-              className="logo notSelectable"
-            />
-            <br />
-            <br />
-
-            <b>
+            <div
+              style={{
+                backgroundColor: "#0057cb",
+                textAlign: "center",
+                verticalAlign: "center",
+                width: "90%",
+                maxWidth: "400px",
+              }}
+            >
+              <br />
               <img
-                alt="Igloo"
-                src="./assets/iglooTitle.svg"
+                alt="Igloo Logo"
+                src="./assets/logo.svg"
                 width="75%"
-                className="unauthenticatedTitle notSelectable"
+                className="logo notSelectable"
               />
-            </b>
-            <br />
-            <br />
-            <MuiThemeProviderNext theme={theme}>
-              <div
-                style={{
-                  textAlign: "center",
-                  backgroundColor: "#fff",
-                  height: "60px",
-                }}
+              <br />
+              <br />
+
+              <b>
+                <img
+                  alt="Igloo"
+                  src="./assets/iglooTitle.svg"
+                  width="75%"
+                  className="unauthenticatedTitle notSelectable"
+                />
+              </b>
+              <br />
+              <br />
+              <MuiThemeProviderNext theme={theme}>
+                <div
+                  style={{
+                    textAlign: "center",
+                    backgroundColor: "#fff",
+                    height: "60px",
+                  }}
+                >
+                  <Button
+                    color="primary"
+                    primary={true}
+                    buttonStyle={{ backgroundColor: "#0083ff" }}
+                    onClick={() => this.setState({ signIn: true })}
+                    style={{ marginTop: "12px" }}
+                  >
+                    Sign up
+                  </Button>{" "}
+                  <Button
+                    variant="raised"
+                    color="primary"
+                    primary={true}
+                    buttonStyle={{ backgroundColor: "#0083ff" }}
+                    onClick={() => this.setState({ logIn: true })}
+                    style={{ marginTop: "12px" }}
+                  >
+                    Log in
+                  </Button>
+                </div>
+              </MuiThemeProviderNext>
+              <Dialog
+                open={this.state.signIn}
+                onRequestClose={() => this.setState({ signIn: false })}
+                contentStyle={{ width: "300px" }}
+                bodyStyle={{ padding: "0 24px 24px 24px" }}
+                title={"Nice to meet you!"}
+                titleClassName="notSelectable defaultCursor"
               >
-                <Button
-                  color="primary"
-                  primary={true}
-                  buttonStyle={{ backgroundColor: "#0083ff" }}
-                  onClick={() => this.setState({ signIn: true })}
-                  style={{ marginTop: "12px" }}
-                >
-                  Sign up
-                </Button>{" "}
-                <Button
-                  variant="raised"
-                  color="primary"
-                  primary={true}
-                  buttonStyle={{ backgroundColor: "#0083ff" }}
-                  onClick={() => this.setState({ logIn: true })}
-                  style={{ marginTop: "12px" }}
-                >
-                  Log in
-                </Button>
-              </div>
-            </MuiThemeProviderNext>
-            <Dialog
-              open={this.state.signIn}
-              onRequestClose={() => this.setState({ signIn: false })}
-              contentStyle={{ width: "300px" }}
-              bodyStyle={{ padding: "0 24px 24px 24px" }}
-              title={"Nice to meet you!"}
-              titleClassName="notSelectable defaultCursor"
-            >
-              <Signup
-                client={this.client}
-                signIn={this.props.signIn}
-                goToLogin={() => this.setState({ slideIndex: 1 })}
-                isDialog={true}
+                <Signup
+                  client={this.client}
+                  signIn={this.props.signIn}
+                  goToLogin={() => this.setState({ slideIndex: 1 })}
+                  isDialog={true}
+                />
+              </Dialog>
+              <Dialog
+                open={this.state.logIn}
+                onRequestClose={() => this.setState({ logIn: false })}
+                contentStyle={{ width: "300px" }}
+                bodyStyle={{ padding: "0 24px 24px 24px" }}
+                title={"Welcome back!"}
+                titleClassName="notSelectable defaultCursor"
+              >
+                <Login
+                  client={this.client}
+                  signIn={this.props.signIn}
+                  goToSignup={() => this.setState({ slideIndex: 0 })}
+                  isMobile={true}
+                  isDialog={true}
+                  closeMobileDialog={() => this.setState({ logIn: false })}
+                  openForgotPassword={() =>
+                    this.setState({ forgotPasswordOpen: true })
+                  }
+                />
+              </Dialog>
+              <ForgotPassword
+                open={this.state.forgotPasswordOpen}
+                close={() => this.setState({ forgotPasswordOpen: false })}
               />
-            </Dialog>
-            <Dialog
-              open={this.state.logIn}
-              onRequestClose={() => this.setState({ logIn: false })}
-              contentStyle={{ width: "300px" }}
-              bodyStyle={{ padding: "0 24px 24px 24px" }}
-              title={"Welcome back!"}
-              titleClassName="notSelectable defaultCursor"
-            >
-              <Login
-                client={this.client}
-                signIn={this.props.signIn}
-                goToSignup={() => this.setState({ slideIndex: 0 })}
-                isMobile={true}
-                isDialog={true}
-                closeMobileDialog={() => this.setState({ logIn: false })}
-                openForgotPassword={() =>
-                  this.setState({ forgotPasswordOpen: true })
-                }
-              />
-            </Dialog>
-            <ForgotPassword
-              open={this.state.forgotPasswordOpen}
-              close={() => this.setState({ forgotPasswordOpen: false })}
-            />
+            </div>
+            <br />
           </div>
-          <br />
-        </div>
+        </Online>
+        <Offline>
+          <div className="loginBackground">
+            <Paper className="offlineLoginMobilePaper">
+              <div className="offlineLoginForm">
+                <div
+                  className="offlineBodyLogin"
+                  style={{ margin: "auto", width: 350, height: 450 }}
+                >
+                  <font size="6">
+                    You are not connected, try again in a while
+                  </font>
+                  <br />
+                  <br />
+                  <font size="5">
+                    In the meantime, why don't you have a nap?
+                  </font>
+                  <br />
+                  <img
+                    alt="Sleeping Polar Bear"
+                    src="./assets/polarBear.svg"
+                    width="300"
+                    className="notSelectable"
+                  />
+                </div>
+              </div>
+            </Paper>
+          </div>
+        </Offline>
       </MuiThemeProvider>
     )
   }
