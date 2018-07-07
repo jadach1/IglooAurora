@@ -16,7 +16,7 @@ body {
   height: 100vh;
   display: grid;
   grid-template-columns: [start] 350px [mid] auto [end];
-  grid-template-rows: [start] 60px [mid] auto [mid2] 30px [end];
+  grid-template-rows: [start] 64px [mid] auto [mid2] 32px [end];
   grid-template-areas: "sidebarHeader mainBodyHeader" "sidebar mainBody" "sidebar statusBar";
 }
 
@@ -24,7 +24,7 @@ body {
   width: 100%;
   height: 100vh;
   display: grid;
-  grid-template-rows: [start] 60px [mid] auto [end];
+  grid-template-rows: [start] 64px [mid] auto [end];
   grid-template-areas: "sidebarHeader" "mainBody";
 }
 
@@ -82,17 +82,8 @@ body {
 
 .sidebarHeader {
   grid-area: sidebarHeader;
-  vertical-align: middle;
-  line-height: 60px;
   background: #0057cb;
   z-index: 1000;
-}
-
-.sidebarHeader .rightSide {
-  color: white;
-  display: inline-block;
-  float: right;
-  margin-right: 16px;
 }
 
 .sidebarHeader .rightSide .icon {
@@ -112,31 +103,26 @@ body {
   background: #0083ff;
   color: white;
   box-sizing: border-box;
-  line-height: 60px;
-  font-size: 30px;
+  line-height: 64px;
+  font-size: 32px;
   vertical-align: middle;
   z-index: 1000;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 16px 40px 16px auto 160px 16px;
-  grid-template-areas: ". icon . title buttons .";
+  grid-template-columns: 8px 48px 8px auto auto;
+  grid-template-areas: ". icon . title buttons";
 }
 
 .deviceIconBig {
   grid-area: icon;
-  font-size: 35px;
+  font-size: 32px;
   vertical-align: middle;
-  line-height: 60px;
+  line-height: 64px;
   text-align: center;
 }
 .title {
   grid-area: title;
   margin: 0;
-}
-
-.mainBodyHeaderIcon {
-  grid-area: buttons;
-  color: white;
 }
 
 .logo {

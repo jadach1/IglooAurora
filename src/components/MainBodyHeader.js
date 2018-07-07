@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import IconButton from "material-ui/IconButton"
+import IconButton from "material-ui-next/IconButton"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import Tooltip from "material-ui-next/Tooltip"
@@ -39,7 +39,14 @@ class MainBodyHeader extends Component {
 
     return (
       <React.Fragment>
-        <div className="mainBodyHeader notSelectable">
+        <div
+          className="mainBodyHeader notSelectable"
+          style={{
+            color: "white",
+          
+            height: "64px",
+          }}
+        >
           {device.icon ? (
             <img
               className="deviceIconBig"
@@ -57,14 +64,18 @@ class MainBodyHeader extends Component {
           <p className="title" style={{ cursor: "default" }}>
             {device.customName}
           </p>
-          <div className="mainBodyHeaderIcon">
+          <div
+            style={{
+              padding: "0",
+              marginLeft: "auto",
+              marginRight: "8px",
+              float: "right",
+              gridArea: "buttons",
+            }}
+          >
             <IconButton
-              className="mainBodyHeaderIcon"
               style={{
-                padding: "0",
-                margin: "0 4px 0 4px",
-                width: "32px",
-                height: "32px",
+                color: "white",
               }}
             >
               <Tooltip
@@ -76,14 +87,10 @@ class MainBodyHeader extends Component {
               </Tooltip>
             </IconButton>
             <IconButton
-              className="mainBodyHeaderIcon"
-              style={{
-                padding: "0",
-                margin: "0 4px 0 4px",
-                width: "32px",
-                height: "32px",
-              }}
               onClick={() => this.setState({ infoOpen: true })}
+              style={{
+                color: "white",
+              }}
             >
               <Tooltip
                 id="tooltip-bottom"
@@ -95,12 +102,8 @@ class MainBodyHeader extends Component {
             </IconButton>
             <IconButton
               onClick={this.handleOpen}
-              className="mainBodyHeaderIcon"
               style={{
-                padding: "0",
-                margin: "0 4px 0 4px",
-                width: "32px",
-                height: "32px",
+                color: "white",
               }}
             >
               <Tooltip
