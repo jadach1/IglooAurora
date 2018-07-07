@@ -264,16 +264,23 @@ class SettingsDialog extends React.Component {
           TransitionComponent={Transition}
         >
           <MuiThemeProvider theme={theme}>
-            <AppBar position="sticky" style={{ height: "60px" }}>
-              <Toolbar style={{ height: "60px" }}>
-                <Typography variant="title" color="inherit">
+            <AppBar position="sticky" style={{ height: "64px" }}>
+              <Toolbar style={{ height: "64px" }}>
+                <Typography
+                  variant="title"
+                  color="inherit"
+                  className="defaultCursor"
+                >
                   Settings
                 </Typography>
                 <IconButton
                   color="inherit"
                   onClick={this.props.closeSettingsDialog}
                   aria-label="Close"
-                  style={{ marginRight: "-10px", marginLeft: "auto" }}
+                  style={{
+                    marginRight: "-8px",
+                    marginLeft: "auto",
+                  }}
                 >
                   <Icon>close</Icon>
                 </IconButton>
@@ -288,7 +295,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "calc(100vh - 120px)",
+                height: "calc(100vh - 128px)",
               }}
             >
               <div style={listStyles.root}>
@@ -336,7 +343,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "calc(100vh - 120px)",
+                height: "calc(100vh - 128px)",
               }}
             >
               <div style={listStyles.root}>
@@ -376,7 +383,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "calc(100vh - 120px)",
+                height: "calc(100vh - 128px)",
               }}
             >
               <List>
@@ -442,7 +449,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "calc(100vh - 120px)",
+                height: "calc(100vh - 128px)",
               }}
             >
               <List>
@@ -489,13 +496,13 @@ class SettingsDialog extends React.Component {
           <AppBar
             color="default"
             position="static"
-            style={{ marginBottom: "0px", marginTop: "auto", height: "60px" }}
+            style={{ marginBottom: "0px", marginTop: "auto", height: "64px" }}
           >
             <BottomNavigation
               onChange={this.props.handleChangeBTIndex}
               value={this.props.slideIndex}
               showLabels
-              style={{ height: "60px" }}
+              style={{ height: "64px" }}
             >
               <BottomNavigationAction
                 icon={<Icon>dashboard</Icon>}

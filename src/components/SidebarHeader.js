@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import IconButton from "material-ui/IconButton"
+import IconButton from "material-ui-next/IconButton"
 import Tooltip from "material-ui-next/Tooltip"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
@@ -25,27 +25,34 @@ class SidebarHeader extends Component {
 
   render() {
     return (
-      <div className="sidebarHeader notSelectable">
+      <div
+        className="sidebarHeader notSelectable"
+        style={{
+          color: "white",
+          display: "flex",
+          alignItems: "center",
+          height: "64px",
+        }}
+      >
         <img
           alt="Igloo Logo"
           src="./assets/logo.svg"
           width="48px"
           height="48px"
-          style={{ marginLeft: "5px" }}
+          style={{ marginLeft: "8px" }}
           className="miniLogo notSelectable"
         />
-        <div className="rightSide notSelectable">
+        <div
+          style={{
+            padding: "0",
+            marginLeft: "auto",
+            marginRight: "8px",
+            float: "right",
+          }}
+        >
           <MuiThemeProvider theme={theme}>
             <a href="https://hellowitlab.github.io/iglooMagellan">
-              <IconButton
-                style={{
-                  padding: "0",
-                  margin: "0 4px 0 4px",
-                  width: "32px",
-                  height: "32px",
-                }}
-                className="sidebarHeaderButton"
-              >
+              <IconButton className="sidebarHeaderButton">
                 <Tooltip
                   id="tooltip-bottom"
                   title="Go to Magellan"
@@ -57,12 +64,6 @@ class SidebarHeader extends Component {
             </a>
             <IconButton
               onClick={this.props.openSettingsDialog}
-              style={{
-                padding: "0",
-                margin: "0 4px 0 4px",
-                width: "32px",
-                height: "32px",
-              }}
               className="sidebarHeaderButton"
             >
               <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
@@ -71,12 +72,6 @@ class SidebarHeader extends Component {
             </IconButton>
             <IconButton
               onClick={this.props.logOut}
-              style={{
-                padding: "0",
-                margin: "0 4px 0 4px",
-                width: "32px",
-                height: "32px",
-              }}
               className="sidebarHeaderButton"
             >
               <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">

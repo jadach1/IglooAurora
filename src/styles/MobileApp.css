@@ -3,7 +3,7 @@
   height: 100vh;
   display: grid;
   grid-template-columns: auto;
-  grid-template-rows: [start] 60px [mid] auto [end];
+  grid-template-rows: [start] 64px [mid] auto [end];
   grid-template-areas: "header" "body";
 }
 
@@ -16,7 +16,7 @@
 .mobileSidebarHeader {
   grid-area: header;
   vertical-align: middle;
-  line-height: 60px;
+  line-height: 64px;
   background: #0057cb;
   z-index: 1000;
 }
@@ -33,7 +33,7 @@
   background: #0083ff;
   color: white;
   box-sizing: border-box;
-  line-height: 60px;
+  line-height: 64px;
   font-size: 30px;
   vertical-align: middle;
   z-index: 1000;
@@ -46,7 +46,7 @@
 .mobileSidebarHeader {
   grid-area: header;
   vertical-align: middle;
-  line-height: 60px;
+  line-height: 64px;
   background: #0057cb;
   z-index: 1000;
 }
@@ -76,7 +76,7 @@
   grid-area: icon;
   font-size: 35px;
   vertical-align: middle;
-  line-height: 60px;
+  line-height: 64px;
   text-align: center;
 }
 

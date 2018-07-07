@@ -100,7 +100,7 @@ class UnAuthenticatedApp extends Component {
                   style={{
                     textAlign: "center",
                     backgroundColor: "#fff",
-                    height: "60px",
+                    height: "64px",
                   }}
                 >
                   <Button

@@ -1,5 +1,5 @@
 import React from "react"
-import IconButton from "material-ui/IconButton"
+import IconButton from "material-ui-next/IconButton"
 import CenteredSpinner from "./CenteredSpinner"
 import List, {
   ListItem,
@@ -349,10 +349,7 @@ class NotificationsDrawer extends React.Component {
           className="mainBodyHeaderIcon"
           style={{
             padding: "0",
-            position: "absolute",
-            marginTop: "14px",
-            width: "32px",
-            height: "32px",
+            color:"white"
           }}
           onClick={() => this.props.changeDrawerState()}
         >
@@ -389,7 +386,7 @@ class NotificationsDrawer extends React.Component {
             }
           >
             <div>
-              <div className="notificationsTopBar notSelectable invisibleHeader">
+              <div className="notificationsTopBar notSelectable invisibleHeader" style={{height:"64px"}}>
                 <IconButton
                   className="notificationsLeftSide"
                   onClick={() => {
@@ -398,8 +395,7 @@ class NotificationsDrawer extends React.Component {
                   }}
                   style={{
                     padding: "0",
-                    width: "32px",
-                    height: "32px",
+                    color:"white"
                   }}
                 >
                   <Tooltip
@@ -410,27 +406,12 @@ class NotificationsDrawer extends React.Component {
                     <Icon>chevron_right</Icon>
                   </Tooltip>
                 </IconButton>
-                {/*  <Tooltip id="tooltip-bottom" title="Clear all" placement="bottom">
-              <IconButton
-                className="notificationsRightSide2"
-                style={{
-                  padding: "0",
-                  width: "32px",
-                  height: "32px",
-                }}
-                onClick={() => {
-                  clearAllNotifications()
-                }}
-              >
-                <i className="material-icons">clear_all</i>
-              </IconButton>
-            </Tooltip> */}
+               
                 <IconButton
                   className="notificationsRightSide"
                   style={{
                     padding: "0",
-                    width: "32px",
-                    height: "32px",
+                    color:"white"
                   }}
                 >
                   <Tooltip
