@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import IconButton from "material-ui/IconButton"
+import IconButton from "material-ui-next/IconButton"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import Tooltip from "material-ui-next/Tooltip"
@@ -41,9 +41,7 @@ class MainBodyHeader extends Component {
         <div className="mobileMainBodyHeader notSelectable">
           <IconButton
             className="mobileBackIcon"
-            style={{
-              width: "32px",
-              height: "32px",
+            style={{       
               color: "white",
               verticalAlign: "middle",
               lineHeight: "64px",

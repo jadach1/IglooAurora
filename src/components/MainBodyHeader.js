@@ -43,7 +43,6 @@ class MainBodyHeader extends Component {
           className="mainBodyHeader notSelectable"
           style={{
             color: "white",
-          
             height: "64px",
           }}
         >
@@ -73,47 +72,47 @@ class MainBodyHeader extends Component {
               gridArea: "buttons",
             }}
           >
-            <IconButton
-              style={{
-                color: "white",
-              }}
+            <Tooltip
+              id="tooltip-bottom"
+              title="See on the map"
+              placement="bottom"
             >
-              <Tooltip
-                id="tooltip-bottom"
-                title="See on the map"
-                placement="bottom"
+              <IconButton
+                style={{
+                  color: "white",
+                }}
               >
                 <Icon>place</Icon>
-              </Tooltip>
-            </IconButton>
-            <IconButton
-              onClick={() => this.setState({ infoOpen: true })}
-              style={{
-                color: "white",
-              }}
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              id="tooltip-bottom"
+              title="Device information"
+              placement="bottom"
             >
-              <Tooltip
-                id="tooltip-bottom"
-                title="Device information"
-                placement="bottom"
+              <IconButton
+                onClick={() => this.setState({ infoOpen: true })}
+                style={{
+                  color: "white",
+                }}
               >
                 <Icon>info</Icon>
-              </Tooltip>
-            </IconButton>
-            <IconButton
-              onClick={this.handleOpen}
-              style={{
-                color: "white",
-              }}
+              </IconButton>
+            </Tooltip>
+            <Tooltip
+              id="tooltip-bottom"
+              title="Rearrange cards"
+              placement="bottom"
             >
-              <Tooltip
-                id="tooltip-bottom"
-                title="Rearrange cards"
-                placement="bottom"
+              <IconButton
+                onClick={this.handleOpen}
+                style={{
+                  color: "white",
+                }}
               >
                 <Icon>mode_edit</Icon>
-              </Tooltip>
-            </IconButton>
+              </IconButton>
+            </Tooltip>
             <NotificationsDrawer
               device={device}
               drawer={this.props.drawer}

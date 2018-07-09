@@ -52,32 +52,32 @@ class SidebarHeader extends Component {
         >
           <MuiThemeProvider theme={theme}>
             <a href="https://hellowitlab.github.io/iglooMagellan">
-              <IconButton className="sidebarHeaderButton">
-                <Tooltip
-                  id="tooltip-bottom"
-                  title="Go to Magellan"
-                  placement="bottom"
-                >
+              <Tooltip
+                id="tooltip-bottom"
+                title="Go to Magellan"
+                placement="bottom"
+              >
+                <IconButton className="sidebarHeaderButton">
                   <Icon color="primary">map</Icon>
-                </Tooltip>
-              </IconButton>
+                </IconButton>
+              </Tooltip>
             </a>
-            <IconButton
-              onClick={this.props.openSettingsDialog}
-              className="sidebarHeaderButton"
-            >
-              <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
+            <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
+              <IconButton
+                onClick={this.props.openSettingsDialog}
+                className="sidebarHeaderButton"
+              >
                 <Icon color="primary">settings</Icon>
-              </Tooltip>
-            </IconButton>
-            <IconButton
-              onClick={this.props.logOut}
-              className="sidebarHeaderButton"
-            >
-              <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
+              </IconButton>
+            </Tooltip>
+            <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
+              <IconButton
+                onClick={this.props.logOut}
+                className="sidebarHeaderButton"
+              >
                 <Icon color="primary">exit_to_app</Icon>
-              </Tooltip>
-            </IconButton>
+              </IconButton>
+            </Tooltip>
           </MuiThemeProvider>
         </div>
       </div>

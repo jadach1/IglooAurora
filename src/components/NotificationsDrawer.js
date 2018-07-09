@@ -17,6 +17,7 @@ import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
 import moment from "moment"
+import AppBar from "material-ui-next/AppBar"
 
 const theme = createMuiTheme({
   palette: {
@@ -346,10 +347,9 @@ class NotificationsDrawer extends React.Component {
     return (
       <React.Fragment>
         <IconButton
-          className="mainBodyHeaderIcon"
           style={{
             padding: "0",
-            color:"white"
+            color: "white",
           }}
           onClick={() => this.props.changeDrawerState()}
         >
@@ -386,43 +386,55 @@ class NotificationsDrawer extends React.Component {
             }
           >
             <div>
-              <div className="notificationsTopBar notSelectable invisibleHeader" style={{height:"64px"}}>
-                <IconButton
-                  className="notificationsLeftSide"
-                  onClick={() => {
-                    this.props.changeDrawerState()
-                    clearAllNotifications()
-                  }}
-                  style={{
-                    padding: "0",
-                    color:"white"
-                  }}
+              <AppBar position="sticky" style={{ height: "64px" }}>
+                <div
+                  className="notSelectable"
+                  style={{ height: "64px", backgroundColor: "#0083ff",      display: "flex",
+                  alignItems: "center", }}
                 >
-                  <Tooltip
-                    id="tooltip-bottom"
-                    title="Close drawer"
-                    placement="bottom"
+                  <IconButton
+                    onClick={() => {
+                      this.props.changeDrawerState()
+                      clearAllNotifications()
+                    }}
+                    style={{
+                      padding: "0",
+                      color: "white",
+                      marginTop: "auto",
+                      marginBottom: "auto",
+                      marginLeft: "8px",
+                    }}
                   >
-                    <Icon>chevron_right</Icon>
-                  </Tooltip>
-                </IconButton>
-               
-                <IconButton
-                  className="notificationsRightSide"
-                  style={{
-                    padding: "0",
-                    color:"white"
-                  }}
-                >
-                  <Tooltip
-                    id="tooltip-bottom"
-                    title="Mute device"
-                    placement="bottom"
+                    <Tooltip
+                      id="tooltip-bottom"
+                      title="Close drawer"
+                      placement="bottom"
+                    >
+                      <Icon>chevron_right</Icon>
+                    </Tooltip>
+                  </IconButton>
+
+                  <IconButton
+                    style={{
+                      padding: "0",
+                      color: "white",
+                      marginTop: "auto",
+                      marginBottom: "auto",
+                      marginRight: "8px",
+                      marginLeft: "auto",
+                      float: "right",
+                    }}
                   >
-                    <Icon>notifications_off</Icon>
-                  </Tooltip>
-                </IconButton>
-              </div>
+                    <Tooltip
+                      id="tooltip-bottom"
+                      title="Mute device"
+                      placement="bottom"
+                    >
+                      <Icon>notifications_off</Icon>
+                    </Tooltip>
+                  </IconButton>
+                </div>
+              </AppBar>
               <div
                 className="notSelectable"
                 style={{ overflowY: "auto", height: "100%", width: "320px" }}
