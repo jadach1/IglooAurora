@@ -33,6 +33,7 @@ import CreateNotification from "./CreateNotification"
 import GDPRDataDownload from "./GDPRDataDownload"
 import CreatePlotNode from "./CreatePlotNode"
 import Toolbar from "material-ui-next/Toolbar"
+import Translate from "translate-components"
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
@@ -270,15 +271,18 @@ class SettingsDialog extends React.Component {
                   variant="title"
                   color="inherit"
                   className="defaultCursor"
+                  style={{
+                    marginLeft: "-8px",
+                  }}
                 >
-                  Settings
+                  <Translate>Settings</Translate>
                 </Typography>
                 <IconButton
                   color="inherit"
                   onClick={this.props.closeSettingsDialog}
                   aria-label="Close"
                   style={{
-                    marginRight: "-8px",
+                    marginRight: "-16px",
                     marginLeft: "auto",
                   }}
                 >

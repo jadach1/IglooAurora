@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import Paper from "material-ui/Paper"
-import IconButton from "material-ui/IconButton"
+import IconButton from "material-ui-next/IconButton"
 import ReadOnlyBooleanTile from "./Booleans/ReadOnlyBooleanTile"
 import ReadWriteBooleanTile from "./Booleans/ReadWriteBooleanTile"
 import ReadWriteBoundedFloatTile from "./Floats/ReadWriteBoundedFloatTile"
@@ -35,6 +35,7 @@ class Tile extends Component {
     deleteTileOpen: false,
     dataVisualizationDialogOpen: false,
     infoOpen: false,
+    tileMenuOpen: false,
   }
 
   handleClick = event => {
@@ -270,87 +271,99 @@ class Tile extends Component {
           }
         >
           <div
-            className="tileHeader"
             style={
               this.props.nightMode
-                ? { background: "#21252b" }
-                : { background: "#f2f2f2" }
+                ? {
+                    background: "#21252b",
+                    display: "flex",
+                    alignItems: "center",
+                  }
+                : {
+                    background: "#f2f2f2",
+                    display: "flex",
+                    alignItems: "center",
+                  }
             }
           >
             <div
               className="tileTitle"
               style={
                 this.props.nightMode
-                  ? { cursor: "default", color: "white" }
-                  : { cursor: "default", color: "black" }
+                  ? {
+                      cursor: "default",
+                      color: "white",
+                      marginLeft: "16px",
+                    }
+                  : {
+                      cursor: "default",
+                      color: "black",
+                      marginLeft: "16px",
+                    }
               }
             >
               {valueTitle}
             </div>
-            <div className="tileHeaderButtons notSelectable">
-              <IconButton
-                onClick={() => {
-                  this.setState({ isTileFullScreen: true })
-                }}
-                style={
-                  this.props.nightMode
-                    ? {
-                        padding: "0",
-                        width: "32px",
-                        height: "32px",
-                        marginTop: "14px",
-                        marginBottom: "14px",
-                        color: "white",
-                      }
-                    : {
-                        padding: "0",
-                        width: "32px",
-                        height: "32px",
-                        marginTop: "14px",
-                        marginBottom: "14px",
-                        color: "black",
-                      }
-                }
-              >
+            <div
+              className="notSelectable"
+              style={{
+                padding: "0",
+                marginLeft: "auto",
+                marginRight: "8px",
+                float: "right",
+              }}
+            >
+              {value.__typename === "PlotValue" ? (
                 <Tooltip
-                  id="tooltip-bottom"
+                  id="tooltip-fullscreen"
                   title="Fullscreen"
                   placement="bottom"
                 >
-                  <Icon>fullscreen</Icon>
-                </Tooltip>
-              </IconButton>
-              <IconMenu
-                iconButtonElement={
                   <IconButton
+                    onClick={() => {
+                      this.setState({ isTileFullScreen: true })
+                    }}
                     style={
                       this.props.nightMode
                         ? {
                             padding: "0",
-                            width: "32px",
-                            height: "32px",
                             color: "white",
                           }
                         : {
                             padding: "0",
-                            width: "32px",
-                            height: "32px",
                             color: "black",
                           }
                     }
                   >
-                    <Tooltip
-                      id="tooltip-bottom"
-                      title="More"
-                      placement="bottom"
+                    <Icon>fullscreen</Icon>
+                  </IconButton>
+                </Tooltip>
+              ) : null}
+              <IconMenu
+                iconButtonElement={
+                  <Tooltip id="tooltip-more" title="More" placement="bottom">
+                    <IconButton
+                      style={
+                        this.props.nightMode
+                          ? {
+                              padding: "0",
+                              color: "white",
+                            }
+                          : {
+                              padding: "0",
+                              color: "black",
+                            }
+                      }
                     >
                       <Icon>more_vert</Icon>
-                    </Tooltip>
-                  </IconButton>
+                    </IconButton>
+                  </Tooltip>
                 }
                 anchorOrigin={{ horizontal: "right", vertical: "top" }}
                 targetOrigin={{ horizontal: "right", vertical: "top" }}
                 animation={PopoverAnimationVertical}
+                onClick={() => this.setState({ tileMenuOpen: true })}
+                onRequestChange={() => this.state.tileMenuOpen ? this.setState({ tileMenuOpen: false }):null}
+                open={this.state.tileMenuOpen}
                 desktop={true}
                 className="notSelectable"
                 menuStyle={

@@ -2,6 +2,8 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { List, ListItem, makeSelectable } from "material-ui/List"
+import { reactTranslateChangeLanguage } from "translate-components"
+import Translate from "translate-components"
 
 const languageDialogContentStyle = {
   width: "350px",
@@ -64,7 +66,7 @@ export default class ChangeLanguageDialog extends React.Component {
     return (
       <React.Fragment>
         <Dialog
-          title="Change language"
+          title={<Translate>Change language</Translate>}
           actions={languageDialogActions}
           open={this.props.languageDialogOpen}
           contentStyle={languageDialogContentStyle}
@@ -77,12 +79,32 @@ export default class ChangeLanguageDialog extends React.Component {
           className="notSelectable"
           titleClassName="notSelectable defaultCursor"
         >
-          <SelectableList defaultValue={2} style={{ paddingBottom: "0px" }}>
-            <ListItem primaryText="Deutsch" value={1} />
-            <ListItem primaryText="English" value={2} />
-            <ListItem primaryText="Español" value={3} />
-            <ListItem primaryText="Italiano" value={4} />
-            <ListItem primaryText="中文 (简体)" value={5} />
+          <SelectableList style={{ paddingBottom: "0px" }}>
+            <ListItem
+              primaryText="Deutsch"
+              value={1}
+              onClick={reactTranslateChangeLanguage.bind(this, "de")}
+            />
+            <ListItem
+              primaryText="English"
+              value={2}
+              onClick={reactTranslateChangeLanguage.bind(this, "en")}
+            />
+            <ListItem
+              primaryText="Español"
+              value={3}
+              onClick={reactTranslateChangeLanguage.bind(this, "es")}
+            />
+            <ListItem
+              primaryText="Italiano"
+              value={4}
+              onClick={reactTranslateChangeLanguage.bind(this, "it")}
+            />
+            <ListItem
+              primaryText="中文 (简体)"
+              value={5}
+              onClick={reactTranslateChangeLanguage.bind(this, "zh-Hans")}
+            />
           </SelectableList>
         </Dialog>
       </React.Fragment>

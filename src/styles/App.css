@@ -286,32 +286,6 @@ body {
   color: #0083ff;
 }
 
-.notificationsLeftSide {
-  grid-area: leftSide;
-  color: #ffffff;
-}
-
-.notificationsRightSide2 {
-  grid-area: rightSide2;
-  color: #ffffff;
-}
-
-.notificationsRightSide {
-  grid-area: rightSide;
-  color: #ffffff;
-}
-
-.notificationsTopBar {
-  background: #0083ff;
-  width: 100%;
-  padding-top: 14px;
-  padding-bottom: 14px;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: 14px 32px auto 32px 7px 32px 14px;
-  grid-template-areas: ". leftSide . rightSide2 . rightSide .";
-}
-
 .loginScreen {
   height: calc(100% - 48px);
 }
