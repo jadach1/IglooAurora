@@ -12,6 +12,7 @@ import { hotkeys } from "react-keyboard-shortcuts"
 import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import StatusBar from "./components/StatusBar"
 import AppBar from "material-ui-next/AppBar"
+import EmailNotVerified from "./components/EmailNotVerified"
 
 class Main extends Component {
   state = {
@@ -388,6 +389,7 @@ class Main extends Component {
               )}
             </div>
             <NotificationsSnackbar />
+            <EmailNotVerified/>
           </Online>
           <Offline key="offlineMainBody">
             <div

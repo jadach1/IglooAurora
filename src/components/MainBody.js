@@ -104,7 +104,7 @@ class MainBody extends Component {
             plotValue: value {
               id
               timestamp
-              value       
+              value
             }
           }
         }

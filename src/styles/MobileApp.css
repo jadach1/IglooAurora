@@ -34,13 +34,13 @@
   color: white;
   box-sizing: border-box;
   line-height: 64px;
-  font-size: 30px;
+  font-size: 32px;
   vertical-align: middle;
   z-index: 1000;
   display: grid;
   grid-template-rows: auto;
-  grid-template-columns: 8px 48px 8px auto auto;
-  grid-template-areas: ". icon . title buttons";
+  grid-template-columns: 8px 48px 8px 48px 8px auto auto;
+  grid-template-areas: ". backIcon . icon . title buttons";
 }
 
 .mobileSidebarHeader {

@@ -51,6 +51,15 @@ class SidebarHeader extends Component {
           }}
         >
           <MuiThemeProvider theme={theme}>
+          {this.props.alertVisible?
+            <Tooltip id="tooltip-bottom" title="Alert" placement="bottom">
+              <IconButton
+                className="sidebarHeaderButton"
+              >
+                <Icon color="primary">error</Icon>
+              </IconButton>
+            </Tooltip>:null
+          }
             <a href="https://hellowitlab.github.io/iglooMagellan">
               <Tooltip
                 id="tooltip-bottom"
