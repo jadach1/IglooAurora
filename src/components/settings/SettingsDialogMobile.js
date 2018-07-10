@@ -34,6 +34,7 @@ import GDPRDataDownload from "./GDPRDataDownload"
 import CreatePlotNode from "./CreatePlotNode"
 import Toolbar from "material-ui-next/Toolbar"
 import Translate from "translate-components"
+import Tooltip from "material-ui-next/Tooltip"
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
@@ -277,6 +278,11 @@ class SettingsDialog extends React.Component {
                 >
                   <Translate>Settings</Translate>
                 </Typography>
+                <Tooltip
+              id="tooltip-bottom"
+              title="Close"
+              placement="bottom"
+            >
                 <IconButton
                   color="inherit"
                   onClick={this.props.closeSettingsDialog}
@@ -287,7 +293,7 @@ class SettingsDialog extends React.Component {
                   }}
                 >
                   <Icon>close</Icon>
-                </IconButton>
+                </IconButton></Tooltip>
               </Toolbar>
             </AppBar>
           </MuiThemeProvider>

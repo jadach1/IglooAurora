@@ -58,15 +58,19 @@ class Sidebar extends Component {
 
     return (
       <React.Fragment>
-        <div style={{ height: "100%" }}>
+        <div
+          style={{
+            height: "100%",
+          }}
+        >
           <MuiThemeProvider theme={theme2}>
             <TextField
               placeholder="Search devices"
               color="primary"
               className="notSelectable"
               style={{
+                margin: "16px 8px 0 16px",
                 width: "calc(100% - 80px)",
-                margin: "8px 16px 0 16px",
               }}
               value={this.props.searchText}
               onChange={event => this.props.changeText(event.target.value)}
@@ -92,7 +96,6 @@ class Sidebar extends Component {
                     <IconButton
                       onClick={this.handleClickCancelSearch}
                       onMouseDown={this.handleMouseDownSearch}
-                      style={{ width: "32px", height: "32px" }}
                     >
                       <Icon
                         style={
@@ -109,10 +112,9 @@ class Sidebar extends Component {
               }}
             />
           </MuiThemeProvider>
-          <IconButton
-            style={{ width: "32px", height: "32px", marginTop: "-16px" }}
-          >
-            <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
+
+          <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
+            <IconButton>
               <Icon
                 style={
                   this.props.nightMode ? { color: "white" } : { color: "black" }
@@ -120,8 +122,9 @@ class Sidebar extends Component {
               >
                 filter_list
               </Icon>
-            </Tooltip>
-          </IconButton>
+            </IconButton>
+          </Tooltip>
+
           <List>
             {this.props.searchText
               ? user.devices
