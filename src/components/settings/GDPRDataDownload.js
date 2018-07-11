@@ -39,7 +39,7 @@ export default class GDPRDataDownload extends React.Component {
     return (
       <React.Fragment>
         <Dialog
-          title="Change your user name"
+          title="Download your data"
           actions={actions}
           open={this.props.open}
           contentStyle={contentStyle}

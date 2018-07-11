@@ -6,25 +6,16 @@ import { SnackbarContent } from "material-ui-next"
 import { withStyles } from "material-ui-next/styles"
 import Icon from "material-ui-next/Icon"
 import { Slide } from "material-ui-next"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import { createMuiTheme } from "material-ui-next/styles"
 import Tooltip from "material-ui-next/Tooltip"
 
 const styles1 = theme => ({
   warning: {
-    backgroundColor: "#f44336",
+    backgroundColor: "#0057cb",
   },
   message: {
     display: "flex",
     alignItems: "center",
-  },
-})
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
   },
 })
 
@@ -37,14 +28,7 @@ function TransitionUp(props) {
 }
 
 function MySnackbarContent(props) {
-  const {
-    classes,
-    className,
-    variant,
-    closeSnackbar,
-    openDialog,
-    mobile,
-  } = props
+  const { classes, className, variant, closeSnackbar } = props
 
   return (
     <SnackbarContent
@@ -57,23 +41,19 @@ function MySnackbarContent(props) {
           className={classes.message}
           style={{ marginLeft: "-4px" }}
         >
-          <Icon style={{ fontSize: 24, marginRight: "16px" }}>warning</Icon>
-          Your account isn't verified!
+          <Icon style={{ fontSize: 24, marginRight: "16px" }}>info</Icon>
+          Do you want to use cookies to log in faster?
         </span>
       }
       action={[
         <IconButton style={{ color: "white" }}>
-          <Icon onClick={openDialog}>notes</Icon>
+          <Icon>done</Icon>
         </IconButton>,
         <IconButton
           style={{ marginRight: "-8px", color: "white" }}
           onClick={closeSnackbar}
         >
-          {mobile ? (
-            <Icon>keyboard_arrow_down</Icon>
-          ) : (
-            <Icon>chevron_right</Icon>
-          )}
+          <Icon>close</Icon>
         </IconButton>,
       ]}
     />
@@ -91,7 +71,6 @@ const styles2 = theme => ({
 class CustomizedSnackbars extends React.Component {
   state = {
     open: false,
-    dialogOpen: false,
   }
 
   componentDidMount() {
@@ -102,47 +81,16 @@ class CustomizedSnackbars extends React.Component {
     this.setState({ open: false })
   }
 
-  openDialog = () => {
-    this.setState({ dialogOpen: true })
-  }
-
   render() {
     return (
       <React.Fragment>
-        <Dialog
-          title="Your account isn't verified!"
-          actions={
-            <MuiThemeProvider theme={theme}>
-              <Button
-                style={{ marginRight: "4px" }}
-                onClick={() => this.setState({ dialogOpen: false })}
-              >
-                Never mind
-              </Button>
-              <Button variant="raised" color="primary" primary={true}>
-                Send again
-              </Button>
-            </MuiThemeProvider>
-          }
-          open={this.state.dialogOpen}
-          onRequestClose={() => {
-            this.setState({ dialogOpen: false })
-          }}
-          titleClassName="notSelectable defaultCursor"
-          contentStyle={{
-            width: "350px",
-          }}
-        >
-          You should have received a verification email. If that's not the case,
-          click on "Send again" and we'll send you another email.
-        </Dialog>
         <Snackbar
+          open={this.state.open}
           anchorOrigin={{
             vertical: "bottom",
             horizontal: "right",
           }}
-          open={this.state.open}
-          style={this.props.mobile ? null : { bottom: "128px", right: "16px" }}
+          style={this.props.mobile ? null : { bottom: "48px", right: "16px" }}
           TransitionComponent={
             this.props.mobile ? TransitionUp : TransitionLeft
           }
@@ -151,8 +99,6 @@ class CustomizedSnackbars extends React.Component {
           <MySnackbarContentWrapper
             variant="warning"
             closeSnackbar={this.closeSnackbar}
-            openDialog={this.openDialog}
-            mobile={this.props.mobile}
           />
         </Snackbar>
       </React.Fragment>

@@ -51,22 +51,16 @@ class SidebarHeader extends Component {
           }}
         >
           <MuiThemeProvider theme={theme}>
-          {this.props.alertVisible?
-            <Tooltip id="tooltip-bottom" title="Alert" placement="bottom">
-              <IconButton
-                className="sidebarHeaderButton"
-              >
-                <Icon color="primary">error</Icon>
-              </IconButton>
-            </Tooltip>:null
-          }
             <a href="https://hellowitlab.github.io/iglooMagellan">
               <Tooltip
                 id="tooltip-bottom"
                 title="Go to Magellan"
                 placement="bottom"
               >
-                <IconButton className="sidebarHeaderButton">
+                <IconButton
+                  className="sidebarHeaderButton"
+                  style={{ color: "white" }}
+                >
                   <Icon color="primary">map</Icon>
                 </IconButton>
               </Tooltip>
@@ -75,6 +69,7 @@ class SidebarHeader extends Component {
               <IconButton
                 onClick={this.props.openSettingsDialog}
                 className="sidebarHeaderButton"
+                style={{ color: "white" }}
               >
                 <Icon color="primary">settings</Icon>
               </IconButton>
@@ -83,6 +78,7 @@ class SidebarHeader extends Component {
               <IconButton
                 onClick={this.props.logOut}
                 className="sidebarHeaderButton"
+                style={{ color: "white" }}
               >
                 <Icon color="primary">exit_to_app</Icon>
               </IconButton>

@@ -13,6 +13,7 @@ import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import StatusBar from "./components/StatusBar"
 import AppBar from "material-ui-next/AppBar"
 import EmailNotVerified from "./components/EmailNotVerified"
+import CookiesAlert from "./components/CookiesAlert"
 
 class Main extends Component {
   state = {
@@ -388,7 +389,8 @@ class Main extends Component {
                 </React.Fragment>
               )}
             </div>
-            <NotificationsSnackbar />
+            <NotificationsSnackbar /> 
+            <CookiesAlert />
             <EmailNotVerified/>
           </Online>
           <Offline key="offlineMainBody">

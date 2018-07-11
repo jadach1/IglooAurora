@@ -4,6 +4,8 @@ import Button from "material-ui-next/Button"
 import { List, ListItem, makeSelectable } from "material-ui/List"
 import { reactTranslateChangeLanguage } from "translate-components"
 import Translate from "translate-components"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 const languageDialogContentStyle = {
   width: "350px",
@@ -40,7 +42,7 @@ function wrapState(ComposedComponent) {
 
 SelectableList = wrapState(SelectableList)
 
-export default class ChangeLanguageDialog extends React.Component {
+class ChangeLanguageDialog extends React.Component {
   state = {
     languageSnackOpen: false,
   }
@@ -59,9 +61,24 @@ export default class ChangeLanguageDialog extends React.Component {
   }
 
   render() {
+
     const languageDialogActions = [
       <Button onClick={this.props.handleLanguageDialogClose}>Close</Button>,
     ]
+
+    let changeLanguage = language => {
+      this.props["ChangeLanguage"]({
+        variables: {
+          language: language,
+        },
+        optimisticResponse: {
+          __typename: "Mutation",
+          user: {
+            language: language,
+          },
+        },
+      })
+    }
 
     return (
       <React.Fragment>
@@ -82,28 +99,43 @@ export default class ChangeLanguageDialog extends React.Component {
           <SelectableList style={{ paddingBottom: "0px" }}>
             <ListItem
               primaryText="Deutsch"
-              value={1}
-              onClick={reactTranslateChangeLanguage.bind(this, "de")}
+              value="de"
+              onClick={() => {
+                reactTranslateChangeLanguage.bind(this, "de")
+                changeLanguage("de")
+              }}
             />
             <ListItem
               primaryText="English"
-              value={2}
-              onClick={reactTranslateChangeLanguage.bind(this, "en")}
+              value="en"
+              onClick={() => {
+                reactTranslateChangeLanguage.bind(this, "en")
+                changeLanguage("en")
+              }}
             />
             <ListItem
               primaryText="Español"
-              value={3}
-              onClick={reactTranslateChangeLanguage.bind(this, "es")}
+              value="es"
+              onClick={() => {
+                reactTranslateChangeLanguage.bind(this, "es")
+                changeLanguage("es")
+              }}
             />
             <ListItem
               primaryText="Italiano"
-              value={4}
-              onClick={reactTranslateChangeLanguage.bind(this, "it")}
+              value="it"
+              onClick={() => {
+                reactTranslateChangeLanguage.bind(this, "it")
+                changeLanguage("it")
+              }}
             />
             <ListItem
               primaryText="中文 (简体)"
-              value={5}
-              onClick={reactTranslateChangeLanguage.bind(this, "zh-Hans")}
+              value="zh-Hans"
+              onClick={() => {
+                reactTranslateChangeLanguage.bind(this, "zh-Hans")
+                changeLanguage("zh-Hans")
+              }}
             />
           </SelectableList>
         </Dialog>
@@ -111,3 +143,16 @@ export default class ChangeLanguageDialog extends React.Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    mutation ChangeLanguage($language: String) {
+      user(language: $language) {
+        language
+      }
+    }
+  `,
+  {
+    name: "ChangeLanguage",
+  }
+)(ChangeLanguageDialog)
