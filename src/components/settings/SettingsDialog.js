@@ -401,6 +401,16 @@ class SettingsDialog extends React.Component {
                   primaryText="Change password"
                   onClick={this.handlePasswordDialogOpen}
                 />
+                 <ListItem
+                  primaryText="Use cookies to log in faster"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                    />
+                  }
+                />
                 <ListItem
                   primaryText="Two-factor authentication"
                   secondaryText="Make your account safer by verifying it is actually you"
@@ -445,7 +455,8 @@ class SettingsDialog extends React.Component {
                 </Subheader>
                 <ListItem primaryText="Manage roles" />
                 <ListItem
-                  primaryText="Change user name"
+                  primaryText="Manage your profile"
+                  secondaryText="Change your profile photo and name"
                   onClick={this.handleNameDialogOpen}
                 />
                 <ListItem

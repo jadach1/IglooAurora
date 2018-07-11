@@ -2,8 +2,8 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
-import Snackbar from "material-ui-next/Snackbar"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import Avatar from "material-ui-next/Avatar"
 
 const theme = createMuiTheme({
   palette: {
@@ -16,32 +16,39 @@ const nameDialogContentStyle = {
   width: "350px",
 }
 
+const colorsArray = [
+  "#0057cb",
+  "#f50057",
+  "#23a82c",
+  "#7100db",
+  "#f20505",
+  "#18ba77",
+]
+
+let random
+
 export default class ChangeNameDialog extends React.Component {
   state = {
-    nameSnackOpen: false,
     nameDialogOpen: false,
-  }
-
-  openNameSnack = () => {
-    this.setState({ nameSnackOpen: true })
-    this.props.handleNameDialogClose()
+    content: "",
   }
 
   closeNameDialog = () => {
     this.setState({ nameDialogOpen: false })
   }
 
-  handleNameSnackOpen = () => {
-    this.setState({
-      nameSnackOpen: true,
-    })
-    this.props.handleNameDialogClose()
+  getInitials = string => {
+    var names = string.trim().split(" "),
+      initials = names[0].substring(0, 1).toUpperCase()
+
+    if (names.length > 1) {
+      initials += names[names.length - 1].substring(0, 1).toUpperCase()
+    }
+    return initials
   }
 
-  handleNameSnackClose = () => {
-    this.setState({
-      nameSnackOpen: false,
-    })
+  componentDidMount() {
+    random = Math.floor(Math.random() * colorsArray.length)
   }
 
   render() {
@@ -69,7 +76,7 @@ export default class ChangeNameDialog extends React.Component {
     return (
       <React.Fragment>
         <Dialog
-          title="Change your user name"
+          title="Manage your profile"
           actions={nameDialogActions}
           open={this.props.confirmationDialogOpen}
           contentStyle={nameDialogContentStyle}
@@ -77,29 +84,30 @@ export default class ChangeNameDialog extends React.Component {
           className="notSelectable"
           titleClassName="notSelectable defaultCursor"
         >
+          <Avatar
+            style={{
+              backgroundColor: colorsArray[random],
+              width: "96px",
+              height: "96px",
+              marginLeft: "auto",
+              marginRight: "auto",
+              fontSize: "48px",
+            }}
+            className="defaultCursor"
+          >
+            {this.getInitials(this.state.content)}
+          </Avatar>
           <TextField
             floatingLabelShrinkStyle={{ color: "#0083ff" }}
             underlineFocusStyle={{ borderColor: "#0083ff" }}
             floatingLabelText="User name"
             style={{ width: "100%" }}
+            onChange={event => this.setState({ content: event.target.value })}
             onKeyPress={event => {
               if (event.key === "Enter") this.openNameSnack()
             }}
           />
         </Dialog>
-        <Snackbar
-          open={this.state.nameSnackOpen}
-          message="You successfully changed your user name"
-          autoHideDuration={4000}
-          onRequestClose={this.handleNameSnackClose}
-          action={[
-            <MuiThemeProvider theme={theme}>
-              <Button key="close" color="secondary" size="small">
-                CLOSE
-              </Button>
-            </MuiThemeProvider>,
-          ]}
-        />
       </React.Fragment>
     )
   }
