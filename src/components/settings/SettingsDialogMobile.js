@@ -220,7 +220,7 @@ class SettingsDialog extends React.Component {
 
     if (user)
       deviceList = (
-        <List>
+        <List style={{ padding: "0" }}>
           {user.devices.map(device => (
             <ListItem
               className="notSelectable"
@@ -278,22 +278,19 @@ class SettingsDialog extends React.Component {
                 >
                   <Translate>Settings</Translate>
                 </Typography>
-                <Tooltip
-              id="tooltip-bottom"
-              title="Close"
-              placement="bottom"
-            >
-                <IconButton
-                  color="inherit"
-                  onClick={this.props.closeSettingsDialog}
-                  aria-label="Close"
-                  style={{
-                    marginRight: "-16px",
-                    marginLeft: "auto",
-                  }}
-                >
-                  <Icon>close</Icon>
-                </IconButton></Tooltip>
+                <Tooltip id="tooltip-bottom" title="Close" placement="bottom">
+                  <IconButton
+                    color="inherit"
+                    onClick={this.props.closeSettingsDialog}
+                    aria-label="Close"
+                    style={{
+                      marginRight: "-16px",
+                      marginLeft: "auto",
+                    }}
+                  >
+                    <Icon>close</Icon>
+                  </IconButton>
+                </Tooltip>
               </Toolbar>
             </AppBar>
           </MuiThemeProvider>
@@ -309,7 +306,7 @@ class SettingsDialog extends React.Component {
               }}
             >
               <div style={listStyles.root}>
-                <List style={{ width: "100%" }}>
+                <List style={{ width: "100%", padding: "0" }}>
                   <Subheader style={{ cursor: "default" }}>
                     Localization
                   </Subheader>
@@ -357,7 +354,7 @@ class SettingsDialog extends React.Component {
               }}
             >
               <div style={listStyles.root}>
-                <List style={{ width: "100%" }}>
+                <List style={{ width: "100%", padding: "0" }}>
                   <Subheader style={{ cursor: "default" }}>
                     Lorem Ipsum
                   </Subheader>
@@ -396,7 +393,7 @@ class SettingsDialog extends React.Component {
                 height: "calc(100vh - 128px)",
               }}
             >
-              <List>
+              <List style={{ padding: "0" }}>
                 <Subheader style={{ cursor: "default" }}>
                   Authentication
                 </Subheader>
@@ -408,16 +405,17 @@ class SettingsDialog extends React.Component {
                 <ListItem
                   primaryText="Change password"
                   onClick={this.handlePasswordDialogOpen}
-                />  <ListItem
-                primaryText="Use cookies to log in faster"
-                rightToggle={
-                  <Toggle
-                    thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                    trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                    rippleStyle={{ color: "#0083ff" }}
-                  />
-                }
-              />
+                />{" "}
+                <ListItem
+                  primaryText="Use cookies to log in faster"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                    />
+                  }
+                />
                 <ListItem
                   primaryText="Two-factor authentication"
                   secondaryText="Make your account safer by verifying it is actually you"
@@ -449,7 +447,8 @@ class SettingsDialog extends React.Component {
                   Account management
                 </Subheader>
                 <ListItem primaryText="Manage roles" />
-                primaryText="Manage your profile"
+                <ListItem
+                  primaryText="Manage your profile"
                   secondaryText="Change your profile photo and name"
                   onClick={this.handleNameDialogOpen}
                 />
@@ -471,7 +470,7 @@ class SettingsDialog extends React.Component {
                 height: "calc(100vh - 128px)",
               }}
             >
-              <List>
+              <List style={{ padding: "0" }}>
                 <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
                 <ListItem
                   primaryText="Manage authorizations"

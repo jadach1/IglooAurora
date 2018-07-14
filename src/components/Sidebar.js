@@ -14,6 +14,7 @@ import Icon from "material-ui-next/Icon"
 import TextField from "material-ui-next/TextField"
 import { InputAdornment } from "material-ui-next/Input"
 import IconButton from "material-ui-next/IconButton"
+import FilterPopover from "./FilterPopover"
 
 const theme = createMuiTheme({
   palette: {
@@ -28,6 +29,8 @@ const theme2 = createMuiTheme({
 })
 
 class Sidebar extends Component {
+  state = { popoverOpen: false }
+
   listItemClick = device => {
     if (this.props.selectedDevice !== device.id) {
       this.props.selectDevice(device.id)
@@ -112,9 +115,16 @@ class Sidebar extends Component {
               }}
             />
           </MuiThemeProvider>
-
           <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
-            <IconButton>
+            <IconButton
+              style={{ marginTop: "-16px" }}
+              buttonRef={node => {
+                this.anchorEl = node
+              }}
+              onClick={() => {
+                this.setState({ popoverOpen: true })
+              }}
+            >
               <Icon
                 style={
                   this.props.nightMode ? { color: "white" } : { color: "black" }
@@ -124,8 +134,14 @@ class Sidebar extends Component {
               </Icon>
             </IconButton>
           </Tooltip>
-
-          <List>
+          <FilterPopover
+            open={this.state.popoverOpen}
+            close={() => this.setState({ popoverOpen: false })}
+            anchorEl={this.anchorEl}
+            devices={user.devices}
+            set
+          />
+          <List style={{padding: "0"}}>
             {this.props.searchText
               ? user.devices
                   .filter(device =>

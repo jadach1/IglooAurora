@@ -103,7 +103,7 @@ export default class ChangeMailDialog extends React.Component {
             paddingBottom: "0px",
           }}
         >
-          <List>
+          <List style={{padding: "0"}}>
             <ListItem
               primaryText="showcase@igloo.io"
               leftIcon={<Icon>mail_outline</Icon>}

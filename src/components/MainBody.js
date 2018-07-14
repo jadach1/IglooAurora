@@ -235,7 +235,7 @@ class MainBody extends Component {
           style={{
             width: "100%",
             textAlign: "center",
-            marginTop: "15px",
+            marginTop: "32px",
           }}
           key="noTilesUI"
           className="notSelectable"

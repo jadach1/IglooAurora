@@ -204,7 +204,7 @@ class SettingsDialog extends React.Component {
 
     if (user)
       deviceList = (
-        <List>
+        <List style={{ padding: "0" }}>
           {user.devices.map(device => (
             <ListItem
               className="notSelectable"
@@ -301,7 +301,7 @@ class SettingsDialog extends React.Component {
               }}
             >
               <div style={listStyles.root}>
-                <List style={{ width: "100%" }}>
+                <List style={{ width: "100%", padding: "0" }}>
                   <Subheader style={{ cursor: "default" }}>
                     Localization
                   </Subheader>
@@ -349,7 +349,7 @@ class SettingsDialog extends React.Component {
               }}
             >
               <div style={listStyles.root}>
-                <List style={{ width: "100%" }}>
+                <List style={{ width: "100%", padding: "0" }}>
                   <Subheader style={{ cursor: "default" }}>
                     Lorem Ipsum
                   </Subheader>
@@ -388,7 +388,7 @@ class SettingsDialog extends React.Component {
                 height: "500px",
               }}
             >
-              <List>
+              <List style={{ padding: "0" }}>
                 <Subheader style={{ cursor: "default" }}>
                   Authentication
                 </Subheader>
@@ -401,7 +401,7 @@ class SettingsDialog extends React.Component {
                   primaryText="Change password"
                   onClick={this.handlePasswordDialogOpen}
                 />
-                 <ListItem
+                <ListItem
                   primaryText="Use cookies to log in faster"
                   rightToggle={
                     <Toggle
@@ -477,7 +477,7 @@ class SettingsDialog extends React.Component {
                 height: "500px",
               }}
             >
-              <List>
+              <List style={{ padding: "0" }}>
                 <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
                 <ListItem
                   primaryText="Manage authorizations"
