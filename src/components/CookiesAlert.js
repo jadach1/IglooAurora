@@ -6,8 +6,6 @@ import { SnackbarContent } from "material-ui-next"
 import { withStyles } from "material-ui-next/styles"
 import Icon from "material-ui-next/Icon"
 import { Slide } from "material-ui-next"
-import { createMuiTheme } from "material-ui-next/styles"
-import Tooltip from "material-ui-next/Tooltip"
 
 const styles1 = theme => ({
   warning: {
@@ -46,7 +44,7 @@ function MySnackbarContent(props) {
         </span>
       }
       action={[
-        <IconButton style={{ color: "white" }}>
+        <IconButton style={{ color: "white" }} onClick={closeSnackbar}>
           <Icon>done</Icon>
         </IconButton>,
         <IconButton

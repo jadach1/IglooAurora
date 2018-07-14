@@ -154,7 +154,7 @@ class AuthDialog extends React.Component {
           }}
           titleClassName="notSelectable defaultCursor"
         >
-          <List>
+          <List style={{ padding: "0" }}>
             {tokens}
             <ListItem
               primaryText="Get a new permanent token"

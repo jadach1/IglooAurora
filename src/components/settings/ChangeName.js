@@ -17,12 +17,14 @@ const nameDialogContentStyle = {
 }
 
 const colorsArray = [
+  "#ffb900",
+  "#ff0000",
+  "#00a31b",
+  "#00a37d",
+  "#00ace6",
   "#0057cb",
-  "#f50057",
-  "#23a82c",
-  "#7100db",
-  "#f20505",
-  "#18ba77",
+  "#6300cc",
+  "#a3008d",
 ]
 
 let random

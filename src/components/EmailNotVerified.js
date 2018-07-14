@@ -9,7 +9,6 @@ import { Slide } from "material-ui-next"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Tooltip from "material-ui-next/Tooltip"
 
 const styles1 = theme => ({
   warning: {
@@ -62,8 +61,8 @@ function MySnackbarContent(props) {
         </span>
       }
       action={[
-        <IconButton style={{ color: "white" }}>
-          <Icon onClick={openDialog}>notes</Icon>
+        <IconButton style={{ color: "white" }} onClick={openDialog}>
+          <Icon>notes</Icon>
         </IconButton>,
         <IconButton
           style={{ marginRight: "-8px", color: "white" }}

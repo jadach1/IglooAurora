@@ -395,8 +395,7 @@ class Main extends Component {
           </Online>
           <Offline key="offlineMainBody">
             <div
-              className="offlineMain notSelectable"
-              style={{ cursor: "default" }}
+              className="offlineMain notSelectable defaultCursor"
               style={
                 this.state.nightMode
                   ? { background: "#2f333d" }

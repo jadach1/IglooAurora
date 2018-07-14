@@ -191,7 +191,7 @@ class NotificationsDrawer extends React.Component {
 
     if (user) {
       notifications = (
-        <List>
+        <List style={{ padding: "0" }}>
           <ReactCSSTransitionGroup
             transitionName="notification"
             transitionEnterTimeout={5000}
@@ -240,7 +240,7 @@ class NotificationsDrawer extends React.Component {
       )
 
       readNotifications = (
-        <List>
+        <List style={{ padding: "0" }}>
           <ReactCSSTransitionGroup
             transitionName="notification"
             transitionEnterTimeout={5000}
@@ -389,8 +389,12 @@ class NotificationsDrawer extends React.Component {
               <AppBar position="sticky" style={{ height: "64px" }}>
                 <div
                   className="notSelectable"
-                  style={{ height: "64px", backgroundColor: "#0083ff",      display: "flex",
-                  alignItems: "center", }}
+                  style={{
+                    height: "64px",
+                    backgroundColor: "#0083ff",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
                 >
                   <IconButton
                     onClick={() => {

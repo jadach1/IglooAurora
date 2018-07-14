@@ -61,7 +61,6 @@ class ChangeLanguageDialog extends React.Component {
   }
 
   render() {
-
     const languageDialogActions = [
       <Button onClick={this.props.handleLanguageDialogClose}>Close</Button>,
     ]
@@ -96,7 +95,7 @@ class ChangeLanguageDialog extends React.Component {
           className="notSelectable"
           titleClassName="notSelectable defaultCursor"
         >
-          <SelectableList style={{ paddingBottom: "0px" }}>
+          <SelectableList style={{ paddingBottom: "0px", padding: "0" }}>
             <ListItem
               primaryText="Deutsch"
               value="de"
