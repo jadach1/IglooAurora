@@ -51,7 +51,7 @@ class SidebarHeader extends Component {
           }}
         >
           <MuiThemeProvider theme={theme}>
-            <a href="https://hellowitlab.github.io/iglooMagellan">
+            <a href="https://igloocloud.github.io/iglooMagellan">
               <Tooltip
                 id="tooltip-bottom"
                 title="Go to Magellan"

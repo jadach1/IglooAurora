@@ -2,7 +2,6 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { List, ListItem, makeSelectable } from "material-ui/List"
-import { reactTranslateChangeLanguage } from "translate-components"
 import Translate from "translate-components"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
@@ -61,22 +60,35 @@ class ChangeLanguageDialog extends React.Component {
   }
 
   render() {
+    const {
+      userData: {  user },
+    } = this.props
+
     const languageDialogActions = [
       <Button onClick={this.props.handleLanguageDialogClose}>Close</Button>,
     ]
 
-    let changeLanguage = language => {
-      this.props["ChangeLanguage"]({
-        variables: {
-          language: language,
-        },
-        optimisticResponse: {
-          __typename: "Mutation",
-          user: {
-            language: language,
+    let changeLanguage
+
+    let lang
+
+    if (user) {
+      changeLanguage = language =>
+        this.props.ChangeLanguage({
+          variables: {
+            language,
           },
-        },
-      })
+          optimisticResponse: {
+            __typename: "Mutation",
+            user: {
+              id: user.id,
+              language,
+              __typename: "User",
+            },
+          },
+        })
+
+      lang = user.language
     }
 
     return (
@@ -95,12 +107,14 @@ class ChangeLanguageDialog extends React.Component {
           className="notSelectable"
           titleClassName="notSelectable defaultCursor"
         >
-          <SelectableList style={{ paddingBottom: "0px", padding: "0" }}>
+          <SelectableList
+            style={{ paddingBottom: "0px", padding: "0" }}
+            defaultValue={lang}
+          >
             <ListItem
               primaryText="Deutsch"
               value="de"
               onClick={() => {
-                reactTranslateChangeLanguage.bind(this, "de")
                 changeLanguage("de")
               }}
             />
@@ -108,7 +122,6 @@ class ChangeLanguageDialog extends React.Component {
               primaryText="English"
               value="en"
               onClick={() => {
-                reactTranslateChangeLanguage.bind(this, "en")
                 changeLanguage("en")
               }}
             />
@@ -116,7 +129,6 @@ class ChangeLanguageDialog extends React.Component {
               primaryText="Español"
               value="es"
               onClick={() => {
-                reactTranslateChangeLanguage.bind(this, "es")
                 changeLanguage("es")
               }}
             />
@@ -124,7 +136,6 @@ class ChangeLanguageDialog extends React.Component {
               primaryText="Italiano"
               value="it"
               onClick={() => {
-                reactTranslateChangeLanguage.bind(this, "it")
                 changeLanguage("it")
               }}
             />
@@ -132,7 +143,6 @@ class ChangeLanguageDialog extends React.Component {
               primaryText="中文 (简体)"
               value="zh-Hans"
               onClick={() => {
-                reactTranslateChangeLanguage.bind(this, "zh-Hans")
                 changeLanguage("zh-Hans")
               }}
             />
@@ -145,13 +155,26 @@ class ChangeLanguageDialog extends React.Component {
 
 export default graphql(
   gql`
-    mutation ChangeLanguage($language: String) {
-      user(language: $language) {
+    query {
+      user {
+        id
         language
       }
     }
   `,
-  {
-    name: "ChangeLanguage",
-  }
-)(ChangeLanguageDialog)
+  { name: "userData" }
+)(
+  graphql(
+    gql`
+      mutation ChangeLanguage($language: String) {
+        user(language: $language) {
+          id
+          language
+        }
+      }
+    `,
+    {
+      name: "ChangeLanguage",
+    }
+  )(ChangeLanguageDialog)
+)

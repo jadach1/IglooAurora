@@ -49,7 +49,7 @@ class NotificationsSnackbar extends React.Component {
       }
     `
 
-    this.props.notifications.subscribeToMore({
+    this.props.userData.subscribeToMore({
       document: subscriptionQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
@@ -85,7 +85,7 @@ class NotificationsSnackbar extends React.Component {
       }
     `
 
-    this.props.notifications.subscribeToMore({
+    this.props.userData.subscribeToMore({
       document: updateQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
@@ -138,7 +138,7 @@ class NotificationsSnackbar extends React.Component {
 
   render() {
     const {
-      notifications: { loading, error, user },
+      userData: { loading, error, user },
     } = this.props
 
     let visualizeSnackbar = id => {
@@ -157,12 +157,12 @@ class NotificationsSnackbar extends React.Component {
       })
     }
 
-    if (error) notifications = "Unexpected error"
+    if (error) return null
 
-    if (loading) notifications = "Loading"
+    if (loading) return null
 
     if (user) {
-      notifications = user.notifications
+      user.notifications
         .filter(
           notification =>
             notification.visualized === false &&
@@ -217,6 +217,7 @@ export default graphql(
   gql`
     query {
       user {
+        id
         notifications {
           id
           content
@@ -232,7 +233,7 @@ export default graphql(
       }
     }
   `,
-  { name: "notifications" }
+  { name: "userData" }
 )(
   graphql(
     gql`

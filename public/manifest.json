@@ -5,7 +5,7 @@
   "background_color": "#0083ff",
   "display": "standalone",
   "Scope": "/iglooAurora/",
-  "start_url": "https://hellowitlab.github.io/iglooAurora/",
+  "start_url": "https://igloocloud.github.io/iglooAurora/",
   "orientation": "any",
   "icons": [
     {

@@ -196,13 +196,47 @@ class SettingsDialog extends React.Component {
       userData: { loading, error, user },
     } = this.props
 
+    let devModeSetting = (
+      <ListItem
+        primaryText="Developer mode"
+        rightToggle={
+          <Toggle
+            thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+            trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+            rippleStyle={{ color: "#0083ff" }}
+            disabled
+          />
+        }
+      />
+    )
+
+    let nightModeSetting = (
+      <ListItem
+        primaryText="Night mode"
+        rightToggle={
+          <Toggle
+            thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+            trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+            rippleStyle={{ color: "#0083ff" }}
+            disabled
+          />
+        }
+      />
+    )
+
+    let devModeTab = ""
+
     let deviceList = "No devices"
+
+    let toggleDevMode = ""
+
+    let toggleNightMode=""
 
     if (error) deviceList = "Unexpected error bear"
 
     if (loading) deviceList = <CenteredSpinner />
 
-    if (user)
+    if (user) {
       deviceList = (
         <List style={{ padding: "0" }}>
           {user.devices.map(device => (
@@ -236,6 +270,84 @@ class SettingsDialog extends React.Component {
           ))}
         </List>
       )
+
+      devModeSetting = (
+        <ListItem
+          primaryText="Developer mode"
+          rightToggle={
+            <Toggle
+              thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+              trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+              rippleStyle={{ color: "#0083ff" }}
+              defaultToggled={user.devMode}
+              onToggle={() => {
+                user.devMode ? toggleDevMode(false) : toggleDevMode(true)
+              }}
+            />
+          }
+        />
+      )
+
+      nightModeSetting=(
+        <ListItem
+          primaryText="Night mode"
+          rightToggle={
+            <Toggle
+              thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+              trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+              rippleStyle={{ color: "#0083ff" }}
+              defaultToggled={user.nightMode}
+              onToggle={() => {
+                user.nightMode ? toggleNightMode(false) : toggleNightMode(true)
+              }}
+            />
+          }
+        />
+      )
+
+      devModeTab = user.devMode ? (
+        <Tab
+          icon={<Icon>code</Icon>}
+          label="Development"
+          buttonStyle={{ backgroundColor: "#0057cb" }}
+          value={3}
+        />
+      ) : (
+        ""
+      )
+
+      toggleDevMode = devMode => {
+        this.props["ToggleDevMode"]({
+          variables: {
+            devMode: devMode,
+          },
+          optimisticResponse: {
+            __typename: "Mutation",
+            user: {
+              id: user.id,
+              devMode: devMode,
+              __typename: "User",
+            },
+          },
+        })
+      }
+
+      toggleNightMode = nightMode => {
+        this.props["ToggleNightMode"]({
+          variables: {
+            nightMode: nightMode,
+          },
+          optimisticResponse: {
+            __typename: "Mutation",
+            user: {
+              id: user.id,
+              devMode: nightMode,
+              __typename: "User",
+            },
+          },
+        })
+      }
+    }
 
     const actions = [
       <Button onClick={this.props.closeSettingsDialog}>Close</Button>,
@@ -281,12 +393,7 @@ class SettingsDialog extends React.Component {
                 buttonStyle={{ backgroundColor: "#0057cb" }}
                 value={2}
               />
-              <Tab
-                icon={<Icon>code</Icon>}
-                label="Development"
-                buttonStyle={{ backgroundColor: "#0057cb" }}
-                value={3}
-              />
+              {devModeTab}
             </Tabs>
           </AppBar>
           <SwipeableViews
@@ -302,6 +409,10 @@ class SettingsDialog extends React.Component {
             >
               <div style={listStyles.root}>
                 <List style={{ width: "100%", padding: "0" }}>
+                  <Subheader style={{ cursor: "default" }}>
+                    Appearance
+                  </Subheader>
+                  {nightModeSetting}
                   <Subheader style={{ cursor: "default" }}>
                     Localization
                   </Subheader>
@@ -439,16 +550,7 @@ class SettingsDialog extends React.Component {
                 <Subheader style={{ cursor: "default" }}>
                   For developers
                 </Subheader>
-                <ListItem
-                  primaryText="Developer mode"
-                  rightToggle={
-                    <Toggle
-                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                      rippleStyle={{ color: "#0083ff" }}
-                    />
-                  }
-                />
+                {devModeSetting}
                 <Divider />
                 <Subheader style={{ cursor: "default" }}>
                   Account management
@@ -617,13 +719,42 @@ export default graphql(
   gql`
     query {
       user {
+        id
         devices {
           id
           customName
           icon
         }
+        devMode
+        nightMode
       }
     }
   `,
   { name: "userData" }
-)(SettingsDialog)
+)(
+  graphql(
+    gql`
+      mutation ToggleDevMode($devMode: Bool) {
+        user(devMode: $devMode) {
+          id
+          devMode
+        }
+      }
+    `,
+    {
+      name: "ToggleDevMode",
+    }
+  )(graphql(
+    gql`
+      mutation ToggleNightMode($nightMode: Bool) {
+        user(devMode: $nightMode) {
+          id
+          nightMode
+        }
+      }
+    `,
+    {
+      name: "ToggleNightMode",
+    }
+  )(SettingsDialog))
+)

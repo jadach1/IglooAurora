@@ -28,8 +28,21 @@ const theme2 = createMuiTheme({
   },
 })
 
+let removeDuplicates = inputArray => {
+  var obj = {}
+  var returnArray = []
+  for (var i = 0; i < inputArray.length; i++) {
+    obj[inputArray[i]] = true
+  }
+  for (var key in obj) {
+    returnArray.push(key)
+  }
+  return returnArray
+}
+
 class Sidebar extends Component {
-  state = { popoverOpen: false }
+  state = { popoverOpen: false, visibleDeviceTypes: []
+   }
 
   listItemClick = device => {
     if (this.props.selectedDevice !== device.id) {
@@ -55,17 +68,14 @@ class Sidebar extends Component {
     if (loading) {
       return <CenteredSpinner />
     }
+
     if (error) {
-      return <p>{error.message}</p>
+      return "Unexpected error"
     }
 
     return (
       <React.Fragment>
-        <div
-          style={{
-            height: "100%",
-          }}
-        >
+        <div style={{ width: "100%", height: "64px" }}>
           <MuiThemeProvider theme={theme2}>
             <TextField
               placeholder="Search devices"
@@ -134,206 +144,221 @@ class Sidebar extends Component {
               </Icon>
             </IconButton>
           </Tooltip>
-          <FilterPopover
-            open={this.state.popoverOpen}
-            close={() => this.setState({ popoverOpen: false })}
-            anchorEl={this.anchorEl}
-            devices={user.devices}
-            set
-          />
-          <List style={{padding: "0"}}>
-            {this.props.searchText
-              ? user.devices
-                  .filter(device =>
-                    device.customName
-                      .toLowerCase()
-                      .includes(this.props.searchText.toLowerCase())
-                  )
-                  .map(device => (
-                    <ListItem
-                      button
-                      className="notSelectable"
-                      style={
-                        this.props.selectedDevice === device.id &&
-                        !this.props.isMobile
-                          ? this.props.nightMode
-                            ? { backgroundColor: "#282c34" }
-                            : { backgroundColor: "#d4d4d4" }
-                          : null
-                      }
-                      key={device.id}
-                      onClick={() => this.listItemClick(device)}
-                    >
-                      <ListItemIcon>
-                        {device.icon ? (
-                          <img
-                            className="deviceIcon"
-                            src={device.icon}
-                            alt="device logo"
-                          />
-                        ) : (
-                          <Icon
-                            style={
-                              this.props.nightMode
-                                ? { color: "#c1c2c5" }
-                                : { color: "#7a7a7a" }
-                            }
-                          >
-                            lightbulb_outline
-                          </Icon>
-                        )}
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={device.customName}
-                        secondary={
-                          device.notifications
-                            .filter(
-                              notification => notification.visualized === false
-                            )
-                            .map(notification => notification.content)
-                            .reverse()[0]
-                            ? device.notifications
-                                .filter(
-                                  notification =>
-                                    notification.visualized === false
-                                )
-                                .map(notification => notification.content)
-                                .reverse()[0]
-                            : device.notifications
-                                .filter(
-                                  notification =>
-                                    notification.visualized === true
-                                )
-                                .map(notification => notification.content)
-                                .reverse()[0]
-                              ? "No unread notifications"
-                              : "No notifications"
-                        }
-                      />
-                      {device.notifications
-                        .filter(
-                          notification => notification.visualized === false
-                        )
-                        .map(notification => notification.content)
-                        .reverse()[0] ? (
-                        <ListItemSecondaryAction>
-                          <MuiThemeProvider theme={theme}>
-                            <Badge
-                              badgeContent={
-                                device.notifications.filter(
-                                  notification =>
-                                    notification.visualized === false
-                                ).length
-                              }
-                              color="primary"
-                              className="notSelectable sidebarBadge"
-                              style={{ marginRight: "24px" }}
-                              onClick={() => {
-                                this.props.changeDrawerState()
-                                if (this.props.selectedDevice !== device.id) {
-                                  this.listItemClick(device)
-                                }
-                              }}
-                            />
-                          </MuiThemeProvider>
-                        </ListItemSecondaryAction>
-                      ) : null}
-                    </ListItem>
-                  ))
-              : user.devices
-                  .filter(device => device.customName.toLowerCase())
-                  .map(device => (
-                    <ListItem
-                      button
-                      className="notSelectable"
-                      style={
-                        this.props.selectedDevice === device.id
-                          ? this.props.nightMode
-                            ? { backgroundColor: "#282c34" }
-                            : { backgroundColor: "#d4d4d4" }
-                          : null
-                      }
-                      key={device.id}
-                      onClick={() => this.listItemClick(device)}
-                    >
-                      <ListItemIcon>
-                        {device.icon ? (
-                          <img
-                            className="deviceIcon"
-                            src={device.icon}
-                            alt="device logo"
-                          />
-                        ) : (
-                          <Icon
-                            style={
-                              this.props.nightMode
-                                ? { color: "#c1c2c5" }
-                                : { color: "#7a7a7a" }
-                            }
-                          >
-                            lightbulb_outline
-                          </Icon>
-                        )}
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={device.customName}
-                        secondary={
-                          device.notifications
-                            .filter(
-                              notification => notification.visualized === false
-                            )
-                            .map(notification => notification.content)
-                            .reverse()[0]
-                            ? device.notifications
-                                .filter(
-                                  notification =>
-                                    notification.visualized === false
-                                )
-                                .map(notification => notification.content)
-                                .reverse()[0]
-                            : device.notifications
-                                .filter(
-                                  notification =>
-                                    notification.visualized === true
-                                )
-                                .map(notification => notification.content)
-                                .reverse()[0]
-                              ? "No unread notifications"
-                              : "No notifications"
-                        }
-                      />
-                      {device.notifications
-                        .filter(
-                          notification => notification.visualized === false
-                        )
-                        .map(notification => notification.content)
-                        .reverse()[0] ? (
-                        <ListItemSecondaryAction>
-                          <MuiThemeProvider theme={theme}>
-                            <Badge
-                              badgeContent={
-                                device.notifications.filter(
-                                  notification =>
-                                    notification.visualized === false
-                                ).length
-                              }
-                              color="primary"
-                              className="notSelectable sidebarBadge"
-                              style={{ marginRight: "24px" }}
-                              onClick={() => {
-                                this.props.changeDrawerState()
-                                if (this.props.selectedDevice !== device.id) {
-                                  this.listItemClick(device)
-                                }
-                              }}
-                            />
-                          </MuiThemeProvider>
-                        </ListItemSecondaryAction>
-                      ) : null}
-                    </ListItem>
-                  ))}
-          </List>
         </div>
+        <FilterPopover
+          open={this.state.popoverOpen}
+          close={() => this.setState({ popoverOpen: false })}
+          anchorEl={this.anchorEl}
+          devices={user.devices}
+          setVisibleTypes={visibleTypes => {
+            this.setState({ visibleDeviceTypes: visibleTypes })
+            console.log(this.state.visibleDeviceTypes)
+          }}
+        />
+
+        <List
+          style={{
+            padding: "0",
+            height: "calc(100vh - 128px)",
+            overflow: "auto",
+          }}
+        >
+          {this.props.searchText
+            ? user.devices
+                .filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.props.searchText.toLowerCase())
+                )
+                .filter(
+                  device =>
+                    this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
+                    -1
+                )
+                .map(device => (
+                  <ListItem
+                    button
+                    className="notSelectable"
+                    style={
+                      this.props.selectedDevice === device.id &&
+                      !this.props.isMobile
+                        ? this.props.nightMode
+                          ? { backgroundColor: "#282c34" }
+                          : { backgroundColor: "#d4d4d4" }
+                        : null
+                    }
+                    key={device.id}
+                    onClick={() => this.listItemClick(device)}
+                  >
+                    <ListItemIcon>
+                      {device.icon ? (
+                        <img
+                          className="deviceIcon"
+                          src={device.icon}
+                          alt="device logo"
+                        />
+                      ) : (
+                        <Icon
+                          style={
+                            this.props.nightMode
+                              ? { color: "#c1c2c5" }
+                              : { color: "#7a7a7a" }
+                          }
+                        >
+                          lightbulb_outline
+                        </Icon>
+                      )}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={device.customName}
+                      secondary={
+                        device.notifications
+                          .filter(
+                            notification => notification.visualized === false
+                          )
+                          .map(notification => notification.content)
+                          .reverse()[0]
+                          ? device.notifications
+                              .filter(
+                                notification =>
+                                  notification.visualized === false
+                              )
+                              .map(notification => notification.content)
+                              .reverse()[0]
+                          : device.notifications
+                              .filter(
+                                notification => notification.visualized === true
+                              )
+                              .map(notification => notification.content)
+                              .reverse()[0]
+                            ? "No unread notifications"
+                            : "No notifications"
+                      }
+                    />
+                    {device.notifications
+                      .filter(notification => notification.visualized === false)
+                      .map(notification => notification.content)
+                      .reverse()[0] ? (
+                      <ListItemSecondaryAction>
+                        <MuiThemeProvider theme={theme}>
+                          <Badge
+                            badgeContent={
+                              device.notifications.filter(
+                                notification =>
+                                  notification.visualized === false
+                              ).length
+                            }
+                            color="primary"
+                            className="notSelectable sidebarBadge"
+                            style={{ marginRight: "24px" }}
+                            onClick={() => {
+                              this.props.changeDrawerState()
+                              if (this.props.selectedDevice !== device.id) {
+                                this.listItemClick(device)
+                              }
+                            }}
+                          />
+                        </MuiThemeProvider>
+                      </ListItemSecondaryAction>
+                    ) : null}
+                  </ListItem>
+                ))
+            : user.devices
+                .filter(device => device.customName.toLowerCase())
+                .filter(
+                  device =>
+                    this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
+                    -1
+                )
+                .map(device => (
+                  <ListItem
+                    button
+                    className="notSelectable"
+                    style={
+                      this.props.selectedDevice === device.id
+                        ? this.props.nightMode
+                          ? { backgroundColor: "#282c34" }
+                          : { backgroundColor: "#d4d4d4" }
+                        : null
+                    }
+                    key={device.id}
+                    onClick={() => this.listItemClick(device)}
+                  >
+                    <ListItemIcon>
+                      {device.icon ? (
+                        <img
+                          className="deviceIcon"
+                          src={device.icon}
+                          alt="device logo"
+                        />
+                      ) : (
+                        <Icon
+                          style={
+                            this.props.nightMode
+                              ? { color: "#c1c2c5" }
+                              : { color: "#7a7a7a" }
+                          }
+                        >
+                          lightbulb_outline
+                        </Icon>
+                      )}
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={device.customName}
+                      secondary={
+                        device.notifications
+                          .filter(
+                            notification => notification.visualized === false
+                          )
+                          .map(notification => notification.content)
+                          .reverse()[0]
+                          ? device.notifications
+                              .filter(
+                                notification =>
+                                  notification.visualized === false
+                              )
+                              .map(notification => notification.content)
+                              .reverse()[0]
+                          : device.notifications
+                              .filter(
+                                notification => notification.visualized === true
+                              )
+                              .map(notification => notification.content)
+                              .reverse()[0]
+                            ? "No unread notifications"
+                            : "No notifications"
+                      }
+                    />
+                    {device.notifications
+                      .filter(notification => notification.visualized === false)
+                      .map(notification => notification.content)
+                      .reverse()[0] ? (
+                      <ListItemSecondaryAction>
+                        <MuiThemeProvider theme={theme}>
+                          <Badge
+                            badgeContent={
+                              device.notifications.filter(
+                                notification =>
+                                  notification.visualized === false
+                              ).length
+                            }
+                            color="primary"
+                            className="notSelectable sidebarBadge"
+                            style={{ marginRight: "24px" }}
+                            onClick={() => {
+                              this.props.changeDrawerState()
+                              if (this.props.selectedDevice !== device.id) {
+                                this.listItemClick(device)
+                              }
+                            }}
+                          />
+                        </MuiThemeProvider>
+                      </ListItemSecondaryAction>
+                    ) : null}
+                  </ListItem>
+                ))}
+        </List>
+
         <Tooltip id="tooltip-bottom" title="Edit list" placement="bottom">
           <FloatingActionButton
             className={

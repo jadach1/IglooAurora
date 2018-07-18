@@ -3,6 +3,7 @@ import Main from "./Main"
 import MainMobile from "./MainMobile"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import { reactTranslateChangeLanguage } from "translate-components"
 
 class GraphQLFetcher extends Component {
   componentDidMount() {
@@ -45,6 +46,30 @@ class GraphQLFetcher extends Component {
   }
 
   render() {
+    const {
+      userData: { loading, error, user },
+    } = this.props
+
+    if (user) {
+      switch (user.language) {
+        case "en":
+          reactTranslateChangeLanguage.bind(this, "en")
+          break
+        case "de":
+          reactTranslateChangeLanguage.bind(this, "de")
+          break
+        case "es":
+          reactTranslateChangeLanguage.bind(this, "es")
+          break
+        case "it":
+          reactTranslateChangeLanguage.bind(this, "it")
+          break
+        case "zh-Hans":
+          reactTranslateChangeLanguage.bind(this, "zh-Hans")
+          break
+      }
+    }
+
     return this.props.isMobile ? (
       <MainMobile
         logOut={this.props.logOut}
@@ -61,6 +86,9 @@ export default graphql(
   gql`
     query {
       user {
+        id
+        language
+        nightMode
         devices {
           id
           customName
