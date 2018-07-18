@@ -659,6 +659,7 @@ export default graphql(
   gql`
     query {
       user {
+      id
         devices {
           id
           customName

@@ -5,9 +5,23 @@ import Checkbox from "material-ui-next/Checkbox"
 import Typography from "material-ui-next/Typography"
 import Toolbar from "material-ui-next/Toolbar"
 
+let removeDuplicates = inputArray => {
+  var obj = {}
+  var returnArray = []
+  for (var i = 0; i < inputArray.length; i++) {
+    obj[inputArray[i]] = true
+  }
+  for (var key in obj) {
+    returnArray.push(key)
+  }
+  return returnArray
+}
+
 export default class FilterPopover extends Component {
   state = {
-    checked: [0],
+    checked: removeDuplicates(
+      this.props.devices.map(device => device.deviceType)
+    ),
   }
 
   handleToggle = value => () => {
@@ -21,27 +35,21 @@ export default class FilterPopover extends Component {
       newChecked.splice(currentIndex, 1)
     }
 
+    this.props.setVisibleTypes(newChecked)
+
     this.setState({
       checked: newChecked,
     })
   }
 
+  componentDidMount() {
+    this.props.setVisibleTypes(this.state.checked)
+  }
+
   render() {
     let deviceTypeList = this.props.devices.map(device => device.deviceType)
 
-    function remove_duplicates(arr) {
-      var obj = {}
-      var ret_arr = []
-      for (var i = 0; i < arr.length; i++) {
-        obj[arr[i]] = true
-      }
-      for (var key in obj) {
-        ret_arr.push(key)
-      }
-      return ret_arr
-    }
-
-    let uniqueDeviceTypeList = remove_duplicates(deviceTypeList)
+    let uniqueDeviceTypeList = removeDuplicates(deviceTypeList)
 
     var occurrences = {}
     for (var i = 0, j = deviceTypeList.length; i < j; i++) {
@@ -86,6 +94,7 @@ export default class FilterPopover extends Component {
                 checked={this.state.checked.indexOf(deviceType) !== -1}
                 tabIndex={-1}
                 disableRipple
+                onChange={this.handleToggle(deviceType)}
               />
               <ListItemText
                 primary={deviceType}

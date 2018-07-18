@@ -2,7 +2,7 @@
 
 # Igloo Aurora
 
-Igloo Aurora is a client for Igloo Cloud Framework that allows you to view the individual values of every device. If you need a more comprehensive summary of your data stored on Igloo Cloud Framework, please check [Igloo Magellan](http:https://github.com/hellowitlab/iglooMagellan).
+Igloo Aurora is a client for Igloo Cloud Framework that allows you to view the individual values of every device. If you need a more comprehensive summary of your data stored on Igloo Cloud Framework, please check [Igloo Magellan](http:https://github.com/igloocloud/iglooMagellan).
 
 This service is still in development, some features may be missing. If your Igloo-based project needs a missing feature in order to work, please check for future updates or help us by contributing.
 
@@ -12,7 +12,7 @@ If you plan to use a custom version of Igloo Aurora, you will need to host the w
 
 ### Public website
 
-Visit the [Igloo Aurora website](https://hellowitlab.github.io/iglooAurora/).
+Visit the [Igloo Aurora website](https://igloocloud.github.io/iglooAurora/).
 
 ### Self hosting
 
@@ -27,13 +27,14 @@ TBD
 Start by cloning the repository and downloading the required libraries:
 
 ```bash
-git clone https://github.com/hellowitlab/iglooHouston
+git clone https://github.com/igloocloud/IglooAurora
 yarn
 ```
+
 or
 
 ```bash
-git clone https://github.com/hellowitlab/iglooHouston
+git clone https://github.com/igloocloud/IglooAurora
 npm install
 ```
 
@@ -55,4 +56,4 @@ TBD
 
 ## License
 
-See the [LICENSE](https://github.com/hellowitlab/iglooAurora/blob/master/LICENSE) file for license rights and limitations (MIT).
+See the [LICENSE](https://github.com/igloocloud/iglooAurora/blob/master/LICENSE) file for license rights and limitations (MIT).

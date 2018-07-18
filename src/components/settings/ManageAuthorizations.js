@@ -42,6 +42,12 @@ class AuthDialog extends React.Component {
       variables: {
         id: tokenID,
       },
+      optimisticResponse: {
+        __typename: "Mutation",
+        DeletePermanentAccesToken: {
+          id: tokenID,
+        },
+      },
     })
   }
 
@@ -56,7 +62,7 @@ class AuthDialog extends React.Component {
 
   render() {
     const {
-      permanentTokens: { loading, error, user },
+      userData: { loading, error, user },
     } = this.props
 
     const confirmationDialogActions = [
@@ -100,23 +106,9 @@ class AuthDialog extends React.Component {
 
     let tokens
 
-    if (error) tokens = "Unexpected error"
+    if (error) return "Unexpected error"
 
-    if (loading) tokens = <CenteredSpinner />
-
-    if (user) {
-      tokens = user.permanentTokens.map(token => (
-        <ListItem
-          primaryText={token.customName}
-          leftIcon={<Icon>vpn_key</Icon>}
-          rightIconButton={
-            <IconButton onClick={() => this.deletePermanentToken(token.id)}>
-              <Icon>delete</Icon>
-            </IconButton>
-          }
-        />
-      ))
-    }
+    if (loading) return <CenteredSpinner />
 
     return (
       <React.Fragment>
@@ -155,7 +147,19 @@ class AuthDialog extends React.Component {
           titleClassName="notSelectable defaultCursor"
         >
           <List style={{ padding: "0" }}>
-            {tokens}
+            {user.permanentTokens.map(token => (
+              <ListItem
+                primaryText={token.customName}
+                leftIcon={<Icon>vpn_key</Icon>}
+                rightIconButton={
+                  <IconButton
+                    onClick={() => this.deletePermanentToken(token.id)}
+                  >
+                    <Icon>delete</Icon>
+                  </IconButton>
+                }
+              />
+            ))}
             <ListItem
               primaryText="Get a new permanent token"
               leftIcon={<Icon>add</Icon>}
@@ -193,6 +197,7 @@ export default graphql(
   gql`
     query {
       user {
+        id
         permanentTokens {
           id
           customName
@@ -200,7 +205,7 @@ export default graphql(
       }
     }
   `,
-  { name: "permanentTokens" }
+  { name: "userData" }
 )(
   graphql(
     gql`

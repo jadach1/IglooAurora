@@ -464,6 +464,7 @@ export default graphql(
   gql`
     query {
       user {
+        id
         notifications {
           id
           content

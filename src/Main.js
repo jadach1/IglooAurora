@@ -263,7 +263,6 @@ class Main extends Component {
       areSettingsOpen: false,
       isTileFullScreen: false,
       drawer: false,
-      nightMode: false,
     }
   }
 
@@ -286,6 +285,16 @@ class Main extends Component {
   }
 
   render() {
+    const {
+      userData: { loading, error, user },
+    } = this.props
+
+    let nightMode
+
+    if (loading) nightMode=""
+    if(error) nightMode=""
+    if(user) nightMode=user.nightMode
+
     return (
       <MuiThemeProvider>
         <React.Fragment>
@@ -298,7 +307,7 @@ class Main extends Component {
                 }}
                 handleChange={this.handleSettingsTabChanged}
                 slideIndex={this.state.slideIndex}
-                nightMode={this.state.nightMode}
+                nightMode={nightMode}
               />
               <div className="invisibleHeader" key="invisibleHeader" />
               <SidebarHeader
@@ -318,7 +327,7 @@ class Main extends Component {
                 className="sidebar"
                 key="sidebar"
                 style={
-                  this.state.nightMode
+                  nightMode
                     ? { background: "#21252b" }
                     : { background: "#f2f2f2" }
                 }
@@ -330,7 +339,7 @@ class Main extends Component {
                   searchText={this.state.searchText}
                   changeText={text => this.setState({ searchText: text })}
                   userData={this.props.userData}
-                  nightMode={this.state.nightMode}
+                  nightMode={nightMode}
                 />
               </div>
               {this.state.selectedDevice !== null ? (
@@ -341,7 +350,7 @@ class Main extends Component {
                   changeDrawerState={this.changeDrawerState}
                   hiddenNotifications={this.state.hiddenNotifications}
                   showHiddenNotifications={this.showHiddenNotifications}
-                  nightMode={this.state.nightMode}
+                  nightMode={nightMode}
                 />
               ) : (
                 <div className="mainBodyHeader" key="mainBodyHeader" />
@@ -352,26 +361,26 @@ class Main extends Component {
                     deviceId={this.state.selectedDevice}
                     showHidden={this.state.showMainHidden}
                     changeShowHiddenState={this.changeShowHiddenState}
-                    nightMode={this.state.nightMode}
+                    nightMode={nightMode}
                   />
                   <StatusBar
                     userData={this.props.userData}
                     deviceId={this.state.selectedDevice}
-                    nightMode={this.state.nightMode}
+                    nightMode={nightMode}
                   />
                 </React.Fragment>
               ) : (
                 <React.Fragment>
                   <div
                     style={
-                      this.state.nightMode
+                      nightMode
                         ? { background: "#2f333d" }
                         : { background: "white" }
                     }
                   >
                     <div
                       className={
-                        this.state.nightMode
+                        nightMode
                           ? "mainBody darkMainBodyBG"
                           : "mainBody mainBodyBG"
                       }
@@ -381,7 +390,7 @@ class Main extends Component {
                   <div
                     className="statusBar"
                     style={
-                      this.state.nightMode
+                      nightMode
                         ? { background: "#2f333d" }
                         : { background: "white" }
                     }
@@ -397,7 +406,7 @@ class Main extends Component {
             <div
               className="offlineMain notSelectable defaultCursor"
               style={
-                this.state.nightMode
+                nightMode
                   ? { background: "#2f333d" }
                   : { background: "white" }
               }
