@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import { line, curveNatural, area } from "d3-shape"
-import { scaleLinear, scaleTime } from "d3-scale"
+import { scaleLinear } from "d3-scale"
 
 class PlotTile extends Component {
   render() {

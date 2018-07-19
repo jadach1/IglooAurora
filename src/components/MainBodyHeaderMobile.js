@@ -29,11 +29,15 @@ class MainBodyHeader extends Component {
     const { loading, error, device } = this.props.data
 
     if (loading) {
-      return <div className="mainBodyHeader" />
+      return (
+        <div
+          className="mainBodyHeader"
+          style={this.props.isMobile ? { height: "64px", width: "100vw" } : ""}
+        />
+      )
     }
 
     if (error) {
-      console.error(error)
       return <div className="mainBodyHeader" />
     }
 

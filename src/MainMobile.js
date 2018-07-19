@@ -356,6 +356,7 @@ class Main extends Component {
                       showHiddenNotifications={this.showHiddenNotifications}
                       selectDevice={id => this.setState({ selectedDevice: id })}
                       nightMode={this.state.nightMode}
+                      isMobile={true}
                     />
                   </AppBar>
                   <div

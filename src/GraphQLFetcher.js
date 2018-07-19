@@ -5,6 +5,8 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { reactTranslateChangeLanguage } from "translate-components"
 
+let systemLang = navigator.language || navigator.userLanguage
+
 class GraphQLFetcher extends Component {
   componentDidMount() {
     const subscriptionQuery = gql`
@@ -47,10 +49,27 @@ class GraphQLFetcher extends Component {
 
   render() {
     const {
-      userData: { loading, error, user },
+      userData: { user },
     } = this.props
 
+    let changeLanguage = () => {}
+
     if (user) {
+      changeLanguage = language =>
+        this.props.ChangeLanguage({
+          variables: {
+            language,
+          },
+          optimisticResponse: {
+            __typename: "Mutation",
+            user: {
+              id: user.id,
+              language,
+              __typename: "User",
+            },
+          },
+        })
+
       switch (user.language) {
         case "en":
           reactTranslateChangeLanguage.bind(this, "en")
@@ -66,6 +85,28 @@ class GraphQLFetcher extends Component {
           break
         case "zh-Hans":
           reactTranslateChangeLanguage.bind(this, "zh-Hans")
+          break
+        default:
+          switch (systemLang) {
+            case "en":
+            changeLanguage("en")
+              break
+            case "de":
+            changeLanguage("de")
+              break
+            case "es":
+            changeLanguage("es")
+              break
+            case "it":
+            changeLanguage("it")
+              break
+            case "zh-Hans":
+            changeLanguage("zh-Hans")
+              break
+            default:
+            changeLanguage("en")
+              break
+          }
           break
       }
     }
@@ -106,4 +147,18 @@ export default graphql(
     }
   `,
   { name: "userData" }
-)(GraphQLFetcher)
+)(
+  graphql(
+    gql`
+      mutation ChangeLanguage($language: String) {
+        user(language: $language) {
+          id
+          language
+        }
+      }
+    `,
+    {
+      name: "ChangeLanguage",
+    }
+  )(GraphQLFetcher)
+)

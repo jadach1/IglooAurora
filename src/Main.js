@@ -377,12 +377,13 @@ class Main extends Component {
                         ? { background: "#2f333d" }
                         : { background: "white" }
                     }
+                    className="mainBody"
                   >
                     <div
                       className={
                         nightMode
-                          ? "mainBody darkMainBodyBG"
-                          : "mainBody mainBodyBG"
+                          ? "darkMainBodyBG"
+                          : "mainBodyBG"
                       }
                       style={{ width: "100%", height: "100%" }}
                     />
@@ -398,8 +399,8 @@ class Main extends Component {
                 </React.Fragment>
               )}
             </div>
-            <NotificationsSnackbar /> 
-            <CookiesAlert />
+            <NotificationsSnackbar mobile={false}/> 
+            <CookiesAlert mobile={false}/>
             <EmailNotVerified/>
           </Online>
           <Offline key="offlineMainBody">

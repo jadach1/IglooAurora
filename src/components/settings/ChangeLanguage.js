@@ -61,14 +61,14 @@ class ChangeLanguageDialog extends React.Component {
 
   render() {
     const {
-      userData: {  user },
+      userData: { user },
     } = this.props
 
     const languageDialogActions = [
       <Button onClick={this.props.handleLanguageDialogClose}>Close</Button>,
     ]
 
-    let changeLanguage
+    let changeLanguage = () => {}
 
     let lang
 
