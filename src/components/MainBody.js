@@ -150,8 +150,8 @@ class MainBody extends Component {
         <div
           style={
             this.props.nightMode
-              ? { background: "#2f333d" }
-              : { background: "white" }
+              ? { background: "#2f333d", height: "100%" }
+              : { background: "white", height: "100%" }
           }
         >
           <div
@@ -167,6 +167,7 @@ class MainBody extends Component {
         </div>
       )
     }
+
     if (error) {
       return (
         <div

@@ -111,7 +111,7 @@ class UnAuthenticatedApp extends Component {
                     style={{ marginTop: "12px" }}
                   >
                     Sign up
-                  </Button>{" "}
+                  </Button>
                   <Button
                     variant="raised"
                     color="primary"

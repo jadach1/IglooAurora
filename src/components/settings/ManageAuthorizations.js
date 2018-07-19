@@ -104,11 +104,34 @@ class AuthDialog extends React.Component {
       </MuiThemeProvider>,
     ]
 
-    let tokens
+let tokenList =""
 
-    if (error) return "Unexpected error"
+    if (error) tokenList = "Unexpected error"
 
-    if (loading) return <CenteredSpinner />
+    if (loading) tokenList = <CenteredSpinner/>
+
+if (user) tokenList =  <List style={{ padding: "0" }}>
+{user.permanentTokens.map(token => (
+  <ListItem
+    primaryText={token.customName}
+    leftIcon={<Icon>vpn_key</Icon>}
+    rightIconButton={
+      <IconButton
+        onClick={() => this.deletePermanentToken(token.id)}
+      >
+        <Icon>delete</Icon>
+      </IconButton>
+    }
+  />
+))}
+<ListItem
+  primaryText="Get a new permanent token"
+  leftIcon={<Icon>add</Icon>}
+  onClick={() =>
+    this.setState({ nameOpen: true, authDialogOpen: false })
+  }
+/>
+</List>
 
     return (
       <React.Fragment>
@@ -146,28 +169,7 @@ class AuthDialog extends React.Component {
           }}
           titleClassName="notSelectable defaultCursor"
         >
-          <List style={{ padding: "0" }}>
-            {user.permanentTokens.map(token => (
-              <ListItem
-                primaryText={token.customName}
-                leftIcon={<Icon>vpn_key</Icon>}
-                rightIconButton={
-                  <IconButton
-                    onClick={() => this.deletePermanentToken(token.id)}
-                  >
-                    <Icon>delete</Icon>
-                  </IconButton>
-                }
-              />
-            ))}
-            <ListItem
-              primaryText="Get a new permanent token"
-              leftIcon={<Icon>add</Icon>}
-              onClick={() =>
-                this.setState({ nameOpen: true, authDialogOpen: false })
-              }
-            />
-          </List>
+         {tokenList}
         </Dialog>
         <Dialog
           title="Choose a token name"

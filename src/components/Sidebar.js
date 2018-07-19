@@ -28,18 +28,6 @@ const theme2 = createMuiTheme({
   },
 })
 
-let removeDuplicates = inputArray => {
-  var obj = {}
-  var returnArray = []
-  for (var i = 0; i < inputArray.length; i++) {
-    obj[inputArray[i]] = true
-  }
-  for (var key in obj) {
-    returnArray.push(key)
-  }
-  return returnArray
-}
-
 class Sidebar extends Component {
   state = { popoverOpen: false, visibleDeviceTypes: []
    }
@@ -152,8 +140,8 @@ class Sidebar extends Component {
           devices={user.devices}
           setVisibleTypes={visibleTypes => {
             this.setState({ visibleDeviceTypes: visibleTypes })
-            console.log(this.state.visibleDeviceTypes)
           }}
+          nightMode={this.props.nightMode}
         />
 
         <List

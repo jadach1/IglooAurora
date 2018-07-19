@@ -219,18 +219,18 @@ class NotificationsDrawer extends React.Component {
                       .fromNow()}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="Delete"
-                      onClick={() => deleteNotification(notification.id)}
+                    <Tooltip
+                      id="tooltip-bottom"
+                      title="Delete"
+                      placement="bottom"
                     >
-                      <Tooltip
-                        id="tooltip-bottom"
-                        title="Delete"
-                        placement="bottom"
+                      <IconButton
+                        aria-label="Delete"
+                        onClick={() => deleteNotification(notification.id)}
                       >
                         <i class="material-icons">delete</i>
-                      </Tooltip>
-                    </IconButton>
+                      </IconButton>
+                    </Tooltip>
                   </ListItemSecondaryAction>
                 </ListItem>
               ))
@@ -268,31 +268,30 @@ class NotificationsDrawer extends React.Component {
                       .fromNow()}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton
-                      aria-label="Mark as unread"
-                      onClick={() => markAsUnread(notification.id)}
+                    <Tooltip
+                      id="tooltip-bottom"
+                      title="Mark as unread"
+                      placement="bottom"
                     >
-                      <Tooltip
-                        id="tooltip-bottom"
-                        title="Mark as unread"
-                        placement="bottom"
+                      <IconButton
+                        aria-label="Mark as unread"
+                        onClick={() => markAsUnread(notification.id)}
                       >
                         <i class="material-icons">markunread</i>
-                      </Tooltip>
-                    </IconButton>
-
-                    <IconButton
-                      aria-label="Delete"
-                      onClick={() => deleteNotification(notification.id)}
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip
+                      id="tooltip-bottom"
+                      title="Delete"
+                      placement="bottom"
                     >
-                      <Tooltip
-                        id="tooltip-bottom"
-                        title="Delete"
-                        placement="bottom"
+                      <IconButton
+                        aria-label="Delete"
+                        onClick={() => deleteNotification(notification.id)}
                       >
                         <i class="material-icons">delete</i>
-                      </Tooltip>
-                    </IconButton>
+                      </IconButton>
+                    </Tooltip>
                   </ListItemSecondaryAction>
                 </ListItem>
               ))

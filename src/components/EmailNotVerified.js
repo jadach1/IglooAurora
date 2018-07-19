@@ -142,7 +142,11 @@ class CustomizedSnackbars extends React.Component {
             horizontal: "right",
           }}
           open={this.state.open}
-          style={this.props.mobile ? null : { bottom: "128px", right: "16px" }}
+          style={
+            this.props.mobile
+              ? null
+              : { bottom: "128px", right: "16px", width: "351px", left: "auto" }
+          }
           TransitionComponent={
             this.props.mobile ? TransitionUp : TransitionLeft
           }

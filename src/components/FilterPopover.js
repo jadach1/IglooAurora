@@ -71,41 +71,43 @@ export default class FilterPopover extends Component {
         }}
         className="notSelectable"
       >
-        <Toolbar style={{ height: "64px" }}>
-          <Typography
-            variant="title"
-            className="defaultCursor"
-            style={{
-              marginLeft: "-8px",
-            }}
-          >
-            Filter by device type
-          </Typography>
-        </Toolbar>
-        <List style={{ width: "256px", padding: "0" }}>
-          {uniqueDeviceTypeList.map(deviceType => (
-            <ListItem
-              key={deviceType}
-              role={undefined}
-              button
-              onClick={this.handleToggle(deviceType)}
+        <div style={this.props.nightMode ? { backgroundColor: "#2f333d" } : null}>
+          <Toolbar style={{ height: "64px" }}>
+            <Typography
+              variant="title"
+              className="defaultCursor"
+              style={{
+                marginLeft: "-8px",
+              }}
             >
-              <Checkbox
-                checked={this.state.checked.indexOf(deviceType) !== -1}
-                tabIndex={-1}
-                disableRipple
-                onChange={this.handleToggle(deviceType)}
-              />
-              <ListItemText
-                primary={deviceType}
-                secondary={
-                  occurrences[deviceType] +
-                  (occurrences[deviceType] === 1 ? " device" : " devices")
-                }
-              />
-            </ListItem>
-          ))}
-        </List>
+              Filter by device type
+            </Typography>
+          </Toolbar>
+          <List style={{ width: "256px", padding: "0" }}>
+            {uniqueDeviceTypeList.map(deviceType => (
+              <ListItem
+                key={deviceType}
+                role={undefined}
+                button
+                onClick={this.handleToggle(deviceType)}
+              >
+                <Checkbox
+                  checked={this.state.checked.indexOf(deviceType) !== -1}
+                  tabIndex={-1}
+                  disableRipple
+                  onChange={this.handleToggle(deviceType)}
+                />
+                <ListItemText
+                  primary={deviceType}
+                  secondary={
+                    occurrences[deviceType] +
+                    (occurrences[deviceType] === 1 ? " device" : " devices")
+                  }
+                />
+              </ListItem>
+            ))}
+          </List>
+        </div>
       </Popover>
     )
   }

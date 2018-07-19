@@ -230,7 +230,7 @@ class SettingsDialog extends React.Component {
 
     let toggleDevMode = ""
 
-    let toggleNightMode=""
+    let toggleNightMode = ""
 
     if (error) deviceList = "Unexpected error bear"
 
@@ -288,7 +288,7 @@ class SettingsDialog extends React.Component {
         />
       )
 
-      nightModeSetting=(
+      nightModeSetting = (
         <ListItem
           primaryText="Night mode"
           rightToggle={
@@ -404,7 +404,6 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "500px",
               }}
             >
               <div style={listStyles.root}>
@@ -413,6 +412,7 @@ class SettingsDialog extends React.Component {
                     Appearance
                   </Subheader>
                   {nightModeSetting}
+                  <Divider />
                   <Subheader style={{ cursor: "default" }}>
                     Localization
                   </Subheader>
@@ -443,6 +443,7 @@ class SettingsDialog extends React.Component {
                     secondaryText="DD/MM/YYYY, 24-hour clock"
                     onClick={this.handleTimeFormatDialogOpen}
                   />
+                  <Divider />
                   <Subheader style={{ cursor: "default" }}>
                     Lorem Ipsum
                   </Subheader>
@@ -456,7 +457,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "500px",
+                height: "100%",
               }}
             >
               <div style={listStyles.root}>
@@ -496,7 +497,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "500px",
+                height: "100%",
               }}
             >
               <List style={{ padding: "0" }}>
@@ -576,7 +577,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "500px",
+                height: "100%",
               }}
             >
               <List style={{ padding: "0" }}>
@@ -586,6 +587,7 @@ class SettingsDialog extends React.Component {
                   secondaryText="Generate, view and delete your account's access tokens"
                   onClick={this.handleAuthDialogOpen}
                 />
+                <Divider />
                 <Subheader style={{ cursor: "default" }}>
                   Devices and values
                 </Subheader>
@@ -744,17 +746,19 @@ export default graphql(
     {
       name: "ToggleDevMode",
     }
-  )(graphql(
-    gql`
-      mutation ToggleNightMode($nightMode: Bool) {
-        user(devMode: $nightMode) {
-          id
-          nightMode
+  )(
+    graphql(
+      gql`
+        mutation ToggleNightMode($nightMode: Bool) {
+          user(devMode: $nightMode) {
+            id
+            nightMode
+          }
         }
+      `,
+      {
+        name: "ToggleNightMode",
       }
-    `,
-    {
-      name: "ToggleNightMode",
-    }
-  )(SettingsDialog))
+    )(SettingsDialog)
+  )
 )
