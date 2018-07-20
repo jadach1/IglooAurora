@@ -33,7 +33,21 @@ class MainBodyHeader extends Component {
         <div
           className="mainBodyHeader"
           style={this.props.isMobile ? { height: "64px", width: "100vw" } : ""}
-        />
+        >
+          <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
+            <IconButton
+              style={{
+                color: "white",
+                marginTop:"auto",
+                marginBottom:"auto",
+                marginLeft:"8px"
+              }}
+              onClick={() => this.props.selectDevice(null)}
+            >
+              <Icon>chevron_left</Icon>
+            </IconButton>
+          </Tooltip>
+        </div>
       )
     }
 
@@ -155,6 +169,7 @@ class MainBodyHeader extends Component {
           id={device.id}
           updatedAt={device.updatedAt}
           createdAt={device.createdAt}
+          devMode={this.props.devMode}
         />
       </React.Fragment>
     )

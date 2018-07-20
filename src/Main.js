@@ -286,14 +286,16 @@ class Main extends Component {
 
   render() {
     const {
-      userData: { loading, error, user },
+      userData: {  user },
     } = this.props
 
-    let nightMode
+    let nightMode = ""
+    let devMode = ""
 
-    if (loading) nightMode=""
-    if(error) nightMode=""
-    if(user) nightMode=user.nightMode
+    if (user) {
+      nightMode = user.nightMode
+      devMode = user.devMode
+    }
 
     return (
       <MuiThemeProvider>
@@ -351,6 +353,7 @@ class Main extends Component {
                   hiddenNotifications={this.state.hiddenNotifications}
                   showHiddenNotifications={this.showHiddenNotifications}
                   nightMode={nightMode}
+                  devMode={devMode}
                 />
               ) : (
                 <div className="mainBodyHeader" key="mainBodyHeader" />
@@ -362,6 +365,7 @@ class Main extends Component {
                     showHidden={this.state.showMainHidden}
                     changeShowHiddenState={this.changeShowHiddenState}
                     nightMode={nightMode}
+                    devMode={devMode}
                   />
                   <StatusBar
                     userData={this.props.userData}
@@ -380,11 +384,7 @@ class Main extends Component {
                     className="mainBody"
                   >
                     <div
-                      className={
-                        nightMode
-                          ? "darkMainBodyBG"
-                          : "mainBodyBG"
-                      }
+                      className={nightMode ? "darkMainBodyBG" : "mainBodyBG"}
                       style={{ width: "100%", height: "100%" }}
                     />
                   </div>
@@ -399,17 +399,15 @@ class Main extends Component {
                 </React.Fragment>
               )}
             </div>
-            <NotificationsSnackbar mobile={false}/> 
-            <CookiesAlert mobile={false}/>
-            <EmailNotVerified/>
+            <NotificationsSnackbar />
+            <CookiesAlert mobile={false} />
+            <EmailNotVerified mobile={false} />
           </Online>
           <Offline key="offlineMainBody">
             <div
               className="offlineMain notSelectable defaultCursor"
               style={
-                nightMode
-                  ? { background: "#2f333d" }
-                  : { background: "white" }
+                nightMode ? { background: "#2f333d" } : { background: "white" }
               }
             >
               <AppBar position="sticky">

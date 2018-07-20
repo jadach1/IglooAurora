@@ -41,9 +41,15 @@ class DeviceInfo extends React.Component {
         {moment
           .utc(this.props.updatedAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
           .fromNow()}
-        <br />
-        <br />
-        <b>ID: </b> {this.props.id}
+        {this.props.devMode ? (
+          <React.Fragment>
+            <br />
+            <br />
+            <b>ID: </b> {this.props.id}
+          </React.Fragment>
+        ) : (
+          ""
+        )}
       </Dialog>
     )
   }

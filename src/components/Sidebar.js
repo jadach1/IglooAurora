@@ -29,8 +29,10 @@ const theme2 = createMuiTheme({
 })
 
 class Sidebar extends Component {
-  state = { popoverOpen: false, visibleDeviceTypes: []
-   }
+  state = {
+    popoverOpen: false,
+    visibleDeviceTypes: [],
+  }
 
   listItemClick = device => {
     if (this.props.selectedDevice !== device.id) {

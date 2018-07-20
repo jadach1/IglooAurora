@@ -248,6 +248,8 @@ class SettingsDialog extends React.Component {
 
     let deviceList = "No devices"
 
+    let languageText = "English"
+
     if (error) deviceList = "Unexpected error bear"
 
     if (loading) deviceList = <CenteredSpinner />
@@ -366,6 +368,27 @@ class SettingsDialog extends React.Component {
           },
         })
       }
+
+      switch(user.language) {
+        case "en": 
+        languageText="English" 
+        break
+      case "de":
+      languageText="Deutsch"
+      break
+      case "es":
+      languageText="Español"
+      break
+      case "it":
+      languageText="Italiano"
+      break
+      case "zh-Hans":
+      languageText="中文(简体)"
+      break
+      default:
+      languageText="English"
+      break
+      }
     }
 
     return (
@@ -382,7 +405,7 @@ class SettingsDialog extends React.Component {
         >
           <MuiThemeProvider theme={theme}>
             <AppBar position="sticky" style={{ height: "64px" }}>
-              <Toolbar style={{ height: "64px" }}>
+              <Toolbar style={{ height: "64px",paddingLeft:"24px", paddingRight:"24px" }}>
                 <Typography
                   variant="title"
                   color="inherit"
@@ -432,7 +455,7 @@ class SettingsDialog extends React.Component {
                   </Subheader>
                   <ListItem
                     primaryText="Change language"
-                    secondaryText="English"
+                    secondaryText={languageText}
                     onClick={this.handleLanguageDialogOpen}
                   />
                   <ListItem
@@ -610,17 +633,7 @@ class SettingsDialog extends React.Component {
                   onClick={() =>
                     this.setState({ createNotificationOpen: true })
                   }
-                />
-                <ListItem
-                  primaryText="Show the ID of values and devices"
-                  rightToggle={
-                    <Toggle
-                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                      rippleStyle={{ color: "#0083ff" }}
-                    />
-                  }
-                />
+                />             
               </List>
             </div>
           </SwipeableViews>

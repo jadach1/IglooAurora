@@ -130,6 +130,7 @@ export default graphql(
         id
         language
         nightMode
+        devMode
         devices {
           id
           customName

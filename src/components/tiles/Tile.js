@@ -673,6 +673,7 @@ class Tile extends Component {
           createdAt={value.createdAt}
           updatedAt={value.updatedAt}
           id={value.id}
+          devMode={this.props.devMode}
         />
       </React.Fragment>
     )

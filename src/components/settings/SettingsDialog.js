@@ -232,6 +232,8 @@ class SettingsDialog extends React.Component {
 
     let toggleNightMode = ""
 
+    let languageText = "English"
+
     if (error) deviceList = "Unexpected error bear"
 
     if (loading) deviceList = <CenteredSpinner />
@@ -347,6 +349,27 @@ class SettingsDialog extends React.Component {
           },
         })
       }
+
+      switch(user.language) {
+        case "en": 
+        languageText="English" 
+        break
+      case "de":
+      languageText="Deutsch"
+      break
+      case "es":
+      languageText="Español"
+      break
+      case "it":
+      languageText="Italiano"
+      break
+      case "zh-Hans":
+      languageText="中文(简体)"
+      break
+      default:
+      languageText="English"
+      break
+      }
     }
 
     const actions = [
@@ -418,7 +441,7 @@ class SettingsDialog extends React.Component {
                   </Subheader>
                   <ListItem
                     primaryText="Change language"
-                    secondaryText="English"
+                    secondaryText={languageText}
                     onClick={this.handleLanguageDialogOpen}
                   />
                   <ListItem
@@ -609,16 +632,6 @@ class SettingsDialog extends React.Component {
                     this.setState({ createNotificationOpen: true })
                   }
                 />
-                <ListItem
-                  primaryText="Show the ID of values and devices"
-                  rightToggle={
-                    <Toggle
-                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                      rippleStyle={{ color: "#0083ff" }}
-                    />
-                  }
-                />
               </List>
             </div>
           </SwipeableViews>
@@ -721,14 +734,15 @@ export default graphql(
   gql`
     query {
       user {
-        id
+        id        
+        devMode
+        nightMode
+        language
         devices {
           id
           customName
           icon
         }
-        devMode
-        nightMode
       }
     }
   `,
