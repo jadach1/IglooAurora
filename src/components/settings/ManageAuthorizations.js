@@ -26,6 +26,7 @@ class AuthDialog extends React.Component {
     authSnackOpen: false,
     authDialogOpen: false,
     tokenName: "",
+    password: "",
   }
 
   getPermanentToken = () => {
@@ -35,6 +36,14 @@ class AuthDialog extends React.Component {
       },
     })
     this.setState({ nameOpen: false, authDialogOpen: true })
+  }
+
+  verifyPassword = () => {
+    this.props["verifyPassword"]({
+      variables: {
+        password: this.state.password,
+      },
+    })
   }
 
   deletePermanentToken = tokenID => {
@@ -104,34 +113,35 @@ class AuthDialog extends React.Component {
       </MuiThemeProvider>,
     ]
 
-let tokenList =""
+    let tokenList = ""
 
     if (error) tokenList = "Unexpected error"
 
-    if (loading) tokenList = <CenteredSpinner/>
+    if (loading) tokenList = <CenteredSpinner />
 
-if (user) tokenList =  <List style={{ padding: "0" }}>
-{user.permanentTokens.map(token => (
-  <ListItem
-    primaryText={token.customName}
-    leftIcon={<Icon>vpn_key</Icon>}
-    rightIconButton={
-      <IconButton
-        onClick={() => this.deletePermanentToken(token.id)}
-      >
-        <Icon>delete</Icon>
-      </IconButton>
-    }
-  />
-))}
-<ListItem
-  primaryText="Get a new permanent token"
-  leftIcon={<Icon>add</Icon>}
-  onClick={() =>
-    this.setState({ nameOpen: true, authDialogOpen: false })
-  }
-/>
-</List>
+    if (user)
+      tokenList = (
+        <List style={{ padding: "0" }}>
+          {user.permanentTokens.map(token => (
+            <ListItem
+              primaryText={token.customName}
+              leftIcon={<Icon>vpn_key</Icon>}
+              rightIconButton={
+                <IconButton onClick={() => this.deletePermanentToken(token.id)}>
+                  <Icon>delete</Icon>
+                </IconButton>
+              }
+            />
+          ))}
+          <ListItem
+            primaryText="Get a new permanent token"
+            leftIcon={<Icon>add</Icon>}
+            onClick={() =>
+              this.setState({ nameOpen: true, authDialogOpen: false })
+            }
+          />
+        </List>
+      )
 
     return (
       <React.Fragment>
@@ -150,6 +160,7 @@ if (user) tokenList =  <List style={{ padding: "0" }}>
             floatingLabelText="Password"
             type="password"
             style={{ width: "100%" }}
+            onChange={event => this.setState({ password: event.target.value })}
             onKeyPress={event => {
               if (event.key === "Enter") this.openAuthDialog()
             }}
@@ -169,7 +180,7 @@ if (user) tokenList =  <List style={{ padding: "0" }}>
           }}
           titleClassName="notSelectable defaultCursor"
         >
-         {tokenList}
+          {tokenList}
         </Dialog>
         <Dialog
           title="Choose a token name"
@@ -230,6 +241,17 @@ export default graphql(
       {
         name: "DeletePermanentAccesToken",
       }
-    )(AuthDialog)
+    )(
+      graphql(
+        gql`
+          query verifyPassword($password: String) {
+            verifyPassword(password: $password)
+          }
+        `,
+        {
+          name: "verifyPassword",
+        }
+      )(AuthDialog)
+    )
   )
 )

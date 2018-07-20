@@ -264,7 +264,6 @@ class Main extends Component {
       isTileFullScreen: false,
       drawer: false,
       slideIndex: 0,
-      nightMode: false,
     }
   }
 
@@ -291,6 +290,18 @@ class Main extends Component {
   }
 
   render() {
+    const {
+      userData: {  user },
+    } = this.props
+
+    let nightMode = ""
+    let devMode = ""
+
+    if (user) {
+      nightMode = user.nightMode
+      devMode = user.devMode
+    }
+
     return (
       <MuiThemeProvider>
         <React.Fragment>
@@ -306,7 +317,7 @@ class Main extends Component {
                     handleChange={this.handleSettingsTabChanged}
                     slideIndex={this.state.slideIndex}
                     handleChangeBTIndex={this.handleChangeBTIndex}
-                    nightMode={this.state.nightMode}
+                    nightMode={nightMode}
                   />
                   <AppBar>
                     <SidebarHeader
@@ -327,7 +338,7 @@ class Main extends Component {
                     className="mobileSidebar"
                     key="sidebar"
                     style={
-                      this.state.nightMode
+                  nightMode
                         ? { background: "#21252b" }
                         : { background: "#f2f2f2" }
                     }
@@ -340,7 +351,7 @@ class Main extends Component {
                       changeText={text => this.setState({ searchText: text })}
                       isMobile={this.props.isMobile}
                       userData={this.props.userData}
-                      nightMode={this.state.nightMode}
+                      nightMode={nightMode}
                     />
                   </div>
                 </React.Fragment>
@@ -355,15 +366,16 @@ class Main extends Component {
                       hiddenNotifications={this.state.hiddenNotifications}
                       showHiddenNotifications={this.showHiddenNotifications}
                       selectDevice={id => this.setState({ selectedDevice: id })}
-                      nightMode={this.state.nightMode}
+                      nightMode={nightMode}
                       isMobile={true}
+                      devMode={devMode}
                     />
                   </AppBar>
                   <div
                     className="mobileMainBody"
                     key="mainBody"
                     style={
-                      this.state.nightMode
+                      nightMode
                         ? { background: "#2f333d" }
                         : { background: "white" }
                     }
@@ -373,7 +385,8 @@ class Main extends Component {
                       showHidden={this.state.showMainHidden}
                       changeShowHiddenState={this.changeShowHiddenState}
                       isMobile={true}
-                      nightMode={this.state.nightMode}
+                      nightMode={nightMode}
+                      devMode={devMode}
                     />
                   </div>
                 </React.Fragment>

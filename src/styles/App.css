@@ -120,6 +120,7 @@ body {
   line-height: 64px;
   text-align: center;
 }
+
 .title {
   grid-area: title;
   margin: 0;

@@ -188,7 +188,12 @@ class MainBody extends Component {
     let hiddenTiles = values.filter(value => value.relevance === "HIDDEN")
 
     const renderTile = value => (
-      <Tile value={value} key={value.id} nightMode={this.props.nightMode} />
+      <Tile
+        value={value}
+        key={value.id}
+        nightMode={this.props.nightMode}
+        devMode={this.props.devMode}
+      />
     )
 
     visibleTiles = visibleTiles.map(renderTile)

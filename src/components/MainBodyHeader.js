@@ -139,6 +139,7 @@ class MainBodyHeader extends Component {
           id={device.id}
           updatedAt={device.updatedAt}
           createdAt={device.createdAt}
+          devMode={this.props.devMode}
         />
       </React.Fragment>
     )
