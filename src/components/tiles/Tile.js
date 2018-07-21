@@ -360,11 +360,9 @@ class Tile extends Component {
                 }
                 anchorOrigin={{ horizontal: "right", vertical: "top" }}
                 targetOrigin={{ horizontal: "right", vertical: "top" }}
-                animation={PopoverAnimationVertical}
                 onClick={() => this.setState({ tileMenuOpen: true })}
                 onRequestChange={() => this.state.tileMenuOpen ? this.setState({ tileMenuOpen: false }):null}
                 open={this.state.tileMenuOpen}
-                desktop={true}
                 className="notSelectable"
                 menuStyle={
                   this.props.nightMode
