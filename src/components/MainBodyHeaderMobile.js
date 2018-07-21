@@ -102,6 +102,19 @@ class MainBodyHeader extends Component {
               gridArea: "buttons",
             }}
           >
+          <Tooltip
+              id="tooltip-bottom"
+              title="Get link"
+              placement="bottom"
+            >
+              <IconButton
+                style={{
+                  color: "white",
+                }}
+              >
+                <Icon>link</Icon>
+              </IconButton>
+            </Tooltip>
             <Tooltip
               id="tooltip-bottom"
               title="See on the map"

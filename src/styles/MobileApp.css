@@ -25,7 +25,6 @@
   grid-area: body;
   overflow-y: auto;
   box-sizing: border-box;
-  padding: 0 15px 0 15px;
 }
 
 .mobileMainBodyHeader {
@@ -34,7 +33,6 @@
   color: white;
   box-sizing: border-box;
   line-height: 64px;
-  font-size: 32px;
   vertical-align: middle;
   z-index: 1000;
   display: grid;

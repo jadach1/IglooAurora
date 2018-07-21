@@ -104,7 +104,6 @@ body {
   color: white;
   box-sizing: border-box;
   line-height: 64px;
-  font-size: 32px;
   vertical-align: middle;
   z-index: 1000;
   display: grid;
@@ -115,7 +114,7 @@ body {
 
 .deviceIconBig {
   grid-area: icon;
-  font-size: 32px;
+  font-size: 24px;
   vertical-align: middle;
   line-height: 64px;
   text-align: center;
@@ -124,6 +123,7 @@ body {
 .title {
   grid-area: title;
   margin: 0;
+  font-size: 24px;
 }
 
 .logo {
@@ -211,13 +211,13 @@ body {
   font-size: 23px;
 }
 .loginForm .rightSide {
-  padding: 15px 30px 15px 30px;
+  padding: 16px 32px 16px 32px;
   grid-column: mid end;
 }
 
 .loginForm .logo {
   display: block;
-  margin: 15px auto 0 auto;
+  margin: 16px auto 0 auto;
 }
 .loginForm h1 {
   color: #0083ff;
