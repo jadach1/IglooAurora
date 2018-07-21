@@ -55,17 +55,17 @@
   height: calc(100% - 64px);
 
   display: grid;
-  grid-template-columns: 15px 25px 10px auto 10px 25px 15px;
-  grid-template-rows: auto 50px 30px auto;
+  grid-template-columns: 16px 24px 8px auto 8px 24px 16px;
+  grid-template-rows: auto 48px 32px auto;
   grid-template-areas: ". . . . . . ." ". min . slider . max ." ". . . number . . ." ". . . . . . .";
 }
 
 .readWriteBoundedFloatTile .min {
-  line-height: 50px;
+  line-height: 48px;
   grid-area: min;
 }
 .readWriteBoundedFloatTile .max {
-  line-height: 50px;
+  line-height: 48px;
   grid-area: max;
 }
 .readWriteBoundedFloatTile .slider {
@@ -75,7 +75,7 @@
 .readWriteBoundedFloatTile .number {
   grid-area: number;
   text-align: center;
-  line-height: 30px;
+  line-height: 32px;
 }
 
 .readOnlyColourTile .colourDot {

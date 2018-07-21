@@ -70,12 +70,12 @@ export default class StatusBar extends Component {
         }
         className="notSelectable statusBar defaultCursor"
       >
-        <div style={{ marginLeft: "12px" }}>
+        <div style={{ marginLeft: "16px" }}>
           {deviceStatus}
           <div
             style={{
               float: "right",
-              marginRight: "12px",
+              marginRight: "8px",
             }}
           >
             <Icon>network_wifi</Icon> <Icon>battery_full</Icon>

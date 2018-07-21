@@ -14,6 +14,7 @@ import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
 import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
 import EmailNotVerified from "./components/EmailNotVerified"
 import CookiesAlert from "./components/CookiesAlert"
+import StatusBar from "./components/StatusBar"
 
 class Main extends Component {
   state = {
@@ -380,6 +381,7 @@ class Main extends Component {
                         : { background: "white" }
                     }
                   >
+                  <div style={{height:"calc(100vh - 96px)"}}>
                     <MainBody
                       deviceId={this.state.selectedDevice}
                       showHidden={this.state.showMainHidden}
@@ -388,7 +390,12 @@ class Main extends Component {
                       nightMode={nightMode}
                       devMode={devMode}
                     />
+                                      </div>
+                    <StatusBar userData={this.props.userData}
+                    deviceId={this.state.selectedDevice}
+                    nightMode={nightMode}/>
                   </div>
+                  
                 </React.Fragment>
               )}
             </div>
