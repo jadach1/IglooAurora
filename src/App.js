@@ -113,9 +113,6 @@ class App extends Component {
     }
   }
 
-  /**
-   * Calculate & Update state of new dimensions
-   */
   updateDimensions() {
     if (window.innerWidth < 900) {
       this.setState({ isMobile: true })
@@ -124,17 +121,11 @@ class App extends Component {
     }
   }
 
-  /**
-   * Add event listener
-   */
   componentDidMount() {
     this.updateDimensions()
     window.addEventListener("resize", this.updateDimensions.bind(this))
   }
 
-  /**
-   * Remove event listener
-   */
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateDimensions.bind(this))
   }
