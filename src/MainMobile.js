@@ -54,9 +54,9 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           if (this.state.searchText === "") {
-            this.selectDevice(this.props.userData.user.devices[0].id)
+            this.props.selectDevice(this.props.userData.user.devices[0].id)
           } else {
-            this.selectDevice(
+            this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
                   .toLowerCase()
@@ -79,7 +79,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           if (this.state.searchText !== "") {
-            this.selectDevice(
+            this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
                   .toLowerCase()
@@ -87,7 +87,7 @@ class Main extends Component {
               )[1].id
             )
           } else {
-            this.selectDevice(this.props.userData.user.devices[1].id)
+            this.props.selectDevice(this.props.userData.user.devices[1].id)
           }
           this.setState({ drawer: false })
         }
@@ -104,7 +104,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           if (this.state.searchText !== "") {
-            this.selectDevice(
+            this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
                   .toLowerCase()
@@ -112,7 +112,7 @@ class Main extends Component {
               )[2].id
             )
           } else {
-            this.selectDevice(this.props.userData.user.devices[2].id)
+            this.props.selectDevice(this.props.userData.user.devices[2].id)
           }
           this.setState({ drawer: false })
         }
@@ -129,7 +129,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           if (this.state.searchText !== "") {
-            this.selectDevice(
+            this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
                   .toLowerCase()
@@ -137,7 +137,7 @@ class Main extends Component {
               )[3].id
             )
           } else {
-            this.selectDevice(this.props.userData.user.devices[3].id)
+            this.props.selectDevice(this.props.userData.user.devices[3].id)
           }
           this.setState({ drawer: false })
         }
@@ -151,7 +151,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           if (this.state.searchText !== "") {
-            this.selectDevice(
+            this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
                   .toLowerCase()
@@ -159,7 +159,7 @@ class Main extends Component {
               )[4].id
             )
           } else {
-            this.selectDevice(this.props.userData.user.devices[4].id)
+            this.props.selectDevice(this.props.userData.user.devices[4].id)
           }
           this.setState({ drawer: false })
         }
@@ -173,7 +173,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           if (this.state.searchText !== "") {
-            this.selectDevice(
+            this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
                   .toLowerCase()
@@ -181,7 +181,7 @@ class Main extends Component {
               )[5].id
             )
           } else {
-            this.selectDevice(this.props.userData.user.devices[5].id)
+            this.props.selectDevice(this.props.userData.user.devices[5].id)
           }
           this.setState({ drawer: false })
         }
@@ -195,7 +195,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           if (this.state.searchText !== "") {
-            this.selectDevice(
+            this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
                   .toLowerCase()
@@ -203,7 +203,7 @@ class Main extends Component {
               )[6].id
             )
           } else {
-            this.selectDevice(this.props.userData.user.devices[6].id)
+            this.props.selectDevice(this.props.userData.user.devices[6].id)
           }
           this.setState({ drawer: false })
         }
@@ -217,7 +217,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           if (this.state.searchText !== "") {
-            this.selectDevice(
+            this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
                   .toLowerCase()
@@ -225,7 +225,7 @@ class Main extends Component {
               )[7].id
             )
           } else {
-            this.selectDevice(this.props.userData.user.devices[7].id)
+            this.props.selectDevice(this.props.userData.user.devices[7].id)
           }
           this.setState({ drawer: false })
         }
@@ -239,7 +239,7 @@ class Main extends Component {
           !this.state.areSettingsOpen
         ) {
           if (this.state.searchText !== "") {
-            this.selectDevice(
+            this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
                 device.customName
                   .toLowerCase()
@@ -247,7 +247,7 @@ class Main extends Component {
               )[8].id
             )
           } else {
-            this.selectDevice(this.props.userData.user.devices[8].id)
+            this.props.selectDevice(this.props.userData.user.devices[8].id)
           }
           this.setState({ drawer: false })
         }
@@ -260,15 +260,12 @@ class Main extends Component {
 
     this.state = {
       showHidden: false,
-      selectedDevice: null,
       areSettingsOpen: false,
       isTileFullScreen: false,
       drawer: false,
       slideIndex: 0,
     }
   }
-
-  selectDevice = id => this.setState({ selectedDevice: id, drawer: false })
 
   changeShowHiddenState = () =>
     this.setState(oldState => ({
@@ -308,7 +305,7 @@ class Main extends Component {
         <React.Fragment>
           <Online>
             <div className="mobileMain">
-              {this.state.selectedDevice == null ? (
+              {this.props.selectedDevice == null ? (
                 <React.Fragment>
                   <SettingsDialogMobile
                     isOpen={this.state.areSettingsOpen}
@@ -345,8 +342,10 @@ class Main extends Component {
                     }
                   >
                     <Sidebar
-                      selectDevice={id => this.setState({ selectedDevice: id })}
-                      selectedDevice={this.state.selectedDevice}
+                       selectDevice={id=>{this.props.selectDevice(id)
+                        this.setState({ drawer: false })
+                      }}
+                      selectedDevice={this.props.selectedDevice}
                       changeDrawerState={this.changeDrawerState}
                       searchText={this.state.searchText}
                       changeText={text => this.setState({ searchText: text })}
@@ -360,13 +359,15 @@ class Main extends Component {
                 <React.Fragment>
                   <AppBar>
                     <MainBodyHeaderMobile
-                      deviceId={this.state.selectedDevice}
+                      deviceId={this.props.selectedDevice}
                       key="mobileMainBodyHeader"
                       drawer={this.state.drawer}
                       changeDrawerState={this.changeDrawerState}
                       hiddenNotifications={this.state.hiddenNotifications}
                       showHiddenNotifications={this.showHiddenNotifications}
-                      selectDevice={id => this.setState({ selectedDevice: id })}
+                      selectDevice={id=>{this.props.selectDevice(id)
+                        this.setState({ drawer: false })
+                      }}
                       nightMode={nightMode}
                       isMobile={true}
                       devMode={devMode}
@@ -383,7 +384,7 @@ class Main extends Component {
                   >
                   <div style={{height:"calc(100vh - 96px)"}}>
                     <MainBody
-                      deviceId={this.state.selectedDevice}
+                      deviceId={this.props.selectedDevice}
                       showHidden={this.state.showMainHidden}
                       changeShowHiddenState={this.changeShowHiddenState}
                       isMobile={true}
@@ -392,7 +393,7 @@ class Main extends Component {
                     />
                                       </div>
                     <StatusBar userData={this.props.userData}
-                    deviceId={this.state.selectedDevice}
+                    deviceId={this.props.selectedDevice}
                     nightMode={nightMode}/>
                   </div>
                   
