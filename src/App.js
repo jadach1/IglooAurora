@@ -3,6 +3,8 @@ import AuthenticatedApp from "./AuthenticatedApp"
 import UnAuthenticatedApp from "./UnAuthenticatedApp"
 import UnAuthenticatedAppMobile from "./UnAuthenticatedAppMobile"
 import jwt from "jsonwebtoken"
+import { Route, Switch, Redirect } from "react-router-dom"
+import Error404 from "./Error404"
 
 function setupWebPush(token) {
   const applicationServerPublicKey =
@@ -110,6 +112,8 @@ class App extends Component {
     this.state = {
       bearer,
       isMobile: null,
+      from: "/",
+      redirectToReferrer: false,
     }
   }
 
@@ -137,6 +141,8 @@ class App extends Component {
         localStorage.setItem("bearer", bearer)
       }
       setupWebPush(bearer)
+
+      this.setState({ redirectToReferrer: true })
     }
 
     const logOut = () => {
@@ -146,21 +152,56 @@ class App extends Component {
       }
     }
 
-    if (this.state.bearer === "") {
-      return this.state.isMobile ? (
-        <UnAuthenticatedAppMobile signIn={signIn} />
-      ) : (
-        <UnAuthenticatedApp signIn={signIn} />
-      )
-    } else {
-      return (
-        <AuthenticatedApp
-          bearer={this.state.bearer}
-          logOut={logOut}
-          isMobile={this.state.isMobile}
-        />
-      )
+    const PrivateRoute = ({ component: Component, ...rest }) => (
+      <Route
+        {...rest}
+        render={props => {
+          if (this.state.bearer) {
+            return (
+              <AuthenticatedApp
+                bearer={this.state.bearer}
+                logOut={logOut}
+                isMobile={this.state.isMobile}
+              />
+            )
+          } else {
+            this.setState({ from: props.location.pathname })
+
+            return (
+              <Redirect
+                to={{
+                  pathname: "/login",
+                }}
+              />
+            )
+          }
+        }}
+      />
+    )
+
+    const { redirectToReferrer } = this.state
+
+    if (redirectToReferrer) {
+      this.setState({ redirectToReferrer: false })
+      return <Redirect to={this.state.from || "/"} />
     }
+
+    return (
+      <Switch>
+        <PrivateRoute exact path="/" />
+        <Route
+          path="/login"
+          render={() =>
+            this.state.isMobile ? (
+              <UnAuthenticatedAppMobile signIn={signIn} />
+            ) : (
+              <UnAuthenticatedApp signIn={signIn} />
+            )
+          }
+        />
+        <Route render={() => <Error404 />} />
+      </Switch>
+    )
   }
 }
 
