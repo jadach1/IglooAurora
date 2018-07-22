@@ -47,6 +47,12 @@ class GraphQLFetcher extends Component {
     })
   }
 
+  state = {
+    selectedDevice: null,
+  }
+
+  selectDevice = id => this.setState({ selectedDevice: id })
+
   render() {
     const {
       userData: { user },
@@ -89,22 +95,22 @@ class GraphQLFetcher extends Component {
         default:
           switch (systemLang) {
             case "en":
-            changeLanguage("en")
+              changeLanguage("en")
               break
             case "de":
-            changeLanguage("de")
+              changeLanguage("de")
               break
             case "es":
-            changeLanguage("es")
+              changeLanguage("es")
               break
             case "it":
-            changeLanguage("it")
+              changeLanguage("it")
               break
             case "zh-Hans":
-            changeLanguage("zh-Hans")
+              changeLanguage("zh-Hans")
               break
             default:
-            changeLanguage("en")
+              changeLanguage("en")
               break
           }
           break
@@ -116,9 +122,16 @@ class GraphQLFetcher extends Component {
         logOut={this.props.logOut}
         isMobile={this.props.isMobile}
         userData={this.props.userData}
+        selectDevice={id => this.setState({ selectedDevice: id })}
+        selectedDevice={this.state.selectedDevice}
       />
     ) : (
-      <Main logOut={this.props.logOut} userData={this.props.userData} />
+      <Main
+        logOut={this.props.logOut}
+        userData={this.props.userData}
+        selectDevice={id => this.setState({ selectedDevice: id })}
+        selectedDevice={this.state.selectedDevice}
+      />
     )
   }
 }
