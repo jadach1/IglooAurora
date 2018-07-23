@@ -225,44 +225,114 @@ class MainBodyHeader extends Component {
                     </ListItemIcon>
                     <ListItemText inset primary="See on the map" />
                   </MenuItem>
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    <ListItemIcon>
-                      <Icon
-                        style={
-                          this.props.nightMode
-                            ? { color: "white" }
-                            : { color: "black" }
+                  {navigator.share ? (
+                    <MenuItem
+                      className="notSelectable"
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                      onClick={() => {
+                        if (navigator.share) {
+                          navigator
+                            .share({
+                              title: "Web Fundamentals",
+                              text: "Check out Web Fundamentals — it rocks!",
+                              url: "https://developers.google.com/web",
+                            })
+                            .then(() => console.log("Successful share"))
+                            .catch(error => console.log("Error sharing", error))
                         }
-                      >
-                        link
-                      </Icon>
-                    </ListItemIcon>
-                    <ListItemText inset primary="Get Link" />
-                  </MenuItem>
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon
+                          style={
+                            this.props.nightMode
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          share
+                        </Icon>
+                      </ListItemIcon>
+                      <ListItemText inset primary="Share" />
+                    </MenuItem>
+                  ) : (
+                    ""
+                  )}
+                  {!navigator.share ? (
+                    <MenuItem
+                      className="notSelectable"
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      <ListItemIcon>
+                        <Icon
+                          style={
+                            this.props.nightMode
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          link
+                        </Icon>
+                      </ListItemIcon>
+                      <ListItemText inset primary="Get Link" />
+                    </MenuItem>
+                  ) : (
+                    ""
+                  )}
                 </Menu>
               </React.Fragment>
             ) : (
               <React.Fragment>
-                <Tooltip
-                  id="tooltip-bottom"
-                  title="Get link"
-                  placement="bottom"
-                >
-                  <IconButton
-                    style={{
-                      color: "white",
-                    }}
+                {navigator.share ? (
+                  <Tooltip id="tooltip-bottom" title="Share" placement="bottom">
+                    <IconButton
+                      style={{
+                        color: "white",
+                      }}
+                      onClick={() => {
+                        if (navigator.share) {
+                          navigator
+                            .share({
+                              title: "Web Fundamentals",
+                              text: "Check out Web Fundamentals — it rocks!",
+                              url: "https://developers.google.com/web",
+                            })
+                            .then(() => console.log("Successful share"))
+                            .catch(error => console.log("Error sharing", error))
+                        }
+                      }}
+                    >
+                      <Icon>share</Icon>
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  ""
+                )}
+                {!navigator.share ? (
+                  <Tooltip
+                    id="tooltip-bottom"
+                    title="Get link"
+                    placement="bottom"
                   >
-                    <Icon>link</Icon>
-                  </IconButton>
-                </Tooltip>
+                    <IconButton
+                      style={{
+                        color: "white",
+                      }}
+                    >
+                      <Icon>link</Icon>
+                    </IconButton>
+                  </Tooltip>
+                ) : (
+                  ""
+                )}
                 <Tooltip
                   id="tooltip-bottom"
                   title="See on the map"
