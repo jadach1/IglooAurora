@@ -8,6 +8,7 @@ import Tooltip from "material-ui-next/Tooltip"
 import NotificationsDrawer from "./NotificationsDrawer"
 import Icon from "material-ui-next/Icon"
 import DeviceInfo from "./DeviceInfo"
+import {CopyToClipboard} from 'react-copy-to-clipboard';
 
 class MainBodyHeader extends Component {
   state = {
@@ -72,11 +73,35 @@ class MainBodyHeader extends Component {
               gridArea: "buttons",
             }}
           >
-          <Tooltip
-              id="tooltip-bottom"
-              title="Get link"
-              placement="bottom"
+            {navigator.share ? (
+              <Tooltip id="tooltip-bottom" title="Share" placement="bottom">
+                <IconButton
+                  style={{
+                    color: "white",
+                  }}
+                  onClick={() => {
+                        if (navigator.share) {
+
+                    navigator
+                      .share({
+                        title: "Web Fundamentals",
+                        text: "Check out Web Fundamentals — it rocks!",
+                        url: "https://developers.google.com/web",
+                      })
+                      .then(() => console.log("Successful share"))
+                      .catch(error => console.log("Error sharing", error))
+                  }}}
             >
+                  <Icon>share</Icon>
+                </IconButton>
+              </Tooltip>
+            ) : (
+              ""
+            )}
+            {!navigator.share ? (
+              <Tooltip id="tooltip-bottom" title="Get link" placement="bottom">
+              <CopyToClipboard
+            text={window.location.href}>
               <IconButton
                 style={{
                   color: "white",
@@ -84,7 +109,11 @@ class MainBodyHeader extends Component {
               >
                 <Icon>link</Icon>
               </IconButton>
+                </CopyToClipboard>
             </Tooltip>
+            ) : (
+              ""
+            )}
             <Tooltip
               id="tooltip-bottom"
               title="See on the map"
