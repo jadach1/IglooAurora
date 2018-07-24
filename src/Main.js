@@ -14,6 +14,7 @@ import StatusBar from "./components/StatusBar"
 import AppBar from "material-ui-next/AppBar"
 import EmailNotVerified from "./components/EmailNotVerified"
 import CookiesAlert from "./components/CookiesAlert"
+import GetLinkSuccess from "./components/GetLinkSuccess"
 
 class Main extends Component {
   state = {
@@ -262,6 +263,7 @@ class Main extends Component {
       areSettingsOpen: false,
       isTileFullScreen: false,
       drawer: false,
+      copyMessageOpen: false
     }
   }
 
@@ -353,6 +355,8 @@ class Main extends Component {
                   showHiddenNotifications={this.showHiddenNotifications}
                   nightMode={nightMode}
                   devMode={devMode}
+                  openSnackBar={()=>{this.setState({copyMessageOpen:true})
+                }}
                 />
               ) : (
                 <div className="mainBodyHeader" key="mainBodyHeader" />
@@ -401,6 +405,7 @@ class Main extends Component {
             <NotificationsSnackbar />
             <CookiesAlert mobile={false} />
             <EmailNotVerified mobile={false} />
+            <GetLinkSuccess mobile={false} open={this.state.copyMessageOpen} close={()=>this.setState({copyMessageOpen:false})}/>
           </Online>
           <Offline key="offlineMainBody">
             <div

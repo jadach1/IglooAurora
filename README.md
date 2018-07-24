@@ -1,4 +1,4 @@
-![Igloo Aurora](https://github.com/hellowitlab/iglooAurora/blob/master/iglooAurora.png?raw=true "Igloo Aurora")
+![Igloo Aurora](https://github.com/IglooCloud/IglooAurora/blob/master/iglooAurora.png?raw=true "Igloo Aurora")
 
 # Igloo Aurora
 
@@ -12,7 +12,7 @@ If you plan to use a custom version of Igloo Aurora, you will need to host the w
 
 ### Public website
 
-Visit the [Igloo Aurora website](https://igloocloud.github.io/IglooAurora/).
+Visit the [Igloo Aurora website](https://igloocloud.github.io/).
 
 ### Self hosting
 

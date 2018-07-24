@@ -15,6 +15,7 @@ import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
 import EmailNotVerified from "./components/EmailNotVerified"
 import CookiesAlert from "./components/CookiesAlert"
 import StatusBar from "./components/StatusBar"
+import GetLinkSuccess from "./components/GetLinkSuccess"
 
 class Main extends Component {
   state = {
@@ -402,7 +403,7 @@ class Main extends Component {
             </div>
             <EmailNotVerified mobile={true} />
             <CookiesAlert mobile={true} />
-            <NotificationsSnackbar />
+            <GetLinkSuccess mobile={true}/>
           </Online>
           <Offline key="offlineMainBody">
             <div className="main">

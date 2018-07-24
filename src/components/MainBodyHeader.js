@@ -8,7 +8,7 @@ import Tooltip from "material-ui-next/Tooltip"
 import NotificationsDrawer from "./NotificationsDrawer"
 import Icon from "material-ui-next/Icon"
 import DeviceInfo from "./DeviceInfo"
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import { CopyToClipboard } from "react-copy-to-clipboard"
 
 class MainBodyHeader extends Component {
   state = {
@@ -80,18 +80,21 @@ class MainBodyHeader extends Component {
                     color: "white",
                   }}
                   onClick={() => {
-                        if (navigator.share) {
-
-                    navigator
-                      .share({
-                        title: "Web Fundamentals",
-                        text: "Check out Web Fundamentals — it rocks!",
-                        url: "https://developers.google.com/web",
-                      })
-                      .then(() => console.log("Successful share"))
-                      .catch(error => console.log("Error sharing", error))
-                  }}}
-            >
+                    if (navigator.share) {
+                      navigator
+                        .share({
+                          title: device.customName + " on Igloo Aurora",
+                          text:
+                            "Check out " +
+                            device.customName +
+                            " on Igloo Aurora",
+                          url: window.location.href,
+                        })
+                        .then(() => console.log("Successful share"))
+                        .catch(error => console.log("Error sharing", error))
+                    }
+                  }}
+                >
                   <Icon>share</Icon>
                 </IconButton>
               </Tooltip>
@@ -100,17 +103,17 @@ class MainBodyHeader extends Component {
             )}
             {!navigator.share ? (
               <Tooltip id="tooltip-bottom" title="Get link" placement="bottom">
-              <CopyToClipboard
-            text={window.location.href}>
-              <IconButton
-                style={{
-                  color: "white",
-                }}
-              >
-                <Icon>link</Icon>
-              </IconButton>
+                <CopyToClipboard text={window.location.href}>
+                  <IconButton
+                    style={{
+                      color: "white",
+                    }}
+                    onClick={() => this.props.openSnackBar()}
+                  >
+                    <Icon>link</Icon>
+                  </IconButton>
                 </CopyToClipboard>
-            </Tooltip>
+              </Tooltip>
             ) : (
               ""
             )}
