@@ -199,7 +199,7 @@ class App extends Component {
             )
           }
         />
-        <Route render={() => <Error404 />} />
+        {/* <Route render={() => <Error404 />} /> */}
       </Switch>
     )
   }

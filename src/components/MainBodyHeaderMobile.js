@@ -9,6 +9,7 @@ import NotificationsDrawer from "./NotificationsDrawer"
 import Icon from "material-ui-next/Icon"
 import DeviceInfo from "./DeviceInfo"
 import { Menu, MenuItem, ListItemIcon, ListItemText } from "material-ui-next"
+import { CopyToClipboard } from "react-copy-to-clipboard"
 
 class MainBodyHeader extends Component {
   state = {
@@ -237,9 +238,12 @@ class MainBodyHeader extends Component {
                         if (navigator.share) {
                           navigator
                             .share({
-                              title: "Web Fundamentals",
-                              text: "Check out Web Fundamentals — it rocks!",
-                              url: "https://developers.google.com/web",
+                              title: device.customName + " on Igloo Aurora",
+                              text:
+                                "Check out " +
+                                device.customName +
+                                " on Igloo Aurora",
+                              url: window.location.href,
                             })
                             .then(() => console.log("Successful share"))
                             .catch(error => console.log("Error sharing", error))
@@ -263,27 +267,30 @@ class MainBodyHeader extends Component {
                     ""
                   )}
                   {!navigator.share ? (
-                    <MenuItem
-                      className="notSelectable"
-                      style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      <ListItemIcon>
-                        <Icon
-                          style={
-                            this.props.nightMode
-                              ? { color: "white" }
-                              : { color: "black" }
-                          }
-                        >
-                          link
-                        </Icon>
-                      </ListItemIcon>
-                      <ListItemText inset primary="Get Link" />
-                    </MenuItem>
+                    <CopyToClipboard text={window.location.href}>
+                      <MenuItem
+                        className="notSelectable"
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                        onClick={() => this.setState({ anchorEl: null })}
+                      >
+                        <ListItemIcon>
+                          <Icon
+                            style={
+                              this.props.nightMode
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
+                          >
+                            link
+                          </Icon>
+                        </ListItemIcon>
+                        <ListItemText inset primary="Get Link" />
+                      </MenuItem>
+                    </CopyToClipboard>
                   ) : (
                     ""
                   )}
@@ -322,13 +329,15 @@ class MainBodyHeader extends Component {
                     title="Get link"
                     placement="bottom"
                   >
-                    <IconButton
-                      style={{
-                        color: "white",
-                      }}
-                    >
-                      <Icon>link</Icon>
-                    </IconButton>
+                    <CopyToClipboard text={window.location.href}>
+                      <IconButton
+                        style={{
+                          color: "white",
+                        }}
+                      >
+                        <Icon>link</Icon>
+                      </IconButton>
+                    </CopyToClipboard>
                   </Tooltip>
                 ) : (
                   ""
