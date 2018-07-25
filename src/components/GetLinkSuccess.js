@@ -26,7 +26,7 @@ function TransitionUp(props) {
 }
 
 function MySnackbarContent(props) {
-  const { classes, className, variant, closeSnackbar } = props
+  const { classes, className, variant, closeSnackbar, mobile } = props
 
   return (
     <SnackbarContent
@@ -50,7 +50,11 @@ function MySnackbarContent(props) {
           style={{ marginRight: "-8px", color: "white" }}
           onClick={closeSnackbar}
         >
-          <Icon>close</Icon>
+          {mobile ? (
+            <Icon>keyboard_arrow_down</Icon>
+          ) : (
+            <Icon>chevron_right</Icon>
+          )}
         </IconButton>,
       ]}
     />
@@ -84,12 +88,13 @@ class CustomizedSnackbars extends React.Component {
             this.props.mobile ? TransitionUp : TransitionLeft
           }
           className="notSelectable defaultCursor"
-          autoHideDuration={5000}
+          autoHideDuration={3000}
           onClose={this.props.close}
         >
           <MySnackbarContentWrapper
             variant="warning"
             closeSnackbar={this.props.close}
+            mobile={this.props.mobile}
           />
         </Snackbar>
       </React.Fragment>

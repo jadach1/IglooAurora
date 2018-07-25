@@ -8,7 +8,6 @@ import "./styles/App.css"
 import "./styles/Tiles.css"
 import "./styles/MobileApp.css"
 import { hotkeys } from "react-keyboard-shortcuts"
-import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import AppBar from "material-ui-next/AppBar"
 import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
 import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
@@ -290,7 +289,7 @@ class Main extends Component {
 
   render() {
     const {
-      userData: {  user },
+      userData: { user },
     } = this.props
 
     let nightMode = ""
@@ -337,13 +336,14 @@ class Main extends Component {
                     className="mobileSidebar"
                     key="sidebar"
                     style={
-                  nightMode
+                      nightMode
                         ? { background: "#21252b" }
                         : { background: "#f2f2f2" }
                     }
                   >
                     <Sidebar
-                       selectDevice={id=>{this.props.selectDevice(id)
+                      selectDevice={id => {
+                        this.props.selectDevice(id)
                         this.setState({ drawer: false })
                       }}
                       selectedDevice={this.props.selectedDevice}
@@ -366,12 +366,16 @@ class Main extends Component {
                       changeDrawerState={this.changeDrawerState}
                       hiddenNotifications={this.state.hiddenNotifications}
                       showHiddenNotifications={this.showHiddenNotifications}
-                      selectDevice={id=>{this.props.selectDevice(id)
+                      selectDevice={id => {
+                        this.props.selectDevice(id)
                         this.setState({ drawer: false })
                       }}
                       nightMode={nightMode}
                       isMobile={true}
                       devMode={devMode}
+                      openSnackBar={() =>
+                        this.setState({ copyMessageOpen: true })
+                      }
                     />
                   </AppBar>
                   <div
@@ -383,27 +387,32 @@ class Main extends Component {
                         : { background: "white" }
                     }
                   >
-                  <div style={{height:"calc(100vh - 96px)"}}>
-                    <MainBody
+                    <div style={{ height: "calc(100vh - 96px)" }}>
+                      <MainBody
+                        deviceId={this.props.selectedDevice}
+                        showHidden={this.state.showMainHidden}
+                        changeShowHiddenState={this.changeShowHiddenState}
+                        isMobile={true}
+                        nightMode={nightMode}
+                        devMode={devMode}
+                      />
+                    </div>
+                    <StatusBar
+                      userData={this.props.userData}
                       deviceId={this.props.selectedDevice}
-                      showHidden={this.state.showMainHidden}
-                      changeShowHiddenState={this.changeShowHiddenState}
-                      isMobile={true}
                       nightMode={nightMode}
-                      devMode={devMode}
                     />
-                                      </div>
-                    <StatusBar userData={this.props.userData}
-                    deviceId={this.props.selectedDevice}
-                    nightMode={nightMode}/>
                   </div>
-                  
                 </React.Fragment>
               )}
             </div>
             <EmailNotVerified mobile={true} />
+            <GetLinkSuccess
+              mobile={true}
+              open={this.state.copyMessageOpen}
+              close={() => this.setState({ copyMessageOpen: false })}
+            />
             <CookiesAlert mobile={true} />
-            <GetLinkSuccess mobile={true}/>
           </Online>
           <Offline key="offlineMainBody">
             <div className="main">
