@@ -2,7 +2,7 @@
   "name": "IglooAurora",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://igloocloud.github.io/",
+  "homepage": "https://igloocloud.github.io/IglooAurora",
   "dependencies": {
     "@quentin-sommer/react-useragent": "^1.2.5",
     "apollo-client-preset": "^1.0.5",

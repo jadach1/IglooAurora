@@ -275,7 +275,9 @@ class MainBodyHeader extends Component {
                             ? { color: "white" }
                             : { color: "black" }
                         }
-                        onClick={() => this.setState({ anchorEl: null })}
+                        onClick={() => {this.setState({ anchorEl: null })
+                   this.props.openSnackBar()
+                  }}
                       >
                         <ListItemIcon>
                           <Icon
@@ -308,9 +310,12 @@ class MainBodyHeader extends Component {
                         if (navigator.share) {
                           navigator
                             .share({
-                              title: "Web Fundamentals",
-                              text: "Check out Web Fundamentals — it rocks!",
-                              url: "https://developers.google.com/web",
+                              title: device.customName + " on Igloo Aurora",
+                              text:
+                                "Check out " +
+                                device.customName +
+                                " on Igloo Aurora",
+                              url: window.location.href,
                             })
                             .then(() => console.log("Successful share"))
                             .catch(error => console.log("Error sharing", error))
@@ -334,6 +339,7 @@ class MainBodyHeader extends Component {
                         style={{
                           color: "white",
                         }}
+                   onClick={this.props.openSnackBar}
                       >
                         <Icon>link</Icon>
                       </IconButton>

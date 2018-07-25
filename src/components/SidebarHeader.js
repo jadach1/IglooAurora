@@ -51,7 +51,7 @@ class SidebarHeader extends Component {
           }}
         >
           <MuiThemeProvider theme={theme}>
-            <a href="https://igloocloud.github.io/iglooMagellan">
+            {/* <a href="https://igloocloud.github.io/IglooMagellan">
               <Tooltip
                 id="tooltip-bottom"
                 title="Go to Magellan"
@@ -64,7 +64,7 @@ class SidebarHeader extends Component {
                   <Icon color="primary">map</Icon>
                 </IconButton>
               </Tooltip>
-            </a>
+            </a> */}
             <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
               <IconButton
                 onClick={this.props.openSettingsDialog}
