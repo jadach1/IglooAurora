@@ -1,10 +1,12 @@
 {
-  "main.css": "static/css/main.e1b60377.css",
-  "main.css.map": "static/css/main.e1b60377.css.map",
-  "main.js": "static/js/main.fb3532b6.js",
-  "main.js.map": "static/js/main.fb3532b6.js.map",
+  "main.css": "static/css/main.495d8ba0.css",
+  "main.css.map": "static/css/main.495d8ba0.css.map",
+  "main.js": "static/js/main.d189ab47.js",
+  "main.js.map": "static/js/main.d189ab47.js.map",
   "static\\media\\Roboto-Regular.ttf": "static/media/Roboto-Regular.3e1af3ef.ttf",
   "static\\media\\darkLogoBG.svg": "static/media/darkLogoBG.ffbfbd40.svg",
+  "static\\media\\iglooTitle.svg": "static/media/iglooTitle.ea0ff003.svg",
   "static\\media\\loginBackground.jpg": "static/media/loginBackground.45daea34.jpg",
+  "static\\media\\logo.svg": "static/media/logo.9e9516e1.svg",
   "static\\media\\logoBG.svg": "static/media/logoBG.30eee7e0.svg"
 }

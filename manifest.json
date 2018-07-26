@@ -4,8 +4,8 @@
   "theme_color": "#0083ff",
   "background_color": "#0083ff",
   "display": "standalone",
-  "Scope": "/IglooAurora/",
-  "start_url": "https://igloocloud.github.io/IglooAurora/",
+  "Scope": "/aurora/",
+  "start_url": "https://igloocloud.github.io/aurora/",
   "orientation": "any",
   "icons": [
     {
