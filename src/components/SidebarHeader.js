@@ -34,12 +34,8 @@ class SidebarHeader extends Component {
           height: "64px",
         }}
       >
-        <img
-          alt="Igloo Logo"
-          src="./assets/logo.svg"
-          width="48px"
-          height="48px"
-          style={{ marginLeft: "8px" }}
+        <div
+          style={{ width: "56px", height: "33px", marginLeft: "16px" }}
           className="miniLogo notSelectable"
         />
         <div

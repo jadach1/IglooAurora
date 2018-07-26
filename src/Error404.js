@@ -54,7 +54,7 @@ export default class Error404 extends Component {
             <br />
             <img
               alt="Sleeping Polar Bear"
-              src="./assets/polarBear.svg"
+              src="./styles/assets/polarBear.svg"
               width="400"
               className="logo notSelectable"
             />

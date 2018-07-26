@@ -76,23 +76,28 @@ class UnAuthenticatedApp extends Component {
               }}
             >
               <br />
-              <img
-                alt="Igloo Logo"
-                src="./assets/logo.svg"
-                width="75%"
+              <br />
+              <div
                 className="logo notSelectable"
+                style={{
+                  width: "300px",
+                  height: "176px",
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                }}
               />
               <br />
               <br />
+              <div
+                className="unauthenticatedTitle notSelectable"
+                style={{
+                  width: "300px",
+                  height: "187px",
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                }}
+              />
 
-              <b>
-                <img
-                  alt="Igloo"
-                  src="./assets/iglooTitle.svg"
-                  width="75%"
-                  className="unauthenticatedTitle notSelectable"
-                />
-              </b>
               <br />
               <br />
               <MuiThemeProviderNext theme={theme}>

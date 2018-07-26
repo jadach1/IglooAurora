@@ -68,23 +68,10 @@ class UnAuthenticatedApp extends Component {
               <div className="leftSide notSelectable">
                 <br />
                 <br />
-                <img
-                  alt="Igloo Logo"
-                  src="./assets/logo.svg"
-                  width="300"
-                  className="logo notSelectable"
-                />
+                <div className="logo notSelectable" style={{width:"300px",height:"176px"}}/>
                 <br />
                 <br />
-
-                <b>
-                  <img
-                    alt="Igloo"
-                    src="./assets/iglooTitle.svg"
-                    width="300"
-                    className="unauthenticatedTitle notSelectable"
-                  />
-                </b>
+                <div className="unauthenticatedTitle notSelectable" style={{width:"300px",height:"187px",marginRight:"auto",marginLeft:"auto"}}/>
               </div>
               <div>
                 <BottomNavigation

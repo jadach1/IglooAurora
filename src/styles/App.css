@@ -129,11 +129,24 @@ body {
 .logo {
   padding: 20px 10px;
   vertical-align: middle;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url(./assets/logo.svg);
+}
+
+.unauthenticatedTitle {
+  vertical-align: middle;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url(./assets/iglooTitle.svg);
 }
 
 .miniLogo {
-  padding: 0px 10px;
+  padding: 0px 0px;
   vertical-align: middle;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-image: url(./assets/logo.svg);
 }
 
 .mainBodyBG {
@@ -270,16 +283,6 @@ body {
   position: absolute;
   bottom: 20px;
   right: 20px;
-}
-
-.leftSideIgloo {
-  font-size: 100px;
-  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
-}
-
-.leftSideCloudRemote {
-  font-size: 33px;
-  font-family: "Century Gothic", CenturyGothic, AppleGothic, sans-serif;
 }
 
 .loginForgotPassoword {
