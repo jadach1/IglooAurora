@@ -10,6 +10,7 @@ import Icon from "material-ui-next/Icon"
 import DeviceInfo from "./DeviceInfo"
 import { Menu, MenuItem, ListItemIcon, ListItemText } from "material-ui-next"
 import { CopyToClipboard } from "react-copy-to-clipboard"
+import { Link } from "react-router-dom"
 
 class MainBodyHeader extends Component {
   state = {
@@ -64,6 +65,14 @@ class MainBodyHeader extends Component {
           style={this.props.isMobile ? { height: "64px", width: "100vw" } : ""}
         >
           <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
+          <Link
+                    to={
+                      this.props.selectedDevice !== device.id
+                        ? "/aurora/" + device.id
+                        : "/aurora/"
+                    }
+                    style={{ textDecoration: "none",color:"black" }}
+                  >
             <IconButton
               style={{
                 color: "white",
@@ -75,6 +84,7 @@ class MainBodyHeader extends Component {
             >
               <Icon>chevron_left</Icon>
             </IconButton>
+            </Link>
           </Tooltip>
         </div>
       )
@@ -95,6 +105,14 @@ class MainBodyHeader extends Component {
         >
           <div className="mobileBackIcon">
             <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
+            <Link
+                    to={
+                      this.props.selectedDevice !== device.id
+                        ? "/aurora/" + device.id
+                        : "/aurora/"
+                    }
+                    style={{ textDecoration: "none",color:"black" }}
+                  >
               <IconButton
                 style={{
                   color: "white",
@@ -103,6 +121,7 @@ class MainBodyHeader extends Component {
               >
                 <Icon>chevron_left</Icon>
               </IconButton>
+              </Link>
             </Tooltip>
           </div>
           {device.icon ? (

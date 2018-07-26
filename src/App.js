@@ -3,7 +3,8 @@ import AuthenticatedApp from "./AuthenticatedApp"
 import UnAuthenticatedApp from "./UnAuthenticatedApp"
 import UnAuthenticatedAppMobile from "./UnAuthenticatedAppMobile"
 import jwt from "jsonwebtoken"
-import { Route, Redirect } from "react-router-dom"
+import { Route,  Switch,
+  Redirect } from "react-router-dom"
 import Error404 from "./Error404"
 
 function setupWebPush(token) {
@@ -112,7 +113,7 @@ class App extends Component {
     this.state = {
       bearer,
       isMobile: null,
-      from: "/dashboard",
+      from: "/aurora",
       redirectToReferrer: false,
     }
   }
@@ -183,12 +184,12 @@ class App extends Component {
 
     if (redirectToReferrer) {
       this.setState({ redirectToReferrer: false })
-      return <Redirect to={this.state.from || "/dashboard"} />
+      return <Redirect to={this.state.from || "/aurora"} />
     }
 
     return (
-      <React.Fragment>
-        <PrivateRoute path="/dashboard" />
+        <Switch>
+        <PrivateRoute path="/aurora/" />
         <Route
           path="/login"
           render={() =>
@@ -199,8 +200,12 @@ class App extends Component {
             )
           }
         />
-        {/* <Route render={() => <Error404 />} /> */}
-      </React.Fragment>
+        <Route
+          render={() =>
+            <Error404/>
+          }
+        />
+                </Switch>
     )
   }
 }

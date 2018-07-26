@@ -162,10 +162,10 @@ class Sidebar extends Component {
                   <Link
                     to={
                       this.props.selectedDevice !== device.id
-                        ? "/dashboard/" + device.id
-                        : "/dashboard/"
+                        ? "/aurora/" + device.id
+                        : "/aurora/"
                     }
-                    style={{ textDecoration: "none",color:"black" }}
+                    style={{ textDecoration: "none", color: "black" }}
                   >
                     <ListItem
                       button
@@ -268,10 +268,10 @@ class Sidebar extends Component {
                   <Link
                     to={
                       this.props.selectedDevice !== device.id
-                        ? "/dashboard/" + device.id
-                        : "/dashboard/"
+                        ? "/aurora/" + device.id
+                        : "/aurora/"
                     }
-                    style={{ textDecoration: "none",color:"black" }}
+                    style={{ textDecoration: "none", color: "black" }}
                   >
                     <ListItem
                       button
