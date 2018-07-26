@@ -17,7 +17,7 @@ export default class Error404 extends Component {
 
     if (wannaGoAway) {
       this.setState({ wannaGoAway: false })
-      return <Redirect to="/" />
+      return <Redirect to="/aurora" />
     }
 
     return (
@@ -58,7 +58,8 @@ export default class Error404 extends Component {
               width="400"
               className="logo notSelectable"
             />
-            <br /><br />
+            <br />
+            <br />
             <MuiThemeProvider theme={theme}>
               <Button
                 variant="raised"
