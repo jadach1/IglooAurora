@@ -15,7 +15,6 @@ import AppBar from "material-ui-next/AppBar"
 import EmailNotVerified from "./components/EmailNotVerified"
 import CookiesAlert from "./components/CookiesAlert"
 import GetLinkSuccess from "./components/GetLinkSuccess"
-import { Switch, Route } from "react-router-dom"
 
 class Main extends Component {
   state = {
@@ -264,8 +263,7 @@ class Main extends Component {
       areSettingsOpen: false,
       isTileFullScreen: false,
       drawer: false,
-      copyMessageOpen: false,
-      selectedDevice: null
+      copyMessageOpen: false
     }
   }
 
@@ -297,85 +295,6 @@ class Main extends Component {
       nightMode = user.nightMode
       devMode = user.devMode
     }
-
-    const MainBodyStatusBar = props => {
-      return (
-      <React.Fragment>
-        <MainBody
-          deviceId={props.match.params.id}
-          showHidden={this.state.showMainHidden}
-          changeShowHiddenState={this.changeShowHiddenState}
-          nightMode={nightMode}
-          devMode={devMode}
-        />
-        <StatusBar
-          userData={this.props.userData}
-          deviceId={props.match.params.id}
-          nightMode={nightMode}
-        />
-      </React.Fragment>
-    )}
-
-    const MainBodyStatusBarDeselected = props => {
-      return (
-      <React.Fragment>
-        <div
-          style={
-            nightMode ? { background: "#2f333d" } : { background: "white" }
-          }
-          className="mainBody"
-        >
-          <div
-            className={nightMode ? "darkMainBodyBG" : "mainBodyBG"}
-            style={{ width: "100%", height: "100%" }}
-          />
-        </div>
-        <div
-          className="statusBar"
-          style={
-            nightMode ? { background: "#2f333d" } : { background: "white" }
-          }
-        />
-      </React.Fragment>
-    )}
-
-    const MainBodyHeaderSelected = props => (
-      <MainBodyHeader
-        deviceId={props.match.params.id}
-        key="mainBodyHeader"
-        drawer={this.state.drawer}
-        changeDrawerState={this.changeDrawerState}
-        hiddenNotifications={this.state.hiddenNotifications}
-        showHiddenNotifications={this.showHiddenNotifications}
-        nightMode={nightMode}
-        devMode={devMode}
-        openSnackBar={() => {
-          this.setState({ copyMessageOpen: true })
-        }}
-      />
-    )
-
-    const MainBodyHeaderDeselected = props => (
-      <div className="mainBodyHeader" key="mainBodyHeader" />
-    )
-
-    const SidebarSelected = props => (<Sidebar
-      selectedDevice={props.match.params.id}
-      changeDrawerState={this.changeDrawerState}
-      searchText={this.state.searchText}
-      changeText={text => this.setState({ searchText: text })}
-      userData={this.props.userData}
-      nightMode={nightMode}
-    />)
-
-    const SidebarDeselected = props => (<Sidebar
-      selectedDevice={""}
-      changeDrawerState={this.changeDrawerState}
-      searchText={this.state.searchText}
-      changeText={text => this.setState({ searchText: text })}
-      userData={this.props.userData}
-      nightMode={nightMode}
-    />)
 
     return (
       <MuiThemeProvider>
@@ -414,46 +333,79 @@ class Main extends Component {
                     : { background: "#f2f2f2" }
                 }
               >
-                 <Switch>
-                <Route
-                  exact
-                  path="/dashboard"
-                  component={SidebarDeselected}
+                <Sidebar
+                   selectDevice={id=>{this.props.selectDevice(id)
+                    this.setState({ drawer: false })
+                  }}
+                  selectedDevice={this.props.selectedDevice}
+                  changeDrawerState={this.changeDrawerState}
+                  searchText={this.state.searchText}
+                  changeText={text => this.setState({ searchText: text })}
+                  userData={this.props.userData}
+                  nightMode={nightMode}
                 />
-                <Route
-                  path="/dashboard/:id"
-                  component={SidebarSelected}
-                />
-              </Switch>
               </div>
-              <Switch>
-                <Route
-                  exact
-                  path="/dashboard"
-                  component={MainBodyHeaderDeselected}
+              {this.props.selectedDevice !== null ? (
+                <MainBodyHeader
+                  deviceId={this.props.selectedDevice}
+                  key="mainBodyHeader"
+                  drawer={this.state.drawer}
+                  changeDrawerState={this.changeDrawerState}
+                  hiddenNotifications={this.state.hiddenNotifications}
+                  showHiddenNotifications={this.showHiddenNotifications}
+                  nightMode={nightMode}
+                  devMode={devMode}
+                  openSnackBar={()=>{this.setState({copyMessageOpen:true})
+                }}
                 />
-                <Route
-                  path="/dashboard/:id"
-                  component={MainBodyHeaderSelected}
-                />
-              </Switch>
-              <Switch>
-                <Route
-                  exact
-                  path="/dashboard"
-                  component={MainBodyStatusBarDeselected}
-                />
-                <Route path="/dashboard/:id" component={MainBodyStatusBar} />
-              </Switch>
+              ) : (
+                <div className="mainBodyHeader" key="mainBodyHeader" />
+              )}
+              {this.props.selectedDevice !== null ? (
+                <React.Fragment>
+                  <MainBody
+                    deviceId={this.props.selectedDevice}
+                    showHidden={this.state.showMainHidden}
+                    changeShowHiddenState={this.changeShowHiddenState}
+                    nightMode={nightMode}
+                    devMode={devMode}
+                  />
+                  <StatusBar
+                    userData={this.props.userData}
+                    deviceId={this.props.selectedDevice}
+                    nightMode={nightMode}
+                  />
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  <div
+                    style={
+                      nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
+                    }
+                    className="mainBody"
+                  >
+                    <div
+                      className={nightMode ? "darkMainBodyBG" : "mainBodyBG"}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
+                  <div
+                    className="statusBar"
+                    style={
+                      nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
+                    }
+                  />
+                </React.Fragment>
+              )}
             </div>
             <NotificationsSnackbar />
             <CookiesAlert mobile={false} />
             <EmailNotVerified mobile={false} />
-            <GetLinkSuccess
-              mobile={false}
-              open={this.state.copyMessageOpen}
-              close={() => this.setState({ copyMessageOpen: false })}
-            />
+            <GetLinkSuccess mobile={false} open={this.state.copyMessageOpen} close={()=>this.setState({copyMessageOpen:false})}/>
           </Online>
           <Offline key="offlineMainBody">
             <div

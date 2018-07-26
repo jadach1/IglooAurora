@@ -4,6 +4,7 @@ import MainMobile from "./MainMobile"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { reactTranslateChangeLanguage } from "translate-components"
+import { Switch, Route } from "react-router-dom"
 
 let systemLang = navigator.language || navigator.userLanguage
 
@@ -117,21 +118,58 @@ class GraphQLFetcher extends Component {
       }
     }
 
-    return this.props.isMobile ? (
+    const MainSelected = props => (
+      <Main
+        logOut={this.props.logOut}
+        userData={this.props.userData}
+        selectDevice={id => this.setState({ selectedDevice: id })}
+        selectedDevice={props.match.params.id}
+      />
+    )
+
+    const MainDeselected = () => (
+      <Main
+        logOut={this.props.logOut}
+        userData={this.props.userData}
+        selectDevice={id => this.setState({ selectedDevice: id })}
+        selectedDevice={null}
+      />
+    )
+
+    const MainMobileSelected = props => (
       <MainMobile
         logOut={this.props.logOut}
         isMobile={this.props.isMobile}
         userData={this.props.userData}
         selectDevice={id => this.setState({ selectedDevice: id })}
-        selectedDevice={this.state.selectedDevice}
+        selectedDevice={props.match.params.id}
       />
-    ) : (
-      <Main
+    )
+
+    const MainMobileDeselected = () => (
+      <MainMobile
         logOut={this.props.logOut}
+        isMobile={this.props.isMobile}
         userData={this.props.userData}
         selectDevice={id => this.setState({ selectedDevice: id })}
-        selectedDevice={this.state.selectedDevice}
+        selectedDevice={null}
       />
+    )
+
+    return (
+      <Switch>
+        <Route
+          exact
+          path="/dashboard"
+          component={
+            this.props.isMobile ? MainMobileDeselected : MainDeselected
+          }
+        />
+        <Route
+          path="/dashboard/:id"
+          component={this.props.isMobile ? MainMobileSelected : MainSelected}
+        />
+      </Switch>
     )
   }
 }
