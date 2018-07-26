@@ -3,8 +3,7 @@ import AuthenticatedApp from "./AuthenticatedApp"
 import UnAuthenticatedApp from "./UnAuthenticatedApp"
 import UnAuthenticatedAppMobile from "./UnAuthenticatedAppMobile"
 import jwt from "jsonwebtoken"
-import { Route,  Switch,
-  Redirect } from "react-router-dom"
+import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
 
 function setupWebPush(token) {
@@ -188,7 +187,7 @@ class App extends Component {
     }
 
     return (
-        <Switch>
+      <Switch>
         <PrivateRoute path="/aurora/" />
         <Route
           path="/login"
@@ -200,12 +199,8 @@ class App extends Component {
             )
           }
         />
-        <Route
-          render={() =>
-            <Error404/>
-          }
-        />
-                </Switch>
+        <Route render={() => <Error404 />} />
+      </Switch>
     )
   }
 }
