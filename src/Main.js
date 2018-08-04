@@ -15,6 +15,7 @@ import AppBar from "material-ui-next/AppBar"
 import EmailNotVerified from "./components/EmailNotVerified"
 import CookiesAlert from "./components/CookiesAlert"
 import GetLinkSuccess from "./components/GetLinkSuccess"
+import { Redirect } from "react-router-dom"
 
 class Main extends Component {
   state = {
@@ -263,7 +264,7 @@ class Main extends Component {
       areSettingsOpen: false,
       isTileFullScreen: false,
       drawer: false,
-      copyMessageOpen: false
+      copyMessageOpen: false,
     }
   }
 
@@ -290,10 +291,13 @@ class Main extends Component {
 
     let nightMode = ""
     let devMode = ""
+    let idList = []
 
     if (user) {
       nightMode = user.nightMode
       devMode = user.devMode
+
+      idList = user.devices.map(device => device.id)
     }
 
     return (
@@ -334,7 +338,8 @@ class Main extends Component {
                 }
               >
                 <Sidebar
-                   selectDevice={id=>{this.props.selectDevice(id)
+                  selectDevice={id => {
+                    this.props.selectDevice(id)
                     this.setState({ drawer: false })
                   }}
                   selectedDevice={this.props.selectedDevice}
@@ -355,27 +360,36 @@ class Main extends Component {
                   showHiddenNotifications={this.showHiddenNotifications}
                   nightMode={nightMode}
                   devMode={devMode}
-                  openSnackBar={()=>{this.setState({copyMessageOpen:true})
-                }}
+                  openSnackBar={() => {
+                    this.setState({ copyMessageOpen: true })
+                  }}
                 />
               ) : (
                 <div className="mainBodyHeader" key="mainBodyHeader" />
               )}
               {this.props.selectedDevice !== null ? (
-                <React.Fragment>
-                  <MainBody
-                    deviceId={this.props.selectedDevice}
-                    showHidden={this.state.showMainHidden}
-                    changeShowHiddenState={this.changeShowHiddenState}
-                    nightMode={nightMode}
-                    devMode={devMode}
-                  />
-                  <StatusBar
-                    userData={this.props.userData}
-                    deviceId={this.props.selectedDevice}
-                    nightMode={nightMode}
-                  />
-                </React.Fragment>
+                user ? (
+                  idList.includes(this.props.selectedDevice) ? (
+                    <React.Fragment>
+                      <MainBody
+                        deviceId={this.props.selectedDevice}
+                        showHidden={this.state.showMainHidden}
+                        changeShowHiddenState={this.changeShowHiddenState}
+                        nightMode={nightMode}
+                        devMode={devMode}
+                      />
+                      <StatusBar
+                        userData={this.props.userData}
+                        deviceId={this.props.selectedDevice}
+                        nightMode={nightMode}
+                      />
+                    </React.Fragment>
+                  ) : (
+                    <Redirect exact to="/aurora" />
+                  )
+                ) : (
+                  ""
+                )
               ) : (
                 <React.Fragment>
                   <div
@@ -405,7 +419,11 @@ class Main extends Component {
             <NotificationsSnackbar />
             <CookiesAlert mobile={false} />
             <EmailNotVerified mobile={false} />
-            <GetLinkSuccess mobile={false} open={this.state.copyMessageOpen} close={()=>this.setState({copyMessageOpen:false})}/>
+            <GetLinkSuccess
+              mobile={false}
+              open={this.state.copyMessageOpen}
+              close={() => this.setState({ copyMessageOpen: false })}
+            />
           </Online>
           <Offline key="offlineMainBody">
             <div
@@ -428,11 +446,14 @@ class Main extends Component {
                     In the meantime, why don't you have a nap?
                   </font>
                   <br />
-                  <img
-                    alt="Sleeping Polar Bear"
-                    src="./assets/polarBear.svg"
-                    width="400"
-                    className="logo notSelectable"
+                  <div
+                    style={{
+                      width: "400px",
+                      height: "300px",
+                      marginRight: "auto",
+                      marginLeft: "auto",
+                    }}
+                    className="sleepingBear notSelectable"
                   />
                 </div>
               </div>

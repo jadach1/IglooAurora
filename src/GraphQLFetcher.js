@@ -5,6 +5,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { reactTranslateChangeLanguage } from "translate-components"
 import { Switch, Route } from "react-router-dom"
+import Error404 from "./Error404"
 
 let systemLang = navigator.language || navigator.userLanguage
 
@@ -166,9 +167,11 @@ class GraphQLFetcher extends Component {
           }
         />
         <Route
+          exact
           path="/aurora/:id"
           component={this.props.isMobile ? MainMobileSelected : MainSelected}
         />
+        <Route render={() => <Error404 />} />
       </Switch>
     )
   }

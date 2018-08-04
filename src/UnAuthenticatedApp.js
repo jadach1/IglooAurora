@@ -68,10 +68,21 @@ class UnAuthenticatedApp extends Component {
               <div className="leftSide notSelectable">
                 <br />
                 <br />
-                <div className="logo notSelectable" style={{width:"300px",height:"176px"}}/>
+                <div
+                  className="logo notSelectable"
+                  style={{ width: "300px", height: "176px" }}
+                />
                 <br />
                 <br />
-                <div className="unauthenticatedTitle notSelectable" style={{width:"300px",height:"187px",marginRight:"auto",marginLeft:"auto"}}/>
+                <div
+                  className="unauthenticatedTitle notSelectable"
+                  style={{
+                    width: "300px",
+                    height: "187px",
+                    marginRight: "auto",
+                    marginLeft: "auto",
+                  }}
+                />
               </div>
               <div>
                 <BottomNavigation
@@ -101,7 +112,6 @@ class UnAuthenticatedApp extends Component {
                 <SwipeableViews
                   index={this.state.slideIndex}
                   onChangeIndex={this.handleChangeIndex}
-                  enableMouseEvents
                   className="loginScreen"
                 >
                   <Signup

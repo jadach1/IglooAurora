@@ -78,17 +78,54 @@ class Signup extends Component {
   render() {
     return (
       <div className="rightSide notSelectable">
-        {this.props.isDialog ? "" : <h1 className="defaultCursor">Nice to meet you!</h1>}
+          <h1 className="defaultCursor">Nice to meet you!</h1>
         <MuiThemeProvider theme={theme}>
           <FormControl style={{ width: "100%" }}>
-            <InputLabel htmlFor="adornment-email">Email</InputLabel>
             <Input
               id="adornment-email-signup"
+              placeholder="Full name"
               value={this.state.email}
               onChange={event => this.setState({ email: event.target.value })}
               onKeyPress={event => {
                 if (event.key === "Enter") this.signUp()
               }}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Icon>account_circle</Icon>
+                </InputAdornment>
+              }
+              endAdornment={
+                this.state.email ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      tabIndex="-1"
+                      onClick={this.handleClickCancelEmail}
+                      onMouseDown={this.handleMouseDownPassword}
+                      style={{ width: "32px", height: "32px" }}
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+            <FormHelperText id="name-error-text-signup">{""}</FormHelperText>
+          </FormControl>
+          <br />
+          <FormControl style={{ width: "100%" }}>
+            <Input
+              id="adornment-email-signup"
+              placeholder="Email"
+              value={this.state.email}
+              onChange={event => this.setState({ email: event.target.value })}
+              onKeyPress={event => {
+                if (event.key === "Enter") this.signUp()
+              }}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Icon>email</Icon>
+                </InputAdornment>
+              }
               endAdornment={
                 this.state.email ? (
                   <InputAdornment position="end">
@@ -110,11 +147,9 @@ class Signup extends Component {
           </FormControl>
           <br />
           <FormControl style={{ width: "100%" }}>
-            <InputLabel htmlFor="adornment-password-signup">
-              Password
-            </InputLabel>
             <Input
               id="adornment-password-signup"
+              placeholder="Password"
               type={this.state.showPassword ? "text" : "password"}
               value={this.state.password}
               onChange={event =>
@@ -125,6 +160,11 @@ class Signup extends Component {
               onKeyPress={event => {
                 if (event.key === "Enter") this.signUp()
               }}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Icon>vpn_key</Icon>
+                </InputAdornment>
+              }
               endAdornment={
                 this.state.password ? (
                   <InputAdornment position="end">
