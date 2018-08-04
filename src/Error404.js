@@ -52,11 +52,9 @@ export default class Error404 extends Component {
               Click on the button below and we'll bring you to a safe place
             </font>
             <br />
-            <img
-              alt="Sleeping Polar Bear"
-              src="./styles/assets/polarBear.svg"
-              width="400"
-              className="logo notSelectable"
+            <div
+              style={{ width: "400px", height: "300px", marginRight:"auto",marginLeft:"auto" }}
+              className="sleepingBear notSelectable"
             />
             <br />
             <br />

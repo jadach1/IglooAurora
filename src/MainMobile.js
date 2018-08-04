@@ -15,6 +15,7 @@ import EmailNotVerified from "./components/EmailNotVerified"
 import CookiesAlert from "./components/CookiesAlert"
 import StatusBar from "./components/StatusBar"
 import GetLinkSuccess from "./components/GetLinkSuccess"
+import {Redirect} from "react-router-dom"
 
 class Main extends Component {
   state = {
@@ -294,10 +295,13 @@ class Main extends Component {
 
     let nightMode = ""
     let devMode = ""
+    let idList = []
 
     if (user) {
       nightMode = user.nightMode
       devMode = user.devMode
+
+      idList = user.devices.map(device => device.id)
     }
 
     return (
@@ -356,54 +360,60 @@ class Main extends Component {
                     />
                   </div>
                 </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <AppBar>
-                    <MainBodyHeaderMobile
-                      deviceId={this.props.selectedDevice}
-                      key="mobileMainBodyHeader"
-                      drawer={this.state.drawer}
-                      changeDrawerState={this.changeDrawerState}
-                      hiddenNotifications={this.state.hiddenNotifications}
-                      showHiddenNotifications={this.showHiddenNotifications}
-                      selectDevice={id => {
-                        this.props.selectDevice(id)
-                        this.setState({ drawer: false })
-                      }}
-                      nightMode={nightMode}
-                      isMobile={true}
-                      devMode={devMode}
-                      openSnackBar={() =>
-                        this.setState({ copyMessageOpen: true })
-                      }
-                    />
-                  </AppBar>
-                  <div
-                    className="mobileMainBody"
-                    key="mainBody"
-                    style={
-                      nightMode
-                        ? { background: "#2f333d" }
-                        : { background: "white" }
-                    }
-                  >
-                    <div style={{ height: "calc(100vh - 96px)" }}>
-                      <MainBody
+              ) : user ? (
+                idList.includes(this.props.selectedDevice) ? (
+                  <React.Fragment>
+                    <AppBar>
+                      <MainBodyHeaderMobile
                         deviceId={this.props.selectedDevice}
-                        showHidden={this.state.showMainHidden}
-                        changeShowHiddenState={this.changeShowHiddenState}
-                        isMobile={true}
+                        key="mobileMainBodyHeader"
+                        drawer={this.state.drawer}
+                        changeDrawerState={this.changeDrawerState}
+                        hiddenNotifications={this.state.hiddenNotifications}
+                        showHiddenNotifications={this.showHiddenNotifications}
+                        selectDevice={id => {
+                          this.props.selectDevice(id)
+                          this.setState({ drawer: false })
+                        }}
                         nightMode={nightMode}
+                        isMobile={true}
                         devMode={devMode}
+                        openSnackBar={() =>
+                          this.setState({ copyMessageOpen: true })
+                        }
+                      />
+                    </AppBar>
+                    <div
+                      className="mobileMainBody"
+                      key="mainBody"
+                      style={
+                        nightMode
+                          ? { background: "#2f333d" }
+                          : { background: "white" }
+                      }
+                    >
+                      <div style={{ height: "calc(100vh - 96px)" }}>
+                        <MainBody
+                          deviceId={this.props.selectedDevice}
+                          showHidden={this.state.showMainHidden}
+                          changeShowHiddenState={this.changeShowHiddenState}
+                          isMobile={true}
+                          nightMode={nightMode}
+                          devMode={devMode}
+                        />
+                      </div>
+                      <StatusBar
+                        userData={this.props.userData}
+                        deviceId={this.props.selectedDevice}
+                        nightMode={nightMode}
                       />
                     </div>
-                    <StatusBar
-                      userData={this.props.userData}
-                      deviceId={this.props.selectedDevice}
-                      nightMode={nightMode}
-                    />
-                  </div>
-                </React.Fragment>
+                  </React.Fragment>
+                ) : (
+                  <Redirect exact to="/aurora" />
+                )
+              ) : (
+                ""
               )}
             </div>
             <EmailNotVerified mobile={true} />
@@ -425,11 +435,14 @@ class Main extends Component {
 
               <font size="5">In the meantime, why don't you have a nap?</font>
               <br />
-              <img
-                alt="Sleeping Polar Bear"
-                src="./assets/polarBear.svg"
-                width="80vh"
-                className="logo notSelectable"
+              <div
+                style={{
+                  width: "80vh",
+                  height: "300px",
+                  marginRight: "auto",
+                  marginLeft: "auto",
+                }}
+                className="sleepingBear notSelectable"
               />
             </div>
           </Offline>

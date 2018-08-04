@@ -7,14 +7,20 @@ import {
   createMuiTheme,
   MuiThemeProvider as MuiThemeProviderNext,
 } from "material-ui-next/styles"
-import Login from "./components/Login"
-import Signup from "./components/Signup"
+import LoginMobile from "./components/LoginMobile"
+import SignupMobile from "./components/SignupMobile"
 import Button from "material-ui-next/Button"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Dialog from "material-ui/Dialog"
 import ForgotPassword from "./components/ForgotPassword"
 import { Offline, Online } from "react-detect-offline"
 import Paper from "material-ui/Paper"
+import BottomNavigation, {
+  BottomNavigationAction,
+} from "material-ui-next/BottomNavigation"
+import Icon from "material-ui-next/Icon"
+import AppBar from "material-ui-next/AppBar"
+import SwipeableViews from "react-swipeable-views"
 
 const theme = createMuiTheme({
   palette: {
@@ -25,7 +31,7 @@ const theme = createMuiTheme({
 class UnAuthenticatedApp extends Component {
   state = { logiIn: false, signIn: false }
 
-  constructor() {
+   constructor() {
     super()
 
     const link = new HttpLink({
@@ -61,116 +67,72 @@ class UnAuthenticatedApp extends Component {
       <MuiThemeProvider>
         <Online>
           <div
-            className="loginBackground"
             style={{
-              verticalAlign: "center",
+              width: "100vw",
+              height: "calc( 100vh - 164px)",
+              backgroundColor: "#0057cb",
+              paddingTop: "100px",
             }}
           >
             <div
+              className="logo notSelectable"
               style={{
-                backgroundColor: "#0057cb",
-                textAlign: "center",
-                verticalAlign: "center",
-                width: "90%",
-                maxWidth: "400px",
+                width: "150px",
+                height: "59px",
+                marginLeft: "auto",
+                marginRight: "auto",
+                marginBottom: "100px",
               }}
-            >
-              <br />
-              <br />
-              <div
-                className="logo notSelectable"
-                style={{
-                  width: "300px",
-                  height: "176px",
-                  marginRight: "auto",
-                  marginLeft: "auto",
-                }}
-              />
-              <br />
-              <br />
-              <div
-                className="unauthenticatedTitle notSelectable"
-                style={{
-                  width: "300px",
-                  height: "187px",
-                  marginRight: "auto",
-                  marginLeft: "auto",
-                }}
-              />
-
-              <br />
-              <br />
-              <MuiThemeProviderNext theme={theme}>
-                <div
-                  style={{
-                    textAlign: "center",
-                    backgroundColor: "#fff",
-                    height: "64px",
-                  }}
+            /> <SwipeableViews
+                  index={this.state.slideIndex}
+                  onChangeIndex={this.handleChangeIndex}
+                  style={{height:"calc(100vh - 323px)"}}
                 >
-                  <Button
-                    color="primary"
-                    primary={true}
-                    buttonStyle={{ backgroundColor: "#0083ff" }}
-                    onClick={() => this.setState({ signIn: true })}
-                    style={{ marginTop: "12px" }}
-                  >
-                    Sign up
-                  </Button>
-                  <Button
-                    variant="raised"
-                    color="primary"
-                    primary={true}
-                    buttonStyle={{ backgroundColor: "#0083ff" }}
-                    onClick={() => this.setState({ logIn: true })}
-                    style={{ marginTop: "12px" }}
-                  >
-                    Log in
-                  </Button>
-                </div>
-              </MuiThemeProviderNext>
-              <Dialog
-                open={this.state.signIn}
-                onRequestClose={() => this.setState({ signIn: false })}
-                contentStyle={{ width: "300px" }}
-                bodyStyle={{ padding: "0 24px 24px 24px" }}
-                title={"Nice to meet you!"}
-                titleClassName="notSelectable defaultCursor"
-              >
-                <Signup
-                  client={this.client}
-                  signIn={this.props.signIn}
-                  goToLogin={() => this.setState({ slideIndex: 1 })}
-                  isDialog={true}
-                />
-              </Dialog>
-              <Dialog
-                open={this.state.logIn}
-                onRequestClose={() => this.setState({ logIn: false })}
-                contentStyle={{ width: "300px" }}
-                bodyStyle={{ padding: "0 24px 24px 24px" }}
-                title={"Welcome back!"}
-                titleClassName="notSelectable defaultCursor"
-              >
-                <Login
-                  client={this.client}
-                  signIn={this.props.signIn}
-                  goToSignup={() => this.setState({ slideIndex: 0 })}
-                  isMobile={true}
-                  isDialog={true}
-                  closeMobileDialog={() => this.setState({ logIn: false })}
-                  openForgotPassword={() =>
-                    this.setState({ forgotPasswordOpen: true })
-                  }
-                />
-              </Dialog>
-              <ForgotPassword
-                open={this.state.forgotPasswordOpen}
-                close={() => this.setState({ forgotPasswordOpen: false })}
-              />
-            </div>
-            <br />
+                <div style={{marginRight:"32px",marginLeft:"32px"}}>
+                  <SignupMobile
+                    client={this.client}
+                    signIn={this.props.signIn}
+                    goToLogin={() => this.setState({ slideIndex: 1 })}
+                  />
+                  </div>
+                  <div style={{marginRight:"32px",marginLeft:"32px"}}>
+                  <LoginMobile
+                    client={this.client}
+                    signIn={this.props.signIn}
+                    goToSignup={() => this.setState({ slideIndex: 0 })}
+                  />
+                  </div>
+                </SwipeableViews>
           </div>
+           <AppBar
+            color="default"
+            position="static"
+            style={{ marginBottom: "0px", marginTop: "auto", height: "64px" }}
+          >
+            <BottomNavigation
+              onChange={this.handleChange}
+              value={this.state.slideIndex}
+              showLabels
+              style={{ width: "100vw", height: "64px" }}
+            >
+              <BottomNavigationAction
+                label="SIGN UP"
+                icon={<Icon>person_add</Icon>}
+                style={   this.state.slideIndex === 0
+                    ? { color: "#0083ff" }
+                    : { color: "#757575" }
+                }
+              />
+              <BottomNavigationAction
+                label="LOG IN"
+                icon={<Icon>person</Icon>}
+                style={   this.state.slideIndex === 1
+                    ? { color: "#0083ff" }
+                    : { color: "#757575" }
+                }
+              />
+            </BottomNavigation>
+                            </AppBar>
         </Online>
         <Offline>
           <div className="loginBackground">

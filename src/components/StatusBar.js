@@ -47,13 +47,16 @@ export default class StatusBar extends Component {
       userData: { loading, error, user },
     } = this.props
 
-    let deviceStatus = null
+    let deviceStatus = ""
 
     if (error) deviceStatus = "Unexpected error"
 
-    if (loading) deviceStatus = <CenteredSpinner />
+    if (loading) deviceStatus =""
 
-    if (user) {
+    if (
+      user &&
+      user.devices.filter(device => device.id === this.props.deviceId)[0]
+    ) {
       deviceStatus = user.devices.filter(
         device => device.id === this.props.deviceId
       )[0].online
