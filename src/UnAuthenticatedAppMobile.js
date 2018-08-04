@@ -3,16 +3,9 @@ import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
-import {
-  createMuiTheme,
-  MuiThemeProvider as MuiThemeProviderNext,
-} from "material-ui-next/styles"
 import LoginMobile from "./components/LoginMobile"
 import SignupMobile from "./components/SignupMobile"
-import Button from "material-ui-next/Button"
 import { hotkeys } from "react-keyboard-shortcuts"
-import Dialog from "material-ui/Dialog"
-import ForgotPassword from "./components/ForgotPassword"
 import { Offline, Online } from "react-detect-offline"
 import Paper from "material-ui/Paper"
 import BottomNavigation, {
@@ -22,16 +15,10 @@ import Icon from "material-ui-next/Icon"
 import AppBar from "material-ui-next/AppBar"
 import SwipeableViews from "react-swipeable-views"
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
-
 class UnAuthenticatedApp extends Component {
   state = { logiIn: false, signIn: false }
 
-   constructor() {
+  constructor() {
     super()
 
     const link = new HttpLink({
@@ -83,28 +70,29 @@ class UnAuthenticatedApp extends Component {
                 marginRight: "auto",
                 marginBottom: "100px",
               }}
-            /> <SwipeableViews
-                  index={this.state.slideIndex}
-                  onChangeIndex={this.handleChangeIndex}
-                  style={{height:"calc(100vh - 323px)"}}
-                >
-                <div style={{marginRight:"32px",marginLeft:"32px"}}>
-                  <SignupMobile
-                    client={this.client}
-                    signIn={this.props.signIn}
-                    goToLogin={() => this.setState({ slideIndex: 1 })}
-                  />
-                  </div>
-                  <div style={{marginRight:"32px",marginLeft:"32px"}}>
-                  <LoginMobile
-                    client={this.client}
-                    signIn={this.props.signIn}
-                    goToSignup={() => this.setState({ slideIndex: 0 })}
-                  />
-                  </div>
-                </SwipeableViews>
+            />{" "}
+            <SwipeableViews
+              index={this.state.slideIndex}
+              onChangeIndex={this.handleChangeIndex}
+              style={{ height: "calc(100vh - 323px)" }}
+            >
+              <div style={{ marginRight: "32px", marginLeft: "32px" }}>
+                <SignupMobile
+                  client={this.client}
+                  signIn={this.props.signIn}
+                  goToLogin={() => this.setState({ slideIndex: 1 })}
+                />
+              </div>
+              <div style={{ marginRight: "32px", marginLeft: "32px" }}>
+                <LoginMobile
+                  client={this.client}
+                  signIn={this.props.signIn}
+                  goToSignup={() => this.setState({ slideIndex: 0 })}
+                />
+              </div>
+            </SwipeableViews>
           </div>
-           <AppBar
+          <AppBar
             color="default"
             position="static"
             style={{ marginBottom: "0px", marginTop: "auto", height: "64px" }}
@@ -118,7 +106,8 @@ class UnAuthenticatedApp extends Component {
               <BottomNavigationAction
                 label="SIGN UP"
                 icon={<Icon>person_add</Icon>}
-                style={   this.state.slideIndex === 0
+                style={
+                  this.state.slideIndex === 0
                     ? { color: "#0083ff" }
                     : { color: "#757575" }
                 }
@@ -126,13 +115,14 @@ class UnAuthenticatedApp extends Component {
               <BottomNavigationAction
                 label="LOG IN"
                 icon={<Icon>person</Icon>}
-                style={   this.state.slideIndex === 1
+                style={
+                  this.state.slideIndex === 1
                     ? { color: "#0083ff" }
                     : { color: "#757575" }
                 }
               />
             </BottomNavigation>
-                            </AppBar>
+          </AppBar>
         </Online>
         <Offline>
           <div className="loginBackground">

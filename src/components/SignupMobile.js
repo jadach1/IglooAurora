@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Input, { InputLabel, InputAdornment } from "material-ui-next/Input"
+import Input, {  InputAdornment } from "material-ui-next/Input"
 import { FormControl, FormHelperText } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
 import Icon from "material-ui-next/Icon"
@@ -83,7 +83,7 @@ class SignupMobile extends Component {
           variant="display1"
           gutterBottom
           className="defaultCursor"
-          style={{ color: "white", textAlign: "center" }}
+          style={{ color: "white", textAlign: "center", fontSize:"2rem" }}
         >
           Nice to meet you!
         </Typography>

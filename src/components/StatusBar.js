@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import Icon from "material-ui-next/Icon"
-import CenteredSpinner from "./CenteredSpinner"
 import gql from "graphql-tag"
 
 export default class StatusBar extends Component {
