@@ -2,11 +2,12 @@ import React, { Component } from "react"
 import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Input, { InputLabel, InputAdornment } from "material-ui-next/Input"
+import Input, {  InputAdornment } from "material-ui-next/Input"
 import { FormControl, FormHelperText } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
 import Icon from "material-ui-next/Icon"
 import ForgotPassword from "./ForgotPassword"
+import { Typography, Grid } from "material-ui-next"
 
 const theme = createMuiTheme({
   palette: {
@@ -89,78 +90,109 @@ class Login extends Component {
     return (
       <React.Fragment>
         <div className="rightSide notSelectable">
-            <h1 className="defaultCursor">Welcome back!</h1>
+          <br />
+          <Typography
+            variant="display1"
+            gutterBottom
+            className="defaultCursor"
+            style={{ color: "#0083ff", textAlign: "center", fontSize:"2rem" }}
+          >
+            Welcome back!
+          </Typography>
+          <br />
           <MuiThemeProvider theme={theme}>
-            <FormControl style={{ width: "100%" }}>
-              <InputLabel htmlFor="adornment-email">Email</InputLabel>
-              <Input
-                id="adornment-email-login"
-                value={this.state.email}
-                onChange={event => this.setState({ email: event.target.value })}
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.signIn()
-                }}
-                endAdornment={
-                  this.state.email ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={this.handleClickCancelEmail}
-                        onMouseDown={this.handleMouseDownPassword}
-                        style={{ width: "32px", height: "32px" }}
-                        tabIndex="-1"
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-              <FormHelperText id="name-error-text-login">
-                {this.state.emailError}
-              </FormHelperText>
-            </FormControl>
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon style={{ marginBottom: "20px" }}>email</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-email-login"
+                    placeholder="Email"
+                    value={this.state.email}
+                    onChange={event =>
+                      this.setState({ email: event.target.value })
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") this.signIn()
+                    }}
+                    endAdornment={
+                      this.state.email ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={this.handleClickCancelEmail}
+                            onMouseDown={this.handleMouseDownPassword}
+                            style={{ width: "32px", height: "32px" }}
+                            tabIndex="-1"
+                          >
+                            <Icon>clear</Icon>
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                  <FormHelperText id="name-error-text-login">
+                    {this.state.emailError}
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+            </Grid>
             <br />
-            <FormControl style={{ width: "100%" }}>
-              <InputLabel htmlFor="adornment-password-login">
-                Password
-              </InputLabel>
-              <Input
-                id="adornment-password-login"
-                type={this.state.showPassword ? "text" : "password"}
-                value={this.state.password}
-                onChange={event =>
-                  this.setState({
-                    password: event.target.value,
-                  })
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.signIn()
-                }}
-                endAdornment={
-                  this.state.password ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={this.handleClickShowPassword}
-                        onMouseDown={this.handleMouseDownPassword}
-                        style={{ width: "32px", height: "32px" }}
-                        tabIndex="-1"
-                      >
-                        {this.state.showPassword ? (
-                          <Icon>visibility_off</Icon>
-                        ) : (
-                          <Icon>visibility</Icon>
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-              <FormHelperText id="passowrd-error-text-login">
-                {this.state.passwordError}
-              </FormHelperText>
-            </FormControl>
-
-            <br />
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon style={{ marginBottom: "20px" }}>vpn_key</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-password-login"
+                    type={this.state.showPassword ? "text" : "password"}
+                    value={this.state.password}
+                    placeholder="Password"
+                    onChange={event =>
+                      this.setState({
+                        password: event.target.value,
+                      })
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") this.signIn()
+                    }}
+                    endAdornment={
+                      this.state.password ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={this.handleClickShowPassword}
+                            onMouseDown={this.handleMouseDownPassword}
+                            style={{ width: "32px", height: "32px" }}
+                            tabIndex="-1"
+                          >
+                            {this.state.showPassword ? (
+                              <Icon>visibility_off</Icon>
+                            ) : (
+                              <Icon>visibility</Icon>
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                  <FormHelperText id="passowrd-error-text-login">
+                    {this.state.passwordError}
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+            </Grid>
             <br />
             <div style={{ textAlign: "right" }}>
               <font
