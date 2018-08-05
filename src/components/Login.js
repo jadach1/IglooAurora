@@ -4,7 +4,7 @@ import gql from "graphql-tag"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import Input, { InputAdornment } from "material-ui-next/Input"
 import { FormControl, FormHelperText } from "material-ui-next/Form"
-import IconButton from "material-ui-next/IconButton"
+import { IconButton } from "material-ui-next"
 import Icon from "material-ui-next/Icon"
 import ForgotPassword from "./ForgotPassword"
 import { Typography, Grid } from "material-ui-next"
@@ -31,6 +31,8 @@ class Login extends Component {
       password: "",
       passwordError: "",
       forgotPasswordOpen: false,
+      isMailEmpty: false,
+      isPasswordEmpty: false,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -67,7 +69,7 @@ class Login extends Component {
         "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
       ) {
         this.setState({
-          emailError: "This account does not exist, maybe you want to sign up?",
+          emailError: "This account does not exist",
         })
       } else {
         console.log(e)
@@ -84,7 +86,7 @@ class Login extends Component {
   }
 
   handleClickCancelEmail = () => {
-    this.setState({ email: "" })
+    this.setState({ email: "", isMailEmpty: true })
   }
 
   render() {
@@ -118,11 +120,19 @@ class Login extends Component {
                     placeholder="Email"
                     value={this.state.email}
                     onChange={event =>
-                      this.setState({ email: event.target.value })
+                      this.setState({
+                        email: event.target.value,
+                        isMailEmpty: event.target.value === "",
+                      })
                     }
                     onKeyPress={event => {
                       if (event.key === "Enter") this.signIn()
                     }}
+                    error={
+                      this.state.emailError || this.state.isMailEmpty
+                        ? true
+                        : false
+                    }
                     endAdornment={
                       this.state.email ? (
                         <InputAdornment position="end">
@@ -137,8 +147,16 @@ class Login extends Component {
                       ) : null
                     }
                   />
-                  <FormHelperText id="name-error-text-login">
+                  <FormHelperText
+                    id="name-error-text-login"
+                    style={
+                      this.state.emailError || this.state.isMailEmpty
+                        ? { color: "#f44336" }
+                        : {}
+                    }
+                  >
                     {this.state.emailError}
+                    {this.state.isMailEmpty ? "This field is required" : ""}
                   </FormHelperText>
                 </FormControl>
               </Grid>
@@ -163,7 +181,14 @@ class Login extends Component {
                     onChange={event =>
                       this.setState({
                         password: event.target.value,
+                        passwordError: "",
+                        isPasswordEmpty: event.target.value === "",
                       })
+                    }
+                    error={
+                      this.state.passwordError || this.state.isPasswordEmpty
+                        ? true
+                        : false
                     }
                     onKeyPress={event => {
                       if (event.key === "Enter") this.signIn()
@@ -186,8 +211,16 @@ class Login extends Component {
                       ) : null
                     }
                   />
-                  <FormHelperText id="passowrd-error-text-login">
+                  <FormHelperText
+                    id="password-error-text-login"
+                    style={
+                      this.state.passwordError || this.state.isPasswordEmpty
+                        ? { color: "#f44336" }
+                        : {}
+                    }
+                  >
                     {this.state.passwordError}
+                    {this.state.isPasswordEmpty ? "This field is required" : ""}
                   </FormHelperText>
                 </FormControl>
               </Grid>
