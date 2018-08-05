@@ -61,7 +61,15 @@ class MainBodyHeader extends Component {
               lightbulb_outline
             </i>
           )}
-          <p className="title" style={{ cursor: "default" }}>
+          <p
+            className="title"
+            style={{
+              cursor: "default",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
+          >
             {device.customName}
           </p>
           <div

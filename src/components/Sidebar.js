@@ -306,6 +306,12 @@ class Sidebar extends Component {
                       </ListItemIcon>
                       <ListItemText
                         primary={device.customName}
+                        style={{
+                          cursor: "default",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
                         secondary={
                           device.notifications
                             .filter(

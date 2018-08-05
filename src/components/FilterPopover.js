@@ -101,6 +101,12 @@ export default class FilterPopover extends Component {
                 />
                 <ListItemText
                   primary={deviceType}
+                  style={{
+              cursor: "default",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
                   secondary={
                     occurrences[deviceType] +
                     (occurrences[deviceType] === 1 ? " device" : " devices")

@@ -7,6 +7,8 @@ import { FormControl, FormHelperText } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
 import Icon from "material-ui-next/Icon"
 import { Grid, Typography } from "material-ui-next"
+import zxcvbn from "zxcvbn"
+import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
   palette: {
@@ -24,43 +26,56 @@ class Signup extends Component {
       password: "",
       passwordError: "",
       fullName: "",
+      passwordScore: null,
+      passwordWarning: "",
+      isEmailValid: false,
     }
 
     this.signUp = this.signUp.bind(this)
   }
 
   async signUp() {
-    try {
-      this.setState({ emailError: "", passwordError: "" })
-      const loginMutation = await this.props.client.mutate({
-        mutation: gql`
-          mutation($email: String!, $password: String!) {
-            SignupUser(email: $email, password: $password) {
-              id
-              token
+    if (
+      !(
+        this.state.fullName &&
+        this.state.email &&
+        this.state.password &&
+        this.state.passwordScore >= 2
+      )
+    ) {
+      try {
+        this.setState({ emailError: "", passwordError: "" })
+        const loginMutation = await this.props.client.mutate({
+          mutation: gql`
+            mutation($email: String!, $password: String!) {
+              SignupUser(email: $email, password: $password) {
+                id
+                token
+              }
             }
-          }
-        `,
-        variables: {
-          email: this.state.email,
-          password: this.state.password,
-        },
-      })
-
-      if (typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.state.email)
-      }
-
-      this.props.signIn(loginMutation.data.SignupUser.token)
-    } catch (e) {
-      if (
-        e.message === "GraphQL error: A user with this email already exists"
-      ) {
-        this.setState({
-          emailError: "This email is already taken, maybe you want to sign in?",
+          `,
+          variables: {
+            email: this.state.email,
+            password: this.state.password,
+          },
         })
-      } else {
-        console.log(e)
+
+        if (typeof Storage !== "undefined") {
+          localStorage.setItem("email", this.state.email)
+        }
+
+        this.props.signIn(loginMutation.data.SignupUser.token)
+      } catch (e) {
+        if (
+          e.message === "GraphQL error: A user with this email already exists"
+        ) {
+          this.setState({
+            emailError:
+              "This email is already taken, maybe you want to sign in?",
+          })
+        } else {
+          console.log(e)
+        }
       }
     }
   }
@@ -78,6 +93,45 @@ class Signup extends Component {
   }
 
   render() {
+    let scoreText = ""
+
+    switch (this.state.passwordScore) {
+      case 0:
+        scoreText = "Very weak"
+        break
+
+      case 1:
+        scoreText = "Weak"
+        break
+
+      case 2:
+        scoreText = "Average"
+        break
+
+      case 3:
+        scoreText = "Strong"
+        break
+
+      case 4:
+        scoreText = "Very strong"
+        break
+
+      default:
+        scoreText = ""
+        break
+    }
+
+    if (!this.state.password) scoreText = ""
+
+    let customDictionary = [
+      this.state.email,
+      this.state.email.split("@")[0],
+      this.state.fullName,
+      "igloo",
+      "igloo aurora",
+      "aurora",
+    ]
+
     return (
       <div className="rightSide notSelectable">
         <br />
@@ -113,11 +167,11 @@ class Signup extends Component {
                     if (event.key === "Enter") this.signUp()
                   }}
                   endAdornment={
-                    this.state.email ? (
+                    this.state.fullName ? (
                       <InputAdornment position="end">
                         <IconButton
                           tabIndex="-1"
-                          onClick={this.handleClickCancelEmail}
+                          onClick={() => this.setState({ fullName: "" })}
                           onMouseDown={this.handleMouseDownPassword}
                           style={{ width: "32px", height: "32px" }}
                         >
@@ -150,7 +204,10 @@ class Signup extends Component {
                   placeholder="Email"
                   value={this.state.email}
                   onChange={event =>
-                    this.setState({ email: event.target.value })
+                    this.setState({
+                      email: event.target.value,
+                      isEmailValid: EmailValidator.validate(event.target.value),
+                    })
                   }
                   onKeyPress={event => {
                     if (event.key === "Enter") this.signUp()
@@ -193,11 +250,15 @@ class Signup extends Component {
                   placeholder="Password"
                   type={this.state.showPassword ? "text" : "password"}
                   value={this.state.password}
-                  onChange={event =>
+                  onChange={event => {
                     this.setState({
                       password: event.target.value,
+                      passwordScore: zxcvbn(
+                        event.target.value,
+                        customDictionary
+                      ).score,
                     })
-                  }
+                  }}
                   onKeyPress={event => {
                     if (event.key === "Enter") this.signUp()
                   }}
@@ -228,6 +289,9 @@ class Signup extends Component {
           </Grid>
           <br />
           <br />
+          {scoreText}
+          <br />
+          <br />
           <Button
             variant="raised"
             color="primary"
@@ -235,6 +299,13 @@ class Signup extends Component {
             primary={true}
             onClick={this.signUp}
             buttonStyle={{ backgroundColor: "#0083ff" }}
+            disabled={
+              !(
+                this.state.fullName &&
+                this.state.isEmailValid &&
+                this.state.passwordScore >= 2
+              )
+            }
           >
             Sign up
           </Button>

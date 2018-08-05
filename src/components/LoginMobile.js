@@ -210,10 +210,6 @@ class LoginMobile extends Component {
                   color: "white",
                 }}
                 onClick={() => {
-                  if (this.props.isMobile) {
-                    this.props.openForgotPassword()
-                    this.props.closeMobileDialog()
-                  }
                   this.setState({ forgotPasswordOpen: true })
                 }}
               >

@@ -2,6 +2,8 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 const theme = createMuiTheme({
   palette: {
@@ -14,8 +16,31 @@ const contentStyle = {
   width: "350px",
 }
 
-export default class GDPRDataDownload extends React.Component {
+class GDPRDataDownload extends React.Component {
   render() {
+    const {
+      userData: { user },
+    } = this.props
+
+    let jsonToCsv = ""
+
+    if (user) {
+      jsonToCsv = () => {
+        const items = user.items
+        const replacer = (key, value) => (value === null ? "" : value) // specify how you want to handle null values here
+        const header = Object.keys(items[0])
+        let csv = items.map(row =>
+          header
+            .map(fieldName => JSON.stringify(row[fieldName], replacer))
+            .join(",")
+        )
+        csv.unshift(header.join(","))
+        csv = csv.join("\r\n")
+
+        console.log(csv)
+      }
+    }
+
     const actions = [
       <MuiThemeProvider theme={theme}>
         <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
@@ -28,7 +53,8 @@ export default class GDPRDataDownload extends React.Component {
             label="Download"
             primary={true}
             buttonStyle={{ backgroundColor: "#0083ff" }}
-            onClick={this.handleNameSnackOpen}
+            disabled={!user}
+            onClick={this.jsonToCsv}
           >
             Download
           </Button>
@@ -53,3 +79,14 @@ export default class GDPRDataDownload extends React.Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    query {
+      user {
+        id
+      }
+    }
+  `,
+  { name: "userData" }
+)(GDPRDataDownload)

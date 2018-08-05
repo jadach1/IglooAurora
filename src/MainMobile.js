@@ -354,7 +354,7 @@ class Main extends Component {
                       changeDrawerState={this.changeDrawerState}
                       searchText={this.state.searchText}
                       changeText={text => this.setState({ searchText: text })}
-                      isMobile={this.props.isMobile}
+                      isMobile={true}
                       userData={this.props.userData}
                       nightMode={nightMode}
                     />
