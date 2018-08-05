@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Input, {InputAdornment } from "material-ui-next/Input"
+import Input, { InputAdornment } from "material-ui-next/Input"
 import { FormControl, FormHelperText } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
 import Icon from "material-ui-next/Icon"
@@ -13,7 +13,7 @@ import { Grid } from "material-ui-next"
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#fff" },
-    secondary: { main: "#0083ff" }
+    secondary: { main: "#0083ff" },
   },
 })
 
@@ -96,7 +96,7 @@ class LoginMobile extends Component {
             variant="display1"
             gutterBottom
             className="defaultCursor"
-            style={{ color: "white", textAlign: "center", fontSize:"2rem" }}
+            style={{ color: "white", textAlign: "center", fontSize: "2rem" }}
           >
             Welcome back!
           </Typography>
@@ -132,10 +132,10 @@ class LoginMobile extends Component {
                           <IconButton
                             onClick={this.handleClickCancelEmail}
                             onMouseDown={this.handleMouseDownPassword}
-                            style={{ width: "32px", height: "32px" }}
                             tabIndex="-1"
+                            style={{ color: "white" }}
                           >
-                            <Icon style={{ color: "white" }}>clear</Icon>
+                            <Icon>clear</Icon>
                           </IconButton>
                         </InputAdornment>
                       ) : null
@@ -181,8 +181,8 @@ class LoginMobile extends Component {
                           <IconButton
                             onClick={this.handleClickShowPassword}
                             onMouseDown={this.handleMouseDownPassword}
-                            style={{ width: "32px", height: "32px" }}
                             tabIndex="-1"
+                            style={{ color: "white" }}
                           >
                             {this.state.showPassword ? (
                               <Icon style={{ color: "white" }}>
@@ -219,7 +219,7 @@ class LoginMobile extends Component {
             <br />
             <br />
             <Button
-            variant="raised"
+              variant="raised"
               primary={true}
               fullWidth={true}
               onClick={this.signIn}

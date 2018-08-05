@@ -173,7 +173,6 @@ class Signup extends Component {
                           tabIndex="-1"
                           onClick={() => this.setState({ fullName: "" })}
                           onMouseDown={this.handleMouseDownPassword}
-                          style={{ width: "32px", height: "32px" }}
                         >
                           <Icon>clear</Icon>
                         </IconButton>
@@ -219,7 +218,6 @@ class Signup extends Component {
                           tabIndex="-1"
                           onClick={this.handleClickCancelEmail}
                           onMouseDown={this.handleMouseDownPassword}
-                          style={{ width: "32px", height: "32px" }}
                         >
                           <Icon>clear</Icon>
                         </IconButton>
@@ -269,7 +267,6 @@ class Signup extends Component {
                           tabIndex="-1"
                           onClick={this.handleClickShowPassword}
                           onMouseDown={this.handleMouseDownPassword}
-                          style={{ width: "32px", height: "32px" }}
                         >
                           {this.state.showPassword ? (
                             <Icon>visibility_off</Icon>

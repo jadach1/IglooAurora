@@ -129,7 +129,6 @@ class Login extends Component {
                           <IconButton
                             onClick={this.handleClickCancelEmail}
                             onMouseDown={this.handleMouseDownPassword}
-                            style={{ width: "32px", height: "32px" }}
                             tabIndex="-1"
                           >
                             <Icon>clear</Icon>
@@ -175,7 +174,6 @@ class Login extends Component {
                           <IconButton
                             onClick={this.handleClickShowPassword}
                             onMouseDown={this.handleMouseDownPassword}
-                            style={{ width: "32px", height: "32px" }}
                             tabIndex="-1"
                           >
                             {this.state.showPassword ? (

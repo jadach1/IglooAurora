@@ -50,7 +50,7 @@ export default class StatusBar extends Component {
 
     if (error) deviceStatus = "Unexpected error"
 
-    if (loading) deviceStatus =""
+    if (loading) deviceStatus = ""
 
     if (
       user &&
@@ -67,12 +67,12 @@ export default class StatusBar extends Component {
       <div
         style={
           this.props.nightMode
-            ? { background: "#2f333d", color: "white" }
-            : { background: "white", color: "black" }
+            ? { background: "#2f333d", color: "white", height: "32px" }
+            : { background: "white", color: "black", height: "32px" }
         }
         className="notSelectable statusBar defaultCursor"
       >
-        <div style={{ marginLeft: "16px" }}>
+        <div style={{ marginLeft: "16px", lineHeight: "26px" }}>
           {deviceStatus}
           <div
             style={{
