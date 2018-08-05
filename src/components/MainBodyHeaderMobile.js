@@ -62,7 +62,7 @@ class MainBodyHeader extends Component {
       return (
         <div
           className="mainBodyHeader"
-          style={this.props.isMobile ? { height: "64px", width: "100vw" } : ""}
+          style={ { height: "64px", width: "100vw" } }
         >
           <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
           <Link

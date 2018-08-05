@@ -2,12 +2,13 @@ import React, { Component } from "react"
 import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Input, {  InputAdornment } from "material-ui-next/Input"
+import Input, { InputAdornment } from "material-ui-next/Input"
 import { FormControl, FormHelperText } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
 import Icon from "material-ui-next/Icon"
 import ForgotPassword from "./ForgotPassword"
 import { Typography, Grid } from "material-ui-next"
+import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
   palette: {
@@ -95,7 +96,7 @@ class Login extends Component {
             variant="display1"
             gutterBottom
             className="defaultCursor"
-            style={{ color: "#0083ff", textAlign: "center", fontSize:"2rem" }}
+            style={{ color: "#0083ff", textAlign: "center", fontSize: "2rem" }}
           >
             Welcome back!
           </Typography>
@@ -198,10 +199,6 @@ class Login extends Component {
               <font
                 className="loginForgotPassoword"
                 onClick={() => {
-                  if (this.props.isMobile) {
-                    this.props.openForgotPassword()
-                    this.props.closeMobileDialog()
-                  }
                   this.setState({ forgotPasswordOpen: true })
                 }}
               >
@@ -215,6 +212,12 @@ class Login extends Component {
               fullWidth={true}
               onClick={this.signIn}
               color="primary"
+              disabled={
+                !(
+                  EmailValidator.validate(this.state.email) &&
+                  this.state.password
+                )
+              }
             >
               Log in
             </Button>
