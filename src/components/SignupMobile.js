@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Input, {  InputAdornment } from "material-ui-next/Input"
+import Input, { InputAdornment } from "material-ui-next/Input"
 import { FormControl, FormHelperText } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
 import Icon from "material-ui-next/Icon"
@@ -10,7 +10,8 @@ import { Typography, Grid } from "material-ui-next"
 
 const theme = createMuiTheme({
   palette: {
-    primary: { main: "#0083ff" },
+    primary: { main: "#fff" },
+    secondary: { main: "#0083ff" },
   },
 })
 
@@ -83,7 +84,7 @@ class SignupMobile extends Component {
           variant="display1"
           gutterBottom
           className="defaultCursor"
-          style={{ color: "white", textAlign: "center", fontSize:"2rem" }}
+          style={{ color: "white", textAlign: "center", fontSize: "2rem" }}
         >
           Nice to meet you!
         </Typography>
@@ -120,7 +121,7 @@ class SignupMobile extends Component {
                           tabIndex="-1"
                           onClick={this.handleClickCancelEmail}
                           onMouseDown={this.handleMouseDownPassword}
-                          style={{ width: "32px", height: "32px" }}
+                          style={{ color: "white" }}
                         >
                           <Icon>clear</Icon>
                         </IconButton>
@@ -151,7 +152,7 @@ class SignupMobile extends Component {
                 <Input
                   id="adornment-email-signup"
                   placeholder="Email"
-                    style={{ color: "white" }}
+                  style={{ color: "white" }}
                   value={this.state.email}
                   onChange={event =>
                     this.setState({ email: event.target.value })
@@ -166,7 +167,7 @@ class SignupMobile extends Component {
                           tabIndex="-1"
                           onClick={this.handleClickCancelEmail}
                           onMouseDown={this.handleMouseDownPassword}
-                          style={{ width: "32px", height: "32px" }}
+                          style={{ color: "white" }}
                         >
                           <Icon>clear</Icon>
                         </IconButton>
@@ -215,7 +216,7 @@ class SignupMobile extends Component {
                           tabIndex="-1"
                           onClick={this.handleClickShowPassword}
                           onMouseDown={this.handleMouseDownPassword}
-                          style={{ width: "32px", height: "32px" }}
+                          style={{ color: "white" }}
                         >
                           {this.state.showPassword ? (
                             <Icon>visibility_off</Icon>
@@ -237,7 +238,7 @@ class SignupMobile extends Component {
           <br />
           <Button
             variant="raised"
-            color="primary"
+            color="secondary"
             fullWidth={true}
             primary={true}
             onClick={this.signUp}

@@ -22,25 +22,6 @@ class GDPRDataDownload extends React.Component {
       userData: { user },
     } = this.props
 
-    let jsonToCsv = ""
-
-    if (user) {
-      jsonToCsv = () => {
-        const items = user.items
-        const replacer = (key, value) => (value === null ? "" : value) // specify how you want to handle null values here
-        const header = Object.keys(items[0])
-        let csv = items.map(row =>
-          header
-            .map(fieldName => JSON.stringify(row[fieldName], replacer))
-            .join(",")
-        )
-        csv.unshift(header.join(","))
-        csv = csv.join("\r\n")
-
-        console.log(csv)
-      }
-    }
-
     const actions = [
       <MuiThemeProvider theme={theme}>
         <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
@@ -54,7 +35,6 @@ class GDPRDataDownload extends React.Component {
             primary={true}
             buttonStyle={{ backgroundColor: "#0083ff" }}
             disabled={!user}
-            onClick={this.jsonToCsv}
           >
             Download
           </Button>
