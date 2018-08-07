@@ -208,7 +208,7 @@ body {
   font-size: 23px;
 }
 .loginForm .rightSide {
-  padding: 16px 32px 16px 32px;
+  padding: 16px 32px 0px 32px;
   grid-column: mid end;
 }
 

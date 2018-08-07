@@ -51,207 +51,229 @@ class Main extends Component {
     "alt+1": {
       priority: 1,
       handler: event => {
-        if (
-          this.props.userData.user.devices[0] &&
-          !this.state.areSettingsOpen
-        ) {
-          if (this.state.searchText === "") {
-            this.props.selectDevice(this.props.userData.user.devices[0].id)
-          } else {
-            this.props.selectDevice(
-              this.props.userData.user.devices.filter(device =>
-                device.customName
-                  .toLowerCase()
-                  .includes(this.state.searchText.toLowerCase())
-              )[0].id
-            )
+        const {
+          userData: { user },
+        } = this.props
+
+        if (user) {
+          if (
+            this.props.userData.user.devices[0] &&
+            !this.state.areSettingsOpen
+          ) {
+            if (this.state.searchText === "") {
+              this.props.selectDevice(this.props.userData.user.devices[0].id)
+            } else {
+              this.props.selectDevice(
+                this.props.userData.user.devices.filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.state.searchText.toLowerCase())
+                )[0].id
+              )
+            }
+            this.setState({ drawer: false })
           }
-          this.setState({ drawer: false })
-        }
-        if (this.state.areSettingsOpen) {
-          this.setState({ slideIndex: 0 })
+          if (this.state.areSettingsOpen) {
+            this.setState({ slideIndex: 0 })
+          }
         }
       },
     },
     "alt+2": {
       priority: 1,
       handler: event => {
-        if (
-          this.props.userData.user.devices[1] &&
-          !this.state.areSettingsOpen
-        ) {
-          if (this.state.searchText !== "") {
-            this.props.selectDevice(
-              this.props.userData.user.devices.filter(device =>
-                device.customName
-                  .toLowerCase()
-                  .includes(this.state.searchText.toLowerCase())
-              )[1].id
-            )
-          } else {
-            this.props.selectDevice(this.props.userData.user.devices[1].id)
+        if (this.props.userData.user) {
+          if (
+            this.props.userData.user.devices[1] &&
+            !this.state.areSettingsOpen
+          ) {
+            if (this.state.searchText !== "") {
+              this.props.selectDevice(
+                this.props.userData.user.devices.filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.state.searchText.toLowerCase())
+                )[1].id
+              )
+            } else {
+              this.props.selectDevice(this.props.userData.user.devices[1].id)
+            }
+            this.setState({ drawer: false })
           }
-          this.setState({ drawer: false })
-        }
-        if (this.state.areSettingsOpen) {
-          this.setState({ slideIndex: 1 })
+          if (this.state.areSettingsOpen) {
+            this.setState({ slideIndex: 1 })
+          }
         }
       },
     },
     "alt+3": {
       priority: 1,
       handler: event => {
-        if (
-          this.props.userData.user.devices[2] &&
-          !this.state.areSettingsOpen
-        ) {
-          if (this.state.searchText !== "") {
-            this.props.selectDevice(
-              this.props.userData.user.devices.filter(device =>
-                device.customName
-                  .toLowerCase()
-                  .includes(this.state.searchText.toLowerCase())
-              )[2].id
-            )
-          } else {
-            this.props.selectDevice(this.props.userData.user.devices[2].id)
+        if (this.props.userData.user) {
+          if (
+            this.props.userData.user.devices[2] &&
+            !this.state.areSettingsOpen
+          ) {
+            if (this.state.searchText !== "") {
+              this.props.selectDevice(
+                this.props.userData.user.devices.filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.state.searchText.toLowerCase())
+                )[2].id
+              )
+            } else {
+              this.props.selectDevice(this.props.userData.user.devices[2].id)
+            }
+            this.setState({ drawer: false })
           }
-          this.setState({ drawer: false })
-        }
-        if (this.state.areSettingsOpen) {
-          this.setState({ slideIndex: 2 })
+          if (this.state.areSettingsOpen) {
+            this.setState({ slideIndex: 2 })
+          }
         }
       },
     },
     "alt+4": {
       priority: 1,
       handler: event => {
-        if (
-          this.props.userData.user.devices[3] &&
-          !this.state.areSettingsOpen
-        ) {
-          if (this.state.searchText !== "") {
-            this.props.selectDevice(
-              this.props.userData.user.devices.filter(device =>
-                device.customName
-                  .toLowerCase()
-                  .includes(this.state.searchText.toLowerCase())
-              )[3].id
-            )
-          } else {
-            this.props.selectDevice(this.props.userData.user.devices[3].id)
+        if (this.props.userData.user) {
+          if (
+            this.props.userData.user.devices[3] &&
+            !this.state.areSettingsOpen
+          ) {
+            if (this.state.searchText !== "") {
+              this.props.selectDevice(
+                this.props.userData.user.devices.filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.state.searchText.toLowerCase())
+                )[3].id
+              )
+            } else {
+              this.props.selectDevice(this.props.userData.user.devices[3].id)
+            }
+            this.setState({ drawer: false })
           }
-          this.setState({ drawer: false })
         }
       },
     },
     "alt+5": {
       priority: 1,
       handler: event => {
-        if (
-          this.props.userData.user.devices[4] &&
-          !this.state.areSettingsOpen
-        ) {
-          if (this.state.searchText !== "") {
-            this.props.selectDevice(
-              this.props.userData.user.devices.filter(device =>
-                device.customName
-                  .toLowerCase()
-                  .includes(this.state.searchText.toLowerCase())
-              )[4].id
-            )
-          } else {
-            this.props.selectDevice(this.props.userData.user.devices[4].id)
+        if (this.props.userData.user) {
+          if (
+            this.props.userData.user.devices[4] &&
+            !this.state.areSettingsOpen
+          ) {
+            if (this.state.searchText !== "") {
+              this.props.selectDevice(
+                this.props.userData.user.devices.filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.state.searchText.toLowerCase())
+                )[4].id
+              )
+            } else {
+              this.props.selectDevice(this.props.userData.user.devices[4].id)
+            }
+            this.setState({ drawer: false })
           }
-          this.setState({ drawer: false })
         }
       },
     },
     "alt+6": {
       priority: 1,
       handler: event => {
-        if (
-          this.props.userData.user.devices[5] &&
-          !this.state.areSettingsOpen
-        ) {
-          if (this.state.searchText !== "") {
-            this.props.selectDevice(
-              this.props.userData.user.devices.filter(device =>
-                device.customName
-                  .toLowerCase()
-                  .includes(this.state.searchText.toLowerCase())
-              )[5].id
-            )
-          } else {
-            this.props.selectDevice(this.props.userData.user.devices[5].id)
+        if (this.props.userData.user) {
+          if (
+            this.props.userData.user.devices[5] &&
+            !this.state.areSettingsOpen
+          ) {
+            if (this.state.searchText !== "") {
+              this.props.selectDevice(
+                this.props.userData.user.devices.filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.state.searchText.toLowerCase())
+                )[5].id
+              )
+            } else {
+              this.props.selectDevice(this.props.userData.user.devices[5].id)
+            }
+            this.setState({ drawer: false })
           }
-          this.setState({ drawer: false })
         }
       },
     },
     "alt+7": {
       priority: 1,
       handler: event => {
-        if (
-          this.props.userData.user.devices[6] &&
-          !this.state.areSettingsOpen
-        ) {
-          if (this.state.searchText !== "") {
-            this.props.selectDevice(
-              this.props.userData.user.devices.filter(device =>
-                device.customName
-                  .toLowerCase()
-                  .includes(this.state.searchText.toLowerCase())
-              )[6].id
-            )
-          } else {
-            this.props.selectDevice(this.props.userData.user.devices[6].id)
+        if (this.props.userData.user) {
+          if (
+            this.props.userData.user.devices[6] &&
+            !this.state.areSettingsOpen
+          ) {
+            if (this.state.searchText !== "") {
+              this.props.selectDevice(
+                this.props.userData.user.devices.filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.state.searchText.toLowerCase())
+                )[6].id
+              )
+            } else {
+              this.props.selectDevice(this.props.userData.user.devices[6].id)
+            }
+            this.setState({ drawer: false })
           }
-          this.setState({ drawer: false })
         }
       },
     },
     "alt+8": {
       priority: 1,
       handler: event => {
-        if (
-          this.props.userData.user.devices[7] &&
-          !this.state.areSettingsOpen
-        ) {
-          if (this.state.searchText !== "") {
-            this.props.selectDevice(
-              this.props.userData.user.devices.filter(device =>
-                device.customName
-                  .toLowerCase()
-                  .includes(this.state.searchText.toLowerCase())
-              )[7].id
-            )
-          } else {
-            this.props.selectDevice(this.props.userData.user.devices[7].id)
+        if (this.props.userData.user) {
+          if (
+            this.props.userData.user.devices[7] &&
+            !this.state.areSettingsOpen
+          ) {
+            if (this.state.searchText !== "") {
+              this.props.selectDevice(
+                this.props.userData.user.devices.filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.state.searchText.toLowerCase())
+                )[7].id
+              )
+            } else {
+              this.props.selectDevice(this.props.userData.user.devices[7].id)
+            }
+            this.setState({ drawer: false })
           }
-          this.setState({ drawer: false })
         }
       },
     },
     "alt+9": {
       priority: 1,
       handler: event => {
-        if (
-          this.props.userData.user.devices[8] &&
-          !this.state.areSettingsOpen
-        ) {
-          if (this.state.searchText !== "") {
-            this.props.selectDevice(
-              this.props.userData.user.devices.filter(device =>
-                device.customName
-                  .toLowerCase()
-                  .includes(this.state.searchText.toLowerCase())
-              )[8].id
-            )
-          } else {
-            this.props.selectDevice(this.props.userData.user.devices[8].id)
+        if (this.props.userData.user) {
+          if (
+            this.props.userData.user.devices[8] &&
+            !this.state.areSettingsOpen
+          ) {
+            if (this.state.searchText !== "") {
+              this.props.selectDevice(
+                this.props.userData.user.devices.filter(device =>
+                  device.customName
+                    .toLowerCase()
+                    .includes(this.state.searchText.toLowerCase())
+                )[8].id
+              )
+            } else {
+              this.props.selectDevice(this.props.userData.user.devices[8].id)
+            }
+            this.setState({ drawer: false })
           }
-          this.setState({ drawer: false })
         }
       },
     },
@@ -427,52 +449,52 @@ class Main extends Component {
             />
           </Online>
           <Offline key="offlineMainBody">
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              backgroundColor: "#0057cb",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
             <div
               style={{
-                margin: "auto",
-                textAlign: "center",
-                width: "400px",
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "#0057cb",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <Typography variant="display1" style={{ color: "white" }}>
-                You are not connected,
-                <br />
-                try again in a while
-              </Typography>
-              <br />
-              <br />
-              <br />
-              <br />
-              <img
-                alt="Sleeping Polar Bear"
-                src={polarBear}
-                className="notSelectable"
-              />
-              <br />
-              <br />
-              <br />
-              <br />
-              <Typography
-                variant="headline"
-                gutterBottom
-                style={{ color: "white" }}
+              <div
+                style={{
+                  margin: "auto",
+                  textAlign: "center",
+                  width: "400px",
+                }}
               >
-                In the meantime, 
+                <Typography variant="display1" style={{ color: "white" }}>
+                  You are not connected,
+                  <br />
+                  try again in a while
+                </Typography>
                 <br />
-                why don't you have a nap?
-              </Typography>
+                <br />
+                <br />
+                <br />
+                <img
+                  alt="Sleeping Polar Bear"
+                  src={polarBear}
+                  className="notSelectable"
+                />
+                <br />
+                <br />
+                <br />
+                <br />
+                <Typography
+                  variant="headline"
+                  gutterBottom
+                  style={{ color: "white" }}
+                >
+                  In the meantime,
+                  <br />
+                  why don't you have a nap?
+                </Typography>
+              </div>
             </div>
-          </div>
           </Offline>
         </React.Fragment>
       </MuiThemeProvider>

@@ -144,6 +144,7 @@ class Sidebar extends Component {
             padding: "0",
             height: "calc(100vh - 128px)",
             overflow: "auto",
+            cursor: "pointer",
           }}
         >
           {this.props.searchText

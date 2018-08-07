@@ -42,6 +42,17 @@ export default class FilterPopover extends Component {
     })
   }
 
+  //fix for .lenght returning undefined
+  getLenght = array => {
+    let count = 0
+
+    for (let i in array) {
+      if (i) count++
+    }
+
+    return count
+  }
+
   componentDidMount() {
     this.props.setVisibleTypes(this.state.checked)
   }
@@ -85,36 +96,45 @@ export default class FilterPopover extends Component {
               Filter by device type
             </Typography>
           </Toolbar>
-          <List style={{ width: "256px", padding: "0" }}>
-            {uniqueDeviceTypeList.map(deviceType => (
-              <ListItem
-                key={deviceType}
-                role={undefined}
-                button
-                onClick={this.handleToggle(deviceType)}
-              >
-                <Checkbox
-                  checked={this.state.checked.indexOf(deviceType) !== -1}
-                  tabIndex={-1}
-                  disableRipple
-                  onChange={this.handleToggle(deviceType)}
-                />
-                <ListItemText
-                  primary={deviceType}
-                  style={{
-              cursor: "default",
-              whiteSpace: "nowrap",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-            }}
-                  secondary={
-                    occurrences[deviceType] +
-                    (occurrences[deviceType] === 1 ? " device" : " devices")
-                  }
-                />
-              </ListItem>
-            ))}
-          </List>
+          <div
+            style={
+              96 + this.getLenght(uniqueDeviceTypeList) * 72 >
+              window.innerHeight
+                ? { height: "calc(100vh - 96px)", overflow: "auto" }
+                : null
+            }
+          >
+            <List style={{ width: "256px", padding: "0" }}>
+              {uniqueDeviceTypeList.map(deviceType => (
+                <ListItem
+                  key={deviceType}
+                  role={undefined}
+                  button
+                  onClick={this.handleToggle(deviceType)}
+                >
+                  <Checkbox
+                    checked={this.state.checked.indexOf(deviceType) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                    onChange={this.handleToggle(deviceType)}
+                  />
+                  <ListItemText
+                    primary={deviceType}
+                    style={{
+                      cursor: "default",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                    secondary={
+                      occurrences[deviceType] +
+                      (occurrences[deviceType] === 1 ? " device" : " devices")
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </div>
         </div>
       </Popover>
     )

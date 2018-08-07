@@ -13,7 +13,7 @@ import CenteredSpinner from "../CenteredSpinner"
 import ChangeNameDialog from "./ChangeName"
 import TwoFactorDialog from "./Enable2FA"
 import DeleteAccountDialog from "./DeleteAccount"
-import ManageEmailDialog from "./ManageEmail"
+// import ManageEmailDialog from "./ManageEmail"
 import ChangePasswordDialog from "./ChangePassword"
 import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
@@ -28,6 +28,7 @@ import CreateDevice from "./CreateDevice"
 import CreateNotification from "./CreateNotification"
 import CreatePlotNode from "./CreatePlotNode"
 import GDPRDataDownload from "./GDPRDataDownload"
+import ChangeEmail from "./ChangeEmail"
 
 var moment = require("moment-timezone")
 
@@ -534,6 +535,7 @@ class SettingsDialog extends React.Component {
                 /> */}
                 <ListItem
                   primaryText="Change email"
+                  onClick={() => this.setState({ emailDialogOpen: true })}
                 />
                 <ListItem
                   primaryText="Change password"
@@ -659,12 +661,12 @@ class SettingsDialog extends React.Component {
           }
           handlePasswordDialogClose={this.handlePasswordDialogClose}
         />
-        <ManageEmailDialog
+        {/* <ManageEmailDialog
           confirmationDialogOpen={
             this.props.isOpen && this.state.emailDialogOpen
           }
           handleEmailDialogClose={this.handleEmailDialogClose}
-        />
+        /> */}
         <ManageAuthorizations
           confirmationDialogOpen={
             this.props.isOpen && this.state.authDialogOpen
@@ -727,6 +729,14 @@ class SettingsDialog extends React.Component {
         <GDPRDataDownload
           open={this.props.isOpen && this.state.gdprOpen}
           close={() => this.setState({ gdprOpen: false })}
+        />
+        <ChangeEmail
+          confirmationDialogOpen={
+            this.props.isOpen && this.state.emailDialogOpen
+          }
+          handleEmailDialogClose={() =>
+            this.setState({ emailDialogOpen: false })
+          }
         />
       </React.Fragment>
     )
