@@ -11,11 +11,12 @@ import "./styles/Tiles.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import StatusBar from "./components/StatusBar"
-import AppBar from "material-ui-next/AppBar"
 import EmailNotVerified from "./components/EmailNotVerified"
 import CookiesAlert from "./components/CookiesAlert"
 import GetLinkSuccess from "./components/GetLinkSuccess"
 import { Redirect } from "react-router-dom"
+import { Typography } from "material-ui-next"
+import polarBear from "./styles/assets/polarBear.svg"
 
 class Main extends Component {
   state = {
@@ -426,38 +427,52 @@ class Main extends Component {
             />
           </Online>
           <Offline key="offlineMainBody">
+          <div
+            style={{
+              width: "100vw",
+              height: "100vh",
+              backgroundColor: "#0057cb",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <div
-              className="offlineMain notSelectable defaultCursor"
-              style={
-                nightMode ? { background: "#2f333d" } : { background: "white" }
-              }
+              style={{
+                margin: "auto",
+                textAlign: "center",
+                width: "400px",
+              }}
             >
-              <AppBar position="sticky">
-                <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
-              </AppBar>
-              <div className="offlineBody mainBody">
-                <div>
-                  <font size="6">
-                    You are not connected, try again in a while
-                  </font>
-                  <br />
-                  <br />
-                  <font size="5">
-                    In the meantime, why don't you have a nap?
-                  </font>
-                  <br />
-                  <div
-                    style={{
-                      width: "400px",
-                      height: "300px",
-                      marginRight: "auto",
-                      marginLeft: "auto",
-                    }}
-                    className="sleepingBear notSelectable"
-                  />
-                </div>
-              </div>
+              <Typography variant="display1" style={{ color: "white" }}>
+                You are not connected,
+                <br />
+                try again in a while
+              </Typography>
+              <br />
+              <br />
+              <br />
+              <br />
+              <img
+                alt="Sleeping Polar Bear"
+                src={polarBear}
+                className="notSelectable"
+              />
+              <br />
+              <br />
+              <br />
+              <br />
+              <Typography
+                variant="headline"
+                gutterBottom
+                style={{ color: "white" }}
+              >
+                In the meantime, 
+                <br />
+                why don't you have a nap?
+              </Typography>
             </div>
+          </div>
           </Offline>
         </React.Fragment>
       </MuiThemeProvider>

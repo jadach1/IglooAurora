@@ -37,10 +37,10 @@ export default class Error404 extends Component {
           style={{
             margin: "auto",
             textAlign: "center",
-            width: "400px",
+            width: "80vw",
           }}
         >
-          <Typography variant="display1" style={{ color: "white" }}>
+          <Typography variant="headline" style={{ color: "white" }}>
             You seem to be lost
           </Typography>
           <br />
@@ -57,7 +57,7 @@ export default class Error404 extends Component {
           <br />
           <br />
           <Typography
-            variant="headline"
+            variant="title"
             gutterBottom
             style={{ color: "white" }}
           >

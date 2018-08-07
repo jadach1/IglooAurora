@@ -62,24 +62,24 @@ class MainBodyHeader extends Component {
       return (
         <div
           className="mainBodyHeader"
-          style={ { height: "64px", width: "100vw" } }
+          style={{ height: "64px", width: "100vw" }}
         >
           <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
-          <Link
-                    to=  "/aurora/"
-                    style={{ textDecoration: "none",color:"black" }}
-                  >
-            <IconButton
-              style={{
-                color: "white",
-                marginTop: "auto",
-                marginBottom: "auto",
-                marginLeft: "8px",
-              }}
-              onClick={() => this.props.selectDevice(null)}
+            <Link
+              to="/aurora/"
+              style={{ textDecoration: "none", color: "black" }}
             >
-              <Icon>chevron_left</Icon>
-            </IconButton>
+              <IconButton
+                style={{
+                  color: "white",
+                  marginTop: "auto",
+                  marginBottom: "auto",
+                  marginLeft: "8px",
+                }}
+                onClick={() => this.props.selectDevice(null)}
+              >
+                <Icon>chevron_left</Icon>
+              </IconButton>
             </Link>
           </Tooltip>
         </div>
@@ -101,18 +101,18 @@ class MainBodyHeader extends Component {
         >
           <div className="mobileBackIcon">
             <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
-            <Link
-                    to=                         "/aurora/"
-                    style={{ textDecoration: "none",color:"black" }}
-                  >
-              <IconButton
-                style={{
-                  color: "white",
-                }}
-                onClick={() => this.props.selectDevice(null)}
+              <Link
+                to="/aurora/"
+                style={{ textDecoration: "none", color: "black" }}
               >
-                <Icon>chevron_left</Icon>
-              </IconButton>
+                <IconButton
+                  style={{
+                    color: "white",
+                  }}
+                  onClick={() => this.props.selectDevice(null)}
+                >
+                  <Icon>chevron_left</Icon>
+                </IconButton>
               </Link>
             </Tooltip>
           </div>
@@ -216,7 +216,7 @@ class MainBodyHeader extends Component {
                     </ListItemIcon>
                     <ListItemText inset primary="Device information" />
                   </MenuItem>
-                  <MenuItem
+                  {/* <MenuItem
                     className="notSelectable"
                     style={
                       this.props.nightMode
@@ -236,7 +236,7 @@ class MainBodyHeader extends Component {
                       </Icon>
                     </ListItemIcon>
                     <ListItemText inset primary="See on the map" />
-                  </MenuItem>
+                  </MenuItem> */}
                   {navigator.share ? (
                     <MenuItem
                       className="notSelectable"
@@ -286,9 +286,10 @@ class MainBodyHeader extends Component {
                             ? { color: "white" }
                             : { color: "black" }
                         }
-                        onClick={() => {this.setState({ anchorEl: null })
-                   this.props.openSnackBar()
-                  }}
+                        onClick={() => {
+                          this.setState({ anchorEl: null })
+                          this.props.openSnackBar()
+                        }}
                       >
                         <ListItemIcon>
                           <Icon
@@ -350,7 +351,7 @@ class MainBodyHeader extends Component {
                         style={{
                           color: "white",
                         }}
-                   onClick={this.props.openSnackBar}
+                        onClick={this.props.openSnackBar}
                       >
                         <Icon>link</Icon>
                       </IconButton>
@@ -359,7 +360,7 @@ class MainBodyHeader extends Component {
                 ) : (
                   ""
                 )}
-                <Tooltip
+                {/* <Tooltip
                   id="tooltip-bottom"
                   title="See on the map"
                   placement="bottom"
@@ -371,7 +372,7 @@ class MainBodyHeader extends Component {
                   >
                     <Icon>place</Icon>
                   </IconButton>
-                </Tooltip>
+                </Tooltip> */}
                 <Tooltip
                   id="tooltip-bottom"
                   title="Device information"

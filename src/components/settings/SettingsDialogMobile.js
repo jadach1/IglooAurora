@@ -11,7 +11,7 @@ import CenteredSpinner from "../CenteredSpinner"
 import ChangeNameDialog from "./ChangeName"
 import TwoFactorDialog from "./Enable2FA"
 import DeleteAccountDialog from "./DeleteAccount"
-import ChangeEmailDialog from "./ChangeEmail"
+import ManageEmailDialog from "./ManageEmail"
 import ChangePasswordDialog from "./ChangePassword"
 import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
@@ -369,25 +369,25 @@ class SettingsDialog extends React.Component {
         })
       }
 
-      switch(user.language) {
-        case "en": 
-        languageText="English" 
-        break
-      case "de":
-      languageText="Deutsch"
-      break
-      case "es":
-      languageText="Español"
-      break
-      case "it":
-      languageText="Italiano"
-      break
-      case "zh-Hans":
-      languageText="中文(简体)"
-      break
-      default:
-      languageText="English"
-      break
+      switch (user.language) {
+        case "en":
+          languageText = "English"
+          break
+        case "de":
+          languageText = "Deutsch"
+          break
+        case "es":
+          languageText = "Español"
+          break
+        case "it":
+          languageText = "Italiano"
+          break
+        case "zh-Hans":
+          languageText = "中文(简体)"
+          break
+        default:
+          languageText = "English"
+          break
       }
     }
 
@@ -405,7 +405,13 @@ class SettingsDialog extends React.Component {
         >
           <MuiThemeProvider theme={theme}>
             <AppBar position="sticky" style={{ height: "64px" }}>
-              <Toolbar style={{ height: "64px",paddingLeft:"24px", paddingRight:"24px" }}>
+              <Toolbar
+                style={{
+                  height: "64px",
+                  paddingLeft: "24px",
+                  paddingRight: "24px",
+                }}
+              >
                 <Typography
                   variant="title"
                   color="inherit"
@@ -541,11 +547,12 @@ class SettingsDialog extends React.Component {
                 <Subheader style={{ cursor: "default" }}>
                   Authentication
                 </Subheader>
-                <ListItem
+                {/* <ListItem
                   primaryText="Manage emails"
                   secondaryText="Add or delete emails you use to log in"
                   onClick={this.handleEmailDialogOpen}
-                />
+                /> */}
+                <ListItem primaryText="Change email" />
                 <ListItem
                   primaryText="Change password"
                   onClick={this.handlePasswordDialogOpen}
@@ -560,7 +567,7 @@ class SettingsDialog extends React.Component {
                     />
                   }
                 />
-                <ListItem
+                {/*  <ListItem
                   primaryText="Two-factor authentication"
                   secondaryText="Make your account safer by verifying it is actually you"
                   rightToggle={
@@ -572,11 +579,23 @@ class SettingsDialog extends React.Component {
                     />
                   }
                 />
+                <ListItem
+                  primaryText="Passwordless authentication"
+                  secondaryText="Use your fingerprint, your face or an external device to log in"
+                  rightToggle={
+                    <Toggle
+                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                      rippleStyle={{ color: "#0083ff" }}
+                      onToggle={this.handleTwoFactorDialogOpen}
+                    />
+                  }
+                /> */}
                 <Divider />
                 <Subheader style={{ cursor: "default" }}>
                   For developers
                 </Subheader>
-              {devModeSetting}
+                {devModeSetting}
                 <Divider />
                 <Subheader style={{ cursor: "default" }}>
                   Account management
@@ -612,7 +631,7 @@ class SettingsDialog extends React.Component {
                   secondaryText="Generate, view and delete your account's access tokens"
                   onClick={this.handleAuthDialogOpen}
                 />
-                <Divider/>
+                <Divider />
                 <Subheader style={{ cursor: "default" }}>
                   Devices and values
                 </Subheader>
@@ -633,7 +652,7 @@ class SettingsDialog extends React.Component {
                   onClick={() =>
                     this.setState({ createNotificationOpen: true })
                   }
-                />             
+                />
               </List>
             </div>
           </SwipeableViews>
@@ -699,7 +718,7 @@ class SettingsDialog extends React.Component {
           }
           handlePasswordDialogClose={this.handlePasswordDialogClose}
         />
-        <ChangeEmailDialog
+        <ManageEmailDialog
           confirmationDialogOpen={
             this.props.isOpen && this.state.emailDialogOpen
           }

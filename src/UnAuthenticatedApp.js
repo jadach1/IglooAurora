@@ -13,6 +13,10 @@ import BottomNavigation, {
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
 import { Offline, Online } from "react-detect-offline"
+import { Typography } from "material-ui-next"
+import polarBear from "./styles/assets/polarBear.svg"
+import logo from "./styles/assets/logo.svg"
+import iglooTitle from "./styles/assets/iglooTitle.svg"
 
 class UnAuthenticatedApp extends Component {
   state = { slideIndex: 0 }
@@ -65,24 +69,28 @@ class UnAuthenticatedApp extends Component {
         <Online>
           <div className="loginBackground">
             <Paper className="loginForm">
-              <div className="leftSide notSelectable">
-                <br />
-                <br />
-                <div
-                  className="logo notSelectable"
-                  style={{ width: "300px", height: "176px" }}
-                />
-                <br />
-                <br />
-                <div
-                  className="unauthenticatedTitle notSelectable"
-                  style={{
-                    width: "300px",
-                    height: "187px",
-                    marginRight: "auto",
-                    marginLeft: "auto",
-                  }}
-                />
+              <div
+                className="leftSide notSelectable"
+                style={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <div>
+                  <img
+                    src={logo}
+                    alt="Igloo logo"
+                    className="notSelectable"
+                    style={{ width: "300px", marginBottom: "77px" }}
+                  />
+                  <img
+                    src={iglooTitle}
+                    alt="Igloo Aurora"
+                    className="notSelectable"
+                    style={{ width: "300px" }}
+                  />
+                </div>
               </div>
               <div>
                 <BottomNavigation
@@ -132,31 +140,51 @@ class UnAuthenticatedApp extends Component {
           </div>
         </Online>
         <Offline key="offlineLogin">
-          <div className="loginBackground">
-            <Paper className="offlineLoginPaper">
-              <div className="offlineLoginForm">
-                <div
-                  className="offlineBodyLogin"
-                  style={{ margin: "auto", width: 400, height: 450 }}
-                >
-                  <font size="6">
-                    You are not connected, try again in a while
-                  </font>
-                  <br />
-                  <br />
-                  <font size="5">
-                    In the meantime, why don't you have a nap?
-                  </font>
-                  <br />
-                  <img
-                    alt="Sleeping Polar Bear"
-                    src="./assets/polarBear.svg"
-                    width="400"
-                    className="notSelectable"
-                  />
-                </div>
-              </div>
-            </Paper>
+          <div
+            style={{
+              width: "100vw",
+              height: "100vh",
+              backgroundColor: "#0057cb",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                margin: "auto",
+                textAlign: "center",
+                width: "400px",
+              }}
+            >
+              <Typography variant="display1" style={{ color: "white" }}>
+                You are not connected,
+                <br />
+                try again in a while
+              </Typography>
+              <br />
+              <br />
+              <br />
+              <br />
+              <img
+                alt="Sleeping Polar Bear"
+                src={polarBear}
+                className="notSelectable"
+              />
+              <br />
+              <br />
+              <br />
+              <br />
+              <Typography
+                variant="headline"
+                gutterBottom
+                style={{ color: "white" }}
+              >
+                In the meantime,
+                <br />
+                why don't you have a nap?
+              </Typography>
+            </div>
           </div>
         </Offline>
       </MuiThemeProvider>

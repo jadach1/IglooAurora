@@ -4,7 +4,7 @@ import Tooltip from "material-ui-next/Tooltip"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-
+import logo from "../styles/assets/logo.svg"
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#fff" },
@@ -34,9 +34,11 @@ class SidebarHeader extends Component {
           height: "64px",
         }}
       >
-        <div
-          style={{ width: "56px", height: "33px", marginLeft: "16px" }}
-          className="miniLogo notSelectable"
+        <img
+          src={logo}
+          alt="Igloo logo"
+          className="notSelectable"
+          style={{ width: "56px", marginLeft: "16px" }}
         />
         <div
           style={{
