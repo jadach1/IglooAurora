@@ -16,6 +16,8 @@ import CookiesAlert from "./components/CookiesAlert"
 import StatusBar from "./components/StatusBar"
 import GetLinkSuccess from "./components/GetLinkSuccess"
 import {Redirect} from "react-router-dom"
+import { Typography } from "material-ui-next"
+import polarBear from "./styles/assets/polarBear.svg"
 
 class Main extends Component {
   state = {
@@ -425,26 +427,48 @@ class Main extends Component {
             <CookiesAlert mobile={true} />
           </Online>
           <Offline key="offlineMainBody">
-            <div className="main">
-              <AppBar>
-                <SidebarHeader logOut={this.props.logOut} key="sidebarHeader" />
-              </AppBar>
-              <font size="6">You are not connected, try again in a while</font>
+          <div
+            style={{
+              width: "100vw",
+              height: "100vh",
+              backgroundColor: "#0057cb",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                margin: "auto",
+                textAlign: "center",
+                width: "80vw",
+              }}
+            >
+              <Typography variant="headline" style={{ color: "white" }}>
+                You are not connected, try again in a while
+              </Typography>
               <br />
               <br />
-
-              <font size="5">In the meantime, why don't you have a nap?</font>
               <br />
-              <div
-                style={{
-                  width: "80vh",
-                  height: "300px",
-                  marginRight: "auto",
-                  marginLeft: "auto",
-                }}
-                className="sleepingBear notSelectable"
+              <br />
+              <img
+                alt="Sleeping Polar Bear"
+                src={polarBear}
+                className="notSelectable"
               />
+              <br />
+              <br />
+              <br />
+              <br />
+              <Typography
+                variant="title"
+                gutterBottom
+                style={{ color: "white" }}
+              >
+                In the meantime, why don't you have a nap?
+              </Typography>
             </div>
+          </div>
           </Offline>
         </React.Fragment>
       </MuiThemeProvider>

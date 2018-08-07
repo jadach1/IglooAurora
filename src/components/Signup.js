@@ -16,6 +16,36 @@ const theme = createMuiTheme({
   },
 })
 
+const veryWeak = createMuiTheme({
+  palette: {
+    primary: { main: "#d80000" },
+  },
+})
+
+const weak = createMuiTheme({
+  palette: {
+    primary: { main: "#ff5e08" },
+  },
+})
+
+const average = createMuiTheme({
+  palette: {
+    primary: { main: "#ffa000" },
+  },
+})
+
+const strong = createMuiTheme({
+  palette: {
+    primary: { main: "#3ac000" },
+  },
+})
+
+const veryStrong = createMuiTheme({
+  palette: {
+    primary: { main: "#2a8a00" },
+  },
+})
+
 class Signup extends Component {
   constructor() {
     super()
@@ -26,7 +56,6 @@ class Signup extends Component {
       password: "",
       fullName: "",
       passwordScore: null,
-      passwordWarning: "",
       isEmailValid: null,
       isNameValid: true,
       isMailEmpty: false,
@@ -86,30 +115,43 @@ class Signup extends Component {
 
   render() {
     let scoreText = ""
+    let passwordColor = ""
+    let passwordTheme = theme
 
     switch (this.state.passwordScore) {
       case 0:
         scoreText = "Very weak"
+        passwordColor = "#d80000"
+        passwordTheme = veryWeak
         break
 
       case 1:
         scoreText = "Weak"
+        passwordColor = "#ff5e08"
+        passwordTheme = weak
         break
 
       case 2:
         scoreText = "Average"
+        passwordColor = "#ffa000"
+        passwordTheme = average
         break
 
       case 3:
         scoreText = "Strong"
+        passwordColor = "#3ac000"
+        passwordTheme = strong
         break
 
       case 4:
         scoreText = "Very strong"
+        passwordColor = "#2a8a00"
+        passwordTheme = veryStrong
         break
 
       default:
         scoreText = ""
+        passwordTheme = theme
         break
     }
 
@@ -248,13 +290,15 @@ class Signup extends Component {
                   {this.state.emailError ||
                     (!this.state.isEmailValid && this.state.email
                       ? "Enter a valid email"
-                      : "")}{" "}
+                      : "")}
                   {this.state.isMailEmpty ? "This field is required" : ""}
                 </FormHelperText>
               </FormControl>
             </Grid>
           </Grid>
-          <br />
+        </MuiThemeProvider>
+        <br />
+        <MuiThemeProvider theme={passwordTheme}>
           <Grid
             container
             spacing={0}
@@ -269,6 +313,7 @@ class Signup extends Component {
                 <Input
                   id="adornment-password-signup"
                   placeholder="Password"
+                  color="secondary"
                   type={this.state.showPassword ? "text" : "password"}
                   value={this.state.password}
                   error={this.state.isPasswordEmpty ? true : false}
@@ -305,7 +350,11 @@ class Signup extends Component {
                 />
                 <FormHelperText
                   id="password-error-text-signup"
-                  style={this.state.isPasswordEmpty ? { color: "#f44336" } : {}}
+                  style={
+                    this.state.isPasswordEmpty
+                      ? { color: "#f44336" }
+                      : { color: passwordColor }
+                  }
                 >
                   {scoreText}
                   {this.state.isPasswordEmpty ? "This field is required" : ""}
@@ -313,8 +362,11 @@ class Signup extends Component {
               </FormControl>
             </Grid>
           </Grid>
-          <br />
-          <br />
+        </MuiThemeProvider>
+
+        <br />
+        <br />
+        <MuiThemeProvider theme={theme}>
           <Button
             variant="raised"
             color="primary"

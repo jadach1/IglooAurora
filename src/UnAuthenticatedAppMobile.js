@@ -7,14 +7,15 @@ import LoginMobile from "./components/LoginMobile"
 import SignupMobile from "./components/SignupMobile"
 import { hotkeys } from "react-keyboard-shortcuts"
 import { Offline, Online } from "react-detect-offline"
-import Paper from "material-ui/Paper"
 import BottomNavigation, {
   BottomNavigationAction,
 } from "material-ui-next/BottomNavigation"
 import Icon from "material-ui-next/Icon"
 import AppBar from "material-ui-next/AppBar"
 import SwipeableViews from "react-swipeable-views"
-
+import { Typography } from "material-ui-next"
+import polarBear from "./styles/assets/polarBear.svg"
+import logo from "./styles/assets/logo.svg"
 class UnAuthenticatedApp extends Component {
   state = { logiIn: false, signIn: false }
 
@@ -62,15 +63,25 @@ class UnAuthenticatedApp extends Component {
             }}
           >
             <div
-              className="logo notSelectable"
               style={{
-                width: "150px",
-                height: "59px",
-                marginLeft: "auto",
-                marginRight: "auto",
-                marginBottom: "100px",
+                width: "100%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
-            />{" "}
+            >
+              <img
+                src={logo}
+                alt="Igloo logo"
+                className="notSelectable"
+                style={{
+                  width: "150px",
+                  marginBottom: "100px",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }}
+              />
+            </div>
             <SwipeableViews
               index={this.state.slideIndex}
               onChangeIndex={this.handleChangeIndex}
@@ -125,31 +136,47 @@ class UnAuthenticatedApp extends Component {
           </AppBar>
         </Online>
         <Offline>
-          <div className="loginBackground">
-            <Paper className="offlineLoginMobilePaper">
-              <div className="offlineLoginForm">
-                <div
-                  className="offlineBodyLogin"
-                  style={{ margin: "auto", width: 350, height: 450 }}
-                >
-                  <font size="6">
-                    You are not connected, try again in a while
-                  </font>
-                  <br />
-                  <br />
-                  <font size="5">
-                    In the meantime, why don't you have a nap?
-                  </font>
-                  <br />
-                  <img
-                    alt="Sleeping Polar Bear"
-                    src="./assets/polarBear.svg"
-                    width="300"
-                    className="notSelectable"
-                  />
-                </div>
-              </div>
-            </Paper>
+          <div
+            style={{
+              width: "100vw",
+              height: "100vh",
+              backgroundColor: "#0057cb",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <div
+              style={{
+                margin: "auto",
+                textAlign: "center",
+                width: "80vw",
+              }}
+            >
+              <Typography variant="headline" style={{ color: "white" }}>
+                You are not connected, try again in a while
+              </Typography>
+              <br />
+              <br />
+              <br />
+              <br />
+              <img
+                alt="Sleeping Polar Bear"
+                src={polarBear}
+                className="notSelectable"
+              />
+              <br />
+              <br />
+              <br />
+              <br />
+              <Typography
+                variant="title"
+                gutterBottom
+                style={{ color: "white" }}
+              >
+                In the meantime, why don't you have a nap?
+              </Typography>
+            </div>
           </div>
         </Offline>
       </MuiThemeProvider>

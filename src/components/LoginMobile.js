@@ -32,6 +32,8 @@ class LoginMobile extends Component {
       password: "",
       passwordError: "",
       forgotPasswordOpen: false,
+      isMailEmpty: false,
+      isPasswordEmpty: false,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -68,7 +70,7 @@ class LoginMobile extends Component {
         "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
       ) {
         this.setState({
-          emailError: "This account does not exist, maybe you want to sign up?",
+          emailError: "This account does not exist",
         })
       } else {
         console.log(e)
@@ -85,7 +87,7 @@ class LoginMobile extends Component {
   }
 
   handleClickCancelEmail = () => {
-    this.setState({ email: "" })
+    this.setState({ email: "", isMailEmpty: true })
   }
 
   render() {
@@ -121,7 +123,10 @@ class LoginMobile extends Component {
                     style={{ color: "white" }}
                     value={this.state.email}
                     onChange={event =>
-                      this.setState({ email: event.target.value })
+                      this.setState({
+                        email: event.target.value,
+                        isMailEmpty: event.target.value === "",
+                      })
                     }
                     onKeyPress={event => {
                       if (event.key === "Enter") this.signIn()
@@ -141,8 +146,12 @@ class LoginMobile extends Component {
                       ) : null
                     }
                   />
-                  <FormHelperText id="name-error-text-login">
+                  <FormHelperText
+                    id="name-error-text-login"
+                    style={{ color: "white" }}
+                  >
                     {this.state.emailError}
+                    {this.state.isMailEmpty ? "This field is required" : ""}
                   </FormHelperText>
                 </FormControl>
               </Grid>
@@ -170,6 +179,8 @@ class LoginMobile extends Component {
                     onChange={event =>
                       this.setState({
                         password: event.target.value,
+                        passwordError: "",
+                        isPasswordEmpty: event.target.value === "",
                       })
                     }
                     onKeyPress={event => {
@@ -196,8 +207,12 @@ class LoginMobile extends Component {
                       ) : null
                     }
                   />
-                  <FormHelperText id="passowrd-error-text-login">
+                  <FormHelperText
+                    id="passowrd-error-text-login"
+                    style={{ color: "white" }}
+                  >
                     {this.state.passwordError}
+                    {this.state.isPasswordEmpty ? "This field is required" : ""}
                   </FormHelperText>
                 </FormControl>
               </Grid>

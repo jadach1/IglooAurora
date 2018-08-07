@@ -125,7 +125,7 @@ class MainBodyHeader extends Component {
             ) : (
               ""
             )}
-            <Tooltip
+            {/* <Tooltip
               id="tooltip-bottom"
               title="See on the map"
               placement="bottom"
@@ -137,7 +137,7 @@ class MainBodyHeader extends Component {
               >
                 <Icon>place</Icon>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Tooltip
               id="tooltip-bottom"
               title="Device information"

@@ -207,7 +207,13 @@ class Tile extends Component {
             ? "ChangeStringSize"
             : value.__typename === "ColourValue"
               ? "ChangeColourSize"
-              : "ChangeBooleanSize"
+              : value.__typename === "PlotValue"
+                ? "ChangePlotSize"
+                : value.__typename === "StringPlotValue"
+                  ? "ChangeStringPlotSize"
+                  : value.__typename === "MapValue"
+                    ? "ChangeMapSize"
+                    : "ChangeBooleanSize"
       ]({
         variables: {
           id: value.id,
@@ -221,7 +227,13 @@ class Tile extends Component {
               ? "stringValue"
               : value.__typename === "ColourValue"
                 ? "colourValue"
-                : "booleanValue"]: {
+                : value.__typename === "PlotValue"
+                  ? "plotValue"
+                  : value.__typename === "StringPlotValue"
+                    ? "stringPlotValue"
+                    : value.__typename === "MapValue"
+                      ? "mapValue"
+                      : "booleanValue"]: {
             __typename: value.__typename,
             id: value.id,
             tileSize: size,
@@ -237,7 +249,13 @@ class Tile extends Component {
             ? "ChangeStringSize"
             : value.__typename === "ColourValue"
               ? "ChangeColourSize"
-              : "ChangeBooleanSize"
+              : value.__typename === "PlotValue"
+                ? "ChangePlotSize"
+                : value.__typename === "StringPlotValue"
+                  ? "ChangeStringPlotSize"
+                  : value.__typename === "MapValue"
+                    ? "ChangeMapSize"
+                    : "ChangeBooleanSize"
       ]({
         variables: {
           id: value.id,
@@ -251,7 +269,13 @@ class Tile extends Component {
               ? "stringValue"
               : value.__typename === "ColourValue"
                 ? "colourValue"
-                : "booleanValue"]: {
+                : value.__typename === "PlotValue"
+                  ? "plotValue"
+                  : value.__typename === "StringPlotValue"
+                    ? "stringPlotValue"
+                    : value.__typename === "MapValue"
+                      ? "mapValue"
+                      : "booleanValue"]: {
             __typename: value.__typename,
             id: value.id,
             relevance: visible ? "VISIBLE" : "HIDDEN",
@@ -361,7 +385,11 @@ class Tile extends Component {
                 anchorOrigin={{ horizontal: "right", vertical: "top" }}
                 targetOrigin={{ horizontal: "right", vertical: "top" }}
                 onClick={() => this.setState({ tileMenuOpen: true })}
-                onRequestChange={() => this.state.tileMenuOpen ? this.setState({ tileMenuOpen: false }):null}
+                onRequestChange={() =>
+                  this.state.tileMenuOpen
+                    ? this.setState({ tileMenuOpen: false })
+                    : null
+                }
                 open={this.state.tileMenuOpen}
                 className="notSelectable"
                 menuStyle={
@@ -370,7 +398,7 @@ class Tile extends Component {
                     : { background: "white" }
                 }
               >
-                <MenuItem
+                {/* <MenuItem
                   primaryText="See on the map"
                   className="notSelectable"
                   leftIcon={<Icon>place</Icon>}
@@ -382,7 +410,7 @@ class Tile extends Component {
                 />
                 <Divider
                   style={this.props.nightMode ? { background: "#21252b" } : {}}
-                />
+                /> */}
                 <MenuItem
                   primaryText="Information"
                   className="notSelectable"
@@ -745,7 +773,68 @@ export default graphql(
         {
           name: "ChangeColourSize",
         }
-      )(Tile)
+      )(
+        graphql(
+          gql`
+            mutation ChangeSize(
+              $id: ID!
+              $size: TileSize
+              $relevance: ValueRelevance
+            ) {
+              plotValue(tileSize: $size, id: $id, relevance: $relevance) {
+                id
+                relevance
+                tileSize
+              }
+            }
+          `,
+          {
+            name: "ChangePlotSize",
+          }
+        )(
+          graphql(
+            gql`
+              mutation ChangeSize(
+                $id: ID!
+                $size: TileSize
+                $relevance: ValueRelevance
+              ) {
+                mapValue(tileSize: $size, id: $id, relevance: $relevance) {
+                  id
+                  relevance
+                  tileSize
+                }
+              }
+            `,
+            {
+              name: "ChangeMapSize",
+            }
+          )(
+            graphql(
+              gql`
+                mutation ChangeSize(
+                  $id: ID!
+                  $size: TileSize
+                  $relevance: ValueRelevance
+                ) {
+                  stringPlotValue(
+                    tileSize: $size
+                    id: $id
+                    relevance: $relevance
+                  ) {
+                    id
+                    relevance
+                    tileSize
+                  }
+                }
+              `,
+              {
+                name: "ChangeStringPlotSize",
+              }
+            )(Tile)
+          )
+        )
+      )
     )
   )
 )
