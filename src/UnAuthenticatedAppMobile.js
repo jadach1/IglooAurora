@@ -16,8 +16,20 @@ import SwipeableViews from "react-swipeable-views"
 import { Typography } from "material-ui-next"
 import polarBear from "./styles/assets/polarBear.svg"
 import logo from "./styles/assets/logo.svg"
+
 class UnAuthenticatedApp extends Component {
   state = { logiIn: false, signIn: false }
+
+  hot_keys = {
+    "alt+1": {
+      priority: 1,
+      handler: event => this.setState({ slideIndex: 0 }),
+    },
+    "alt+2": {
+      priority: 1,
+      handler: event => this.setState({ slideIndex: 1 }),
+    },
+  }
 
   constructor() {
     super()
@@ -55,12 +67,21 @@ class UnAuthenticatedApp extends Component {
       <MuiThemeProvider>
         <Online>
           <div
-            style={{
-              width: "100vw",
-              height: "calc( 100vh - 164px)",
-              backgroundColor: "#0057cb",
-              paddingTop: "100px",
-            }}
+            style={
+              window.innerHeight >= 690
+                ? {
+                    width: "100vw",
+                    height: "calc( 100vh - 164px)",
+                    backgroundColor: "#0057cb",
+                    paddingTop: "100px",
+                  }
+                : {
+                    width: "100vw",
+                    height: "calc( 100vh - 114px)",
+                    backgroundColor: "#0057cb",
+                    paddingTop: "50px",
+                  }
+            }
           >
             <div
               style={{
@@ -74,18 +95,31 @@ class UnAuthenticatedApp extends Component {
                 src={logo}
                 alt="Igloo logo"
                 className="notSelectable"
-                style={{
-                  width: "150px",
-                  marginBottom: "100px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }}
+                style={
+                  window.innerHeight >= 690
+                    ? {
+                        width: "150px",
+                        marginBottom: "100px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                      }
+                    : {
+                        width: "150px",
+                        marginBottom: "50px",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                      }
+                }
               />
             </div>
             <SwipeableViews
               index={this.state.slideIndex}
               onChangeIndex={this.handleChangeIndex}
-              style={{ height: "calc(100vh - 323px)" }}
+              style={
+                window.innerHeight >= 690
+                  ? { height: "calc(100vh - 352px)" }
+                  : { height: "calc(100vh - 252px)" }
+              }
             >
               <div style={{ marginRight: "32px", marginLeft: "32px" }}>
                 <SignupMobile

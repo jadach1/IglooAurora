@@ -9,6 +9,7 @@ import Icon from "material-ui-next/Icon"
 import ForgotPassword from "./ForgotPassword"
 import { Typography } from "material-ui-next"
 import { Grid } from "material-ui-next"
+import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
   palette: {
@@ -239,6 +240,12 @@ class LoginMobile extends Component {
               fullWidth={true}
               onClick={this.signIn}
               color="secondary"
+              disabled={
+                !(
+                  EmailValidator.validate(this.state.email) &&
+                  this.state.password
+                )
+              }
             >
               Log in
             </Button>
