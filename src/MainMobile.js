@@ -12,7 +12,6 @@ import AppBar from "material-ui-next/AppBar"
 import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
 import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
 import EmailNotVerified from "./components/EmailNotVerified"
-import CookiesAlert from "./components/CookiesAlert"
 import StatusBar from "./components/StatusBar"
 import GetLinkSuccess from "./components/GetLinkSuccess"
 import {Redirect} from "react-router-dom"
@@ -424,7 +423,6 @@ class Main extends Component {
               open={this.state.copyMessageOpen}
               close={() => this.setState({ copyMessageOpen: false })}
             />
-            <CookiesAlert mobile={true} />
           </Online>
           <Offline key="offlineMainBody">
           <div

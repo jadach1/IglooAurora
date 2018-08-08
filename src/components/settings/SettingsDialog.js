@@ -542,7 +542,7 @@ class SettingsDialog extends React.Component {
                   onClick={this.handlePasswordDialogOpen}
                 />
                 <ListItem
-                  primaryText="Use cookies to log in faster"
+                  primaryText="Don't log out at the end of every session"
                   rightToggle={
                     <Toggle
                       thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}

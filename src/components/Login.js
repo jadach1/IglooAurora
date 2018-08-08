@@ -7,7 +7,7 @@ import { FormControl, FormHelperText } from "material-ui-next/Form"
 import { IconButton } from "material-ui-next"
 import Icon from "material-ui-next/Icon"
 import ForgotPassword from "./ForgotPassword"
-import { Typography, Grid } from "material-ui-next"
+import { Typography, Grid, FormControlLabel, Checkbox } from "material-ui-next"
 import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
@@ -33,6 +33,7 @@ class Login extends Component {
       forgotPasswordOpen: false,
       isMailEmpty: false,
       isPasswordEmpty: false,
+      keepLoggedIn: true,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -155,8 +156,10 @@ class Login extends Component {
                         : {}
                     }
                   >
-                    {this.state.emailError}
-                    {this.state.isMailEmpty ? "This field is required" : ""}
+                    { this.state.emailError +
+                        (this.state.isMailEmpty
+                          ? "This field is required"
+                          : "")}
                   </FormHelperText>
                 </FormControl>
               </Grid>
@@ -219,12 +222,30 @@ class Login extends Component {
                         : {}
                     }
                   >
-                    {this.state.passwordError}
-                    {this.state.isPasswordEmpty ? "This field is required" : ""}
+                    {this.state.passwordError +
+                    (this.state.isPasswordEmpty ? "This field is required" : "")}
                   </FormHelperText>
                 </FormControl>
               </Grid>
             </Grid>
+            <FormControlLabel
+              control={
+                <MuiThemeProvider
+                  theme={createMuiTheme({
+                    palette: {
+                      secondary: { main: "#0083ff" },
+                    },
+                  })}
+                >
+                  <Checkbox
+                    onChange={event =>
+                      this.setState({ keepLoggedIn: event.target.checked })
+                    }
+                  />
+                </MuiThemeProvider>
+              }
+              label="Keep me logged in"
+            />
             <br />
             <div style={{ textAlign: "right" }}>
               <font

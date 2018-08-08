@@ -9,6 +9,7 @@ import Icon from "material-ui-next/Icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
+import moment from "moment"
 
 const theme = createMuiTheme({
   palette: {
@@ -125,11 +126,21 @@ class AuthDialog extends React.Component {
           {user.permanentTokens.map(token => (
             <ListItem
               primaryText={token.customName}
+              secondaryText={
+                "Last used: " +
+                moment
+                  .utc(token.lastUsed.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+                  .fromNow()
+              }
               leftIcon={<Icon>vpn_key</Icon>}
               rightIconButton={
-                <IconButton onClick={() => this.deletePermanentToken(token.id)}>
-                  <Icon>delete</Icon>
-                </IconButton>
+                <React.Fragment>
+                  <IconButton
+                    onClick={() => this.deletePermanentToken(token.id)}
+                  >
+                    <Icon>delete</Icon>
+                  </IconButton>
+                </React.Fragment>
               }
             />
           ))}
@@ -214,6 +225,7 @@ export default graphql(
         permanentTokens {
           id
           customName
+          lastUsed
         }
       }
     }
