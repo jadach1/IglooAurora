@@ -43,24 +43,34 @@ export default class StatusBar extends Component {
 
   render() {
     const {
-      userData: { loading, error, user },
+      userData: { user },
     } = this.props
 
     let deviceStatus = ""
-
-    if (error) deviceStatus = "Unexpected error"
-
-    if (loading) deviceStatus = ""
+    let signalStatus = ""
 
     if (
       user &&
       user.devices.filter(device => device.id === this.props.deviceId)[0]
     ) {
-      deviceStatus = user.devices.filter(
+      if (
+        user.devices.filter(device => device.id === this.props.deviceId)[0]
+          .online ||
+        user.devices.filter(device => device.id === this.props.deviceId)[0]
+          .lastSeen
+      ) {
+        deviceStatus = user.devices.filter(
+          device => device.id === this.props.deviceId
+        )[0].online
+          ? "Online"
+          : "Last seen: " +
+            user.devices.filter(device => device.id === this.props.deviceId)[0]
+              .lastSeen
+      }
+
+      signalStatus = user.devices.filter(
         device => device.id === this.props.deviceId
-      )[0].online
-        ? "Online"
-        : "Last seen:"
+      )[0].signalStatus
     }
 
     return (
@@ -80,7 +90,12 @@ export default class StatusBar extends Component {
               marginRight: "8px",
             }}
           >
-            <Icon>network_wifi</Icon> <Icon>battery_full</Icon>
+            {signalStatus ? (
+              <Icon>{"network_wifi_" + Math.floor(signalStatus / 20)}</Icon>
+            ) : (
+              ""
+            )}
+            <Icon>battery_full</Icon>
           </div>
         </div>
       </div>

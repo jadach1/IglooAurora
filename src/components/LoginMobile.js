@@ -7,8 +7,7 @@ import { FormControl, FormHelperText } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
 import Icon from "material-ui-next/Icon"
 import ForgotPassword from "./ForgotPassword"
-import { Typography } from "material-ui-next"
-import { Grid } from "material-ui-next"
+import { Typography, Grid, FormControlLabel, Checkbox } from "material-ui-next"
 import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
@@ -35,6 +34,7 @@ class LoginMobile extends Component {
       forgotPasswordOpen: false,
       isMailEmpty: false,
       isPasswordEmpty: false,
+      keepLoggedIn: true,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -218,6 +218,26 @@ class LoginMobile extends Component {
                 </FormControl>
               </Grid>
             </Grid>
+            <FormControlLabel
+              control={
+                <MuiThemeProvider
+                  theme={createMuiTheme({
+                    palette: {
+                      secondary: { main: "#fff" },
+                    },
+                  })}
+                >
+                  <Checkbox
+                    checked={this.state.keepLoggedIn}
+                    onChange={event =>
+                      this.setState({ keepLoggedIn: event.target.checked })
+                    }
+                  />
+                </MuiThemeProvider>
+              }
+              label="Keep me logged in"
+              style={{ color: "white" }}
+            />
             <br />
             <div style={{ textAlign: "right" }}>
               <font

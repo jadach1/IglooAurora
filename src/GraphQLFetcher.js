@@ -19,6 +19,8 @@ class GraphQLFetcher extends Component {
           customName
           icon
           online
+          batteryStatus
+          signalStatus
           deviceType
           notifications {
             id
@@ -190,11 +192,14 @@ export default graphql(
         language
         nightMode
         devMode
+        emailIsVerified
         devices {
           id
           customName
           icon
           online
+          batteryStatus
+          signalStatus
           deviceType
           notifications {
             id

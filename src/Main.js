@@ -12,7 +12,6 @@ import { hotkeys } from "react-keyboard-shortcuts"
 import NotificationsSnackbar from "./components/NotificationsSnackbar"
 import StatusBar from "./components/StatusBar"
 import EmailNotVerified from "./components/EmailNotVerified"
-import CookiesAlert from "./components/CookiesAlert"
 import GetLinkSuccess from "./components/GetLinkSuccess"
 import { Redirect } from "react-router-dom"
 import { Typography } from "material-ui-next"
@@ -312,13 +311,15 @@ class Main extends Component {
       userData: { user },
     } = this.props
 
-    let nightMode = ""
-    let devMode = ""
+    let nightMode = false
+    let devMode = false
+    let emailIsVerified = false
     let idList = []
 
     if (user) {
       nightMode = user.nightMode
       devMode = user.devMode
+      emailIsVerified= user.emailIsVerified
 
       idList = user.devices.map(device => device.id)
     }
@@ -440,8 +441,8 @@ class Main extends Component {
               )}
             </div>
             <NotificationsSnackbar />
-            <CookiesAlert mobile={false} />
-            <EmailNotVerified mobile={false} />
+            {!emailIsVerified?
+            <EmailNotVerified mobile={false} />:""}
             <GetLinkSuccess
               mobile={false}
               open={this.state.copyMessageOpen}
