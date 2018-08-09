@@ -86,7 +86,7 @@ export default class ChangeMailDialog extends React.Component {
             style={{ width: "100%" }}
           >
             <Grid item style={{ marginRight: "16px" }}>
-              <Icon style={{ marginBottom: "20px" }}>vpn_key</Icon>
+              <Icon >vpn_key</Icon>
             </Grid>
             <Grid item style={{ width: "calc(100% - 40px)" }}>
               <FormControl style={{ width: "100%" }}>

@@ -4,6 +4,7 @@ import List, { ListItem, ListItemText } from "material-ui-next/List"
 import Checkbox from "material-ui-next/Checkbox"
 import Typography from "material-ui-next/Typography"
 import Toolbar from "material-ui-next/Toolbar"
+import { MuiThemeProvider, createMuiTheme } from "material-ui-next"
 
 let removeDuplicates = inputArray => {
   var obj = {}
@@ -112,12 +113,20 @@ export default class FilterPopover extends Component {
                   button
                   onClick={this.handleToggle(deviceType)}
                 >
-                  <Checkbox
-                    checked={this.state.checked.indexOf(deviceType) !== -1}
-                    tabIndex={-1}
-                    disableRipple
-                    onChange={this.handleToggle(deviceType)}
-                  />
+                  <MuiThemeProvider
+                    theme={createMuiTheme({
+                      palette: {
+                        secondary: { main: "#ff4081" },
+                      },
+                    })}
+                  >
+                    <Checkbox
+                      checked={this.state.checked.indexOf(deviceType) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      onChange={this.handleToggle(deviceType)}
+                    />
+                  </MuiThemeProvider>
                   <ListItemText
                     primary={deviceType}
                     style={{

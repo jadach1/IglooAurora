@@ -38,6 +38,7 @@ class LoginMobile extends Component {
     }
 
     this.signIn = this.signIn.bind(this)
+    this.recover = this.recover.bind(this)
   }
 
   async signIn() {
@@ -72,6 +73,33 @@ class LoginMobile extends Component {
       ) {
         this.setState({
           emailError: "This account does not exist",
+        })
+      } else {
+        console.log(e)
+      }
+    }
+  }
+
+  async recover(recoveryEmail) {
+    try {
+      this.setState({ recoveryError: "" })
+      await this.props.client.mutate({
+        mutation: gql`
+          mutation($email: String!) {
+            SendPasswordRecoveryEmail(email: $email)
+          }
+        `,
+        variables: {
+          email: recoveryEmail,
+        },
+      })
+    } catch (e) {
+      if (
+        e.message ===
+        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+      ) {
+        this.setState({
+          recoveryError: "This account does not exist",
         })
       } else {
         console.log(e)
@@ -272,6 +300,7 @@ class LoginMobile extends Component {
           </MuiThemeProvider>
         </div>
         <ForgotPassword
+          recover={email => this.recover(email)}
           open={this.state.forgotPasswordOpen}
           close={() => this.setState({ forgotPasswordOpen: false })}
         />

@@ -30,6 +30,7 @@ class Login extends Component {
       emailError: "",
       password: "",
       passwordError: "",
+      recoveryError: "",
       forgotPasswordOpen: false,
       isMailEmpty: false,
       isPasswordEmpty: false,
@@ -37,6 +38,7 @@ class Login extends Component {
     }
 
     this.signIn = this.signIn.bind(this)
+    this.recover = this.recover.bind(this)
   }
 
   async signIn() {
@@ -71,6 +73,33 @@ class Login extends Component {
       ) {
         this.setState({
           emailError: "This account does not exist",
+        })
+      } else {
+        console.log(e)
+      }
+    }
+  }
+
+  async recover(recoveryEmail) {
+    try {
+      this.setState({ recoveryError: "" })
+      await this.props.client.mutate({
+        mutation: gql`
+          mutation($email: String!) {
+            SendPasswordRecoveryEmail(email: $email)
+          }
+        `,
+        variables: {
+          email: recoveryEmail,
+        },
+      })
+    } catch (e) {
+      if (
+        e.message ===
+        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+      ) {
+        this.setState({
+          recoveryError: "This account does not exist",
         })
       } else {
         console.log(e)
@@ -156,10 +185,8 @@ class Login extends Component {
                         : {}
                     }
                   >
-                    { this.state.emailError +
-                        (this.state.isMailEmpty
-                          ? "This field is required"
-                          : "")}
+                    {this.state.emailError +
+                      (this.state.isMailEmpty ? "This field is required" : "")}
                   </FormHelperText>
                 </FormControl>
               </Grid>
@@ -223,7 +250,9 @@ class Login extends Component {
                     }
                   >
                     {this.state.passwordError +
-                    (this.state.isPasswordEmpty ? "This field is required" : "")}
+                      (this.state.isPasswordEmpty
+                        ? "This field is required"
+                        : "")}
                   </FormHelperText>
                 </FormControl>
               </Grid>
@@ -276,6 +305,7 @@ class Login extends Component {
           </MuiThemeProvider>
         </div>
         <ForgotPassword
+          recover={email => this.recover(email)}
           open={this.state.forgotPasswordOpen}
           close={() => this.setState({ forgotPasswordOpen: false })}
         />

@@ -7,6 +7,7 @@ import Input, { InputLabel, InputAdornment } from "material-ui-next/Input"
 import { FormControl } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
 import Icon from "material-ui-next/Icon"
+import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
   palette: {
@@ -63,7 +64,15 @@ export default class ChangeNameDialog extends React.Component {
               Never mind
             </Button>,
             <MuiThemeProvider theme={theme}>
-              <Button variant="raised" color="primary">
+              <Button
+                variant="raised"
+                color="primary"
+                disabled={!EmailValidator.validate(this.state.email)}
+                onClick={() => {
+                  this.props.recover(this.state.email)
+                  this.props.close()
+                }}
+              >
                 Recover
               </Button>
             </MuiThemeProvider>,
