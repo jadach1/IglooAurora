@@ -9,6 +9,8 @@ import { Slide } from "material-ui-next"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 const styles1 = theme => ({
   warning: {
@@ -106,6 +108,10 @@ class CustomizedSnackbars extends React.Component {
   }
 
   render() {
+    let resendVerificationEmail = () => {
+      this.props.ResendVerificationEmail()
+    }
+
     return (
       <React.Fragment>
         <Dialog
@@ -118,7 +124,12 @@ class CustomizedSnackbars extends React.Component {
               >
                 Never mind
               </Button>
-              <Button variant="raised" color="primary" primary={true}>
+              <Button
+                variant="raised"
+                color="primary"
+                primary={true}
+                onClick={resendVerificationEmail}
+              >
                 Send again
               </Button>
             </MuiThemeProvider>
@@ -164,4 +175,13 @@ class CustomizedSnackbars extends React.Component {
   }
 }
 
-export default withStyles(styles2)(CustomizedSnackbars)
+export default graphql(
+  gql`
+    mutation ResendVerificationEmail($id: ID!) {
+      ResendVerificationEmail
+    }
+  `,
+  {
+    name: "ResendVerificationEmail",
+  }
+)(withStyles(styles2)(CustomizedSnackbars))

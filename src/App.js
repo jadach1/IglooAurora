@@ -5,6 +5,8 @@ import UnAuthenticatedAppMobile from "./UnAuthenticatedAppMobile"
 import jwt from "jsonwebtoken"
 import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
+import MobileError404 from "./MobileError404"
+import RecoveryFetcher from "./RecoveryFetcher"
 
 function setupWebPush(token) {
   const applicationServerPublicKey =
@@ -186,6 +188,10 @@ class App extends Component {
       return <Redirect to={this.state.from || "/aurora"} />
     }
 
+    let recoveryFetcher = props => {
+      return <RecoveryFetcher token={props.match.params.token} />
+    }
+
     return (
       <Switch>
         <PrivateRoute path="/aurora/" />
@@ -199,7 +205,17 @@ class App extends Component {
             )
           }
         />
-        <Route render={() => <Error404 />} />
+        <Route exact path="/recovery/:token" component={recoveryFetcher} />
+        <Route
+          exact
+          path="/recovery/"
+          component={() => <Redirect to="/aurora/" />}
+        />
+        <Route
+          render={() =>
+            this.state.isMobile ? <MobileError404 /> : <Error404 />
+          }
+        />
       </Switch>
     )
   }
