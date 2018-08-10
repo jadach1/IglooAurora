@@ -19,7 +19,7 @@ import { graphql } from "react-apollo"
 import logo from "./styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
 
-class PasswordRecovery extends Component {
+class MobilePasswordRecovery extends Component {
   state = { password: "", showPassword: false, redirect: false }
 
   render() {
@@ -86,7 +86,7 @@ class PasswordRecovery extends Component {
           style={{
             margin: "auto",
             textAlign: "center",
-            width: "327px",
+            width: "80vw",
           }}
         >
           <img
@@ -94,15 +94,15 @@ class PasswordRecovery extends Component {
             alt="Igloo logo"
             className="notSelectable"
             style={
-              window.innerHeight >= 690
+              window.innerWidth >= 354
                 ? {
                     width: "200px",
-                    marginBottom: "100px",
+                    marginBottom: "50px",
                     marginLeft: "auto",
                     marginRight: "auto",
                   }
                 : {
-                    width: "200px",
+                    width: "150px",
                     marginBottom: "50px",
                     marginLeft: "auto",
                     marginRight: "auto",
@@ -199,7 +199,14 @@ class PasswordRecovery extends Component {
               to="/login/"
               style={{ textDecoration: "none", color: "black" }}
             >
-              <Button color="primary" style={{ marginRight: "4px" }}>
+              <Button
+                color="primary"
+                style={
+                  window.innerWidth >= 354
+                    ? { marginRight: "4px" }
+                    : { width: "100%" }
+                }
+              >
                 Never mind
               </Button>
             </Link>
@@ -212,6 +219,7 @@ class PasswordRecovery extends Component {
                 color="secondary"
                 disabled={!(this.state.passwordScore >= 2)}
                 onClick={() => changePassword(this.state.password)}
+                style={window.innerWidth >= 354 ? {} : { width: "100%" }}
               >
                 Change password
               </Button>
@@ -235,4 +243,4 @@ export default graphql(
   {
     name: "ChangePassword",
   }
-)(PasswordRecovery)
+)(MobilePasswordRecovery)

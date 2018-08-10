@@ -189,7 +189,12 @@ class App extends Component {
     }
 
     let recoveryFetcher = props => {
-      return <RecoveryFetcher token={props.match.params.token} />
+      return (
+        <RecoveryFetcher
+          token={props.match.params.token}
+          mobile={this.state.isMobile}
+        />
+      )
     }
 
     return (

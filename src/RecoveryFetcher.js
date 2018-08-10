@@ -11,6 +11,7 @@ import { HttpLink } from "apollo-link-http"
 import introspectionQueryResultData from "./fragmentTypes.json"
 import { getMainDefinition } from "apollo-utilities"
 import { ApolloProvider } from "react-apollo"
+import MobilePasswordRecovery from "./MobilePasswordRecovery"
 
 export default class RecoveryFetcher extends Component {
   render() {
@@ -54,7 +55,7 @@ export default class RecoveryFetcher extends Component {
 
     return (
       <ApolloProvider client={this.client}>
-        <PasswordRecovery />
+        {this.props.mobile ? <MobilePasswordRecovery /> : <PasswordRecovery />}
       </ApolloProvider>
     )
   }
