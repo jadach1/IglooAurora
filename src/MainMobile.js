@@ -322,7 +322,7 @@ class Main extends Component {
                     handleChangeBTIndex={this.handleChangeBTIndex}
                     nightMode={nightMode}
                   />
-                  <AppBar>
+                  <AppBar position="sticky">
                     <SidebarHeader
                       logOut={this.props.logOut}
                       key="mobileSidebarHeader"
@@ -411,7 +411,7 @@ class Main extends Component {
                     </div>
                   </React.Fragment>
                 ) : (
-                  <Redirect exact to="/aurora" />
+                  <Redirect exact to="/devices" />
                 )
               ) : (
                 ""

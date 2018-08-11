@@ -218,7 +218,7 @@ class PasswordRecovery extends Component {
             </Link>
           </MuiThemeProvider>
         </div>
-        {this.state.redirect ? <Redirect push to="/aurora/" /> : ""}
+        {this.state.redirect ? <Redirect push to="/devices/" /> : ""}
       </div>
     )
   }

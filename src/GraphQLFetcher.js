@@ -164,14 +164,14 @@ class GraphQLFetcher extends Component {
       <Switch>
         <Route
           exact
-          path="/aurora/"
+          path="/devices/"
           component={
             this.props.isMobile ? MainMobileDeselected : MainDeselected
           }
         />
         <Route
           exact
-          path="/aurora/:id"
+          path="/devices/:id"
           component={this.props.isMobile ? MainMobileSelected : MainSelected}
         />
         <Route

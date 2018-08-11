@@ -163,8 +163,8 @@ class Sidebar extends Component {
                   <Link
                     to={
                       this.props.selectedDevice !== device.id
-                        ? "/aurora/" + device.id
-                        : "/aurora/"
+                        ? "/devices/" + device.id
+                        : "/devices/"
                     }
                     style={{ textDecoration: "none", color: "black" }}
                   >
@@ -269,8 +269,8 @@ class Sidebar extends Component {
                   <Link
                     to={
                       this.props.selectedDevice !== device.id
-                        ? "/aurora/" + device.id
-                        : "/aurora/"
+                        ? "/devices/" + device.id
+                        : "/devices/"
                     }
                     style={{ textDecoration: "none", color: "black" }}
                   >

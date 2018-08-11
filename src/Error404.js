@@ -19,7 +19,7 @@ export default class Error404 extends Component {
 
     if (wannaGoAway) {
       this.setState({ wannaGoAway: false })
-      return <Redirect to="/aurora" />
+      return <Redirect to="/devices" />
     }
 
     return (
