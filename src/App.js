@@ -7,6 +7,7 @@ import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
 import MobileError404 from "./MobileError404"
 import RecoveryFetcher from "./RecoveryFetcher"
+import Boards from "./Boards"
 
 function setupWebPush(token) {
   const applicationServerPublicKey =
@@ -114,7 +115,7 @@ class App extends Component {
     this.state = {
       bearer,
       isMobile: null,
-      from: "/aurora",
+      from: "/devices",
       redirectToReferrer: false,
     }
   }
@@ -154,7 +155,7 @@ class App extends Component {
       }
     }
 
-    const PrivateRoute = ({ component: Component, ...rest }) => (
+    const DevicesPrivateRoute = ({ component: Component, ...rest }) => (
       <Route
         {...rest}
         render={props => {
@@ -181,11 +182,32 @@ class App extends Component {
       />
     )
 
+    const BoardsPrivateRoute = ({ component: Component, ...rest }) => (
+      <Route
+        {...rest}
+        render={props => {
+          if (this.state.bearer) {
+            return <Boards logOut={logOut} />
+          } else {
+            this.setState({ from: props.location.pathname })
+
+            return (
+              <Redirect
+                to={{
+                  pathname: "/login",
+                }}
+              />
+            )
+          }
+        }}
+      />
+    )
+
     const { redirectToReferrer } = this.state
 
     if (redirectToReferrer) {
       this.setState({ redirectToReferrer: false })
-      return <Redirect to={this.state.from || "/aurora"} />
+      return <Redirect to={this.state.from || "/devices"} />
     }
 
     let recoveryFetcher = props => {
@@ -199,7 +221,8 @@ class App extends Component {
 
     return (
       <Switch>
-        <PrivateRoute path="/aurora/" />
+        <DevicesPrivateRoute path="/devices/" />
+        <BoardsPrivateRoute path="/boards/" />
         <Route
           path="/login"
           render={() =>
@@ -214,8 +237,9 @@ class App extends Component {
         <Route
           exact
           path="/recovery/"
-          component={() => <Redirect to="/aurora/" />}
+          component={() => <Redirect to="/devices/" />}
         />
+        <Route exact path="/" component={() => <Redirect to="/devices/" />} />
         <Route
           render={() =>
             this.state.isMobile ? <MobileError404 /> : <Error404 />

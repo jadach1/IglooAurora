@@ -109,7 +109,10 @@ class MobilePasswordRecovery extends Component {
                   }
             }
           />
-          <Typography variant="display1" style={{ color: "white" }}>
+          <Typography
+            variant="display1"
+            style={{ color: "white", fontSize: "1.95rem" }}
+          >
             Recover your account
           </Typography>
           <br />
@@ -195,38 +198,70 @@ class MobilePasswordRecovery extends Component {
               </Grid>
             </Grid>
             <br />
-            <Link
-              to="/login/"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <Button
-                color="primary"
-                style={
-                  window.innerWidth >= 354
-                    ? { marginRight: "4px" }
-                    : { width: "100%" }
-                }
-              >
-                Never mind
-              </Button>
-            </Link>
-            <Link
-              to="/login/"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <Button
-                variant="raised"
-                color="secondary"
-                disabled={!(this.state.passwordScore >= 2)}
-                onClick={() => changePassword(this.state.password)}
-                style={window.innerWidth >= 354 ? {} : { width: "100%" }}
-              >
-                Change password
-              </Button>
-            </Link>
+            {window.innerWidth >= 354 ? (
+              <React.Fragment>
+                <Link
+                  to="/"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  <Button
+                    color="primary"
+                    style={{
+                      marginRight: "4px",
+                    }}
+                  >
+                    Never mind
+                  </Button>
+                </Link>
+                <Link
+                  to="/"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  <Button
+                    variant="raised"
+                    color="secondary"
+                    disabled={!(this.state.passwordScore >= 2)}
+                    onClick={() => changePassword(this.state.password)}
+                  >
+                    Change password
+                  </Button>
+                </Link>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                <Link
+                  to="/"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  <Button
+                    variant="raised"
+                    color="secondary"
+                    disabled={!(this.state.passwordScore >= 2)}
+                    onClick={() => changePassword(this.state.password)}
+                    style={{ width: "100%" }}
+                  >
+                    Change password
+                  </Button>
+                </Link>
+                <Link
+                  to="/"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  <Button
+                    color="primary"
+                    style={{
+                      marginTop: "4px",
+                      width: "100%",
+                    }}
+                  >
+                    Never mind
+                  </Button>
+                </Link>
+              </React.Fragment>
+            )}
           </MuiThemeProvider>
         </div>
-        {this.state.redirect ? <Redirect push to="/aurora/" /> : ""}
+        {this.state.redirect ? <Redirect push to="/devices/" /> : ""}
       </div>
     )
   }

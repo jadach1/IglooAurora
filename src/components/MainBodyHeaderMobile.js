@@ -66,7 +66,7 @@ class MainBodyHeader extends Component {
         >
           <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
             <Link
-              to="/aurora/"
+              to="/devices/"
               style={{ textDecoration: "none", color: "black" }}
             >
               <IconButton
@@ -102,7 +102,7 @@ class MainBodyHeader extends Component {
           <div className="mobileBackIcon">
             <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
               <Link
-                to="/aurora/"
+                to="/devices/"
                 style={{ textDecoration: "none", color: "black" }}
               >
                 <IconButton

@@ -5,6 +5,8 @@ import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import logo from "../styles/assets/logo.svg"
+import { Link } from "react-router-dom"
+
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#fff" },
@@ -71,6 +73,16 @@ class SidebarHeader extends Component {
               >
                 <Icon color="primary">settings</Icon>
               </IconButton>
+            </Tooltip>
+            <Tooltip id="tooltip-bottom" title="Boards" placement="bottom">
+              <Link to="/boards/">
+                <IconButton
+                  className="sidebarHeaderButton"
+                  style={{ textDecoration: "none", color: "white" }}
+                >
+                  <Icon color="primary">widgets</Icon>
+                </IconButton>
+              </Link>
             </Tooltip>
             <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
               <IconButton

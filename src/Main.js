@@ -409,7 +409,7 @@ class Main extends Component {
                       />
                     </React.Fragment>
                   ) : (
-                    <Redirect exact to="/aurora" />
+                    <Redirect exact to="/devices" />
                   )
                 ) : (
                   ""
