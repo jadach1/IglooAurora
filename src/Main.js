@@ -319,7 +319,7 @@ class Main extends Component {
     if (user) {
       nightMode = user.nightMode
       devMode = user.devMode
-      emailIsVerified= user.emailIsVerified
+      emailIsVerified = user.emailIsVerified
 
       idList = user.devices.map(device => device.id)
     }
@@ -409,7 +409,14 @@ class Main extends Component {
                       />
                     </React.Fragment>
                   ) : (
-                    <Redirect exact to="/devices" />
+                    <Redirect
+                      exact
+                      to={
+                        this.props.selectedBoard
+                          ? "/dashboard?board=" + this.props.selectedBoard
+                          : "/dashboard"
+                      }
+                    />
                   )
                 ) : (
                   ""
@@ -441,8 +448,7 @@ class Main extends Component {
               )}
             </div>
             <NotificationsSnackbar />
-            {!emailIsVerified?
-            <EmailNotVerified mobile={false} />:""}
+            {!emailIsVerified ? <EmailNotVerified mobile={false} /> : ""}
             <GetLinkSuccess
               mobile={false}
               open={this.state.copyMessageOpen}

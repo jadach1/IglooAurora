@@ -7,7 +7,10 @@ class Boards extends Component {
     return (
       <React.Fragment>
         <BoardsHeader logOut={this.props.logOut} />
-        <BoardsBody />
+        <BoardsBody
+          userData={this.props.userData}
+          selectBoard={this.props.selectBoard}
+        />
       </React.Fragment>
     )
   }

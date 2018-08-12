@@ -92,10 +92,6 @@ class MainBodyHeader extends Component {
                       navigator
                         .share({
                           title: device.customName + " on Igloo Aurora",
-                          text:
-                            "Check out " +
-                            device.customName +
-                            " on Igloo Aurora",
                           url: window.location.href,
                         })
                         .then(() => console.log("Successful share"))

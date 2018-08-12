@@ -382,6 +382,7 @@ class Main extends Component {
                         openSnackBar={() =>
                           this.setState({ copyMessageOpen: true })
                         }
+                        selectedBoard={this.props.selectedBoard}
                       />
                     </AppBar>
                     <div
@@ -411,8 +412,14 @@ class Main extends Component {
                     </div>
                   </React.Fragment>
                 ) : (
-                  <Redirect exact to="/devices" />
-                )
+<Redirect
+                      exact
+                      to={
+                        this.props.selectedBoard
+                          ? "/dashboard?board=" + this.props.selectedBoard
+                          : "/dashboard"
+                      }
+                    />                )
               ) : (
                 ""
               )}

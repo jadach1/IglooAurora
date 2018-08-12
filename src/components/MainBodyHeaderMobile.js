@@ -66,7 +66,7 @@ class MainBodyHeader extends Component {
         >
           <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
             <Link
-              to="/devices/"
+              to="/dashboard/"
               style={{ textDecoration: "none", color: "black" }}
             >
               <IconButton
@@ -102,7 +102,7 @@ class MainBodyHeader extends Component {
           <div className="mobileBackIcon">
             <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
               <Link
-                to="/devices/"
+                to={"/dashboard?board="+this.props.selectedBoard}
                 style={{ textDecoration: "none", color: "black" }}
               >
                 <IconButton
@@ -250,10 +250,6 @@ class MainBodyHeader extends Component {
                           navigator
                             .share({
                               title: device.customName + " on Igloo Aurora",
-                              text:
-                                "Check out " +
-                                device.customName +
-                                " on Igloo Aurora",
                               url: window.location.href,
                             })
                             .then(() => console.log("Successful share"))
@@ -323,10 +319,6 @@ class MainBodyHeader extends Component {
                           navigator
                             .share({
                               title: device.customName + " on Igloo Aurora",
-                              text:
-                                "Check out " +
-                                device.customName +
-                                " on Igloo Aurora",
                               url: window.location.href,
                             })
                             .then(() => console.log("Successful share"))
