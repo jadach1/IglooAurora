@@ -4,9 +4,11 @@ import MainMobile from "./MainMobile"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { reactTranslateChangeLanguage } from "translate-components"
-import { Switch, Route } from "react-router-dom"
+import { Switch, Route, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
 import MobileError404 from "./MobileError404"
+import Boards from "./Boards"
+import queryString from "query-string"
 
 let systemLang = navigator.language || navigator.userLanguage
 
@@ -54,6 +56,8 @@ class GraphQLFetcher extends Component {
 
   state = {
     selectedDevice: null,
+    selectedBoard: null,
+    goToDevices: false,
   }
 
   selectDevice = id => this.setState({ selectedDevice: id })
@@ -122,64 +126,127 @@ class GraphQLFetcher extends Component {
       }
     }
 
-    const MainSelected = props => (
-      <Main
-        logOut={this.props.logOut}
-        userData={this.props.userData}
-        selectDevice={id => this.setState({ selectedDevice: id })}
-        selectedDevice={props.match.params.id}
-      />
-    )
+    const MainSelected = () => {
+      if (
+        queryString.parse("?" + window.location.href.split("?")[1]).board ||
+        queryString.parse("?" + window.location.href.split("?")[1]).device
+      ) {
+        if (
+          queryString.parse("?" + window.location.href.split("?")[1]).device
+        ) {
+          return (
+            <Main
+              logOut={this.props.logOut}
+              userData={this.props.userData}
+              selectDevice={id => this.setState({ selectedDevice: id })}
+              selectedDevice={
+                queryString.parse("?" + window.location.href.split("?")[1])
+                  .device
+              }
+              selectBoard={id => this.setState({ selectedBoard: id })}
+              selectedBoard={
+                queryString.parse("?" + window.location.href.split("?")[1])
+                  .board
+              }
+            />
+          )
+        } else {
+          return (
+            <Main
+              logOut={this.props.logOut}
+              userData={this.props.userData}
+              selectDevice={id => this.setState({ selectedDevice: id })}
+              selectedDevice={null}
+              selectBoard={id => this.setState({ selectedBoard: id })}
+              selectedBoard={
+                queryString.parse("?" + window.location.href.split("?")[1])
+                  .board
+              }
+            />
+          )
+        }
+      } else {
+        return (
+          <Boards
+            userData={this.props.userData}
+            logOut={this.props.logOut}
+            selectBoard={id => this.setState({ selectedBoard: id })}
+          />
+        )
+      }
+    }
 
-    const MainDeselected = () => (
-      <Main
-        logOut={this.props.logOut}
-        userData={this.props.userData}
-        selectDevice={id => this.setState({ selectedDevice: id })}
-        selectedDevice={null}
-      />
-    )
-
-    const MainMobileSelected = props => (
-      <MainMobile
-        logOut={this.props.logOut}
-        isMobile={this.props.isMobile}
-        userData={this.props.userData}
-        selectDevice={id => this.setState({ selectedDevice: id })}
-        selectedDevice={props.match.params.id}
-      />
-    )
-
-    const MainMobileDeselected = () => (
-      <MainMobile
-        logOut={this.props.logOut}
-        isMobile={this.props.isMobile}
-        userData={this.props.userData}
-        selectDevice={id => this.setState({ selectedDevice: id })}
-        selectedDevice={null}
-      />
-    )
+    const MainMobileSelected = () => {
+      if (
+        queryString.parse("?" + window.location.href.split("?")[1]).board ||
+        queryString.parse("?" + window.location.href.split("?")[1]).device
+      ) {
+        if (
+          queryString.parse("?" + window.location.href.split("?")[1]).device
+        ) {
+          return (
+            <MainMobile
+              logOut={this.props.logOut}
+              userData={this.props.userData}
+              selectDevice={id => this.setState({ selectedDevice: id })}
+              selectedDevice={
+                queryString.parse("?" + window.location.href.split("?")[1])
+                  .device
+              }
+              selectBoard={id => this.setState({ selectedBoard: id })}
+              selectedBoard={
+                queryString.parse("?" + window.location.href.split("?")[1])
+                  .board
+              }
+            />
+          )
+        } else {
+          return (
+            <MainMobile
+              logOut={this.props.logOut}
+              userData={this.props.userData}
+              selectDevice={id => this.setState({ selectedDevice: id })}
+              selectedDevice={null}
+              selectBoard={id => this.setState({ selectedBoard: id })}
+              selectedBoard={
+                queryString.parse("?" + window.location.href.split("?")[1])
+                  .board
+              }
+            />
+          )
+        }
+      } else {
+        return (
+          <Boards
+            userData={this.props.userData}
+            logOut={this.props.logOut}
+            selectBoard={id => this.setState({ selectedBoard: id })}
+          />
+        )
+      }
+    }
 
     return (
-      <Switch>
-        <Route
-          exact
-          path="/devices/"
-          component={
-            this.props.isMobile ? MainMobileDeselected : MainDeselected
-          }
-        />
-        <Route
-          exact
-          path="/devices/:id"
-          component={this.props.isMobile ? MainMobileSelected : MainSelected}
-        />
-        <Route
-          render={() =>
-            this.props.isMobile ? <MobileError404 /> : <Error404 />
-          }
-        />
-      </Switch>
+      <React.Fragment>
+        <Switch>
+          <Route
+            exact
+            strict
+            path="/dashboard"
+            component={this.props.isMobile ? MainMobileSelected : MainSelected}
+          />
+          <Route
+            exact
+            path="/dashboard/"
+            component={() => <Redirect to="/dashboard" />}
+          />
+          <Route
+            render={() =>
+              this.props.isMobile ? <MobileError404 /> : <Error404 />
+            }
+          />
+        </Switch>
+      </React.Fragment>
     )
   }
 }
@@ -193,6 +260,10 @@ export default graphql(
         nightMode
         devMode
         emailIsVerified
+        boards {
+          id
+          customName
+        }
         devices {
           id
           customName
@@ -201,6 +272,9 @@ export default graphql(
           batteryStatus
           signalStatus
           deviceType
+          board {
+            id
+          }
           notifications {
             id
             content

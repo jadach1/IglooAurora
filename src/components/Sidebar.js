@@ -144,7 +144,6 @@ class Sidebar extends Component {
             padding: "0",
             height: "calc(100vh - 128px)",
             overflow: "auto",
-            cursor: "pointer",
           }}
         >
           {this.props.searchText
@@ -163,10 +162,14 @@ class Sidebar extends Component {
                   <Link
                     to={
                       this.props.selectedDevice !== device.id
-                        ? "/devices/" + device.id
-                        : "/devices/"
+                        ? "/dashboard?board=" +
+                          this.props.selectedBoard +
+                          "&device=" +
+                          device.id
+                        : "/dashboard?board=" + this.props.selectedBoard
                     }
-                    style={{ textDecoration: "none", color: "black" }}
+                    style={{ textDecoration: "none", color: "black",
+                    cursor: "pointer", }}
                   >
                     <ListItem
                       button
@@ -269,8 +272,8 @@ class Sidebar extends Component {
                   <Link
                     to={
                       this.props.selectedDevice !== device.id
-                        ? "/devices/" + device.id
-                        : "/devices/"
+                        ? "/dashboard?board=" + this.props.selectedBoard + "&device=" + device.id
+                        : "/dashboard?board=" + this.props.selectedBoard
                     }
                     style={{ textDecoration: "none", color: "black" }}
                   >

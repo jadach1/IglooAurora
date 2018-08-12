@@ -19,6 +19,7 @@
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.17",
     "node-fetch": "^2.1.2",
+    "query-string": "^6.1.0",
     "react": "^16.4.1",
     "react-addons-css-transition-group": "^15.6.2",
     "react-apollo": "^2.0.4",

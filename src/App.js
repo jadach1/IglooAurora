@@ -7,7 +7,6 @@ import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
 import MobileError404 from "./MobileError404"
 import RecoveryFetcher from "./RecoveryFetcher"
-import Boards from "./Boards"
 
 function setupWebPush(token) {
   const applicationServerPublicKey =
@@ -115,7 +114,7 @@ class App extends Component {
     this.state = {
       bearer,
       isMobile: null,
-      from: "/devices",
+      from: "/dashboard",
       redirectToReferrer: false,
     }
   }
@@ -187,7 +186,13 @@ class App extends Component {
         {...rest}
         render={props => {
           if (this.state.bearer) {
-            return <Boards logOut={logOut} />
+            return (
+              <AuthenticatedApp
+                bearer={this.state.bearer}
+                logOut={logOut}
+                isMobile={this.state.isMobile}
+              />
+            )
           } else {
             this.setState({ from: props.location.pathname })
 
@@ -207,7 +212,7 @@ class App extends Component {
 
     if (redirectToReferrer) {
       this.setState({ redirectToReferrer: false })
-      return <Redirect to={this.state.from || "/devices"} />
+      return <Redirect to={this.state.from || "/dashboard"} />
     }
 
     let recoveryFetcher = props => {
@@ -221,7 +226,7 @@ class App extends Component {
 
     return (
       <Switch>
-        <DevicesPrivateRoute path="/devices/" />
+        <DevicesPrivateRoute path="/dashboard/" />
         <BoardsPrivateRoute path="/boards/" />
         <Route
           path="/login"
@@ -237,9 +242,9 @@ class App extends Component {
         <Route
           exact
           path="/recovery/"
-          component={() => <Redirect to="/devices/" />}
+          component={() => <Redirect to="/dashboard/" />}
         />
-        <Route exact path="/" component={() => <Redirect to="/devices/" />} />
+        <Route exact path="/" component={() => <Redirect to="/dashboard/" />} />
         <Route
           render={() =>
             this.state.isMobile ? <MobileError404 /> : <Error404 />
