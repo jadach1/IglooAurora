@@ -16,16 +16,17 @@ import {
   Button,
   MuiThemeProvider,
   createMuiTheme,
-} from "material-ui-next"
+} from "@material-ui/core"
 import { Link } from "react-router-dom"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import GetLinkSuccess from "./GetLinkSuccess"
+import CenteredSpinner from "./CenteredSpinner"
 
 export default class BoardsBody extends Component {
   state = {
     anchorEl: null,
     createOpen: false,
-    copyMessageOpen: true,
+    copyMessageOpen: false,
   }
 
   handleMenuOpen = event => {
@@ -38,37 +39,79 @@ export default class BoardsBody extends Component {
 
   render() {
     const {
-      userData: { error, user },
+      userData: { error, user, loading },
     } = this.props
 
     let boardsList = ""
+    let nightMode = false
+
+    if (loading) {
+      boardsList = <CenteredSpinner />
+    }
 
     if (error) {
       boardsList = "Unexpected error"
     }
 
     if (user) {
+      nightMode = user.nightMode
+
       boardsList = user.boards.map(board => (
         <React.Fragment>
           <Grid key={board.id} item>
-            <Card>
+            <Card
+              style={
+                nightMode
+                  ? { backgroundColor: "#2f333d" }
+                  : { backgroundColor: "#fff" }
+              }
+            >
               <CardHeader
                 action={
                   <Tooltip id="tooltip-bottom" title="More" placement="bottom">
                     <IconButton onClick={this.handleMenuOpen}>
-                      <Icon>more_vert</Icon>
+                      <Icon
+                        style={
+                          nightMode ? { color: "white" } : { color: "black" }
+                        }
+                      >
+                        more_vert
+                      </Icon>
                     </IconButton>
                   </Tooltip>
                 }
                 title={
                   <Link
                     to={"/dashboard?board=" + board.id}
-                    style={{ textDecoration: "none", color: "black" }}
+                    style={
+                      nightMode
+                        ? { color: "white", textDecoration: "none" }
+                        : { color: "black", textDecoration: "none" }
+                    }
                   >
                     {board.customName}
                   </Link>
                 }
-                subheader="August 11, 2018"
+                subheader={
+                  <Link
+                    to={"/dashboard?board=" + board.id}
+                    style={
+                      nightMode
+                        ? {
+                            color: "white",
+                            opacity: "0.5",
+                            textDecoration: "none",
+                          }
+                        : {
+                            color: "black",
+                            opacity: "0.5",
+                            textDecoration: "none",
+                          }
+                    }
+                  >
+                    August 11, 2018
+                  </Link>
+                }
               />
               <CardMedia
                 image="../styles/assets/loginBackground.jpg"
@@ -81,8 +124,14 @@ export default class BoardsBody extends Component {
                   title="Add to favourites"
                   placement="bottom"
                 >
-                  <IconButton>
-                    <Icon>favorite_border</Icon>
+                  <IconButton style={{ marginRight: "0", marginLeft: "auto" }}>
+                    <Icon
+                      style={
+                        nightMode ? { color: "white" } : { color: "black" }
+                      }
+                    >
+                      favorite_border
+                    </Icon>
                   </IconButton>
                 </Tooltip>
               </CardActions>
@@ -215,9 +264,7 @@ export default class BoardsBody extends Component {
             )}
             <MenuItem
               className="notSelectable"
-              style={
-                this.props.nightMode ? { color: "white" } : { color: "black" }
-              }
+              style={nightMode ? { color: "white" } : { color: "black" }}
               onClick={() => {
                 this.handleOpen()
                 this.handleMenuClose()
@@ -236,11 +283,61 @@ export default class BoardsBody extends Component {
     }
 
     return (
-      <React.Fragment>
-        <Typography variant="display1" className="notSelectable defaultCursor">
+      <div
+        style={
+          nightMode
+            ? {
+                width: "100vw",
+                height: "calc(100vh - 64px)",
+                backgroundColor: "#21252b",
+              }
+            : {
+                width: "100vw",
+                height: "calc(100vh - 64px)",
+                backgroundColor: "#f2f2f2",
+              }
+        }
+      >
+        <Typography
+          variant="display1"
+          className="notSelectable defaultCursor"
+          style={
+            nightMode
+              ? {
+                  textAlign: "center",
+                  paddingTop: "32px",
+                  marginBottom: "32px",
+                  color: "white",
+                }
+              : {
+                  textAlign: "center",
+                  paddingTop: "32px",
+                  marginBottom: "32px",
+                  color: "black",
+                }
+          }
+        >
           Favorite boards
         </Typography>
-        <Typography variant="display1" className="notSelectable defaultCursor">
+        <Typography
+          variant="display1"
+          className="notSelectable defaultCursor"
+          style={
+            nightMode
+              ? {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                  color: "white",
+                }
+              : {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                  color: "black",
+                }
+          }
+        >
           Recent boards
         </Typography>
         <Grid
@@ -261,12 +358,13 @@ export default class BoardsBody extends Component {
         >
           <Tooltip id="tooltip-bottom" title="Create board" placement="top">
             <Button
-              variant="fab"
+              variant="extendedFab"
               color="primary"
               style={{ position: "absolute", right: "20px", bottom: "20px" }}
               onClick={() => this.setState({ createOpen: true })}
             >
-              <Icon>add</Icon>
+              <Icon style={{ marginRight: "16px" }}>add</Icon>
+              Create board
             </Button>
           </Tooltip>
         </MuiThemeProvider>
@@ -275,7 +373,7 @@ export default class BoardsBody extends Component {
           open={this.state.copyMessageOpen}
           close={() => this.setState({ copyMessageOpen: false })}
         />
-      </React.Fragment>
+      </div>
     )
   }
 }

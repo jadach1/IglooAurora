@@ -448,7 +448,7 @@ class Main extends Component {
               )}
             </div>
             <NotificationsSnackbar />
-            {!emailIsVerified ? <EmailNotVerified mobile={false} /> : ""}
+            {!emailIsVerified && <EmailNotVerified mobile={false} />}
             <GetLinkSuccess
               mobile={false}
               open={this.state.copyMessageOpen}

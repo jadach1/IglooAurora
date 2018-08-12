@@ -72,7 +72,7 @@ class Login extends Component {
         "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
       ) {
         this.setState({
-          emailError: "This account does not exist",
+          emailError: "This account doesn't exist",
         })
       } else {
         console.log(e)

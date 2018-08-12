@@ -14,7 +14,7 @@ let systemLang = navigator.language || navigator.userLanguage
 
 class GraphQLFetcher extends Component {
   componentDidMount() {
-    const subscriptionQuery = gql`
+    const deviceSubscriptionQuery = gql`
       subscription {
         deviceCreated {
           id
@@ -24,6 +24,9 @@ class GraphQLFetcher extends Component {
           batteryStatus
           signalStatus
           deviceType
+          board {
+            id
+          }
           notifications {
             id
             content
@@ -35,7 +38,7 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: subscriptionQuery,
+      document: deviceSubscriptionQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -48,6 +51,34 @@ class GraphQLFetcher extends Component {
           user: {
             ...prev.user,
             devices: newDevices,
+          },
+        }
+      },
+    })
+
+    const boardSubscriptionQuery = gql`
+      subscription {
+        boardCreated {
+          id
+          customName
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: boardSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newBoards = [
+          ...prev.user.boards,
+          subscriptionData.data.boardCreated,
+        ]
+        return {
+          user: {
+            ...prev.user,
+            boards: newBoards,
           },
         }
       },
