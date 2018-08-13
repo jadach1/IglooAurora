@@ -4,8 +4,8 @@ import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
 import Paper from "material-ui/Paper"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
-import Login from "./components/Login"
-import Signup from "./components/Signup"
+import Login from "./components/unauthenticated/Login"
+import Signup from "./components/unauthenticated/Signup"
 import SwipeableViews from "react-swipeable-views"
 import BottomNavigation, {
   BottomNavigationAction,

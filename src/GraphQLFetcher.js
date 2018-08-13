@@ -83,6 +83,47 @@ class GraphQLFetcher extends Component {
         }
       },
     })
+
+    const subscribeToBoardsUpdates = gql`
+      subscription {
+        boardUpdated {
+          id
+          customName
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToBoardsUpdates,
+    })
+
+    const subscribeToBoardsDeletes = gql`
+      subscription {
+        boardDeleted
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToBoardsDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        console.log(prev)
+
+        const newBoards = prev.user.boards.filter(
+          board => board.id !== subscriptionData.data.boardDeleted
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            boards: newBoards,
+          },
+        }
+      },
+    })
   }
 
   state = {
