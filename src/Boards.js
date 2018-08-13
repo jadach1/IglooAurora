@@ -1,20 +1,66 @@
 import React, { Component } from "react"
-import BoardsHeader from "./components/BoardsHeader"
-import BoardsBody from "./components/BoardsBody"
+import BoardsHeader from "./components/boards/BoardsHeader"
+import BoardsBody from "./components/boards/BoardsBody"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
+import SettingsDialog from "./components/settings/SettingsDialog"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 class Boards extends Component {
+  state = {
+    slideIndex: 0,
+    settingsOpen: false,
+  }
+
+  hot_keys = {
+    "alt+1": {
+      priority: 1,
+      handler: event => {
+        this.setState({ slideIndex: 0 })
+      },
+    },
+
+    "alt+2": {
+      priority: 1,
+      handler: event => {
+        this.setState({ slideIndex: 1 })
+      },
+    },
+    "alt+3": {
+      priority: 1,
+      handler: event => {
+        this.setState({ slideIndex: 2 })
+      },
+    },
+  }
+
+  handleSettingsTabChanged = value => {
+    this.setState({
+      slideIndex: value,
+    })
+  }
+
   render() {
     return (
       <MuiThemeProvider>
-        <BoardsHeader logOut={this.props.logOut} />
+        <BoardsHeader
+          logOut={this.props.logOut}
+          openSettings={() => this.setState({ settingsOpen: true })}
+        />
         <BoardsBody
           userData={this.props.userData}
           selectBoard={this.props.selectBoard}
+        />
+        <SettingsDialog
+          isOpen={this.state.settingsOpen}
+          closeSettingsDialog={() => {
+            this.setState({ settingsOpen: false })
+          }}
+          handleChange={this.handleSettingsTabChanged}
+          slideIndex={this.state.slideIndex}
         />
       </MuiThemeProvider>
     )
   }
 }
 
-export default Boards
+export default hotkeys(Boards)

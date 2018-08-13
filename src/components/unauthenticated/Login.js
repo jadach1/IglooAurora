@@ -6,7 +6,7 @@ import Input, { InputAdornment } from "material-ui-next/Input"
 import { FormControl, FormHelperText } from "material-ui-next/Form"
 import { IconButton } from "material-ui-next"
 import Icon from "material-ui-next/Icon"
-import ForgotPassword from "./ForgotPassword"
+import ForgotPassword from "../ForgotPassword"
 import { Typography, Grid, FormControlLabel, Checkbox } from "material-ui-next"
 import * as EmailValidator from "email-validator"
 

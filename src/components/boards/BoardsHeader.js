@@ -7,7 +7,7 @@ import {
   MuiThemeProvider,
   AppBar,
 } from "material-ui-next"
-import logo from "../styles/assets/logo.svg"
+import logo from "../../styles/assets/logo.svg"
 
 const theme = createMuiTheme({
   palette: {
@@ -75,7 +75,7 @@ export default class BoardsHeader extends Component {
             </a> */}
               <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
                 <IconButton
-                  onClick={this.props.openSettingsDialog}
+                  onClick={this.props.openSettings}
                   className="sidebarHeaderButton"
                   style={{ color: "white" }}
                 >
