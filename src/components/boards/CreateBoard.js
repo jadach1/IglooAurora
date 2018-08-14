@@ -15,10 +15,17 @@ const theme = createMuiTheme({
 class CreateBoard extends React.Component {
   state = { customName: "" }
 
-  createBoardMutation = () => {
+  createBoardMutation = customName => {
     this.props.CreateBoard({
       variables: {
-        customName: this.state.customName,
+        customName,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        CreateBoard: {
+          customName,
+          __typename: "Board",
+        },
       },
     })
     this.props.close()
@@ -35,7 +42,7 @@ class CreateBoard extends React.Component {
           color="primary"
           primary={true}
           buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.createBoardMutation}
+          onClick={() => this.createBoardMutation(this.state.customName)}
           disabled={!this.state.customName}
         >
           Create board
@@ -76,6 +83,7 @@ export default graphql(
   gql`
     mutation CreateBoard($customName: String) {
       CreateBoard(customName: $customName) {
+        id
         customName
       }
     }

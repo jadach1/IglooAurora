@@ -70,8 +70,12 @@ class Signup extends Component {
       this.setState({ emailError: "" })
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
-          mutation($email: String!, $password: String!) {
-            SignupUser(email: $email, password: $password) {
+          mutation($email: String!, $password: String!, $displayName: String!) {
+            SignupUser(
+              email: $email
+              password: $password
+              displayName: $displayName
+            ) {
               id
               token
             }
@@ -80,6 +84,7 @@ class Signup extends Component {
         variables: {
           email: this.state.email,
           password: this.state.password,
+          displayName: this.state.fullName,
         },
       })
 

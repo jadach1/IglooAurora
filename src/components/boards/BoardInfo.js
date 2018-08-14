@@ -2,7 +2,7 @@ import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-// import moment from "moment"
+import moment from "moment"
 
 const theme = createMuiTheme({
   palette: {
@@ -32,15 +32,15 @@ class BoardInfo extends React.Component {
         }}
       >
         <b>Created: </b>
-        {/* {moment
-          .utc(this.props.createdAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-          .fromNow()} */}
+        {moment
+          .utc(this.props.board.createdAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+          .fromNow()}
         <br />
         <br />
         <b>Last updated: </b>
-        {/*  {moment
-          .utc(this.props.updatedAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-          .fromNow()} */}
+        {moment
+          .utc(this.props.board.updatedAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+          .fromNow()}
         {this.props.devMode ? (
           <React.Fragment>
             <br />

@@ -9,6 +9,7 @@ import Error404 from "./Error404"
 import MobileError404 from "./MobileError404"
 import Boards from "./Boards"
 import queryString from "query-string"
+import BoardsMobile from "./BoardsMobile"
 
 let systemLang = navigator.language || navigator.userLanguage
 
@@ -56,11 +57,69 @@ class GraphQLFetcher extends Component {
       },
     })
 
+    const subscribeToDevicesUpdates = gql`
+      subscription {
+        deviceUpdated {
+          id
+          customName
+          icon
+          online
+          batteryStatus
+          signalStatus
+          deviceType
+          board {
+            id
+          }
+          notifications {
+            id
+            content
+            date
+            visualized
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToDevicesUpdates,
+    })
+
+    const subscribeToDevicesDeletes = gql`
+      subscription {
+        deviceDeleted
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToDevicesDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newDevices = prev.user.devices.filter(
+          device => device.id !== subscriptionData.data.deviceDeleted
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            devices: newDevices,
+          },
+        }
+      },
+    })
+
     const boardSubscriptionQuery = gql`
       subscription {
         boardCreated {
           id
           customName
+          favorite
+          createdAt
+          updatedAt
+          notificationsCount
+          quietMode
         }
       }
     `
@@ -89,6 +148,11 @@ class GraphQLFetcher extends Component {
         boardUpdated {
           id
           customName
+          favorite
+          createdAt
+          updatedAt
+          notificationsCount
+          quietMode
         }
       }
     `
@@ -109,8 +173,6 @@ class GraphQLFetcher extends Component {
         if (!subscriptionData.data) {
           return prev
         }
-
-        console.log(prev)
 
         const newBoards = prev.user.boards.filter(
           board => board.id !== subscriptionData.data.boardDeleted
@@ -239,6 +301,11 @@ class GraphQLFetcher extends Component {
         }
       } else {
         return (
+          this.props.isMobile ?<BoardsMobile
+          userData={this.props.userData}
+          logOut={this.props.logOut}
+          selectBoard={id => this.setState({ selectedBoard: id })}
+        />:
           <Boards
             userData={this.props.userData}
             logOut={this.props.logOut}
@@ -289,6 +356,11 @@ class GraphQLFetcher extends Component {
         }
       } else {
         return (
+          this.props.isMobile ?<BoardsMobile
+          userData={this.props.userData}
+          logOut={this.props.logOut}
+          selectBoard={id => this.setState({ selectedBoard: id })}
+        />:
           <Boards
             userData={this.props.userData}
             logOut={this.props.logOut}
@@ -335,6 +407,11 @@ export default graphql(
         boards {
           id
           customName
+          favorite
+          createdAt
+          updatedAt
+          notificationsCount
+          quietMode
         }
         devices {
           id

@@ -6,11 +6,14 @@ import {
   Button,
   MuiThemeProvider,
   createMuiTheme,
+  Zoom,
 } from "@material-ui/core"
 import GetLinkSuccess from "../GetLinkSuccess"
 import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
+
+let zoomAnimation = false
 
 export default class BoardsBody extends Component {
   state = {
@@ -19,12 +22,17 @@ export default class BoardsBody extends Component {
     copyMessageOpen: false,
   }
 
+  componentDidMount() {
+    zoomAnimation = true
+  }
+
   render() {
     const {
       userData: { error, user, loading },
     } = this.props
 
     let boardsList = ""
+    let favoriteBoardsList = ""
 
     let nightMode = false
 
@@ -32,17 +40,27 @@ export default class BoardsBody extends Component {
 
     if (loading) {
       boardsList = <CenteredSpinner />
+      favoriteBoardsList = <CenteredSpinner />
     }
 
     if (error) {
       boardsList = "Unexpected error"
+      favoriteBoardsList = "Unexpected error"
     }
 
     if (user) {
       nightMode = user.nightMode
       devMode = user.devMode
 
-      boardsList = user.boards.map(board => (
+      favoriteBoardsList = user.boards
+        .filter(board => board.favorite)
+        .map(board => (
+          <Grid key={board.id} item>
+            <BoardCard board={board} nightMode={nightMode} devMode={devMode} />
+          </Grid>
+        ))
+
+      boardsList = user.boards.filter(board => !board.favorite).map(board => (
         <Grid key={board.id} item>
           <BoardCard board={board} nightMode={nightMode} devMode={devMode} />
         </Grid>
@@ -87,6 +105,15 @@ export default class BoardsBody extends Component {
           >
             Favorite boards
           </Typography>
+          <Grid
+            container
+            justify="center"
+            spacing={16}
+            className="notSelectable defaultCursor"
+            style={{ width: "100vw" }}
+          >
+            {favoriteBoardsList}
+          </Grid>
           <Typography
             variant="display1"
             className="notSelectable defaultCursor"
@@ -124,15 +151,24 @@ export default class BoardsBody extends Component {
               },
             })}
           >
-            <Button
-              variant="extendedFab"
-              color="primary"
-              style={{ position: "absolute", right: "20px", bottom: "20px" }}
-              onClick={() => this.setState({ createOpen: true })}
+            <Zoom
+              in={zoomAnimation}
+              style={
+                this.state.slideIndex === 1
+                  ? { transitionDelay: 200 }
+                  : { transitionDelay: 0 }
+              }
             >
-              <Icon style={{ marginRight: "16px" }}>add</Icon>
-              Create board
-            </Button>
+              <Button
+                variant="extendedFab"
+                color="primary"
+                style={{ position: "absolute", right: "20px", bottom: "20px" }}
+                onClick={() => this.setState({ createOpen: true })}
+              >
+                <Icon style={{ marginRight: "8px" }}>add</Icon>
+                Create board
+              </Button>
+            </Zoom>
           </MuiThemeProvider>
         </div>
         <GetLinkSuccess
