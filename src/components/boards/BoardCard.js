@@ -14,12 +14,17 @@ import {
   ListItemIcon,
   ListItemText,
   Divider,
+  MuiThemeProvider,
+  Badge,
+  createMuiTheme,
 } from "@material-ui/core"
 import DeleteBoard from "./DeleteBoard"
 import RenameBoard from "./RenameBoard"
 import BoardInfo from "./BoardInfo"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
-export default class BoardCard extends Component {
+class BoardCard extends Component {
   state = { deleteOpen: false, renameOpen: false, infoOpen: false }
 
   handleMenuOpen = event => {
@@ -29,6 +34,38 @@ export default class BoardCard extends Component {
   handleMenuClose = () => {
     this.setState({ anchorEl: null })
   }
+
+  toggleFavorite = favorite =>
+    this.props.ToggleFavorite({
+      variables: {
+        id: this.props.board.id,
+        favorite,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        board: {
+          id: this.props.board.id,
+          favorite,
+          __typename: "Board",
+        },
+      },
+    })
+
+  toggleQuietMode = quietMode =>
+    this.props.ToggleQuietMode({
+      variables: {
+        id: this.props.board.id,
+        quietMode,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        board: {
+          id: this.props.board.id,
+          quietMode,
+          __typename: "Board",
+        },
+      },
+    })
 
   render() {
     return (
@@ -95,12 +132,54 @@ export default class BoardCard extends Component {
             style={{ cursor: "pointer" }}
           />
           <CardActions disableActionSpacing>
+            {this.props.board.quietMode ? (
+              <Tooltip id="tooltip-bottom" title="Unmute" placement="bottom">
+                <IconButton
+                  onClick={() =>
+                    this.toggleQuietMode(
+                      this.props.board.quietMode ? false : true
+                    )
+                  }
+                >
+                  <Icon
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  >
+                    notifications_off
+                  </Icon>
+                </IconButton>
+              </Tooltip>
+            ) : (
+              <MuiThemeProvider
+                theme={createMuiTheme({
+                  palette: {
+                    primary: { main: "#ff4081" },
+                  },
+                })}
+              >
+                {this.props.board.notificationsCount ? (
+                  <Badge
+                    badgeContent={this.props.board.notificationsCount}
+                    color="primary"
+                    style={{ marginLeft: "24px" }}
+                  />
+                ) : (
+                  ""
+                )}
+              </MuiThemeProvider>
+            )}
             <Tooltip
               id="tooltip-bottom"
               title="Add to favourites"
               placement="bottom"
             >
-              <IconButton style={{ marginRight: "0", marginLeft: "auto" }}>
+              <IconButton
+                style={{ marginRight: "0", marginLeft: "auto" }}
+                onClick={() => this.toggleFavorite(!this.props.board.favorite)}
+              >
                 <Icon
                   style={
                     this.props.nightMode
@@ -108,7 +187,7 @@ export default class BoardCard extends Component {
                       : { color: "black" }
                   }
                 >
-                  favorite_border
+                  {this.props.board.favorite ? "favorite" : "favorite_border"}
                 </Icon>
               </IconButton>
             </Tooltip>
@@ -221,6 +300,7 @@ export default class BoardCard extends Component {
               this.props.nightMode ? { color: "white" } : { color: "black" }
             }
             onClick={() => {
+              this.toggleQuietMode(this.props.board.quietMode ? false : true)
               this.handleMenuClose()
             }}
           >
@@ -230,10 +310,15 @@ export default class BoardCard extends Component {
                   this.props.nightMode ? { color: "white" } : { color: "black" }
                 }
               >
-                notifications_off
+                {this.props.board.quietMode
+                  ? "notifications"
+                  : "notifications_off"}
               </Icon>
             </ListItemIcon>
-            <ListItemText inset primary="Mute" />
+            <ListItemText
+              inset
+              primary={this.props.board.quietMode ? "Unmute" : "Mute"}
+            />
           </MenuItem>
           <Divider />
           <MenuItem
@@ -295,3 +380,31 @@ export default class BoardCard extends Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    mutation ToggleFavorite($id: ID!, $favorite: Boolean) {
+      board(id: $id, favorite: $favorite) {
+        id
+        favorite
+      }
+    }
+  `,
+  {
+    name: "ToggleFavorite",
+  }
+)(
+  graphql(
+    gql`
+      mutation ToggleQuietMode($id: ID!, $quietMode: Boolean) {
+        board(id: $id, quietMode: $quietMode) {
+          id
+          quietMode
+        }
+      }
+    `,
+    {
+      name: "ToggleQuietMode",
+    }
+  )(BoardCard)
+)
