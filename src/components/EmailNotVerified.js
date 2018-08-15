@@ -144,8 +144,11 @@ class CustomizedSnackbars extends React.Component {
           }}
           className="notSelectable defaultCursor"
         >
-          You should have received a verification email. If that's not the case,
-          click on "Send again" and we'll send you another email.
+          You should have received a verification email.
+          <br />
+          <br />
+          If that's not the case, click on "Send again" and we'll send you
+          another email.
         </Dialog>
         <Snackbar
           anchorOrigin={{

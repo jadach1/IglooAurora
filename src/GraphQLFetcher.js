@@ -186,6 +186,22 @@ class GraphQLFetcher extends Component {
         }
       },
     })
+
+    const subscribeToUserUpdates = gql`
+      subscription {
+        userUpdated {
+          id
+          language
+          nightMode
+          devMode
+          emailIsVerified
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToUserUpdates,
+    })
   }
 
   state = {
@@ -300,12 +316,13 @@ class GraphQLFetcher extends Component {
           )
         }
       } else {
-        return (
-          this.props.isMobile ?<BoardsMobile
-          userData={this.props.userData}
-          logOut={this.props.logOut}
-          selectBoard={id => this.setState({ selectedBoard: id })}
-        />:
+        return this.props.isMobile ? (
+          <BoardsMobile
+            userData={this.props.userData}
+            logOut={this.props.logOut}
+            selectBoard={id => this.setState({ selectedBoard: id })}
+          />
+        ) : (
           <Boards
             userData={this.props.userData}
             logOut={this.props.logOut}
@@ -355,12 +372,13 @@ class GraphQLFetcher extends Component {
           )
         }
       } else {
-        return (
-          this.props.isMobile ?<BoardsMobile
-          userData={this.props.userData}
-          logOut={this.props.logOut}
-          selectBoard={id => this.setState({ selectedBoard: id })}
-        />:
+        return this.props.isMobile ? (
+          <BoardsMobile
+            userData={this.props.userData}
+            logOut={this.props.logOut}
+            selectBoard={id => this.setState({ selectedBoard: id })}
+          />
+        ) : (
           <Boards
             userData={this.props.userData}
             logOut={this.props.logOut}

@@ -1,9 +1,10 @@
 import React, { Component } from "react"
-import BoardsHeader from "./components/boards/BoardsHeader"
+import BoardsHeaderMobile from "./components/boards/BoardsHeaderMobile"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import SettingsDialogMobile from "./components/settings/SettingsDialog"
 import { hotkeys } from "react-keyboard-shortcuts"
 import BoardsBodyMobile from "./components/boards/BoardsBodyMobile"
+import EmailNotVerified from "./components/EmailNotVerified"
 
 class BoardsMobile extends Component {
   state = {
@@ -44,9 +45,19 @@ class BoardsMobile extends Component {
   }
 
   render() {
+    const {
+      userData: { user },
+    } = this.props
+
+    let emailIsVerified = false
+
+    if (user) {
+      emailIsVerified = user.emailIsVerified
+    }
+
     return (
       <MuiThemeProvider>
-        <BoardsHeader
+        <BoardsHeaderMobile
           logOut={this.props.logOut}
           openSettings={() => this.setState({ settingsOpen: true })}
         />
@@ -63,6 +74,7 @@ class BoardsMobile extends Component {
           slideIndex={this.state.slideIndex}
           handleChangeBTIndex={this.handleChangeBTIndex}
         />
+        {!emailIsVerified && <EmailNotVerified mobile={true} />}
       </MuiThemeProvider>
     )
   }

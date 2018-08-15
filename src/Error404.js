@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { Redirect } from "react-router-dom"
 import Button from "material-ui-next/Button"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import polarBear from "./styles/assets/polarBear.svg"
+import polarBearWithBucket from "./styles/assets/polarBearWithBucket.svg"
 import { Typography } from "material-ui-next"
 
 const theme = createMuiTheme({
@@ -17,6 +17,8 @@ export default class Error404 extends Component {
   render() {
     const { wannaGoAway } = this.state
 
+    document.body.style.backgroundColor = "#0057cb"
+
     if (wannaGoAway) {
       this.setState({ wannaGoAway: false })
       return <Redirect to="/dashboard" />
@@ -25,9 +27,9 @@ export default class Error404 extends Component {
     return (
       <div
         style={{
-          width: "100vw",
+          width: "400px",
           height: "100vh",
-          backgroundColor: "#0057cb",
+          margin: "auto",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
@@ -40,6 +42,8 @@ export default class Error404 extends Component {
             width: "400px",
           }}
         >
+          <br />
+          <br />
           <Typography variant="display1" style={{ color: "white" }}>
             You seem to be lost
           </Typography>
@@ -49,8 +53,9 @@ export default class Error404 extends Component {
           <br />
           <img
             alt="Sleeping Polar Bear"
-            src={polarBear}
+            src={polarBearWithBucket}
             className="notSelectable"
+            style={{ height: "300px" }}
           />
           <br />
           <br />
@@ -77,6 +82,8 @@ export default class Error404 extends Component {
               Take me away!
             </Button>
           </MuiThemeProvider>
+          <br />
+          <br />
         </div>
       </div>
     )

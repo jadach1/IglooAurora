@@ -25,7 +25,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
 class BoardCard extends Component {
-  state = { deleteOpen: false, renameOpen: false, infoOpen: false }
+  state = { deleteOpen: false, renameOpen: false }
 
   handleMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget })
@@ -105,30 +105,9 @@ class BoardCard extends Component {
                 {this.props.board.customName}
               </Link>
             }
-            subheader={
-              <Link
-                to={"/dashboard?board=" + this.props.board.id}
-                style={
-                  this.props.nightMode
-                    ? {
-                        color: "white",
-                        opacity: "0.5",
-                        textDecoration: "none",
-                      }
-                    : {
-                        color: "black",
-                        opacity: "0.5",
-                        textDecoration: "none",
-                      }
-                }
-              >
-                August 11, 2018
-              </Link>
-            }
           />
           <CardMedia
-            image="../styles/assets/loginBackground.jpg"
-            title="Contemplative Reptile"
+            image="../../styles/assets/loginBackground.jpg"
             style={{ cursor: "pointer" }}
           />
           <CardActions disableActionSpacing>
@@ -273,7 +252,8 @@ class BoardCard extends Component {
                   this.props.nightMode ? { color: "white" } : { color: "black" }
                 }
                 onClick={() => {
-                  this.setState({ anchorEl: null, copyMessageOpen: true })
+                  this.setState({ anchorEl: null })
+                  this.props.showMessage()
                 }}
               >
                 <ListItemIcon>
