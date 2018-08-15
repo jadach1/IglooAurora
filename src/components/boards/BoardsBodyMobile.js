@@ -10,6 +10,9 @@ import {
   BottomNavigation,
   BottomNavigationAction,
   Zoom,
+  IconButton,
+  TextField,
+  InputAdornment,
 } from "@material-ui/core"
 import GetLinkSuccess from "../GetLinkSuccess"
 import CenteredSpinner from "../CenteredSpinner"
@@ -18,6 +21,12 @@ import CreateBoard from "./CreateBoard"
 import SwipeableViews from "react-swipeable-views"
 
 let zoomAnimation = false
+
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
 
 class BoardsBodyMobile extends Component {
   state = {
@@ -67,13 +76,23 @@ class BoardsBodyMobile extends Component {
         .filter(board => board.favorite)
         .map(board => (
           <Grid key={board.id} item>
-            <BoardCard board={board} nightMode={nightMode} devMode={devMode} />
+            <BoardCard
+              board={board}
+              nightMode={nightMode}
+              devMode={devMode}
+              showMessage={() => this.setState({ copyMessageOpen: true })}
+            />
           </Grid>
         ))
 
       boardsList = user.boards.filter(board => !board.favorite).map(board => (
         <Grid key={board.id} item>
-          <BoardCard board={board} nightMode={nightMode} devMode={devMode} />
+          <BoardCard
+            board={board}
+            nightMode={nightMode}
+            devMode={devMode}
+            showMessage={() => this.setState({ copyMessageOpen: true })}
+          />
         </Grid>
       ))
     }
@@ -85,16 +104,67 @@ class BoardsBodyMobile extends Component {
             nightMode
               ? {
                   width: "100vw",
-                  height: "calc(100vh - 64px)",
+                  height: "calc(100vh - 128px)",
                   backgroundColor: "#21252b",
                 }
               : {
                   width: "100vw",
-                  height: "calc(100vh - 64px)",
+                  height: "calc(100vh - 128px)",
                   backgroundColor: "#f2f2f2",
                 }
           }
         >
+          <div style={{ width: "100%", height: "64px" }}>
+            <MuiThemeProvider theme={theme}>
+              <TextField
+                placeholder="Search boards"
+                color="primary"
+                className="notSelectable"
+                style={{
+                  margin: "16px 8px 0 16px",
+                  width: "calc(100% - 32px)",
+                }}
+                value={this.props.searchText}
+                onChange={event => this.props.changeText(event.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment
+                      position="start"
+                      style={{ cursor: "default" }}
+                    >
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        search
+                      </Icon>
+                    </InputAdornment>
+                  ),
+                  endAdornment: this.props.searchText ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={this.handleClickCancelSearch}
+                        onMouseDown={this.handleMouseDownSearch}
+                      >
+                        <Icon
+                          style={
+                            this.props.nightMode
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          clear
+                        </Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null,
+                }}
+              />
+            </MuiThemeProvider>
+          </div>
           <SwipeableViews
             index={this.state.slideIndex}
             onChangeIndex={this.handleSettingsTabChanged}
@@ -103,7 +173,7 @@ class BoardsBodyMobile extends Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "calc(100vh - 128px)",
+                height: "calc(100vh - 192px)",
               }}
             >
               <Typography
@@ -140,7 +210,7 @@ class BoardsBodyMobile extends Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "calc(100vh - 128px)",
+                height: "calc(100vh - 192px)",
               }}
             >
               <Typography
@@ -176,32 +246,54 @@ class BoardsBodyMobile extends Component {
             </div>
           </SwipeableViews>
           <AppBar
-            color="default"
             position="static"
-            style={{ marginBottom: "0px", marginTop: "auto", height: "64px" }}
+            style={{
+              marginBottom: "0px",
+              marginTop: "auto",
+              height: "64px",
+            }}
           >
             <BottomNavigation
+              color="primary"
               onChange={this.handleSettingsTabChanged}
               value={this.state.slideIndex}
               showLabels
-              style={{ height: "64px" }}
+              style={
+                nightMode
+                  ? {
+                      height: "64px",
+                      backgroundColor: "#2f333d",
+                    }
+                  : {
+                      height: "64px",
+                      backgroundColor: "#fff",
+                    }
+              }
             >
               <BottomNavigationAction
                 icon={<Icon>favorite</Icon>}
                 label="Favourite"
                 style={
-                  this.state.slideIndex === 0
-                    ? { color: "#0083ff" }
-                    : { color: "#757575" }
+                  nightMode
+                    ? this.state.slideIndex === 0
+                      ? { color: "#fff" }
+                      : { color: "#fff", opacity: 0.5 }
+                    : this.state.slideIndex === 0
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
                 }
               />
               <BottomNavigationAction
                 icon={<Icon>history</Icon>}
                 label="Recent"
                 style={
-                  this.state.slideIndex === 1
-                    ? { color: "#0083ff" }
-                    : { color: "#757575" }
+                  nightMode
+                    ? this.state.slideIndex === 1
+                      ? { color: "#fff" }
+                      : { color: "#fff", opacity: 0.5 }
+                    : this.state.slideIndex === 1
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
                 }
               />
             </BottomNavigation>
@@ -258,7 +350,7 @@ class BoardsBodyMobile extends Component {
           </MuiThemeProvider>
         </div>
         <GetLinkSuccess
-          mobile={false}
+          mobile={true}
           open={this.state.copyMessageOpen}
           close={() => this.setState({ copyMessageOpen: false })}
         />

@@ -54,15 +54,34 @@ export default class BoardsBody extends Component {
 
       favoriteBoardsList = user.boards
         .filter(board => board.favorite)
+        .filter(board =>
+          board.customName
+            .toLowerCase()
+            .includes(this.props.searchText.toLowerCase())
+        )
         .map(board => (
           <Grid key={board.id} item>
-            <BoardCard board={board} nightMode={nightMode} devMode={devMode} />
+            <BoardCard
+              board={board}
+              nightMode={nightMode}
+              devMode={devMode}
+              showMessage={() => this.setState({ copyMessageOpen: true })}
+            />
           </Grid>
         ))
 
-      boardsList = user.boards.filter(board => !board.favorite).map(board => (
+      boardsList = user.boards.filter(board => !board.favorite).filter(board =>
+        board.customName
+          .toLowerCase()
+          .includes(this.props.searchText.toLowerCase())
+      ).map(board => (
         <Grid key={board.id} item>
-          <BoardCard board={board} nightMode={nightMode} devMode={devMode} />
+          <BoardCard
+            board={board}
+            nightMode={nightMode}
+            devMode={devMode}
+            showMessage={() => this.setState({ copyMessageOpen: true })}
+          />
         </Grid>
       ))
     }
