@@ -3,10 +3,6 @@ import { Link } from "react-router-dom"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import {
   Icon,
-  Card,
-  CardHeader,
-  CardMedia,
-  CardActions,
   IconButton,
   Tooltip,
   Menu,
@@ -17,12 +13,17 @@ import {
   MuiThemeProvider,
   Badge,
   createMuiTheme,
+  Paper,
+  Typography,
+  Toolbar,
 } from "@material-ui/core"
 import DeleteBoard from "./DeleteBoard"
 import RenameBoard from "./RenameBoard"
 import BoardInfo from "./BoardInfo"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import iceberg from "../../styles/assets/iceberg.jpg"
+import northernLights from "../../styles/assets/northernLights.jpg"
 
 class BoardCard extends Component {
   state = { deleteOpen: false, renameOpen: false }
@@ -70,68 +71,37 @@ class BoardCard extends Component {
   render() {
     return (
       <React.Fragment>
-        <Card
+        <Paper
           style={
             this.props.nightMode
-              ? { backgroundColor: "#2f333d" }
-              : { backgroundColor: "#fff" }
+              ? { backgroundColor: "#2f333d", width: "256px", height: "196px" }
+              : { backgroundColor: "#fff", width: "256px", height: "196px" }
           }
         >
-          <CardHeader
-            action={
-              <Tooltip id="tooltip-bottom" title="More" placement="bottom">
-                <IconButton onClick={this.handleMenuOpen}>
-                  <Icon
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
+          <Toolbar
+            style={{
+              height: "64px",
+              paddingLeft: "24px",
+              paddingRight: "24px",
+            }}
+          >
+            <Typography
+              variant="title"
+              className="notSelectable defaultCursor"
+              style={
+                this.props.nightMode
+                  ? {
+                      color: "white",
+                      marginLeft: "-8px",
                     }
-                  >
-                    more_vert
-                  </Icon>
-                </IconButton>
-              </Tooltip>
-            }
-            title={
-              <Link
-                to={"/dashboard?board=" + this.props.board.id}
-                style={
-                  this.props.nightMode
-                    ? { color: "white", textDecoration: "none" }
-                    : { color: "black", textDecoration: "none" }
-                }
-              >
-                {this.props.board.customName}
-              </Link>
-            }
-          />
-          <CardMedia
-            image="../../styles/assets/loginBackground.jpg"
-            style={{ cursor: "pointer" }}
-          />
-          <CardActions disableActionSpacing>
-            {this.props.board.quietMode ? (
-              <Tooltip id="tooltip-bottom" title="Unmute" placement="bottom">
-                <IconButton
-                  onClick={() =>
-                    this.toggleQuietMode(
-                      this.props.board.quietMode ? false : true
-                    )
-                  }
-                >
-                  <Icon
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
+                  : {
+                      color: "black",
+                      marginLeft: "-8px",
                     }
-                  >
-                    notifications_off
-                  </Icon>
-                </IconButton>
-              </Tooltip>
-            ) : (
+              }
+            >
+              {this.props.board.customName}
+            </Typography>
               <MuiThemeProvider
                 theme={createMuiTheme({
                   palette: {
@@ -149,7 +119,6 @@ class BoardCard extends Component {
                   ""
                 )}
               </MuiThemeProvider>
-            )}
             <Tooltip
               id="tooltip-bottom"
               title="Add to favourites"
@@ -170,8 +139,47 @@ class BoardCard extends Component {
                 </Icon>
               </IconButton>
             </Tooltip>
-          </CardActions>
-        </Card>
+            <Tooltip id="tooltip-bottom" title="More" placement="bottom">
+              <IconButton
+                onClick={this.handleMenuOpen}
+                style={{
+                  marginRight: "-16px",
+                  marginLeft: "0",
+                }}
+              >
+                <Icon
+                  style={
+                    this.props.nightMode
+                      ? {
+                          color: "white",
+                        }
+                      : {
+                          color: "black",
+                        }
+                  }
+                >
+                  more_vert
+                </Icon>
+              </IconButton>
+            </Tooltip>
+          </Toolbar>
+          {this.props.board.avatar === "iceberg" && (
+            <img
+              src={iceberg}
+              alt="Iceberg"
+              className="notSelectable"
+              style={{ width: "100%", height: "128px" }}
+            />
+          )}
+          {this.props.board.avatar === "northernLights" && (
+            <img
+              src={northernLights}
+              alt="Northern lights"
+              className="notSelectable"
+              style={{ width: "100%", height: "128px" }}
+            />
+          )}
+        </Paper>
         <Menu
           id="simple-menu"
           anchorEl={this.state.anchorEl}

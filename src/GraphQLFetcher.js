@@ -120,6 +120,7 @@ class GraphQLFetcher extends Component {
           updatedAt
           notificationsCount
           quietMode
+          avatar
         }
       }
     `
@@ -153,6 +154,7 @@ class GraphQLFetcher extends Component {
           updatedAt
           notificationsCount
           quietMode
+          avatar
         }
       }
     `
@@ -430,6 +432,7 @@ export default graphql(
           updatedAt
           notificationsCount
           quietMode
+          avatar
         }
         devices {
           id

@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import BoardsHeaderMobile from "./components/boards/BoardsHeaderMobile"
+import BoardsHeader from "./components/boards/BoardsHeader"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import SettingsDialogMobile from "./components/settings/SettingsDialog"
 import { hotkeys } from "react-keyboard-shortcuts"
@@ -57,7 +57,7 @@ class BoardsMobile extends Component {
 
     return (
       <MuiThemeProvider>
-        <BoardsHeaderMobile
+        <BoardsHeader
           logOut={this.props.logOut}
           openSettings={() => this.setState({ settingsOpen: true })}
         />

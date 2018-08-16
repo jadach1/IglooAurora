@@ -34,6 +34,7 @@ class BoardsBodyMobile extends Component {
     createOpen: false,
     copyMessageOpen: false,
     slideIndex: 0,
+    searchText: "",
   }
 
   handleSettingsTabChanged = (event, value) => {
@@ -74,6 +75,11 @@ class BoardsBodyMobile extends Component {
 
       favoriteBoardsList = user.boards
         .filter(board => board.favorite)
+        .filter(board =>
+          board.customName
+            .toLowerCase()
+            .includes(this.state.searchText.toLowerCase())
+        )
         .map(board => (
           <Grid key={board.id} item>
             <BoardCard
@@ -85,16 +91,23 @@ class BoardsBodyMobile extends Component {
           </Grid>
         ))
 
-      boardsList = user.boards.filter(board => !board.favorite).map(board => (
-        <Grid key={board.id} item>
-          <BoardCard
-            board={board}
-            nightMode={nightMode}
-            devMode={devMode}
-            showMessage={() => this.setState({ copyMessageOpen: true })}
-          />
-        </Grid>
-      ))
+      boardsList = user.boards
+        .filter(board => !board.favorite)
+        .filter(board =>
+          board.customName
+            .toLowerCase()
+            .includes(this.state.searchText.toLowerCase())
+        )
+        .map(board => (
+          <Grid key={board.id} item>
+            <BoardCard
+              board={board}
+              nightMode={nightMode}
+              devMode={devMode}
+              showMessage={() => this.setState({ copyMessageOpen: true })}
+            />
+          </Grid>
+        ))
     }
 
     return (
@@ -124,8 +137,10 @@ class BoardsBodyMobile extends Component {
                   margin: "16px 8px 0 16px",
                   width: "calc(100% - 32px)",
                 }}
-                value={this.props.searchText}
-                onChange={event => this.props.changeText(event.target.value)}
+                value={this.state.searchText}
+                onChange={event =>
+                  this.setState({ searchText: event.target.value })
+                }
                 InputProps={{
                   startAdornment: (
                     <InputAdornment

@@ -7,6 +7,9 @@ import {
   MuiThemeProvider,
   createMuiTheme,
   Zoom,
+  IconButton,
+  TextField,
+  InputAdornment,
 } from "@material-ui/core"
 import GetLinkSuccess from "../GetLinkSuccess"
 import CenteredSpinner from "../CenteredSpinner"
@@ -15,11 +18,18 @@ import CreateBoard from "./CreateBoard"
 
 let zoomAnimation = false
 
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0083ff" },
+  },
+})
+
 export default class BoardsBody extends Component {
   state = {
     anchorEl: null,
     createOpen: false,
     copyMessageOpen: false,
+    searchText: "",
   }
 
   componentDidMount() {
@@ -57,7 +67,7 @@ export default class BoardsBody extends Component {
         .filter(board =>
           board.customName
             .toLowerCase()
-            .includes(this.props.searchText.toLowerCase())
+            .includes(this.state.searchText.toLowerCase())
         )
         .map(board => (
           <Grid key={board.id} item>
@@ -70,20 +80,23 @@ export default class BoardsBody extends Component {
           </Grid>
         ))
 
-      boardsList = user.boards.filter(board => !board.favorite).filter(board =>
-        board.customName
-          .toLowerCase()
-          .includes(this.props.searchText.toLowerCase())
-      ).map(board => (
-        <Grid key={board.id} item>
-          <BoardCard
-            board={board}
-            nightMode={nightMode}
-            devMode={devMode}
-            showMessage={() => this.setState({ copyMessageOpen: true })}
-          />
-        </Grid>
-      ))
+      boardsList = user.boards
+        .filter(board => !board.favorite)
+        .filter(board =>
+          board.customName
+            .toLowerCase()
+            .includes(this.state.searchText.toLowerCase())
+        )
+        .map(board => (
+          <Grid key={board.id} item>
+            <BoardCard
+              board={board}
+              nightMode={nightMode}
+              devMode={devMode}
+              showMessage={() => this.setState({ copyMessageOpen: true })}
+            />
+          </Grid>
+        ))
     }
 
     return (
@@ -92,13 +105,85 @@ export default class BoardsBody extends Component {
           style={
             nightMode
               ? {
+                  width: "100%",
+                  height: "64px",
+                  backgroundColor: "#21252b",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }
+              : {
+                  width: "100%",
+                  height: "64px",
+                  backgroundColor: "#f2f2f2",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }
+          }
+        >
+          <MuiThemeProvider theme={theme}>
+            <TextField
+              placeholder="Search boards"
+              color="primary"
+              className="notSelectable"
+              style={{
+                width: "400px",
+              }}
+              value={this.state.searchText}
+              onChange={event =>
+                this.setState({ searchText: event.target.value })
+              }
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment
+                    position="start"
+                    style={{ cursor: "default" }}
+                  >
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      search
+                    </Icon>
+                  </InputAdornment>
+                ),
+                endAdornment: this.state.searchText ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={this.handleClickCancelSearch}
+                      onMouseDown={this.handleMouseDownSearch}
+                    >
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        clear
+                      </Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null,
+              }}
+            />
+          </MuiThemeProvider>
+        </div>
+        <div
+          style={
+            nightMode
+              ? {
                   width: "100vw",
-                  height: "calc(100vh - 64px)",
+                  height: "calc(100vh - 128px)",
                   backgroundColor: "#21252b",
                 }
               : {
                   width: "100vw",
-                  height: "calc(100vh - 64px)",
+                  height: "calc(100vh - 128px)",
                   backgroundColor: "#f2f2f2",
                 }
           }

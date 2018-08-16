@@ -28,18 +28,19 @@ export default class Error404 extends Component {
       <div
         style={{
           width: "100vw",
+          height: "100vh",
+          margin: "auto",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          margin: "auto",
         }}
       >
         <div
           style={{
             margin: "auto",
             textAlign: "center",
-            width: "70vw",
-            maxWidth: "300px",
+            width: "88vw",
+            maxWidth: "400px",
           }}
         >
           <br />
@@ -49,22 +50,21 @@ export default class Error404 extends Component {
           </Typography>
           <br />
           <br />
-          <br />
-          <br />
           <img
             alt="Sleeping Polar Bear"
             src={polarBearWithBucket}
             className="notSelectable"
+            style={{
+              maxWidth: "245px",
+              width: "62vw",
+            }}
           />
-          <br />
           <br />
           <br />
           <br />
           <Typography variant="title" gutterBottom style={{ color: "white" }}>
             Click on the button below and we'll take you to a safe place
           </Typography>
-          <br />
-          <br />
           <br />
           <br />
           <MuiThemeProvider theme={theme}>
@@ -77,6 +77,7 @@ export default class Error404 extends Component {
               Take me away!
             </Button>
           </MuiThemeProvider>
+          <br />
           <br />
           <br />
         </div>
