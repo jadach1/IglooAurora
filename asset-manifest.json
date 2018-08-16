@@ -1,13 +1,16 @@
 {
   "main.css": "static/css/main.28982bc8.css",
   "main.css.map": "static/css/main.28982bc8.css.map",
-  "main.js": "static/js/main.9e9d402d.js",
-  "main.js.map": "static/js/main.9e9d402d.js.map",
+  "main.js": "static/js/main.110848a9.js",
+  "main.js.map": "static/js/main.110848a9.js.map",
   "static\\media\\Roboto-Regular.ttf": "static/media/Roboto-Regular.3e1af3ef.ttf",
   "static\\media\\darkLogoBG.svg": "static/media/darkLogoBG.ffbfbd40.svg",
+  "static\\media\\iceberg.jpg": "static/media/iceberg.5a09f0e1.jpg",
   "static\\media\\iglooTitle.svg": "static/media/iglooTitle.ea0ff003.svg",
   "static\\media\\loginBackground.jpg": "static/media/loginBackground.45daea34.jpg",
   "static\\media\\logo.svg": "static/media/logo.9e9516e1.svg",
   "static\\media\\logoBG.svg": "static/media/logoBG.30eee7e0.svg",
-  "static\\media\\polarBear.svg": "static/media/polarBear.b9ab75ee.svg"
+  "static\\media\\northernLights.jpg": "static/media/northernLights.ad6b17e7.jpg",
+  "static\\media\\polarBear.svg": "static/media/polarBear.b9ab75ee.svg",
+  "static\\media\\polarBearWithBucket.svg": "static/media/polarBearWithBucket.2e8e8adf.svg"
 }
