@@ -83,7 +83,7 @@ export default class Error404 extends Component {
             </Button>
           </MuiThemeProvider>
           <br />
-          <br />
+          <br /> <br />
         </div>
       </div>
     )

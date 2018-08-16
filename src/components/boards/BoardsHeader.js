@@ -6,8 +6,6 @@ import {
   createMuiTheme,
   MuiThemeProvider,
   AppBar,
-  TextField,
-  InputAdornment,
 } from "material-ui-next"
 import logo from "../../styles/assets/logo.svg"
 
@@ -52,40 +50,6 @@ export default class BoardsHeader extends Component {
             className="notSelectable"
             style={{ width: "56px", marginLeft: "16px" }}
           />
-          <MuiThemeProvider theme={theme}>
-            <TextField
-              placeholder="Search devices"
-              color="primary"
-              className="notSelectable"
-              style={{
-                width: "30%",
-                color: "white",
-                marginLeft: "32px",
-              }}
-              value={this.props.searchText}
-              onChange={event => this.props.changeText(event.target.value)}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment
-                    position="start"
-                    style={{ cursor: "default" }}
-                  >
-                    <Icon style={{ color: "white" }}>search</Icon>
-                  </InputAdornment>
-                ),
-                endAdornment: this.props.searchText ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={this.handleClickCancelSearch}
-                      onMouseDown={this.handleMouseDownSearch}
-                    >
-                      <Icon style={{ color: "white" }}>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ) : null,
-              }}
-            />
-          </MuiThemeProvider>
           <div
             style={{
               padding: "0",

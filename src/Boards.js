@@ -10,7 +10,6 @@ class Boards extends Component {
   state = {
     slideIndex: 0,
     settingsOpen: false,
-    searchText: "",
   }
 
   hot_keys = {
@@ -57,13 +56,10 @@ class Boards extends Component {
         <BoardsHeader
           logOut={this.props.logOut}
           openSettings={() => this.setState({ settingsOpen: true })}
-          changeText={text => this.setState({ searchText: text })}
-          searchText={this.state.searchText}
         />
         <BoardsBody
           userData={this.props.userData}
           selectBoard={this.props.selectBoard}
-          searchText={this.state.searchText}
         />
         <SettingsDialog
           isOpen={this.state.settingsOpen}
