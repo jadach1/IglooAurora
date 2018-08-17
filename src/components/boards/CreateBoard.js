@@ -70,7 +70,7 @@ class CreateBoard extends React.Component {
           onChange={event => this.setState({ customName: event.target.value })}
           onKeyPress={event => {
             if (event.key === "Enter") {
-              this.createBoard()
+              this.createBoardMutation(this.state.customName)
             }
           }}
         />
@@ -81,7 +81,7 @@ class CreateBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation CreateBoard($customName: String) {
+    mutation CreateBoard($customName: String!) {
       CreateBoard(customName: $customName) {
         id
         customName
