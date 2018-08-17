@@ -74,8 +74,8 @@ class BoardCard extends Component {
         <Paper
           style={
             this.props.nightMode
-              ? { backgroundColor: "#2f333d", width: "256px", height: "196px" }
-              : { backgroundColor: "#fff", width: "256px", height: "196px" }
+              ? { backgroundColor: "#2f333d", width: "256px", height: "192px" }
+              : { backgroundColor: "#fff", width: "256px", height: "192px" }
           }
         >
           <Toolbar
@@ -85,40 +85,49 @@ class BoardCard extends Component {
               paddingRight: "24px",
             }}
           >
-            <Typography
-              variant="title"
-              className="notSelectable defaultCursor"
+            <Link
+              to={"/dashboard?board=" + this.props.board.id}
               style={
                 this.props.nightMode
-                  ? {
-                      color: "white",
-                      marginLeft: "-8px",
-                    }
-                  : {
-                      color: "black",
-                      marginLeft: "-8px",
-                    }
+                  ? { color: "white", textDecoration: "none" }
+                  : { color: "black", textDecoration: "none" }
               }
             >
-              {this.props.board.customName}
-            </Typography>
-              <MuiThemeProvider
-                theme={createMuiTheme({
-                  palette: {
-                    primary: { main: "#ff4081" },
-                  },
-                })}
+              <Typography
+                variant="title"
+                className="notSelectable"
+                style={
+                  this.props.nightMode
+                    ? {
+                        color: "white",
+                        marginLeft: "-8px",
+                      }
+                    : {
+                        color: "black",
+                        marginLeft: "-8px",
+                      }
+                }
               >
-                {this.props.board.notificationsCount ? (
-                  <Badge
-                    badgeContent={this.props.board.notificationsCount}
-                    color="primary"
-                    style={{ marginLeft: "24px" }}
-                  />
-                ) : (
-                  ""
-                )}
-              </MuiThemeProvider>
+                {this.props.board.customName}
+              </Typography>
+            </Link>
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#ff4081" },
+                },
+              })}
+            >
+              {this.props.board.notificationsCount ? (
+                <Badge
+                  badgeContent={this.props.board.notificationsCount}
+                  color="primary"
+                  style={{ marginLeft: "24px" }}
+                />
+              ) : (
+                ""
+              )}
+            </MuiThemeProvider>
             <Tooltip
               id="tooltip-bottom"
               title="Add to favourites"
@@ -163,22 +172,42 @@ class BoardCard extends Component {
               </IconButton>
             </Tooltip>
           </Toolbar>
-          {this.props.board.avatar === "iceberg" && (
-            <img
-              src={iceberg}
-              alt="Iceberg"
-              className="notSelectable"
-              style={{ width: "100%", height: "128px" }}
-            />
-          )}
-          {this.props.board.avatar === "northernLights" && (
-            <img
-              src={northernLights}
-              alt="Northern lights"
-              className="notSelectable"
-              style={{ width: "100%", height: "128px" }}
-            />
-          )}
+          <Link
+            to={"/dashboard?board=" + this.props.board.id}
+            style={
+              this.props.nightMode
+                ? { color: "white", textDecoration: "none" }
+                : { color: "black", textDecoration: "none" }
+            }
+          >
+            {this.props.board.avatar === "iceberg" && (
+              <img
+                src={iceberg}
+                alt="Iceberg"
+                className="notSelectable"
+                style={{
+                  width: "100%",
+                  height: "128px",
+                  borderBottomLeftRadius: "4px",
+                  borderBottomRightRadius: "4px",
+                }}
+              />
+            )}
+            {this.props.board.avatar === "northernLights" && (
+              <img
+                src={northernLights}
+                alt="Northern lights"
+                className="notSelectable"
+                style={{
+                  width: "100%",
+                  height: "128px",
+                  borderBottomLeftRadius: "4px",
+                  borderBottomRightRadius: "4px",
+                }}
+                tifi
+              />
+            )}
+          </Link>
         </Paper>
         <Menu
           id="simple-menu"

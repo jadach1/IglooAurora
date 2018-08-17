@@ -158,10 +158,10 @@ class BoardsBodyMobile extends Component {
                       </Icon>
                     </InputAdornment>
                   ),
-                  endAdornment: this.props.searchText ? (
+                  endAdornment: this.state.searchText ? (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={this.handleClickCancelSearch}
+                        onClick={()=>this.setState({searchText:""})}
                         onMouseDown={this.handleMouseDownSearch}
                       >
                         <Icon
