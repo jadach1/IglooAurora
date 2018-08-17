@@ -82,7 +82,7 @@ class CreateDevice extends React.Component {
 
 export default graphql(
   gql`
-    mutation CreateDevice($deviceType: String, $customName: String) {
+    mutation CreateDevice($deviceType: String, $customName: String!) {
       CreateDevice(deviceType: $deviceType, customName: $customName) {
         id
       }
