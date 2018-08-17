@@ -154,7 +154,7 @@ export default class BoardsBody extends Component {
                 endAdornment: this.state.searchText ? (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={this.handleClickCancelSearch}
+                      onClick={() => this.setState({ searchText: "" })}
                       onMouseDown={this.handleMouseDownSearch}
                     >
                       <Icon
