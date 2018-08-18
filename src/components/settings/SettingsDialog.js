@@ -344,7 +344,7 @@ class SettingsDialog extends React.Component {
             __typename: "Mutation",
             user: {
               id: user.id,
-              devMode: nightMode,
+              nightMode: nightMode,
               __typename: "User",
             },
           },
@@ -423,7 +423,6 @@ class SettingsDialog extends React.Component {
           <SwipeableViews
             index={this.props.slideIndex}
             onChangeIndex={this.props.handleChange}
-            enableMouseEvents
           >
             <div
               style={{
@@ -469,7 +468,7 @@ class SettingsDialog extends React.Component {
                   />
                   <Divider />
                   <Subheader style={{ cursor: "default" }}>
-                    Lorem Ipsum
+                    Accessibility
                   </Subheader>
                   <ListItem
                     primaryText="Keyboard shortcuts"
@@ -763,7 +762,7 @@ export default graphql(
 )(
   graphql(
     gql`
-      mutation ToggleDevMode($devMode: Bool) {
+      mutation ToggleDevMode($devMode: Boolean!) {
         user(devMode: $devMode) {
           id
           devMode
@@ -776,8 +775,8 @@ export default graphql(
   )(
     graphql(
       gql`
-        mutation ToggleNightMode($nightMode: Bool) {
-          user(devMode: $nightMode) {
+        mutation ToggleNightMode($nightMode: Boolean!) {
+          user(nightMode: $nightMode) {
             id
             nightMode
           }

@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import Paper from "material-ui/Paper"
-import IconButton from "material-ui-next/IconButton"
 import ReadOnlyBooleanTile from "./Booleans/ReadOnlyBooleanTile"
 import ReadWriteBooleanTile from "./Booleans/ReadWriteBooleanTile"
 import ReadWriteBoundedFloatTile from "./Floats/ReadWriteBoundedFloatTile"
@@ -23,9 +22,8 @@ import { PopoverAnimationVertical } from "material-ui/Popover"
 import Divider from "material-ui/Divider"
 import RenameTileDialog from "./RenameTile"
 import DeleteTileDialog from "./DeleteTile"
-import Tooltip from "material-ui-next/Tooltip"
-import Icon from "material-ui-next/Icon"
 import InfoDialog from "./InfoDialog.js"
+import { Typography, Icon, Tooltip, IconButton } from "@material-ui/core"
 
 class Tile extends Component {
   state = {
@@ -301,32 +299,43 @@ class Tile extends Component {
                     background: "#21252b",
                     display: "flex",
                     alignItems: "center",
+                    height: "64px",
                   }
                 : {
                     background: "#f2f2f2",
                     display: "flex",
                     alignItems: "center",
+                    height: "64px",
                   }
             }
           >
-            <div
-              className="tileTitle"
+            <Typography
+              variant="title"
+              className="notSelectable"
               style={
                 this.props.nightMode
                   ? {
                       cursor: "default",
                       color: "white",
                       marginLeft: "16px",
+                      width:"calc(100% - 80px)",
+                      overflow:"hidden",
+whiteSpace:"nowrap",
+textOverflow: "ellipsis"
                     }
                   : {
                       cursor: "default",
                       color: "black",
                       marginLeft: "16px",
+                      width:"calc(100% - 80px)",
+                      overflow:"hidden",
+whiteSpace:"nowrap",
+textOverflow: "ellipsis"
                     }
               }
             >
               {valueTitle}
-            </div>
+            </Typography>
             <div
               className="notSelectable"
               style={{

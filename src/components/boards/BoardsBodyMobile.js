@@ -161,7 +161,7 @@ class BoardsBodyMobile extends Component {
                   endAdornment: this.state.searchText ? (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={()=>this.setState({searchText:""})}
+                        onClick={() => this.setState({ searchText: "" })}
                         onMouseDown={this.handleMouseDownSearch}
                       >
                         <Icon
@@ -183,7 +183,6 @@ class BoardsBodyMobile extends Component {
           <SwipeableViews
             index={this.state.slideIndex}
             onChangeIndex={this.handleSettingsTabChanged}
-            enableMouseEvents
           >
             <div
               style={{
@@ -198,29 +197,37 @@ class BoardsBodyMobile extends Component {
                   nightMode
                     ? {
                         textAlign: "center",
-                        paddingTop: "32px",
-                        marginBottom: "32px",
+                        paddingTop: "8px",
+                        marginBottom: "16px",
                         color: "white",
                       }
                     : {
                         textAlign: "center",
-                        paddingTop: "32px",
-                        marginBottom: "32px",
+                        paddingTop: "8px",
+                        marginBottom: "16px",
                         color: "black",
                       }
                 }
               >
                 Favorite boards
               </Typography>
-              <Grid
-                container
-                justify="center"
-                spacing={16}
-                className="notSelectable defaultCursor"
-                style={{ width: "100vw" }}
+              <div
+                style={{ height: "calc(100vh - 257px)", overflowY: "scroll" }}
               >
-                {favoriteBoardsList}
-              </Grid>
+                <Grid
+                  container
+                  justify="center"
+                  spacing={16}
+                  className="notSelectable defaultCursor"
+                  style={{
+                    width: "100vw",
+                    marginLeft: "0",
+                    marginRight: "0",
+                  }}
+                >
+                  {favoriteBoardsList}
+                </Grid>
+              </div>
             </div>
             <div
               style={{
@@ -235,29 +242,37 @@ class BoardsBodyMobile extends Component {
                   nightMode
                     ? {
                         textAlign: "center",
-                        marginTop: "32px",
-                        marginBottom: "32px",
+                        marginTop: "8px",
+                        marginBottom: "16px",
                         color: "white",
                       }
                     : {
                         textAlign: "center",
-                        marginTop: "32px",
-                        marginBottom: "32px",
+                        marginTop: "8px",
+                        marginBottom: "16px",
                         color: "black",
                       }
                 }
               >
                 Recent boards
               </Typography>
-              <Grid
-                container
-                justify="center"
-                spacing={16}
-                className="notSelectable defaultCursor"
-                style={{ width: "100vw" }}
+              <div
+                style={{ height: "calc(100vh - 257px)", overflowY: "scroll" }}
               >
-                {boardsList}
-              </Grid>
+                <Grid
+                  container
+                  justify="center"
+                  spacing={16}
+                  className="notSelectable defaultCursor"
+                  style={{
+                    width: "100vw",
+                    marginLeft: "0",
+                    marginRight: "0",
+                  }}
+                >
+                  {boardsList}
+                </Grid>
+              </div>
             </div>
           </SwipeableViews>
           <AppBar

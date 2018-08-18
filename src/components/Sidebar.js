@@ -158,6 +158,7 @@ class Sidebar extends Component {
                     this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
                     -1
                 )
+                .filter(device => device.board.id === this.props.selectedBoard)
                 .map(device => (
                   <Link
                     to={
@@ -168,8 +169,11 @@ class Sidebar extends Component {
                           device.id
                         : "/dashboard?board=" + this.props.selectedBoard
                     }
-                    style={{ textDecoration: "none", color: "black",
-                    cursor: "pointer", }}
+                    style={{
+                      textDecoration: "none",
+                      color: "black",
+                      cursor: "pointer",
+                    }}
                   >
                     <ListItem
                       button
@@ -268,11 +272,15 @@ class Sidebar extends Component {
                     this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
                     -1
                 )
+                .filter(device => device.board.id === this.props.selectedBoard)
                 .map(device => (
                   <Link
                     to={
                       this.props.selectedDevice !== device.id
-                        ? "/dashboard?board=" + this.props.selectedBoard + "&device=" + device.id
+                        ? "/dashboard?board=" +
+                          this.props.selectedBoard +
+                          "&device=" +
+                          device.id
                         : "/dashboard?board=" + this.props.selectedBoard
                     }
                     style={{ textDecoration: "none", color: "black" }}
