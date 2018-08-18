@@ -15,8 +15,8 @@ class ReadWriteBoundedStringTile extends Component {
   state = { text: this.props.stringValue }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.defaultValue !== this.state.text) {
-      this.setState({ text: nextProps.defaultValue })
+    if (nextProps.stringValue !== this.state.text) {
+      this.setState({ text: nextProps.stringValue })
     }
   }
 
@@ -42,7 +42,7 @@ class ReadWriteBoundedStringTile extends Component {
   }
 
   render() {
-    const charCount = this.state.text
+    const charCount = this.state.text || 0
 
     return (
       <div className="readOnlyFloatTile notSelectable">
@@ -51,6 +51,7 @@ class ReadWriteBoundedStringTile extends Component {
             <InputLabel>{this.props.customName}</InputLabel>
             <Input
               value={this.state.text}
+              onChange={this.handleChange}
               endAdornment={
                 <InputAdornment style={{ cursor: "default" }}>
                   {charCount.length}/{this.props.maxChars}
@@ -65,10 +66,10 @@ class ReadWriteBoundedStringTile extends Component {
 }
 
 const updateStringValue = gql`
-  mutation stringValue($id: ID!, $value: String!) {
-    stringValue(id: $id, stringValue: $stringValue) {
+  mutation stringValue($id: ID!, $stringValue: String!) {
+    stringValue(id: $id, value: $stringValue) {
       id
-      stringValue
+      value
     }
   }
 `

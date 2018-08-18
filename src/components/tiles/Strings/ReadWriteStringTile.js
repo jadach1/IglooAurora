@@ -14,8 +14,8 @@ class ReadWriteStringTile extends Component {
   state = { text: this.props.stringValue }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.defaultValue !== this.state.text) {
-      this.setState({ text: nextProps.defaultValue })
+    if (nextProps.stringValue !== this.state.text) {
+      this.setState({ text: nextProps.stringValue })
     }
   }
 

@@ -73,6 +73,7 @@ class BoardsMobile extends Component {
           handleChange={this.handleSettingsTabChanged}
           slideIndex={this.state.slideIndex}
           handleChangeBTIndex={this.handleChangeBTIndex}
+          userData={this.props.userData}
         />
         {!emailIsVerified && <EmailNotVerified mobile={true} />}
       </MuiThemeProvider>

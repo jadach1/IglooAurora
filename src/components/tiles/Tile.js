@@ -318,19 +318,19 @@ class Tile extends Component {
                       cursor: "default",
                       color: "white",
                       marginLeft: "16px",
-                      width:"calc(100% - 80px)",
-                      overflow:"hidden",
-whiteSpace:"nowrap",
-textOverflow: "ellipsis"
+                      width: "calc(100% - 80px)",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
                     }
                   : {
                       cursor: "default",
                       color: "black",
                       marginLeft: "16px",
-                      width:"calc(100% - 80px)",
-                      overflow:"hidden",
-whiteSpace:"nowrap",
-textOverflow: "ellipsis"
+                      width: "calc(100% - 80px)",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
                     }
               }
             >

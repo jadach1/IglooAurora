@@ -321,6 +321,7 @@ class Main extends Component {
                     slideIndex={this.state.slideIndex}
                     handleChangeBTIndex={this.handleChangeBTIndex}
                     nightMode={nightMode}
+                    userData={this.props.userData}
                   />
                   <AppBar position="sticky">
                     <SidebarHeader
