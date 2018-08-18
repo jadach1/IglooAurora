@@ -756,6 +756,7 @@ class SettingsDialog extends React.Component {
             this.props.isOpen && this.state.authDialogOpen
           }
           handleAuthDialogClose={this.handleAuthDialogClose}
+          userData={this.props.userData}
         />
         <Shortcuts
           handleShortcutDialogClose={this.handleShortcutDialogClose}
@@ -791,23 +792,7 @@ class SettingsDialog extends React.Component {
   }
 }
 
-export default graphql(
-  gql`
-    query {
-      user {
-        id
-        devices {
-          id
-          customName
-          icon
-        }
-        devMode
-        nightMode
-      }
-    }
-  `,
-  { name: "userData" }
-)(
+export default (
   graphql(
     gql`
       mutation ToggleDevMode($devMode: Boolean!) {

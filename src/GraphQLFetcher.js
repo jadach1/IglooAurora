@@ -204,6 +204,61 @@ class GraphQLFetcher extends Component {
     this.props.userData.subscribeToMore({
       document: subscribeToUserUpdates,
     })
+
+    const tokenSubscriptionQuery = gql`
+      subscription {
+        tokenCreated {
+          id
+          customName
+          lastUsed
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: tokenSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newTokens = [
+          ...prev.user.permanentTokens,
+          subscriptionData.data.tokenCreated,
+        ]
+        return {
+          user: {
+            ...prev.user,
+            permanentTokens: newTokens,
+          },
+        }
+      },
+    })
+
+    const subscribeToTokensDeletes = gql`
+      subscription {
+        tokenDeleted
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToTokensDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newTokens = prev.user.permanentTokens.filter(
+          token => token.id !== subscriptionData.data.tokenDeleted
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            permanentTokens: newTokens,
+          },
+        }
+      },
+    })
   }
 
   state = {
@@ -424,6 +479,11 @@ export default graphql(
         nightMode
         devMode
         emailIsVerified
+        permanentTokens {
+          id
+          customName
+          lastUsed
+        }
         boards {
           id
           customName

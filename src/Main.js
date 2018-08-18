@@ -326,138 +326,135 @@ class Main extends Component {
       boardIdList = user.boards.map(board => board.id)
     }
 
-console.log(boardIdList,this.props.selectedBoard)
-
     return (
       <MuiThemeProvider>
         <React.Fragment>
           <Online>
-              <div className="main">
-                <SettingsDialog
-                  isOpen={this.state.areSettingsOpen}
-                  closeSettingsDialog={() => {
-                    this.setState({ areSettingsOpen: false })
+            <div className="main">
+              <SettingsDialog
+                isOpen={this.state.areSettingsOpen}
+                closeSettingsDialog={() => {
+                  this.setState({ areSettingsOpen: false })
+                }}
+                handleChange={this.handleSettingsTabChanged}
+                slideIndex={this.state.slideIndex}
+                nightMode={nightMode}
+                userData={this.props.userData}
+              />
+              <div className="invisibleHeader" key="invisibleHeader" />
+              <SidebarHeader
+                logOut={this.props.logOut}
+                key="sidebarHeader"
+                openSettingsDialog={() => {
+                  this.setState({ areSettingsOpen: true })
+                }}
+                changeSettingsState={() =>
+                  this.setState(oldState => ({
+                    areSettingsOpen: !oldState.areSettingsOpen,
+                    drawer: false,
+                  }))
+                }
+              />
+              <div
+                className="sidebar"
+                key="sidebar"
+                style={
+                  nightMode
+                    ? { background: "#21252b" }
+                    : { background: "#f2f2f2" }
+                }
+              >
+                <Sidebar
+                  selectDevice={id => {
+                    this.props.selectDevice(id)
+                    this.setState({ drawer: false })
                   }}
-                  handleChange={this.handleSettingsTabChanged}
-                  slideIndex={this.state.slideIndex}
+                  selectedDevice={this.props.selectedDevice}
+                  changeDrawerState={this.changeDrawerState}
+                  searchText={this.state.searchText}
+                  changeText={text => this.setState({ searchText: text })}
+                  userData={this.props.userData}
                   nightMode={nightMode}
+                  selectedBoard={this.props.selectedBoard}
                 />
-                <div className="invisibleHeader" key="invisibleHeader" />
-                <SidebarHeader
-                  logOut={this.props.logOut}
-                  key="sidebarHeader"
-                  openSettingsDialog={() => {
-                    this.setState({ areSettingsOpen: true })
+              </div>
+              {this.props.selectedDevice !== null ? (
+                <MainBodyHeader
+                  deviceId={this.props.selectedDevice}
+                  key="mainBodyHeader"
+                  drawer={this.state.drawer}
+                  changeDrawerState={this.changeDrawerState}
+                  hiddenNotifications={this.state.hiddenNotifications}
+                  showHiddenNotifications={this.showHiddenNotifications}
+                  nightMode={nightMode}
+                  devMode={devMode}
+                  openSnackBar={() => {
+                    this.setState({ copyMessageOpen: true })
                   }}
-                  changeSettingsState={() =>
-                    this.setState(oldState => ({
-                      areSettingsOpen: !oldState.areSettingsOpen,
-                      drawer: false,
-                    }))
-                  }
                 />
-                <div
-                  className="sidebar"
-                  key="sidebar"
-                  style={
-                    nightMode
-                      ? { background: "#21252b" }
-                      : { background: "#f2f2f2" }
-                  }
-                >
-                  <Sidebar
-                    selectDevice={id => {
-                      this.props.selectDevice(id)
-                      this.setState({ drawer: false })
-                    }}
-                    selectedDevice={this.props.selectedDevice}
-                    changeDrawerState={this.changeDrawerState}
-                    searchText={this.state.searchText}
-                    changeText={text => this.setState({ searchText: text })}
-                    userData={this.props.userData}
-                    nightMode={nightMode}
-                    selectedBoard={this.props.selectedBoard}
-                  />
-                </div>
-                {this.props.selectedDevice !== null ? (
-                  <MainBodyHeader
-                    deviceId={this.props.selectedDevice}
-                    key="mainBodyHeader"
-                    drawer={this.state.drawer}
-                    changeDrawerState={this.changeDrawerState}
-                    hiddenNotifications={this.state.hiddenNotifications}
-                    showHiddenNotifications={this.showHiddenNotifications}
-                    nightMode={nightMode}
-                    devMode={devMode}
-                    openSnackBar={() => {
-                      this.setState({ copyMessageOpen: true })
-                    }}
-                  />
-                ) : (
-                  <div className="mainBodyHeader" key="mainBodyHeader" />
-                )}
-                {this.props.selectedDevice !== null ? (
-                  user ? (
-                    deviceIdList.includes(this.props.selectedDevice) ? (
-                      <React.Fragment>
-                        <MainBody
-                          deviceId={this.props.selectedDevice}
-                          showHidden={this.state.showMainHidden}
-                          changeShowHiddenState={this.changeShowHiddenState}
-                          nightMode={nightMode}
-                          devMode={devMode}
-                        />
-                        <StatusBar
-                          userData={this.props.userData}
-                          deviceId={this.props.selectedDevice}
-                          nightMode={nightMode}
-                        />
-                      </React.Fragment>
-                    ) : (
-                      <Redirect
-                        exact
-                        to={
-                          this.props.selectedBoard
-                            ? "/dashboard?board=" + this.props.selectedBoard
-                            : "/dashboard"
-                        }
+              ) : (
+                <div className="mainBodyHeader" key="mainBodyHeader" />
+              )}
+              {this.props.selectedDevice !== null ? (
+                user ? (
+                  deviceIdList.includes(this.props.selectedDevice) ? (
+                    <React.Fragment>
+                      <MainBody
+                        deviceId={this.props.selectedDevice}
+                        showHidden={this.state.showMainHidden}
+                        changeShowHiddenState={this.changeShowHiddenState}
+                        nightMode={nightMode}
+                        devMode={devMode}
                       />
-                    )
+                      <StatusBar
+                        userData={this.props.userData}
+                        deviceId={this.props.selectedDevice}
+                        nightMode={nightMode}
+                      />
+                    </React.Fragment>
                   ) : (
-                    ""
-                  )
-                ) : (
-                  <React.Fragment>
-                    <div
-                      style={
-                        nightMode
-                          ? { background: "#2f333d" }
-                          : { background: "white" }
-                      }
-                      className="mainBody"
-                    >
-                      <div
-                        className={nightMode ? "darkMainBodyBG" : "mainBodyBG"}
-                        style={{ width: "100%", height: "100%" }}
-                      />
-                    </div>
-                    <div
-                      className="statusBar"
-                      style={
-                        nightMode
-                          ? { background: "#2f333d" }
-                          : { background: "white" }
+                    <Redirect
+                      exact
+                      to={
+                        this.props.selectedBoard
+                          ? "/dashboard?board=" + this.props.selectedBoard
+                          : "/dashboard"
                       }
                     />
-                  </React.Fragment>
-                )}
-              </div>
-            {(user && !boardIdList.includes(this.props.selectedBoard)) && (
-              <Redirect
-                exact
-                to= "/dashboard"
-              />
-            )}
+                  )
+                ) : (
+                  ""
+                )
+              ) : (
+                <React.Fragment>
+                  <div
+                    style={
+                      nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
+                    }
+                    className="mainBody"
+                  >
+                    <div
+                      className={nightMode ? "darkMainBodyBG" : "mainBodyBG"}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
+                  <div
+                    className="statusBar"
+                    style={
+                      nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
+                    }
+                  />
+                </React.Fragment>
+              )}
+            </div>
+            {user &&
+              !boardIdList.includes(this.props.selectedBoard) && (
+                <Redirect exact to="/dashboard" />
+              )}
             <NotificationsSnackbar />
             {!emailIsVerified && <EmailNotVerified mobile={false} />}
             <GetLinkSuccess

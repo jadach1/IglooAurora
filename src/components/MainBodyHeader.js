@@ -1,14 +1,17 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import IconButton from "material-ui-next/IconButton"
 import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import Tooltip from "material-ui-next/Tooltip"
 import NotificationsDrawer from "./NotificationsDrawer"
-import Icon from "material-ui-next/Icon"
 import DeviceInfo from "./DeviceInfo"
 import { CopyToClipboard } from "react-copy-to-clipboard"
+import {
+  Typography,
+  Button,
+  Tooltip,
+  Icon,
+  IconButton,
+} from "@material-ui/core"
 
 class MainBodyHeader extends Component {
   state = {
@@ -61,17 +64,20 @@ class MainBodyHeader extends Component {
               lightbulb_outline
             </i>
           )}
-          <p
+          <Typography
+            variant="headline"
             className="title"
             style={{
               cursor: "default",
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
+              color:"white",
+              lineHeight:"64px"
             }}
           >
             {device.customName}
-          </p>
+          </Typography>
           <div
             style={{
               padding: "0",

@@ -671,6 +671,7 @@ class SettingsDialog extends React.Component {
             this.props.isOpen && this.state.authDialogOpen
           }
           handleAuthDialogClose={this.handleAuthDialogClose}
+          userData={this.props.userData}
         />
         <ChangeLanguageDialog
           handleLanguageDialogClose={this.handleLanguageDialogClose}
@@ -742,24 +743,7 @@ class SettingsDialog extends React.Component {
   }
 }
 
-export default graphql(
-  gql`
-    query {
-      user {
-        id
-        devMode
-        nightMode
-        language
-        devices {
-          id
-          customName
-          icon
-        }
-      }
-    }
-  `,
-  { name: "userData" }
-)(
+export default 
   graphql(
     gql`
       mutation ToggleDevMode($devMode: Boolean!) {
@@ -787,4 +771,4 @@ export default graphql(
       }
     )(SettingsDialog)
   )
-)
+

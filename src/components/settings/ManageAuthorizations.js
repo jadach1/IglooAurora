@@ -71,10 +71,6 @@ class AuthDialog extends React.Component {
   }
 
   render() {
-    const {
-      userData: { loading, error, user },
-    } = this.props
-
     const confirmationDialogActions = [
       <MuiThemeProvider theme={theme}>
         <Button
@@ -116,31 +112,29 @@ class AuthDialog extends React.Component {
 
     let tokenList = ""
 
-    if (error) tokenList = "Unexpected error"
+    if (this.props.userData.error) tokenList = "Unexpected error"
 
-    if (loading) tokenList = <CenteredSpinner />
+    if (this.props.userData.loading) tokenList = <CenteredSpinner />
 
-    if (user)
+    if (this.props.userData.user)
       tokenList = (
         <List style={{ padding: "0" }}>
-          {user.permanentTokens.map(token => (
+          {this.props.userData.user.permanentTokens.map(token => (
             <ListItem
               primaryText={token.customName}
               secondaryText={
-                "Last used: " +
-                moment
-                  .utc(token.lastUsed.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-                  .fromNow()
+                token.lastUsed
+                  ? "Last used: " +
+                    moment
+                      .utc(token.lastUsed.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+                      .fromNow()
+                  : "Never used"
               }
               leftIcon={<Icon>vpn_key</Icon>}
               rightIconButton={
-                <React.Fragment>
-                  <IconButton
-                    onClick={() => this.deletePermanentToken(token.id)}
-                  >
-                    <Icon>delete</Icon>
-                  </IconButton>
-                </React.Fragment>
+                <IconButton onClick={() => this.deletePermanentToken(token.id)}>
+                  <Icon>delete</Icon>
+                </IconButton>
               }
             />
           ))}
@@ -219,51 +213,35 @@ class AuthDialog extends React.Component {
 
 export default graphql(
   gql`
-    query {
-      user {
-        id
-        permanentTokens {
-          id
-          customName
-          lastUsed
-        }
+    mutation GeneratePermanentAccessToken($customName: String!) {
+      GeneratePermanentAccessToken(customName: $customName) {
+        token
       }
     }
   `,
-  { name: "userData" }
+  {
+    name: "GeneratePermanentAccessToken",
+  }
 )(
   graphql(
     gql`
-      mutation GeneratePermanentAccessToken($customName: String) {
-        GeneratePermanentAccessToken(customName: $customName) {
-          token
-        }
+      mutation DeletePermanentAccesToken($id: ID!) {
+        DeletePermanentAccesToken(id: $id)
       }
     `,
     {
-      name: "GeneratePermanentAccessToken",
+      name: "DeletePermanentAccesToken",
     }
   )(
     graphql(
       gql`
-        mutation DeletePermanentAccesToken($id: ID!) {
-          DeletePermanentAccesToken(id: $id)
+        query verifyPassword($password: String) {
+          verifyPassword(password: $password)
         }
       `,
       {
-        name: "DeletePermanentAccesToken",
+        name: "verifyPassword",
       }
-    )(
-      graphql(
-        gql`
-          query verifyPassword($password: String) {
-            verifyPassword(password: $password)
-          }
-        `,
-        {
-          name: "verifyPassword",
-        }
-      )(AuthDialog)
-    )
+    )(AuthDialog)
   )
 )
