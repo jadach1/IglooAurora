@@ -115,7 +115,6 @@ export default class CreateValue extends React.Component {
             axis={theme.direction === "rtl" ? "x-reverse" : "x"}
             index={this.state.activeStep}
             onChangeIndex={this.handleStepChange}
-            enableMouseEvents
             style={{ height: "220px" }}
           >
             <div style={{ height: "200px" }}>{deviceList}</div>

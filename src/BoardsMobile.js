@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import BoardsHeader from "./components/boards/BoardsHeader"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
-import SettingsDialogMobile from "./components/settings/SettingsDialog"
+import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
 import { hotkeys } from "react-keyboard-shortcuts"
 import BoardsBodyMobile from "./components/boards/BoardsBodyMobile"
 import EmailNotVerified from "./components/EmailNotVerified"

@@ -74,8 +74,16 @@ class BoardCard extends Component {
         <Paper
           style={
             this.props.nightMode
-              ? { backgroundColor: "#2f333d", width: "256px", height: "192px" }
-              : { backgroundColor: "#fff", width: "256px", height: "192px" }
+              ? {
+                  backgroundColor: "#2f333d",
+                  width: "256px",
+                  height: "192px",
+                }
+              : {
+                  backgroundColor: "#fff",
+                  width: "256px",
+                  height: "192px",
+                }
           }
         >
           <Toolbar
@@ -101,10 +109,18 @@ class BoardCard extends Component {
                     ? {
                         color: "white",
                         marginLeft: "-8px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        width: "136px",
                       }
                     : {
                         color: "black",
                         marginLeft: "-8px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        width: "136px",
                       }
                 }
               >

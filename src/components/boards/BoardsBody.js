@@ -180,11 +180,13 @@ export default class BoardsBody extends Component {
                   width: "100vw",
                   height: "calc(100vh - 128px)",
                   backgroundColor: "#21252b",
+                  overflowY: "auto",
                 }
               : {
                   width: "100vw",
                   height: "calc(100vh - 128px)",
                   backgroundColor: "#f2f2f2",
+                  overflowY: "auto",
                 }
           }
         >
@@ -214,7 +216,11 @@ export default class BoardsBody extends Component {
             justify="center"
             spacing={16}
             className="notSelectable defaultCursor"
-            style={{ width: "100vw" }}
+            style={{
+              width: "100vw",
+              marginLeft: "0",
+              marginRight: "0",
+            }}
           >
             {favoriteBoardsList}
           </Grid>
@@ -244,7 +250,11 @@ export default class BoardsBody extends Component {
             justify="center"
             spacing={16}
             className="notSelectable defaultCursor"
-            style={{ width: "100vw" }}
+            style={{
+              width: "100vw",
+              marginLeft: "0",
+              marginRight: "0",
+            }}
           >
             {boardsList}
           </Grid>

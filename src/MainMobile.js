@@ -14,7 +14,7 @@ import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
 import EmailNotVerified from "./components/EmailNotVerified"
 import StatusBar from "./components/StatusBar"
 import GetLinkSuccess from "./components/GetLinkSuccess"
-import {Redirect} from "react-router-dom"
+import { Redirect } from "react-router-dom"
 import { Typography } from "material-ui-next"
 import polarBear from "./styles/assets/polarBear.svg"
 
@@ -358,6 +358,7 @@ class Main extends Component {
                       isMobile={true}
                       userData={this.props.userData}
                       nightMode={nightMode}
+                      selectedBoard={this.props.selectedBoard}
                     />
                   </div>
                 </React.Fragment>
@@ -412,14 +413,15 @@ class Main extends Component {
                     </div>
                   </React.Fragment>
                 ) : (
-<Redirect
-                      exact
-                      to={
-                        this.props.selectedBoard
-                          ? "/dashboard?board=" + this.props.selectedBoard
-                          : "/dashboard"
-                      }
-                    />                )
+                  <Redirect
+                    exact
+                    to={
+                      this.props.selectedBoard
+                        ? "/dashboard?board=" + this.props.selectedBoard
+                        : "/dashboard"
+                    }
+                  />
+                )
               ) : (
                 ""
               )}
@@ -432,48 +434,48 @@ class Main extends Component {
             />
           </Online>
           <Offline key="offlineMainBody">
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              backgroundColor: "#0057cb",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
             <div
               style={{
-                margin: "auto",
-                textAlign: "center",
-                width: "80vw",
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "#0057cb",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
-              <Typography variant="headline" style={{ color: "white" }}>
-                You are not connected, try again in a while
-              </Typography>
-              <br />
-              <br />
-              <br />
-              <br />
-              <img
-                alt="Sleeping Polar Bear"
-                src={polarBear}
-                className="notSelectable"
-              />
-              <br />
-              <br />
-              <br />
-              <br />
-              <Typography
-                variant="title"
-                gutterBottom
-                style={{ color: "white" }}
+              <div
+                style={{
+                  margin: "auto",
+                  textAlign: "center",
+                  width: "80vw",
+                }}
               >
-                In the meantime, why don't you have a nap?
-              </Typography>
+                <Typography variant="headline" style={{ color: "white" }}>
+                  You are not connected, try again in a while
+                </Typography>
+                <br />
+                <br />
+                <br />
+                <br />
+                <img
+                  alt="Sleeping Polar Bear"
+                  src={polarBear}
+                  className="notSelectable"
+                />
+                <br />
+                <br />
+                <br />
+                <br />
+                <Typography
+                  variant="title"
+                  gutterBottom
+                  style={{ color: "white" }}
+                >
+                  In the meantime, why don't you have a nap?
+                </Typography>
+              </div>
             </div>
-          </div>
           </Offline>
         </React.Fragment>
       </MuiThemeProvider>

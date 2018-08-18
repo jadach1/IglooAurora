@@ -1,10 +1,16 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import {
+  FormControlLabel,
+  Checkbox,
+  Icon,
+  Button,
+  MuiThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core"
 
 const theme = createMuiTheme({
   palette: {
@@ -13,17 +19,19 @@ const theme = createMuiTheme({
 })
 
 class CreateBoard extends React.Component {
-  state = { customName: "" }
+  state = { customName: "", favorite: false }
 
-  createBoardMutation = customName => {
+  createBoardMutation = () => {
     this.props.CreateBoard({
       variables: {
-        customName,
+        customName: this.state.customName,
+        favorite: this.state.favorite,
       },
       optimisticResponse: {
         __typename: "Mutation",
         CreateBoard: {
-          customName,
+          customName: this.state.customName,
+          favorite: this.state.favorite,
           __typename: "Board",
         },
       },
@@ -42,7 +50,7 @@ class CreateBoard extends React.Component {
           color="primary"
           primary={true}
           buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={() => this.createBoardMutation(this.state.customName)}
+          onClick={this.createBoardMutation}
           disabled={!this.state.customName}
         >
           Create board
@@ -74,6 +82,26 @@ class CreateBoard extends React.Component {
             }
           }}
         />
+        <FormControlLabel
+          control={
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  secondary: { main: "#0083ff" },
+                },
+              })}
+            >
+              <Checkbox
+                onChange={event =>
+                  this.setState({ favorite: event.target.checked })
+                }
+                icon={<Icon>favorite_border</Icon>}
+                checkedIcon={<Icon>favorite</Icon>}
+              />
+            </MuiThemeProvider>
+          }
+          label="Set as favorite"
+        />
       </Dialog>
     )
   }
@@ -81,10 +109,11 @@ class CreateBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation CreateBoard($customName: String!) {
-      CreateBoard(customName: $customName) {
+    mutation CreateBoard($customName: String!, $favorite: Boolean) {
+      CreateBoard(customName: $customName, favorite: $favorite) {
         id
         customName
+        favorite
       }
     }
   `,
