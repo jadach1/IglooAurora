@@ -113,6 +113,7 @@ class BoardCard extends Component {
                         whiteSpace: "nowrap",
                         textOverflow: "ellipsis",
                         width: "136px",
+                        marginRight: "23px",
                       }
                     : {
                         color: "black",
@@ -121,6 +122,7 @@ class BoardCard extends Component {
                         whiteSpace: "nowrap",
                         textOverflow: "ellipsis",
                         width: "136px",
+                        marginRight: "23px",
                       }
                 }
               >
@@ -138,38 +140,16 @@ class BoardCard extends Component {
                 <Badge
                   badgeContent={this.props.board.notificationsCount}
                   color="primary"
-                  style={{ marginLeft: "24px" }}
                 />
               ) : (
                 ""
               )}
             </MuiThemeProvider>
-            <Tooltip
-              id="tooltip-bottom"
-              title="Add to favourites"
-              placement="bottom"
-            >
-              <IconButton
-                style={{ marginRight: "0", marginLeft: "auto" }}
-                onClick={() => this.toggleFavorite(!this.props.board.favorite)}
-              >
-                <Icon
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                >
-                  {this.props.board.favorite ? "favorite" : "favorite_border"}
-                </Icon>
-              </IconButton>
-            </Tooltip>
             <Tooltip id="tooltip-bottom" title="More" placement="bottom">
               <IconButton
                 onClick={this.handleMenuOpen}
                 style={{
-                  marginRight: "-16px",
-                  marginLeft: "0",
+                  marginLeft: "23px",
                 }}
               >
                 <Icon
@@ -220,7 +200,6 @@ class BoardCard extends Component {
                   borderBottomLeftRadius: "4px",
                   borderBottomRightRadius: "4px",
                 }}
-                tifi
               />
             )}
           </Link>
@@ -268,14 +247,10 @@ class BoardCard extends Component {
               }
               onClick={() => {
                 if (navigator.share) {
-                  navigator
-                    .share({
-                      title: this.props.board.customName + " on Igloo Aurora",
-                      url:
-                        window.location.href + "?board=" + this.props.board.id,
-                    })
-                    .then(() => console.log("Successful share"))
-                    .catch(error => console.log("Error sharing", error))
+                  navigator.share({
+                    title: this.props.board.customName + " on Igloo Aurora",
+                    url: window.location.href + "?board=" + this.props.board.id,
+                  })
                 }
               }}
             >
@@ -360,6 +335,30 @@ class BoardCard extends Component {
               this.props.nightMode ? { color: "white" } : { color: "black" }
             }
             onClick={() => {
+              this.toggleFavorite(!this.props.board.favorite)
+              this.handleMenuClose()
+            }}
+          >
+            <ListItemIcon>
+              <Icon
+                style={
+                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                }
+              >
+                {!this.props.board.favorite ? "star" : "star_border"}
+              </Icon>
+            </ListItemIcon>
+            <ListItemText
+              inset
+              primary={!this.props.board.favorite ? "Star" : "Unstar"}
+            />
+          </MenuItem>
+          <MenuItem
+            className="notSelectable"
+            style={
+              this.props.nightMode ? { color: "white" } : { color: "black" }
+            }
+            onClick={() => {
               this.setState({ renameOpen: true })
               this.handleMenuClose()
             }}
@@ -375,23 +374,25 @@ class BoardCard extends Component {
             </ListItemIcon>
             <ListItemText inset primary="Rename" />
           </MenuItem>
-          <MenuItem
-            className="notSelectable"
-            style={
-              this.props.nightMode ? { color: "white" } : { color: "black" }
-            }
-            onClick={() => {
-              this.setState({ deleteOpen: true })
-              this.handleMenuClose()
-            }}
-          >
-            <ListItemIcon>
-              <Icon style={{ color: "#f44336" }}>delete</Icon>
-            </ListItemIcon>
-            <ListItemText inset>
-              <span style={{ color: "#f44336" }}>Delete board</span>
-            </ListItemText>
-          </MenuItem>
+          {!this.props.lastBoard && (
+            <MenuItem
+              className="notSelectable"
+              style={
+                this.props.nightMode ? { color: "white" } : { color: "black" }
+              }
+              onClick={() => {
+                this.setState({ deleteOpen: true })
+                this.handleMenuClose()
+              }}
+            >
+              <ListItemIcon>
+                <Icon style={{ color: "#f44336" }}>delete</Icon>
+              </ListItemIcon>
+              <ListItemText inset>
+                <span style={{ color: "#f44336" }}>Delete board</span>
+              </ListItemText>
+            </MenuItem>
+          )}
         </Menu>
         <BoardInfo
           open={this.state.infoOpen}

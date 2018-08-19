@@ -229,9 +229,26 @@ class SettingsDialog extends React.Component {
 
     let deviceList = "No devices"
 
-    let toggleDevMode = ""
+    let quietModeSetting = (
+      <ListItem
+        primaryText="Quiet mode"
+        secondaryText="Mute all notifications"
+        rightToggle={
+          <Toggle
+            thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+            trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+            rippleStyle={{ color: "#0083ff" }}
+            disabled
+          />
+        }
+      />
+    )
 
-    let toggleNightMode = ""
+    let toggleDevMode = ()=>{}
+
+    let toggleNightMode = ()=>{}
+
+    let toggleQuietMode = ()=>{}
 
     let languageText = "English"
 
@@ -308,6 +325,24 @@ class SettingsDialog extends React.Component {
         />
       )
 
+      quietModeSetting = (
+        <ListItem
+          primaryText="Quiet mode"
+          secondaryText="Mute all notifications"
+          rightToggle={
+            <Toggle
+              thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+              trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+              rippleStyle={{ color: "#0083ff" }}
+              defaultToggled={user.quietMode}
+              onToggle={() => {
+                user.quietMode ? toggleQuietMode(false) : toggleQuietMode(true)
+              }}
+            />
+          }
+        />
+      )
+
       devModeTab = user.devMode ? (
         <Tab
           icon={<Icon>code</Icon>}
@@ -351,6 +386,22 @@ class SettingsDialog extends React.Component {
         })
       }
 
+      toggleQuietMode = quietMode => {
+        this.props["ToggleQuietMode"]({
+          variables: {
+            quietMode: quietMode,
+          },
+          optimisticResponse: {
+            __typename: "Mutation",
+            user: {
+              id: user.id,
+              quietMode: quietMode,
+              __typename: "User",
+            },
+          },
+        })
+      }
+
       switch (user.language) {
         case "en":
           languageText = "English"
@@ -374,7 +425,12 @@ class SettingsDialog extends React.Component {
     }
 
     const actions = [
-      <Button onClick={this.props.closeSettingsDialog}>Close</Button>,
+      <Button
+        onClick={this.props.closeSettingsDialog}
+        style={user && user.nightMode ? { color: "#fff" } : { color: "#000" }}
+      >
+        Close
+      </Button>,
     ]
 
     return (
@@ -388,6 +444,11 @@ class SettingsDialog extends React.Component {
           repositionOnUpdate={true}
           contentStyle={{ width: "550px" }}
           className="notSelectable"
+          actionsContainerStyle={
+            user && user.nightMode
+              ? { backgroundColor: "#2f333d" }
+              : { backgroundColor: "#fff" }
+          }
         >
           <AppBar position="sticky">
             <Tabs
@@ -488,17 +549,7 @@ class SettingsDialog extends React.Component {
                   <Subheader style={{ cursor: "default" }}>
                     Lorem Ipsum
                   </Subheader>
-                  <ListItem
-                    primaryText="Quiet mode"
-                    secondaryText="Mute all notifications"
-                    rightToggle={
-                      <Toggle
-                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                        rippleStyle={{ color: "#0083ff" }}
-                      />
-                    }
-                  />
+                  {quietModeSetting}
                   <ListItem
                     primaryText="Receive notifications from hidden devices"
                     rightToggle={
@@ -743,32 +794,44 @@ class SettingsDialog extends React.Component {
   }
 }
 
-export default 
+export default graphql(
+  gql`
+    mutation ToggleDevMode($devMode: Boolean!) {
+      user(devMode: $devMode) {
+        id
+        devMode
+      }
+    }
+  `,
+  {
+    name: "ToggleDevMode",
+  }
+)(
   graphql(
     gql`
-      mutation ToggleDevMode($devMode: Boolean!) {
-        user(devMode: $devMode) {
+      mutation ToggleNightMode($nightMode: Boolean!) {
+        user(nightMode: $nightMode) {
           id
-          devMode
+          nightMode
         }
       }
     `,
     {
-      name: "ToggleDevMode",
+      name: "ToggleNightMode",
     }
   )(
     graphql(
       gql`
-        mutation ToggleNightMode($nightMode: Boolean!) {
-          user(nightMode: $nightMode) {
+        mutation ToggleQuietMode($quietMode: Boolean!) {
+          user(quietMode: $quietMode) {
             id
-            nightMode
+            quietMode
           }
         }
       `,
       {
-        name: "ToggleNightMode",
+        name: "ToggleQuietMode",
       }
     )(SettingsDialog)
   )
-
+)

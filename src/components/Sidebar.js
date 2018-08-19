@@ -1,21 +1,24 @@
 import React, { Component } from "react"
-import List, {
+import CenteredSpinner from "./CenteredSpinner"
+import FloatingActionButton from "material-ui/FloatingActionButton"
+import FilterPopover from "./FilterPopover"
+import { Link } from "react-router-dom"
+import {
+  FormControl,
+  Input,
+  IconButton,
+  Badge,
+  Tooltip,
   ListItem,
   ListItemIcon,
   ListItemSecondaryAction,
   ListItemText,
-} from "material-ui-next/List"
-import CenteredSpinner from "./CenteredSpinner"
-import FloatingActionButton from "material-ui/FloatingActionButton"
-import Tooltip from "material-ui-next/Tooltip"
-import Badge from "material-ui-next/Badge"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Icon from "material-ui-next/Icon"
-import TextField from "material-ui-next/TextField"
-import { InputAdornment } from "material-ui-next/Input"
-import IconButton from "material-ui-next/IconButton"
-import FilterPopover from "./FilterPopover"
-import { Link } from "react-router-dom"
+  List,
+  InputAdornment,
+  MuiThemeProvider,
+  createMuiTheme,
+  Icon,
+} from "@material-ui/core"
 
 const theme = createMuiTheme({
   palette: {
@@ -60,18 +63,35 @@ class Sidebar extends Component {
       <React.Fragment>
         <div style={{ width: "100%", height: "64px" }}>
           <MuiThemeProvider theme={theme2}>
-            <TextField
-              placeholder="Search devices"
-              color="primary"
-              className="notSelectable"
+            <FormControl
               style={{
                 margin: "16px 8px 0 16px",
                 width: "calc(100% - 80px)",
               }}
-              value={this.props.searchText}
-              onChange={event => this.props.changeText(event.target.value)}
-              InputProps={{
-                startAdornment: (
+            >
+              <Input
+                id="adornment-devices"
+                placeholder="Search devices"
+                color="primary"
+                className="notSelectable"
+                style={
+                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                }
+                disabled={
+                  !user.devices
+                    .filter(
+                      device =>
+                        this.state.visibleDeviceTypes.indexOf(
+                          device.deviceType
+                        ) !== -1
+                    )
+                    .filter(
+                      device => device.board.id === this.props.selectedBoard
+                    )[0]
+                }
+                value={this.props.searchText}
+                onChange={event => this.props.changeText(event.target.value)}
+                startAdornment={
                   <InputAdornment
                     position="start"
                     style={{ cursor: "default" }}
@@ -79,34 +99,57 @@ class Sidebar extends Component {
                     <Icon
                       style={
                         this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
+                          ? !user.devices
+                              .filter(
+                                device =>
+                                  this.state.visibleDeviceTypes.indexOf(
+                                    device.deviceType
+                                  ) !== -1
+                              )
+                              .filter(
+                                device =>
+                                  device.board.id === this.props.selectedBoard
+                              )[0]
+                            ? { color: "white", opacity: "0.5" }
+                            : { color: "white" }
+                          : !user.devices
+                              .filter(
+                                device =>
+                                  this.state.visibleDeviceTypes.indexOf(
+                                    device.deviceType
+                                  ) !== -1
+                              )
+                              .filter(
+                                device =>
+                                  device.board.id === this.props.selectedBoard
+                              )[0]
+                            ? { color: "black", opacity: "0.5" }
+                            : { color: "black" }
                       }
                     >
                       search
                     </Icon>
                   </InputAdornment>
-                ),
-                endAdornment: this.props.searchText ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={this.handleClickCancelSearch}
-                      onMouseDown={this.handleMouseDownSearch}
-                    >
-                      <Icon
+                }
+                endAdornment={
+                  this.state.searchText ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={this.handleClickCancelSearch}
+                        onMouseDown={this.handleMouseDownSearch}
                         style={
                           this.props.nightMode
                             ? { color: "white" }
                             : { color: "black" }
                         }
                       >
-                        clear
-                      </Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ) : null,
-              }}
-            />
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
           </MuiThemeProvider>
           <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
             <IconButton
@@ -117,10 +160,52 @@ class Sidebar extends Component {
               onClick={() => {
                 this.setState({ popoverOpen: true })
               }}
+              disabled={
+                !user.devices
+                  .filter(
+                    device => device.board.id === this.props.selectedBoard
+                  )
+                  .filter(
+                    device =>
+                      this.props.searchText
+                        ? device.customName
+                            .toLowerCase()
+                            .includes(this.props.searchText.toLowerCase())
+                        : true
+                  )[0]
+              }
             >
               <Icon
                 style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                  this.props.nightMode
+                    ? !user.devices
+                        .filter(
+                          device => device.board.id === this.props.selectedBoard
+                        )
+                        .filter(
+                          device =>
+                            this.props.searchText
+                              ? device.customName
+                                  .toLowerCase()
+                                  .includes(this.props.searchText.toLowerCase())
+                              : true
+                        )[0]
+                      ? { color: "white", opacity: "0.5" }
+                      : { color: "white" }
+                    : !user.devices
+                        .filter(
+                          device => device.board.id === this.props.selectedBoard
+                        )
+                        .filter(
+                          device =>
+                            this.props.searchText
+                              ? device.customName
+                                  .toLowerCase()
+                                  .includes(this.props.searchText.toLowerCase())
+                              : true
+                        )[0]
+                      ? { color: "black", opacity: "0.5" }
+                      : { color: "black" }
                 }
               >
                 filter_list
@@ -254,9 +339,6 @@ class Sidebar extends Component {
                               style={{ marginRight: "24px" }}
                               onClick={() => {
                                 this.props.changeDrawerState()
-                                if (this.props.selectedDevice !== device.id) {
-                                  this.listItemClick(device)
-                                }
                               }}
                             />
                           </MuiThemeProvider>
@@ -369,9 +451,6 @@ class Sidebar extends Component {
                               style={{ marginRight: "24px" }}
                               onClick={() => {
                                 this.props.changeDrawerState()
-                                if (this.props.selectedDevice !== device.id) {
-                                  this.listItemClick(device)
-                                }
                               }}
                             />
                           </MuiThemeProvider>

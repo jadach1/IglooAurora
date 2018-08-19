@@ -75,7 +75,6 @@ class LoginMobile extends Component {
           emailError: "This account does not exist",
         })
       } else {
-        console.log(e)
       }
     }
   }
@@ -102,7 +101,6 @@ class LoginMobile extends Component {
           recoveryError: "This account does not exist",
         })
       } else {
-        console.log(e)
       }
     }
   }

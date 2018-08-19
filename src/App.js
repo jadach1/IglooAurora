@@ -29,47 +29,32 @@ function setupWebPush(token) {
 
   // check support
   if ("serviceWorker" in navigator && "PushManager" in window) {
-    console.log("Service Worker and Push is supported")
-
     // registering service worker
-    navigator.serviceWorker
-      .register("webPushSw.js")
-      .then(function(swReg) {
-        console.log("Service Worker is registered", swReg)
+    navigator.serviceWorker.register("webPushSw.js").then(function(swReg) {
+      // checking push subscription
+      swReg.pushManager.getSubscription().then(function(subscription) {
+        const isSubscribed = !(subscription === null)
 
-        // checking push subscription
-        swReg.pushManager.getSubscription().then(function(subscription) {
-          const isSubscribed = !(subscription === null)
+        if (isSubscribed) {
+          sendSubscriptionToServer(subscription)
+        } else {
+          // subscribing user
+          const applicationServerKey = urlB64ToUint8Array(
+            applicationServerPublicKey
+          )
 
-          if (isSubscribed) {
-            sendSubscriptionToServer(subscription)
-          } else {
-            // subscribing user
-            const applicationServerKey = urlB64ToUint8Array(
-              applicationServerPublicKey
-            )
-
-            console.log(
-              swReg.pushManager
-                .subscribe({
-                  userVisibleOnly: true,
-                  applicationServerKey: applicationServerKey,
-                })
-                .then(function(subscription) {
-                  sendSubscriptionToServer(subscription)
-                })
-                .catch(function(err) {
-                  console.log("Failed to subscribe the user: ", err)
-                })
-            )
-          }
-        })
+          swReg.pushManager
+            .subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: applicationServerKey,
+            })
+            .then(function(subscription) {
+              sendSubscriptionToServer(subscription)
+            })
+        }
       })
-      .catch(function(error) {
-        console.error("Service Worker Error: ", error)
-      })
+    })
   } else {
-    console.warn("Push messaging is not supported")
   }
 
   function sendSubscriptionToServer(subscription) {

@@ -1,6 +1,5 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import TextField from "material-ui/TextField"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import {
@@ -10,6 +9,11 @@ import {
   Button,
   MuiThemeProvider,
   createMuiTheme,
+  Grid,
+  FormControl,
+  Input,
+  InputAdornment,
+  IconButton,
 } from "@material-ui/core"
 
 const theme = createMuiTheme({
@@ -70,18 +74,49 @@ class CreateBoard extends React.Component {
         }}
         titleClassName="notSelectable defaultCursor"
       >
-        <TextField
-          floatingLabelText="Board name"
-          floatingLabelShrinkStyle={{ color: "#0083ff" }}
-          underlineFocusStyle={{ borderColor: "#0083ff" }}
-          style={{ width: "100%" }}
-          onChange={event => this.setState({ customName: event.target.value })}
-          onKeyPress={event => {
-            if (event.key === "Enter") {
-              this.createBoardMutation(this.state.customName)
-            }
-          }}
-        />
+        <MuiThemeProvider theme={theme}>
+          <Grid
+            container
+            spacing={0}
+            alignItems="flex-end"
+            style={{ width: "100%" }}
+          >
+            <Grid item style={{ marginRight: "16px" }}>
+              <Icon>widgets</Icon>
+            </Grid>
+            <Grid item style={{ width: "calc(100% - 40px)" }}>
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-name-login"
+                  placeholder="Board Name"
+                  value={this.state.customName}
+                  onChange={event =>
+                    this.setState({
+                      customName: event.target.value,
+                    })
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") this.createBoardMutation()
+                  }}
+                  endAdornment={
+                    this.state.customName ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ customName: "" })}
+                          onMouseDown={this.handleMouseDownPassword}
+                          tabIndex="-1"
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null
+                  }
+                />
+              </FormControl>
+            </Grid>
+          </Grid>
+        </MuiThemeProvider>
+        <br />
         <FormControlLabel
           control={
             <MuiThemeProvider
@@ -95,8 +130,8 @@ class CreateBoard extends React.Component {
                 onChange={event =>
                   this.setState({ favorite: event.target.checked })
                 }
-                icon={<Icon>favorite_border</Icon>}
-                checkedIcon={<Icon>favorite</Icon>}
+                icon={<Icon>star_border</Icon>}
+                checkedIcon={<Icon>star</Icon>}
               />
             </MuiThemeProvider>
           }

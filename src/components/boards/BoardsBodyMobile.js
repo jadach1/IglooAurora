@@ -11,8 +11,9 @@ import {
   BottomNavigationAction,
   Zoom,
   IconButton,
-  TextField,
+  Input,
   InputAdornment,
+  FormControl,
 } from "@material-ui/core"
 import GetLinkSuccess from "../GetLinkSuccess"
 import CenteredSpinner from "../CenteredSpinner"
@@ -87,6 +88,7 @@ class BoardsBodyMobile extends Component {
               nightMode={nightMode}
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
+              lastBoard={!user.boards[1]}
             />
           </Grid>
         ))
@@ -105,6 +107,7 @@ class BoardsBodyMobile extends Component {
               nightMode={nightMode}
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
+              lastBoard={!user.boards[1]}
             />
           </Grid>
         ))
@@ -129,55 +132,53 @@ class BoardsBodyMobile extends Component {
         >
           <div style={{ width: "100%", height: "64px" }}>
             <MuiThemeProvider theme={theme}>
-              <TextField
-                placeholder="Search boards"
-                color="primary"
-                className="notSelectable"
+              <FormControl
                 style={{
                   margin: "16px 8px 0 16px",
                   width: "calc(100% - 32px)",
                 }}
-                value={this.state.searchText}
-                onChange={event =>
-                  this.setState({ searchText: event.target.value })
-                }
-                InputProps={{
-                  startAdornment: (
+              >
+                <Input
+                  id="adornment-name-login"
+                  placeholder="Search boards"
+                  color="primary"
+                  className="notSelectable"
+                  value={this.state.searchText}
+                  style={nightMode ? { color: "white" } : { color: "black" }}
+                  onChange={event =>
+                    this.setState({ searchText: event.target.value })
+                  }
+                  startAdornment={
                     <InputAdornment
                       position="start"
                       style={{ cursor: "default" }}
                     >
                       <Icon
                         style={
-                          this.props.nightMode
-                            ? { color: "white" }
-                            : { color: "black" }
+                          nightMode ? { color: "white" } : { color: "black" }
                         }
                       >
                         search
                       </Icon>
                     </InputAdornment>
-                  ),
-                  endAdornment: this.state.searchText ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => this.setState({ searchText: "" })}
-                        onMouseDown={this.handleMouseDownSearch}
-                      >
-                        <Icon
+                  }
+                  endAdornment={
+                    this.state.searchText ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ searchText: "" })}
+                          onMouseDown={this.handleMouseDownSearch}
                           style={
-                            this.props.nightMode
-                              ? { color: "white" }
-                              : { color: "black" }
+                            nightMode ? { color: "white" } : { color: "black" }
                           }
                         >
-                          clear
-                        </Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null,
-                }}
-              />
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null
+                  }
+                />
+              </FormControl>
             </MuiThemeProvider>
           </div>
           <SwipeableViews
@@ -209,20 +210,18 @@ class BoardsBodyMobile extends Component {
                       }
                 }
               >
-                Favorite boards
+                Starred boards
               </Typography>
-              <div
-                style={{ height: "calc(100vh - 257px)", overflowY: "scroll" }}
-              >
+              <div style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}>
                 <Grid
                   container
                   justify="center"
                   spacing={16}
                   className="notSelectable defaultCursor"
                   style={{
-                    width: "100vw",
-                    marginLeft: "0",
-                    marginRight: "0",
+                    width: "calc(100vw - 64px)",
+                    marginLeft: "32px",
+                    marginRight: "32px",
                   }}
                 >
                   {favoriteBoardsList}
@@ -256,18 +255,16 @@ class BoardsBodyMobile extends Component {
               >
                 Recent boards
               </Typography>
-              <div
-                style={{ height: "calc(100vh - 257px)", overflowY: "scroll" }}
-              >
+              <div style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}>
                 <Grid
                   container
                   justify="center"
                   spacing={16}
                   className="notSelectable defaultCursor"
                   style={{
-                    width: "100vw",
-                    marginLeft: "0",
-                    marginRight: "0",
+                    width: "calc(100vw - 64px)",
+                    marginLeft: "32px",
+                    marginRight: "32px",
                   }}
                 >
                   {boardsList}
@@ -301,8 +298,8 @@ class BoardsBodyMobile extends Component {
               }
             >
               <BottomNavigationAction
-                icon={<Icon>favorite</Icon>}
-                label="Favourite"
+                icon={<Icon>star</Icon>}
+                label="Starred"
                 style={
                   nightMode
                     ? this.state.slideIndex === 0
