@@ -74,7 +74,7 @@ const allDialogsClosed = {
   gdprOpen: false,
 }
 
-class SettingsDialog extends React.Component {
+class SettingsDialogMobile extends React.Component {
   state = {
     isDeleteDisabled: true,
     timer: 5,
@@ -240,11 +240,28 @@ class SettingsDialog extends React.Component {
       />
     )
 
+    let quietModeSetting = (
+      <ListItem
+        primaryText="Quiet mode"
+        secondaryText="Mute all notifications"
+        rightToggle={
+          <Toggle
+            thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+            trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+            rippleStyle={{ color: "#0083ff" }}
+            disabled
+          />
+        }
+      />
+    )
+
     let devModeTab = ""
 
-    let toggleDevMode = ""
+    let toggleDevMode = ()=>{}
 
-    let toggleNightMode = ""
+    let toggleNightMode = ()=>{}
+
+    let toggleQuietMode = ()=>{}
 
     let deviceList = "No devices"
 
@@ -323,6 +340,24 @@ class SettingsDialog extends React.Component {
         />
       )
 
+      quietModeSetting = (
+        <ListItem
+          primaryText="Quiet mode"
+          secondaryText="Mute all notifications"
+          rightToggle={
+            <Toggle
+              thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+              trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+              rippleStyle={{ color: "#0083ff" }}
+              defaultToggled={user.quietMode}
+              onToggle={() => {
+                user.quietMode ? toggleQuietMode(false) : toggleQuietMode(true)
+              }}
+            />
+          }
+        />
+      )
+
       devModeTab = user.devMode ? (
         <BottomNavigationAction
           icon={<Icon>code</Icon>}
@@ -363,6 +398,22 @@ class SettingsDialog extends React.Component {
             user: {
               id: user.id,
               nightMode: nightMode,
+              __typename: "User",
+            },
+          },
+        })
+      }
+
+      toggleQuietMode = quietMode => {
+        this.props["ToggleQuietMode"]({
+          variables: {
+            quietMode: quietMode,
+          },
+          optimisticResponse: {
+            __typename: "Mutation",
+            user: {
+              id: user.id,
+              quietMode: quietMode,
               __typename: "User",
             },
           },
@@ -507,17 +558,7 @@ class SettingsDialog extends React.Component {
                   <Subheader style={{ cursor: "default" }}>
                     Lorem Ipsum
                   </Subheader>
-                  <ListItem
-                    primaryText="Quiet mode"
-                    secondaryText="Mute all notifications"
-                    rightToggle={
-                      <Toggle
-                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                        rippleStyle={{ color: "#0083ff" }}
-                      />
-                    }
-                  />
+                  {quietModeSetting}
                   <ListItem
                     primaryText="Receive notifications from hidden devices"
                     rightToggle={
@@ -664,33 +705,51 @@ class SettingsDialog extends React.Component {
               onChange={this.props.handleChangeBTIndex}
               value={this.props.slideIndex}
               showLabels
-              style={{ height: "64px" }}
-            >
+              style={
+                user && user.nightMode                  ? {
+                      height: "64px",
+                      backgroundColor: "#2f333d",
+                    }
+                  : {
+                      height: "64px",
+                      backgroundColor: "#fff",
+                    }
+              }            >
               <BottomNavigationAction
                 icon={<Icon>dashboard</Icon>}
                 label="Interface"
                 style={
-                  this.props.slideIndex === 0
-                    ? { color: "#0083ff" }
-                    : { color: "#757575" }
+                  user && user.nightMode                    ? this.props.slideIndex === 0
+                      ? { color: "#fff" }
+                      : { color: "#fff", opacity: 0.5 }
+                    : this.props.slideIndex === 0
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
                 }
               />
               <BottomNavigationAction
                 icon={<Icon>notifications</Icon>}
                 label="Notifications"
                 style={
-                  this.props.slideIndex === 1
-                    ? { color: "#0083ff" }
-                    : { color: "#757575" }
+                  user && user.nightMode                    ? this.props.slideIndex === 1
+                      ? { color: "#fff" }
+                      : { color: "#fff", opacity: 0.5 }
+                    : this.state.slideIndex === 1
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
                 }
               />
               <BottomNavigationAction
                 icon={<Icon>account_box</Icon>}
                 label="Account"
                 style={
-                  this.props.slideIndex === 2
-                    ? { color: "#0083ff" }
-                    : { color: "#757575" }
+                  user && user.nightMode
+                    ? this.props.slideIndex === 2
+                      ? { color: "#fff" }
+                      : { color: "#fff", opacity: 0.5 }
+                    : this.props.slideIndex === 2
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
                 }
               />
               {devModeTab}
@@ -792,32 +851,44 @@ class SettingsDialog extends React.Component {
   }
 }
 
-export default (
+export default graphql(
+  gql`
+    mutation ToggleDevMode($devMode: Boolean!) {
+      user(devMode: $devMode) {
+        id
+        devMode
+      }
+    }
+  `,
+  {
+    name: "ToggleDevMode",
+  }
+)(
   graphql(
     gql`
-      mutation ToggleDevMode($devMode: Boolean!) {
-        user(devMode: $devMode) {
+      mutation ToggleNightMode($nightMode: Boolean!) {
+        user(nightMode: $nightMode) {
           id
-          devMode
+          nightMode
         }
       }
     `,
     {
-      name: "ToggleDevMode",
+      name: "ToggleNightMode",
     }
   )(
     graphql(
       gql`
-        mutation ToggleNightMode($nightMode: Boolean!) {
-          user(nightMode: $nightMode) {
+        mutation ToggleQuietMode($quietMode: Boolean!) {
+          user(quietMode: $quietMode) {
             id
-            nightMode
+            quietMode
           }
         }
       `,
       {
-        name: "ToggleNightMode",
+        name: "ToggleQuietMode",
       }
-    )(SettingsDialog)
+    )(SettingsDialogMobile)
   )
 )

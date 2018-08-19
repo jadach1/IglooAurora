@@ -101,7 +101,6 @@ class Signup extends Component {
           emailError: "This email is already taken",
         })
       } else {
-        console.log(e)
       }
     }
   }

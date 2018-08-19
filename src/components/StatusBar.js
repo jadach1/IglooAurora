@@ -48,6 +48,7 @@ export default class StatusBar extends Component {
 
     let deviceStatus = ""
     let signalStatus = ""
+    let batteryCharging = ""
 
     if (
       user &&
@@ -71,6 +72,10 @@ export default class StatusBar extends Component {
       signalStatus = user.devices.filter(
         device => device.id === this.props.deviceId
       )[0].signalStatus
+
+      batteryCharging = user.devices.filter(
+        device => device.id === this.props.deviceId
+      )[0].batteryCharging
     }
 
     return (
@@ -95,7 +100,11 @@ export default class StatusBar extends Component {
             ) : (
               ""
             )}
-            <Icon>battery_full</Icon>
+            {batteryCharging ? (
+              <Icon>battery_charging_full</Icon>
+            ) : (
+              <Icon>battery_full</Icon>
+            )}
           </div>
         </div>
       </div>

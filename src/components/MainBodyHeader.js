@@ -37,7 +37,6 @@ class MainBodyHeader extends Component {
     }
 
     if (error) {
-      console.error(error)
       return <div className="mainBodyHeader" />
     }
 
@@ -100,8 +99,6 @@ class MainBodyHeader extends Component {
                           title: device.customName + " on Igloo Aurora",
                           url: window.location.href,
                         })
-                        .then(() => console.log("Successful share"))
-                        .catch(error => console.log("Error sharing", error))
                     }
                   }}
                 >

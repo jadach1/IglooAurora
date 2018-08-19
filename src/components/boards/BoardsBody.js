@@ -8,7 +8,8 @@ import {
   createMuiTheme,
   Zoom,
   IconButton,
-  TextField,
+  FormControl,
+  Input,
   InputAdornment,
 } from "@material-ui/core"
 import GetLinkSuccess from "../GetLinkSuccess"
@@ -76,6 +77,7 @@ export default class BoardsBody extends Component {
               nightMode={nightMode}
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
+              lastBoard={!user.boards[1]}
             />
           </Grid>
         ))
@@ -94,6 +96,7 @@ export default class BoardsBody extends Component {
               nightMode={nightMode}
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
+              lastBoard={!user.boards[1]}
             />
           </Grid>
         ))
@@ -123,54 +126,48 @@ export default class BoardsBody extends Component {
           }
         >
           <MuiThemeProvider theme={theme}>
-            <TextField
-              placeholder="Search boards"
-              color="primary"
-              className="notSelectable"
-              style={{
-                width: "400px",
-              }}
-              value={this.state.searchText}
-              onChange={event =>
-                this.setState({ searchText: event.target.value })
-              }
-              InputProps={{
-                startAdornment: (
+            <FormControl style={{ width: "400px" }}>
+              <Input
+                id="adornment-name-login"
+                placeholder="Search boards"
+                color="primary"
+                className="notSelectable"
+                value={this.state.searchText}
+                style={nightMode ? { color: "white" } : { color: "black" }}
+                onChange={event =>
+                  this.setState({ searchText: event.target.value })
+                }
+                startAdornment={
                   <InputAdornment
                     position="start"
                     style={{ cursor: "default" }}
                   >
                     <Icon
                       style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
+                        nightMode ? { color: "white" } : { color: "black" }
                       }
                     >
                       search
                     </Icon>
                   </InputAdornment>
-                ),
-                endAdornment: this.state.searchText ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => this.setState({ searchText: "" })}
-                      onMouseDown={this.handleMouseDownSearch}
-                    >
-                      <Icon
+                }
+                endAdornment={
+                  this.state.searchText ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => this.setState({ searchText: "" })}
+                        onMouseDown={this.handleMouseDownSearch}
                         style={
-                          this.props.nightMode
-                            ? { color: "white" }
-                            : { color: "black" }
+                          nightMode ? { color: "white" } : { color: "black" }
                         }
                       >
-                        clear
-                      </Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ) : null,
-              }}
-            />
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
           </MuiThemeProvider>
         </div>
         <div
@@ -209,7 +206,7 @@ export default class BoardsBody extends Component {
                   }
             }
           >
-            Favorite boards
+            Starred boards
           </Typography>
           <Grid
             container
@@ -217,9 +214,9 @@ export default class BoardsBody extends Component {
             spacing={16}
             className="notSelectable defaultCursor"
             style={{
-              width: "100vw",
-              marginLeft: "0",
-              marginRight: "0",
+              width: "calc(100vw - 64px)",
+              marginLeft: "32px",
+              marginRight: "32px",
             }}
           >
             {favoriteBoardsList}
@@ -251,9 +248,9 @@ export default class BoardsBody extends Component {
             spacing={16}
             className="notSelectable defaultCursor"
             style={{
-              width: "100vw",
-              marginLeft: "0",
-              marginRight: "0",
+              width: "calc(100vw - 64px)",
+              marginLeft: "32px",
+              marginRight: "32px",
             }}
           >
             {boardsList}

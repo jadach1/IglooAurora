@@ -25,6 +25,7 @@ class GraphQLFetcher extends Component {
           batteryStatus
           signalStatus
           deviceType
+          batteryCharging
           board {
             id
           }
@@ -67,6 +68,7 @@ class GraphQLFetcher extends Component {
           batteryStatus
           signalStatus
           deviceType
+          batteryCharging
           board {
             id
           }
@@ -478,6 +480,7 @@ export default graphql(
         language
         nightMode
         devMode
+        quietMode
         emailIsVerified
         permanentTokens {
           id
@@ -500,6 +503,7 @@ export default graphql(
           icon
           online
           batteryStatus
+          batteryCharging
           signalStatus
           deviceType
           board {
