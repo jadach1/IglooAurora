@@ -391,6 +391,7 @@ class Main extends Component {
                   openSnackBar={() => {
                     this.setState({ copyMessageOpen: true })
                   }}
+                  userData={this.props.userData}
                 />
               ) : (
                 <div className="mainBodyHeader" key="mainBodyHeader" />

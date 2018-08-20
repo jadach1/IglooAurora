@@ -550,16 +550,6 @@ class SettingsDialog extends React.Component {
                     Lorem Ipsum
                   </Subheader>
                   {quietModeSetting}
-                  <ListItem
-                    primaryText="Receive notifications from hidden devices"
-                    rightToggle={
-                      <Toggle
-                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                        rippleStyle={{ color: "#0083ff" }}
-                      />
-                    }
-                  />
                   <Divider />
                   <Subheader style={{ cursor: "default" }}>
                     Lorem Ipsum
@@ -766,6 +756,7 @@ class SettingsDialog extends React.Component {
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
           close={() => this.setState({ createDeviceOpen: false })}
+          userData={this.props.userData}
         />
         <CreateNotification
           open={this.props.isOpen && this.state.createNotificationOpen}

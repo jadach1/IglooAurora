@@ -15,6 +15,12 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
+"@babel/runtime@7.0.0-rc.1":
+  version "7.0.0-rc.1"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-rc.1.tgz#42f36fc5817911c89ea75da2b874054922967616"
+  dependencies:
+    regenerator-runtime "^0.12.0"
+
 "@babel/runtime@^7.0.0-beta.42":
   version "7.0.0-beta.54"
   resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.0.0-beta.54.tgz#39ebb42723fe7ca4b3e1b00e967e80138d47cadf"
@@ -23,10 +29,10 @@
     regenerator-runtime "^0.12.0"
 
 "@material-ui/core@^1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.4.3.tgz#e6bc29b441c07932cc64fffb02670792b119fb8e"
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-1.5.1.tgz#cb00cb934447ae688e08129f1dab55f54d29d87a"
   dependencies:
-    "@babel/runtime" "7.0.0-beta.42"
+    "@babel/runtime" "7.0.0-rc.1"
     "@types/jss" "^9.5.3"
     "@types/react-transition-group" "^2.0.8"
     brcast "^3.0.1"
@@ -75,16 +81,23 @@
     csstype "^2.0.0"
     indefinite-observable "^1.0.1"
 
+"@types/prop-types@*":
+  version "15.5.5"
+  resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.5.5.tgz#17038dd322c2325f5da650a94d5f9974943625e3"
+  dependencies:
+    "@types/react" "*"
+
 "@types/react-transition-group@^2.0.8":
-  version "2.0.11"
-  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.0.11.tgz#feb274676a39383fffaa0dff710958d2251abefb"
+  version "2.0.13"
+  resolved "https://registry.yarnpkg.com/@types/react-transition-group/-/react-transition-group-2.0.13.tgz#7769fb61eb71d64d087a713956f086a42c3ee171"
   dependencies:
     "@types/react" "*"
 
 "@types/react@*":
-  version "16.4.6"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.6.tgz#5024957c6bcef4f02823accf5974faba2e54fada"
+  version "16.4.11"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.11.tgz#330f3d864300f71150dc2d125e48644c098f8770"
   dependencies:
+    "@types/prop-types" "*"
     csstype "^2.2.0"
 
 "@types/zen-observable@^0.5.3":
@@ -2179,8 +2192,8 @@ date-now@^0.1.4:
   resolved "https://registry.yarnpkg.com/date-now/-/date-now-0.1.4.tgz#eaf439fd4d4848ad74e5cc7dbef200672b9e345b"
 
 debounce@^1.1.0:
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.1.0.tgz#6a1a4ee2a9dc4b7c24bb012558dbcdb05b37f408"
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/debounce/-/debounce-1.2.0.tgz#44a540abc0ea9943018dc0eaa95cce87f65cd131"
 
 debug@2.6.9, debug@^2.1.2, debug@^2.2.0, debug@^2.3.3, debug@^2.6.0, debug@^2.6.6, debug@^2.6.8, debug@^2.6.9:
   version "2.6.9"
@@ -5837,8 +5850,8 @@ pluralize@^7.0.0:
   resolved "https://registry.yarnpkg.com/pluralize/-/pluralize-7.0.0.tgz#298b89df8b93b0221dbf421ad2b1b1ea23fc6777"
 
 popper.js@^1.14.1:
-  version "1.14.3"
-  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.3.tgz#1438f98d046acf7b4d78cd502bf418ac64d4f095"
+  version "1.14.4"
+  resolved "https://registry.yarnpkg.com/popper.js/-/popper.js-1.14.4.tgz#8eec1d8ff02a5a3a152dd43414a15c7b79fd69b6"
 
 portfinder@^1.0.9:
   version "1.0.13"
@@ -6792,8 +6805,8 @@ regenerator-runtime@^0.11.0, regenerator-runtime@^0.11.1:
   resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.11.1.tgz#be05ad7f9bf7d22e056f9726cee5017fbf19e2e9"
 
 regenerator-runtime@^0.12.0:
-  version "0.12.0"
-  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.0.tgz#8052ac952d85b10f3425192cd0c53f45cf65c6cb"
+  version "0.12.1"
+  resolved "https://registry.yarnpkg.com/regenerator-runtime/-/regenerator-runtime-0.12.1.tgz#fa1a71544764c036f8c49b13a08b2594c9f8a0de"
 
 regenerator-transform@^0.10.0:
   version "0.10.1"
@@ -8082,8 +8095,8 @@ warning@^3.0.0:
     loose-envify "^1.0.0"
 
 warning@^4.0.1:
-  version "4.0.1"
-  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.1.tgz#66ce376b7fbfe8a887c22bdf0e7349d73d397745"
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/warning/-/warning-4.0.2.tgz#aa6876480872116fa3e11d434b0d0d8d91e44607"
   dependencies:
     loose-envify "^1.0.0"
 
