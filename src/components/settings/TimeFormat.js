@@ -1,8 +1,7 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
-import Icon from "material-ui-next/Icon"
+import {Icon,Button} from "@material-ui/core"
 
 export default class TimeFormatDialog extends React.Component {
   render() {

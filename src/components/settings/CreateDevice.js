@@ -1,10 +1,17 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import CenteredSpinner from "../CenteredSpinner"
+import {
+  FormControl,
+  Select,
+  MenuItem,
+  Button,
+  MuiThemeProvider,
+  createMuiTheme,
+} from "@material-ui/core"
 
 const theme = createMuiTheme({
   palette: {
@@ -14,7 +21,7 @@ const theme = createMuiTheme({
 })
 
 class CreateDevice extends React.Component {
-  state = { deviceType: "", customName: "" }
+  state = { deviceType: "", customName: "", board: 0 }
 
   createDeviceMutation = () => {
     this.props["CreateDevice"]({
@@ -26,6 +33,10 @@ class CreateDevice extends React.Component {
   }
 
   render() {
+    const {
+      userData: { error, user, loading },
+    } = this.props
+
     const actions = [
       <MuiThemeProvider theme={theme}>
         <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
@@ -44,6 +55,30 @@ class CreateDevice extends React.Component {
         </Button>
       </MuiThemeProvider>,
     ]
+
+    let boards = ""
+
+    if (error) boards = "Unexpected error"
+
+    if (loading) boards = <CenteredSpinner />
+
+    if (user)
+      boards = (
+        <FormControl>
+          <Select
+            value={this.state.board}
+            onChange={event => {
+              this.setState({ board: event.target.value })
+            }}
+            displayEmpty
+            name="board"
+          >
+            {user.boards.map(board => (
+              <MenuItem value={board.index}>{board.customName}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      )
 
     return (
       <React.Fragment>
@@ -74,6 +109,7 @@ class CreateDevice extends React.Component {
               this.setState({ customName: event.target.value })
             }
           />
+          {boards}
         </Dialog>
       </React.Fragment>
     )

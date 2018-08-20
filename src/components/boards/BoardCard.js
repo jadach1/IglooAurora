@@ -389,7 +389,7 @@ class BoardCard extends Component {
                 <Icon style={{ color: "#f44336" }}>delete</Icon>
               </ListItemIcon>
               <ListItemText inset>
-                <span style={{ color: "#f44336" }}>Delete board</span>
+                <span style={{ color: "#f44336" }}>Delete</span>
               </ListItemText>
             </MenuItem>
           )}

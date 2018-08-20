@@ -116,6 +116,7 @@ class GraphQLFetcher extends Component {
       subscription {
         boardCreated {
           id
+          index
           customName
           favorite
           createdAt
@@ -150,6 +151,7 @@ class GraphQLFetcher extends Component {
       subscription {
         boardUpdated {
           id
+          index
           customName
           favorite
           createdAt
@@ -489,6 +491,7 @@ export default graphql(
         }
         boards {
           id
+          index
           customName
           favorite
           createdAt

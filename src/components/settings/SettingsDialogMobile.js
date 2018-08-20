@@ -257,11 +257,11 @@ class SettingsDialogMobile extends React.Component {
 
     let devModeTab = ""
 
-    let toggleDevMode = ()=>{}
+    let toggleDevMode = () => {}
 
-    let toggleNightMode = ()=>{}
+    let toggleNightMode = () => {}
 
-    let toggleQuietMode = ()=>{}
+    let toggleQuietMode = () => {}
 
     let deviceList = "No devices"
 
@@ -559,16 +559,6 @@ class SettingsDialogMobile extends React.Component {
                     Lorem Ipsum
                   </Subheader>
                   {quietModeSetting}
-                  <ListItem
-                    primaryText="Receive notifications from hidden devices"
-                    rightToggle={
-                      <Toggle
-                        thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                        trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                        rippleStyle={{ color: "#0083ff" }}
-                      />
-                    }
-                  />
                   <Divider />
                   <Subheader style={{ cursor: "default" }}>
                     Lorem Ipsum
@@ -706,7 +696,8 @@ class SettingsDialogMobile extends React.Component {
               value={this.props.slideIndex}
               showLabels
               style={
-                user && user.nightMode                  ? {
+                user && user.nightMode
+                  ? {
                       height: "64px",
                       backgroundColor: "#2f333d",
                     }
@@ -714,12 +705,14 @@ class SettingsDialogMobile extends React.Component {
                       height: "64px",
                       backgroundColor: "#fff",
                     }
-              }            >
+              }
+            >
               <BottomNavigationAction
                 icon={<Icon>dashboard</Icon>}
                 label="Interface"
                 style={
-                  user && user.nightMode                    ? this.props.slideIndex === 0
+                  user && user.nightMode
+                    ? this.props.slideIndex === 0
                       ? { color: "#fff" }
                       : { color: "#fff", opacity: 0.5 }
                     : this.props.slideIndex === 0
@@ -731,7 +724,8 @@ class SettingsDialogMobile extends React.Component {
                 icon={<Icon>notifications</Icon>}
                 label="Notifications"
                 style={
-                  user && user.nightMode                    ? this.props.slideIndex === 1
+                  user && user.nightMode
+                    ? this.props.slideIndex === 1
                       ? { color: "#fff" }
                       : { color: "#fff", opacity: 0.5 }
                     : this.state.slideIndex === 1
@@ -831,6 +825,7 @@ class SettingsDialogMobile extends React.Component {
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
           close={() => this.setState({ createDeviceOpen: false })}
+                    userData={this.props.userData}
         />
         <CreatePlotNode
           open={this.props.isOpen && this.state.createNodeOpen}

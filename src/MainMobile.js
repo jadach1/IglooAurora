@@ -385,6 +385,7 @@ class Main extends Component {
                           this.setState({ copyMessageOpen: true })
                         }
                         selectedBoard={this.props.selectedBoard}
+                        userData={this.props.userData}
                       />
                     </AppBar>
                     <div
