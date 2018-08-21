@@ -233,9 +233,6 @@ class MainBodyHeader extends Component {
                   <ListItemText inset primary="Share" />
                 </MenuItem>
               ) : (
-                ""
-              )}
-              {!navigator.share ? (
                 <CopyToClipboard text={window.location.href}>
                   <MenuItem
                     className="notSelectable"
@@ -263,8 +260,6 @@ class MainBodyHeader extends Component {
                     <ListItemText inset primary="Get Link" />
                   </MenuItem>
                 </CopyToClipboard>
-              ) : (
-                ""
               )}
               <Divider />
               <MenuItem
@@ -296,6 +291,7 @@ class MainBodyHeader extends Component {
                   this.props.nightMode ? { color: "white" } : { color: "black" }
                 }
                 onClick={() => {
+                  this.setState({ changeBoardOpen: true })
                   this.handleMenuClose()
                 }}
               >
@@ -312,7 +308,7 @@ class MainBodyHeader extends Component {
                 </ListItemIcon>
                 <ListItemText inset primary="Change board" />
               </MenuItem>
-              <MenuItem
+              {device.values.length>1 && <MenuItem
                 className="notSelectable"
                 style={
                   this.props.nightMode ? { color: "white" } : { color: "black" }
@@ -334,13 +330,14 @@ class MainBodyHeader extends Component {
                   </Icon>
                 </ListItemIcon>
                 <ListItemText inset primary="Rearrange cards" />
-              </MenuItem>
+              </MenuItem>}
               <MenuItem
                 className="notSelectable"
                 style={
                   this.props.nightMode ? { color: "white" } : { color: "black" }
                 }
                 onClick={() => {
+                  this.setState({ renameOpen: true })
                   this.handleMenuClose()
                 }}
               >
@@ -430,6 +427,9 @@ export default graphql(
       device(id: $id) {
         id
         board {
+          id
+        }
+        values {
           id
         }
         customName

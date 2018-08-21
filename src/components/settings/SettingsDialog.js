@@ -244,11 +244,11 @@ class SettingsDialog extends React.Component {
       />
     )
 
-    let toggleDevMode = ()=>{}
+    let toggleDevMode = () => {}
 
-    let toggleNightMode = ()=>{}
+    let toggleNightMode = () => {}
 
-    let toggleQuietMode = ()=>{}
+    let toggleQuietMode = () => {}
 
     let languageText = "English"
 

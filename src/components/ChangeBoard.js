@@ -30,7 +30,7 @@ class ChangeBoard extends React.Component {
         device: {
           __typename: this.props.device.__typename,
           id: this.props.device.id,
-          board: { id: this.state.newBoard },
+          boardId: this.state.newBoard,
         },
       },
     })
