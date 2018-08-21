@@ -30,6 +30,7 @@ class MainBody extends Component {
           ... on StringValue {
             stringValue: value
             maxChars
+            allowedValues
           }
           ... on BooleanValue {
             boolValue: value
@@ -93,6 +94,7 @@ class MainBody extends Component {
           ... on StringValue {
             stringValue: value
             maxChars
+            allowedValues
           }
           ... on BooleanValue {
             boolValue: value
