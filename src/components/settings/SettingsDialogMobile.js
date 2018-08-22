@@ -267,6 +267,10 @@ class SettingsDialogMobile extends React.Component {
 
     let languageText = "English"
 
+    let displayName = ""
+
+    let profileIconColor = ""
+
     if (error) deviceList = "Unexpected error bear"
 
     if (loading) deviceList = <CenteredSpinner />
@@ -440,6 +444,10 @@ class SettingsDialogMobile extends React.Component {
           languageText = "English"
           break
       }
+
+      displayName = user.displayName
+
+      profileIconColor = user.profileIconColor
     }
 
     return (
@@ -648,43 +656,43 @@ class SettingsDialogMobile extends React.Component {
                 />
               </List>
             </div>
-            <div
-              style={{
-                overflowY: "auto",
-                height: "calc(100vh - 128px)",
-              }}
-            >
-              <List style={{ padding: "0" }}>
-                <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
-                <ListItem
-                  primaryText="Manage authorizations"
-                  secondaryText="Generate, view and delete your account's access tokens"
-                  onClick={this.handleAuthDialogOpen}
-                />
-                <Divider />
-                <Subheader style={{ cursor: "default" }}>
-                  Devices and values
-                </Subheader>
-                <ListItem
-                  primaryText="Create a new device"
-                  onClick={() => this.setState({ createDeviceOpen: true })}
-                />
-                <ListItem
-                  primaryText="Create a new value"
-                  onClick={() => this.setState({ createValueOpen: true })}
-                />
-                <ListItem
-                  primaryText="Create a new plot node"
-                  onClick={() => this.setState({ createNodeOpen: true })}
-                />
-                <ListItem
-                  primaryText="Create a new notification"
-                  onClick={() =>
-                    this.setState({ createNotificationOpen: true })
-                  }
-                />
-              </List>
-            </div>
+                <div
+                  style={{
+                    overflowY: "auto",
+                    height: "calc(100vh - 128px)",
+                  }}
+                >
+                  <List style={{ padding: "0" }}>
+                    <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
+                    <ListItem
+                      primaryText="Manage authorizations"
+                      secondaryText="Generate, view and delete your account's access tokens"
+                      onClick={this.handleAuthDialogOpen}
+                    />
+                    <Divider />
+                    <Subheader style={{ cursor: "default" }}>
+                      Devices and values
+                    </Subheader>
+                    <ListItem
+                      primaryText="Create a new device"
+                      onClick={() => this.setState({ createDeviceOpen: true })}
+                    />
+                    <ListItem
+                      primaryText="Create a new value"
+                      onClick={() => this.setState({ createValueOpen: true })}
+                    />
+                    <ListItem
+                      primaryText="Create a new plot node"
+                      onClick={() => this.setState({ createNodeOpen: true })}
+                    />
+                    <ListItem
+                      primaryText="Create a new notification"
+                      onClick={() =>
+                        this.setState({ createNotificationOpen: true })
+                      }
+                    />
+                  </List>
+                </div>
           </SwipeableViews>
           <AppBar
             color="default"
@@ -803,6 +811,8 @@ class SettingsDialogMobile extends React.Component {
           confirmationDialogOpen={
             this.props.isOpen && this.state.nameDialogOpen
           }
+          displayName={displayName}
+          profileIconColor={profileIconColor}
         />
         <ManageAuthorizations
           confirmationDialogOpen={
@@ -825,7 +835,7 @@ class SettingsDialogMobile extends React.Component {
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
           close={() => this.setState({ createDeviceOpen: false })}
-                    userData={this.props.userData}
+          userData={this.props.userData}
         />
         <CreatePlotNode
           open={this.props.isOpen && this.state.createNodeOpen}

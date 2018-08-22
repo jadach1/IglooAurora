@@ -201,6 +201,8 @@ class GraphQLFetcher extends Component {
           nightMode
           devMode
           emailIsVerified
+          displayName
+          profileIconColor
         }
       }
     `
@@ -334,6 +336,31 @@ class GraphQLFetcher extends Component {
               break
           }
           break
+      }
+    }
+
+    if (user) {
+      let i
+
+      for (i = 0; i < user.devices.length; i++) {
+        if (
+          user.devices[i].id ===
+            queryString.parse("?" + window.location.href.split("?")[1])
+              .device &&
+          user.devices[i].board.id !==
+            queryString.parse("?" + window.location.href.split("?")[1]).board
+        ) {
+          return (
+            <Redirect
+              to={
+                "/dashboard?board=" +
+                user.devices[i].board.id +
+                "&device=" +
+                user.devices[i].id
+              }
+            />
+          )
+        }
       }
     }
 
@@ -484,6 +511,8 @@ export default graphql(
         devMode
         quietMode
         emailIsVerified
+        displayName
+        profileIconColor
         permanentTokens {
           id
           customName

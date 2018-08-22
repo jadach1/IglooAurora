@@ -16,6 +16,7 @@ import GetLinkSuccess from "./components/GetLinkSuccess"
 import { Redirect } from "react-router-dom"
 import { Typography } from "material-ui-next"
 import polarBear from "./styles/assets/polarBear.svg"
+import queryString from "query-string"
 
 class Main extends Component {
   state = {
@@ -300,12 +301,6 @@ class Main extends Component {
       hiddenNotifications: !oldState.hiddenNotifications,
     }))
 
-  handleSettingsTabChanged = value => {
-    this.setState({
-      slideIndex: value,
-    })
-  }
-
   render() {
     const {
       userData: { user },
@@ -315,7 +310,6 @@ class Main extends Component {
     let devMode = false
     let emailIsVerified = false
     let deviceIdList = []
-    let boardIdList = []
 
     if (user) {
       nightMode = user.nightMode
@@ -323,7 +317,19 @@ class Main extends Component {
       emailIsVerified = user.emailIsVerified
 
       deviceIdList = user.devices.map(device => device.id)
-      boardIdList = user.boards.map(board => board.id)
+
+      let boardIdList = user.boards.map(board => board.id)
+
+            if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
+        if (!boardIdList.includes(this.props.selectedBoard))         return <Redirect exact to="/dashboard" />
+
+      }
+    }
+
+    let handleSettingsTabChanged = value => {
+      this.setState({
+        slideIndex: value,
+      })
     }
 
     return (
@@ -336,7 +342,7 @@ class Main extends Component {
                 closeSettingsDialog={() => {
                   this.setState({ areSettingsOpen: false })
                 }}
-                handleChange={this.handleSettingsTabChanged}
+                handleChange={handleSettingsTabChanged}
                 slideIndex={this.state.slideIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
@@ -452,10 +458,6 @@ class Main extends Component {
                 </React.Fragment>
               )}
             </div>
-            {user &&
-              !boardIdList.includes(this.props.selectedBoard) && (
-                <Redirect exact to="/dashboard" />
-              )}
             <NotificationsSnackbar />
             {!emailIsVerified && <EmailNotVerified mobile={false} />}
             <GetLinkSuccess
