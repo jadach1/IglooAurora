@@ -1,16 +1,19 @@
 {
-  "main.css": "static/css/main.28982bc8.css",
-  "main.css.map": "static/css/main.28982bc8.css.map",
-  "main.js": "static/js/main.110848a9.js",
-  "main.js.map": "static/js/main.110848a9.js.map",
+  "main.css": "static/css/main.e1a7edfd.css",
+  "main.css.map": "static/css/main.e1a7edfd.css.map",
+  "main.js": "static/js/main.f41c933f.js",
+  "main.js.map": "static/js/main.f41c933f.js.map",
   "static\\media\\Roboto-Regular.ttf": "static/media/Roboto-Regular.3e1af3ef.ttf",
   "static\\media\\darkLogoBG.svg": "static/media/darkLogoBG.ffbfbd40.svg",
-  "static\\media\\iceberg.jpg": "static/media/iceberg.5a09f0e1.jpg",
+  "static\\media\\denali.jpg": "static/media/denali.cade9349.jpg",
+  "static\\media\\fox.jpg": "static/media/fox.ef0ffbaa.jpg",
   "static\\media\\iglooTitle.svg": "static/media/iglooTitle.ea0ff003.svg",
-  "static\\media\\loginBackground.jpg": "static/media/loginBackground.45daea34.jpg",
+  "static\\media\\loginBackground.jpg": "static/media/loginBackground.d48ab202.jpg",
   "static\\media\\logo.svg": "static/media/logo.9e9516e1.svg",
   "static\\media\\logoBG.svg": "static/media/logoBG.30eee7e0.svg",
-  "static\\media\\northernLights.jpg": "static/media/northernLights.ad6b17e7.jpg",
+  "static\\media\\northernLights.jpg": "static/media/northernLights.a83f45e4.jpg",
   "static\\media\\polarBear.svg": "static/media/polarBear.b9ab75ee.svg",
-  "static\\media\\polarBearWithBucket.svg": "static/media/polarBearWithBucket.2e8e8adf.svg"
+  "static\\media\\polarBearWithBucket.svg": "static/media/polarBearWithBucket.2e8e8adf.svg",
+  "static\\media\\puffin.jpg": "static/media/puffin.7438f623.jpg",
+  "static\\media\\treetops.jpg": "static/media/treetops.4ab5c9a1.jpg"
 }
