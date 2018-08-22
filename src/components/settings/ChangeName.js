@@ -1,9 +1,19 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import TextField from "material-ui/TextField"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Avatar from "material-ui-next/Avatar"
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  Button,
+  Avatar,
+  Grid,
+  Icon,
+  FormControl,
+  Input,
+  InputAdornment,
+  IconButton,
+} from "@material-ui/core"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 const theme = createMuiTheme({
   palette: {
@@ -16,23 +26,10 @@ const nameDialogContentStyle = {
   width: "350px",
 }
 
-const colorsArray = [
-  "#ffb900",
-  "#ff0000",
-  "#00a31b",
-  "#00a37d",
-  "#00ace6",
-  "#0057cb",
-  "#6300cc",
-  "#a3008d",
-]
-
-let random
-
-export default class ChangeNameDialog extends React.Component {
+class ChangeNameDialog extends React.Component {
   state = {
     nameDialogOpen: false,
-    content: "",
+    displayName: "",
   }
 
   closeNameDialog = () => {
@@ -40,20 +37,48 @@ export default class ChangeNameDialog extends React.Component {
   }
 
   getInitials = string => {
-    var names = string.trim().split(" "),
-      initials = names[0].substring(0, 1).toUpperCase()
+    if (string) {
+      var names = string.trim().split(" "),
+        initials = names[0].substring(0, 1).toUpperCase()
 
-    if (names.length > 1) {
-      initials += names[names.length - 1].substring(0, 1).toUpperCase()
+      if (names.length > 1) {
+        initials += names[names.length - 1].substring(0, 1).toUpperCase()
+      }
+      return initials
     }
-    return initials
   }
 
-  componentDidMount() {
-    random = Math.floor(Math.random() * colorsArray.length)
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.displayName !== this.state.displayName) {
+      this.setState({ displayName: nextProps.displayName })
+    }
   }
 
   render() {
+    const {
+      userData: { user },
+    } = this.props
+
+    let changeName = () => {}
+
+    if (user) {
+      changeName = displayName => {
+        this.props["ChangeName"]({
+          variables: {
+            displayName: displayName,
+          },
+          optimisticResponse: {
+            __typename: "Mutation",
+            user: {
+              id: user.id,
+              displayName: displayName,
+              __typename: "User",
+            },
+          },
+        })
+      }
+    }
+
     const nameDialogActions = [
       <MuiThemeProvider theme={theme}>
         <Button
@@ -68,7 +93,9 @@ export default class ChangeNameDialog extends React.Component {
           label="Change"
           primary={true}
           buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.handleNameSnackOpen}
+          onClick={() => {
+            changeName(this.state.displayName)
+          }}
         >
           Change
         </Button>
@@ -88,7 +115,7 @@ export default class ChangeNameDialog extends React.Component {
         >
           <Avatar
             style={{
-              backgroundColor: colorsArray[random],
+              backgroundColor: this.props.profileIconColor || "#0057cb",
               width: "96px",
               height: "96px",
               marginLeft: "auto",
@@ -97,20 +124,70 @@ export default class ChangeNameDialog extends React.Component {
             }}
             className="defaultCursor"
           >
-            {this.getInitials(this.state.content)}
+            {this.getInitials(this.state.displayName)}
           </Avatar>
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="User name"
-            style={{ width: "100%" }}
-            onChange={event => this.setState({ content: event.target.value })}
-            onKeyPress={event => {
-              if (event.key === "Enter") this.openNameSnack()
-            }}
-          />
+          <br />
+          <MuiThemeProvider theme={theme}>
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon>account_circle</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-email-login"
+                    placeholder="Email"
+                    value={this.state.displayName}
+                    onChange={event =>
+                      this.setState({
+                        displayName: event.target.value,
+                      })
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter")
+                        changeName(this.state.displayName)
+                    }}
+                    endAdornment={
+                      this.state.displayName ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => {
+                              this.setState({ displayName: "" })
+                            }}
+                            onMouseDown={this.handleMouseDownPassword}
+                            tabIndex="-1"
+                          >
+                            <Icon>clear</Icon>
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+          </MuiThemeProvider>
         </Dialog>
       </React.Fragment>
     )
   }
 }
+
+export default graphql(
+  gql`
+    mutation ChangeName($displayName: String!) {
+      user(displayName: $displayName) {
+        id
+        displayName
+      }
+    }
+  `,
+  {
+    name: "ChangeName",
+  }
+)(ChangeNameDialog)

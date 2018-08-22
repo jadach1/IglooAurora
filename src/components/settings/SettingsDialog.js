@@ -252,6 +252,10 @@ class SettingsDialog extends React.Component {
 
     let languageText = "English"
 
+    let displayName = ""
+
+    let profileIconColor = ""
+
     if (error) deviceList = "Unexpected error bear"
 
     if (loading) deviceList = <CenteredSpinner />
@@ -422,6 +426,10 @@ class SettingsDialog extends React.Component {
           languageText = "English"
           break
       }
+
+      displayName = user.displayName
+
+      profileIconColor = user.profileIconColor
     }
 
     const actions = [
@@ -741,6 +749,9 @@ class SettingsDialog extends React.Component {
           confirmationDialogOpen={
             this.props.isOpen && this.state.nameDialogOpen
           }
+          userData={this.props.userData}
+          displayName={displayName}
+          profileIconColor={profileIconColor}
         />
         <Shortcuts
           handleShortcutDialogClose={this.handleShortcutDialogClose}
