@@ -68,7 +68,7 @@ class Boards extends Component {
           }}
           handleChange={this.handleSettingsTabChanged}
           slideIndex={this.state.slideIndex}
-                userData={this.props.userData}
+          userData={this.props.userData}
         />
         {!emailIsVerified && <EmailNotVerified mobile={false} />}
       </MuiThemeProvider>
