@@ -16,6 +16,7 @@ import GetLinkSuccess from "../GetLinkSuccess"
 import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
+import LargeCenteredSpinner from "../LargeCenteredSpinner"
 
 let zoomAnimation = false
 
@@ -187,74 +188,88 @@ export default class BoardsBody extends Component {
                 }
           }
         >
-          <Typography
-            variant="display1"
-            className="notSelectable defaultCursor"
-            style={
-              nightMode
-                ? {
-                    textAlign: "center",
-                    paddingTop: "32px",
-                    marginBottom: "32px",
-                    color: "white",
-                  }
-                : {
-                    textAlign: "center",
-                    paddingTop: "32px",
-                    marginBottom: "32px",
-                    color: "black",
-                  }
-            }
-          >
-            Starred boards
-          </Typography>
-          <Grid
-            container
-            justify="center"
-            spacing={16}
-            className="notSelectable defaultCursor"
-            style={{
-              width: "calc(100vw - 64px)",
-              marginLeft: "32px",
-              marginRight: "32px",
-            }}
-          >
-            {favoriteBoardsList}
-          </Grid>
-          <Typography
-            variant="display1"
-            className="notSelectable defaultCursor"
-            style={
-              nightMode
-                ? {
-                    textAlign: "center",
-                    marginTop: "32px",
-                    marginBottom: "32px",
-                    color: "white",
-                  }
-                : {
-                    textAlign: "center",
-                    marginTop: "32px",
-                    marginBottom: "32px",
-                    color: "black",
-                  }
-            }
-          >
-            Recent boards
-          </Typography>
-          <Grid
-            container
-            justify="center"
-            spacing={16}
-            className="notSelectable defaultCursor"
-            style={{
-              width: "calc(100vw - 64px)",
-              marginLeft: "32px",
-              marginRight: "32px",
-            }}
-          >
-            {boardsList}
-          </Grid>
+          {error && "Unexpected error"}
+          {loading && <LargeCenteredSpinner />}
+          {user && (
+            <React.Fragment>
+              {user.boards.filter(board => board.favorite)[0] && (
+                <React.Fragment>
+                  <Typography
+                    variant="display1"
+                    className="notSelectable defaultCursor"
+                    style={
+                      nightMode
+                        ? {
+                            textAlign: "center",
+                            paddingTop: "32px",
+                            marginBottom: "32px",
+                            color: "white",
+                          }
+                        : {
+                            textAlign: "center",
+                            paddingTop: "32px",
+                            marginBottom: "32px",
+                            color: "black",
+                          }
+                    }
+                  >
+                    Starred boards
+                  </Typography>
+                  <Grid
+                    container
+                    justify="center"
+                    spacing={16}
+                    className="notSelectable defaultCursor"
+                    style={{
+                      width: "calc(100vw - 64px)",
+                      marginLeft: "32px",
+                      marginRight: "32px",
+                    }}
+                  >
+                    {favoriteBoardsList}
+                  </Grid>
+                </React.Fragment>
+              )}
+              {user.boards.filter(board => !board.favorite)[0] && (
+                <React.Fragment>
+                  <Typography
+                    variant="display1"
+                    className="notSelectable defaultCursor"
+                    style={
+                      nightMode
+                        ? {
+                            textAlign: "center",
+                            marginTop: "32px",
+                            marginBottom: "32px",
+                            color: "white",
+                          }
+                        : {
+                            textAlign: "center",
+                            marginTop: "32px",
+                            marginBottom: "32px",
+                            color: "black",
+                          }
+                    }
+                  >
+                    Recent boards
+                  </Typography>
+                  <Grid
+                    container
+                    justify="center"
+                    spacing={16}
+                    className="notSelectable defaultCursor"
+                    style={{
+                      width: "calc(100vw - 64px)",
+                      marginLeft: "32px",
+                      marginRight: "32px",
+                    }}
+                  >
+                    {boardsList}
+                  </Grid>
+                </React.Fragment>
+              )}
+            </React.Fragment>
+          )}
           <MuiThemeProvider
             theme={createMuiTheme({
               palette: {
@@ -273,7 +288,11 @@ export default class BoardsBody extends Component {
               <Button
                 variant="extendedFab"
                 color="primary"
-                style={{ position: "absolute", right: "20px", bottom: "20px" }}
+                style={{
+                  position: "absolute",
+                  right: "20px",
+                  bottom: "20px",
+                }}
                 onClick={() => this.setState({ createOpen: true })}
               >
                 <Icon style={{ marginRight: "8px" }}>add</Icon>

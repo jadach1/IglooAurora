@@ -26,6 +26,8 @@ const nameDialogContentStyle = {
   width: "350px",
 }
 
+let oldName = ""
+
 class ChangeNameDialog extends React.Component {
   state = {
     nameDialogOpen: false,
@@ -52,6 +54,10 @@ class ChangeNameDialog extends React.Component {
     if (nextProps.displayName !== this.state.displayName) {
       this.setState({ displayName: nextProps.displayName })
     }
+  }
+
+  componentDidMount() {
+    oldName = this.props.displayName
   }
 
   render() {
@@ -93,6 +99,9 @@ class ChangeNameDialog extends React.Component {
           label="Change"
           primary={true}
           buttonStyle={{ backgroundColor: "#0083ff" }}
+          disabled={
+            !this.state.displayName || oldName === this.state.displayName
+          }
           onClick={() => {
             changeName(this.state.displayName)
           }}
@@ -143,11 +152,11 @@ class ChangeNameDialog extends React.Component {
                     id="adornment-email-login"
                     placeholder="Email"
                     value={this.state.displayName}
-                    onChange={event =>
+                    onChange={event => {
                       this.setState({
                         displayName: event.target.value,
                       })
-                    }
+                    }}
                     onKeyPress={event => {
                       if (event.key === "Enter")
                         changeName(this.state.displayName)
@@ -159,7 +168,9 @@ class ChangeNameDialog extends React.Component {
                             onClick={() => {
                               this.setState({ displayName: "" })
                             }}
-                            onMouseDown={this.handleMouseDownPassword}
+                            onMouseDown={event => {
+                              event.preventDefault()
+                            }}
                             tabIndex="-1"
                           >
                             <Icon>clear</Icon>

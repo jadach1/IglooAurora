@@ -22,8 +22,11 @@ import RenameBoard from "./RenameBoard"
 import BoardInfo from "./BoardInfo"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import iceberg from "../../styles/assets/iceberg.jpg"
+import fox from "../../styles/assets/fox.jpg"
 import northernLights from "../../styles/assets/northernLights.jpg"
+import denali from "../../styles/assets/denali.jpg"
+import puffin from "../../styles/assets/puffin.jpg"
+import treetops from "../../styles/assets/treetops.jpg"
 
 class BoardCard extends Component {
   state = { deleteOpen: false, renameOpen: false }
@@ -89,7 +92,7 @@ class BoardCard extends Component {
           <Toolbar
             style={{
               height: "64px",
-              paddingLeft: "24px",
+              paddingLeft: "0",
               paddingRight: "24px",
             }}
           >
@@ -97,8 +100,18 @@ class BoardCard extends Component {
               to={"/dashboard?board=" + this.props.board.id}
               style={
                 this.props.nightMode
-                  ? { color: "white", textDecoration: "none" }
-                  : { color: "black", textDecoration: "none" }
+                  ? {
+                      color: "white",
+                      textDecoration: "none",
+                      height: "64px",
+                      paddingLeft: "24px",
+                    }
+                  : {
+                      color: "black",
+                      textDecoration: "none",
+                      height: "64px",
+                      paddingLeft: "24px",
+                    }
               }
             >
               <Typography
@@ -114,6 +127,7 @@ class BoardCard extends Component {
                         textOverflow: "ellipsis",
                         width: "136px",
                         marginRight: "23px",
+                        lineHeight: "64px",
                       }
                     : {
                         color: "black",
@@ -123,6 +137,7 @@ class BoardCard extends Component {
                         textOverflow: "ellipsis",
                         width: "136px",
                         marginRight: "23px",
+                        lineHeight: "64px",
                       }
                 }
               >
@@ -176,10 +191,49 @@ class BoardCard extends Component {
                 : { color: "black", textDecoration: "none" }
             }
           >
-            {this.props.board.avatar === "iceberg" && (
+            {this.props.board.avatar === "denali" && (
               <img
-                src={iceberg}
-                alt="Iceberg"
+                src={denali}
+                alt="Mt. Denali"
+                className="notSelectable"
+                style={{
+                  width: "100%",
+                  height: "128px",
+                  borderBottomLeftRadius: "4px",
+                  borderBottomRightRadius: "4px",
+                }}
+              />
+            )}
+            {this.props.board.avatar === "fox" && (
+              <img
+                src={fox}
+                alt="Fox"
+                className="notSelectable"
+                style={{
+                  width: "100%",
+                  height: "128px",
+                  borderBottomLeftRadius: "4px",
+                  borderBottomRightRadius: "4px",
+                }}
+              />
+            )}
+            {this.props.board.avatar === "treetops" && (
+              <img
+                src={treetops}
+                alt="treetops"
+                className="notSelectable"
+                style={{
+                  width: "100%",
+                  height: "128px",
+                  borderBottomLeftRadius: "4px",
+                  borderBottomRightRadius: "4px",
+                }}
+              />
+            )}
+            {this.props.board.avatar === "puffin" && (
+              <img
+                src={puffin}
+                alt="Puffin"
                 className="notSelectable"
                 style={{
                   width: "100%",
@@ -372,7 +426,7 @@ class BoardCard extends Component {
                 mode_edit
               </Icon>
             </ListItemIcon>
-            <ListItemText inset primary="Rename" />
+            <ListItemText inset primary="Customize" />
           </MenuItem>
           {!this.props.lastBoard && (
             <MenuItem

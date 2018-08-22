@@ -811,6 +811,7 @@ class SettingsDialogMobile extends React.Component {
           confirmationDialogOpen={
             this.props.isOpen && this.state.nameDialogOpen
           }
+          userData={this.props.userData}
           displayName={displayName}
           profileIconColor={profileIconColor}
         />
