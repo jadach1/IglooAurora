@@ -106,9 +106,9 @@ class App extends Component {
 
   updateDimensions() {
     if (window.innerWidth < 900) {
-      this.setState({ isMobile: true })
+      !this.state.isMobile && this.setState({ isMobile: true })
     } else {
-      this.setState({ isMobile: false })
+      this.state.isMobile && this.setState({ isMobile: false })
     }
   }
 

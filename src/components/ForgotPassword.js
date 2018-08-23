@@ -24,7 +24,7 @@ export default class ChangeNameDialog extends React.Component {
   state = {
     nameSnackOpen: false,
     nameDialogOpen: false,
-    email: "",
+    email: this.props.email,
   }
 
   openNameDialog = () => {

@@ -247,10 +247,9 @@ class Login extends Component {
                         : {}
                     }
                   >
-                    {this.state.passwordError +
-                      (this.state.isPasswordEmpty
-                        ? "This field is required"
-                        : "")}
+                    {this.state.isMailEmpty
+                      ? "This field is required"
+                      : this.state.emailError}
                   </FormHelperText>
                 </FormControl>
               </Grid>
@@ -306,6 +305,7 @@ class Login extends Component {
           recover={email => this.recover(email)}
           open={this.state.forgotPasswordOpen}
           close={() => this.setState({ forgotPasswordOpen: false })}
+          email={this.state.email}
         />
       </React.Fragment>
     )

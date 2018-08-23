@@ -15,6 +15,12 @@ import {
   InputAdornment,
   IconButton,
 } from "@material-ui/core"
+import fox from "../../styles/assets/fox.jpg"
+import northernLights from "../../styles/assets/northernLights.jpg"
+import denali from "../../styles/assets/denali.jpg"
+import puffin from "../../styles/assets/puffin.jpg"
+import treetops from "../../styles/assets/treetops.jpg"
+import SwipeableViews from "react-swipeable-views"
 
 const theme = createMuiTheme({
   palette: {
@@ -23,19 +29,42 @@ const theme = createMuiTheme({
 })
 
 class CreateBoard extends React.Component {
-  state = { customName: "", favorite: false }
+  state = { customName: "", favorite: false, slideIndex: 0 }
+
+  selectImage = index => {
+    switch (index) {
+      case 0:
+        return "denali"
+      case 1:
+        return "fox"
+
+      case 2:
+        return "treetops"
+
+      case 3:
+        return "puffin"
+
+      case 4:
+        return "northernLights"
+
+      default:
+        return "northernLights"
+    }
+  }
 
   createBoardMutation = () => {
     this.props.CreateBoard({
       variables: {
         customName: this.state.customName,
         favorite: this.state.favorite,
+        avatar: this.selectImage(this.state.slideIndex),
       },
       optimisticResponse: {
         __typename: "Mutation",
         CreateBoard: {
           customName: this.state.customName,
           favorite: this.state.favorite,
+          avatar: this.selectImage(this.state.slideIndex),
           __typename: "Board",
         },
       },
@@ -137,6 +166,81 @@ class CreateBoard extends React.Component {
           }
           label="Set as favorite"
         />
+        <br /> <br />
+        <SwipeableViews
+          index={this.state.slideIndex}
+          onChangeIndex={value => {
+            this.setState({
+              slideIndex: value,
+            })
+          }}
+        >
+          <img
+            src={denali}
+            alt="Mt. Denali"
+            className="notSelectable"
+            style={{
+              width: "100%",
+            }}
+          />
+          <img
+            src={fox}
+            alt="Fox"
+            className="notSelectable"
+            style={{
+              width: "100%",
+            }}
+          />
+          <img
+            src={treetops}
+            alt="treetops"
+            className="notSelectable"
+            style={{
+              width: "100%",
+            }}
+          />
+          <img
+            src={puffin}
+            alt="Puffin"
+            className="notSelectable"
+            style={{
+              width: "100%",
+            }}
+          />
+          <img
+            src={northernLights}
+            alt="Northern lights"
+            className="notSelectable"
+            style={{
+              width: "100%",
+            }}
+          />
+        </SwipeableViews>
+        <Button
+          size="small"
+          onClick={() =>
+            this.setState(oldState => ({
+              slideIndex: oldState.slideIndex - 1,
+            }))
+          }
+          disabled={this.state.slideIndex === 0}
+        >
+          <Icon>keyboard_arrow_left</Icon>
+          Back
+        </Button>
+        <Button
+          size="small"
+          onClick={() =>
+            this.setState(oldState => ({
+              slideIndex: oldState.slideIndex + 1,
+            }))
+          }
+          disabled={this.state.slideIndex === 4}
+          style={{ float: "right" }}
+        >
+          Next
+          <Icon>keyboard_arrow_right</Icon>
+        </Button>
       </Dialog>
     )
   }
@@ -144,11 +248,20 @@ class CreateBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation CreateBoard($customName: String!, $favorite: Boolean) {
-      CreateBoard(customName: $customName, favorite: $favorite) {
+    mutation CreateBoard(
+      $customName: String!
+      $favorite: Boolean
+      $avatar: String
+    ) {
+      CreateBoard(
+        customName: $customName
+        favorite: $favorite
+        avatar: $avatar
+      ) {
         id
         customName
         favorite
+        avatar
       }
     }
   `,
