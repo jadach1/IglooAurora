@@ -139,60 +139,6 @@ class App extends Component {
       }
     }
 
-    const DevicesPrivateRoute = ({ component: Component, ...rest }) => (
-      <Route
-        {...rest}
-        render={props => {
-          if (this.state.bearer) {
-            return (
-              <AuthenticatedApp
-                bearer={this.state.bearer}
-                logOut={logOut}
-                isMobile={this.state.isMobile}
-              />
-            )
-          } else {
-            this.setState({ from: props.location.pathname })
-
-            return (
-              <Redirect
-                to={{
-                  pathname: "/login",
-                }}
-              />
-            )
-          }
-        }}
-      />
-    )
-
-    const BoardsPrivateRoute = ({ component: Component, ...rest }) => (
-      <Route
-        {...rest}
-        render={props => {
-          if (this.state.bearer) {
-            return (
-              <AuthenticatedApp
-                bearer={this.state.bearer}
-                logOut={logOut}
-                isMobile={this.state.isMobile}
-              />
-            )
-          } else {
-            this.setState({ from: props.location.pathname })
-
-            return (
-              <Redirect
-                to={{
-                  pathname: "/login",
-                }}
-              />
-            )
-          }
-        }}
-      />
-    )
-
     const { redirectToReferrer } = this.state
 
     if (redirectToReferrer) {
@@ -211,8 +157,30 @@ class App extends Component {
 
     return (
       <Switch>
-        <DevicesPrivateRoute path="/dashboard/" />
-        <BoardsPrivateRoute path="/boards/" />
+        <Route
+          path="/dashboard/"
+          render={props => {
+            if (this.state.bearer) {
+              return (
+                <AuthenticatedApp
+                  bearer={this.state.bearer}
+                  logOut={logOut}
+                  isMobile={this.state.isMobile}
+                />
+              )
+            } else {
+              this.setState({ from: props.location.pathname })
+
+              return (
+                <Redirect
+                  to={{
+                    pathname: "/login",
+                  }}
+                />
+              )
+            }
+          }}
+        />
         <Route
           path="/login"
           render={() =>

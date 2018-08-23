@@ -483,12 +483,12 @@ class GraphQLFetcher extends Component {
             exact
             strict
             path="/dashboard"
-            component={this.props.isMobile ? MainMobileSelected : MainSelected}
+            render={this.props.isMobile ? MainMobileSelected : MainSelected}
           />
           <Route
             exact
             path="/dashboard/"
-            component={() => <Redirect to="/dashboard" />}
+            render={() => <Redirect to="/dashboard" />}
           />
           <Route
             render={() =>
