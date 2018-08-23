@@ -148,6 +148,7 @@ class BoardsBodyMobile extends Component {
                   onChange={event =>
                     this.setState({ searchText: event.target.value })
                   }
+                  disabled={loading || error || (user && !user.boards[0])}
                   startAdornment={
                     <InputAdornment
                       position="start"
@@ -155,7 +156,13 @@ class BoardsBodyMobile extends Component {
                     >
                       <Icon
                         style={
-                          nightMode ? { color: "white" } : { color: "black" }
+                          nightMode
+                            ? user && user.boards[0]
+                              ? { color: "white" }
+                              : { color: "white", opacity: "0.5" }
+                            : user && user.boards[0]
+                              ? { color: "black" }
+                              : { color: "black", opacity: "0.5" }
                         }
                       >
                         search

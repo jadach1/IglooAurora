@@ -320,9 +320,9 @@ class Main extends Component {
 
       let boardIdList = user.boards.map(board => board.id)
 
-            if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
-        if (!boardIdList.includes(this.props.selectedBoard))         return <Redirect exact to="/dashboard" />
-
+      if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
+        if (!boardIdList.includes(this.props.selectedBoard))
+          return <Redirect exact to="/dashboard" />
       }
     }
 
