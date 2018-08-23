@@ -60,6 +60,8 @@ class Boards extends Component {
         <BoardsBody
           userData={this.props.userData}
           selectBoard={this.props.selectBoard}
+          searchBoards={this.props.searchBoards}
+          searchText={this.props.boardsSearchText}
         />
         <SettingsDialog
           isOpen={this.state.settingsOpen}

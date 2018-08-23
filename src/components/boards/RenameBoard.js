@@ -74,23 +74,22 @@ class RenameBoard extends React.Component {
     switch (this.props.board.avatar) {
       case "denali":
         this.setState({ slideIndex: 0 })
-        console.log("a")
         break
       case "fox":
         this.setState({ slideIndex: 1 })
         break
       case "treetops":
-      this.setState({ slideIndex: 2 })
-      break
+        this.setState({ slideIndex: 2 })
+        break
       case "puffin":
-      this.setState({ slideIndex: 3 })
-      break
+        this.setState({ slideIndex: 3 })
+        break
       case "northernLights":
-      this.setState({ slideIndex: 4 })
-      break
+        this.setState({ slideIndex: 4 })
+        break
       default:
-      this.setState({ slideIndex: 0 })
-      break
+        this.setState({ slideIndex: 0 })
+        break
     }
   }
 

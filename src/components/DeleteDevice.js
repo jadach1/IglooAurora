@@ -19,7 +19,7 @@ class DeleteDevice extends React.Component {
       },
       optimisticResponse: {
         __typename: "Mutation",
-        deleteBoard: {
+        deleteDevice: {
           id: this.props.device.id,
         },
       },

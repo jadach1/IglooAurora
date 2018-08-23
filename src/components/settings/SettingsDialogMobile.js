@@ -656,43 +656,43 @@ class SettingsDialogMobile extends React.Component {
                 />
               </List>
             </div>
-                <div
-                  style={{
-                    overflowY: "auto",
-                    height: "calc(100vh - 128px)",
-                  }}
-                >
-                  <List style={{ padding: "0" }}>
-                    <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
-                    <ListItem
-                      primaryText="Manage authorizations"
-                      secondaryText="Generate, view and delete your account's access tokens"
-                      onClick={this.handleAuthDialogOpen}
-                    />
-                    <Divider />
-                    <Subheader style={{ cursor: "default" }}>
-                      Devices and values
-                    </Subheader>
-                    <ListItem
-                      primaryText="Create a new device"
-                      onClick={() => this.setState({ createDeviceOpen: true })}
-                    />
-                    <ListItem
-                      primaryText="Create a new value"
-                      onClick={() => this.setState({ createValueOpen: true })}
-                    />
-                    <ListItem
-                      primaryText="Create a new plot node"
-                      onClick={() => this.setState({ createNodeOpen: true })}
-                    />
-                    <ListItem
-                      primaryText="Create a new notification"
-                      onClick={() =>
-                        this.setState({ createNotificationOpen: true })
-                      }
-                    />
-                  </List>
-                </div>
+            <div
+              style={{
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+              }}
+            >
+              <List style={{ padding: "0" }}>
+                <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
+                <ListItem
+                  primaryText="Manage authorizations"
+                  secondaryText="Generate, view and delete your account's access tokens"
+                  onClick={this.handleAuthDialogOpen}
+                />
+                <Divider />
+                <Subheader style={{ cursor: "default" }}>
+                  Devices and values
+                </Subheader>
+                <ListItem
+                  primaryText="Create a new device"
+                  onClick={() => this.setState({ createDeviceOpen: true })}
+                />
+                <ListItem
+                  primaryText="Create a new value"
+                  onClick={() => this.setState({ createValueOpen: true })}
+                />
+                <ListItem
+                  primaryText="Create a new plot node"
+                  onClick={() => this.setState({ createNodeOpen: true })}
+                />
+                <ListItem
+                  primaryText="Create a new notification"
+                  onClick={() =>
+                    this.setState({ createNotificationOpen: true })
+                  }
+                />
+              </List>
+            </div>
           </SwipeableViews>
           <AppBar
             color="default"
@@ -736,7 +736,7 @@ class SettingsDialogMobile extends React.Component {
                     ? this.props.slideIndex === 1
                       ? { color: "#fff" }
                       : { color: "#fff", opacity: 0.5 }
-                    : this.state.slideIndex === 1
+                    : this.props.slideIndex === 1
                       ? { color: "#0083ff" }
                       : { color: "#757575" }
                 }

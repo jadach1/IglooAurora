@@ -69,7 +69,7 @@ export default class BoardsBody extends Component {
         .filter(board =>
           board.customName
             .toLowerCase()
-            .includes(this.state.searchText.toLowerCase())
+            .includes(this.props.searchText.toLowerCase())
         )
         .map(board => (
           <Grid key={board.id} item>
@@ -88,7 +88,7 @@ export default class BoardsBody extends Component {
         .filter(board =>
           board.customName
             .toLowerCase()
-            .includes(this.state.searchText.toLowerCase())
+            .includes(this.props.searchText.toLowerCase())
         )
         .map(board => (
           <Grid key={board.id} item>
@@ -133,11 +133,9 @@ export default class BoardsBody extends Component {
                 placeholder="Search boards"
                 color="primary"
                 className="notSelectable"
-                value={this.state.searchText}
+                value={this.props.searchText}
                 style={nightMode ? { color: "white" } : { color: "black" }}
-                onChange={event =>
-                  this.setState({ searchText: event.target.value })
-                }
+                onChange={event => this.props.searchBoards(event.target.value)}
                 disabled={loading || error || (user && !user.boards[0])}
                 startAdornment={
                   <InputAdornment
@@ -160,10 +158,10 @@ export default class BoardsBody extends Component {
                   </InputAdornment>
                 }
                 endAdornment={
-                  this.state.searchText ? (
+                  this.props.searchText ? (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={() => this.setState({ searchText: "" })}
+                        onClick={() => this.props.searchBoards("")}
                         onMouseDown={this.handleMouseDownSearch}
                         style={
                           nightMode ? { color: "white" } : { color: "black" }
