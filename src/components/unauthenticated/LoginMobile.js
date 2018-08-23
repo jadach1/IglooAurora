@@ -246,6 +246,7 @@ class LoginMobile extends Component {
               </Grid>
             </Grid>
             <FormControlLabel
+            style={{marginLeft:"-12px"}}
               control={
                 <MuiThemeProvider
                   theme={createMuiTheme({
@@ -262,8 +263,14 @@ class LoginMobile extends Component {
                   />
                 </MuiThemeProvider>
               }
-              label="Keep me logged in"
-              style={{ color: "white" }}
+              label={
+                <Typography
+                  variant="body1"
+                  style={{ paddingLeft: "4px", color: "white" }}
+                >
+                  Keep me logged in
+                </Typography>
+              }
             />
             <br />
             <div style={{ textAlign: "right" }}>

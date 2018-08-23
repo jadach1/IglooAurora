@@ -271,6 +271,7 @@ class GraphQLFetcher extends Component {
     selectedDevice: null,
     selectedBoard: null,
     goToDevices: false,
+    boardsSearchText: "",
   }
 
   selectDevice = id => this.setState({ selectedDevice: id })
@@ -404,17 +405,15 @@ class GraphQLFetcher extends Component {
           )
         }
       } else {
-        return this.props.isMobile ? (
-          <BoardsMobile
-            userData={this.props.userData}
-            logOut={this.props.logOut}
-            selectBoard={id => this.setState({ selectedBoard: id })}
-          />
-        ) : (
+        return (
           <Boards
             userData={this.props.userData}
             logOut={this.props.logOut}
             selectBoard={id => this.setState({ selectedBoard: id })}
+            searchBoards={text => {
+              this.setState({ boardsSearchText: text })
+            }}
+            boardsSearchText={this.state.boardsSearchText}
           />
         )
       }
@@ -460,17 +459,15 @@ class GraphQLFetcher extends Component {
           )
         }
       } else {
-        return this.props.isMobile ? (
+        return (
           <BoardsMobile
             userData={this.props.userData}
             logOut={this.props.logOut}
             selectBoard={id => this.setState({ selectedBoard: id })}
-          />
-        ) : (
-          <Boards
-            userData={this.props.userData}
-            logOut={this.props.logOut}
-            selectBoard={id => this.setState({ selectedBoard: id })}
+            searchBoards={text => {
+              this.setState({ boardsSearchText: text })
+            }}
+            boardsSearchText={this.state.boardsSearchText}
           />
         )
       }

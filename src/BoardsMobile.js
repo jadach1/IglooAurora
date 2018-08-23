@@ -64,6 +64,8 @@ class BoardsMobile extends Component {
         <BoardsBodyMobile
           userData={this.props.userData}
           selectBoard={this.props.selectBoard}
+          searchBoards={this.props.searchBoards}
+          searchText={this.props.boardsSearchText}
         />
         <SettingsDialogMobile
           isOpen={this.state.settingsOpen}

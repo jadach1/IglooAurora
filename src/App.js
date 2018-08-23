@@ -191,13 +191,13 @@ class App extends Component {
             )
           }
         />
-        <Route exact path="/recovery/:token" component={recoveryFetcher} />
+        <Route exact path="/recovery/:token" render={recoveryFetcher} />
         <Route
           exact
           path="/recovery/"
-          component={() => <Redirect to="/dashboard/" />}
+          render={() => <Redirect to="/dashboard/" />}
         />
-        <Route exact path="/" component={() => <Redirect to="/dashboard/" />} />
+        <Route exact path="/" render={() => <Redirect to="/dashboard/" />} />
         <Route
           render={() =>
             this.state.isMobile ? <MobileError404 /> : <Error404 />
