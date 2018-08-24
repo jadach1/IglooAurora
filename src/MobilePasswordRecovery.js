@@ -11,6 +11,7 @@ import {
   createMuiTheme,
   MuiThemeProvider,
   Typography,
+  CircularProgress,
 } from "material-ui-next"
 import { Link } from "react-router-dom"
 import zxcvbn from "zxcvbn"
@@ -23,6 +24,12 @@ class MobilePasswordRecovery extends Component {
   state = { password: "", showPassword: false, redirect: false }
 
   render() {
+    document.body.style.backgroundColor = "#0057cb"
+
+    const {
+      userData: { error, loading, user },
+    } = this.props
+
     let scoreText = ""
 
     let changePassword = newPassword => {
@@ -59,16 +66,38 @@ class MobilePasswordRecovery extends Component {
         break
     }
 
-    if (!this.state.password) scoreText = ""
+    if (!this.props.password) scoreText = ""
 
-    let customDictionary = [
-      /*       this.state.email,
-      this.state.email.split("@")[0],
-      this.state.fullName, */
-      "igloo",
-      "igloo aurora",
-      "aurora",
-    ]
+    if (error) {
+      return "Unexpected error"
+    }
+
+    if (loading) {
+      return (
+        <div
+          style={{
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "#0057cb",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          className="notSelectable defaultCursor"
+        >
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#fff" },
+                secondary: { main: "#0083ff" },
+              },
+            })}
+          >
+            <CircularProgress size={100} />
+          </MuiThemeProvider>
+        </div>
+      )
+    }
 
     return (
       <div
@@ -84,9 +113,14 @@ class MobilePasswordRecovery extends Component {
       >
         <div
           style={{
-            margin: "auto",
+            marginTop: "auto",
+            marginBottom: "auto",
+            marginLeft: "32px",
+            marginRight: "32px",
+            maxWidth: "400px",
             textAlign: "center",
-            width: "80vw",
+            paddingTop:"32px",
+            paddingBottom:"32px"
           }}
         >
           <img
@@ -144,26 +178,30 @@ class MobilePasswordRecovery extends Component {
                     style={{
                       color: "white",
                     }}
-                    value={this.state.password}
+                    value={this.props.password}
                     type={this.state.showPassword ? "text" : "password"}
-                    onChange={event =>
+                    onChange={event => {
                       this.setState({
-                        password: event.target.value,
-                        passwordScore: zxcvbn(
-                          event.target.value,
-                          customDictionary
-                        ).score,
+                        passwordScore: zxcvbn(event.target.value, [
+                          user.email,
+                          user.email.split("@")[0],
+                          user.displayName,
+                          "igloo",
+                          "igloo aurora",
+                          "aurora",
+                        ]).score,
                         isPasswordEmpty: event.target.value === "",
                       })
-                    }
+                      this.props.updatePassword(event.target.value)
+                    }}
                     onKeyPress={event => {
                       if (event.key === "Enter") {
-                        changePassword(this.state.password)
+                        changePassword(this.props.password)
                         this.setState({ redirect: true })
                       }
                     }}
                     endAdornment={
-                      this.state.password ? (
+                      this.props.password ? (
                         <InputAdornment position="end">
                           <IconButton
                             onClick={() =>
@@ -200,10 +238,7 @@ class MobilePasswordRecovery extends Component {
             <br />
             {window.innerWidth >= 354 ? (
               <React.Fragment>
-                <Link
-                  to="/"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
+                <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                   <Button
                     color="primary"
                     style={{
@@ -213,15 +248,12 @@ class MobilePasswordRecovery extends Component {
                     Never mind
                   </Button>
                 </Link>
-                <Link
-                  to="/"
-                  style={{ textDecoration: "none", color: "white" }}
-                >
+                <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                   <Button
                     variant="raised"
                     color="secondary"
                     disabled={!(this.state.passwordScore >= 2)}
-                    onClick={() => changePassword(this.state.password)}
+                    onClick={() => changePassword(this.props.password)}
                   >
                     Change password
                   </Button>
@@ -230,21 +262,21 @@ class MobilePasswordRecovery extends Component {
             ) : (
               <React.Fragment>
                 <Link
-                  to="/"
+                  to="/dashboard"
                   style={{ textDecoration: "none", color: "white" }}
                 >
                   <Button
                     variant="raised"
                     color="secondary"
                     disabled={!(this.state.passwordScore >= 2)}
-                    onClick={() => changePassword(this.state.password)}
+                    onClick={() => changePassword(this.props.password)}
                     style={{ width: "100%" }}
                   >
                     Change password
                   </Button>
                 </Link>
                 <Link
-                  to="/"
+                  to="/dashboard"
                   style={{ textDecoration: "none", color: "white" }}
                 >
                   <Button
@@ -261,7 +293,7 @@ class MobilePasswordRecovery extends Component {
             )}
           </MuiThemeProvider>
         </div>
-        {this.state.redirect ? <Redirect push to="/dashboard/" /> : ""}
+        {this.state.redirect ? <Redirect push to="/dashboard" /> : ""}
       </div>
     )
   }

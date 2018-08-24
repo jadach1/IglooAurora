@@ -146,15 +146,6 @@ class App extends Component {
       return <Redirect to={this.state.from || "/dashboard"} />
     }
 
-    let recoveryFetcher = props => {
-      return (
-        <RecoveryFetcher
-          token={props.match.params.token}
-          mobile={this.state.isMobile}
-        />
-      )
-    }
-
     return (
       <Switch>
         <Route
@@ -191,11 +182,9 @@ class App extends Component {
             )
           }
         />
-        <Route exact path="/recovery/:token" render={recoveryFetcher} />
         <Route
-          exact
-          path="/recovery/"
-          render={() => <Redirect to="/dashboard/" />}
+          path="/recovery"
+          render={() => <RecoveryFetcher mobile={this.state.isMobile} />}
         />
         <Route exact path="/" render={() => <Redirect to="/dashboard/" />} />
         <Route
