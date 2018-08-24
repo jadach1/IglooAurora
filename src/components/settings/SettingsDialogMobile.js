@@ -15,7 +15,7 @@ import ManageEmailDialog from "./ManageEmail"
 import ChangePasswordDialog from "./ChangePassword"
 import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
-import TimeZoneDialog from "./TimeZone"
+// import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import Shortcuts from "./Shortcuts"
 import Icon from "material-ui-next/Icon"
@@ -40,7 +40,7 @@ function Transition(props) {
   return <Slide direction="up" {...props} />
 }
 
-var moment = require("moment-timezone")
+// var moment = require("moment-timezone")
 
 const theme = createMuiTheme({
   palette: {
@@ -529,7 +529,7 @@ class SettingsDialogMobile extends React.Component {
                   />
                   <Divider />
                   <Subheader style={{ cursor: "default" }}>Time</Subheader>
-                  <ListItem
+                  {/* <ListItem
                     primaryText="Change time zone"
                     secondaryText={
                       "Auto: (UTC" +
@@ -538,7 +538,7 @@ class SettingsDialogMobile extends React.Component {
                       moment.tz.guess().split("/")[1]
                     }
                     onClick={this.handleTimeDialogOpen}
-                  />
+                  /> */}
                   <ListItem
                     primaryText="Change date and time format"
                     secondaryText="DD/MM/YYYY, 24-hour clock"
@@ -790,12 +790,12 @@ class SettingsDialogMobile extends React.Component {
             this.props.isOpen && this.state.languageDialogOpen
           }
         />
-        <TimeZoneDialog
+        {/* <TimeZoneDialog
           handleTimeDialogClose={this.handleTimeDialogClose}
           timeZoneDialogOpen={
             this.props.isOpen && this.state.timeZoneDialogOpen
           }
-        />
+        /> */}
         <TimeFormatDialog
           handleTimeFormatDialogClose={this.handleTimeFormatDialogClose}
           timeFormatDialogOpen={

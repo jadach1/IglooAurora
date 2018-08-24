@@ -43,7 +43,7 @@ class Sidebar extends Component {
   }
 
   handleClickCancelSearch = () => {
-    this.props.changeText("")
+    this.props.searchDevices("")
   }
 
   render() {
@@ -90,7 +90,7 @@ class Sidebar extends Component {
                     )[0]
                 }
                 value={this.props.searchText}
-                onChange={event => this.props.changeText(event.target.value)}
+                onChange={event => this.props.searchDevices(event.target.value)}
                 startAdornment={
                   <InputAdornment
                     position="start"
@@ -132,7 +132,7 @@ class Sidebar extends Component {
                   </InputAdornment>
                 }
                 endAdornment={
-                  this.state.searchText ? (
+                  this.props.searchText ? (
                     <InputAdornment position="end">
                       <IconButton
                         onClick={this.handleClickCancelSearch}

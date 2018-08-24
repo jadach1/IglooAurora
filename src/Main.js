@@ -25,7 +25,6 @@ class Main extends Component {
     hiddenNotifications: false,
     slideIndex: 0,
     areSettingsOpen: false,
-    searchText: "",
   }
 
   changeDrawerState = () => {
@@ -60,14 +59,14 @@ class Main extends Component {
             this.props.userData.user.devices[0] &&
             !this.state.areSettingsOpen
           ) {
-            if (this.state.searchText === "") {
+            if (this.props.devicesSearchText === "") {
               this.props.selectDevice(this.props.userData.user.devices[0].id)
             } else {
               this.props.selectDevice(
                 this.props.userData.user.devices.filter(device =>
                   device.customName
                     .toLowerCase()
-                    .includes(this.state.searchText.toLowerCase())
+                    .includes(this.props.devicesSearchText.toLowerCase())
                 )[0].id
               )
             }
@@ -87,12 +86,12 @@ class Main extends Component {
             this.props.userData.user.devices[1] &&
             !this.state.areSettingsOpen
           ) {
-            if (this.state.searchText !== "") {
+            if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
                 this.props.userData.user.devices.filter(device =>
                   device.customName
                     .toLowerCase()
-                    .includes(this.state.searchText.toLowerCase())
+                    .includes(this.props.devicesSearchText.toLowerCase())
                 )[1].id
               )
             } else {
@@ -114,12 +113,12 @@ class Main extends Component {
             this.props.userData.user.devices[2] &&
             !this.state.areSettingsOpen
           ) {
-            if (this.state.searchText !== "") {
+            if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
                 this.props.userData.user.devices.filter(device =>
                   device.customName
                     .toLowerCase()
-                    .includes(this.state.searchText.toLowerCase())
+                    .includes(this.props.devicesSearchText.toLowerCase())
                 )[2].id
               )
             } else {
@@ -141,12 +140,12 @@ class Main extends Component {
             this.props.userData.user.devices[3] &&
             !this.state.areSettingsOpen
           ) {
-            if (this.state.searchText !== "") {
+            if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
                 this.props.userData.user.devices.filter(device =>
                   device.customName
                     .toLowerCase()
-                    .includes(this.state.searchText.toLowerCase())
+                    .includes(this.props.devicesSearchText.toLowerCase())
                 )[3].id
               )
             } else {
@@ -165,12 +164,12 @@ class Main extends Component {
             this.props.userData.user.devices[4] &&
             !this.state.areSettingsOpen
           ) {
-            if (this.state.searchText !== "") {
+            if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
                 this.props.userData.user.devices.filter(device =>
                   device.customName
                     .toLowerCase()
-                    .includes(this.state.searchText.toLowerCase())
+                    .includes(this.props.devicesSearchText.toLowerCase())
                 )[4].id
               )
             } else {
@@ -189,12 +188,12 @@ class Main extends Component {
             this.props.userData.user.devices[5] &&
             !this.state.areSettingsOpen
           ) {
-            if (this.state.searchText !== "") {
+            if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
                 this.props.userData.user.devices.filter(device =>
                   device.customName
                     .toLowerCase()
-                    .includes(this.state.searchText.toLowerCase())
+                    .includes(this.props.devicesSearchText.toLowerCase())
                 )[5].id
               )
             } else {
@@ -213,12 +212,12 @@ class Main extends Component {
             this.props.userData.user.devices[6] &&
             !this.state.areSettingsOpen
           ) {
-            if (this.state.searchText !== "") {
+            if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
                 this.props.userData.user.devices.filter(device =>
                   device.customName
                     .toLowerCase()
-                    .includes(this.state.searchText.toLowerCase())
+                    .includes(this.props.devicesSearchText.toLowerCase())
                 )[6].id
               )
             } else {
@@ -237,12 +236,12 @@ class Main extends Component {
             this.props.userData.user.devices[7] &&
             !this.state.areSettingsOpen
           ) {
-            if (this.state.searchText !== "") {
+            if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
                 this.props.userData.user.devices.filter(device =>
                   device.customName
                     .toLowerCase()
-                    .includes(this.state.searchText.toLowerCase())
+                    .includes(this.props.devicesSearchText.toLowerCase())
                 )[7].id
               )
             } else {
@@ -261,12 +260,12 @@ class Main extends Component {
             this.props.userData.user.devices[8] &&
             !this.state.areSettingsOpen
           ) {
-            if (this.state.searchText !== "") {
+            if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
                 this.props.userData.user.devices.filter(device =>
                   device.customName
                     .toLowerCase()
-                    .includes(this.state.searchText.toLowerCase())
+                    .includes(this.props.devicesSearchText.toLowerCase())
                 )[8].id
               )
             } else {
@@ -377,11 +376,11 @@ class Main extends Component {
                   }}
                   selectedDevice={this.props.selectedDevice}
                   changeDrawerState={this.changeDrawerState}
-                  searchText={this.state.searchText}
-                  changeText={text => this.setState({ searchText: text })}
                   userData={this.props.userData}
                   nightMode={nightMode}
                   selectedBoard={this.props.selectedBoard}
+                  searchDevices={this.props.searchDevices}
+                  searchText={this.props.devicesSearchText}
                 />
               </div>
               {this.props.selectedDevice !== null ? (

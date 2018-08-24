@@ -17,7 +17,7 @@ import DeleteAccountDialog from "./DeleteAccount"
 import ChangePasswordDialog from "./ChangePassword"
 import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
-import TimeZoneDialog from "./TimeZone"
+// import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import ManageAuthorizations from "./ManageAuthorizations"
 import Shortcuts from "./Shortcuts"
@@ -30,7 +30,7 @@ import CreatePlotNode from "./CreatePlotNode"
 import GDPRDataDownload from "./GDPRDataDownload"
 import ChangeEmail from "./ChangeEmail"
 
-var moment = require("moment-timezone")
+// var moment = require("moment-timezone")
 
 const listStyles = {
   root: {
@@ -520,7 +520,7 @@ class SettingsDialog extends React.Component {
                   />
                   <Divider />
                   <Subheader style={{ cursor: "default" }}>Time</Subheader>
-                  <ListItem
+                  {/* <ListItem
                     primaryText="Change time zone"
                     secondaryText={
                       "Auto: (UTC" +
@@ -529,7 +529,7 @@ class SettingsDialog extends React.Component {
                       moment.tz.guess().split("/")[1]
                     }
                     onClick={this.handleTimeDialogOpen}
-                  />
+                  /> */}
                   <ListItem
                     primaryText="Change date and time format"
                     secondaryText="DD/MM/YYYY, 24-hour clock"
@@ -728,12 +728,13 @@ class SettingsDialog extends React.Component {
             this.props.isOpen && this.state.languageDialogOpen
           }
         />
+        {/* 
         <TimeZoneDialog
           handleTimeDialogClose={this.handleTimeDialogClose}
           timeZoneDialogOpen={
             this.props.isOpen && this.state.timeZoneDialogOpen
           }
-        />
+        /> */}
         <TimeFormatDialog
           handleTimeFormatDialogClose={this.handleTimeFormatDialogClose}
           timeFormatDialogOpen={

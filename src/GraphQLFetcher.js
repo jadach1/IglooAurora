@@ -272,6 +272,7 @@ class GraphQLFetcher extends Component {
     selectedBoard: null,
     goToDevices: false,
     boardsSearchText: "",
+    devicesSearchText: "",
   }
 
   selectDevice = id => this.setState({ selectedDevice: id })
@@ -387,6 +388,10 @@ class GraphQLFetcher extends Component {
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
               }
+              searchDevices={text => {
+                this.setState({ devicesSearchText: text })
+              }}
+              devicesSearchText={this.state.devicesSearchText}
             />
           )
         } else {
@@ -401,6 +406,10 @@ class GraphQLFetcher extends Component {
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
               }
+              searchDevices={text => {
+                this.setState({ devicesSearchText: text })
+              }}
+              devicesSearchText={this.state.devicesSearchText}
             />
           )
         }
@@ -441,6 +450,10 @@ class GraphQLFetcher extends Component {
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
               }
+              searchDevices={text => {
+                this.setState({ devicesSearchText: text })
+              }}
+              devicesSearchText={this.state.devicesSearchText}
             />
           )
         } else {
@@ -455,6 +468,10 @@ class GraphQLFetcher extends Component {
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
               }
+              searchDevices={text => {
+                this.setState({ devicesSearchText: text })
+              }}
+              devicesSearchText={this.state.devicesSearchText}
             />
           )
         }

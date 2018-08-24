@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import PasswordRecovery from "./PasswordRecovery"
 import { WebSocketLink } from "apollo-link-ws"
 import { split } from "apollo-link"
 import {
@@ -11,16 +10,26 @@ import { HttpLink } from "apollo-link-http"
 import introspectionQueryResultData from "./fragmentTypes.json"
 import { getMainDefinition } from "apollo-utilities"
 import { ApolloProvider } from "react-apollo"
-import MobilePasswordRecovery from "./MobilePasswordRecovery"
+import queryString from "query-string"
+import { Redirect } from "react-router-dom"
+import RecoveryMain from "./RecoveryMain"
 
 export default class RecoveryFetcher extends Component {
+  state = { token: "" }
+
+  componentDidMount() {
+    this.setState({
+      token: queryString.parse("?" + window.location.href.split("?")[1]).token,
+    })
+  }
+
   render() {
     const wsLink = new WebSocketLink({
       uri: `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
-          Authorization: "Bearer " + this.props.token,
+          Authorization: "Bearer " + this.state.token,
         },
       },
     })
@@ -28,7 +37,7 @@ export default class RecoveryFetcher extends Component {
     const httpLink = new HttpLink({
       uri: "https://iglooql.herokuapp.com/graphql",
       headers: {
-        Authorization: "Bearer " + this.props.token,
+        Authorization: "Bearer " + this.state.token,
       },
     })
 
@@ -55,7 +64,10 @@ export default class RecoveryFetcher extends Component {
 
     return (
       <ApolloProvider client={this.client}>
-        {this.props.mobile ? <MobilePasswordRecovery /> : <PasswordRecovery />}
+        <RecoveryMain mobile={this.props.mobile} />
+        {!queryString.parse("?" + window.location.href.split("?")[1]).token && (
+          <Redirect to="/boards" />
+        )}
       </ApolloProvider>
     )
   }

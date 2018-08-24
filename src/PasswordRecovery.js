@@ -11,6 +11,7 @@ import {
   createMuiTheme,
   MuiThemeProvider,
   Typography,
+  CircularProgress,
 } from "material-ui-next"
 import { Link } from "react-router-dom"
 import zxcvbn from "zxcvbn"
@@ -20,9 +21,15 @@ import logo from "./styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
 
 class PasswordRecovery extends Component {
-  state = { password: "", showPassword: false, redirect: false }
+  state = { showPassword: false, redirect: false }
 
   render() {
+    document.body.style.backgroundColor = "#0057cb"
+
+    const {
+      userData: { error, loading, user },
+    } = this.props
+
     let scoreText = ""
 
     let changePassword = newPassword => {
@@ -59,16 +66,38 @@ class PasswordRecovery extends Component {
         break
     }
 
-    if (!this.state.password) scoreText = ""
+    if (!this.props.password) scoreText = ""
 
-    let customDictionary = [
-      /*       this.state.email,
-      this.state.email.split("@")[0],
-      this.state.fullName, */
-      "igloo",
-      "igloo aurora",
-      "aurora",
-    ]
+    if (error) {
+      return "Unexpected error"
+    }
+
+    if (loading) {
+      return (
+        <div
+          style={{
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "#0057cb",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          className="notSelectable defaultCursor"
+        >
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#fff" },
+                secondary: { main: "#0083ff" },
+              },
+            })}
+          >
+            <CircularProgress size={100} />
+          </MuiThemeProvider>
+        </div>
+      )
+    }
 
     return (
       <div
@@ -141,26 +170,30 @@ class PasswordRecovery extends Component {
                     style={{
                       color: "white",
                     }}
-                    value={this.state.password}
+                    value={this.props.password}
                     type={this.state.showPassword ? "text" : "password"}
-                    onChange={event =>
+                    onChange={event => {
                       this.setState({
-                        password: event.target.value,
-                        passwordScore: zxcvbn(
-                          event.target.value,
-                          customDictionary
-                        ).score,
+                        passwordScore: zxcvbn(event.target.value, [
+                          user.email,
+                          user.email.split("@")[0],
+                          user.displayName,
+                          "igloo",
+                          "igloo aurora",
+                          "aurora",
+                        ]).score,
                         isPasswordEmpty: event.target.value === "",
                       })
-                    }
+                      this.props.updatePassword(event.target.value)
+                    }}
                     onKeyPress={event => {
                       if (event.key === "Enter") {
-                        changePassword(this.state.password)
+                        changePassword(this.props.password)
                         this.setState({ redirect: true })
                       }
                     }}
                     endAdornment={
-                      this.state.password ? (
+                      this.props.password ? (
                         <InputAdornment position="end">
                           <IconButton
                             onClick={() =>
@@ -196,7 +229,7 @@ class PasswordRecovery extends Component {
             </Grid>
             <br />
             <Link
-              to="/login/"
+              to="/dashboard"
               style={{ textDecoration: "none", color: "black" }}
             >
               <Button color="primary" style={{ marginRight: "4px" }}>
@@ -204,21 +237,21 @@ class PasswordRecovery extends Component {
               </Button>
             </Link>
             <Link
-              to="/login/"
+              to="/dashboard"
               style={{ textDecoration: "none", color: "black" }}
             >
               <Button
                 variant="raised"
                 color="secondary"
-                disabled={!(this.state.passwordScore >= 2)}
-                onClick={() => changePassword(this.state.password)}
+                disabled={!user || !(this.state.passwordScore >= 2)}
+                onClick={() => changePassword(this.props.password)}
               >
                 Change password
               </Button>
             </Link>
           </MuiThemeProvider>
         </div>
-        {this.state.redirect && <Redirect push to="/dashboard/" /> }
+        {this.state.redirect && <Redirect push to="/dashboard" />}
       </div>
     )
   }
