@@ -1,10 +1,8 @@
 import React, { Component } from "react"
 import BoardsHeader from "./components/boards/BoardsHeader"
 import BoardsBody from "./components/boards/BoardsBody"
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import SettingsDialog from "./components/settings/SettingsDialog"
 import { hotkeys } from "react-keyboard-shortcuts"
-import EmailNotVerified from "./components/EmailNotVerified"
 
 class Boards extends Component {
   state = {
@@ -41,18 +39,8 @@ class Boards extends Component {
   }
 
   render() {
-    const {
-      userData: { user },
-    } = this.props
-
-    let emailIsVerified = false
-
-    if (user) {
-      emailIsVerified = user.emailIsVerified
-    }
-
     return (
-      <MuiThemeProvider>
+      <React.Fragment>
         <BoardsHeader
           logOut={this.props.logOut}
           openSettings={() => this.setState({ settingsOpen: true })}
@@ -62,6 +50,7 @@ class Boards extends Component {
           selectBoard={this.props.selectBoard}
           searchBoards={this.props.searchBoards}
           searchText={this.props.boardsSearchText}
+          snackBarHidden={this.props.snackBarHidden}
         />
         <SettingsDialog
           isOpen={this.state.settingsOpen}
@@ -72,8 +61,7 @@ class Boards extends Component {
           slideIndex={this.state.slideIndex}
           userData={this.props.userData}
         />
-        {!emailIsVerified && <EmailNotVerified mobile={false} />}
-      </MuiThemeProvider>
+      </React.Fragment>
     )
   }
 }

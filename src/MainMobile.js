@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import Sidebar from "./components/Sidebar"
 import SidebarHeader from "./components/SidebarHeader"
 import MainBody from "./components/MainBody"
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import { Offline, Online } from "react-detect-offline"
 import "./styles/App.css"
 import "./styles/Tiles.css"
@@ -11,9 +10,7 @@ import { hotkeys } from "react-keyboard-shortcuts"
 import AppBar from "material-ui-next/AppBar"
 import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
 import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
-import EmailNotVerified from "./components/EmailNotVerified"
 import StatusBar from "./components/StatusBar"
-import GetLinkSuccess from "./components/GetLinkSuccess"
 import { Redirect } from "react-router-dom"
 import { Typography } from "material-ui-next"
 import polarBear from "./styles/assets/polarBear.svg"
@@ -306,181 +303,173 @@ class Main extends Component {
     }
 
     return (
-      <MuiThemeProvider>
-        <React.Fragment>
-          <Online>
-            <div className="mobileMain">
-              {this.props.selectedDevice == null ? (
-                <React.Fragment>
-                  <SettingsDialogMobile
-                    isOpen={this.state.areSettingsOpen}
-                    closeSettingsDialog={() => {
-                      this.setState({ areSettingsOpen: false })
+      <React.Fragment>
+        <Online>
+          <div className="mobileMain">
+            {this.props.selectedDevice == null ? (
+              <React.Fragment>
+                <SettingsDialogMobile
+                  isOpen={this.state.areSettingsOpen}
+                  closeSettingsDialog={() => {
+                    this.setState({ areSettingsOpen: false })
+                  }}
+                  handleChange={this.handleSettingsTabChanged}
+                  slideIndex={this.state.slideIndex}
+                  handleChangeBTIndex={this.handleChangeBTIndex}
+                  nightMode={nightMode}
+                  userData={this.props.userData}
+                />
+                <AppBar position="sticky">
+                  <SidebarHeader
+                    logOut={this.props.logOut}
+                    key="mobileSidebarHeader"
+                    openSettingsDialog={() => {
+                      this.setState({ areSettingsOpen: true })
                     }}
-                    handleChange={this.handleSettingsTabChanged}
-                    slideIndex={this.state.slideIndex}
-                    handleChangeBTIndex={this.handleChangeBTIndex}
-                    nightMode={nightMode}
-                    userData={this.props.userData}
-                  />
-                  <AppBar position="sticky">
-                    <SidebarHeader
-                      logOut={this.props.logOut}
-                      key="mobileSidebarHeader"
-                      openSettingsDialog={() => {
-                        this.setState({ areSettingsOpen: true })
-                      }}
-                      changeSettingsState={() =>
-                        this.setState(oldState => ({
-                          areSettingsOpen: !oldState.areSettingsOpen,
-                          drawer: false,
-                        }))
-                      }
-                    />
-                  </AppBar>
-                  <div
-                    className="mobileSidebar"
-                    key="sidebar"
-                    style={
-                      nightMode
-                        ? { background: "#21252b" }
-                        : { background: "#f2f2f2" }
+                    changeSettingsState={() =>
+                      this.setState(oldState => ({
+                        areSettingsOpen: !oldState.areSettingsOpen,
+                        drawer: false,
+                      }))
                     }
-                  >
-                    <Sidebar
+                  />
+                </AppBar>
+                <div
+                  className="mobileSidebar"
+                  key="sidebar"
+                  style={
+                    nightMode
+                      ? { background: "#21252b" }
+                      : { background: "#f2f2f2" }
+                  }
+                >
+                  <Sidebar
+                    selectDevice={id => {
+                      this.props.selectDevice(id)
+                      this.setState({ drawer: false })
+                    }}
+                    selectedDevice={this.props.selectedDevice}
+                    changeDrawerState={this.changeDrawerState}
+                    isMobile={true}
+                    userData={this.props.userData}
+                    nightMode={nightMode}
+                    selectedBoard={this.props.selectedBoard}
+                    searchDevices={this.props.searchDevices}
+                    searchText={this.props.devicesSearchText}
+                  />
+                </div>
+              </React.Fragment>
+            ) : user ? (
+              idList.includes(this.props.selectedDevice) ? (
+                <React.Fragment>
+                  <AppBar>
+                    <MainBodyHeaderMobile
+                      deviceId={this.props.selectedDevice}
+                      key="mobileMainBodyHeader"
+                      drawer={this.state.drawer}
+                      changeDrawerState={this.changeDrawerState}
+                      hiddenNotifications={this.state.hiddenNotifications}
+                      showHiddenNotifications={this.showHiddenNotifications}
                       selectDevice={id => {
                         this.props.selectDevice(id)
                         this.setState({ drawer: false })
                       }}
-                      selectedDevice={this.props.selectedDevice}
-                      changeDrawerState={this.changeDrawerState}
-                      isMobile={true}
-                      userData={this.props.userData}
                       nightMode={nightMode}
+                      isMobile={true}
+                      devMode={devMode}
+                      openSnackBar={() =>
+                        this.setState({ copyMessageOpen: true })
+                      }
                       selectedBoard={this.props.selectedBoard}
-                      searchDevices={this.props.searchDevices}
-                      searchText={this.props.devicesSearchText}
+                      userData={this.props.userData}
+                    />
+                  </AppBar>
+                  <div
+                    className="mobileMainBody"
+                    key="mainBody"
+                    style={
+                      nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
+                    }
+                  >
+                    <div style={{ height: "calc(100vh - 96px)" }}>
+                      <MainBody
+                        deviceId={this.props.selectedDevice}
+                        showHidden={this.state.showMainHidden}
+                        changeShowHiddenState={this.changeShowHiddenState}
+                        isMobile={true}
+                        nightMode={nightMode}
+                        devMode={devMode}
+                      />
+                    </div>
+                    <StatusBar
+                      userData={this.props.userData}
+                      deviceId={this.props.selectedDevice}
+                      nightMode={nightMode}
                     />
                   </div>
                 </React.Fragment>
-              ) : user ? (
-                idList.includes(this.props.selectedDevice) ? (
-                  <React.Fragment>
-                    <AppBar>
-                      <MainBodyHeaderMobile
-                        deviceId={this.props.selectedDevice}
-                        key="mobileMainBodyHeader"
-                        drawer={this.state.drawer}
-                        changeDrawerState={this.changeDrawerState}
-                        hiddenNotifications={this.state.hiddenNotifications}
-                        showHiddenNotifications={this.showHiddenNotifications}
-                        selectDevice={id => {
-                          this.props.selectDevice(id)
-                          this.setState({ drawer: false })
-                        }}
-                        nightMode={nightMode}
-                        isMobile={true}
-                        devMode={devMode}
-                        openSnackBar={() =>
-                          this.setState({ copyMessageOpen: true })
-                        }
-                        selectedBoard={this.props.selectedBoard}
-                        userData={this.props.userData}
-                      />
-                    </AppBar>
-                    <div
-                      className="mobileMainBody"
-                      key="mainBody"
-                      style={
-                        nightMode
-                          ? { background: "#2f333d" }
-                          : { background: "white" }
-                      }
-                    >
-                      <div style={{ height: "calc(100vh - 96px)" }}>
-                        <MainBody
-                          deviceId={this.props.selectedDevice}
-                          showHidden={this.state.showMainHidden}
-                          changeShowHiddenState={this.changeShowHiddenState}
-                          isMobile={true}
-                          nightMode={nightMode}
-                          devMode={devMode}
-                        />
-                      </div>
-                      <StatusBar
-                        userData={this.props.userData}
-                        deviceId={this.props.selectedDevice}
-                        nightMode={nightMode}
-                      />
-                    </div>
-                  </React.Fragment>
-                ) : (
-                  <Redirect
-                    exact
-                    to={
-                      this.props.selectedBoard
-                        ? "/dashboard?board=" + this.props.selectedBoard
-                        : "/dashboard"
-                    }
-                  />
-                )
               ) : (
-                ""
-              )}
-            </div>
-            <EmailNotVerified mobile={true} />
-            <GetLinkSuccess
-              mobile={true}
-              open={this.state.copyMessageOpen}
-              close={() => this.setState({ copyMessageOpen: false })}
-            />
-          </Online>
-          <Offline key="offlineMainBody">
+                <Redirect
+                  exact
+                  to={
+                    this.props.selectedBoard
+                      ? "/dashboard?board=" + this.props.selectedBoard
+                      : "/dashboard"
+                  }
+                />
+              )
+            ) : (
+              ""
+            )}
+          </div>
+        </Online>
+        <Offline key="offlineMainBody">
+          <div
+            style={{
+              width: "100vw",
+              height: "100vh",
+              backgroundColor: "#0057cb",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <div
               style={{
-                width: "100vw",
-                height: "100vh",
-                backgroundColor: "#0057cb",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
+                margin: "auto",
+                textAlign: "center",
+                width: "80vw",
               }}
             >
-              <div
-                style={{
-                  margin: "auto",
-                  textAlign: "center",
-                  width: "80vw",
-                }}
+              <Typography variant="headline" style={{ color: "white" }}>
+                You are not connected, try again in a while
+              </Typography>
+              <br />
+              <br />
+              <br />
+              <br />
+              <img
+                alt="Sleeping Polar Bear"
+                src={polarBear}
+                className="notSelectable"
+              />
+              <br />
+              <br />
+              <br />
+              <br />
+              <Typography
+                variant="title"
+                gutterBottom
+                style={{ color: "white" }}
               >
-                <Typography variant="headline" style={{ color: "white" }}>
-                  You are not connected, try again in a while
-                </Typography>
-                <br />
-                <br />
-                <br />
-                <br />
-                <img
-                  alt="Sleeping Polar Bear"
-                  src={polarBear}
-                  className="notSelectable"
-                />
-                <br />
-                <br />
-                <br />
-                <br />
-                <Typography
-                  variant="title"
-                  gutterBottom
-                  style={{ color: "white" }}
-                >
-                  In the meantime, why don't you have a nap?
-                </Typography>
-              </div>
+                In the meantime, why don't you have a nap?
+              </Typography>
             </div>
-          </Offline>
-        </React.Fragment>
-      </MuiThemeProvider>
+          </div>
+        </Offline>
+      </React.Fragment>
     )
   }
 }

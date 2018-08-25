@@ -42,6 +42,7 @@ export default class Error404 extends Component {
             width: "88vw",
             maxWidth: "400px",
           }}
+          className="notSelectable defaultCursor"
         >
           <br />
           <br />

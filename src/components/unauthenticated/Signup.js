@@ -1,14 +1,21 @@
 import React, { Component } from "react"
-import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Input, { InputAdornment } from "material-ui-next/Input"
-import { FormControl, FormHelperText } from "material-ui-next/Form"
-import IconButton from "material-ui-next/IconButton"
-import Icon from "material-ui-next/Icon"
-import { Grid, Typography } from "material-ui-next"
 import zxcvbn from "zxcvbn"
 import * as EmailValidator from "email-validator"
+import {
+  CircularProgress,
+  Button,
+  MuiThemeProvider,
+  createMuiTheme,
+  Input,
+  InputAdornment,
+  FormControl,
+  FormHelperText,
+  IconButton,
+  Icon,
+  Grid,
+  Typography,
+} from "@material-ui/core"
 
 const theme = createMuiTheme({
   palette: {
@@ -60,6 +67,7 @@ class Signup extends Component {
       isNameValid: true,
       isMailEmpty: false,
       isPasswordEmpty: false,
+      showLoading: false,
     }
 
     this.signUp = this.signUp.bind(this)
@@ -94,6 +102,7 @@ class Signup extends Component {
 
       this.props.signIn(loginMutation.data.SignupUser.token)
     } catch (e) {
+      this.setState({ showLoading: false })
       if (
         e.message === "GraphQL error: A user with this email already exists"
       ) {
@@ -171,7 +180,8 @@ class Signup extends Component {
     ]
 
     return (
-      <div className="rightSide notSelectable">
+      <div className="rightSide notSelectable"                   style={{overflowY:"hidden"}}
+      >
         <br />
         <Typography
           variant="display1"
@@ -205,7 +215,10 @@ class Signup extends Component {
                     })
                   }
                   onKeyPress={event => {
-                    if (event.key === "Enter") this.signUp()
+                    if (event.key === "Enter") {
+                      this.setState({ showLoading: true })
+                      this.signUp()
+                    }
                   }}
                   error={!this.state.isNameValid}
                   endAdornment={
@@ -265,7 +278,9 @@ class Signup extends Component {
                     })
                   }
                   onKeyPress={event => {
-                    if (event.key === "Enter") this.signUp()
+                    if (event.key === "Enter") {
+                      this.setState({ showLoading: true })
+                      this.signUp()}                    
                   }}
                   endAdornment={
                     this.state.email ? (
@@ -332,7 +347,10 @@ class Signup extends Component {
                     })
                   }}
                   onKeyPress={event => {
-                    if (event.key === "Enter") this.signUp()
+                    if (event.key === "Enter") 
+                    {  this.setState({ showLoading: true })
+                      this.signUp()
+                    }
                   }}
                   endAdornment={
                     this.state.password ? (
@@ -367,7 +385,6 @@ class Signup extends Component {
             </Grid>
           </Grid>
         </MuiThemeProvider>
-
         <br />
         <br />
         <MuiThemeProvider theme={theme}>
@@ -376,17 +393,38 @@ class Signup extends Component {
             color="primary"
             fullWidth={true}
             primary={true}
-            onClick={this.signUp}
+            onClick={()=>{this.setState({showLoading:true})
+            this.signUp()}}
             buttonStyle={{ backgroundColor: "#0083ff" }}
             disabled={
               !(
                 this.state.fullName &&
                 this.state.isEmailValid &&
                 this.state.passwordScore >= 2
-              )
+              ) || this.state.showLoading
             }
           >
             Sign up
+            {this.state.showLoading && (
+              <MuiThemeProvider
+                theme={createMuiTheme({
+                  palette: {
+                    primary: { main: "#0083ff" },
+                  },
+                })}
+              >
+                <CircularProgress
+                  size={24}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: -12,
+                    marginLeft: -12,
+                  }}
+                />
+              </MuiThemeProvider>
+            )}
           </Button>
         </MuiThemeProvider>
       </div>

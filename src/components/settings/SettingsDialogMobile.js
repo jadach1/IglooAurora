@@ -783,6 +783,7 @@ class SettingsDialogMobile extends React.Component {
             this.props.isOpen && this.state.emailDialogOpen
           }
           handleEmailDialogClose={this.handleEmailDialogClose}
+          userData={this.props.userData}
         />
         <ChangeLanguageDialog
           handleLanguageDialogClose={this.handleLanguageDialogClose}

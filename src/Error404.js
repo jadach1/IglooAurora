@@ -41,6 +41,7 @@ export default class Error404 extends Component {
             textAlign: "center",
             width: "400px",
           }}
+          className="notSelectable defaultCursor"
         >
           <br />
           <br />

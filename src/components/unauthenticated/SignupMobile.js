@@ -6,7 +6,7 @@ import Input, { InputAdornment } from "material-ui-next/Input"
 import { FormControl, FormHelperText } from "material-ui-next/Form"
 import IconButton from "material-ui-next/IconButton"
 import Icon from "material-ui-next/Icon"
-import { Typography, Grid } from "material-ui-next"
+import { Typography, Grid, CircularProgress } from "material-ui-next"
 import zxcvbn from "zxcvbn"
 import * as EmailValidator from "email-validator"
 
@@ -32,6 +32,7 @@ class SignupMobile extends Component {
       isNameValid: true,
       isMailEmpty: false,
       isPasswordEmpty: false,
+      showLoading: false,
     }
 
     this.signUp = this.signUp.bind(this)
@@ -61,6 +62,7 @@ class SignupMobile extends Component {
 
       this.props.signIn(loginMutation.data.SignupUser.token)
     } catch (e) {
+      this.setState({ showLoading: false })
       if (
         e.message === "GraphQL error: A user with this email already exists"
       ) {
@@ -125,7 +127,10 @@ class SignupMobile extends Component {
     ]
 
     return (
-      <div className="rightSide notSelectable">
+      <div
+        className="rightSide notSelectable"
+        style={{ maxWidth: "400px", marginLeft: "auto", marginRight: "auto" }}
+      >
         <Typography
           variant="display1"
           gutterBottom
@@ -161,7 +166,10 @@ class SignupMobile extends Component {
                     })
                   }
                   onKeyPress={event => {
-                    if (event.key === "Enter") this.signUp()
+                    if (event.key === "Enter") {
+                      this.setState({ showLoading: true })
+                      this.signUp()
+                    }
                   }}
                   endAdornment={
                     this.state.fullName ? (
@@ -217,7 +225,10 @@ class SignupMobile extends Component {
                     })
                   }
                   onKeyPress={event => {
-                    if (event.key === "Enter") this.signUp()
+                    if (event.key === "Enter") {
+                      this.setState({ showLoading: true })
+                      this.signUp()
+                    }
                   }}
                   endAdornment={
                     this.state.email ? (
@@ -278,7 +289,10 @@ class SignupMobile extends Component {
                     })
                   }
                   onKeyPress={event => {
-                    if (event.key === "Enter") this.signUp()
+                    if (event.key === "Enter") {
+                      this.setState({ showLoading: true })
+                      this.signUp()
+                    }
                   }}
                   endAdornment={
                     this.state.password ? (
@@ -316,17 +330,40 @@ class SignupMobile extends Component {
             color="secondary"
             fullWidth={true}
             primary={true}
-            onClick={this.signUp}
+            onClick={() => {
+              this.setState({ showLoading: true })
+              this.signUp()
+            }}
             buttonStyle={{ backgroundColor: "#0083ff" }}
             disabled={
               !(
                 this.state.fullName &&
                 this.state.isEmailValid &&
                 this.state.passwordScore >= 2
-              )
+              ) || this.state.showLoading
             }
           >
             Sign up
+            {this.state.showLoading && (
+              <MuiThemeProvider
+                theme={createMuiTheme({
+                  palette: {
+                    primary: { main: "#fff" },
+                  },
+                })}
+              >
+                <CircularProgress
+                  size={24}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: -12,
+                    marginLeft: -12,
+                  }}
+                />
+              </MuiThemeProvider>
+            )}
           </Button>
         </MuiThemeProvider>
       </div>
