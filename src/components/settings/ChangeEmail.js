@@ -7,6 +7,8 @@ import Icon from "material-ui-next/Icon"
 import { Grid } from "material-ui-next"
 import Input, { InputAdornment } from "material-ui-next/Input"
 import { FormControl } from "material-ui-next/Form"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 const theme = createMuiTheme({
   palette: {
@@ -15,7 +17,7 @@ const theme = createMuiTheme({
   },
 })
 
-export default class ChangeMailDialog extends React.Component {
+class ChangeMailDialog extends React.Component {
   state = {
     mailSnackOpen: false,
     mailDialogOpen: false,
@@ -44,6 +46,30 @@ export default class ChangeMailDialog extends React.Component {
   }
 
   render() {
+    const {
+      userData: { user },
+    } = this.props
+
+    let changeEmail = () => {}
+
+    if (user) {
+      changeEmail = email => {
+        this.props["ChangeEmail"]({
+          variables: {
+            email: email,
+          },
+          optimisticResponse: {
+            __typename: "Mutation",
+            user: {
+              id: user.id,
+              email: email,
+              __typename: "User",
+            },
+          },
+        })
+      }
+    }
+
     const confirmationDialogActions = [
       <MuiThemeProvider theme={theme}>
         <Button
@@ -62,7 +88,12 @@ export default class ChangeMailDialog extends React.Component {
         <Button onClick={this.closeMailDialog} style={{ marginRight: "4px" }}>
           Never mind
         </Button>
-        <Button variant="raised" color="primary">
+        <Button
+          variant="raised"
+          color="primary"
+          onClick={() => changeEmail(this.state.email)}
+          disabled={!user}
+        >
           Change
         </Button>
       </MuiThemeProvider>,
@@ -86,7 +117,7 @@ export default class ChangeMailDialog extends React.Component {
             style={{ width: "100%" }}
           >
             <Grid item style={{ marginRight: "16px" }}>
-              <Icon >vpn_key</Icon>
+              <Icon>vpn_key</Icon>
             </Grid>
             <Grid item style={{ width: "calc(100% - 40px)" }}>
               <FormControl style={{ width: "100%" }}>
@@ -148,7 +179,7 @@ export default class ChangeMailDialog extends React.Component {
             style={{ width: "100%" }}
           >
             <Grid item style={{ marginRight: "16px" }}>
-              <Icon >email</Icon>
+              <Icon>email</Icon>
             </Grid>
             <Grid item style={{ width: "calc(100% - 40px)" }}>
               <FormControl style={{ width: "100%" }}>
@@ -192,3 +223,17 @@ export default class ChangeMailDialog extends React.Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    mutation ChangeEmail($email: String!) {
+      user(email: $email) {
+        id
+        email
+      }
+    }
+  `,
+  {
+    name: "ChangeEmail",
+  }
+)(ChangeMailDialog)

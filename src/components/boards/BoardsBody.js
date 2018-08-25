@@ -12,7 +12,6 @@ import {
   Input,
   InputAdornment,
 } from "@material-ui/core"
-import GetLinkSuccess from "../GetLinkSuccess"
 import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
@@ -295,8 +294,8 @@ export default class BoardsBody extends Component {
                 color="primary"
                 style={{
                   position: "absolute",
-                  right: "20px",
-                  bottom: "20px",
+                  right: "16px",
+                  bottom: "16px",
                 }}
                 onClick={() => this.setState({ createOpen: true })}
               >
@@ -306,11 +305,6 @@ export default class BoardsBody extends Component {
             </Zoom>
           </MuiThemeProvider>
         </div>
-        <GetLinkSuccess
-          mobile={false}
-          open={this.state.copyMessageOpen}
-          close={() => this.setState({ copyMessageOpen: false })}
-        />
         <CreateBoard
           open={this.state.createOpen}
           close={() => this.setState({ createOpen: false })}

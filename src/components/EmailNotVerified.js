@@ -68,7 +68,9 @@ function MySnackbarContent(props) {
         </IconButton>,
         <IconButton
           style={{ marginRight: "-8px", color: "white" }}
-          onClick={closeSnackbar}
+          onClick={() => {
+            closeSnackbar()
+          }}
         >
           {mobile ? (
             <Icon>keyboard_arrow_down</Icon>
@@ -159,7 +161,7 @@ class CustomizedSnackbars extends React.Component {
           style={
             this.props.mobile
               ? null
-              : { bottom: "48px", right: "16px", width: "351px", left: "auto" }
+              : { bottom: "80px", right: "16px", width: "351px", left: "auto" }
           }
           TransitionComponent={
             this.props.mobile ? TransitionUp : TransitionLeft

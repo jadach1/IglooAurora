@@ -15,7 +15,6 @@ import {
   InputAdornment,
   FormControl,
 } from "@material-ui/core"
-import GetLinkSuccess from "../GetLinkSuccess"
 import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
@@ -145,7 +144,9 @@ class BoardsBodyMobile extends Component {
                   className="notSelectable"
                   value={this.props.searchText}
                   style={nightMode ? { color: "white" } : { color: "black" }}
-                  onChange={event => this.props.searchBoards(event.target.value)}
+                  onChange={event =>
+                    this.props.searchBoards(event.target.value)
+                  }
                   disabled={loading || error || (user && !user.boards[0])}
                   startAdornment={
                     <InputAdornment
@@ -381,11 +382,6 @@ class BoardsBodyMobile extends Component {
             </Zoom>
           </MuiThemeProvider>
         </div>
-        <GetLinkSuccess
-          mobile={true}
-          open={this.state.copyMessageOpen}
-          close={() => this.setState({ copyMessageOpen: false })}
-        />
         <CreateBoard
           open={this.state.createOpen}
           close={() => this.setState({ createOpen: false })}

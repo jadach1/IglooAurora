@@ -121,6 +121,7 @@ class UnAuthenticatedApp extends Component {
                   index={this.state.slideIndex}
                   onChangeIndex={this.handleChangeIndex}
                   className="loginScreen"
+                  style={{overflowY:"hidden"}}
                 >
                   <Signup
                     client={this.client}

@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
-import { CopyToClipboard } from "react-copy-to-clipboard"
 import {
   Icon,
   IconButton,
@@ -20,6 +19,7 @@ import {
 import DeleteBoard from "./DeleteBoard"
 import RenameBoard from "./RenameBoard"
 import BoardInfo from "./BoardInfo"
+import ShareBoard from "./ShareBoard"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import fox from "../../styles/assets/fox.jpg"
@@ -29,7 +29,7 @@ import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
 
 class BoardCard extends Component {
-  state = { deleteOpen: false, renameOpen: false }
+  state = { deleteOpen: false, renameOpen: false, shareOpen: false }
 
   handleMenuOpen = event => {
     this.setState({ anchorEl: event.currentTarget })
@@ -293,68 +293,27 @@ class BoardCard extends Component {
             </ListItemIcon>
             <ListItemText inset primary="Information" />
           </MenuItem>
-          {navigator.share ? (
-            <MenuItem
-              className="notSelectable"
-              style={
-                this.props.nightMode ? { color: "white" } : { color: "black" }
-              }
-              onClick={() => {
-                if (navigator.share) {
-                  navigator.share({
-                    title: this.props.board.customName + " on Igloo Aurora",
-                    url: window.location.href + "?board=" + this.props.board.id,
-                  })
-                }
-              }}
-            >
-              <ListItemIcon>
-                <Icon
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                >
-                  share
-                </Icon>
-              </ListItemIcon>
-              <ListItemText inset primary="Share" />
-            </MenuItem>
-          ) : (
-            ""
-          )}
-          {!navigator.share ? (
-            <CopyToClipboard
-              text={window.location.href + "?board=" + this.props.board.id}
-            >
-              <MenuItem
-                className="notSelectable"
+          <MenuItem
+            className="notSelectable"
+            style={
+              this.props.nightMode ? { color: "white" } : { color: "black" }
+            }
+            onClick={() => {
+              this.setState({ anchorEl: null })
+              this.setState({ shareOpen: true })
+            }}
+          >
+            <ListItemIcon>
+              <Icon
                 style={
                   this.props.nightMode ? { color: "white" } : { color: "black" }
                 }
-                onClick={() => {
-                  this.setState({ anchorEl: null })
-                  this.props.showMessage()
-                }}
               >
-                <ListItemIcon>
-                  <Icon
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    link
-                  </Icon>
-                </ListItemIcon>
-                <ListItemText inset primary="Get Link" />
-              </MenuItem>
-            </CopyToClipboard>
-          ) : (
-            ""
-          )}
+                share
+              </Icon>
+            </ListItemIcon>
+            <ListItemText inset primary="Share" />
+          </MenuItem>
           <Divider />
           <MenuItem
             className="notSelectable"
@@ -462,6 +421,11 @@ class BoardCard extends Component {
         <DeleteBoard
           open={this.state.deleteOpen}
           close={() => this.setState({ deleteOpen: false })}
+          board={this.props.board}
+        />
+        <ShareBoard
+          open={this.state.shareOpen}
+          close={() => this.setState({ shareOpen: false })}
           board={this.props.board}
         />
       </React.Fragment>

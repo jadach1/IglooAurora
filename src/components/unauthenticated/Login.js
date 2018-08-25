@@ -1,13 +1,22 @@
 import React, { Component } from "react"
-import Button from "material-ui-next/Button"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Input, { InputAdornment } from "material-ui-next/Input"
-import { FormControl, FormHelperText } from "material-ui-next/Form"
-import { IconButton } from "material-ui-next"
-import Icon from "material-ui-next/Icon"
+import {
+  FormControl,
+  FormHelperText,
+  CircularProgress,
+  InputAdornment,
+  Input,
+  MuiThemeProvider,
+  createMuiTheme,
+  Button,
+  Typography,
+  Grid,
+  FormControlLabel,
+  Checkbox,
+  Icon,
+  IconButton,
+} from "material-ui-next"
 import ForgotPassword from "../ForgotPassword"
-import { Typography, Grid, FormControlLabel, Checkbox } from "material-ui-next"
 import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
@@ -35,6 +44,7 @@ class Login extends Component {
       isMailEmpty: false,
       isPasswordEmpty: false,
       keepLoggedIn: true,
+      showLoading: false,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -65,6 +75,7 @@ class Login extends Component {
 
       this.props.signIn(loginMutation.data.AuthenticateUser.token)
     } catch (e) {
+      this.setState({ showLoading: false })
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
       } else if (
@@ -120,7 +131,8 @@ class Login extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="rightSide notSelectable">
+        <div className="rightSide notSelectable"                   style={{overflowY:"hidden"}}
+>
           <br />
           <Typography
             variant="display1"
@@ -154,7 +166,8 @@ class Login extends Component {
                       })
                     }
                     onKeyPress={event => {
-                      if (event.key === "Enter") this.signIn()
+                      if (event.key === "Enter") {this.setState({showLoading:true})
+                      this.signIn()}
                     }}
                     error={
                       this.state.emailError || this.state.isMailEmpty
@@ -219,7 +232,8 @@ class Login extends Component {
                         : false
                     }
                     onKeyPress={event => {
-                      if (event.key === "Enter") this.signIn()
+                      if (event.key === "Enter") {this.setState({showLoading:true})
+                        this.signIn()}
                     }}
                     endAdornment={
                       this.state.password ? (
@@ -293,16 +307,39 @@ class Login extends Component {
               variant="raised"
               primary={true}
               fullWidth={true}
-              onClick={this.signIn}
+              onClick={()=>{
+                this.setState({showLoading:true})
+                this.signIn()
+                }}
               color="primary"
               disabled={
                 !(
                   EmailValidator.validate(this.state.email) &&
                   this.state.password
-                )
+                ) || this.state.showLoading
               }
             >
               Log in
+              {this.state.showLoading && (
+                <MuiThemeProvider
+                  theme={createMuiTheme({
+                    palette: {
+                      primary: { main: "#0083ff" },
+                    },
+                  })}
+                >
+                  <CircularProgress
+                    size={24}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: -12,
+                      marginLeft: -12,
+                    }}
+                  />
+                </MuiThemeProvider>
+              )}
             </Button>
           </MuiThemeProvider>
         </div>

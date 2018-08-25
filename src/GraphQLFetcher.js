@@ -10,6 +10,8 @@ import MobileError404 from "./MobileError404"
 import Boards from "./Boards"
 import queryString from "query-string"
 import BoardsMobile from "./BoardsMobile"
+import EmailNotVerified from "./components/EmailNotVerified"
+import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 
 let systemLang = navigator.language || navigator.userLanguage
 
@@ -282,6 +284,12 @@ class GraphQLFetcher extends Component {
       userData: { user },
     } = this.props
 
+    let emailIsVerified = false
+
+    if (user) {
+      emailIsVerified = user.emailIsVerified
+    }
+
     let changeLanguage = () => {}
 
     if (user) {
@@ -491,7 +499,7 @@ class GraphQLFetcher extends Component {
     }
 
     return (
-      <React.Fragment>
+      <MuiThemeProvider>
         <Switch>
           <Route
             exact
@@ -510,7 +518,8 @@ class GraphQLFetcher extends Component {
             }
           />
         </Switch>
-      </React.Fragment>
+        {!emailIsVerified && <EmailNotVerified mobile={false} />}
+      </MuiThemeProvider>
     )
   }
 }

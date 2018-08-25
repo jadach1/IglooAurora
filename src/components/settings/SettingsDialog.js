@@ -791,6 +791,7 @@ class SettingsDialog extends React.Component {
           handleEmailDialogClose={() =>
             this.setState({ emailDialogOpen: false })
           }
+                    userData={this.props.userData}
         />
       </React.Fragment>
     )
