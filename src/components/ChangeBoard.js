@@ -105,7 +105,9 @@ export default graphql(
     mutation ChangeBoard($id: ID!, $boardId: ID) {
       device(id: $id, boardId: $boardId) {
         id
-        boardId
+        board {
+          id
+        }
       }
     }
   `,
