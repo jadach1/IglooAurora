@@ -15,15 +15,13 @@ import { Redirect } from "react-router-dom"
 import RecoveryMain from "./RecoveryMain"
 
 export default class RecoveryFetcher extends Component {
-  state = { token: "" }
+  constructor(props) {
+    super(props)
 
-  componentDidMount() {
-    this.setState({
+    this.state = {
       token: queryString.parse("?" + window.location.href.split("?")[1]).token,
-    })
-  }
+    }
 
-  render() {
     const wsLink = new WebSocketLink({
       uri: `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
@@ -61,7 +59,9 @@ export default class RecoveryFetcher extends Component {
       link,
       cache: new InMemoryCache({ fragmentMatcher }),
     })
+  }
 
+  render() {
     return (
       <ApolloProvider client={this.client}>
         <RecoveryMain mobile={this.props.mobile} />
