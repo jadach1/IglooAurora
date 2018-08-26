@@ -27,8 +27,8 @@ class MainBodyHeader extends Component {
     infoOpen: false,
     anchorEl: null,
     deleteOpen: false,
-    changeBoardOpen:false,
-    renameOpen:false
+    changeBoardOpen: false,
+    renameOpen: false,
   }
 
   handleOpen = () => {
@@ -127,61 +127,64 @@ class MainBodyHeader extends Component {
           <p className="title" style={{ cursor: "default" }}>
             {device.customName}
           </p>
-          <div
-            style={{
-              padding: "0",
-              marginLeft: "auto",
-              marginRight: "8px",
-              float: "right",
-              gridArea: "buttons",
-            }}
-          >
-            <Tooltip id="tooltip-more" title="More" placement="bottom">
-              <IconButton
-                style={{ color: "white" }}
-                onClick={this.handleMenuOpen}
-              >
-                <Icon>more_vert</Icon>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              id="simple-menu"
-              anchorEl={this.state.anchorEl}
-              open={this.state.anchorEl}
-              onClose={this.handleMenuClose}
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "right",
-              }}
-              transformOrigin={{
-                vertical: "top",
-                horizontal: "right",
+          {device && (
+            <div
+              style={{
+                padding: "0",
+                marginLeft: "auto",
+                marginRight: "8px",
+                float: "right",
+                gridArea: "buttons",
               }}
             >
-              <MenuItem
-                className="notSelectable"
-                style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
-                }
-                onClick={() => {
-                  this.setState({ infoOpen: true })
-                  this.handleMenuClose()
+              <Tooltip id="tooltip-more" title="More" placement="bottom">
+                <IconButton
+                  style={{ color: "white" }}
+                  onClick={this.handleMenuOpen}
+                >
+                  <Icon>more_vert</Icon>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                id="simple-menu"
+                anchorEl={this.state.anchorEl}
+                open={this.state.anchorEl}
+                onClose={this.handleMenuClose}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
                 }}
               >
-                <ListItemIcon>
-                  <Icon
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    info
-                  </Icon>
-                </ListItemIcon>
-                <ListItemText inset primary="Device information" />
-              </MenuItem>
-              {/* <MenuItem
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ infoOpen: true })
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      info
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Device information" />
+                </MenuItem>
+                {/* <MenuItem
                     className="notSelectable"
                     style={
                       this.props.nightMode
@@ -202,38 +205,7 @@ class MainBodyHeader extends Component {
                     </ListItemIcon>
                     <ListItemText inset primary="See on the map" />
                   </MenuItem> */}
-              {navigator.share ? (
-                <MenuItem
-                  className="notSelectable"
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    if (navigator.share) {
-                      navigator.share({
-                        title: device.customName + " on Igloo Aurora",
-                        url: window.location.href,
-                      })
-                    }
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      share
-                    </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Share" />
-                </MenuItem>
-              ) : (
-                <CopyToClipboard text={window.location.href}>
+                {navigator.share ? (
                   <MenuItem
                     className="notSelectable"
                     style={
@@ -242,8 +214,12 @@ class MainBodyHeader extends Component {
                         : { color: "black" }
                     }
                     onClick={() => {
-                      this.setState({ anchorEl: null })
-                      this.props.openSnackBar()
+                      if (navigator.share) {
+                        navigator.share({
+                          title: device.customName + " on Igloo Aurora",
+                          url: window.location.href,
+                        })
+                      }
                     }}
                   >
                     <ListItemIcon>
@@ -254,133 +230,173 @@ class MainBodyHeader extends Component {
                             : { color: "black" }
                         }
                       >
-                        link
+                        share
                       </Icon>
                     </ListItemIcon>
-                    <ListItemText inset primary="Get Link" />
+                    <ListItemText inset primary="Share" />
                   </MenuItem>
-                </CopyToClipboard>
-              )}
-              <Divider />
-              <MenuItem
-                className="notSelectable"
-                style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
-                }
-                onClick={() => {
-                  this.handleMenuClose()
-                }}
-              >
-                <ListItemIcon>
-                  <Icon
+                ) : (
+                  <CopyToClipboard text={window.location.href}>
+                    <MenuItem
+                      className="notSelectable"
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                      onClick={() => {
+                        this.setState({ anchorEl: null })
+                        this.props.openSnackBar()
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon
+                          style={
+                            this.props.nightMode
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          link
+                        </Icon>
+                      </ListItemIcon>
+                      <ListItemText inset primary="Get Link" />
+                    </MenuItem>
+                  </CopyToClipboard>
+                )}
+                <Divider />
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      notifications_off
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Mute" />
+                </MenuItem>
+                <Divider />
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ changeBoardOpen: true })
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      widgets
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Change board" />
+                </MenuItem>
+                {device.values.length > 1 && (
+                  <MenuItem
+                    className="notSelectable"
                     style={
                       this.props.nightMode
                         ? { color: "white" }
                         : { color: "black" }
                     }
+                    onClick={() => {
+                      this.handleOpen()
+                      this.handleMenuClose()
+                    }}
                   >
-                    notifications_off
-                  </Icon>
-                </ListItemIcon>
-                <ListItemText inset primary="Mute" />
-              </MenuItem>
-              <Divider />
-              <MenuItem
-                className="notSelectable"
-                style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
-                }
-                onClick={() => {
-                  this.setState({ changeBoardOpen: true })
-                  this.handleMenuClose()
-                }}
-              >
-                <ListItemIcon>
-                  <Icon
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    widgets
-                  </Icon>
-                </ListItemIcon>
-                <ListItemText inset primary="Change board" />
-              </MenuItem>
-              {device.values.length>1 && <MenuItem
-                className="notSelectable"
-                style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
-                }
-                onClick={() => {
-                  this.handleOpen()
-                  this.handleMenuClose()
-                }}
-              >
-                <ListItemIcon>
-                  <Icon
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    swap_vert
-                  </Icon>
-                </ListItemIcon>
-                <ListItemText inset primary="Rearrange cards" />
-              </MenuItem>}
-              <MenuItem
-                className="notSelectable"
-                style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
-                }
-                onClick={() => {
-                  this.setState({ renameOpen: true })
-                  this.handleMenuClose()
-                }}
-              >
-                <ListItemIcon>
-                  <Icon
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    mode_edit
-                  </Icon>
-                </ListItemIcon>
-                <ListItemText inset primary="Rename" />
-              </MenuItem>
-              <MenuItem
-                className="notSelectable"
-                style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
-                }
-                onClick={() => {
-                  this.setState({ deleteOpen: true })
-                  this.handleMenuClose()
-                }}
-              >
-                <ListItemIcon>
-                  <Icon style={{ color: "#f44336" }}>delete</Icon>
-                </ListItemIcon>
-                <ListItemText inset>
-                  <span style={{ color: "#f44336" }}>Delete</span>
-                </ListItemText>
-              </MenuItem>
-            </Menu>
-            <NotificationsDrawer
-              device={device}
-              drawer={this.props.drawer}
-              changeDrawerState={this.props.changeDrawerState}
-              hiddenNotifications={this.props.hiddenNotifications}
-              showHiddenNotifications={this.props.showHiddenNotifications}
-              nightMode={this.props.nightMode}
-            />
-          </div>
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        swap_vert
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Rearrange cards" />
+                  </MenuItem>
+                )}
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ renameOpen: true })
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      mode_edit
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Rename" />
+                </MenuItem>
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ deleteOpen: true })
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon style={{ color: "#f44336" }}>delete</Icon>
+                  </ListItemIcon>
+                  <ListItemText inset>
+                    <span style={{ color: "#f44336" }}>Delete</span>
+                  </ListItemText>
+                </MenuItem>
+              </Menu>
+              <NotificationsDrawer
+                device={device}
+                drawer={this.props.drawer}
+                changeDrawerState={this.props.changeDrawerState}
+                hiddenNotifications={this.props.hiddenNotifications}
+                showHiddenNotifications={this.props.showHiddenNotifications}
+                nightMode={this.props.nightMode}
+              />
+            </div>
+          )}
         </div>
         <Dialog
           title="Rearrange cards"

@@ -153,7 +153,7 @@ export default graphql(
       graphql(
         gql`
           mutation Rename($id: ID!, $customName: String) {
-            floatValue(id: $id, customName: $customName) {
+            booleanValue(id: $id, customName: $customName) {
               id
               customName
             }

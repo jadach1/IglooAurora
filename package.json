@@ -2,7 +2,7 @@
   "name": "IglooAurora",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://igloocloud.github.io/IglooAurora",
+  "homepage": "https://igloo.ooo",
   "dependencies": {
     "@material-ui/core": "^1.4.3",
     "@quentin-sommer/react-useragent": "^1.2.5",

@@ -1,23 +1,25 @@
 import React from "react"
-import IconButton from "material-ui-next/IconButton"
 import CenteredSpinner from "./CenteredSpinner"
-import List, {
+import {
+  List,
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
-} from "material-ui-next/List"
+  AppBar,
+  Typography,
+  Icon,
+  Badge,
+  Tooltip,
+  SwipeableDrawer,
+  IconButton,
+} from "@material-ui/core"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import Badge from "material-ui-next/Badge"
 import ReactCSSTransitionGroup from "react-addons-css-transition-group"
-import Tooltip from "material-ui-next/Tooltip"
-import SwipeableDrawer from "material-ui-next/SwipeableDrawer"
 import FlatButton from "material-ui/FlatButton"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import { hotkeys } from "react-keyboard-shortcuts"
-import Icon from "material-ui-next/Icon"
 import moment from "moment"
-import AppBar from "material-ui-next/AppBar"
 
 const theme = createMuiTheme({
   palette: {
@@ -103,6 +105,33 @@ class NotificationsDrawer extends React.Component {
               ? newNotification
               : notification
         )
+        return {
+          user: {
+            ...prev.user,
+            notifications: newNotifications,
+          },
+        }
+      },
+    })
+
+    const subscribeToNotificationsDeletes = gql`
+      subscription {
+        notificationDeleted
+      }
+    `
+
+    this.props.notifications.subscribeToMore({
+      document: subscribeToNotificationsDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newNotifications = prev.user.notifications.filter(
+          notification =>
+            notification.id !== subscriptionData.data.notificationDeleted
+        )
+
         return {
           user: {
             ...prev.user,
@@ -197,44 +226,40 @@ class NotificationsDrawer extends React.Component {
             transitionEnterTimeout={5000}
             transitionLeaveTimeout={3000}
           >
-            {user.notifications
-              .filter(
-                notification => notification.device.id === this.props.device.id
-              )
-              .filter(notification => notification.visualized === false)
-              .map(notification => (
-                <ListItem
-                  className="notSelectable"
-                  key={notification.id}
-                  id={notification.id}
-                  onClick={() => clearNotification(notification.id)}
-                >
-                  <ListItemText
-                    primary={notification.content}
-                    secondary={moment
-                      .utc(
-                        notification.date.split(".")[0],
-                        "YYYY-MM-DDTh:mm:ss"
-                      )
-                      .fromNow()}
-                  />
-                  <ListItemSecondaryAction>
-                    <Tooltip
-                      id="tooltip-bottom"
-                      title="Delete"
-                      placement="bottom"
-                    >
+            {user.notifications &&
+              user.notifications
+                .filter(
+                  notification =>
+                    notification.device.id === this.props.device.id
+                )
+                .filter(notification => notification.visualized === false)
+                .map(notification => (
+                  <ListItem
+                    className="notSelectable"
+                    key={notification.id}
+                    id={notification.id}
+                    onClick={() => clearNotification(notification.id)}
+                  >
+                    <ListItemText
+                      primary={notification.content}
+                      secondary={moment
+                        .utc(
+                          notification.date.split(".")[0],
+                          "YYYY-MM-DDTh:mm:ss"
+                        )
+                        .fromNow()}
+                    />
+                    <ListItemSecondaryAction>
                       <IconButton
                         aria-label="Delete"
                         onClick={() => deleteNotification(notification.id)}
                       >
                         <i class="material-icons">delete</i>
                       </IconButton>
-                    </Tooltip>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))
-              .reverse()}
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))
+                .reverse()}
           </ReactCSSTransitionGroup>
         </List>
       )
@@ -246,70 +271,79 @@ class NotificationsDrawer extends React.Component {
             transitionEnterTimeout={5000}
             transitionLeaveTimeout={3000}
           >
-            {user.notifications
-              .filter(
-                notification => notification.device.id === this.props.device.id
-              )
-              .filter(notification => notification.visualized === true)
-              .map(notification => (
-                <ListItem
-                  button
-                  key={notification.id}
-                  className="notSelectable"
-                  id={notification.id}
-                >
-                  <ListItemText
-                    primary={notification.content}
-                    secondary={moment
-                      .utc(
-                        notification.date.split(".")[0],
-                        "YYYY-MM-DDTh:mm:ss"
-                      )
-                      .fromNow()}
-                  />
-                  <ListItemSecondaryAction>
-                    <Tooltip
-                      id="tooltip-bottom"
-                      title="Mark as unread"
-                      placement="bottom"
-                    >
+            {user.notifications &&
+              user.notifications
+                .filter(
+                  notification =>
+                    notification.device.id === this.props.device.id
+                )
+                .filter(notification => notification.visualized === true)
+                .map(notification => (
+                  <ListItem
+                    button
+                    key={notification.id}
+                    className="notSelectable"
+                    id={notification.id}
+                  >
+                    <ListItemText
+                      primary={notification.content}
+                      secondary={moment
+                        .utc(
+                          notification.date.split(".")[0],
+                          "YYYY-MM-DDTh:mm:ss"
+                        )
+                        .fromNow()}
+                    />
+                    <ListItemSecondaryAction>
                       <IconButton
                         aria-label="Mark as unread"
                         onClick={() => markAsUnread(notification.id)}
                       >
                         <i class="material-icons">markunread</i>
                       </IconButton>
-                    </Tooltip>
-                    <Tooltip
-                      id="tooltip-bottom"
-                      title="Delete"
-                      placement="bottom"
-                    >
                       <IconButton
                         aria-label="Delete"
                         onClick={() => deleteNotification(notification.id)}
                       >
                         <i class="material-icons">delete</i>
                       </IconButton>
-                    </Tooltip>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))
-              .reverse()}
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))
+                .reverse()}
           </ReactCSSTransitionGroup>
         </List>
       )
 
-      notificationCount = user.notifications
-        .filter(notification => notification.device.id === this.props.device.id)
-        .filter(notification => notification.visualized === false).length
+      notificationCount =
+        user.notifications &&
+        user.notifications
+          .filter(
+            notification => notification.device.id === this.props.device.id
+          )
+          .filter(notification => notification.visualized === false).length
 
-      const readNotificationCount = user.notifications
-        .filter(notification => notification.device.id === this.props.device.id)
-        .filter(notification => notification.visualized === true).length
+      const readNotificationCount =
+        user.notifications &&
+        user.notifications
+          .filter(
+            notification => notification.device.id === this.props.device.id
+          )
+          .filter(notification => notification.visualized === true).length
 
       if (!notificationCount) {
-        noNotificationsUI = "No new notifications"
+        noNotificationsUI = (
+          <Typography
+            variant="headline"
+            style={{
+              textAlign: "center",
+              marginTop: "32px",
+              marginBottom: "32px",
+            }}
+          >
+            No new notifications
+          </Typography>
+        )
       }
 
       if (readNotificationCount) {
