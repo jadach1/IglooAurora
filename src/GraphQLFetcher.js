@@ -284,7 +284,7 @@ class GraphQLFetcher extends Component {
       userData: { user },
     } = this.props
 
-    let emailIsVerified = false
+    let emailIsVerified = true
 
     if (user) {
       emailIsVerified = user.emailIsVerified
@@ -518,7 +518,7 @@ class GraphQLFetcher extends Component {
             }
           />
         </Switch>
-        {!emailIsVerified && <EmailNotVerified mobile={false} />}
+        {!emailIsVerified && <EmailNotVerified mobile={this.props.isMobile} />}
       </MuiThemeProvider>
     )
   }
