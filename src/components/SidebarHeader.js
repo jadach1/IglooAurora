@@ -1,10 +1,13 @@
 import React, { Component } from "react"
-import IconButton from "material-ui-next/IconButton"
-import Tooltip from "material-ui-next/Tooltip"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "material-ui-next/Icon"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import logo from "../styles/assets/logo.svg"
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  Typography,
+  Tooltip,
+  IconButton,
+} from "@material-ui/core"
 import { Redirect } from "react-router-dom"
 
 const theme = createMuiTheme({
@@ -40,12 +43,32 @@ class SidebarHeader extends Component {
           height: "64px",
         }}
       >
-        <img
-          src={logo}
-          alt="Igloo logo"
-          className="notSelectable"
-          style={{ width: "56px", marginLeft: "16px" }}
-        />
+        <Tooltip id="tooltip-bottom" title="Boards" placement="bottom">
+          <IconButton
+            style={{
+              color: "white",
+              marginLeft: "8px",
+            }}
+            className="sidebarHeaderButton"
+            onClick={() => this.setState({ goToBoards: true })}
+          >
+            <Icon color="primary">chevron_left</Icon>
+          </IconButton>
+        </Tooltip>
+        <Typography
+          variant="headline"
+          style={{
+            cursor: "default",
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            color: "white",
+            lineHeight: "64px",
+            marginLeft: "8px",
+          }}
+        >
+          {this.props.boardName}
+        </Typography>
         <div
           style={{
             padding: "0",
@@ -76,15 +99,6 @@ class SidebarHeader extends Component {
                 style={{ color: "white" }}
               >
                 <Icon color="primary">settings</Icon>
-              </IconButton>
-            </Tooltip>
-            <Tooltip id="tooltip-bottom" title="Boards" placement="bottom">
-              <IconButton
-                className="sidebarHeaderButton"
-                style={{ textDecoration: "none", color: "white" }}
-                onClick={() => this.setState({ goToBoards: true })}
-              >
-                <Icon color="primary">widgets</Icon>
               </IconButton>
             </Tooltip>
             <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">

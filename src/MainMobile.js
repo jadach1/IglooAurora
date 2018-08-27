@@ -332,6 +332,12 @@ class Main extends Component {
                         drawer: false,
                       }))
                     }
+                    boardName={
+                      this.props.userData.user &&
+                      this.props.userData.user.boards.filter(
+                        board => board.id === this.props.selectedBoard
+                      )[0].customName
+                    }
                   />
                 </AppBar>
                 <div

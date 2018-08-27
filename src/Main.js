@@ -343,6 +343,7 @@ class Main extends Component {
             <SidebarHeader
               logOut={this.props.logOut}
               key="sidebarHeader"
+              selectedBoard={this.props.selectedBoard}
               openSettingsDialog={() => {
                 this.setState({ areSettingsOpen: true })
               }}
@@ -351,6 +352,12 @@ class Main extends Component {
                   areSettingsOpen: !oldState.areSettingsOpen,
                   drawer: false,
                 }))
+              }
+              boardName={
+                this.props.userData.user &&
+                this.props.userData.user.boards.filter(
+                  board => board.id === this.props.selectedBoard
+                )[0].customName
               }
             />
             <div
