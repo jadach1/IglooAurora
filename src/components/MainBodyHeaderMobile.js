@@ -58,10 +58,10 @@ class MainBodyHeader extends Component {
           className="mainBodyHeader"
           style={{ height: "64px", width: "100vw" }}
         >
-          <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
+          <Tooltip id="tooltip-bottom" title="Devices" placement="bottom">
             <Link
               to="/dashboard/"
-              style={{ textDecoration: "none", color: "black" }}
+              style={{ textDecoration: "none", color: "white" }}
             >
               <IconButton
                 style={{
