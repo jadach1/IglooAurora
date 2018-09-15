@@ -34,21 +34,21 @@ class CreateBoard extends React.Component {
   selectImage = index => {
     switch (index) {
       case 0:
-        return "denali"
+        return "DENALI"
       case 1:
-        return "fox"
+        return "FOX"
 
       case 2:
-        return "treetops"
+        return "TREETOPS"
 
       case 3:
-        return "puffin"
+        return "PUFFIN"
 
       case 4:
-        return "northernLights"
+        return "NORTHERN_LIGHTS"
 
       default:
-        return "northernLights"
+        return "NORTHERN_LIGHTS"
     }
   }
 
@@ -251,7 +251,7 @@ export default graphql(
     mutation CreateBoard(
       $customName: String!
       $favorite: Boolean
-      $avatar: String
+      $avatar: BoardAvatar
     ) {
       CreateBoard(
         customName: $customName

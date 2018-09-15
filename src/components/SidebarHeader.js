@@ -52,7 +52,7 @@ class SidebarHeader extends Component {
             className="sidebarHeaderButton"
             onClick={() => this.setState({ goToBoards: true })}
           >
-            <Icon color="primary">chevron_left</Icon>
+            <Icon>chevron_left</Icon>
           </IconButton>
         </Tooltip>
         <Typography

@@ -98,7 +98,6 @@ class ChangeNameDialog extends React.Component {
           color="primary"
           label="Change"
           primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
           disabled={
             !this.state.displayName || oldName === this.state.displayName
           }

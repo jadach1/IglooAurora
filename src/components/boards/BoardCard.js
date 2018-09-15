@@ -191,7 +191,7 @@ class BoardCard extends Component {
                 : { color: "black", textDecoration: "none" }
             }
           >
-            {this.props.board.avatar === "denali" && (
+            {this.props.board.avatar === "DENALI" && (
               <img
                 src={denali}
                 alt="Mt. Denali"
@@ -204,7 +204,7 @@ class BoardCard extends Component {
                 }}
               />
             )}
-            {this.props.board.avatar === "fox" && (
+            {this.props.board.avatar === "FOX" && (
               <img
                 src={fox}
                 alt="Fox"
@@ -217,7 +217,7 @@ class BoardCard extends Component {
                 }}
               />
             )}
-            {this.props.board.avatar === "treetops" && (
+            {this.props.board.avatar === "TREETOPS" && (
               <img
                 src={treetops}
                 alt="treetops"
@@ -230,7 +230,7 @@ class BoardCard extends Component {
                 }}
               />
             )}
-            {this.props.board.avatar === "puffin" && (
+            {this.props.board.avatar === "PUFFIN" && (
               <img
                 src={puffin}
                 alt="Puffin"
@@ -243,7 +243,7 @@ class BoardCard extends Component {
                 }}
               />
             )}
-            {this.props.board.avatar === "northernLights" && (
+            {this.props.board.avatar === "NORTHERN_LIGHTS" && (
               <img
                 src={northernLights}
                 alt="Northern lights"
@@ -427,6 +427,7 @@ class BoardCard extends Component {
           open={this.state.shareOpen}
           close={() => this.setState({ shareOpen: false })}
           board={this.props.board}
+          nightMode={this.props.nightMode}
         />
       </React.Fragment>
     )

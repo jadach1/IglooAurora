@@ -32,21 +32,21 @@ class RenameBoard extends React.Component {
   selectImage = index => {
     switch (index) {
       case 0:
-        return "denali"
+        return "DENALI"
       case 1:
-        return "fox"
+        return "FOX"
 
       case 2:
-        return "treetops"
+        return "TREETOPS"
 
       case 3:
-        return "puffin"
+        return "PUFFIN"
 
       case 4:
-        return "northernLights"
+        return "NORTHERN_LIGHTS"
 
       default:
-        return "northernLights"
+        return "NORTHERN_LIGHTS"
     }
   }
 
@@ -72,19 +72,19 @@ class RenameBoard extends React.Component {
 
   componentDidMount() {
     switch (this.props.board.avatar) {
-      case "denali":
+      case "DENALI":
         this.setState({ slideIndex: 0 })
         break
-      case "fox":
+      case "FOX":
         this.setState({ slideIndex: 1 })
         break
-      case "treetops":
+      case "TREETOPS":
         this.setState({ slideIndex: 2 })
         break
-      case "puffin":
+      case "PUFFIN":
         this.setState({ slideIndex: 3 })
         break
-      case "northernLights":
+      case "NORTHERN_LIGHTS":
         this.setState({ slideIndex: 4 })
         break
       default:
@@ -249,7 +249,7 @@ class RenameBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation Rename($id: ID!, $customName: String, $avatar: String) {
+    mutation Rename($id: ID!, $customName: String, $avatar: BoardAvatar) {
       board(id: $id, customName: $customName, avatar: $avatar) {
         id
         customName
