@@ -39,14 +39,6 @@ class AuthDialog extends React.Component {
     this.setState({ nameOpen: false, authDialogOpen: true })
   }
 
-  verifyPassword = () => {
-    this.props["verifyPassword"]({
-      variables: {
-        password: this.state.password,
-      },
-    })
-  }
-
   deletePermanentToken = tokenID => {
     this.props["DeletePermanentAccesToken"]({
       variables: {
@@ -71,6 +63,20 @@ class AuthDialog extends React.Component {
   }
 
   render() {
+    /* const verifyPasswordQuery = this.props.client.query({
+      mutation: gql`
+        mutation($password: String!) {
+          VerifyPassword(password: $password) {
+            id
+            token
+          }
+        }
+      `,
+      variables: {
+        password: this.state.password,
+      },
+    }) */
+
     const confirmationDialogActions = [
       <MuiThemeProvider theme={theme}>
         <Button
@@ -232,16 +238,5 @@ export default graphql(
     {
       name: "DeletePermanentAccesToken",
     }
-  )(
-    graphql(
-      gql`
-        query verifyPassword($password: String) {
-          verifyPassword(password: $password)
-        }
-      `,
-      {
-        name: "verifyPassword",
-      }
-    )(AuthDialog)
-  )
+  )(AuthDialog)
 )
