@@ -73,6 +73,7 @@ export default class BoardsBody extends Component {
         .map(board => (
           <Grid key={board.id} item>
             <BoardCard
+              user={user && user}
               board={board}
               nightMode={nightMode}
               devMode={devMode}

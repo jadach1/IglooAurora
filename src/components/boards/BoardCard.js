@@ -72,6 +72,11 @@ class BoardCard extends Component {
     })
 
   render() {
+    let isShared =
+      this.props.board.admins[0] ||
+      this.props.board.editors[0] ||
+      this.props.board.spectators[0]
+
     return (
       <React.Fragment>
         <Paper
@@ -121,7 +126,6 @@ class BoardCard extends Component {
                   this.props.nightMode
                     ? {
                         color: "white",
-                        marginLeft: "-8px",
                         overflow: "hidden",
                         whiteSpace: "nowrap",
                         textOverflow: "ellipsis",
@@ -141,6 +145,13 @@ class BoardCard extends Component {
                       }
                 }
               >
+                {isShared ? (
+                  <Icon style={{ marginRight: "8px", marginBottom: "-5px" }}>
+                    group
+                  </Icon>
+                ) : (
+                  ""
+                )}
                 {this.props.board.customName}
               </Typography>
             </Link>
@@ -387,25 +398,23 @@ class BoardCard extends Component {
             </ListItemIcon>
             <ListItemText inset primary="Customize" />
           </MenuItem>
-          {!this.props.lastBoard && (
-            <MenuItem
-              className="notSelectable"
-              style={
-                this.props.nightMode ? { color: "white" } : { color: "black" }
-              }
-              onClick={() => {
-                this.setState({ deleteOpen: true })
-                this.handleMenuClose()
-              }}
-            >
-              <ListItemIcon>
-                <Icon style={{ color: "#f44336" }}>delete</Icon>
-              </ListItemIcon>
-              <ListItemText inset>
-                <span style={{ color: "#f44336" }}>Delete</span>
-              </ListItemText>
-            </MenuItem>
-          )}
+          <MenuItem
+            className="notSelectable"
+            style={
+              this.props.nightMode ? { color: "white" } : { color: "black" }
+            }
+            onClick={() => {
+              this.setState({ deleteOpen: true })
+              this.handleMenuClose()
+            }}
+          >
+            <ListItemIcon>
+              <Icon style={{ color: "#f44336" }}>delete</Icon>
+            </ListItemIcon>
+            <ListItemText inset>
+              <span style={{ color: "#f44336" }}>Delete</span>
+            </ListItemText>
+          </MenuItem>
         </Menu>
         <BoardInfo
           open={this.state.infoOpen}
@@ -427,6 +436,7 @@ class BoardCard extends Component {
           open={this.state.shareOpen}
           close={() => this.setState({ shareOpen: false })}
           board={this.props.board}
+          user={this.props.user}
           nightMode={this.props.nightMode}
         />
       </React.Fragment>

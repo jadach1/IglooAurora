@@ -1,7 +1,14 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Button,
+  MuiThemeProvider,
+  createMuiTheme,
+  Grow,
+  Slide,
+} from "@material-ui/core"
 import moment from "moment"
 
 const theme = createMuiTheme({
@@ -9,6 +16,16 @@ const theme = createMuiTheme({
     primary: { main: "#0083ff" },
   },
 })
+
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
 
 class BoardInfo extends React.Component {
   state = { showHidden: false }
@@ -22,15 +39,19 @@ class BoardInfo extends React.Component {
 
     return (
       <Dialog
-        title="Board information"
         actions={infoActions}
         open={this.props.open}
-        onRequestClose={this.props.close}
-        titleClassName="notSelectable defaultCursor"
-        contentStyle={{
-          width: "400px",
-        }}
+        onClose={this.props.close}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={Transition}
       >
+        <DialogTitle
+          className="notSelectable defaultCursor"
+          style={{ width: "350px" }}
+        >
+          Board information
+        </DialogTitle>
+        <div style={{paddingLeft:"24px",paddingRight:"24px"}}>
         <b>Created: </b>
         {moment
           .utc(this.props.board.createdAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
@@ -50,6 +71,12 @@ class BoardInfo extends React.Component {
         ) : (
           ""
         )}
+        </div>
+        <DialogActions>
+          <MuiThemeProvider theme={theme}>
+            <Button onClick={this.props.close}>Close</Button>
+          </MuiThemeProvider>
+        </DialogActions>
       </Dialog>
     )
   }

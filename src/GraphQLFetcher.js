@@ -126,6 +126,32 @@ class GraphQLFetcher extends Component {
           notificationsCount
           quietMode
           avatar
+          myRole
+          email
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
+          }
         }
       }
     `
@@ -551,6 +577,30 @@ export default graphql(
           notificationsCount
           quietMode
           avatar
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
+          }
         }
         devices {
           id

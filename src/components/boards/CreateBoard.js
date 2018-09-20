@@ -1,5 +1,4 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import {
@@ -14,6 +13,11 @@ import {
   Input,
   InputAdornment,
   IconButton,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Grow,
+  Slide,
 } from "@material-ui/core"
 import fox from "../../styles/assets/fox.jpg"
 import northernLights from "../../styles/assets/northernLights.jpg"
@@ -27,6 +31,16 @@ const theme = createMuiTheme({
     primary: { main: "#0083ff" },
   },
 })
+
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
 
 class CreateBoard extends React.Component {
   state = { customName: "", favorite: false, slideIndex: 0 }
@@ -73,42 +87,28 @@ class CreateBoard extends React.Component {
   }
 
   render() {
-    const createBoardActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.createBoardMutation}
-          disabled={!this.state.customName}
-        >
-          Create board
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
       <Dialog
-        title="Create board"
-        actions={createBoardActions}
         open={this.props.open}
-        onRequestClose={this.props.close}
+        onClose={this.props.close}
         className="notSelectable"
-        contentStyle={{
-          width: "350px",
-        }}
-        titleClassName="notSelectable defaultCursor"
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        n
+        start
       >
+        <DialogTitle
+          className="notSelectable defaultCursor"
+          style={{ width: "350px" }}
+        >
+          Create board
+        </DialogTitle>
         <MuiThemeProvider theme={theme}>
           <Grid
             container
             spacing={0}
             alignItems="flex-end"
-            style={{ width: "100%" }}
+            style={{ width: "100%", paddingLeft: "24px", paddingRight: "24px" }}
           >
             <Grid item style={{ marginRight: "16px" }}>
               <Icon>widgets</Icon>
@@ -164,9 +164,10 @@ class CreateBoard extends React.Component {
               />
             </MuiThemeProvider>
           }
+          style={{ paddingLeft: "24px", paddingRight: "24px" }}
           label="Set as favorite"
         />
-        <br /> <br />
+        <br />
         <SwipeableViews
           index={this.state.slideIndex}
           onChangeIndex={value => {
@@ -174,6 +175,15 @@ class CreateBoard extends React.Component {
               slideIndex: value,
             })
           }}
+          style={
+            window.innerWidth < MOBILE_WIDTH
+              ? {
+                  width: "calc(100vw - 48px)",
+                  marginLeft: "24px",
+                  marginRight: "24px",
+                }
+              : { width: "350px", marginLeft: "24px", marginRight: "24px" }
+          }
         >
           <img
             src={denali}
@@ -216,31 +226,59 @@ class CreateBoard extends React.Component {
             }}
           />
         </SwipeableViews>
-        <Button
-          size="small"
-          onClick={() =>
-            this.setState(oldState => ({
-              slideIndex: oldState.slideIndex - 1,
-            }))
-          }
-          disabled={this.state.slideIndex === 0}
+        <div>
+          <Button
+            size="small"
+            onClick={() =>
+              this.setState(oldState => ({
+                slideIndex: oldState.slideIndex - 1,
+              }))
+            }
+            disabled={this.state.slideIndex === 0}
+            style={{ width: "73px", marginLeft: "24px" }}
+          >
+            <Icon>keyboard_arrow_left</Icon>
+            Back
+          </Button>
+          <Button
+            size="small"
+            onClick={() =>
+              this.setState(oldState => ({
+                slideIndex: oldState.slideIndex + 1,
+              }))
+            }
+            disabled={this.state.slideIndex === 4}
+            style={{
+              width: "73px",
+              float: "right",
+              marginRight: "24px",
+              marginLeft: "auto",
+            }}
+          >
+            Next
+            <Icon>keyboard_arrow_right</Icon>
+          </Button>
+        </div>
+        <DialogActions
+          className="notSelectable defaultCursor"
+          style={{ marginLeft: "8px", marginRight: "8px" }}
         >
-          <Icon>keyboard_arrow_left</Icon>
-          Back
-        </Button>
-        <Button
-          size="small"
-          onClick={() =>
-            this.setState(oldState => ({
-              slideIndex: oldState.slideIndex + 1,
-            }))
-          }
-          disabled={this.state.slideIndex === 4}
-          style={{ float: "right" }}
-        >
-          Next
-          <Icon>keyboard_arrow_right</Icon>
-        </Button>
+          <MuiThemeProvider theme={theme}>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              onClick={this.createBoardMutation}
+              disabled={!this.state.customName}
+            >
+              Create board
+            </Button>
+          </MuiThemeProvider>
+        </DialogActions>
       </Dialog>
     )
   }
