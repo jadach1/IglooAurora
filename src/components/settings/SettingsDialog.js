@@ -1,6 +1,5 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
+import { Dialog, DialogActions, Button, Grow } from "@material-ui/core"
 import { Tabs, Tab } from "material-ui/Tabs"
 import Toggle from "material-ui/Toggle"
 import { List, ListItem } from "material-ui/List"
@@ -31,6 +30,10 @@ import GDPRDataDownload from "./GDPRDataDownload"
 import ChangeEmail from "./ChangeEmail"
 
 // var moment = require("moment-timezone")
+
+function Transition(props) {
+  return <Grow {...props} />
+}
 
 const listStyles = {
   root: {
@@ -432,31 +435,13 @@ class SettingsDialog extends React.Component {
       profileIconColor = user.profileIconColor
     }
 
-    const actions = [
-      <Button
-        onClick={this.props.closeSettingsDialog}
-        style={user && user.nightMode ? { color: "#fff" } : { color: "#000" }}
-      >
-        Close
-      </Button>,
-    ]
-
     return (
       <React.Fragment>
         <Dialog
-          actions={actions}
-          modal={false}
           open={this.props.isOpen}
-          onRequestClose={this.props.closeSettingsDialog}
-          bodyStyle={{ padding: "0" }}
-          repositionOnUpdate={true}
-          contentStyle={{ width: "550px" }}
-          className="notSelectable"
-          actionsContainerStyle={
-            user && user.nightMode
-              ? { backgroundColor: "#2f333d" }
-              : { backgroundColor: "#fff" }
-          }
+          onClose={this.props.closeSettingsDialog}
+          TransitionComponent={Transition}
+          className="notSelectable defaultCursor"
         >
           <AppBar position="sticky">
             <Tabs
@@ -549,7 +534,6 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "100%",
               }}
             >
               <div style={listStyles.root}>
@@ -569,7 +553,6 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "100%",
               }}
             >
               <List style={{ padding: "0" }}>
@@ -653,7 +636,6 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
-                height: "100%",
               }}
             >
               <List style={{ padding: "0" }}>
@@ -688,6 +670,17 @@ class SettingsDialog extends React.Component {
               </List>
             </div>
           </SwipeableViews>
+          <DialogActions
+            className="notSelectable defaultCursor"
+            style={{ marginLeft: "8px", marginRight: "8px" }}
+          >
+            <Button
+              style={{ float: "right" }}
+              onClick={this.props.closeSettingsDialog}
+            >
+              Close
+            </Button>
+          </DialogActions>
         </Dialog>
         <TwoFactorDialog
           isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}
@@ -791,7 +784,7 @@ class SettingsDialog extends React.Component {
           handleEmailDialogClose={() =>
             this.setState({ emailDialogOpen: false })
           }
-                    userData={this.props.userData}
+          userData={this.props.userData}
         />
       </React.Fragment>
     )
