@@ -27,7 +27,11 @@ const theme = createMuiTheme({
 })
 
 class RenameBoard extends React.Component {
-  state = { customName: this.props.board.customName, slideIndex: 0 }
+  state = {
+    customName: this.props.board.customName,
+    slideIndex: 0,
+    initialSlideIndex: 0,
+  }
 
   selectImage = index => {
     switch (index) {
@@ -73,22 +77,22 @@ class RenameBoard extends React.Component {
   componentDidMount() {
     switch (this.props.board.avatar) {
       case "DENALI":
-        this.setState({ slideIndex: 0 })
+        this.setState({ slideIndex: 0, initialSlideIndex: 0 })
         break
       case "FOX":
-        this.setState({ slideIndex: 1 })
+        this.setState({ slideIndex: 1, initialSlideIndex: 1 })
         break
       case "TREETOPS":
-        this.setState({ slideIndex: 2 })
+        this.setState({ slideIndex: 2, initialSlideIndex: 2 })
         break
       case "PUFFIN":
-        this.setState({ slideIndex: 3 })
+        this.setState({ slideIndex: 3, initialSlideIndex: 3 })
         break
       case "NORTHERN_LIGHTS":
-        this.setState({ slideIndex: 4 })
+        this.setState({ slideIndex: 4, initialSlideIndex: 4 })
         break
       default:
-        this.setState({ slideIndex: 0 })
+        this.setState({ slideIndex: 0, initialSlideIndex: 0 })
         break
     }
   }
@@ -105,7 +109,11 @@ class RenameBoard extends React.Component {
           primary={true}
           buttonStyle={{ backgroundColor: "#0083ff" }}
           onClick={this.rename}
-          disabled={!this.state.customName}
+          disabled={
+            !this.state.customName ||
+            (this.state.initialSlideIndex === this.state.slideIndex &&
+            this.props.board.customName === this.state.customName)
+          }
         >
           Customize
         </Button>

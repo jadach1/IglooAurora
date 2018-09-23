@@ -127,7 +127,6 @@ class GraphQLFetcher extends Component {
           quietMode
           avatar
           myRole
-          email
           owner {
             id
             email
@@ -175,6 +174,66 @@ class GraphQLFetcher extends Component {
       },
     })
 
+    const boardSharedSubscriptionQuery = gql`
+      subscription {
+        boardShared {
+          id
+          index
+          customName
+          favorite
+          createdAt
+          updatedAt
+          notificationsCount
+          quietMode
+          avatar
+          myRole
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: boardSharedSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newBoards = [
+          ...prev.user.boards,
+          subscriptionData.data.boardShared,
+        ]
+        return {
+          user: {
+            ...prev.user,
+            boards: newBoards,
+          },
+        }
+      },
+    })
+
     const subscribeToBoardsUpdates = gql`
       subscription {
         boardUpdated {
@@ -187,6 +246,31 @@ class GraphQLFetcher extends Component {
           notificationsCount
           quietMode
           avatar
+          myRole
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
+          }
         }
       }
     `
@@ -562,6 +646,7 @@ export default graphql(
         emailIsVerified
         displayName
         profileIconColor
+        email
         permanentTokens {
           id
           customName

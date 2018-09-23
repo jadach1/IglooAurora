@@ -83,6 +83,7 @@ class BoardsBodyMobile extends Component {
         .map(board => (
           <Grid key={board.id} item>
             <BoardCard
+            userData={this.props.userData}
               board={board}
               nightMode={nightMode}
               devMode={devMode}
@@ -102,6 +103,7 @@ class BoardsBodyMobile extends Component {
         .map(board => (
           <Grid key={board.id} item>
             <BoardCard
+            userData={this.props.userData}
               board={board}
               nightMode={nightMode}
               devMode={devMode}

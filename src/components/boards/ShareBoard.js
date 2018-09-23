@@ -88,6 +88,23 @@ class ShareBoard extends React.Component {
     })
   }
 
+  stopSharing = () => {
+    this.props.StopSharing({
+      variables: {
+        boardId: this.props.board.id,
+        email: this.state.menuTarget.email,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        stopSharing: {
+          id: this.props.board.id,
+          email: this.state.menuTarget.email,
+          __typename: "Board",
+        },
+      },
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
@@ -118,7 +135,11 @@ class ShareBoard extends React.Component {
           </Typography>
           <List
             subheader={<li />}
-            style={{ overflow: "auto", maxHeight: "420px" }}
+            style={
+              window.innerWidth < MOBILE_WIDTH
+                ? { overflow: "auto", height: "100%" }
+                : { overflow: "auto", maxHeight: "420px" }
+            }
           >
             <li key="Owner">
               <ul style={{ padding: "0" }}>
@@ -140,14 +161,27 @@ class ShareBoard extends React.Component {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={this.props.board.owner.displayName}
-                    secondary={this.props.board.owner.email}
+                    primary={
+                      this.props.userData.user.email ===
+                      this.props.board.owner.email
+                        ? "You"
+                        : this.props.board.owner.displayName
+                    }
+                    secondary={
+                      this.props.userData.user.email ===
+                      this.props.board.owner.email
+                        ? ""
+                        : this.props.board.owner.email
+                    }
                   />
-                  <ListItemSecondaryAction>
-                    <IconButton>
-                      <Icon>edit</Icon>
-                    </IconButton>
-                  </ListItemSecondaryAction>
+                  {this.props.userData.user.email ===
+                    this.props.board.owner.email && (
+                    <ListItemSecondaryAction>
+                      <IconButton>
+                        <Icon>edit</Icon>
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  )}
                 </ListItem>
               </ul>
             </li>
@@ -170,25 +204,30 @@ class ShareBoard extends React.Component {
                     </ListItemAvatar>
                     <ListItemText
                       primary={
-                        this.props.user &&
-                        item.displayName === this.props.user.email
+                        this.props.userData.user.email === item.email
                           ? "You"
                           : item.displayName
                       }
-                      secondary={item.email}
+                      secondary={
+                        this.props.userData.user.email === item.email
+                          ? ""
+                          : item.email
+                      }
                     />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        onClick={event =>
-                          this.setState({
-                            anchorEl: event.currentTarget,
-                            menuTarget: item,
-                          })
-                        }
-                      >
-                        <Icon>more_vert</Icon>
-                      </IconButton>
-                    </ListItemSecondaryAction>
+                    {this.props.userData.user.email !== item.email && (
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={event =>
+                            this.setState({
+                              anchorEl: event.currentTarget,
+                              menuTarget: item,
+                            })
+                          }
+                        >
+                          <Icon>more_vert</Icon>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    )}
                   </ListItem>
                 ))}
                 <ListItem
@@ -228,21 +267,31 @@ class ShareBoard extends React.Component {
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={item.displayName}
-                      secondary={item.email}
+                      primary={
+                        this.props.userData.user.email === item.email
+                          ? "You"
+                          : item.displayName
+                      }
+                      secondary={
+                        this.props.userData.user.email === item.email
+                          ? ""
+                          : item.email
+                      }
                     />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        onClick={event =>
-                          this.setState({
-                            anchorEl: event.currentTarget,
-                            menuTarget: item,
-                          })
-                        }
-                      >
-                        <Icon>more_vert</Icon>
-                      </IconButton>
-                    </ListItemSecondaryAction>
+                    {this.props.userData.user.email !== item.email && (
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={event =>
+                            this.setState({
+                              anchorEl: event.currentTarget,
+                              menuTarget: item,
+                            })
+                          }
+                        >
+                          <Icon>more_vert</Icon>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    )}
                   </ListItem>
                 ))}
                 <ListItem
@@ -282,21 +331,31 @@ class ShareBoard extends React.Component {
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
-                      primary={item.displayName}
-                      secondary={item.email}
+                      primary={
+                        this.props.userData.user.email === item.email
+                          ? "You"
+                          : item.displayName
+                      }
+                      secondary={
+                        this.props.userData.user.email === item.email
+                          ? ""
+                          : item.email
+                      }
                     />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        onClick={event =>
-                          this.setState({
-                            anchorEl: event.currentTarget,
-                            menuTarget: item,
-                          })
-                        }
-                      >
-                        <Icon>more_vert</Icon>
-                      </IconButton>
-                    </ListItemSecondaryAction>
+                    {this.props.userData.user.email !== item.email && (
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={event =>
+                            this.setState({
+                              anchorEl: event.currentTarget,
+                              menuTarget: item,
+                            })
+                          }
+                        >
+                          <Icon>more_vert</Icon>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    )}
                   </ListItem>
                 ))}
                 <ListItem
@@ -437,6 +496,7 @@ class ShareBoard extends React.Component {
               </Grid>
             </Grid>
           </MuiThemeProvider>
+          <div style={{ height: "100%" }} />
           <br />
           <DialogActions
             className="notSelectable defaultCursor"
@@ -480,6 +540,9 @@ class ShareBoard extends React.Component {
             name="role"
             onChange={(event, value) => this.setState({ value: value })}
             valueSelected={this.state.value}
+            style={{
+              height: "100%",
+            }}
           >
             <RadioButton
               value="admin"
@@ -555,7 +618,8 @@ class ShareBoard extends React.Component {
           open={this.state.stopSharingOpen}
           onClose={() => this.setState({ stopSharingOpen: false })}
           className="notSelectable defaultCursor"
-          titleClassName="notSelectable defaultCursor"
+          TransitionComponent={Transition}
+          fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
           <DialogTitle style={{ width: "350px" }}>Stop sharing</DialogTitle>
           <div
@@ -563,12 +627,17 @@ class ShareBoard extends React.Component {
               paddingLeft: "24px",
               paddingRight: "24px",
               width: "350px",
+              height: "100%",
             }}
           >
             Are you sure you want to stop sharing this board with{" "}
             {this.state.menuTarget && this.state.menuTarget.displayName}?
           </div>
-          <DialogActions>
+          <DialogActions
+            className="notSelectable defaultCursor"
+            style={{ marginLeft: "8px", marginRight: "8px" }}
+          >
+            {" "}
             <MuiThemeProvider
               theme={createMuiTheme({
                 palette: {
@@ -582,7 +651,15 @@ class ShareBoard extends React.Component {
               >
                 Never mind
               </Button>
-              <Button variant="raised" color="primary" primary={true}>
+              <Button
+                variant="raised"
+                color="primary"
+                primary={true}
+                onClick={() => {
+                  this.stopSharing()
+                  this.setState({ stopSharingOpen: false })
+                }}
+              >
                 Stop sharing
               </Button>
             </MuiThemeProvider>
@@ -595,13 +672,26 @@ class ShareBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation ChangeName($email: String!, $boardId: ID!, $role: Role!) {
-      shareBoard(email: $email, boardId: $boardId, role: $role) {
+    mutation StopSharing($email: String!, $boardId: ID!) {
+      stopSharingBoard(email: $email, boardId: $boardId) {
         id
       }
     }
   `,
   {
-    name: "InviteUser",
+    name: "StopSharing",
   }
-)(ShareBoard)
+)(
+  graphql(
+    gql`
+      mutation ChangeName($email: String!, $boardId: ID!, $role: Role!) {
+        shareBoard(email: $email, boardId: $boardId, role: $role) {
+          id
+        }
+      }
+    `,
+    {
+      name: "InviteUser",
+    }
+  )(ShareBoard)
+)
