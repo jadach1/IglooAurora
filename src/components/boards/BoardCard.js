@@ -20,6 +20,7 @@ import DeleteBoard from "./DeleteBoard"
 import RenameBoard from "./RenameBoard"
 import BoardInfo from "./BoardInfo"
 import ShareBoard from "./ShareBoard"
+import LeaveBoard from "./LeaveBoard"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import fox from "../../styles/assets/fox.jpg"
@@ -304,6 +305,7 @@ class BoardCard extends Component {
             </ListItemIcon>
             <ListItemText inset primary="Information" />
           </MenuItem>
+          <Divider />
           <MenuItem
             className="notSelectable"
             style={
@@ -324,6 +326,27 @@ class BoardCard extends Component {
               </Icon>
             </ListItemIcon>
             <ListItemText inset primary="Share" />
+          </MenuItem>
+          <MenuItem
+            className="notSelectable"
+            style={
+              this.props.nightMode ? { color: "white" } : { color: "black" }
+            }
+            onClick={() => {
+              this.setState({ leaveOpen: true })
+              this.handleMenuClose()
+            }}
+          >
+            <ListItemIcon>
+              <Icon
+                style={
+                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                }
+              >
+                remove_circle
+              </Icon>
+            </ListItemIcon>
+            <ListItemText inset primary="Leave board" />
           </MenuItem>
           <Divider />
           <MenuItem
@@ -436,7 +459,14 @@ class BoardCard extends Component {
           open={this.state.shareOpen}
           close={() => this.setState({ shareOpen: false })}
           board={this.props.board}
-          user={this.props.user}
+          userData={this.props.userData}
+          nightMode={this.props.nightMode}
+        />
+        <LeaveBoard
+          open={this.state.leaveOpen}
+          close={() => this.setState({ leaveOpen: false })}
+          board={this.props.board}
+          userData={this.props.userData}
           nightMode={this.props.nightMode}
         />
       </React.Fragment>

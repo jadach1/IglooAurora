@@ -259,6 +259,7 @@ class CreateBoard extends React.Component {
             <Icon>keyboard_arrow_right</Icon>
           </Button>
         </div>
+        <div style={{ height: "100%" }} />
         <DialogActions
           className="notSelectable defaultCursor"
           style={{ marginLeft: "8px", marginRight: "8px" }}
