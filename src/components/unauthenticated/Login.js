@@ -15,8 +15,8 @@ import {
   Checkbox,
   Icon,
   IconButton,
-} from "material-ui-next"
-import ForgotPassword from "../ForgotPassword"
+} from "@material-ui/core"
+import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
@@ -131,8 +131,10 @@ class Login extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="rightSide notSelectable"                   style={{overflowY:"hidden"}}
->
+        <div
+          className="rightSide notSelectable"
+          style={{ overflowY: "hidden" }}
+        >
           <br />
           <Typography
             variant="display1"
@@ -166,8 +168,10 @@ class Login extends Component {
                       })
                     }
                     onKeyPress={event => {
-                      if (event.key === "Enter") {this.setState({showLoading:true})
-                      this.signIn()}
+                      if (event.key === "Enter") {
+                        this.setState({ showLoading: true })
+                        this.signIn()
+                      }
                     }}
                     error={
                       this.state.emailError || this.state.isMailEmpty
@@ -232,8 +236,10 @@ class Login extends Component {
                         : false
                     }
                     onKeyPress={event => {
-                      if (event.key === "Enter") {this.setState({showLoading:true})
-                        this.signIn()}
+                      if (event.key === "Enter") {
+                        this.setState({ showLoading: true })
+                        this.signIn()
+                      }
                     }}
                     endAdornment={
                       this.state.password ? (
@@ -307,10 +313,10 @@ class Login extends Component {
               variant="raised"
               primary={true}
               fullWidth={true}
-              onClick={()=>{
-                this.setState({showLoading:true})
+              onClick={() => {
+                this.setState({ showLoading: true })
                 this.signIn()
-                }}
+              }}
               color="primary"
               disabled={
                 !(

@@ -3,7 +3,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Dialog from "material-ui/Dialog"
 import NotificationsDrawer from "./NotificationsDrawer"
-import DeviceInfo from "./DeviceInfo"
+import DeviceInfo from "./devices/DeviceInfo"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import {
   Typography,
@@ -17,9 +17,10 @@ import {
   ListItemIcon,
   Menu,
 } from "@material-ui/core"
-import DeleteDevice from "./DeleteDevice"
-import RenameDevice from "./RenameDevice"
-import ChangeBoard from "./ChangeBoard"
+import ShareDevice from "./devices/ShareDevice"
+import DeleteDevice from "./devices/DeleteDevice"
+import RenameDevice from "./devices/RenameDevice"
+import ChangeBoard from "./devices/ChangeBoard"
 
 class MainBodyHeader extends Component {
   state = {
@@ -28,6 +29,7 @@ class MainBodyHeader extends Component {
     deleteOpen: false,
     renameOpen: false,
     changeBoardOpen: false,
+    shareOpen: false,
   }
 
   handleOpen = () => {
@@ -152,6 +154,32 @@ class MainBodyHeader extends Component {
                     </Icon>
                   </ListItemIcon>
                   <ListItemText inset primary="Device information" />
+                </MenuItem>
+                <Divider />
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ anchorEl: null })
+                    this.setState({ shareOpen: true })
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      share
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Share" />
                 </MenuItem>
                 {/* <MenuItem
                     className="notSelectable"
@@ -385,6 +413,7 @@ class MainBodyHeader extends Component {
           createdAt={device.createdAt}
           devMode={this.props.devMode}
         />
+        <ShareDevice open={this.state.shareOpen} device={device} />
         <ChangeBoard
           open={this.state.changeBoardOpen}
           close={() => this.setState({ changeBoardOpen: false })}

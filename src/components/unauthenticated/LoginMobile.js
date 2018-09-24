@@ -1,13 +1,19 @@
 import React, { Component } from "react"
-import Button from "material-ui-next/Button"
+import Button from "@material-ui/core/Button"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Input, { InputAdornment } from "material-ui-next/Input"
-import { FormControl, FormHelperText } from "material-ui-next/Form"
-import IconButton from "material-ui-next/IconButton"
-import Icon from "material-ui-next/Icon"
-import ForgotPassword from "../ForgotPassword"
-import { Typography, Grid, FormControlLabel, Checkbox,CircularProgress } from "material-ui-next"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Input, { InputAdornment } from "@material-ui/core/Input"
+import { FormControl, FormHelperText } from "@material-ui/core"
+import IconButton from "@material-ui/core/IconButton"
+import Icon from "@material-ui/core/Icon"
+import ForgotPassword from "./ForgotPassword"
+import {
+  Typography,
+  Grid,
+  FormControlLabel,
+  Checkbox,
+  CircularProgress,
+} from "@material-ui/core"
 import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
@@ -35,7 +41,7 @@ class LoginMobile extends Component {
       isMailEmpty: false,
       isPasswordEmpty: false,
       keepLoggedIn: true,
-      showLoading:false
+      showLoading: false,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -66,7 +72,7 @@ class LoginMobile extends Component {
 
       this.props.signIn(loginMutation.data.AuthenticateUser.token)
     } catch (e) {
-      this.setState({showLoading:false})
+      this.setState({ showLoading: false })
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
       } else if (
@@ -122,8 +128,10 @@ class LoginMobile extends Component {
   render() {
     return (
       <React.Fragment>
-        <div className="rightSide notSelectable" style={{ maxWidth: "400px", marginLeft: "auto", marginRight: "auto" }}
->
+        <div
+          className="rightSide notSelectable"
+          style={{ maxWidth: "400px", marginLeft: "auto", marginRight: "auto" }}
+        >
           <Typography
             variant="display1"
             gutterBottom
@@ -159,8 +167,10 @@ class LoginMobile extends Component {
                       })
                     }
                     onKeyPress={event => {
-                      if (event.key === "Enter") {this.setState({showLoading:true})
-                      this.signIn()}
+                      if (event.key === "Enter") {
+                        this.setState({ showLoading: true })
+                        this.signIn()
+                      }
                     }}
                     endAdornment={
                       this.state.email ? (
@@ -216,8 +226,10 @@ class LoginMobile extends Component {
                       })
                     }
                     onKeyPress={event => {
-                      if (event.key === "Enter") {this.setState({showLoading:true})
-                      this.signIn()}
+                      if (event.key === "Enter") {
+                        this.setState({ showLoading: true })
+                        this.signIn()
+                      }
                     }}
                     endAdornment={
                       this.state.password ? (
@@ -251,7 +263,7 @@ class LoginMobile extends Component {
               </Grid>
             </Grid>
             <FormControlLabel
-            style={{marginLeft:"-12px"}}
+              style={{ marginLeft: "-12px" }}
               control={
                 <MuiThemeProvider
                   theme={createMuiTheme({
@@ -297,10 +309,10 @@ class LoginMobile extends Component {
               variant="raised"
               primary={true}
               fullWidth={true}
-              onClick={()=>{
-                this.setState({showLoading:true})
+              onClick={() => {
+                this.setState({ showLoading: true })
                 this.signIn()
-                }}
+              }}
               color="secondary"
               disabled={
                 !(

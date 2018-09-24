@@ -3,7 +3,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Dialog from "material-ui/Dialog"
 import NotificationsDrawer from "./NotificationsDrawer"
-import DeviceInfo from "./DeviceInfo"
+import DeviceInfo from "./devices/DeviceInfo"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import { Link } from "react-router-dom"
 import {
@@ -17,9 +17,9 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core"
-import DeleteDevice from "./DeleteDevice"
-import ChangeBoard from "./ChangeBoard"
-import RenameDevice from "./RenameDevice"
+import DeleteDevice from "./devices/DeleteDevice"
+import ChangeBoard from "./devices/ChangeBoard"
+import RenameDevice from "./devices/RenameDevice"
 
 class MainBodyHeader extends Component {
   state = {
