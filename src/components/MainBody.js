@@ -285,6 +285,31 @@ export default graphql(
     query($id: ID!) {
       device(id: $id) {
         id
+        myRole
+        owner {
+          id
+          email
+          displayName
+          profileIconColor
+        }
+        admins {
+          id
+          email
+          displayName
+          profileIconColor
+        }
+        editors {
+          id
+          email
+          displayName
+          profileIconColor
+        }
+        spectators {
+          id
+          email
+          displayName
+          profileIconColor
+        }
         values {
           id
           permission
