@@ -28,6 +28,8 @@ class GraphQLFetcher extends Component {
           signalStatus
           deviceType
           batteryCharging
+          createdAt
+          updatedAt
           board {
             id
           }
@@ -71,6 +73,8 @@ class GraphQLFetcher extends Component {
           signalStatus
           deviceType
           batteryCharging
+          createdAt
+          updatedAt
           board {
             id
           }
@@ -696,6 +700,8 @@ export default graphql(
           batteryCharging
           signalStatus
           deviceType
+          createdAt
+          updatedAt
           board {
             id
           }

@@ -1,7 +1,14 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Grow,
+  Slide,
+} from "@material-ui/core"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -10,6 +17,16 @@ const theme = createMuiTheme({
     primary: { main: "#0083ff" },
   },
 })
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
+
+const MOBILE_WIDTH = 500
 
 class LeaveBoard extends React.Component {
   deleteBoardMutation = () => {
@@ -45,35 +62,35 @@ class LeaveBoard extends React.Component {
   }
 
   render() {
-    const deleteBoardActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          onClick={this.stopSharing}
-        >
-          Leave board
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
       <Dialog
-        title="Leave board"
-        actions={deleteBoardActions}
         open={this.props.open}
-        onRequestClose={this.props.close}
+        onClose={this.props.close}
         className="notSelectable defaultCursor"
-        contentStyle={{
-          width: "350px",
-        }}
         titleClassName="notSelectable defaultCursor"
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        Are you sure you want to leave {this.props.board.customName}?
+        <DialogTitle style={{ width: "350px" }}>Leave board</DialogTitle>
+        <div style={{ paddingLeft: "24px", height: "100%" }}>
+          Are you sure you want to leave {this.props.board.customName}?
+        </div>
+        <br />
+        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <MuiThemeProvider theme={theme}>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              onClick={this.stopSharing}
+            >
+              Leave board
+            </Button>
+          </MuiThemeProvider>
+        </DialogActions>
       </Dialog>
     )
   }

@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import Icon from "material-ui-next/Icon"
 import gql from "graphql-tag"
+import moment from "moment"
 
 export default class StatusBar extends Component {
   componentDidMount() {
@@ -54,20 +55,18 @@ export default class StatusBar extends Component {
       user &&
       user.devices.filter(device => device.id === this.props.deviceId)[0]
     ) {
-      if (
-        user.devices.filter(device => device.id === this.props.deviceId)[0]
-          .online ||
-        user.devices.filter(device => device.id === this.props.deviceId)[0]
-          .lastSeen
-      ) {
-        deviceStatus = user.devices.filter(
-          device => device.id === this.props.deviceId
-        )[0].online
-          ? "Online"
-          : "Last seen: " +
-            user.devices.filter(device => device.id === this.props.deviceId)[0]
-              .lastSeen
-      }
+      deviceStatus = user.devices.filter(
+        device => device.id === this.props.deviceId
+      )[0].online
+        ? "Online"
+        : "Last seen " +
+          moment
+            .utc(
+              user.devices.filter(
+                device => device.id === this.props.deviceId
+              )[0].updatedAt
+            )
+            .fromNow()
 
       signalStatus = user.devices.filter(
         device => device.id === this.props.deviceId

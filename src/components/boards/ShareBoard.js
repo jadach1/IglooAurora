@@ -55,6 +55,7 @@ class ShareBoard extends React.Component {
     menuTarget: null,
     email: "",
     selectedUserType: "",
+    selectedUserForCHangeRoleDialog: "",
   }
 
   getInitials = string => {
@@ -82,6 +83,25 @@ class ShareBoard extends React.Component {
           id: this.props.board.id,
           email: this.state.email,
           role: role,
+          __typename: "Board",
+        },
+      },
+    })
+  }
+
+  changeRole = role => {
+    this.props.InviteUser({
+      variables: {
+        role: role.toUpperCase(),
+        boardId: this.props.board.id,
+        email: this.state.menuTarget.email,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        shareBoard: {
+          id: this.props.board.id,
+          email: this.state.menuTarget.email,
+          role: role.toUpperCase(),
           __typename: "Board",
         },
       },
@@ -221,6 +241,7 @@ class ShareBoard extends React.Component {
                             this.setState({
                               anchorEl: event.currentTarget,
                               menuTarget: item,
+                              selectedUserForCHangeRoleDialog: "admin",
                             })
                           }
                         >
@@ -285,6 +306,7 @@ class ShareBoard extends React.Component {
                             this.setState({
                               anchorEl: event.currentTarget,
                               menuTarget: item,
+                              selectedUserForCHangeRoleDialog: "editor",
                             })
                           }
                         >
@@ -349,6 +371,7 @@ class ShareBoard extends React.Component {
                             this.setState({
                               anchorEl: event.currentTarget,
                               menuTarget: item,
+                              selectedUserForCHangeRoleDialog: "spectator",
                             })
                           }
                         >
@@ -538,8 +561,10 @@ class ShareBoard extends React.Component {
           <div style={{ paddingLeft: "24px" }}>Role</div>
           <RadioButtonGroup
             name="role"
-            onChange={(event, value) => this.setState({ value: value })}
-            valueSelected={this.state.value}
+            onChange={(event, value) =>
+              this.setState({ selectedUserForCHangeRoleDialog: value })
+            }
+            valueSelected={this.state.selectedUserForCHangeRoleDialog}
             style={{
               height: "100%",
             }}
@@ -606,7 +631,7 @@ class ShareBoard extends React.Component {
                 color="primary"
                 onClick={() => {
                   this.setState({ changeRoleOpen: false })
-                  this.inviteUser(this.state.selectedUserType.toUpperCase())
+                  this.changeRole(this.state.selectedUserForCHangeRoleDialog)
                 }}
               >
                 Change role
@@ -631,13 +656,12 @@ class ShareBoard extends React.Component {
             }}
           >
             Are you sure you want to stop sharing this board with{" "}
-            {this.state.menuTarget && this.state.menuTarget.displayName}?
+            {this.state.menuTarget && this.state.menuTarget.displayName}?<br />
           </div>
           <DialogActions
             className="notSelectable defaultCursor"
             style={{ marginLeft: "8px", marginRight: "8px" }}
           >
-            {" "}
             <MuiThemeProvider
               theme={createMuiTheme({
                 palette: {
@@ -684,7 +708,7 @@ export default graphql(
 )(
   graphql(
     gql`
-      mutation ChangeName($email: String!, $boardId: ID!, $role: Role!) {
+      mutation InviteUser($email: String!, $boardId: ID!, $role: Role!) {
         shareBoard(email: $email, boardId: $boardId, role: $role) {
           id
         }
