@@ -4,7 +4,7 @@ import gql from "graphql-tag"
 import Dialog from "material-ui/Dialog"
 import NotificationsDrawer from "./NotificationsDrawer"
 import DeviceInfo from "./devices/DeviceInfo"
-import { CopyToClipboard } from "react-copy-to-clipboard"
+// import { CopyToClipboard } from "react-copy-to-clipboard"
 import {
   Typography,
   Button,
@@ -21,6 +21,7 @@ import ShareDevice from "./devices/ShareDevice"
 import DeleteDevice from "./devices/DeleteDevice"
 import RenameDevice from "./devices/RenameDevice"
 import ChangeBoard from "./devices/ChangeBoard"
+import LeaveDevice from "./devices/LeaveDevice"
 
 class MainBodyHeader extends Component {
   state = {
@@ -181,6 +182,31 @@ class MainBodyHeader extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Share" />
                 </MenuItem>
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ leaveOpen: true })
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      remove_circle
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Leave device" />
+                </MenuItem>
                 {/* <MenuItem
                     className="notSelectable"
                     style={
@@ -202,7 +228,7 @@ class MainBodyHeader extends Component {
                     </ListItemIcon>
                     <ListItemText inset primary="See on the map" />
                   </MenuItem> */}
-                {navigator.share ? (
+                {/* {navigator.share ? (
                   <MenuItem
                     className="notSelectable"
                     style={
@@ -260,7 +286,7 @@ class MainBodyHeader extends Component {
                       <ListItemText inset primary="Get Link" />
                     </MenuItem>
                   </CopyToClipboard>
-                )}
+                        )} */}
                 <Divider />
                 <MenuItem
                   className="notSelectable"
@@ -413,7 +439,19 @@ class MainBodyHeader extends Component {
           createdAt={device.createdAt}
           devMode={this.props.devMode}
         />
-        <ShareDevice open={this.state.shareOpen} device={device} />
+          <ShareDevice
+            open={this.state.shareOpen}
+            close={() => this.setState({ shareOpen: false })}
+            device={device}
+            userData={this.props.userData}
+          />
+        <LeaveDevice
+          open={this.state.leaveOpen}
+          close={() => this.setState({ leaveOpen: false })}
+          device={device}
+          userData={this.props.userData}
+          nightMode={this.props.nightMode}
+        />
         <ChangeBoard
           open={this.state.changeBoardOpen}
           close={() => this.setState({ changeBoardOpen: false })}
@@ -450,6 +488,31 @@ export default graphql(
         icon
         updatedAt
         createdAt
+        myRole
+        owner {
+          id
+          email
+          displayName
+          profileIconColor
+        }
+        admins {
+          id
+          email
+          displayName
+          profileIconColor
+        }
+        editors {
+          id
+          email
+          displayName
+          profileIconColor
+        }
+        spectators {
+          id
+          email
+          displayName
+          profileIconColor
+        }
       }
     }
   `,

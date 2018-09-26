@@ -125,8 +125,8 @@ class ShareDevice extends React.Component {
     })
   }
 
-  render() {
-    return (
+    render() {
+      if (this.props.userData.user) return (
       <React.Fragment>
         <Dialog
           open={
@@ -655,8 +655,9 @@ class ShareDevice extends React.Component {
               height: "100%",
             }}
           >
-            Are you sure you want to stop sharing this device with{" "}
-            {this.state.menuTarget && this.state.menuTarget.displayName}?<br />
+            Are you sure you want to stop sharing this device with
+            {" " + (this.state.menuTarget && this.state.menuTarget.displayName)}?
+            <br />
           </div>
           <DialogActions
             className="notSelectable defaultCursor"
