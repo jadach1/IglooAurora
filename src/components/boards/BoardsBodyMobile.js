@@ -83,7 +83,7 @@ class BoardsBodyMobile extends Component {
         .map(board => (
           <Grid key={board.id} item>
             <BoardCard
-            userData={this.props.userData}
+              userData={this.props.userData}
               board={board}
               nightMode={nightMode}
               devMode={devMode}
@@ -103,7 +103,7 @@ class BoardsBodyMobile extends Component {
         .map(board => (
           <Grid key={board.id} item>
             <BoardCard
-            userData={this.props.userData}
+              userData={this.props.userData}
               board={board}
               nightMode={nightMode}
               devMode={devMode}
@@ -131,12 +131,21 @@ class BoardsBodyMobile extends Component {
                 }
           }
         >
-          <div style={{ width: "100%", height: "64px" }}>
+          <div
+            style={{
+              width: "100%",
+              height: "64px",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
             <MuiThemeProvider theme={theme}>
               <FormControl
                 style={{
-                  margin: "16px 8px 0 16px",
+                  marginTop: "16px",
                   width: "calc(100% - 32px)",
+                  maxWidth: "400px",
                 }}
               >
                 <Input
