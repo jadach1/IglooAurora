@@ -32,6 +32,7 @@ import {
   ListItemText,
 } from "@material-ui/core"
 import TileSize from "../TileSize"
+import DataSettings from "./DataSettings"
 
 class Tile extends Component {
   state = {
@@ -43,6 +44,8 @@ class Tile extends Component {
     infoOpen: false,
     anchorEl: null,
     tileSizeOpen: false,
+    dataSettingsOpen: false,
+    shareValueOpen: false,
   }
 
   handleClick = event => {
@@ -419,6 +422,59 @@ class Tile extends Component {
                   style={this.props.nightMode ? { background: "#21252b" } : {}}
                 />
                 <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ anchorEl: null })
+                    this.setState({ shareValueOpen: true })
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      share
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Share" />
+                </MenuItem>
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ leaveOpen: true })
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      remove_circle
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Leave device" />
+                </MenuItem>
+                <Divider
+                  style={this.props.nightMode ? { background: "#21252b" } : {}}
+                />
+                <MenuItem
                   primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}
                   className="notSelectable"
                   onClick={() => {
@@ -492,8 +548,10 @@ class Tile extends Component {
                       ? { color: "white" }
                       : { color: "black" }
                   }
-                  onClick={()=>                    this.handleMenuClose()
-                  }
+                  onClick={() => {
+                    this.handleMenuClose()
+                    this.setState({ dataSettingsOpen: true })
+                  }}
                 >
                   <ListItemIcon>
                     <Icon
@@ -511,6 +569,31 @@ class Tile extends Component {
                 <Divider
                   style={this.props.nightMode ? { background: "#21252b" } : {}}
                 />
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ changeBoardOpen: true })
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      swap_horiz
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Change device" />
+                </MenuItem>
                 <MenuItem
                   primaryText="Rename"
                   className="notSelectable"
@@ -592,6 +675,10 @@ class Tile extends Component {
           open={this.state.tileSizeOpen}
           close={() => this.setState({ tileSizeOpen: false })}
           value={value}
+        />
+        <DataSettings
+          open={this.state.dataSettingsOpen}
+          close={() => this.setState({ dataSettingsOpen: false })}
         />
       </React.Fragment>
     )
