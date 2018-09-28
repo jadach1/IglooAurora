@@ -333,7 +333,7 @@ class MainBodyHeader extends Component {
                           : { color: "black" }
                       }
                     >
-                      widgets
+                      swap_horiz
                     </Icon>
                   </ListItemIcon>
                   <ListItemText inset primary="Change board" />
