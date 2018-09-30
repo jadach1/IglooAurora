@@ -44,7 +44,9 @@ class Login extends Component {
       forgotPasswordOpen: false,
       isMailEmpty: false,
       isPasswordEmpty: false,
-      keepLoggedIn: true,
+      keepLoggedIn:
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("keepLoggedIn") === "true",
       showLoading: false,
       redirect: false,
     }
@@ -88,9 +90,13 @@ class Login extends Component {
           : ""
       )
 
-      this.props.signIn(loginMutation.data.AuthenticateUser.token)
+      this.props.signIn(
+        loginMutation.data.AuthenticateUser.token,
+        this.state.keepLoggedIn
+      )
     } catch (e) {
       this.setState({ showLoading: false })
+
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
       } else if (
@@ -303,6 +309,7 @@ class Login extends Component {
                     onChange={event =>
                       this.setState({ keepLoggedIn: event.target.checked })
                     }
+                    checked={this.state.keepLoggedIn}
                   />
                 </MuiThemeProvider>
               }

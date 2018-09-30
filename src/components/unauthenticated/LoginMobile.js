@@ -23,7 +23,7 @@ const theme = createMuiTheme({
   },
 })
 
-class LoginMobile extends Component {
+export default class LoginMobile extends Component {
   constructor() {
     super()
     let email = ""
@@ -73,6 +73,7 @@ class LoginMobile extends Component {
       this.props.signIn(loginMutation.data.AuthenticateUser.token)
     } catch (e) {
       this.setState({ showLoading: false })
+
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
       } else if (
@@ -355,5 +356,3 @@ class LoginMobile extends Component {
     )
   }
 }
-
-export default LoginMobile
