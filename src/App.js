@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import AuthenticatedApp from "./AuthenticatedApp"
-import UnAuthenticatedApp from "./UnAuthenticatedApp"
+import LoginMain from "./LoginMain"
+import SignupMain from "./SignupMain"
 import UnAuthenticatedAppMobile from "./UnAuthenticatedAppMobile"
 import jwt from "jsonwebtoken"
 import { Route, Switch, Redirect } from "react-router-dom"
@@ -99,8 +100,11 @@ class App extends Component {
     this.state = {
       bearer,
       isMobile: null,
-      from: "/dashboard",
+      from: "",
       redirectToReferrer: false,
+      boardsCount: 0,
+      boardId: "",
+      loggedOut: false,
     }
   }
 
@@ -133,7 +137,7 @@ class App extends Component {
     }
 
     const logOut = () => {
-      this.setState({ bearer: "" })
+      this.setState({ bearer: "", loggedOut: true })
       if (typeof Storage !== "undefined") {
         localStorage.setItem("bearer", "")
       }
@@ -143,7 +147,17 @@ class App extends Component {
 
     if (redirectToReferrer) {
       this.setState({ redirectToReferrer: false })
-      return <Redirect to={this.state.from || "/dashboard"} />
+
+      return (
+        <Redirect
+          to={
+            this.state.from ||
+            (this.state.boardsCount === 1
+              ? "/dashboard?board=" + this.state.boardId
+              : "/dashboard")
+          }
+        />
+      )
     }
 
     return (
@@ -161,13 +175,15 @@ class App extends Component {
               )
             } else {
               this.setState({ from: props.location.pathname })
-
-              return (
+              return typeof Storage !== "undefined" &&
+                localStorage.getItem("email") ? (
                 <Redirect
                   to={{
                     pathname: "/login",
                   }}
                 />
+              ) : (
+                <Redirect to={{ pathname: "/signup" }} />
               )
             }
           }}
@@ -178,7 +194,22 @@ class App extends Component {
             this.state.isMobile ? (
               <UnAuthenticatedAppMobile signIn={signIn} />
             ) : (
-              <UnAuthenticatedApp signIn={signIn} />
+              <LoginMain
+                signIn={signIn}
+                setBoards={(count, id) =>
+                  this.setState({ boardsCount: count, boardId: id })
+                }
+              />
+            )
+          }
+        />
+        <Route
+          path="/signup"
+          render={() =>
+            this.state.isMobile ? (
+              <UnAuthenticatedAppMobile signIn={signIn} />
+            ) : (
+              <SignupMain signIn={signIn} />
             )
           }
         />
@@ -186,7 +217,13 @@ class App extends Component {
           path="/recovery"
           render={() => <RecoveryFetcher mobile={this.state.isMobile} />}
         />
-        <Route exact path="/" render={() => <Redirect to="/dashboard/" />} />
+        <Route
+          exact
+          path="/"
+          render={() => {
+            return <Redirect to="/dashboard" />
+          }}
+        />
         <Route
           render={() =>
             this.state.isMobile ? <MobileError404 /> : <Error404 />

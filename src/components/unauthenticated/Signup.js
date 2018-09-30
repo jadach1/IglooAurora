@@ -16,6 +16,7 @@ import {
   Grid,
   Typography,
 } from "@material-ui/core"
+import { Redirect } from "react-router-dom"
 
 const theme = createMuiTheme({
   palette: {
@@ -68,6 +69,7 @@ class Signup extends Component {
       isMailEmpty: false,
       isPasswordEmpty: false,
       showLoading: false,
+      redirect: false,
     }
 
     this.signUp = this.signUp.bind(this)
@@ -180,16 +182,15 @@ class Signup extends Component {
     ]
 
     return (
-      <div className="rightSide notSelectable"                   style={{overflowY:"hidden"}}
-      >
+      <div className="rightSide notSelectable" style={{ overflowY: "hidden" }}>
         <br />
         <Typography
-          variant="display1"
+          variant="display2"
           gutterBottom
           className="defaultCursor"
-          style={{ color: "#0083ff", textAlign: "center", fontSize: "2rem" }}
+          style={{ color: "#0083ff", textAlign: "center" }}
         >
-          Nice to meet you!
+          Sign up
         </Typography>
         <br />
         <MuiThemeProvider theme={theme}>
@@ -280,7 +281,8 @@ class Signup extends Component {
                   onKeyPress={event => {
                     if (event.key === "Enter") {
                       this.setState({ showLoading: true })
-                      this.signUp()}                    
+                      this.signUp()
+                    }
                   }}
                   endAdornment={
                     this.state.email ? (
@@ -347,8 +349,8 @@ class Signup extends Component {
                     })
                   }}
                   onKeyPress={event => {
-                    if (event.key === "Enter") 
-                    {  this.setState({ showLoading: true })
+                    if (event.key === "Enter") {
+                      this.setState({ showLoading: true })
                       this.signUp()
                     }
                   }}
@@ -393,8 +395,10 @@ class Signup extends Component {
             color="primary"
             fullWidth={true}
             primary={true}
-            onClick={()=>{this.setState({showLoading:true})
-            this.signUp()}}
+            onClick={() => {
+              this.setState({ showLoading: true })
+              this.signUp()
+            }}
             buttonStyle={{ backgroundColor: "#0083ff" }}
             disabled={
               !(
@@ -427,6 +431,16 @@ class Signup extends Component {
             )}
           </Button>
         </MuiThemeProvider>
+        <Typography variant="subheading" style={{ marginTop: "8px" }}>
+          Already have an account?{" "}
+          <font
+            style={{ marginTop: "8px", color: "#0083ff", cursor: "pointer" }}
+            onClick={() => this.setState({ redirect: true })}
+          >
+            Log in!
+          </font>
+        </Typography>
+        {this.state.redirect && <Redirect to="/login" />}
       </div>
     )
   }
