@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
+import { Redirect } from "react-router-dom"
 
 const theme = createMuiTheme({
   palette: {
@@ -45,6 +46,7 @@ class Login extends Component {
       isPasswordEmpty: false,
       keepLoggedIn: true,
       showLoading: false,
+      redirect: false,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -60,6 +62,12 @@ class Login extends Component {
             AuthenticateUser(email: $email, password: $password) {
               id
               token
+              user {
+                boardsCount
+                boards {
+                  id
+                }
+              }
             }
           }
         `,
@@ -72,6 +80,13 @@ class Login extends Component {
       if (typeof Storage !== "undefined") {
         localStorage.setItem("email", this.state.email)
       }
+
+      this.props.setBoards(
+        loginMutation.data.AuthenticateUser.user.boardsCount,
+        loginMutation.data.AuthenticateUser.user.boardsCount === 1
+          ? loginMutation.data.AuthenticateUser.user.boards[0].id
+          : ""
+      )
 
       this.props.signIn(loginMutation.data.AuthenticateUser.token)
     } catch (e) {
@@ -137,12 +152,12 @@ class Login extends Component {
         >
           <br />
           <Typography
-            variant="display1"
+            variant="display2"
             gutterBottom
             className="defaultCursor"
-            style={{ color: "#0083ff", textAlign: "center", fontSize: "2rem" }}
+            style={{ color: "#0083ff", textAlign: "center" }}
           >
-            Welcome back!
+            Log in
           </Typography>
           <br />
           <MuiThemeProvider theme={theme}>
@@ -299,16 +314,20 @@ class Login extends Component {
             />
             <br />
             <div style={{ textAlign: "right" }}>
-              <font
-                className="loginForgotPassoword"
+              <Typography
+                variant="subheading"
+                style={{
+                  color: "#0083ff",
+                  cursor: "pointer",
+                  marginBottom: "8px",
+                }}
                 onClick={() => {
                   this.setState({ forgotPasswordOpen: true })
                 }}
               >
                 Forgot password?
-              </font>
+              </Typography>
             </div>
-            <br />
             <Button
               variant="raised"
               primary={true}
@@ -348,6 +367,15 @@ class Login extends Component {
               )}
             </Button>
           </MuiThemeProvider>
+          <Typography variant="subheading" style={{ marginTop: "8px" }}>
+            No account yet?{" "}
+            <font
+              style={{ marginTop: "8px", color: "#0083ff", cursor: "pointer" }}
+              onClick={() => this.setState({ redirect: true })}
+            >
+              Sign up!
+            </font>
+          </Typography>
         </div>
         <ForgotPassword
           recover={email => this.recover(email)}
@@ -355,6 +383,7 @@ class Login extends Component {
           close={() => this.setState({ forgotPasswordOpen: false })}
           email={this.state.email}
         />
+        {this.state.redirect && <Redirect to="/signup" />}
       </React.Fragment>
     )
   }

@@ -1,23 +1,36 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Slide from "material-ui-next/transitions/Slide"
-import Input, { InputLabel, InputAdornment } from "material-ui-next/Input"
-import { FormControl } from "material-ui-next/Form"
-import IconButton from "material-ui-next/IconButton"
-import Icon from "material-ui-next/Icon"
 import * as EmailValidator from "email-validator"
+import {
+  Dialog,
+  Button,
+  MuiThemeProvider,
+  createMuiTheme,
+  Input,
+  InputAdornment,
+  InputLabel,
+  FormControl,
+  IconButton,
+  Icon,
+  DialogTitle,
+  DialogActions,
+  Grow,
+  Slide,
+} from "@material-ui/core"
+
+const MOBILE_WIDTH = 500
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
   },
 })
 
 function Transition(props) {
-  return <Slide direction="up" {...props} />
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
 }
 
 export default class ChangeNameDialog extends React.Component {
@@ -54,15 +67,66 @@ export default class ChangeNameDialog extends React.Component {
       <React.Fragment>
         <Dialog
           open={this.props.open}
-          onRequestClose={this.props.close}
+          onClose={this.props.close}
           className="notSelectable"
           TransitionComponent={Transition}
-          title={"Recover your password"}
           contentStyle={{ width: "350px" }}
-          actions={[
+          titleClassName="defaultCursor"
+        >
+          <DialogTitle
+            className="notSelectable defaultCursor"
+            style={{ width: "350px" }}
+          >
+            Recover your password
+          </DialogTitle>
+          <MuiThemeProvider theme={theme}>
+            <div
+              style={{
+                paddingLeft: "24px",
+                paddingRight: "24px",
+                width: "350px",
+              }}
+            >
+              <div className="defaultCursor">
+                Enter your email address and we will send you a link to reset
+                your password
+              </div>
+              <br />
+              <FormControl style={{ width: "100%" }}>
+                <InputLabel htmlFor="adornment-email">Email</InputLabel>
+                <Input
+                  id="adornment-email-login"
+                  value={this.state.email}
+                  onChange={event =>
+                    this.setState({ email: event.target.value })
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") this.signIn()
+                  }}
+                  endAdornment={
+                    this.state.email ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ email: "" })}
+                          onMouseDown={event => {
+                            event.preventDefault()
+                          }}
+                          style={{ width: "32px", height: "32px" }}
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null
+                  }
+                />
+              </FormControl>
+            </div>
+          </MuiThemeProvider>
+          <br />
+          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind
-            </Button>,
+            </Button>
             <MuiThemeProvider theme={theme}>
               <Button
                 variant="raised"
@@ -75,42 +139,8 @@ export default class ChangeNameDialog extends React.Component {
               >
                 Recover
               </Button>
-            </MuiThemeProvider>,
-          ]}
-          titleClassName="defaultCursor"
-        >
-          <MuiThemeProvider theme={theme}>
-            <div className="defaultCursor">
-              Enter your email address and we will send you a link to reset your
-              password
-            </div>
-            <br />
-            <br />
-            <FormControl style={{ width: "100%" }}>
-              <InputLabel htmlFor="adornment-email">Email</InputLabel>
-              <Input
-                id="adornment-email-login"
-                value={this.state.email}
-                onChange={event => this.setState({ email: event.target.value })}
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.signIn()
-                }}
-                endAdornment={
-                  this.state.email ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={this.handleClickCancelEmail}
-                        onMouseDown={this.handleMouseDownPassword}
-                        style={{ width: "32px", height: "32px" }}
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
+            </MuiThemeProvider>
+          </DialogActions>
         </Dialog>
       </React.Fragment>
     )

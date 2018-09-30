@@ -5,21 +5,16 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import Paper from "material-ui/Paper"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import Login from "./components/unauthenticated/Login"
-import Signup from "./components/unauthenticated/Signup"
-import SwipeableViews from "react-swipeable-views"
-import BottomNavigation, {
-  BottomNavigationAction,
-} from "material-ui-next/BottomNavigation"
 import { hotkeys } from "react-keyboard-shortcuts"
-import Icon from "material-ui-next/Icon"
 import { Offline, Online } from "react-detect-offline"
 import { Typography } from "material-ui-next"
 import polarBear from "./styles/assets/polarBear.svg"
 import logo from "./styles/assets/logo.svg"
 import iglooTitle from "./styles/assets/iglooTitle.svg"
+import { Redirect } from "react-router-dom"
 
 class UnAuthenticatedApp extends Component {
-  state = { slideIndex: 0 }
+  state = { redirect: false }
 
   hot_keys = {
     "alt+1": {
@@ -45,14 +40,6 @@ class UnAuthenticatedApp extends Component {
       link,
       cache: new InMemoryCache(),
     })
-
-    let slideIndex = 0
-    if (typeof Storage !== "undefined" && localStorage.getItem("email")) {
-      slideIndex = 1
-    }
-    this.state = {
-      slideIndex,
-    }
   }
 
   handleChange = (event, value) => {
@@ -92,51 +79,12 @@ class UnAuthenticatedApp extends Component {
                   />
                 </div>
               </div>
-              <div>
-                <BottomNavigation
-                  onChange={this.handleChange}
-                  value={this.state.slideIndex}
-                  showLabels
-                >
-                  <BottomNavigationAction
-                    label="SIGN UP"
-                    icon={<Icon>person_add</Icon>}
-                    style={
-                      this.state.slideIndex
-                        ? { color: "#757575" }
-                        : { color: "#0083ff" }
-                    }
-                  />
-                  <BottomNavigationAction
-                    label="LOG IN"
-                    icon={<Icon>person</Icon>}
-                    style={
-                      this.state.slideIndex
-                        ? { color: "#0083ff" }
-                        : { color: "#757575" }
-                    }
-                  />
-                </BottomNavigation>
-                <SwipeableViews
-                  index={this.state.slideIndex}
-                  onChangeIndex={this.handleChangeIndex}
-                  className="loginScreen"
-                  style={{overflowY:"hidden"}}
-                >
-                  <Signup
-                    client={this.client}
-                    isDialog={false}
-                    signIn={this.props.signIn}
-                    goToLogin={() => this.setState({ slideIndex: 1 })}
-                  />
-                  <Login
-                    client={this.client}
-                    isDialog={false}
-                    signIn={this.props.signIn}
-                    goToSignup={() => this.setState({ slideIndex: 0 })}
-                  />
-                </SwipeableViews>
-              </div>
+              <Login
+                client={this.client}
+                isDialog={false}
+                signIn={this.props.signIn}
+                setBoards={this.props.setBoards}
+              />
             </Paper>
           </div>
         </Online>
@@ -188,6 +136,7 @@ class UnAuthenticatedApp extends Component {
             </div>
           </div>
         </Offline>
+        {this.props.redirect && <Redirect to="/signup" />}
       </MuiThemeProvider>
     )
   }
