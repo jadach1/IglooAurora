@@ -126,11 +126,21 @@ class App extends Component {
   }
 
   render() {
-    const signIn = bearer => {
+    const signIn = (bearer, keepLoggedIn) => {
       this.setState({ bearer })
-      if (typeof Storage !== "undefined") {
-        localStorage.setItem("bearer", bearer)
+
+      if (keepLoggedIn) {
+        if (typeof Storage !== "undefined") {
+          localStorage.setItem("bearer", bearer)
+        }
+      } else {
+        if (typeof Storage !== "undefined") {
+          localStorage.setItem("bearer", "")
+        }
       }
+
+      localStorage.setItem("keepLoggedIn", keepLoggedIn)
+
       setupWebPush(bearer)
 
       this.setState({ redirectToReferrer: true })
@@ -174,7 +184,10 @@ class App extends Component {
                 />
               )
             } else {
-              this.setState({ from: props.location.pathname })
+              if (!this.state.loggedOut) {
+                this.setState({ from: props.location.pathname })
+              }
+
               return typeof Storage !== "undefined" &&
                 localStorage.getItem("email") ? (
                 <Redirect
