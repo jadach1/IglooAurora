@@ -54,6 +54,22 @@ class MainBodyHeader extends Component {
 
     const { loading, error, device } = this.props.data
 
+    const toggleQuietMode = quietMode =>
+      this.props.ToggleQuietMode({
+        variables: {
+          id: device.id,
+          quietMode,
+        },
+        optimisticResponse: {
+          __typename: "Mutation",
+          device: {
+            id: device.id,
+            quietMode,
+            __typename: "Device",
+          },
+        },
+      })
+
     if (loading) {
       return <div className="mainBodyHeader" />
     }
@@ -288,30 +304,59 @@ class MainBodyHeader extends Component {
                   </CopyToClipboard>
                         )} */}
                 <Divider />
-                <MenuItem
-                  className="notSelectable"
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      notifications_off
-                    </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Mute" />
-                </MenuItem>
+                {device.quietMode ? (
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      toggleQuietMode(false)
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        notifications
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Unmute" />
+                  </MenuItem>
+                ) : (
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      toggleQuietMode(true)
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        notifications_off
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Mute" />
+                  </MenuItem>
+                )}
                 <Divider />
                 <MenuItem
                   className="notSelectable"
@@ -439,12 +484,12 @@ class MainBodyHeader extends Component {
           createdAt={device.createdAt}
           devMode={this.props.devMode}
         />
-          <ShareDevice
-            open={this.state.shareOpen}
-            close={() => this.setState({ shareOpen: false })}
-            device={device}
-            userData={this.props.userData}
-          />
+        <ShareDevice
+          open={this.state.shareOpen}
+          close={() => this.setState({ shareOpen: false })}
+          device={device}
+          userData={this.props.userData}
+        />
         <LeaveDevice
           open={this.state.leaveOpen}
           close={() => this.setState({ leaveOpen: false })}
@@ -475,52 +520,66 @@ class MainBodyHeader extends Component {
 
 export default graphql(
   gql`
-    query($id: ID!) {
-      device(id: $id) {
+    mutation ToggleQuietMode($id: ID!, $quietMode: Boolean) {
+      device(id: $id, quietMode: $quietMode) {
         id
-        board {
-          id
-        }
-        values {
-          id
-        }
-        customName
-        icon
-        updatedAt
-        createdAt
-        myRole
-        owner {
-          id
-          email
-          displayName
-          profileIconColor
-        }
-        admins {
-          id
-          email
-          displayName
-          profileIconColor
-        }
-        editors {
-          id
-          email
-          displayName
-          profileIconColor
-        }
-        spectators {
-          id
-          email
-          displayName
-          profileIconColor
-        }
       }
     }
   `,
   {
-    options: ({ deviceId }) => ({
-      variables: {
-        id: deviceId,
-      },
-    }),
+    name: "ToggleQuietMode",
   }
-)(MainBodyHeader)
+)(
+  graphql(
+    gql`
+      query($id: ID!) {
+        device(id: $id) {
+          id
+          board {
+            id
+          }
+          values {
+            id
+          }
+          customName
+          icon
+          updatedAt
+          createdAt
+          myRole
+          quietMode
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+        }
+      }
+    `,
+    {
+      options: ({ deviceId }) => ({
+        variables: {
+          id: deviceId,
+        },
+      }),
+    }
+  )(MainBodyHeader)
+)

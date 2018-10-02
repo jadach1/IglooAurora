@@ -32,6 +32,7 @@ class DataSettings extends Component {
         open={this.props.open}
         onClose={this.props.close}
         TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
         <DialogTitle style={{ width: "300px" }}>Data settings</DialogTitle>
         <div style={{ paddingLeft: "24px" }}>Unit of measurement</div>
@@ -88,7 +89,8 @@ class DataSettings extends Component {
             }
             uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
-        </RadioButtonGroup><br/>
+        </RadioButtonGroup>
+        <br />
         <div style={{ paddingLeft: "24px" }}>Visualization</div>
         <RadioButtonGroup
           name="visualization"

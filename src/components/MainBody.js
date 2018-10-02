@@ -195,6 +195,7 @@ class MainBody extends Component {
         key={value.id}
         nightMode={this.props.nightMode}
         devMode={this.props.devMode}
+        userData={this.props.userData}
       />
     )
 
@@ -319,6 +320,9 @@ export default graphql(
           customName
           updatedAt
           createdAt
+          device {
+            id
+          }
           ... on FloatValue {
             floatValue: value
             precision

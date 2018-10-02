@@ -33,6 +33,7 @@ import {
 } from "@material-ui/core"
 import TileSize from "../TileSize"
 import DataSettings from "./DataSettings"
+import ChangeDevice from "./ChangeDevice"
 
 class Tile extends Component {
   state = {
@@ -577,7 +578,7 @@ class Tile extends Component {
                       : { color: "black" }
                   }
                   onClick={() => {
-                    this.setState({ changeBoardOpen: true })
+                    this.setState({ changeDeviceOpen: true })
                     this.handleMenuClose()
                   }}
                 >
@@ -679,6 +680,12 @@ class Tile extends Component {
         <DataSettings
           open={this.state.dataSettingsOpen}
           close={() => this.setState({ dataSettingsOpen: false })}
+        />
+        <ChangeDevice
+          open={this.state.changeDeviceOpen}
+          close={() => this.setState({ changeDeviceOpen: false })}
+          value={value}
+          userData={this.props.userData}
         />
       </React.Fragment>
     )

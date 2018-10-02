@@ -411,6 +411,7 @@ class Main extends Component {
                       changeShowHiddenState={this.changeShowHiddenState}
                       nightMode={nightMode}
                       devMode={devMode}
+                      userData={this.props.userData}
                     />
                     <StatusBar
                       userData={this.props.userData}

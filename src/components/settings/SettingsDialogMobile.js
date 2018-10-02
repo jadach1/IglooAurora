@@ -596,7 +596,7 @@ class SettingsDialogMobile extends React.Component {
                   onClick={this.handlePasswordDialogOpen}
                 />
                 <ListItem
-                  primaryText="Use cookies to log in faster"
+                  primaryText="Log out at the end of every session"
                   rightToggle={
                     <Toggle
                       thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
@@ -638,7 +638,6 @@ class SettingsDialogMobile extends React.Component {
                 <Subheader style={{ cursor: "default" }}>
                   Account management
                 </Subheader>
-                <ListItem primaryText="Manage roles" />
                 <ListItem
                   primaryText="Manage your profile"
                   secondaryText="Change your profile photo and name"

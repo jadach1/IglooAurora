@@ -85,7 +85,10 @@ class LeaveBoard extends React.Component {
               variant="raised"
               color="primary"
               primary={true}
-              onClick={this.stopSharing}
+              onClick={() => {
+                this.stopSharing()
+                this.props.close()
+              }}
             >
               Leave board
             </Button>

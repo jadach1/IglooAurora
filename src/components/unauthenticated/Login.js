@@ -45,8 +45,9 @@ class Login extends Component {
       isMailEmpty: false,
       isPasswordEmpty: false,
       keepLoggedIn:
-        typeof Storage !== "undefined" &&
-        localStorage.getItem("keepLoggedIn") === "true",
+        (typeof Storage !== "undefined" &&
+          localStorage.getItem("keepLoggedIn") === "true") ||
+        true,
       showLoading: false,
       redirect: false,
     }
