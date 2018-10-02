@@ -407,6 +407,7 @@ class Main extends Component {
                         isMobile={true}
                         nightMode={nightMode}
                         devMode={devMode}
+                        userData={this.props.userData}
                       />
                     </div>
                     <StatusBar

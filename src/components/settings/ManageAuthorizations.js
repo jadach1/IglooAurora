@@ -1,4 +1,7 @@
 import React from "react"
+import { ApolloClient } from "apollo-client"
+import { HttpLink } from "apollo-link-http"
+import { InMemoryCache } from "apollo-cache-inmemory"
 import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
@@ -28,15 +31,22 @@ class AuthDialog extends React.Component {
     authDialogOpen: false,
     tokenName: "",
     password: "",
+    token: "",
   }
 
-  getPermanentToken = () => {
-    this.props["GeneratePermanentAccessToken"]({
-      variables: {
-        customName: this.state.tokenName,
-      },
+  constructor() {
+    super()
+
+    const link = new HttpLink({
+      uri: "https://iglooql.herokuapp.com/graphql",
     })
-    this.setState({ nameOpen: false, authDialogOpen: true })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache(),
+    })
   }
 
   deletePermanentToken = tokenID => {
@@ -62,21 +72,26 @@ class AuthDialog extends React.Component {
     this.setState({ authDialogOpen: false })
   }
 
-  render() {
-    /* const verifyPasswordQuery = this.props.client.query({
+  async getPermanentToken() {
+    const tokenMutation = await this.client.mutate({
       mutation: gql`
-        mutation($password: String!) {
-          VerifyPassword(password: $password) {
-            id
+        mutation GeneratePermanentAccessToken($customName: String!) {
+          GeneratePermanentAccessToken(customName: $customName) {
             token
           }
         }
       `,
       variables: {
-        password: this.state.password,
+        customName: this.state.tokenName,
       },
-    }) */
+    })
 
+    this.setState({
+      token: tokenMutation.data.GeneratePermanentAccessToken.token,
+    })
+  }
+
+  render() {
     const confirmationDialogActions = [
       <MuiThemeProvider theme={theme}>
         <Button
@@ -109,9 +124,12 @@ class AuthDialog extends React.Component {
         <Button
           variant="raised"
           color="primary"
-          onClick={() => this.getPermanentToken()}
+          onClick={() => {
+            this.getPermanentToken()
+            this.setState({ nameOpen: false, authDialogOpen: true })
+          }}
         >
-          Obtain token
+          Get token
         </Button>
       </MuiThemeProvider>,
     ]
@@ -219,24 +237,11 @@ class AuthDialog extends React.Component {
 
 export default graphql(
   gql`
-    mutation GeneratePermanentAccessToken($customName: String!) {
-      GeneratePermanentAccessToken(customName: $customName) {
-        token
-      }
+    mutation DeletePermanentAccesToken($id: ID!) {
+      DeletePermanentAccesToken(id: $id)
     }
   `,
   {
-    name: "GeneratePermanentAccessToken",
+    name: "DeletePermanentAccesToken",
   }
-)(
-  graphql(
-    gql`
-      mutation DeletePermanentAccesToken($id: ID!) {
-        DeletePermanentAccesToken(id: $id)
-      }
-    `,
-    {
-      name: "DeletePermanentAccesToken",
-    }
-  )(AuthDialog)
-)
+)(AuthDialog)

@@ -18,6 +18,8 @@ const theme = createMuiTheme({
   },
 })
 
+const MOBILE_WIDTH = 500
+
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
@@ -25,8 +27,6 @@ function Transition(props) {
     <Slide direction="up" {...props} />
   )
 }
-
-const MOBILE_WIDTH = 500
 
 class LeaveDevice extends React.Component {
   deleteDeviceMutation = () => {
@@ -85,7 +85,10 @@ class LeaveDevice extends React.Component {
               variant="raised"
               color="primary"
               primary={true}
-              onClick={this.stopSharing}
+              onClick={() => {
+                this.stopSharing()
+                this.props.close()
+              }}
             >
               Leave device
             </Button>

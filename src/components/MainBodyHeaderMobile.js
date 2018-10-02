@@ -16,6 +16,7 @@ import {
   MenuItem,
   ListItemIcon,
   ListItemText,
+  Typography,
 } from "@material-ui/core"
 import DeleteDevice from "./devices/DeleteDevice"
 import ChangeBoard from "./devices/ChangeBoard"
@@ -51,6 +52,22 @@ class MainBodyHeader extends Component {
     const actions = [<Button onClick={this.handleClose}>Close</Button>]
 
     const { loading, error, device } = this.props.data
+
+    const toggleQuietMode = quietMode =>
+      this.props.ToggleQuietMode({
+        variables: {
+          id: device.id,
+          quietMode,
+        },
+        optimisticResponse: {
+          __typename: "Mutation",
+          device: {
+            id: device.id,
+            quietMode,
+            __typename: "Device",
+          },
+        },
+      })
 
     if (loading) {
       return (
@@ -124,9 +141,21 @@ class MainBodyHeader extends Component {
               lightbulb_outline
             </i>
           )}
-          <p className="title" style={{ cursor: "default" }}>
+          <Typography
+            variant="headline"
+            className="title"
+            style={{
+              cursor: "default",
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              color: "white",
+              lineHeight: "64px",
+            }}
+          >
+            {" "}
             {device.customName}
-          </p>
+          </Typography>
           {device && (
             <div
               style={{
@@ -265,30 +294,59 @@ class MainBodyHeader extends Component {
                   </CopyToClipboard>
                 )}
                 <Divider />
-                <MenuItem
-                  className="notSelectable"
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      notifications_off
-                    </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Mute" />
-                </MenuItem>
+                {device.quietMode ? (
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      toggleQuietMode(false)
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        notifications
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Unmute" />
+                  </MenuItem>
+                ) : (
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      toggleQuietMode(true)
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        notifications_off
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Mute" />
+                  </MenuItem>
+                )}
                 <Divider />
                 <MenuItem
                   className="notSelectable"
@@ -439,27 +497,41 @@ class MainBodyHeader extends Component {
 
 export default graphql(
   gql`
-    query($id: ID!) {
-      device(id: $id) {
+    mutation ToggleQuietMode($id: ID!, $quietMode: Boolean) {
+      device(id: $id, quietMode: $quietMode) {
         id
-        board {
-          id
-        }
-        values {
-          id
-        }
-        customName
-        icon
-        updatedAt
-        createdAt
       }
     }
   `,
   {
-    options: ({ deviceId }) => ({
-      variables: {
-        id: deviceId,
-      },
-    }),
+    name: "ToggleQuietMode",
   }
-)(MainBodyHeader)
+)(
+  graphql(
+    gql`
+      query($id: ID!) {
+        device(id: $id) {
+          id
+          quietMode
+          board {
+            id
+          }
+          values {
+            id
+          }
+          customName
+          icon
+          updatedAt
+          createdAt
+        }
+      }
+    `,
+    {
+      options: ({ deviceId }) => ({
+        variables: {
+          id: deviceId,
+        },
+      }),
+    }
+  )(MainBodyHeader)
+)

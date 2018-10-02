@@ -30,6 +30,7 @@ class GraphQLFetcher extends Component {
           batteryCharging
           createdAt
           updatedAt
+          quietMode
           board {
             id
           }
@@ -62,6 +63,52 @@ class GraphQLFetcher extends Component {
       },
     })
 
+    const deviceSharedSubscriptionQuery = gql`
+      subscription {
+        deviceShared {
+          id
+          customName
+          icon
+          online
+          batteryStatus
+          signalStatus
+          deviceType
+          batteryCharging
+          createdAt
+          updatedAt
+          quietMode
+          board {
+            id
+          }
+          notifications {
+            id
+            content
+            date
+            visualized
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: deviceSharedSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newDevices = [
+          ...prev.user.devices,
+          subscriptionData.data.deviceCreated,
+        ]
+        return {
+          user: {
+            ...prev.user,
+            devices: newDevices,
+          },
+        }
+      },
+    })
+
     const subscribeToDevicesUpdates = gql`
       subscription {
         deviceUpdated {
@@ -75,6 +122,7 @@ class GraphQLFetcher extends Component {
           batteryCharging
           createdAt
           updatedAt
+          quietMode
           board {
             id
           }

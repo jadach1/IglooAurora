@@ -1,5 +1,4 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import {
@@ -12,7 +11,12 @@ import {
   InputAdornment,
   IconButton,
   Icon,
-} from "material-ui-next/"
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Grow,
+  Slide,
+} from "@material-ui/core"
 import SwipeableViews from "react-swipeable-views"
 import fox from "../../styles/assets/fox.jpg"
 import northernLights from "../../styles/assets/northernLights.jpg"
@@ -25,6 +29,16 @@ const theme = createMuiTheme({
     primary: { main: "#0083ff" },
   },
 })
+
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
 
 class RenameBoard extends React.Component {
   state = {
@@ -98,40 +112,16 @@ class RenameBoard extends React.Component {
   }
 
   render() {
-    const renameBoardActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.rename}
-          disabled={
-            !this.state.customName ||
-            (this.state.initialSlideIndex === this.state.slideIndex &&
-            this.props.board.customName === this.state.customName)
-          }
-        >
-          Customize
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
       <Dialog
-        title="Customize board"
-        actions={renameBoardActions}
         open={this.props.open}
-        onRequestClose={this.props.close}
-        className="notSelectable"
-        contentStyle={{
-          width: "350px",
-        }}
+        onClose={this.props.close}
+        className="notSelectable defaultCursor"
         titleClassName="notSelectable defaultCursor"
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
+        <DialogTitle>Customize board</DialogTitle>
         <MuiThemeProvider theme={theme}>
           <Grid
             container
@@ -250,6 +240,28 @@ class RenameBoard extends React.Component {
           Next
           <Icon>keyboard_arrow_right</Icon>
         </Button>
+        <DialogActions>
+          <MuiThemeProvider theme={theme}>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              onClick={this.rename}
+              disabled={
+                !this.state.customName ||
+                (this.state.initialSlideIndex === this.state.slideIndex &&
+                  this.props.board.customName === this.state.customName)
+              }
+              style={{ marginRight: "4px" }}
+            >
+              Customize
+            </Button>
+          </MuiThemeProvider>
+        </DialogActions>
       </Dialog>
     )
   }

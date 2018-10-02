@@ -1,7 +1,14 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import {
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Button,
+  MuiThemeProvider,
+  createMuiTheme,
+  Grow,
+  Slide,
+} from "@material-ui/core"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -10,6 +17,16 @@ const theme = createMuiTheme({
     primary: { main: "#f44336" },
   },
 })
+
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
 
 class DeleteBoard extends React.Component {
   deleteBoardMutation = () => {
@@ -28,39 +45,41 @@ class DeleteBoard extends React.Component {
   }
 
   render() {
-    const deleteBoardActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#f44336" }}
-          onClick={this.deleteBoardMutation}
-        >
-          Delete
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
       <Dialog
-        title="Delete board"
-        actions={deleteBoardActions}
         open={this.props.open}
-        onRequestClose={this.props.close}
+        onClose={this.props.close}
         className="notSelectable defaultCursor"
-        contentStyle={{
-          width: "350px",
-        }}
         titleClassName="notSelectable defaultCursor"
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        Be careful, this board will be deleted permanently.
-        <br />
-        <br />
-        Note that by deleting a board, you won't delete any of its devices.
+        <DialogTitle>Delete board</DialogTitle>
+        <font
+          style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
+        >
+          Be careful, this board will be deleted permanently.
+          <br />
+          <br />
+          Note that by deleting a board, you will delete all of its devices.
+        </font>
+        <DialogActions>
+          <MuiThemeProvider theme={theme}>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#f44336" }}
+              onClick={this.deleteBoardMutation}
+              style={{ marginRight: "4px" }}
+            >
+              Delete
+            </Button>
+          </MuiThemeProvider>
+        </DialogActions>
       </Dialog>
     )
   }

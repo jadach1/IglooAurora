@@ -78,6 +78,7 @@ class TileSize extends Component {
         open={this.props.open}
         onClose={this.props.close}
         TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
         <DialogTitle style={{ width: "300px" }}>Change card size</DialogTitle>
         <div style={{ paddingLeft: "24px" }}>Role</div>
@@ -150,7 +151,7 @@ class TileSize extends Component {
             uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
         </RadioButtonGroup>
-        <DialogActions>
+        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <MuiThemeProvider
             theme={createMuiTheme({
               palette: {

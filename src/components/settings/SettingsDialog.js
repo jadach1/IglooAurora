@@ -60,6 +60,9 @@ const allDialogsClosed = {
   createNotificationOpen: false,
   createNodeOpen: false,
   gdprOpen: false,
+  keepLoggedIn:
+    typeof Storage !== "undefined" &&
+    localStorage.getItem("keepLoggedIn") === true,
 }
 
 class SettingsDialog extends React.Component {
@@ -573,12 +576,18 @@ class SettingsDialog extends React.Component {
                   onClick={this.handlePasswordDialogOpen}
                 />
                 <ListItem
-                  primaryText="Don't log out at the end of every session"
+                  primaryText="Log out at the end of every session"
                   rightToggle={
                     <Toggle
                       thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
                       trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
                       rippleStyle={{ color: "#0083ff" }}
+                      onClick={() =>
+                        localStorage.setItem(
+                          "keepLoggedIn",
+                          !this.state.keepLoggedIn
+                        )
+                      }
                     />
                   }
                 />
@@ -615,7 +624,6 @@ class SettingsDialog extends React.Component {
                 <Subheader style={{ cursor: "default" }}>
                   Account management
                 </Subheader>
-                <ListItem primaryText="Manage roles" />
                 <ListItem
                   primaryText="Manage your profile"
                   secondaryText="Change your profile photo and name"
