@@ -59,7 +59,9 @@ export default class FilterPopover extends Component {
   }
 
   render() {
-    let deviceTypeList = this.props.devices.map(device => device.deviceType)
+    let deviceTypeList = this.props.devices
+      .filter(device => device.board.id === this.props.boardId)
+      .map(device => device.deviceType)
 
     let uniqueDeviceTypeList = removeDuplicates(deviceTypeList)
 
@@ -101,8 +103,12 @@ export default class FilterPopover extends Component {
             style={
               96 + this.getLenght(uniqueDeviceTypeList) * 72 >
               window.innerHeight
-                ? { height: "calc(100vh - 96px)", overflow: "auto" }
-                : null
+                ? {
+                    height: "calc(100vh - 96px)",
+                    overflow: "auto",
+                    overflowX: "hidden",
+                  }
+                : { overflowX: "hidden" }
             }
           >
             <List style={{ width: "256px", padding: "0" }}>

@@ -51,26 +51,28 @@ class BoardInfo extends React.Component {
         >
           Board information
         </DialogTitle>
-        <div style={{paddingLeft:"24px",paddingRight:"24px"}}>
-        <b>Created: </b>
-        {moment
-          .utc(this.props.board.createdAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-          .fromNow()}
-        <br />
-        <br />
-        <b>Last updated: </b>
-        {moment
-          .utc(this.props.board.updatedAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-          .fromNow()}
-        {this.props.devMode ? (
-          <React.Fragment>
-            <br />
-            <br />
-            <b>ID: </b> {this.props.board.id}
-          </React.Fragment>
-        ) : (
-          ""
-        )}
+        <div
+          style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
+        >
+          <b>Created: </b>
+          {moment
+            .utc(this.props.board.createdAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+            .fromNow()}
+          <br />
+          <br />
+          <b>Last updated: </b>
+          {moment
+            .utc(this.props.board.updatedAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+            .fromNow()}
+          {this.props.devMode ? (
+            <React.Fragment>
+              <br />
+              <br />
+              <b>ID: </b> {this.props.board.id}
+            </React.Fragment>
+          ) : (
+            ""
+          )}
         </div>
         <DialogActions>
           <MuiThemeProvider theme={theme}>

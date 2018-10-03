@@ -1,19 +1,22 @@
 import React, { Component } from "react"
-import Button from "@material-ui/core/Button"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
-import Input, { InputAdornment } from "@material-ui/core/Input"
-import { FormControl, FormHelperText } from "@material-ui/core"
-import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
-import ForgotPassword from "./ForgotPassword"
 import {
   Typography,
   Grid,
   FormControlLabel,
   Checkbox,
   CircularProgress,
+  InputAdornment,
+  Input,
+  Icon,
+  IconButton,
+  Button,
+  FormControl,
+  FormHelperText,
+  createMuiTheme,
+  MuiThemeProvider,
 } from "@material-ui/core"
+import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 
 const theme = createMuiTheme({
@@ -176,12 +179,7 @@ export default class LoginMobile extends Component {
                     endAdornment={
                       this.state.email ? (
                         <InputAdornment position="end">
-                          <IconButton
-                            onClick={this.handleClickCancelEmail}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                            style={{ color: "white" }}
-                          >
+                          <IconButton tabIndex="-1" style={{ color: "white" }}>
                             <Icon>clear</Icon>
                           </IconButton>
                         </InputAdornment>
