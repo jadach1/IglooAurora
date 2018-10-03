@@ -7,7 +7,7 @@ import {
   createMuiTheme,
   Input,
   InputAdornment,
-  InputLabel,
+  Grid,
   FormControl,
   IconButton,
   Icon,
@@ -33,33 +33,9 @@ function Transition(props) {
   )
 }
 
-export default class ChangeNameDialog extends React.Component {
+export default class ForgotPassword extends React.Component {
   state = {
-    nameSnackOpen: false,
-    nameDialogOpen: false,
     email: this.props.email,
-  }
-
-  openNameDialog = () => {
-    this.setState({ nameDialogOpen: true })
-    this.props.handleNameDialogClose()
-  }
-
-  closeNameDialog = () => {
-    this.setState({ nameDialogOpen: false })
-  }
-
-  handleNameSnackOpen = () => {
-    this.setState({
-      nameSnackOpen: true,
-    })
-    this.props.handleNameDialogClose()
-  }
-
-  handleNameSnackClose = () => {
-    this.setState({
-      nameSnackOpen: false,
-    })
   }
 
   render() {
@@ -70,59 +46,77 @@ export default class ChangeNameDialog extends React.Component {
           onClose={this.props.close}
           className="notSelectable"
           TransitionComponent={Transition}
-          contentStyle={{ width: "350px" }}
           titleClassName="defaultCursor"
+          fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
           <DialogTitle
             className="notSelectable defaultCursor"
-            style={{ width: "350px" }}
+            style={window.innerWidth > MOBILE_WIDTH ? { width: "350px" } : null}
           >
             Recover your password
           </DialogTitle>
           <MuiThemeProvider theme={theme}>
             <div
-              style={{
-                paddingLeft: "24px",
-                paddingRight: "24px",
-                width: "350px",
-              }}
+              style={
+                window.innerWidth > MOBILE_WIDTH
+                  ? {
+                      paddingLeft: "24px",
+                      paddingRight: "24px",
+                      width: "350px",
+                    }
+                  : { paddingLeft: "24px", paddingRight: "24px" }
+              }
             >
               <div className="defaultCursor">
                 Enter your email address and we will send you a link to reset
                 your password
               </div>
               <br />
-              <FormControl style={{ width: "100%" }}>
-                <InputLabel htmlFor="adornment-email">Email</InputLabel>
-                <Input
-                  id="adornment-email-login"
-                  value={this.state.email}
-                  onChange={event =>
-                    this.setState({ email: event.target.value })
-                  }
-                  onKeyPress={event => {
-                    if (event.key === "Enter") this.signIn()
-                  }}
-                  endAdornment={
-                    this.state.email ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => this.setState({ email: "" })}
-                          onMouseDown={event => {
-                            event.preventDefault()
-                          }}
-                          style={{ width: "32px", height: "32px" }}
-                        >
-                          <Icon>clear</Icon>
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-              </FormControl>
+              <Grid
+                container
+                spacing={0}
+                alignItems="flex-end"
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Grid item style={{ marginRight: "16px" }}>
+                  <Icon>email</Icon>
+                </Grid>
+                <Grid item style={{ width: "calc(100% - 40px)" }}>
+                  <FormControl style={{ width: "100%" }}>
+                    <Input
+                      id="adornment-name-login"
+                      placeholder="Email"
+                      value={this.state.email}
+                      onChange={event =>
+                        this.setState({
+                          customName: event.target.value,
+                        })
+                      }
+                      onKeyPress={event => {
+                        if (event.key === "Enter") this.rename()
+                      }}
+                      endAdornment={
+                        this.state.customName ? (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => this.setState({ email: "" })}
+                              onMouseDown={this.handleMouseDownPassword}
+                              tabIndex="-1"
+                            >
+                              <Icon>clear</Icon>
+                            </IconButton>
+                          </InputAdornment>
+                        ) : null
+                      }
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
             </div>
           </MuiThemeProvider>
-          <br />
+          <div style={{ height: "100%" }} />
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind

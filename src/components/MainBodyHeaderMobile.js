@@ -348,31 +348,33 @@ class MainBodyHeader extends Component {
                   </MenuItem>
                 )}
                 <Divider />
-                <MenuItem
-                  className="notSelectable"
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.setState({ changeBoardOpen: true })
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      widgets
-                    </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Change board" />
-                </MenuItem>
+                {this.props.userData.user.boards.length > 1 && (
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      this.setState({ changeBoardOpen: true })
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        swap_vert
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Change board" />
+                  </MenuItem>
+                )}
                 {device.values.length > 1 && (
                   <MenuItem
                     className="notSelectable"

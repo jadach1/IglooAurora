@@ -198,7 +198,7 @@ class ShareBoard extends React.Component {
                     this.props.board.owner.email && (
                     <ListItemSecondaryAction>
                       <IconButton>
-                        <Icon>edit</Icon>
+                        <Icon>swap_horiz</Icon>
                       </IconButton>
                     </ListItemSecondaryAction>
                   )}

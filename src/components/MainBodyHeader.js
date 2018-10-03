@@ -358,7 +358,7 @@ class MainBodyHeader extends Component {
                   </MenuItem>
                 )}
                 <Divider />
-                <MenuItem
+                {this.props.userData.user.boards.length > 1 && <MenuItem
                   className="notSelectable"
                   style={
                     this.props.nightMode
@@ -382,7 +382,7 @@ class MainBodyHeader extends Component {
                     </Icon>
                   </ListItemIcon>
                   <ListItemText inset primary="Change board" />
-                </MenuItem>
+                </MenuItem>}
                 {device.values.length > 1 && (
                   <MenuItem
                     className="notSelectable"

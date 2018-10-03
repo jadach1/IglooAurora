@@ -215,6 +215,7 @@ class Sidebar extends Component {
         </div>
         <FilterPopover
           open={this.state.popoverOpen}
+          boardId={this.props.selectedBoard}
           close={() => this.setState({ popoverOpen: false })}
           anchorEl={this.anchorEl}
           devices={user.devices}
