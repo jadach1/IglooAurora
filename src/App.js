@@ -60,7 +60,7 @@ function setupWebPush(token) {
 
   function sendSubscriptionToServer(subscription) {
     const serverUrl =
-      process.env.NODE_ENV === "SERVER_DEVELOPMENT"
+      process.env.DEV_MODE === "SERVER"
         ? "localhost:3000/webPushSubscribe"
         : `http://iglooql.herokuapp.com/graphql`
 

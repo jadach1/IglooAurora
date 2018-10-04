@@ -39,7 +39,7 @@ class AuthDialog extends React.Component {
 
     const link = new HttpLink({
       uri:
-        process.env.NODE_ENV === "SERVER_DEVELOPMENT"
+        process.env.DEV_MODE === "SERVER"
           ? "localhost:3000/graphql"
           : "https://iglooql.herokuapp.com/graphql",
     })

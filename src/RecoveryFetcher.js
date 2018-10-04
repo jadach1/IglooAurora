@@ -24,7 +24,7 @@ export default class RecoveryFetcher extends Component {
 
     const wsLink = new WebSocketLink({
       uri:
-        process.env.NODE_ENV === "SERVER_DEVELOPMENT"
+        process.env.DEV_MODE === "SERVER"
           ? "wss://localhost:3000/subscriptions"
           : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
@@ -37,7 +37,7 @@ export default class RecoveryFetcher extends Component {
 
     const httpLink = new HttpLink({
       uri:
-        process.env.NODE_ENV === "SERVER_DEVELOPMENT"
+        process.env.DEV_MODE === "SERVER"
           ? "localhost:3000/graphql"
           : "https://iglooql.herokuapp.com/graphql",
       headers: {
