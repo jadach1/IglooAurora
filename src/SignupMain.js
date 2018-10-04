@@ -30,7 +30,10 @@ class UnAuthenticatedApp extends Component {
     super()
 
     const link = new HttpLink({
-      uri: "https://iglooql.herokuapp.com/graphql",
+      uri:
+        process.env.NODE_ENV === "SERVER_DEVELOPMENT"
+          ? "localhost:3000/graphql"
+          : "https://iglooql.herokuapp.com/graphql",
     })
 
     this.client = new ApolloClient({
