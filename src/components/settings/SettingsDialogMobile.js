@@ -559,6 +559,7 @@ class SettingsDialogMobile extends React.Component {
               style={{
                 overflowY: "auto",
                 height: "calc(100vh - 128px)",
+                overflowX: "hidden",
               }}
             >
               <div style={listStyles.root}>

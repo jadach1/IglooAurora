@@ -1,9 +1,22 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import TextField from "material-ui/TextField"
+import {
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Grow,
+  Slide,
+  Grid,
+  Icon,
+  FormControl,
+  Input,
+  InputAdornment,
+  IconButton,
+  MuiThemeProvider,
+  createMuiTheme,
+  Button,
+} from "@material-ui/core"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme, Button } from "@material-ui/core"
 
 const theme = createMuiTheme({
   palette: {
@@ -11,8 +24,18 @@ const theme = createMuiTheme({
   },
 })
 
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
+
 class RenameDevice extends React.Component {
-  state = { customName: null }
+  state = { customName: this.props.device.customName }
 
   rename = () => {
     this.props["Rename"]({
@@ -33,49 +56,86 @@ class RenameDevice extends React.Component {
   }
 
   render() {
-    const renameDeviceActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.rename}
-          disabled={!this.state.customName}
-        >
-          Rename
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
       <Dialog
-        title="Rename device"
-        actions={renameDeviceActions}
         open={this.props.open}
-        onRequestClose={this.props.close}
-        className="notSelectable"
-        contentStyle={{
-          width: "350px",
-        }}
-        titleClassName="notSelectable defaultCursor"
+        onClose={this.props.close}
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        className="notSelectable defaultCursor"
       >
-        <TextField
-          floatingLabelText="Device name"
-          defaultValue={this.props.device.customName}
-          floatingLabelShrinkStyle={{ color: "#0083ff" }}
-          underlineFocusStyle={{ borderColor: "#0083ff" }}
-          style={{ width: "100%" }}
-          onChange={event => this.setState({ customName: event.target.value })}
-          onKeyPress={event => {
-            if (event.key === "Enter") {
-              this.rename()
-            }
-          }}
-        />
+        <DialogTitle
+          className="notSelectable defaultCursor"
+          style={{ width: "350px" }}
+        >
+          Rename device
+        </DialogTitle>
+        <div style={{ height: "100%" }}>
+          <MuiThemeProvider theme={theme}>
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{
+                width: "100%",
+                paddingLeft: "24px",
+                paddingRight: "24px",
+              }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon>lightbulb_outline</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-name-login"
+                    placeholder="Board Name"
+                    value={this.state.customName}
+                    onChange={event =>
+                      this.setState({
+                        customName: event.target.value,
+                      })
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") this.rename()
+                    }}
+                    endAdornment={
+                      this.state.customName ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => this.setState({ customName: "" })}
+                            onMouseDown={this.handleMouseDownPassword}
+                            tabIndex="-1"
+                          >
+                            <Icon>clear</Icon>
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+          </MuiThemeProvider>
+        </div>
+        <br />
+        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <MuiThemeProvider theme={theme}>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              onClick={this.rename}
+              disabled={!this.state.customName}
+            >
+              Rename
+            </Button>
+          </MuiThemeProvider>
+        </DialogActions>
       </Dialog>
     )
   }

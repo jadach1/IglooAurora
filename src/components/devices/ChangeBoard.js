@@ -1,5 +1,4 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import {
@@ -7,6 +6,11 @@ import {
   createMuiTheme,
   Button,
   Icon,
+  Dialog,
+  DialogTitle,
+  DialogActions,
+  Grow,
+  Slide,
 } from "@material-ui/core"
 import { RadioButtonGroup, RadioButton } from "material-ui"
 
@@ -15,6 +19,16 @@ const theme = createMuiTheme({
     primary: { main: "#0083ff" },
   },
 })
+
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
 
 class ChangeBoard extends React.Component {
   state = { newBoard: this.props.device.board.id }
@@ -42,41 +56,25 @@ class ChangeBoard extends React.Component {
       userData: { user },
     } = this.props
 
-    const changeBoardActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.changeBoard}
-          disabled={this.state.newBoard === this.props.device.board.id}
-        >
-          Change board
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
       <Dialog
-        title="Change board"
-        actions={changeBoardActions}
         open={this.props.open}
-        onRequestClose={this.props.close}
-        className="notSelectable"
-        contentStyle={{
-          width: "350px",
-        }}
-        titleClassName="notSelectable defaultCursor"
+        onClose={this.props.close}
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        className="notSelectable defaultCursor"
       >
-        Board
+        <DialogTitle
+          className="notSelectable defaultCursor"
+          style={{ width: "300px" }}
+        >
+          Change board
+        </DialogTitle>
         <RadioButtonGroup
-          name="date"
+          name="board"
           onChange={(event, value) => this.setState({ newBoard: value })}
           valueSelected={this.state.newBoard || this.props.device.board.id}
+          style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
           {user &&
             user.boards.map(board => (
@@ -95,6 +93,23 @@ class ChangeBoard extends React.Component {
               />
             ))}
         </RadioButtonGroup>
+        <DialogActions>
+          <MuiThemeProvider theme={theme}>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              style={{ marginRight: "8px" }}
+              onClick={this.changeBoard}
+              disabled={this.state.newBoard === this.props.device.board.id}
+            >
+              Change board
+            </Button>
+          </MuiThemeProvider>
+        </DialogActions>
       </Dialog>
     )
   }
