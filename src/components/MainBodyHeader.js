@@ -1,14 +1,12 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import Dialog from "material-ui/Dialog"
 import NotificationsDrawer from "./NotificationsDrawer"
 import DeviceInfo from "./devices/DeviceInfo"
 // import { CopyToClipboard } from "react-copy-to-clipboard"
 import {
   Typography,
-  Button,
-  Tooltip,
+    Tooltip,
   Icon,
   IconButton,
   ListItemText,
@@ -50,8 +48,6 @@ class MainBodyHeader extends Component {
   }
 
   render() {
-    const actions = [<Button onClick={this.handleClose}>Close</Button>]
-
     const { loading, error, device } = this.props.data
 
     const toggleQuietMode = quietMode =>
@@ -466,16 +462,6 @@ class MainBodyHeader extends Component {
             </div>
           )}
         </div>
-        <Dialog
-          title="Rearrange cards"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-          className="notSelectable"
-        >
-          [FILL WITH DRAG 'N' DROPPABLE LIST]
-        </Dialog>
         <DeviceInfo
           infoOpen={this.state.infoOpen}
           close={() => this.setState({ infoOpen: false })}

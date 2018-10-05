@@ -1,5 +1,13 @@
 import React from "react"
-import { Dialog, DialogActions, Button, Grow } from "@material-ui/core"
+import {
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Button,
+  Grow,
+  Icon,
+  AppBar,
+} from "@material-ui/core"
 import { Tabs, Tab } from "material-ui/Tabs"
 import Toggle from "material-ui/Toggle"
 import { List, ListItem } from "material-ui/List"
@@ -20,8 +28,6 @@ import TimeFormatDialog from "./TimeFormat"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import ManageAuthorizations from "./ManageAuthorizations"
 import Shortcuts from "./Shortcuts"
-import Icon from "material-ui-next/Icon"
-import AppBar from "material-ui-next/AppBar"
 import CreateValue from "./CreateValue"
 import CreateDevice from "./CreateDevice"
 import CreateNotification from "./CreateNotification"
@@ -446,37 +452,39 @@ class SettingsDialog extends React.Component {
           TransitionComponent={Transition}
           className="notSelectable defaultCursor"
         >
-          <AppBar position="sticky">
-            <Tabs
-              inkBarStyle={{
-                background: "#ff4081",
-                height: "3px",
-                marginTop: "-3px",
-              }}
-              onChange={this.props.handleChange}
-              value={this.props.slideIndex}
-            >
-              <Tab
-                icon={<Icon>dashboard</Icon>}
-                label="Interface"
-                buttonStyle={{ backgroundColor: "#0057cb" }}
-                value={0}
-              />
-              <Tab
-                icon={<Icon>notifications</Icon>}
-                label="Notifications"
-                buttonStyle={{ backgroundColor: "#0057cb" }}
-                value={1}
-              />
-              <Tab
-                icon={<Icon>account_box</Icon>}
-                label="Account"
-                buttonStyle={{ backgroundColor: "#0057cb" }}
-                value={2}
-              />
-              {devModeTab}
-            </Tabs>
-          </AppBar>
+          <DialogTitle style={{ padding: "0" }}>
+            <AppBar position="sticky">
+              <Tabs
+                inkBarStyle={{
+                  background: "#ff4081",
+                  height: "3px",
+                  marginTop: "-3px",
+                }}
+                onChange={this.props.handleChange}
+                value={this.props.slideIndex}
+              >
+                <Tab
+                  icon={<Icon>dashboard</Icon>}
+                  label="Interface"
+                  buttonStyle={{ backgroundColor: "#0057cb" }}
+                  value={0}
+                />
+                <Tab
+                  icon={<Icon>notifications</Icon>}
+                  label="Notifications"
+                  buttonStyle={{ backgroundColor: "#0057cb" }}
+                  value={1}
+                />
+                <Tab
+                  icon={<Icon>account_box</Icon>}
+                  label="Account"
+                  buttonStyle={{ backgroundColor: "#0057cb" }}
+                  value={2}
+                />
+                {devModeTab}
+              </Tabs>
+            </AppBar>
+          </DialogTitle>
           <SwipeableViews
             index={this.props.slideIndex}
             onChangeIndex={this.props.handleChange}
@@ -484,6 +492,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
+                height: "calc(100vh - 220px)",
               }}
             >
               <div style={listStyles.root}>
@@ -537,6 +546,8 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
+                overflowX: "hidden",
+                height: "calc(100vh - 220px)",
               }}
             >
               <div style={listStyles.root}>
@@ -556,6 +567,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
+                height: "calc(100vh - 220px)",
               }}
             >
               <List style={{ padding: "0" }}>
@@ -644,6 +656,7 @@ class SettingsDialog extends React.Component {
             <div
               style={{
                 overflowY: "auto",
+                height: "calc(100vh - 220px)",
               }}
             >
               <List style={{ padding: "0" }}>

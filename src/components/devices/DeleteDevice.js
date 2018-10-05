@@ -1,7 +1,14 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import {
+  MuiThemeProvider,
+  createMuiTheme,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogTitle,
+  Grow,
+  Slide,
+} from "@material-ui/core"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -10,6 +17,16 @@ const theme = createMuiTheme({
     primary: { main: "#f44336" },
   },
 })
+
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
 
 class DeleteDevice extends React.Component {
   deleteDeviceMutation = () => {
@@ -28,39 +45,40 @@ class DeleteDevice extends React.Component {
   }
 
   render() {
-    const deleteDeviceActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#f44336" }}
-          onClick={this.deleteDeviceMutation}
-        >
-          Delete
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
       <Dialog
-        title="Delete device"
-        actions={deleteDeviceActions}
         open={this.props.open}
-        onRequestClose={this.props.close}
+        onClose={this.props.close}
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
         className="notSelectable defaultCursor"
-        contentStyle={{
-          width: "350px",
-        }}
-        titleClassName="notSelectable defaultCursor"
       >
-        Be careful, this device will be deleted permanently.
-        <br />
-        <br />
-        Note that by deleting a device, you will delete all of its values.
+        <DialogTitle>Delete device</DialogTitle>
+        <font
+          style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
+        >
+          Be careful, this device will be deleted permanently.
+          <br />
+          <br />
+          Note that by deleting a device, you will delete all of its values and
+          notifications.
+        </font>
+        <DialogActions style={{ marginRight: "8px" }}>
+          <MuiThemeProvider theme={theme}>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#f44336" }}
+              onClick={this.deleteDeviceMutation}
+            >
+              Delete
+            </Button>
+          </MuiThemeProvider>
+        </DialogActions>
       </Dialog>
     )
   }
