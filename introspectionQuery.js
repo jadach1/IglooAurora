@@ -1,7 +1,12 @@
 const fetch = require("node-fetch")
 const fs = require("fs")
 
-fetch(`http://iglooql.herokuapp.com/graphql`, {
+const serverUrl =
+  process.env.DEV_MODE === "SERVER"
+    ? "localhost:3000/graphql"
+    : `http://iglooql.herokuapp.com/graphql`
+
+fetch(serverUrl, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
