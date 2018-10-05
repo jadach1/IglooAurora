@@ -47,7 +47,7 @@
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build",
-    "server-dev": "set DEV_MODE=SERVER&&yarn build&&serve -s build"
+    "dev-server": "set DEV_MODE=SERVER&&yarn build&&serve -s build"
   },
   "devDependencies": {
     "@hint/configuration-development": "^1.1.1",
