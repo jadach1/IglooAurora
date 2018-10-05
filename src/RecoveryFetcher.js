@@ -23,7 +23,10 @@ export default class RecoveryFetcher extends Component {
     }
 
     const wsLink = new WebSocketLink({
-      uri: `wss://iglooql.herokuapp.com/subscriptions`,
+      uri:
+        process.env.DEV_MODE === "SERVER"
+          ? "wss://localhost:3000/subscriptions"
+          : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -33,7 +36,10 @@ export default class RecoveryFetcher extends Component {
     })
 
     const httpLink = new HttpLink({
-      uri: "https://iglooql.herokuapp.com/graphql",
+      uri:
+        process.env.DEV_MODE === "SERVER"
+          ? "localhost:3000/graphql"
+          : "https://iglooql.herokuapp.com/graphql",
       headers: {
         Authorization: "Bearer " + this.state.token,
       },

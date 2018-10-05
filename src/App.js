@@ -59,7 +59,12 @@ function setupWebPush(token) {
   }
 
   function sendSubscriptionToServer(subscription) {
-    fetch("https://iglooql.herokuapp.com/webPushSubscribe", {
+    const serverUrl =
+      process.env.DEV_MODE === "SERVER"
+        ? "localhost:3000/webPushSubscribe"
+        : `http://iglooql.herokuapp.com/graphql`
+
+    fetch(serverUrl, {
       body: JSON.stringify(subscription), // must match 'Content-Type' header
       cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
       credentials: "same-origin", // include, same-origin, *omit
