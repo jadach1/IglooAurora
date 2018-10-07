@@ -2,7 +2,8 @@ import React, { Component } from "react"
 import AuthenticatedApp from "./AuthenticatedApp"
 import LoginMain from "./LoginMain"
 import SignupMain from "./SignupMain"
-import UnAuthenticatedAppMobile from "./UnAuthenticatedAppMobile"
+import LoginMainMobile from "./LoginMainMobile"
+import SignupMainMobile from "./SignupMainMobile"
 import jwt from "jsonwebtoken"
 import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
@@ -210,7 +211,7 @@ class App extends Component {
           path="/login"
           render={() =>
             this.state.isMobile ? (
-              <UnAuthenticatedAppMobile signIn={signIn} />
+              <LoginMainMobile signIn={signIn} />
             ) : (
               <LoginMain
                 signIn={signIn}
@@ -225,7 +226,7 @@ class App extends Component {
           path="/signup"
           render={() =>
             this.state.isMobile ? (
-              <UnAuthenticatedAppMobile signIn={signIn} />
+              <SignupMainMobile signIn={signIn} />
             ) : (
               <SignupMain signIn={signIn} />
             )

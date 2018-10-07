@@ -7,7 +7,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard"
 import { Link } from "react-router-dom"
 import {
   Divider,
-    Tooltip,
+  Tooltip,
   Icon,
   IconButton,
   Menu,
@@ -162,14 +162,6 @@ class MainBodyHeader extends Component {
                 gridArea: "buttons",
               }}
             >
-              <Tooltip id="tooltip-more" title="More" placement="bottom">
-                <IconButton
-                  style={{ color: "white" }}
-                  onClick={this.handleMenuOpen}
-                >
-                  <Icon>more_vert</Icon>
-                </IconButton>
-              </Tooltip>
               <Menu
                 id="simple-menu"
                 anchorEl={this.state.anchorEl}
@@ -451,6 +443,14 @@ class MainBodyHeader extends Component {
                 showHiddenNotifications={this.props.showHiddenNotifications}
                 nightMode={this.props.nightMode}
               />
+              <Tooltip id="tooltip-more" title="More" placement="bottom">
+                <IconButton
+                  style={{ color: "white" }}
+                  onClick={this.handleMenuOpen}
+                >
+                  <Icon>more_vert</Icon>
+                </IconButton>
+              </Tooltip>
             </div>
           )}
         </div>
@@ -458,6 +458,7 @@ class MainBodyHeader extends Component {
           infoOpen={this.state.infoOpen}
           close={() => this.setState({ infoOpen: false })}
           id={device.id}
+          firmware={device.firmware}
           updatedAt={device.updatedAt}
           createdAt={device.createdAt}
           devMode={this.props.devMode}
@@ -500,7 +501,6 @@ export default graphql(
       query($id: ID!) {
         device(id: $id) {
           id
-          quietMode
           board {
             id
           }
@@ -511,6 +511,39 @@ export default graphql(
           icon
           updatedAt
           createdAt
+          myRole
+          quietMode
+          firmware
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          notifications {
+            id
+            content
+            date
+            visualized
+          }
         }
       }
     `,

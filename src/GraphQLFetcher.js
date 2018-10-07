@@ -21,18 +21,42 @@ class GraphQLFetcher extends Component {
       subscription {
         deviceCreated {
           id
-          customName
-          icon
-          online
-          batteryStatus
-          signalStatus
-          deviceType
-          batteryCharging
-          createdAt
-          updatedAt
-          quietMode
           board {
             id
+          }
+          values {
+            id
+          }
+          customName
+          icon
+          updatedAt
+          createdAt
+          myRole
+          quietMode
+          firmware
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
           }
           notifications {
             id
@@ -67,18 +91,42 @@ class GraphQLFetcher extends Component {
       subscription {
         deviceShared {
           id
-          customName
-          icon
-          online
-          batteryStatus
-          signalStatus
-          deviceType
-          batteryCharging
-          createdAt
-          updatedAt
-          quietMode
           board {
             id
+          }
+          values {
+            id
+          }
+          customName
+          icon
+          updatedAt
+          createdAt
+          myRole
+          quietMode
+          firmware
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
           }
           notifications {
             id
@@ -113,18 +161,42 @@ class GraphQLFetcher extends Component {
       subscription {
         deviceUpdated {
           id
-          customName
-          icon
-          online
-          batteryStatus
-          signalStatus
-          deviceType
-          batteryCharging
-          createdAt
-          updatedAt
-          quietMode
           board {
             id
+          }
+          values {
+            id
+          }
+          customName
+          icon
+          updatedAt
+          createdAt
+          myRole
+          quietMode
+          firmware
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
           }
           notifications {
             id

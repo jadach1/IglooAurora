@@ -9,9 +9,43 @@ export default class StatusBar extends Component {
       subscription {
         deviceUpdated {
           id
+          board {
+            id
+          }
+          values {
+            id
+          }
           customName
           icon
-          online
+          updatedAt
+          createdAt
+          myRole
+          quietMode
+          firmware
+          owner {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            displayName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            displayName
+            profileIconColor
+          }
           notifications {
             id
             content

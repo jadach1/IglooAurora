@@ -70,6 +70,7 @@ class Signup extends Component {
       isPasswordEmpty: false,
       showLoading: false,
       redirect: false,
+      height: 0,
     }
 
     this.signUp = this.signUp.bind(this)
@@ -440,7 +441,7 @@ class Signup extends Component {
             Log in!
           </font>
         </Typography>
-        {this.state.redirect && <Redirect to="/login" />}
+        {this.state.redirect && <Redirect push to="/login" />}
       </div>
     )
   }

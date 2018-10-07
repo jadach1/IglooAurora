@@ -297,7 +297,11 @@ class Login extends Component {
               </Grid>
             </Grid>
             <FormControlLabel
-              style={{ marginLeft: "-94px", textAlign: "left" }}
+              style={{
+                marginLeft: "-94px",
+                textAlign: "left",
+                marginRight: "0px",
+              }}
               control={
                 <MuiThemeProvider
                   theme={createMuiTheme({
@@ -315,7 +319,7 @@ class Login extends Component {
                 </MuiThemeProvider>
               }
               label={
-                <Typography variant="body1" style={{ paddingLeft: "4px" }}>
+                <Typography variant="subheading" style={{ paddingLeft: "4px" }}>
                   Keep me logged in
                 </Typography>
               }
@@ -391,7 +395,7 @@ class Login extends Component {
           close={() => this.setState({ forgotPasswordOpen: false })}
           email={this.state.email}
         />
-        {this.state.redirect && <Redirect to="/signup" />}
+        {this.state.redirect && <Redirect push to="/signup" />}
       </React.Fragment>
     )
   }

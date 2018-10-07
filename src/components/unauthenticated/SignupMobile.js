@@ -9,6 +9,8 @@ import Icon from "material-ui-next/Icon"
 import { Typography, Grid, CircularProgress } from "material-ui-next"
 import zxcvbn from "zxcvbn"
 import * as EmailValidator from "email-validator"
+import logo from "../../styles/assets/logo.svg"
+import { Redirect } from "react-router-dom"
 
 const theme = createMuiTheme({
   palette: {
@@ -36,6 +38,20 @@ class SignupMobile extends Component {
     }
 
     this.signUp = this.signUp.bind(this)
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions()
+    window.addEventListener("resize", this.updateWindowDimensions)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWindowDimensions)
+  }
+
+  updateWindowDimensions() {
+    this.setState({ height: window.innerHeight })
   }
 
   async signUp() {
@@ -43,8 +59,12 @@ class SignupMobile extends Component {
       this.setState({ emailError: "", passwordError: "" })
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
-          mutation($email: String!, $password: String!,$displayName: String!) {
-            SignupUser(email: $email, password: $password,displayName:$displayName) {
+          mutation($email: String!, $password: String!, $displayName: String!) {
+            SignupUser(
+              email: $email
+              password: $password
+              displayName: $displayName
+            ) {
               id
               token
             }
@@ -53,7 +73,7 @@ class SignupMobile extends Component {
         variables: {
           email: this.state.email,
           password: this.state.password,
-          displayName: this.state.fullName
+          displayName: this.state.fullName,
         },
       })
 
@@ -132,13 +152,37 @@ class SignupMobile extends Component {
         className="rightSide notSelectable"
         style={{ maxWidth: "400px", marginLeft: "auto", marginRight: "auto" }}
       >
+        <img
+          src={logo}
+          alt="Igloo logo"
+          className="notSelectable"
+          style={
+            this.state.height >= 690
+              ? {
+                  width: "200px",
+                  paddingTop: "75px",
+                  marginBottom: "75px",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }
+              : {
+                  width: "150px",
+                  paddingTop: "50px",
+                  marginBottom: "50px",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }
+          }
+        />
         <Typography
-          variant="display1"
+          variant="display2"
           gutterBottom
           className="defaultCursor"
-          style={{ color: "white", textAlign: "center", fontSize: "2rem" }}
+          style={{ color: "white", textAlign: "center" }}
         >
-          Nice to meet you!
+          Sign up
         </Typography>
         <br />
         <MuiThemeProvider theme={theme}>
@@ -366,6 +410,20 @@ class SignupMobile extends Component {
               </MuiThemeProvider>
             )}
           </Button>
+          <Typography
+            variant="subheading"
+            style={{
+              marginTop: "16px",
+              marginBottom: "16px",
+              color: "white",
+              cursor: "pointer",
+              textAlign: "center",
+            }}
+            onClick={() => this.setState({ redirect: true })}
+          >
+            Already have an account? Log in
+          </Typography>
+          {this.state.redirect && <Redirect push to="/login" />}
         </MuiThemeProvider>
       </div>
     )
