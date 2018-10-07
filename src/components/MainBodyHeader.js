@@ -6,7 +6,7 @@ import DeviceInfo from "./devices/DeviceInfo"
 // import { CopyToClipboard } from "react-copy-to-clipboard"
 import {
   Typography,
-    Tooltip,
+  Tooltip,
   Icon,
   IconButton,
   ListItemText,
@@ -121,14 +121,6 @@ class MainBodyHeader extends Component {
                 gridArea: "buttons",
               }}
             >
-              <Tooltip id="tooltip-more" title="More" placement="bottom">
-                <IconButton
-                  style={{ color: "white" }}
-                  onClick={this.handleMenuOpen}
-                >
-                  <Icon>more_vert</Icon>
-                </IconButton>
-              </Tooltip>
               <Menu
                 id="simple-menu"
                 anchorEl={this.state.anchorEl}
@@ -354,31 +346,33 @@ class MainBodyHeader extends Component {
                   </MenuItem>
                 )}
                 <Divider />
-                {this.props.userData.user.boards.length > 1 && <MenuItem
-                  className="notSelectable"
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.setState({ changeBoardOpen: true })
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      swap_horiz
-                    </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Change board" />
-                </MenuItem>}
+                {this.props.userData.user.boards.length > 1 && (
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      this.setState({ changeBoardOpen: true })
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        swap_horiz
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Change board" />
+                  </MenuItem>
+                )}
                 {device.values.length > 1 && (
                   <MenuItem
                     className="notSelectable"
@@ -459,6 +453,14 @@ class MainBodyHeader extends Component {
                 showHiddenNotifications={this.props.showHiddenNotifications}
                 nightMode={this.props.nightMode}
               />
+              <Tooltip id="tooltip-more" title="More" placement="bottom">
+                <IconButton
+                  style={{ color: "white" }}
+                  onClick={this.handleMenuOpen}
+                >
+                  <Icon>more_vert</Icon>
+                </IconButton>
+              </Tooltip>
             </div>
           )}
         </div>
@@ -466,6 +468,7 @@ class MainBodyHeader extends Component {
           infoOpen={this.state.infoOpen}
           close={() => this.setState({ infoOpen: false })}
           id={device.id}
+          firmware={device.firmware}
           updatedAt={device.updatedAt}
           createdAt={device.createdAt}
           devMode={this.props.devMode}
@@ -533,6 +536,7 @@ export default graphql(
           createdAt
           myRole
           quietMode
+          firmware
           owner {
             id
             email
@@ -556,6 +560,12 @@ export default graphql(
             email
             displayName
             profileIconColor
+          }
+          notifications {
+            id
+            content
+            date
+            visualized
           }
         }
       }

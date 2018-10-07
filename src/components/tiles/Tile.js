@@ -570,6 +570,7 @@ class Tile extends Component {
                 <Divider
                   style={this.props.nightMode ? { background: "#21252b" } : {}}
                 />
+                 {this.props.userData.user.devices.length > 1 && 
                 <MenuItem
                   className="notSelectable"
                   style={
@@ -594,7 +595,7 @@ class Tile extends Component {
                     </Icon>
                   </ListItemIcon>
                   <ListItemText inset primary="Change device" />
-                </MenuItem>
+                </MenuItem>}
                 <MenuItem
                   primaryText="Rename"
                   className="notSelectable"

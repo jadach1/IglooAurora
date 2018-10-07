@@ -127,6 +127,7 @@ class BoardCard extends Component {
                   this.props.nightMode
                     ? {
                         color: "white",
+                        marginLeft: "-8px",
                         overflow: "hidden",
                         whiteSpace: "nowrap",
                         textOverflow: "ellipsis",

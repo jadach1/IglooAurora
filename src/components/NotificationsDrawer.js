@@ -12,10 +12,12 @@ import {
   Tooltip,
   SwipeableDrawer,
   IconButton,
+  MenuItem,
+  ListItemIcon,
+  Menu,
 } from "@material-ui/core"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import ReactCSSTransitionGroup from "react-addons-css-transition-group"
 import FlatButton from "material-ui/FlatButton"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
 import { hotkeys } from "react-keyboard-shortcuts"
@@ -221,97 +223,83 @@ class NotificationsDrawer extends React.Component {
     if (user) {
       notifications = (
         <List style={{ padding: "0" }}>
-          <ReactCSSTransitionGroup
-            transitionName="notification"
-            transitionEnterTimeout={5000}
-            transitionLeaveTimeout={3000}
-          >
-            {user.notifications &&
-              user.notifications
-                .filter(
-                  notification =>
-                    notification.device.id === this.props.device.id
-                )
-                .filter(notification => notification.visualized === false)
-                .map(notification => (
-                  <ListItem
-                    className="notSelectable"
-                    key={notification.id}
-                    id={notification.id}
-                    onClick={() => clearNotification(notification.id)}
-                  >
-                    <ListItemText
-                      primary={notification.content}
-                      secondary={moment
-                        .utc(
-                          notification.date.split(".")[0],
-                          "YYYY-MM-DDTh:mm:ss"
-                        )
-                        .fromNow()}
-                    />
-                    <ListItemSecondaryAction>
-                      <IconButton
-                        aria-label="Delete"
-                        onClick={() => deleteNotification(notification.id)}
-                      >
-                        <i class="material-icons">delete</i>
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))
-                .reverse()}
-          </ReactCSSTransitionGroup>
+          {user.notifications &&
+            user.notifications
+              .filter(
+                notification => notification.device.id === this.props.device.id
+              )
+              .filter(notification => notification.visualized === false)
+              .map(notification => (
+                <ListItem
+                  className="notSelectable"
+                  key={notification.id}
+                  id={notification.id}
+                  onClick={() => clearNotification(notification.id)}
+                  button
+                >
+                  <ListItemText
+                    primary={notification.content}
+                    secondary={moment
+                      .utc(
+                        notification.date.split(".")[0],
+                        "YYYY-MM-DDTh:mm:ss"
+                      )
+                      .fromNow()}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton
+                      aria-label="Delete"
+                      onClick={() => deleteNotification(notification.id)}
+                    >
+                      <i class="material-icons">delete</i>
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))
+              .reverse()}
         </List>
       )
 
       readNotifications = (
         <List style={{ padding: "0" }}>
-          <ReactCSSTransitionGroup
-            transitionName="notification"
-            transitionEnterTimeout={5000}
-            transitionLeaveTimeout={3000}
-          >
-            {user.notifications &&
-              user.notifications
-                .filter(
-                  notification =>
-                    notification.device.id === this.props.device.id
-                )
-                .filter(notification => notification.visualized === true)
-                .map(notification => (
-                  <ListItem
-                    button
-                    key={notification.id}
-                    className="notSelectable"
-                    id={notification.id}
-                  >
-                    <ListItemText
-                      primary={notification.content}
-                      secondary={moment
-                        .utc(
-                          notification.date.split(".")[0],
-                          "YYYY-MM-DDTh:mm:ss"
-                        )
-                        .fromNow()}
-                    />
-                    <ListItemSecondaryAction>
+          {user.notifications &&
+            user.notifications
+              .filter(
+                notification => notification.device.id === this.props.device.id
+              )
+              .filter(notification => notification.visualized === true)
+              .map(notification => (
+                <ListItem
+                  key={notification.id}
+                  className="notSelectable"
+                  id={notification.id}
+                >
+                  <ListItemText
+                    primary={notification.content}
+                    secondary={moment
+                      .utc(
+                        notification.date.split(".")[0],
+                        "YYYY-MM-DDTh:mm:ss"
+                      )
+                      .fromNow()}
+                  />
+                  <ListItemSecondaryAction>
+                    <Tooltip title="More" placement="bottom">
                       <IconButton
-                        aria-label="Mark as unread"
-                        onClick={() => markAsUnread(notification.id)}
+                        onClick={event =>
+                          this.setState({
+                            anchorEl: event.currentTarget,
+                            targetNotification: notification,
+                          })
+                        }
                       >
-                        <i class="material-icons">markunread</i>
+                        <i class="material-icons">more_vert</i>
                       </IconButton>
-                      <IconButton
-                        aria-label="Delete"
-                        onClick={() => deleteNotification(notification.id)}
-                      >
-                        <i class="material-icons">delete</i>
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                ))
-                .reverse()}
-          </ReactCSSTransitionGroup>
+                    </Tooltip>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))
+              .reverse()}
         </List>
       )
 
@@ -379,14 +367,69 @@ class NotificationsDrawer extends React.Component {
 
     return (
       <React.Fragment>
-        <IconButton
-          style={{
-            padding: "0",
-            color: "white",
+        <Menu
+          open={this.state.anchorEl}
+          anchorEl={this.state.anchorEl}
+          onClose={() => {
+            this.setState({ anchorEl: null })
           }}
-          onClick={() => this.props.changeDrawerState()}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
         >
-          <Tooltip title="Notifications" placement="bottom">
+          <MenuItem
+            onClick={() => {
+              markAsUnread(this.state.targetNotification.id)
+              this.setState({ anchorEl: null })
+            }}
+          >
+            <ListItemIcon>
+              <Icon
+                style={
+                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                }
+              >
+                markunread
+              </Icon>
+            </ListItemIcon>
+            <ListItemText>Mark as unread</ListItemText>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              deleteNotification(this.state.targetNotification.id)
+              this.setState({ anchorEl: null })
+            }}
+          >
+            <ListItemIcon>
+              <Icon style={{ color: "#f44336" }}>delete</Icon>
+            </ListItemIcon>
+            <ListItemText inset>
+              <span style={{ color: "#f44336" }}>Delete</span>
+            </ListItemText>
+          </MenuItem>
+        </Menu>
+        <Tooltip title="Notifications" placement="bottom">
+          <IconButton
+            style={{
+              padding: "0",
+              color: "white",
+            }}
+            onClick={
+              this.props.hiddenNotifications
+                ? () => {
+                    this.props.changeDrawerState()
+                    this.props.showHiddenNotifications()
+                  }
+                : () => {
+                    this.props.changeDrawerState()
+                  }
+            }
+          >
             <MuiThemeProvider theme={theme}>
               {notificationCount ? (
                 <Badge badgeContent={notificationCount} color="primary">
@@ -396,8 +439,8 @@ class NotificationsDrawer extends React.Component {
                 <Icon>notifications_none</Icon>
               )}
             </MuiThemeProvider>
-          </Tooltip>
-        </IconButton>
+          </IconButton>
+        </Tooltip>
         <SwipeableDrawer
           variant="temporary"
           anchor="right"

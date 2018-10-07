@@ -18,6 +18,8 @@ import {
 } from "@material-ui/core"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
+import logo from "../../styles/assets/logo.svg"
+import { Redirect } from "react-router-dom"
 
 const theme = createMuiTheme({
   palette: {
@@ -45,10 +47,26 @@ export default class LoginMobile extends Component {
       isPasswordEmpty: false,
       keepLoggedIn: true,
       showLoading: false,
+      height: 0,
+      redirect: false,
     }
 
     this.signIn = this.signIn.bind(this)
     this.recover = this.recover.bind(this)
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions()
+    window.addEventListener("resize", this.updateWindowDimensions)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWindowDimensions)
+  }
+
+  updateWindowDimensions() {
+    this.setState({ height: window.innerHeight })
   }
 
   async signIn() {
@@ -134,15 +152,43 @@ export default class LoginMobile extends Component {
       <React.Fragment>
         <div
           className="rightSide notSelectable"
-          style={{ maxWidth: "400px", marginLeft: "auto", marginRight: "auto" }}
+          style={{
+            maxWidth: "400px",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
         >
+          <img
+            src={logo}
+            alt="Igloo logo"
+            className="notSelectable"
+            style={
+              this.state.height >= 690
+                ? {
+                    width: "200px",
+                    paddingTop: "75px",
+                    marginBottom: "75px",
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }
+                : {
+                    width: "150px",
+                    paddingTop: "50px",
+                    marginBottom: "50px",
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }
+            }
+          />
           <Typography
-            variant="display1"
+            variant="display2"
             gutterBottom
             className="defaultCursor"
-            style={{ color: "white", textAlign: "center", fontSize: "2rem" }}
+            style={{ color: "white", textAlign: "center" }}
           >
-            Welcome back!
+            Log in
           </Typography>
           <br />
           <MuiThemeProvider theme={theme}>
@@ -281,7 +327,7 @@ export default class LoginMobile extends Component {
               }
               label={
                 <Typography
-                  variant="body1"
+                  variant="subheading"
                   style={{ paddingLeft: "4px", color: "white" }}
                 >
                   Keep me logged in
@@ -289,8 +335,9 @@ export default class LoginMobile extends Component {
               }
             />
             <br />
-            <div style={{ textAlign: "right" }}>
-              <font
+            <div style={{ textAlign: "right", marginBottom: "16px" }}>
+              <Typography
+                variant="subheading"
                 style={{
                   cursor: "pointer",
                   color: "white",
@@ -300,10 +347,8 @@ export default class LoginMobile extends Component {
                 }}
               >
                 Forgot password?
-              </font>
+              </Typography>
             </div>
-            <br />
-            <br />
             <Button
               variant="raised"
               primary={true}
@@ -342,6 +387,19 @@ export default class LoginMobile extends Component {
                 </MuiThemeProvider>
               )}
             </Button>
+            <Typography
+              variant="subheading"
+              style={{
+                marginTop: "16px",
+                marginBottom: "16px",
+                color: "white",
+                cursor: "pointer",
+                textAlign: "center",
+              }}
+              onClick={() => this.setState({ redirect: true })}
+            >
+              No account yet? Sign up!
+            </Typography>
           </MuiThemeProvider>
         </div>
         <ForgotPassword
@@ -350,6 +408,7 @@ export default class LoginMobile extends Component {
           close={() => this.setState({ forgotPasswordOpen: false })}
           email={this.state.email}
         />
+        {this.state.redirect && <Redirect push to="/signup" />}
       </React.Fragment>
     )
   }
