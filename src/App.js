@@ -89,7 +89,8 @@ class App extends Component {
     let bearer = ""
     // reuse previous session's bearer if present
     if (typeof Storage !== "undefined") {
-      bearer = localStorage.getItem("bearer") || ""
+      bearer =
+        localStorage.getItem("bearer") || sessionStorage.getItem("bearer") || ""
 
       // ask for a new token 1 day before the expiration date
       if (bearer !== "") {
@@ -98,6 +99,7 @@ class App extends Component {
         if (expirationDate < tomorrow) {
           bearer = ""
           localStorage.setItem("bearer", "")
+          sessionStorage.setItem("bearer", "")
         } else {
           setupWebPush(bearer)
         }
@@ -141,7 +143,7 @@ class App extends Component {
         }
       } else {
         if (typeof Storage !== "undefined") {
-          localStorage.setItem("bearer", "")
+          sessionStorage.setItem("bearer", bearer)
         }
       }
 
@@ -156,6 +158,7 @@ class App extends Component {
       this.setState({ bearer: "", loggedOut: true })
       if (typeof Storage !== "undefined") {
         localStorage.setItem("bearer", "")
+          sessionStorage.setItem("bearer", "")
       }
     }
 

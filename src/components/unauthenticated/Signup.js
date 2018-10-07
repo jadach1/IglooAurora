@@ -184,263 +184,269 @@ class Signup extends Component {
 
     return (
       <div className="rightSide notSelectable" style={{ overflowY: "hidden" }}>
-        <br />
-        <Typography
-          variant="display2"
-          gutterBottom
-          className="defaultCursor"
-          style={{ color: "#0083ff", textAlign: "center" }}
-        >
-          Sign up
-        </Typography>
-        <br />
-        <MuiThemeProvider theme={theme}>
-          <Grid
-            container
-            spacing={0}
-            alignItems="flex-end"
-            style={{ width: "100%" }}
-          >
-            <Grid item style={{ marginRight: "16px" }}>
-              <Icon style={{ marginBottom: "20px" }}>account_circle</Icon>
-            </Grid>
-            <Grid item style={{ width: "calc(100% - 40px)" }}>
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  id="adornment-email-signup"
-                  placeholder="Full name"
-                  value={this.state.fullName}
-                  onChange={event =>
-                    this.setState({
-                      fullName: event.target.value,
-                      isNameValid: event.target.value !== "",
-                    })
-                  }
-                  onKeyPress={event => {
-                    if (event.key === "Enter") {
-                      this.setState({ showLoading: true })
-                      this.signUp()
-                    }
-                  }}
-                  error={!this.state.isNameValid}
-                  endAdornment={
-                    this.state.fullName ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          tabIndex="-1"
-                          onClick={() =>
-                            this.setState({ fullName: "", isNameValid: false })
-                          }
-                          onMouseDown={this.handleMouseDownPassword}
-                        >
-                          <Icon>clear</Icon>
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-                <FormHelperText
-                  id="name-error-text-signup"
-                  style={!this.state.isNameValid ? { color: "#f44336" } : {}}
-                >
-                  {!this.state.isNameValid ? "This field is required" : ""}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <br />
-          <Grid
-            container
-            spacing={0}
-            alignItems="flex-end"
-            style={{ width: "100%" }}
-          >
-            <Grid item style={{ marginRight: "16px" }}>
-              <Icon style={{ marginBottom: "20px" }}>email</Icon>
-            </Grid>
-            <Grid item style={{ width: "calc(100% - 40px)" }}>
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  id="adornment-email-signup"
-                  placeholder="Email"
-                  value={this.state.email}
-                  error={
-                    (!this.state.isEmailValid && this.state.email) ||
-                    this.state.emailError ||
-                    this.state.isMailEmpty
-                      ? true
-                      : false
-                  }
-                  onChange={event =>
-                    this.setState({
-                      email: event.target.value,
-                      isEmailValid: EmailValidator.validate(event.target.value),
-                      emailError: "",
-                      isMailEmpty: event.target.value === "",
-                    })
-                  }
-                  onKeyPress={event => {
-                    if (event.key === "Enter") {
-                      this.setState({ showLoading: true })
-                      this.signUp()
-                    }
-                  }}
-                  endAdornment={
-                    this.state.email ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          tabIndex="-1"
-                          onClick={this.handleClickCancelEmail}
-                          onMouseDown={this.handleMouseDownPassword}
-                        >
-                          <Icon>clear</Icon>
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-                <FormHelperText
-                  id="name-error-text-signup"
-                  style={
-                    (!this.state.isEmailValid && this.state.email) ||
-                    this.state.emailError ||
-                    this.state.isMailEmpty
-                      ? { color: "#f44336" }
-                      : {}
-                  }
-                >
-                  {this.state.emailError ||
-                    (!this.state.isEmailValid && this.state.email
-                      ? "Enter a valid email"
-                      : "")}
-                  {this.state.isMailEmpty ? "This field is required" : ""}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-          </Grid>
-        </MuiThemeProvider>
-        <br />
-        <MuiThemeProvider theme={passwordTheme}>
-          <Grid
-            container
-            spacing={0}
-            alignItems="flex-end"
-            style={{ width: "100%" }}
-          >
-            <Grid item style={{ marginRight: "16px" }}>
-              <Icon style={{ marginBottom: "20px" }}>vpn_key</Icon>
-            </Grid>
-            <Grid item style={{ width: "calc(100% - 40px)" }}>
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  id="adornment-password-signup"
-                  placeholder="Password"
-                  color="secondary"
-                  type={this.state.showPassword ? "text" : "password"}
-                  value={this.state.password}
-                  error={this.state.isPasswordEmpty ? true : false}
-                  onChange={event => {
-                    this.setState({
-                      password: event.target.value,
-                      passwordScore: zxcvbn(
-                        event.target.value,
-                        customDictionary
-                      ).score,
-                      isPasswordEmpty: event.target.value === "",
-                    })
-                  }}
-                  onKeyPress={event => {
-                    if (event.key === "Enter") {
-                      this.setState({ showLoading: true })
-                      this.signUp()
-                    }
-                  }}
-                  endAdornment={
-                    this.state.password ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          tabIndex="-1"
-                          onClick={this.handleClickShowPassword}
-                          onMouseDown={this.handleMouseDownPassword}
-                        >
-                          {this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
-                          ) : (
-                            <Icon>visibility</Icon>
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-                <FormHelperText
-                  id="password-error-text-signup"
-                  style={
-                    this.state.isPasswordEmpty
-                      ? { color: "#f44336" }
-                      : { color: passwordColor }
-                  }
-                >
-                  {scoreText}
-                  {this.state.isPasswordEmpty ? "This field is required" : ""}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-          </Grid>
-        </MuiThemeProvider>
-        <br />
-        <br />
-        <MuiThemeProvider theme={theme}>
-          <Button
-            variant="raised"
-            color="primary"
-            fullWidth={true}
-            primary={true}
-            onClick={() => {
-              this.setState({ showLoading: true })
-              this.signUp()
-            }}
-            buttonStyle={{ backgroundColor: "#0083ff" }}
-            disabled={
-              !(
-                this.state.fullName &&
-                this.state.isEmailValid &&
-                this.state.passwordScore >= 2
-              ) || this.state.showLoading
-            }
+        <div>
+          <Typography
+            variant="display2"
+            gutterBottom
+            className="defaultCursor"
+            style={{ color: "#0083ff", textAlign: "center" }}
           >
             Sign up
-            {this.state.showLoading && (
-              <MuiThemeProvider
-                theme={createMuiTheme({
-                  palette: {
-                    primary: { main: "#0083ff" },
-                  },
-                })}
-              >
-                <CircularProgress
-                  size={24}
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: -12,
-                    marginLeft: -12,
-                  }}
-                />
-              </MuiThemeProvider>
-            )}
-          </Button>
-        </MuiThemeProvider>
-        <Typography variant="subheading" style={{ marginTop: "8px" }}>
-          Already have an account?{" "}
-          <font
-            style={{ marginTop: "8px", color: "#0083ff", cursor: "pointer" }}
-            onClick={() => this.setState({ redirect: true })}
-          >
-            Log in!
-          </font>
-        </Typography>
+          </Typography>
+          <br />
+          <MuiThemeProvider theme={theme}>
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon style={{ marginBottom: "20px" }}>account_circle</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-email-signup"
+                    placeholder="Full name"
+                    value={this.state.fullName}
+                    onChange={event =>
+                      this.setState({
+                        fullName: event.target.value,
+                        isNameValid: event.target.value !== "",
+                      })
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") {
+                        this.setState({ showLoading: true })
+                        this.signUp()
+                      }
+                    }}
+                    error={!this.state.isNameValid}
+                    endAdornment={
+                      this.state.fullName ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            tabIndex="-1"
+                            onClick={() =>
+                              this.setState({
+                                fullName: "",
+                                isNameValid: false,
+                              })
+                            }
+                            onMouseDown={this.handleMouseDownPassword}
+                          >
+                            <Icon>clear</Icon>
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                  <FormHelperText
+                    id="name-error-text-signup"
+                    style={!this.state.isNameValid ? { color: "#f44336" } : {}}
+                  >
+                    {!this.state.isNameValid ? "This field is required" : ""}
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <br />
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon style={{ marginBottom: "20px" }}>email</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-email-signup"
+                    placeholder="Email"
+                    value={this.state.email}
+                    error={
+                      (!this.state.isEmailValid && this.state.email) ||
+                      this.state.emailError ||
+                      this.state.isMailEmpty
+                        ? true
+                        : false
+                    }
+                    onChange={event =>
+                      this.setState({
+                        email: event.target.value,
+                        isEmailValid: EmailValidator.validate(
+                          event.target.value
+                        ),
+                        emailError: "",
+                        isMailEmpty: event.target.value === "",
+                      })
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") {
+                        this.setState({ showLoading: true })
+                        this.signUp()
+                      }
+                    }}
+                    endAdornment={
+                      this.state.email ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            tabIndex="-1"
+                            onClick={this.handleClickCancelEmail}
+                            onMouseDown={this.handleMouseDownPassword}
+                          >
+                            <Icon>clear</Icon>
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                  <FormHelperText
+                    id="name-error-text-signup"
+                    style={
+                      (!this.state.isEmailValid && this.state.email) ||
+                      this.state.emailError ||
+                      this.state.isMailEmpty
+                        ? { color: "#f44336" }
+                        : {}
+                    }
+                  >
+                    {this.state.emailError ||
+                      (!this.state.isEmailValid && this.state.email
+                        ? "Enter a valid email"
+                        : "")}
+                    {this.state.isMailEmpty ? "This field is required" : ""}
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </MuiThemeProvider>
+          <br />
+          <MuiThemeProvider theme={passwordTheme}>
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon style={{ marginBottom: "20px" }}>vpn_key</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-password-signup"
+                    placeholder="Password"
+                    color="secondary"
+                    type={this.state.showPassword ? "text" : "password"}
+                    value={this.state.password}
+                    error={this.state.isPasswordEmpty ? true : false}
+                    onChange={event => {
+                      this.setState({
+                        password: event.target.value,
+                        passwordScore: zxcvbn(
+                          event.target.value,
+                          customDictionary
+                        ).score,
+                        isPasswordEmpty: event.target.value === "",
+                      })
+                    }}
+                    onKeyPress={event => {
+                      if (event.key === "Enter") {
+                        this.setState({ showLoading: true })
+                        this.signUp()
+                      }
+                    }}
+                    endAdornment={
+                      this.state.password ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            tabIndex="-1"
+                            onClick={this.handleClickShowPassword}
+                            onMouseDown={this.handleMouseDownPassword}
+                          >
+                            {this.state.showPassword ? (
+                              <Icon>visibility_off</Icon>
+                            ) : (
+                              <Icon>visibility</Icon>
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                  <FormHelperText
+                    id="password-error-text-signup"
+                    style={
+                      this.state.isPasswordEmpty
+                        ? { color: "#f44336" }
+                        : { color: passwordColor }
+                    }
+                  >
+                    {scoreText}
+                    {this.state.isPasswordEmpty ? "This field is required" : ""}
+                  </FormHelperText>
+                </FormControl>
+              </Grid>
+            </Grid>
+          </MuiThemeProvider>
+        </div>
+        <div style={{ marginTop: "189px" }}>
+          <MuiThemeProvider theme={theme}>
+            <Button
+              variant="raised"
+              color="primary"
+              fullWidth={true}
+              primary={true}
+              onClick={() => {
+                this.setState({ showLoading: true })
+                this.signUp()
+              }}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              disabled={
+                !(
+                  this.state.fullName &&
+                  this.state.isEmailValid &&
+                  this.state.passwordScore >= 2
+                ) || this.state.showLoading
+              }
+            >
+              Sign up
+              {this.state.showLoading && (
+                <MuiThemeProvider
+                  theme={createMuiTheme({
+                    palette: {
+                      primary: { main: "#0083ff" },
+                    },
+                  })}
+                >
+                  <CircularProgress
+                    size={24}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: -12,
+                      marginLeft: -12,
+                    }}
+                  />
+                </MuiThemeProvider>
+              )}
+            </Button>
+          </MuiThemeProvider>
+          <Typography variant="subheading" style={{ marginTop: "8px" }}>
+            Already have an account?{" "}
+            <font
+              style={{ marginTop: "8px", color: "#0083ff", cursor: "pointer" }}
+              onClick={() => this.setState({ redirect: true })}
+            >
+              Log in!
+            </font>
+          </Typography>
+        </div>
         {this.state.redirect && <Redirect push to="/login" />}
       </div>
     )
