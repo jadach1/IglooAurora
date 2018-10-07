@@ -38,8 +38,8 @@ function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
   ) : (
-    <Slide direction="up" {...props} />
-  )
+      <Slide direction="up" {...props} />
+    )
 }
 
 class CreateBoard extends React.Component {
@@ -168,6 +168,7 @@ class CreateBoard extends React.Component {
           label="Set as favorite"
         />
         <br />
+        <p>Choose a board image</p>
         <SwipeableViews
           index={this.state.slideIndex}
           onChangeIndex={value => {
@@ -178,10 +179,10 @@ class CreateBoard extends React.Component {
           style={
             window.innerWidth < MOBILE_WIDTH
               ? {
-                  width: "calc(100vw - 48px)",
-                  marginLeft: "24px",
-                  marginRight: "24px",
-                }
+                width: "calc(100vw - 48px)",
+                marginLeft: "24px",
+                marginRight: "24px",
+              }
               : { width: "350px", marginLeft: "24px", marginRight: "24px" }
           }
         >
