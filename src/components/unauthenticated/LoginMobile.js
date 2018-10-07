@@ -45,9 +45,12 @@ export default class LoginMobile extends Component {
       forgotPasswordOpen: false,
       isMailEmpty: false,
       isPasswordEmpty: false,
-      keepLoggedIn: true,
       showLoading: false,
       height: 0,
+      keepLoggedIn:
+        typeof Storage !== "undefined"
+          ? localStorage.getItem("keepLoggedIn") === "true"
+          : true,
       redirect: false,
     }
 
@@ -91,7 +94,10 @@ export default class LoginMobile extends Component {
         localStorage.setItem("email", this.state.email)
       }
 
-      this.props.signIn(loginMutation.data.AuthenticateUser.token)
+      this.props.signIn(
+        loginMutation.data.AuthenticateUser.token,
+        this.state.keepLoggedIn
+      )
     } catch (e) {
       this.setState({ showLoading: false })
 
@@ -313,16 +319,18 @@ export default class LoginMobile extends Component {
                 <MuiThemeProvider
                   theme={createMuiTheme({
                     palette: {
+                      primary: { main: "#fff" },
                       secondary: { main: "#fff" },
+                      default: { main: "#fff" },
                     },
                   })}
                 >
-                  <Checkbox
-                    checked={this.state.keepLoggedIn}
-                    onChange={event =>
-                      this.setState({ keepLoggedIn: event.target.checked })
-                    }
-                  />
+                <Checkbox
+                  onChange={event =>
+                    this.setState({ keepLoggedIn: event.target.checked })
+                  }
+                  checked={this.state.keepLoggedIn}
+                />
                 </MuiThemeProvider>
               }
               label={
