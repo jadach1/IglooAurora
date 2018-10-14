@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import { Redirect } from "react-router-dom"
-import Button from "material-ui-next/Button"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import Button from "@material-ui/core/Button"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import polarBearWithBucket from "./styles/assets/polarBearWithBucket.svg"
-import { Typography } from "material-ui-next"
+import Typography from "@material-ui/core/Typography"
 
 const theme = createMuiTheme({
   palette: {

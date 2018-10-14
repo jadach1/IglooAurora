@@ -7,12 +7,12 @@ import "./styles/App.css"
 import "./styles/Tiles.css"
 import "./styles/MobileApp.css"
 import { hotkeys } from "react-keyboard-shortcuts"
-import AppBar from "material-ui-next/AppBar"
+import AppBar from "@material-ui/core/AppBar"
 import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
 import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
 import StatusBar from "./components/devices/StatusBar"
 import { Redirect } from "react-router-dom"
-import { Typography } from "material-ui-next"
+import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
 
 class Main extends Component {
@@ -38,11 +38,11 @@ class Main extends Component {
       handler: event => {
         !this.state.drawer
           ? this.setState(oldState => ({
-              showMainHidden: !oldState.showMainHidden,
-            }))
+            showMainHidden: !oldState.showMainHidden,
+          }))
           : this.setState(oldState => ({
-              hiddenNotifications: !oldState.hiddenNotifications,
-            }))
+            hiddenNotifications: !oldState.hiddenNotifications,
+          }))
       },
     },
     "alt+1": {
@@ -309,10 +309,8 @@ class Main extends Component {
             {this.props.selectedDevice == null ? (
               <React.Fragment>
                 <SettingsDialogMobile
-                  isOpen={this.state.areSettingsOpen}
-                  closeSettingsDialog={() => {
-                    this.setState({ areSettingsOpen: false })
-                  }}
+                  isOpen={this.props.areSettingsOpen}
+                  closeSettingsDialog={this.props.closeSettings}
                   handleChange={this.handleSettingsTabChanged}
                   slideIndex={this.state.slideIndex}
                   handleChangeBTIndex={this.handleChangeBTIndex}
@@ -322,10 +320,9 @@ class Main extends Component {
                 <AppBar position="sticky">
                   <SidebarHeader
                     logOut={this.props.logOut}
+                    user={this.props.userData.user}
                     key="mobileSidebarHeader"
-                    openSettingsDialog={() => {
-                      this.setState({ areSettingsOpen: true })
-                    }}
+                    openSettingsDialog={this.props.openSettings}
                     changeSettingsState={() =>
                       this.setState(oldState => ({
                         areSettingsOpen: !oldState.areSettingsOpen,
@@ -418,18 +415,18 @@ class Main extends Component {
                   </div>
                 </React.Fragment>
               ) : (
-                <Redirect
-                  exact
-                  to={
-                    this.props.selectedBoard
-                      ? "/dashboard?board=" + this.props.selectedBoard
-                      : "/dashboard"
-                  }
-                />
-              )
+                  <Redirect
+                    exact
+                    to={
+                      this.props.selectedBoard
+                        ? "/dashboard?board=" + this.props.selectedBoard
+                        : "/dashboard"
+                    }
+                  />
+                )
             ) : (
-              ""
-            )}
+                  ""
+                )}
           </div>
         </Online>
         <Offline key="offlineMainBody">

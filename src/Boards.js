@@ -43,7 +43,8 @@ class Boards extends Component {
       <React.Fragment>
         <BoardsHeader
           logOut={this.props.logOut}
-          openSettings={() => this.setState({ settingsOpen: true })}
+          openSettings={this.props.openSettings}
+          user={this.props.userData.user}
         />
         <BoardsBody
           userData={this.props.userData}
@@ -53,10 +54,8 @@ class Boards extends Component {
           snackBarHidden={this.props.snackBarHidden}
         />
         <SettingsDialog
-          isOpen={this.state.settingsOpen}
-          closeSettingsDialog={() => {
-            this.setState({ settingsOpen: false })
-          }}
+          isOpen={this.props.settingsOpen}
+          closeSettingsDialog={this.props.closeSettings}
           handleChange={this.handleSettingsTabChanged}
           slideIndex={this.state.slideIndex}
           userData={this.props.userData}

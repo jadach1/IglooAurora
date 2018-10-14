@@ -47,7 +47,8 @@ class BoardsMobile extends Component {
       <React.Fragment>
         <BoardsHeader
           logOut={this.props.logOut}
-          openSettings={() => this.setState({ settingsOpen: true })}
+          openSettings={this.props.openSettings}
+          user={this.props.userData.user}
         />
         <BoardsBodyMobile
           userData={this.props.userData}
@@ -56,10 +57,8 @@ class BoardsMobile extends Component {
           searchText={this.props.boardsSearchText}
         />
         <SettingsDialogMobile
-          isOpen={this.state.settingsOpen}
-          closeSettingsDialog={() => {
-            this.setState({ settingsOpen: false })
-          }}
+                     isOpen={this.props.settingsOpen}
+          closeSettingsDialog={this.props.closeSettings}
           handleChange={this.handleSettingsTabChanged}
           slideIndex={this.state.slideIndex}
           handleChangeBTIndex={this.handleChangeBTIndex}

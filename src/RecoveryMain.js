@@ -32,7 +32,7 @@ export default graphql(
   gql`
     query {
       user {
-        displayName
+        fullName
         email
       }
     }

@@ -25,25 +25,25 @@ export default class StatusBar extends Component {
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           notifications {

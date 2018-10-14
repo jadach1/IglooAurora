@@ -32,9 +32,9 @@ function setupWebPush(token) {
   // check support
   if ("serviceWorker" in navigator && "PushManager" in window) {
     // registering service worker
-    navigator.serviceWorker.register("webPushSw.js").then(function(swReg) {
+    navigator.serviceWorker.register("webPushSw.js").then(function (swReg) {
       // checking push subscription
-      swReg.pushManager.getSubscription().then(function(subscription) {
+      swReg.pushManager.getSubscription().then(function (subscription) {
         const isSubscribed = !(subscription === null)
 
         if (isSubscribed) {
@@ -50,7 +50,7 @@ function setupWebPush(token) {
               userVisibleOnly: true,
               applicationServerKey: applicationServerKey,
             })
-            .then(function(subscription) {
+            .then(function (subscription) {
               sendSubscriptionToServer(subscription)
             })
         }
@@ -84,6 +84,12 @@ function setupWebPush(token) {
 
 class App extends Component {
   constructor() {
+    let email = ""
+
+    if (typeof Storage !== "undefined") {
+      email = localStorage.getItem("email") || ""
+    }
+
     super()
 
     let bearer = ""
@@ -113,6 +119,16 @@ class App extends Component {
       boardsCount: 0,
       boardId: "",
       loggedOut: false,
+      loginEmail: email,
+      loginEmailError: "",
+      loginPassword: "",
+      loginPasswordError: "",
+      signupEmail: "",
+      signupEmailError: "",
+      signupPassword: "",
+      signupPasswordError: "",
+      fullName: "",
+      fullNameError: ""
     }
   }
 
@@ -158,7 +174,7 @@ class App extends Component {
       this.setState({ bearer: "", loggedOut: true })
       if (typeof Storage !== "undefined") {
         localStorage.setItem("bearer", "")
-          sessionStorage.setItem("bearer", "")
+        sessionStorage.setItem("bearer", "")
       }
     }
 
@@ -199,14 +215,14 @@ class App extends Component {
 
               return typeof Storage !== "undefined" &&
                 localStorage.getItem("email") ? (
-                <Redirect
-                  to={{
-                    pathname: "/login",
-                  }}
-                />
-              ) : (
-                <Redirect to={{ pathname: "/signup" }} />
-              )
+                  <Redirect
+                    to={{
+                      pathname: "/login",
+                    }}
+                  />
+                ) : (
+                  <Redirect to={{ pathname: "/signup" }} />
+                )
             }
           }}
         />
@@ -214,25 +230,40 @@ class App extends Component {
           path="/login"
           render={() =>
             this.state.isMobile ? (
-              <LoginMainMobile signIn={signIn} />
-            ) : (
-              <LoginMain
-                signIn={signIn}
-                setBoards={(count, id) =>
-                  this.setState({ boardsCount: count, boardId: id })
-                }
+              <LoginMainMobile signIn={signIn}
+                password={this.state.loginPassword} changePassword={loginPassword => this.setState({ loginPassword })}
+                passwordError={this.state.loginPasswordError} changePasswordError={loginPasswordError => this.setState({ loginPasswordError })}
+                email={this.state.loginEmail} changeEmail={loginEmail => this.setState({ loginEmail })}
+                emailError={this.state.loginEmailError} changeEmailError={loginEmailError => this.setState({ loginEmailError })}
               />
-            )
+            ) : (
+                <LoginMain
+                  signIn={signIn}
+                  setBoards={(count, id) =>
+                    this.setState({ boardsCount: count, boardId: id })
+                  }
+                  password={this.state.loginPassword} changePassword={loginPassword => this.setState({ loginPassword: loginPassword })}
+                  passwordError={this.state.loginPasswordError} changePasswordError={loginPasswordError => this.setState({ loginPasswordError })}
+                  email={this.state.loginEmail} changeEmail={loginEmail => this.setState({ loginEmail })}
+                  emailError={this.state.loginEmailError} changeEmailError={loginEmailError => this.setState({ loginEmailError })}
+                />
+              )
           }
         />
         <Route
           path="/signup"
           render={() =>
             this.state.isMobile ? (
-              <SignupMainMobile signIn={signIn} />
+              <SignupMainMobile signIn={signIn}
+                fullName={this.state.fullName} changeFullName={fullName => this.setState({ fullName })}
+                password={this.state.signupPassword} changePassword={signupPassword => this.setState({ signupPassword })}
+                email={this.state.signupEmail} changeEmail={signupEmail => this.setState({ signupEmail })} />
             ) : (
-              <SignupMain signIn={signIn} />
-            )
+                <SignupMain signIn={signIn}
+                  fullName={this.state.fullName} changeFullName={fullName => this.setState({ fullName })}
+                  password={this.state.signupPassword} changePassword={signupPassword => this.setState({ signupPassword })}
+                  email={this.state.signupEmail} changeEmail={signupEmail => this.setState({ signupEmail })} />
+              )
           }
         />
         <Route

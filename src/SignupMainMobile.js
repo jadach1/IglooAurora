@@ -65,19 +65,25 @@ class UnAuthenticatedApp extends Component {
             style={
               window.innerHeight >= 690
                 ? {
-                    width: "100vw",
-                    height: "100vh",
-                    backgroundColor: "#0057cb",
-                  }
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "#0057cb",
+                }
                 : {
-                    width: "100vw",
-                    height: "100vh",
-                    backgroundColor: "#0057cb",
-                  }
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "#0057cb",
+                }
             }
           >
             <div style={{ marginRight: "32px", marginLeft: "32px" }}>
-              <SignupMobile client={this.client} signup={this.props.signup} />
+              <SignupMobile client={this.client} signup={this.props.signup} signIn={this.props.signIn}
+                email={this.props.email}
+                password={this.props.password}
+                fullName={this.props.fullName}
+                changeEmail={this.props.changeEmail}
+                changePassword={this.props.changePassword}
+                changeFullName={this.props.changeFullName} />
             </div>
           </div>
         </Online>

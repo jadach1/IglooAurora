@@ -37,25 +37,25 @@ class GraphQLFetcher extends Component {
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           notifications {
@@ -107,25 +107,25 @@ class GraphQLFetcher extends Component {
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           notifications {
@@ -177,25 +177,25 @@ class GraphQLFetcher extends Component {
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           notifications {
@@ -254,25 +254,25 @@ class GraphQLFetcher extends Component {
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
         }
@@ -314,25 +314,25 @@ class GraphQLFetcher extends Component {
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
         }
@@ -374,25 +374,25 @@ class GraphQLFetcher extends Component {
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
         }
@@ -437,7 +437,7 @@ class GraphQLFetcher extends Component {
           nightMode
           devMode
           emailIsVerified
-          displayName
+          fullName
           profileIconColor
         }
       }
@@ -449,7 +449,7 @@ class GraphQLFetcher extends Component {
 
     const tokenSubscriptionQuery = gql`
       subscription {
-        tokenCreated {
+        permanentTokenCreated {
           id
           customName
           lastUsed
@@ -465,7 +465,7 @@ class GraphQLFetcher extends Component {
         }
         const newTokens = [
           ...prev.user.permanentTokens,
-          subscriptionData.data.tokenCreated,
+          subscriptionData.data.permanentTokenCreated,
         ]
         return {
           user: {
@@ -478,7 +478,7 @@ class GraphQLFetcher extends Component {
 
     const subscribeToTokensDeletes = gql`
       subscription {
-        tokenDeleted
+        permanentTokenDeleted
       }
     `
 
@@ -490,7 +490,7 @@ class GraphQLFetcher extends Component {
         }
 
         const newTokens = prev.user.permanentTokens.filter(
-          token => token.id !== subscriptionData.data.tokenDeleted
+          token => token.id !== subscriptionData.data.permanentTokenDeleted
         )
 
         return {
@@ -509,6 +509,7 @@ class GraphQLFetcher extends Component {
     goToDevices: false,
     boardsSearchText: "",
     devicesSearchText: "",
+    areSettingsOpen: false,
   }
 
   selectDevice = id => this.setState({ selectedDevice: id })
@@ -524,7 +525,7 @@ class GraphQLFetcher extends Component {
       emailIsVerified = user.emailIsVerified
     }
 
-    let changeLanguage = () => {}
+    let changeLanguage = () => { }
 
     if (user) {
       changeLanguage = language =>
@@ -589,10 +590,10 @@ class GraphQLFetcher extends Component {
       for (i = 0; i < user.devices.length; i++) {
         if (
           user.devices[i].id ===
-            queryString.parse("?" + window.location.href.split("?")[1])
-              .device &&
+          queryString.parse("?" + window.location.href.split("?")[1])
+            .device &&
           user.devices[i].board.id !==
-            queryString.parse("?" + window.location.href.split("?")[1]).board
+          queryString.parse("?" + window.location.href.split("?")[1]).board
         ) {
           return (
             <Redirect
@@ -625,11 +626,14 @@ class GraphQLFetcher extends Component {
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .device
               }
+              openSettings={() => this.setState({ areSettingsOpen: true })}
+              areSettingsOpen={this.state.areSettingsOpen}
               selectBoard={id => this.setState({ selectedBoard: id })}
               selectedBoard={
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
               }
+              closeSettings={() => this.setState({ areSettingsOpen: false })}
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
               }}
@@ -639,8 +643,10 @@ class GraphQLFetcher extends Component {
         } else {
           return (
             <Main
+              areSettingsOpen={this.state.areSettingsOpen}
               logOut={this.props.logOut}
               userData={this.props.userData}
+              openSettings={() => this.setState({ areSettingsOpen: true })}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
               selectBoard={id => this.setState({ selectedBoard: id })}
@@ -648,6 +654,7 @@ class GraphQLFetcher extends Component {
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
               }
+              closeSettings={() => this.setState({ areSettingsOpen: false })}
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
               }}
@@ -664,6 +671,9 @@ class GraphQLFetcher extends Component {
             searchBoards={text => {
               this.setState({ boardsSearchText: text })
             }}
+            settingsOpen={this.state.areSettingsOpen}
+            openSettings={() => this.setState({ areSettingsOpen: true })}
+            closeSettings={() => this.setState({ areSettingsOpen: false })}
             boardsSearchText={this.state.boardsSearchText}
           />
         )
@@ -680,8 +690,11 @@ class GraphQLFetcher extends Component {
         ) {
           return (
             <MainMobile
+              areSettingsOpen={this.state.areSettingsOpen}
               logOut={this.props.logOut}
               userData={this.props.userData}
+              closeSettings={() => this.setState({ areSettingsOpen: false })}
+              openSettings={() => this.setState({ areSettingsOpen: true })}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={
                 queryString.parse("?" + window.location.href.split("?")[1])
@@ -701,7 +714,10 @@ class GraphQLFetcher extends Component {
         } else {
           return (
             <MainMobile
+              areSettingsOpen={this.state.areSettingsOpen}
               logOut={this.props.logOut}
+              openSettings={() => this.setState({ areSettingsOpen: true })}
+              closeSettings={() => this.setState({ areSettingsOpen: false })}
               userData={this.props.userData}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
@@ -726,6 +742,9 @@ class GraphQLFetcher extends Component {
             searchBoards={text => {
               this.setState({ boardsSearchText: text })
             }}
+            settingsOpen={this.state.areSettingsOpen}
+            openSettings={() => this.setState({ areSettingsOpen: true })}
+            closeSettings={() => this.setState({ areSettingsOpen: false })}
             boardsSearchText={this.state.boardsSearchText}
           />
         )
@@ -768,7 +787,7 @@ export default graphql(
         devMode
         quietMode
         emailIsVerified
-        displayName
+        fullName
         profileIconColor
         email
         permanentTokens {
@@ -786,28 +805,29 @@ export default graphql(
           notificationsCount
           quietMode
           avatar
+          myRole
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
         }

@@ -177,7 +177,7 @@ class PasswordRecovery extends Component {
                         passwordScore: zxcvbn(event.target.value, [
                           user.email,
                           user.email.split("@")[0],
-                          user.displayName,
+                          user.fullName,
                           "igloo",
                           "igloo aurora",
                           "aurora",

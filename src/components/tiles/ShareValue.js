@@ -177,7 +177,7 @@ class ShareValue extends React.Component {
                           .profileIconColor,
                       }}
                     >
-                      {this.getInitials(this.props.value.owner.displayName)}
+                      {this.getInitials(this.props.value.owner.fullName)}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
@@ -185,7 +185,7 @@ class ShareValue extends React.Component {
                       this.props.userData.user.email ===
                       this.props.value.owner.email
                         ? "You"
-                        : this.props.value.owner.displayName
+                        : this.props.value.owner.fullName
                     }
                     secondary={
                       this.props.userData.user.email ===
@@ -220,13 +220,13 @@ class ShareValue extends React.Component {
                         backgroundColor: item.profileIconColor,
                       }}
                     >
-                      <Avatar>{this.getInitials(item.displayName)}</Avatar>
+                      <Avatar>{this.getInitials(item.fullName)}</Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         this.props.userData.user.email === item.email
                           ? "You"
-                          : item.displayName
+                          : item.fullName
                       }
                       secondary={
                         this.props.userData.user.email === item.email
@@ -284,14 +284,14 @@ class ShareValue extends React.Component {
                           backgroundColor: item.profileIconColor,
                         }}
                       >
-                        {this.getInitials(item.displayName)}
+                        {this.getInitials(item.fullName)}
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         this.props.userData.user.email === item.email
                           ? "You"
-                          : item.displayName
+                          : item.fullName
                       }
                       secondary={
                         this.props.userData.user.email === item.email
@@ -349,14 +349,14 @@ class ShareValue extends React.Component {
                           backgroundColor: item.profileIconColor,
                         }}
                       >
-                        {this.getInitials(item.displayName)}
+                        {this.getInitials(item.fullName)}
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         this.props.userData.user.email === item.email
                           ? "You"
-                          : item.displayName
+                          : item.fullName
                       }
                       secondary={
                         this.props.userData.user.email === item.email
@@ -656,7 +656,7 @@ class ShareValue extends React.Component {
             }}
           >
             Are you sure you want to stop sharing this value with
-            {" " + (this.state.menuTarget && this.state.menuTarget.displayName)}?
+            {" " + (this.state.menuTarget && this.state.menuTarget.fullName)}?
             <br />
           </div>
           <DialogActions

@@ -7,7 +7,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import Login from "./components/unauthenticated/Login"
 import { hotkeys } from "react-keyboard-shortcuts"
 import { Offline, Online } from "react-detect-offline"
-import { Typography } from "material-ui-next"
+import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
 import logo from "./styles/assets/logo.svg"
 import iglooTitle from "./styles/assets/iglooTitle.svg"
@@ -87,6 +87,10 @@ class UnAuthenticatedApp extends Component {
                 isDialog={false}
                 signIn={this.props.signIn}
                 setBoards={this.props.setBoards}
+                password={this.props.password} changePassword={this.props.changePassword}
+                passwordError={this.props.passwordError} changePasswordError={this.props.changePasswordError}
+                email={this.props.email} changeEmail={this.props.changeEmail}
+                emailError={this.props.emailError} changeEmailError={this.props.changeEmailError}
               />
             </Paper>
           </div>

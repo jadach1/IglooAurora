@@ -1,67 +1,97 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import Table, {
+import {
+  Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-} from "material-ui-next/Table"
-import Paper from "material-ui-next/Paper"
+  Button,
+  Dialog,
+  Paper,
+  DialogActions,
+  DialogTitle,
+  Grow,
+  Slide,
+} from "@material-ui/core"
 
-const shortcutDialogContentStyle = {
-  width: "425px",
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
 }
 
 export default class ChangeShortcutDialog extends React.Component {
   render() {
-    const shortcutDialogActions = [
-      <Button onClick={this.props.handleShortcutDialogClose}>Close</Button>,
-    ]
-
     return (
       <React.Fragment>
         <Dialog
-          title="Keyboard shortcuts"
-          actions={shortcutDialogActions}
           open={this.props.shortcutDialogOpen}
-          contentStyle={shortcutDialogContentStyle}
-          onRequestClose={this.props.handleShortcutDialogClose}
-          className="notSelectable defaultCursor"
-          titleClassName="notSelectable defaultCursor"
+          onClose={this.props.handleShortcutDialogClose}
+          className="notSelectable"
+          TransitionComponent={Transition}
+          titleClassName="defaultCursor"
+          fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <Paper>
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell>Shortcut</TableCell>
-                  <TableCell>Lorem Ipsum</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                <TableRow>
-                  <TableCell>Alt/Option + Number</TableCell>
-                  <TableCell>Select a device/Scroll through settings</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Alt/Option + ,</TableCell>
-                  <TableCell>Settings</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Alt/Option + N</TableCell>
-                  <TableCell>Notifications</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Alt/Option + S</TableCell>
-                  <TableCell>Show hidden cards/notifications</TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell>Alt/Option + Q</TableCell>
-                  <TableCell>Log out</TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </Paper>
+          <DialogTitle
+            className="notSelectable defaultCursor"
+            style={window.innerWidth > MOBILE_WIDTH ? { width: "350px" } : null}
+          >
+            Keyboard shortcuts
+          </DialogTitle>
+          <div
+            style={{
+              paddingLeft: "24px",
+              paddingRight: "24px",
+              height: "100%",
+            }}
+          >
+            <Paper>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Shortcut</TableCell>
+                    <TableCell>Lorem Ipsum</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  <TableRow>
+                    <TableCell>Alt/Option + Number</TableCell>
+                    <TableCell>
+                      Select a device/Scroll through settings
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Alt/Option + ,</TableCell>
+                    <TableCell>Settings</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Alt/Option + N</TableCell>
+                    <TableCell>Notifications</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Alt/Option + S</TableCell>
+                    <TableCell>Show hidden cards/notifications</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell>Alt/Option + Q</TableCell>
+                    <TableCell>Log out</TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </Paper>
+          </div>
+          <DialogActions style={{ marginRight: "8px" }}>
+            <Button
+              style={{ marginRight: "8px" }}
+              onClick={this.props.handleShortcutDialogClose}
+            >
+              Close
+            </Button>
+          </DialogActions>
         </Dialog>
       </React.Fragment>
     )

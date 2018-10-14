@@ -29,17 +29,8 @@ const theme = createMuiTheme({
 class Login extends Component {
   constructor() {
     super()
-    let email = ""
-
-    if (typeof Storage !== "undefined") {
-      email = localStorage.getItem("email") || ""
-    }
 
     this.state = {
-      email,
-      emailError: "",
-      password: "",
-      passwordError: "",
       recoveryError: "",
       forgotPasswordOpen: false,
       isMailEmpty: false,
@@ -58,7 +49,8 @@ class Login extends Component {
 
   async signIn() {
     try {
-      this.setState({ emailError: "", passwordError: "" })
+      this.props.changePasswordError("")
+      this.props.changeEmailError("")
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!) {
@@ -75,13 +67,13 @@ class Login extends Component {
           }
         `,
         variables: {
-          email: this.state.email,
-          password: this.state.password,
+          email: this.props.email,
+          password: this.props.password,
         },
       })
 
       if (typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.state.email)
+        localStorage.setItem("email", this.props.email)
       }
 
       this.props.setBoards(
@@ -99,15 +91,14 @@ class Login extends Component {
       this.setState({ showLoading: false })
 
       if (e.message === "GraphQL error: Wrong password") {
-        this.setState({ passwordError: "Wrong password" })
+        this.props.changePasswordError("Wrong password")
       } else if (
         e.message ===
         "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
       ) {
-        this.setState({
-          emailError: "This account doesn't exist",
-        })
+        this.props.changeEmailError("This account doesn't exist")
       } else {
+        this.props.changeEmailError("Unexpected error")
       }
     }
   }
@@ -147,7 +138,8 @@ class Login extends Component {
   }
 
   handleClickCancelEmail = () => {
-    this.setState({ email: "", isMailEmpty: true })
+    this.props.changeEmail("")
+    this.setState({ isMailEmpty: true })
   }
 
   render() {
@@ -182,12 +174,13 @@ class Login extends Component {
                     <Input
                       id="adornment-email-login"
                       placeholder="Email"
-                      value={this.state.email}
-                      onChange={event =>
+                      value={this.props.email}
+                      onChange={event => {
+                        this.props.changeEmail(event.target.value)
                         this.setState({
-                          email: event.target.value,
                           isMailEmpty: event.target.value === "",
                         })
+                      }
                       }
                       onKeyPress={event => {
                         if (event.key === "Enter") {
@@ -196,12 +189,12 @@ class Login extends Component {
                         }
                       }}
                       error={
-                        this.state.emailError || this.state.isMailEmpty
+                        this.props.emailError || this.state.isMailEmpty
                           ? true
                           : false
                       }
                       endAdornment={
-                        this.state.email ? (
+                        this.props.email ? (
                           <InputAdornment position="end">
                             <IconButton
                               onClick={this.handleClickCancelEmail}
@@ -217,12 +210,12 @@ class Login extends Component {
                     <FormHelperText
                       id="name-error-text-login"
                       style={
-                        this.state.emailError || this.state.isMailEmpty
+                        this.props.emailError || this.state.isMailEmpty
                           ? { color: "#f44336" }
                           : {}
                       }
                     >
-                      {this.state.emailError +
+                      {this.props.emailError +
                         (this.state.isMailEmpty
                           ? "This field is required"
                           : "")}
@@ -245,17 +238,18 @@ class Login extends Component {
                     <Input
                       id="adornment-password-login"
                       type={this.state.showPassword ? "text" : "password"}
-                      value={this.state.password}
+                      value={this.props.password}
                       placeholder="Password"
-                      onChange={event =>
+                      onChange={event => {
+                        this.props.changePassword(event.target.value)
+                        this.props.changePasswordError("")
                         this.setState({
-                          password: event.target.value,
-                          passwordError: "",
                           isPasswordEmpty: event.target.value === "",
                         })
                       }
+                      }
                       error={
-                        this.state.passwordError || this.state.isPasswordEmpty
+                        this.props.passwordError || this.state.isPasswordEmpty
                           ? true
                           : false
                       }
@@ -266,7 +260,7 @@ class Login extends Component {
                         }
                       }}
                       endAdornment={
-                        this.state.password ? (
+                        this.props.password ? (
                           <InputAdornment position="end">
                             <IconButton
                               onClick={this.handleClickShowPassword}
@@ -276,8 +270,8 @@ class Login extends Component {
                               {this.state.showPassword ? (
                                 <Icon>visibility_off</Icon>
                               ) : (
-                                <Icon>visibility</Icon>
-                              )}
+                                  <Icon>visibility</Icon>
+                                )}
                             </IconButton>
                           </InputAdornment>
                         ) : null
@@ -286,14 +280,14 @@ class Login extends Component {
                     <FormHelperText
                       id="password-error-text-login"
                       style={
-                        this.state.passwordError || this.state.isPasswordEmpty
+                        this.props.passwordError || this.state.isPasswordEmpty
                           ? { color: "#f44336" }
                           : {}
                       }
                     >
                       {this.state.isMailEmpty
                         ? "This field is required"
-                        : this.state.emailError}
+                        : this.props.emailError}
                     </FormHelperText>
                   </FormControl>
                 </Grid>
@@ -359,8 +353,8 @@ class Login extends Component {
                 color="primary"
                 disabled={
                   !(
-                    EmailValidator.validate(this.state.email) &&
-                    this.state.password
+                    EmailValidator.validate(this.props.email) &&
+                    this.props.password
                   ) || this.state.showLoading
                 }
               >
@@ -406,7 +400,7 @@ class Login extends Component {
           recover={email => this.recover(email)}
           open={this.state.forgotPasswordOpen}
           close={() => this.setState({ forgotPasswordOpen: false })}
-          email={this.state.email}
+          email={this.props.email}
         />
         {this.state.redirect && <Redirect push to="/signup" />}
       </React.Fragment>

@@ -34,6 +34,8 @@ import {
 import TileSize from "../TileSize"
 import DataSettings from "./DataSettings"
 import ChangeDevice from "./ChangeDevice"
+import LeaveValue from "./LeaveValue"
+//import ShareValue from "./ShareValue"
 
 class Tile extends Component {
   state = {
@@ -47,6 +49,7 @@ class Tile extends Component {
     tileSizeOpen: false,
     dataSettingsOpen: false,
     shareValueOpen: false,
+    leaveOpen: false
   }
 
   handleClick = event => {
@@ -232,7 +235,7 @@ class Tile extends Component {
       ]({
         variables: {
           id: value.id,
-          relevance: visible ? "VISIBLE" : "HIDDEN",
+          visibility: visible ? "VISIBLE" : "HIDDEN",
         },
         optimisticResponse: {
           __typename: "Mutation",
@@ -251,7 +254,7 @@ class Tile extends Component {
                       : "booleanValue"]: {
             __typename: value.__typename,
             id: value.id,
-            relevance: visible ? "VISIBLE" : "HIDDEN",
+            visibility: visible ? "VISIBLE" : "HIDDEN",
           },
         },
       })
@@ -271,17 +274,17 @@ class Tile extends Component {
             style={
               this.props.nightMode
                 ? {
-                    background: "#21252b",
-                    display: "flex",
-                    alignItems: "center",
-                    height: "64px",
-                  }
+                  background: "#21252b",
+                  display: "flex",
+                  alignItems: "center",
+                  height: "64px",
+                }
                 : {
-                    background: "#f2f2f2",
-                    display: "flex",
-                    alignItems: "center",
-                    height: "64px",
-                  }
+                  background: "#f2f2f2",
+                  display: "flex",
+                  alignItems: "center",
+                  height: "64px",
+                }
             }
           >
             <Typography
@@ -290,23 +293,23 @@ class Tile extends Component {
               style={
                 this.props.nightMode
                   ? {
-                      cursor: "default",
-                      color: "white",
-                      marginLeft: "16px",
-                      width: "calc(100% - 80px)",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                    }
+                    cursor: "default",
+                    color: "white",
+                    marginLeft: "16px",
+                    width: "calc(100% - 80px)",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                  }
                   : {
-                      cursor: "default",
-                      color: "black",
-                      marginLeft: "16px",
-                      width: "calc(100% - 80px)",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                    }
+                    cursor: "default",
+                    color: "black",
+                    marginLeft: "16px",
+                    width: "calc(100% - 80px)",
+                    overflow: "hidden",
+                    whiteSpace: "nowrap",
+                    textOverflow: "ellipsis",
+                  }
               }
             >
               {valueTitle}
@@ -333,13 +336,13 @@ class Tile extends Component {
                     style={
                       this.props.nightMode
                         ? {
-                            padding: "0",
-                            color: "white",
-                          }
+                          padding: "0",
+                          color: "white",
+                        }
                         : {
-                            padding: "0",
-                            color: "black",
-                          }
+                          padding: "0",
+                          color: "black",
+                        }
                     }
                   >
                     <Icon>fullscreen</Icon>
@@ -351,13 +354,13 @@ class Tile extends Component {
                   style={
                     this.props.nightMode
                       ? {
-                          padding: "0",
-                          color: "white",
-                        }
+                        padding: "0",
+                        color: "white",
+                      }
                       : {
-                          padding: "0",
-                          color: "black",
-                        }
+                        padding: "0",
+                        color: "black",
+                      }
                   }
                   onClick={event =>
                     this.setState({ anchorEl: event.currentTarget })
@@ -476,10 +479,10 @@ class Tile extends Component {
                   style={this.props.nightMode ? { background: "#21252b" } : {}}
                 />
                 <MenuItem
-                  primaryText={value.relevance === "VISIBLE" ? "Hide" : "Show"}
+                  primaryText={value.visibility === "VISIBLE" ? "Hide" : "Show"}
                   className="notSelectable"
                   onClick={() => {
-                    value.relevance === "VISIBLE"
+                    value.visibility === "VISIBLE"
                       ? updateShown(false)
                       : updateShown(true)
                     this.handleMenuClose()
@@ -498,16 +501,16 @@ class Tile extends Component {
                           : { color: "black" }
                       }
                     >
-                      {value.relevance === "VISIBLE" ? (
+                      {value.visibility === "VISIBLE" ? (
                         <Icon>visibility_off</Icon>
                       ) : (
-                        <Icon>visibility</Icon>
-                      )}
+                          <Icon>visibility</Icon>
+                        )}
                     </Icon>
                   </ListItemIcon>
                   <ListItemText
                     inset
-                    primary={value.relevance === "VISIBLE" ? "Hide" : "Show"}
+                    primary={value.visibility === "VISIBLE" ? "Hide" : "Show"}
                   />
                 </MenuItem>
                 <MenuItem
@@ -570,37 +573,40 @@ class Tile extends Component {
                 <Divider
                   style={this.props.nightMode ? { background: "#21252b" } : {}}
                 />
-                 {this.props.userData.user.devices.length > 1 && 
-                <MenuItem
-                  className="notSelectable"
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.setState({ changeDeviceOpen: true })
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      swap_horiz
+                {this.props.userData.user.devices.length > 1 &&
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      this.setState({ changeDeviceOpen: true })
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        swap_horiz
                     </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Change device" />
-                </MenuItem>}
+                    </ListItemIcon>
+                    <ListItemText inset primary="Change device" />
+                  </MenuItem>}
                 <MenuItem
                   primaryText="Rename"
                   className="notSelectable"
                   leftIcon={<Icon>create</Icon>}
-                  onClick={() => this.setState({ renameTileOpen: true })}
+                  onClick={() => {
+                    this.setState({ renameTileOpen: true })
+                    this.handleMenuClose()
+                  }}
                   style={
                     this.props.nightMode
                       ? { color: "white" }
@@ -688,6 +694,16 @@ class Tile extends Component {
           value={value}
           userData={this.props.userData}
         />
+        <LeaveValue
+          open={this.state.leaveOpen}
+          close={() => this.setState({ leaveOpen: false })}
+          value={value}
+          userData={this.props.userData}
+        />
+        {/*
+      <ShareValue open={this.state.shareValueOpen} close={() => this.setState({ shareValueOpen: "" })}
+          value={value} userData={this.props.userData}
+        /> */}
       </React.Fragment>
     )
   }
@@ -695,10 +711,10 @@ class Tile extends Component {
 
 export default graphql(
   gql`
-    mutation ChangeSize($id: ID!, $size: TileSize, $relevance: ValueRelevance) {
-      floatValue(tileSize: $size, id: $id, relevance: $relevance) {
+    mutation ChangeSize($id: ID!, $size: TileSize, $visibility: ValueVisibility) {
+      floatValue(tileSize: $size, id: $id, visibility: $visibility) {
         id
-        relevance
+        visibility
         tileSize
       }
     }
@@ -712,12 +728,12 @@ export default graphql(
       mutation ChangeSize(
         $id: ID!
         $size: TileSize
-        $relevance: ValueRelevance
+        $visibility: ValueVisibility
       ) {
-        stringValue(tileSize: $size, id: $id, relevance: $relevance) {
+        stringValue(tileSize: $size, id: $id, visibility: $visibility) {
           id
           tileSize
-          relevance
+          visibility
         }
       }
     `,
@@ -730,11 +746,11 @@ export default graphql(
         mutation ChangeSize(
           $id: ID!
           $size: TileSize
-          $relevance: ValueRelevance
+          $visibility: ValueVisibility
         ) {
-          booleanValue(tileSize: $size, id: $id, relevance: $relevance) {
+          booleanValue(tileSize: $size, id: $id, visibility: $visibility) {
             id
-            relevance
+            visibility
             tileSize
           }
         }
@@ -748,11 +764,11 @@ export default graphql(
           mutation ChangeSize(
             $id: ID!
             $size: TileSize
-            $relevance: ValueRelevance
+            $visibility: ValueVisibility
           ) {
-            colourValue(tileSize: $size, id: $id, relevance: $relevance) {
+            colourValue(tileSize: $size, id: $id, visibility: $visibility) {
               id
-              relevance
+              visibility
               tileSize
             }
           }
@@ -766,11 +782,11 @@ export default graphql(
             mutation ChangeSize(
               $id: ID!
               $size: TileSize
-              $relevance: ValueRelevance
+              $visibility: ValueVisibility
             ) {
-              plotValue(tileSize: $size, id: $id, relevance: $relevance) {
+              plotValue(tileSize: $size, id: $id, visibility: $visibility) {
                 id
-                relevance
+                visibility
                 tileSize
               }
             }
@@ -784,11 +800,11 @@ export default graphql(
               mutation ChangeSize(
                 $id: ID!
                 $size: TileSize
-                $relevance: ValueRelevance
+                $visibility: ValueVisibility
               ) {
-                mapValue(tileSize: $size, id: $id, relevance: $relevance) {
+                mapValue(tileSize: $size, id: $id, visibility: $visibility) {
                   id
-                  relevance
+                  visibility
                   tileSize
                 }
               }
@@ -802,15 +818,15 @@ export default graphql(
                 mutation ChangeSize(
                   $id: ID!
                   $size: TileSize
-                  $relevance: ValueRelevance
+                  $visibility: ValueVisibility
                 ) {
                   stringPlotValue(
                     tileSize: $size
                     id: $id
-                    relevance: $relevance
+                    visibility: $visibility
                   ) {
                     id
-                    relevance
+                    visibility
                     tileSize
                   }
                 }

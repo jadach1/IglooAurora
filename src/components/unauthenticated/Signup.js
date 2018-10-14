@@ -59,10 +59,7 @@ class Signup extends Component {
     super()
 
     this.state = {
-      email: "",
       emailError: "",
-      password: "",
-      fullName: "",
       passwordScore: null,
       isEmailValid: null,
       isNameValid: true,
@@ -81,11 +78,11 @@ class Signup extends Component {
       this.setState({ emailError: "" })
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
-          mutation($email: String!, $password: String!, $displayName: String!) {
+          mutation($email: String!, $password: String!, $fullName: String!) {
             SignupUser(
               email: $email
               password: $password
-              displayName: $displayName
+              fullName: $fullName
             ) {
               id
               token
@@ -93,14 +90,14 @@ class Signup extends Component {
           }
         `,
         variables: {
-          email: this.state.email,
-          password: this.state.password,
-          displayName: this.state.fullName,
+          email: this.props.email,
+          password: this.props.password,
+          fullName: this.props.fullName,
         },
       })
 
       if (typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.state.email)
+        localStorage.setItem("email", this.props.email)
       }
 
       this.props.signIn(loginMutation.data.SignupUser.token)
@@ -126,7 +123,8 @@ class Signup extends Component {
   }
 
   handleClickCancelEmail = () => {
-    this.setState({ email: "", isMailEmpty: true })
+    this.props.changeEmail("")
+    this.setState({ isMailEmpty: true })
   }
 
   render() {
@@ -174,9 +172,9 @@ class Signup extends Component {
     if (!this.state.password) scoreText = ""
 
     let customDictionary = [
-      this.state.email,
-      this.state.email.split("@")[0],
-      this.state.fullName,
+      this.props.email,
+      this.props.email.split("@")[0],
+      this.props.fullName,
       "igloo",
       "igloo aurora",
       "aurora",
@@ -209,12 +207,13 @@ class Signup extends Component {
                   <Input
                     id="adornment-email-signup"
                     placeholder="Full name"
-                    value={this.state.fullName}
-                    onChange={event =>
+                    value={this.props.fullName}
+                    onChange={event => {
+                      this.props.changeFullName(event.target.value)
                       this.setState({
-                        fullName: event.target.value,
                         isNameValid: event.target.value !== "",
                       })
+                    }
                     }
                     onKeyPress={event => {
                       if (event.key === "Enter") {
@@ -224,15 +223,16 @@ class Signup extends Component {
                     }}
                     error={!this.state.isNameValid}
                     endAdornment={
-                      this.state.fullName ? (
+                      this.props.fullName ? (
                         <InputAdornment position="end">
                           <IconButton
                             tabIndex="-1"
-                            onClick={() =>
+                            onClick={() => {
+                              this.props.changeFullName("")
                               this.setState({
-                                fullName: "",
                                 isNameValid: false,
                               })
+                            }
                             }
                             onMouseDown={this.handleMouseDownPassword}
                           >
@@ -266,24 +266,24 @@ class Signup extends Component {
                   <Input
                     id="adornment-email-signup"
                     placeholder="Email"
-                    value={this.state.email}
+                    value={this.props.email}
                     error={
-                      (!this.state.isEmailValid && this.state.email) ||
-                      this.state.emailError ||
-                      this.state.isMailEmpty
+                      (!this.state.isEmailValid && this.props.email) ||
+                        this.state.emailError ||
+                        this.state.isMailEmpty
                         ? true
                         : false
                     }
-                    onChange={event =>
+                    onChange={event => {
+                      this.props.changeEmail(event.target.value)
                       this.setState({
-                        email: event.target.value,
                         isEmailValid: EmailValidator.validate(
                           event.target.value
                         ),
                         emailError: "",
                         isMailEmpty: event.target.value === "",
                       })
-                    }
+                    }}
                     onKeyPress={event => {
                       if (event.key === "Enter") {
                         this.setState({ showLoading: true })
@@ -291,7 +291,7 @@ class Signup extends Component {
                       }
                     }}
                     endAdornment={
-                      this.state.email ? (
+                      this.props.email ? (
                         <InputAdornment position="end">
                           <IconButton
                             tabIndex="-1"
@@ -307,15 +307,15 @@ class Signup extends Component {
                   <FormHelperText
                     id="name-error-text-signup"
                     style={
-                      (!this.state.isEmailValid && this.state.email) ||
-                      this.state.emailError ||
-                      this.state.isMailEmpty
+                      (!this.state.isEmailValid && this.props.email) ||
+                        this.state.emailError ||
+                        this.state.isMailEmpty
                         ? { color: "#f44336" }
                         : {}
                     }
                   >
                     {this.state.emailError ||
-                      (!this.state.isEmailValid && this.state.email
+                      (!this.state.isEmailValid && this.props.email
                         ? "Enter a valid email"
                         : "")}
                     {this.state.isMailEmpty ? "This field is required" : ""}
@@ -342,11 +342,11 @@ class Signup extends Component {
                     placeholder="Password"
                     color="secondary"
                     type={this.state.showPassword ? "text" : "password"}
-                    value={this.state.password}
+                    value={this.props.password}
                     error={this.state.isPasswordEmpty ? true : false}
                     onChange={event => {
+                      this.props.changePassword(event.target.value)
                       this.setState({
-                        password: event.target.value,
                         passwordScore: zxcvbn(
                           event.target.value,
                           customDictionary
@@ -371,8 +371,8 @@ class Signup extends Component {
                             {this.state.showPassword ? (
                               <Icon>visibility_off</Icon>
                             ) : (
-                              <Icon>visibility</Icon>
-                            )}
+                                <Icon>visibility</Icon>
+                              )}
                           </IconButton>
                         </InputAdornment>
                       ) : null
@@ -408,7 +408,7 @@ class Signup extends Component {
               buttonStyle={{ backgroundColor: "#0083ff" }}
               disabled={
                 !(
-                  this.state.fullName &&
+                  this.props.fullName &&
                   this.state.isEmailValid &&
                   this.state.passwordScore >= 2
                 ) || this.state.showLoading

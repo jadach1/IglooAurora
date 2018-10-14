@@ -167,8 +167,7 @@ class CreateBoard extends React.Component {
           style={{ paddingLeft: "24px", paddingRight: "24px" }}
           label="Set as favorite"
         />
-        <br />
-        <p>Choose a board image</p>
+        <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>Choose a board image</p>
         <SwipeableViews
           index={this.state.slideIndex}
           onChangeIndex={value => {
@@ -291,7 +290,7 @@ export default graphql(
     mutation CreateBoard(
       $customName: String!
       $favorite: Boolean
-      $avatar: BoardAvatar
+      $avatar: BoardPicture
     ) {
       CreateBoard(
         customName: $customName

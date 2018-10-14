@@ -12,8 +12,35 @@ class MainBody extends Component {
       subscription {
         valueCreated {
           id
+        myRole
+        owner {
+          id
+          email
+          fullName
+          profileIconColor
+        }
+        admins {
+          id
+          email
+          fullName
+          profileIconColor
+        }
+        editors {
+          id
+          email
+          fullName
+          profileIconColor
+        }
+        spectators {
+          id
+          email
+          fullName
+          profileIconColor
+        }
+        values {
+          id
           permission
-          relevance
+          visibility
           valueDetails
           tileSize
           customName
@@ -37,6 +64,7 @@ class MainBody extends Component {
           }
           ... on ColourValue {
             colourValue: value
+            allowedValues
           }
           ... on PlotValue {
             plotValue: value {
@@ -45,6 +73,7 @@ class MainBody extends Component {
               timestamp
             }
           }
+        }
         }
       }
     `
@@ -76,8 +105,35 @@ class MainBody extends Component {
       subscription {
         valueUpdated {
           id
+        myRole
+        owner {
+          id
+          email
+          fullName
+          profileIconColor
+        }
+        admins {
+          id
+          email
+          fullName
+          profileIconColor
+        }
+        editors {
+          id
+          email
+          fullName
+          profileIconColor
+        }
+        spectators {
+          id
+          email
+          fullName
+          profileIconColor
+        }
+        values {
+          id
           permission
-          relevance
+          visibility
           valueDetails
           tileSize
           customName
@@ -101,14 +157,16 @@ class MainBody extends Component {
           }
           ... on ColourValue {
             colourValue: value
+            allowedValues
           }
           ... on PlotValue {
             plotValue: value {
               id
-              timestamp
               value
+              timestamp
             }
           }
+        }
         }
       }
     `
@@ -185,9 +243,9 @@ class MainBody extends Component {
     }
 
     const values = device.values
-    let visibleTiles = values.filter(value => value.relevance === "VISIBLE")
+    let visibleTiles = values.filter(value => value.visibility === "VISIBLE")
 
-    let hiddenTiles = values.filter(value => value.relevance === "HIDDEN")
+    let hiddenTiles = values.filter(value => value.visibility === "HIDDEN")
 
     const renderTile = value => (
       <Tile
@@ -215,8 +273,8 @@ class MainBody extends Component {
             this.props.showHidden ? (
               <Icon>keyboard_arrow_up</Icon>
             ) : (
-              <Icon>keyboard_arrow_down</Icon>
-            )
+                <Icon>keyboard_arrow_down</Icon>
+              )
           }
           fullWidth={true}
           className="divider notSelectable"
@@ -290,31 +348,31 @@ export default graphql(
         owner {
           id
           email
-          displayName
+          fullName
           profileIconColor
         }
         admins {
           id
           email
-          displayName
+          fullName
           profileIconColor
         }
         editors {
           id
           email
-          displayName
+          fullName
           profileIconColor
         }
         spectators {
           id
           email
-          displayName
+          fullName
           profileIconColor
         }
         values {
           id
           permission
-          relevance
+          visibility
           valueDetails
           tileSize
           customName
@@ -323,6 +381,13 @@ export default graphql(
           device {
             id
           }
+          myRole
+        owner {
+          id
+          email
+          fullName
+          profileIconColor
+        }
           ... on FloatValue {
             floatValue: value
             precision

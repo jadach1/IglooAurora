@@ -94,6 +94,12 @@ class UnAuthenticatedApp extends Component {
                 isDialog={false}
                 signIn={this.props.signIn}
                 goToLogin={() => this.setState({ slideIndex: 1 })}
+                email={this.props.email}
+                password={this.props.password}
+                fullName={this.props.fullName}
+                changeEmail={this.props.changeEmail}
+                changePassword={this.props.changePassword}
+                changeFullName={this.props.changeFullName}
               />
             </Paper>
           </div>

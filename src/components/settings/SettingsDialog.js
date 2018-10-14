@@ -262,9 +262,9 @@ class SettingsDialog extends React.Component {
 
     let toggleQuietMode = () => {}
 
-    let languageText = "English"
+    // let languageText = "English"
 
-    let displayName = ""
+    let fullName = ""
 
     let profileIconColor = ""
 
@@ -418,7 +418,7 @@ class SettingsDialog extends React.Component {
         })
       }
 
-      switch (user.language) {
+      /*       switch (user.language) {
         case "en":
           languageText = "English"
           break
@@ -437,9 +437,9 @@ class SettingsDialog extends React.Component {
         default:
           languageText = "English"
           break
-      }
+      } */
 
-      displayName = user.displayName
+      fullName = user.fullName
 
       profileIconColor = user.profileIconColor
     }
@@ -505,19 +505,20 @@ class SettingsDialog extends React.Component {
                   <Subheader style={{ cursor: "default" }}>
                     Localization
                   </Subheader>
+                  {/*
                   <ListItem
                     primaryText="Change language"
                     secondaryText={languageText}
                     onClick={this.handleLanguageDialogOpen}
-                  />
+                  /> */}
                   <ListItem
                     primaryText="Change units of measurement"
                     secondaryText="SI, Celsius"
                     onClick={this.handleUnitDialogOpen}
                   />
-                  <Divider />
+                  {/*     <Divider />
                   <Subheader style={{ cursor: "default" }}>Time</Subheader>
-                  {/* <ListItem
+                <ListItem
                     primaryText="Change time zone"
                     secondaryText={
                       "Auto: (UTC" +
@@ -742,7 +743,7 @@ class SettingsDialog extends React.Component {
             this.props.isOpen && this.state.languageDialogOpen
           }
         />
-        {/* 
+        {/*
         <TimeZoneDialog
           handleTimeDialogClose={this.handleTimeDialogClose}
           timeZoneDialogOpen={
@@ -765,7 +766,7 @@ class SettingsDialog extends React.Component {
             this.props.isOpen && this.state.nameDialogOpen
           }
           userData={this.props.userData}
-          displayName={displayName}
+          fullName={fullName}
           profileIconColor={profileIconColor}
         />
         <Shortcuts
