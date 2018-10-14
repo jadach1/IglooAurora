@@ -42,8 +42,8 @@ function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
   ) : (
-    <Slide direction="up" {...props} />
-  )
+      <Slide direction="up" {...props} />
+    )
 }
 
 class ShareBoard extends React.Component {
@@ -177,35 +177,35 @@ class ShareBoard extends React.Component {
                           .profileIconColor,
                       }}
                     >
-                      {this.getInitials(this.props.board.owner.displayName)}
+                      {this.getInitials(this.props.board.owner.fullName)}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
                     primary={
                       this.props.userData.user.email ===
-                      this.props.board.owner.email
+                        this.props.board.owner.email
                         ? "You"
-                        : this.props.board.owner.displayName
+                        : this.props.board.owner.fullName
                     }
                     secondary={
                       this.props.userData.user.email ===
-                      this.props.board.owner.email
+                        this.props.board.owner.email
                         ? ""
                         : this.props.board.owner.email
                     }
                   />
                   {this.props.userData.user.email ===
                     this.props.board.owner.email && (
-                    <ListItemSecondaryAction>
-                      <IconButton>
-                        <Icon>swap_horiz</Icon>
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  )}
+                      <ListItemSecondaryAction>
+                        <IconButton>
+                          <Icon>swap_horiz</Icon>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    )}
                 </ListItem>
               </ul>
             </li>
-            <li key="Admins">
+            {!((this.props.board.myRole === "EDITOR" || this.props.board.myRole === "SPECTATOR") && !this.props.board.admins[0]) && < li key="Admins">
               <ul style={{ padding: "0" }}>
                 <ListSubheader
                   style={{ backgroundColor: "white" }}
@@ -220,13 +220,13 @@ class ShareBoard extends React.Component {
                         backgroundColor: item.profileIconColor,
                       }}
                     >
-                      <Avatar>{this.getInitials(item.displayName)}</Avatar>
+                      <Avatar>{this.getInitials(item.fullName)}</Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         this.props.userData.user.email === item.email
                           ? "You"
-                          : item.displayName
+                          : item.fullName
                       }
                       secondary={
                         this.props.userData.user.email === item.email
@@ -251,7 +251,7 @@ class ShareBoard extends React.Component {
                     )}
                   </ListItem>
                 ))}
-                <ListItem
+                {(this.props.board.myRole === "ADMIN" || this.props.board.myRole === "OWNER") && <ListItem
                   button
                   onClick={() =>
                     this.setState({
@@ -268,10 +268,10 @@ class ShareBoard extends React.Component {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary="Invite an admin" />
-                </ListItem>
+                </ListItem>}
               </ul>
-            </li>
-            <li key="Editors">
+            </li>}
+            {!(( this.props.board.myRole === "SPECTATOR") && !this.props.board.admins[0]) && <li key="Editors">
               <ul style={{ padding: "0" }}>
                 <ListSubheader style={{ backgroundColor: "white" }}>
                   Editors
@@ -284,14 +284,14 @@ class ShareBoard extends React.Component {
                           backgroundColor: item.profileIconColor,
                         }}
                       >
-                        {this.getInitials(item.displayName)}
+                        {this.getInitials(item.fullName)}
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         this.props.userData.user.email === item.email
                           ? "You"
-                          : item.displayName
+                          : item.fullName
                       }
                       secondary={
                         this.props.userData.user.email === item.email
@@ -316,7 +316,7 @@ class ShareBoard extends React.Component {
                     )}
                   </ListItem>
                 ))}
-                <ListItem
+                {(this.props.board.myRole === "ADMIN" || this.props.board.myRole === "OWNER") && <ListItem
                   button
                   onClick={() =>
                     this.setState({
@@ -333,10 +333,10 @@ class ShareBoard extends React.Component {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary="Invite an editor" />
-                </ListItem>
+                </ListItem>}
               </ul>
-            </li>
-            <li key="Spectators">
+            </li>}
+            {!(( this.props.board.myRole === "EDITOR") && !this.props.board.admins[0]) &&     <li key="Spectators">
               <ul style={{ padding: "0" }}>
                 <ListSubheader style={{ backgroundColor: "white" }}>
                   Spectators
@@ -349,14 +349,14 @@ class ShareBoard extends React.Component {
                           backgroundColor: item.profileIconColor,
                         }}
                       >
-                        {this.getInitials(item.displayName)}
+                        {this.getInitials(item.fullName)}
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         this.props.userData.user.email === item.email
                           ? "You"
-                          : item.displayName
+                          : item.fullName
                       }
                       secondary={
                         this.props.userData.user.email === item.email
@@ -381,7 +381,7 @@ class ShareBoard extends React.Component {
                     )}
                   </ListItem>
                 ))}
-                <ListItem
+                {(this.props.board.myRole === "ADMIN" || this.props.board.myRole === "OWNER") && <ListItem
                   button
                   onClick={() =>
                     this.setState({
@@ -398,9 +398,9 @@ class ShareBoard extends React.Component {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary="Invite a spectator" />
-                </ListItem>
+                </ListItem>}
               </ul>
-            </li>
+            </li>}
           </List>
           <Menu
             anchorEl={this.state.anchorEl}
@@ -656,7 +656,7 @@ class ShareBoard extends React.Component {
             }}
           >
             Are you sure you want to stop sharing this board with{" "}
-            {this.state.menuTarget && this.state.menuTarget.displayName}?<br />
+            {this.state.menuTarget && this.state.menuTarget.fullName}?<br />
           </div>
           <DialogActions
             className="notSelectable defaultCursor"
@@ -689,7 +689,7 @@ class ShareBoard extends React.Component {
             </MuiThemeProvider>
           </DialogActions>
         </Dialog>
-      </React.Fragment>
+      </React.Fragment >
     )
   }
 }
@@ -697,11 +697,11 @@ class ShareBoard extends React.Component {
 export default graphql(
   gql`
     mutation StopSharing($email: String!, $boardId: ID!) {
-      stopSharingBoard(email: $email, boardId: $boardId) {
-        id
-      }
-    }
-  `,
+          stopSharingBoard(email: $email, boardId: $boardId) {
+          id
+        }
+        }
+      `,
   {
     name: "StopSharing",
   }
@@ -709,11 +709,11 @@ export default graphql(
   graphql(
     gql`
       mutation InviteUser($email: String!, $boardId: ID!, $role: Role!) {
-        shareBoard(email: $email, boardId: $boardId, role: $role) {
+          shareBoard(email: $email, boardId: $boardId, role: $role) {
           id
         }
-      }
-    `,
+        }
+      `,
     {
       name: "InviteUser",
     }

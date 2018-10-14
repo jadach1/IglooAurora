@@ -1,11 +1,13 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Button from "@material-ui/core/Button"
 import TextField from "material-ui/TextField"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Icon from "material-ui-next/Icon"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Icon from "@material-ui/core/Icon"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
-import MobileStepper from "material-ui-next/MobileStepper"
+import MobileStepper from "@material-ui/core/MobileStepper"
 import SwipeableViews from "react-swipeable-views"
 import DropDownMenu from "material-ui/DropDownMenu"
 import MenuItem from "material-ui/MenuItem"
@@ -78,39 +80,17 @@ export default class CreateValue extends React.Component {
 
     const maxSteps = 5
 
-    const actions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          label="Change"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.props.close}
-          disabled={true}
-        >
-          Create
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
       <React.Fragment>
         <Dialog
           title="Create value"
-          actions={actions}
           open={this.props.open}
-          contentStyle={{ width: "350px" }}
-          onRequestClose={this.props.close}
+          onClose={this.props.close}
           className="notSelectable"
-          titleClassName="notSelectable defaultCursor"
-          bodyStyle={{
-            paddingBottom: "0px",
-          }}
         >
+<DialogTitle style={{width:"350px"}}>
+	Create value
+</DialogTitle>
           <SwipeableViews
             axis={theme.direction === "rtl" ? "x-reverse" : "x"}
             index={this.state.activeStep}
@@ -326,6 +306,24 @@ export default class CreateValue extends React.Component {
               }
             />
           </MuiThemeProvider>
+<DialogActions>
+	<MuiThemeProvider theme={theme}>
+        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+          Never mind
+        </Button>
+        <Button
+          variant="raised"
+          color="primary"
+          label="Change"
+          primary={true}
+          buttonStyle={{ backgroundColor: "#0083ff" }}
+          onClick={this.props.close}
+          disabled={true}
+        >
+          Create
+        </Button>
+      </MuiThemeProvider>
+</DialogActions>
         </Dialog>
       </React.Fragment>
     )

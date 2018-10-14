@@ -90,13 +90,13 @@ class MainBodyHeader extends Component {
               alt="device logo"
             />
           ) : (
-            <i
-              className="deviceIconBig material-icons"
-              style={{ cursor: "default" }}
-            >
-              lightbulb_outline
+              <i
+                className="deviceIconBig material-icons"
+                style={{ cursor: "default" }}
+              >
+                lightbulb_outline
             </i>
-          )}
+            )}
           <Typography
             variant="headline"
             className="title"
@@ -186,7 +186,7 @@ class MainBodyHeader extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Share" />
                 </MenuItem>
-                <MenuItem
+                {!(this.props.userData.user.email === device.owner.email) &&  <MenuItem
                   className="notSelectable"
                   style={
                     this.props.nightMode
@@ -210,7 +210,7 @@ class MainBodyHeader extends Component {
                     </Icon>
                   </ListItemIcon>
                   <ListItemText inset primary="Leave device" />
-                </MenuItem>
+                </MenuItem>}
                 {/* <MenuItem
                     className="notSelectable"
                     style={
@@ -319,32 +319,32 @@ class MainBodyHeader extends Component {
                     <ListItemText inset primary="Unmute" />
                   </MenuItem>
                 ) : (
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                    onClick={() => {
-                      toggleQuietMode(true)
-                      this.handleMenuClose()
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Icon
-                        style={
-                          this.props.nightMode
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        notifications_off
+                    <MenuItem
+                      className="notSelectable"
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                      onClick={() => {
+                        toggleQuietMode(true)
+                        this.handleMenuClose()
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon
+                          style={
+                            this.props.nightMode
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          notifications_off
                       </Icon>
-                    </ListItemIcon>
-                    <ListItemText inset primary="Mute" />
-                  </MenuItem>
-                )}
+                      </ListItemIcon>
+                      <ListItemText inset primary="Mute" />
+                    </MenuItem>
+                  )}
                 <Divider />
                 {this.props.userData.user.boards.length > 1 && (
                   <MenuItem
@@ -540,25 +540,25 @@ export default graphql(
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           notifications {

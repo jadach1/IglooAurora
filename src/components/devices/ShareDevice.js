@@ -42,8 +42,8 @@ function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
   ) : (
-    <Slide direction="up" {...props} />
-  )
+      <Slide direction="up" {...props} />
+    )
 }
 
 class ShareDevice extends React.Component {
@@ -125,8 +125,8 @@ class ShareDevice extends React.Component {
     })
   }
 
-    render() {
-      if (this.props.userData.user) return (
+  render() {
+    if (this.props.userData.user) return (
       <React.Fragment>
         <Dialog
           open={
@@ -177,35 +177,35 @@ class ShareDevice extends React.Component {
                           .profileIconColor,
                       }}
                     >
-                      {this.getInitials(this.props.device.owner.displayName)}
+                      {this.getInitials(this.props.device.owner.fullName)}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
                     primary={
                       this.props.userData.user.email ===
-                      this.props.device.owner.email
+                        this.props.device.owner.email
                         ? "You"
-                        : this.props.device.owner.displayName
+                        : this.props.device.owner.fullName
                     }
                     secondary={
                       this.props.userData.user.email ===
-                      this.props.device.owner.email
+                        this.props.device.owner.email
                         ? ""
                         : this.props.device.owner.email
                     }
                   />
                   {this.props.userData.user.email ===
                     this.props.device.owner.email && (
-                    <ListItemSecondaryAction>
-                      <IconButton>
-                        <Icon>edit</Icon>
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  )}
+                      <ListItemSecondaryAction>
+                        <IconButton>
+                          <Icon>edit</Icon>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    )}
                 </ListItem>
               </ul>
             </li>
-            <li key="Admins">
+            {!((this.props.device.myRole === "EDITOR" || this.props.device.myRole === "SPECTATOR") && !this.props.device.admins[0]) && <li key="Admins">
               <ul style={{ padding: "0" }}>
                 <ListSubheader
                   style={{ backgroundColor: "white" }}
@@ -220,13 +220,13 @@ class ShareDevice extends React.Component {
                         backgroundColor: item.profileIconColor,
                       }}
                     >
-                      <Avatar>{this.getInitials(item.displayName)}</Avatar>
+                      <Avatar>{this.getInitials(item.fullName)}</Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         this.props.userData.user.email === item.email
                           ? "You"
-                          : item.displayName
+                          : item.fullName
                       }
                       secondary={
                         this.props.userData.user.email === item.email
@@ -251,7 +251,7 @@ class ShareDevice extends React.Component {
                     )}
                   </ListItem>
                 ))}
-                <ListItem
+                {(this.props.device.myRole === "ADMIN" || this.props.device.myRole === "OWNER") && <ListItem
                   button
                   onClick={() =>
                     this.setState({
@@ -268,10 +268,10 @@ class ShareDevice extends React.Component {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary="Invite an admin" />
-                </ListItem>
+                </ListItem>}
               </ul>
-            </li>
-            <li key="Editors">
+            </li>}
+            {!((this.props.device.myRole === "SPECTATOR") && !this.props.device.admins[0]) && <li key="Editors">
               <ul style={{ padding: "0" }}>
                 <ListSubheader style={{ backgroundColor: "white" }}>
                   Editors
@@ -284,14 +284,14 @@ class ShareDevice extends React.Component {
                           backgroundColor: item.profileIconColor,
                         }}
                       >
-                        {this.getInitials(item.displayName)}
+                        {this.getInitials(item.fullName)}
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         this.props.userData.user.email === item.email
                           ? "You"
-                          : item.displayName
+                          : item.fullName
                       }
                       secondary={
                         this.props.userData.user.email === item.email
@@ -316,7 +316,7 @@ class ShareDevice extends React.Component {
                     )}
                   </ListItem>
                 ))}
-                <ListItem
+                {(this.props.device.myRole === "ADMIN" || this.props.device.myRole === "OWNER") && <ListItem
                   button
                   onClick={() =>
                     this.setState({
@@ -333,10 +333,10 @@ class ShareDevice extends React.Component {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary="Invite an editor" />
-                </ListItem>
+                </ListItem>}
               </ul>
-            </li>
-            <li key="Spectators">
+            </li>}
+            {!((this.props.device.myRole === "EDITOR") && !this.props.device.admins[0]) && <li key="Spectators">
               <ul style={{ padding: "0" }}>
                 <ListSubheader style={{ backgroundColor: "white" }}>
                   Spectators
@@ -349,14 +349,14 @@ class ShareDevice extends React.Component {
                           backgroundColor: item.profileIconColor,
                         }}
                       >
-                        {this.getInitials(item.displayName)}
+                        {this.getInitials(item.fullName)}
                       </Avatar>
                     </ListItemAvatar>
                     <ListItemText
                       primary={
                         this.props.userData.user.email === item.email
                           ? "You"
-                          : item.displayName
+                          : item.fullName
                       }
                       secondary={
                         this.props.userData.user.email === item.email
@@ -381,7 +381,7 @@ class ShareDevice extends React.Component {
                     )}
                   </ListItem>
                 ))}
-                <ListItem
+                {(this.props.device.myRole === "ADMIN" || this.props.device.myRole === "OWNER") && <ListItem
                   button
                   onClick={() =>
                     this.setState({
@@ -398,9 +398,9 @@ class ShareDevice extends React.Component {
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText primary="Invite a spectator" />
-                </ListItem>
+                </ListItem>}
               </ul>
-            </li>
+            </li>}
           </List>
           <Menu
             anchorEl={this.state.anchorEl}
@@ -656,7 +656,7 @@ class ShareDevice extends React.Component {
             }}
           >
             Are you sure you want to stop sharing this device with
-            {" " + (this.state.menuTarget && this.state.menuTarget.displayName)}?
+            {" " + (this.state.menuTarget && this.state.menuTarget.fullName)}?
             <br />
           </div>
           <DialogActions

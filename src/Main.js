@@ -10,7 +10,7 @@ import "./styles/Tiles.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import StatusBar from "./components/devices/StatusBar"
 import { Redirect } from "react-router-dom"
-import { Typography } from "material-ui-next"
+import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
 import queryString from "query-string"
 
@@ -36,11 +36,11 @@ class Main extends Component {
       handler: event => {
         !this.state.drawer
           ? this.setState(oldState => ({
-              showMainHidden: !oldState.showMainHidden,
-            }))
+            showMainHidden: !oldState.showMainHidden,
+          }))
           : this.setState(oldState => ({
-              hiddenNotifications: !oldState.hiddenNotifications,
-            }))
+            hiddenNotifications: !oldState.hiddenNotifications,
+          }))
       },
     },
     "alt+1": {
@@ -330,10 +330,8 @@ class Main extends Component {
         <Online>
           <div className="main">
             <SettingsDialog
-              isOpen={this.state.areSettingsOpen}
-              closeSettingsDialog={() => {
-                this.setState({ areSettingsOpen: false })
-              }}
+              isOpen={this.props.areSettingsOpen}
+              closeSettingsDialog={this.props.closeSettings}
               handleChange={handleSettingsTabChanged}
               slideIndex={this.state.slideIndex}
               nightMode={nightMode}
@@ -344,15 +342,14 @@ class Main extends Component {
               logOut={this.props.logOut}
               key="sidebarHeader"
               selectedBoard={this.props.selectedBoard}
-              openSettingsDialog={() => {
-                this.setState({ areSettingsOpen: true })
-              }}
+              openSettingsDialog={this.props.openSettings}
               changeSettingsState={() =>
                 this.setState(oldState => ({
                   areSettingsOpen: !oldState.areSettingsOpen,
                   drawer: false,
                 }))
               }
+              user={this.props.userData.user}
               boardName={
                 this.props.userData.user &&
                 this.props.userData.user.boards.filter(
@@ -399,8 +396,8 @@ class Main extends Component {
                 userData={this.props.userData}
               />
             ) : (
-              <div className="mainBodyHeader" key="mainBodyHeader" />
-            )}
+                <div className="mainBodyHeader" key="mainBodyHeader" />
+              )}
             {this.props.selectedDevice !== null ? (
               user ? (
                 deviceIdList.includes(this.props.selectedDevice) ? (
@@ -420,43 +417,43 @@ class Main extends Component {
                     />
                   </React.Fragment>
                 ) : (
-                  <Redirect
-                    exact
-                    to={
-                      this.props.selectedBoard
-                        ? "/dashboard?board=" + this.props.selectedBoard
-                        : "/dashboard"
+                    <Redirect
+                      exact
+                      to={
+                        this.props.selectedBoard
+                          ? "/dashboard?board=" + this.props.selectedBoard
+                          : "/dashboard"
+                      }
+                    />
+                  )
+              ) : (
+                  ""
+                )
+            ) : (
+                <React.Fragment>
+                  <div
+                    style={
+                      nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
+                    }
+                    className="mainBody"
+                  >
+                    <div
+                      className={nightMode ? "darkMainBodyBG" : "mainBodyBG"}
+                      style={{ width: "100%", height: "100%" }}
+                    />
+                  </div>
+                  <div
+                    className="statusBar"
+                    style={
+                      nightMode
+                        ? { background: "#2f333d" }
+                        : { background: "white" }
                     }
                   />
-                )
-              ) : (
-                ""
-              )
-            ) : (
-              <React.Fragment>
-                <div
-                  style={
-                    nightMode
-                      ? { background: "#2f333d" }
-                      : { background: "white" }
-                  }
-                  className="mainBody"
-                >
-                  <div
-                    className={nightMode ? "darkMainBodyBG" : "mainBodyBG"}
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                </div>
-                <div
-                  className="statusBar"
-                  style={
-                    nightMode
-                      ? { background: "#2f333d" }
-                      : { background: "white" }
-                  }
-                />
-              </React.Fragment>
-            )}
+                </React.Fragment>
+              )}
           </div>
         </Online>
         <Offline key="offlineMainBody">

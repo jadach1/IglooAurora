@@ -168,10 +168,7 @@ class RenameBoard extends React.Component {
                 </FormControl>
               </Grid>
             </Grid>
-          </MuiThemeProvider>
-          <br />
-          <br />
-          <p>Choose a board image</p>
+          </MuiThemeProvider>   <br />     <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>Choose a board image</p>
           <SwipeableViews
             index={this.state.slideIndex}
             onChangeIndex={value => {
@@ -293,7 +290,7 @@ class RenameBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation Rename($id: ID!, $customName: String, $avatar: BoardAvatar) {
+    mutation Rename($id: ID!, $customName: String, $avatar: BoardPicture) {
       board(id: $id, customName: $customName, avatar: $avatar) {
         id
         customName

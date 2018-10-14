@@ -24,11 +24,8 @@ class SignupMobile extends Component {
     super()
 
     this.state = {
-      email: "",
       emailError: "",
-      password: "",
       passwordError: "",
-      fullName: "",
       passwordScore: null,
       isEmailValid: null,
       isNameValid: true,
@@ -59,11 +56,11 @@ class SignupMobile extends Component {
       this.setState({ emailError: "", passwordError: "" })
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
-          mutation($email: String!, $password: String!, $displayName: String!) {
+          mutation($email: String!, $password: String!, $fullName: String!) {
             SignupUser(
               email: $email
               password: $password
-              displayName: $displayName
+              fullName: $fullName
             ) {
               id
               token
@@ -71,14 +68,14 @@ class SignupMobile extends Component {
           }
         `,
         variables: {
-          email: this.state.email,
+          email: this.props.email,
           password: this.state.password,
-          displayName: this.state.fullName,
+          fullName: this.props.fullName,
         },
       })
 
       if (typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.state.email)
+        localStorage.setItem("email", this.props.email)
       }
 
       this.props.signIn(loginMutation.data.SignupUser.token)
@@ -91,6 +88,9 @@ class SignupMobile extends Component {
           emailError: "This email is already taken",
         })
       } else {
+        this.setState({
+          emailError: "Unexpected error",
+        })
       }
     }
   }
@@ -104,7 +104,8 @@ class SignupMobile extends Component {
   }
 
   handleClickCancelEmail = () => {
-    this.setState({ email: "", isMailEmpty: true })
+    this.props.changeEmail("")
+    this.setState({ isMailEmpty: true })
   }
 
   render() {
@@ -139,9 +140,9 @@ class SignupMobile extends Component {
     if (!this.state.password) scoreText = ""
 
     let customDictionary = [
-      this.state.email,
-      this.state.email.split("@")[0],
-      this.state.fullName,
+      this.props.email,
+      this.props.email.split("@")[0],
+      this.props.fullName,
       "igloo",
       "igloo aurora",
       "aurora",
@@ -159,21 +160,21 @@ class SignupMobile extends Component {
           style={
             this.state.height >= 690
               ? {
-                  width: "200px",
-                  paddingTop: "75px",
-                  marginBottom: "75px",
-                  display: "block",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }
+                width: "200px",
+                paddingTop: "75px",
+                marginBottom: "75px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }
               : {
-                  width: "150px",
-                  paddingTop: "50px",
-                  marginBottom: "50px",
-                  display: "block",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }
+                width: "150px",
+                paddingTop: "50px",
+                marginBottom: "50px",
+                display: "block",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }
           }
         />
         <Typography
@@ -203,12 +204,13 @@ class SignupMobile extends Component {
                   id="adornment-email-signup"
                   placeholder="Full name"
                   style={{ color: "white" }}
-                  value={this.state.fullName}
-                  onChange={event =>
+                  value={this.props.fullName}
+                  onChange={event => {
+                    this.props.changeFullName(event.target.value)
                     this.setState({
-                      fullName: event.target.value,
                       isNameValid: event.target.value !== "",
                     })
+                  }
                   }
                   onKeyPress={event => {
                     if (event.key === "Enter") {
@@ -217,13 +219,14 @@ class SignupMobile extends Component {
                     }
                   }}
                   endAdornment={
-                    this.state.fullName ? (
+                    this.props.fullName ? (
                       <InputAdornment position="end">
                         <IconButton
                           tabIndex="-1"
-                          onClick={() =>
-                            this.setState({ fullName: "", isNameValid: false })
-                          }
+                          onClick={() => {
+                            this.props.changeFullName("")
+                            this.setState({ isNameValid: false })
+                          }}
                           onMouseDown={this.handleMouseDownPassword}
                           style={{ color: "white" }}
                         >
@@ -260,14 +263,15 @@ class SignupMobile extends Component {
                   id="adornment-email-signup"
                   placeholder="Email"
                   style={{ color: "white" }}
-                  value={this.state.email}
-                  onChange={event =>
+                  value={this.props.email}
+                  onChange={event => {
+                    this.props.changeEmail(event.target.value)
                     this.setState({
-                      email: event.target.value,
                       isEmailValid: EmailValidator.validate(event.target.value),
                       emailError: "",
                       isMailEmpty: event.target.value === "",
                     })
+                  }
                   }
                   onKeyPress={event => {
                     if (event.key === "Enter") {
@@ -276,7 +280,7 @@ class SignupMobile extends Component {
                     }
                   }}
                   endAdornment={
-                    this.state.email ? (
+                    this.props.email ? (
                       <InputAdornment position="end">
                         <IconButton
                           tabIndex="-1"
@@ -295,7 +299,7 @@ class SignupMobile extends Component {
                   style={{ color: "white" }}
                 >
                   {this.state.emailError ||
-                    (!this.state.isEmailValid && this.state.email
+                    (!this.state.isEmailValid && this.props.email
                       ? "Enter a valid email"
                       : "")}
                   {this.state.isMailEmpty ? "This field is required" : ""}
@@ -322,17 +326,17 @@ class SignupMobile extends Component {
                   placeholder="Password"
                   style={{ color: "white" }}
                   type={this.state.showPassword ? "text" : "password"}
-                  value={this.state.password}
-                  onChange={event =>
+                  value={this.props.password}
+                  onChange={event => {
+                    this.props.changePassword(event.target.value)
                     this.setState({
-                      password: event.target.value,
                       passwordScore: zxcvbn(
                         event.target.value,
                         customDictionary
                       ).score,
                       isPasswordEmpty: event.target.value === "",
                     })
-                  }
+                  }}
                   onKeyPress={event => {
                     if (event.key === "Enter") {
                       this.setState({ showLoading: true })
@@ -340,7 +344,7 @@ class SignupMobile extends Component {
                     }
                   }}
                   endAdornment={
-                    this.state.password ? (
+                    this.props.password ? (
                       <InputAdornment position="end">
                         <IconButton
                           tabIndex="-1"
@@ -351,8 +355,8 @@ class SignupMobile extends Component {
                           {this.state.showPassword ? (
                             <Icon>visibility_off</Icon>
                           ) : (
-                            <Icon>visibility</Icon>
-                          )}
+                              <Icon>visibility</Icon>
+                            )}
                         </IconButton>
                       </InputAdornment>
                     ) : null
@@ -382,7 +386,7 @@ class SignupMobile extends Component {
             buttonStyle={{ backgroundColor: "#0083ff" }}
             disabled={
               !(
-                this.state.fullName &&
+                this.props.fullName &&
                 this.state.isEmailValid &&
                 this.state.passwordScore >= 2
               ) || this.state.showLoading

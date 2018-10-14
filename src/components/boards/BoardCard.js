@@ -84,15 +84,15 @@ class BoardCard extends Component {
           style={
             this.props.nightMode
               ? {
-                  backgroundColor: "#2f333d",
-                  width: "256px",
-                  height: "192px",
-                }
+                backgroundColor: "#2f333d",
+                width: "256px",
+                height: "192px",
+              }
               : {
-                  backgroundColor: "#fff",
-                  width: "256px",
-                  height: "192px",
-                }
+                backgroundColor: "#fff",
+                width: "256px",
+                height: "192px",
+              }
           }
         >
           <Toolbar
@@ -107,17 +107,17 @@ class BoardCard extends Component {
               style={
                 this.props.nightMode
                   ? {
-                      color: "white",
-                      textDecoration: "none",
-                      height: "64px",
-                      paddingLeft: "24px",
-                    }
+                    color: "white",
+                    textDecoration: "none",
+                    height: "64px",
+                    paddingLeft: "24px",
+                  }
                   : {
-                      color: "black",
-                      textDecoration: "none",
-                      height: "64px",
-                      paddingLeft: "24px",
-                    }
+                    color: "black",
+                    textDecoration: "none",
+                    height: "64px",
+                    paddingLeft: "24px",
+                  }
               }
             >
               <Typography
@@ -126,25 +126,25 @@ class BoardCard extends Component {
                 style={
                   this.props.nightMode
                     ? {
-                        color: "white",
-                        marginLeft: "-8px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                        width: "136px",
-                        marginRight: "23px",
-                        lineHeight: "64px",
-                      }
+                      color: "white",
+                      marginLeft: "-8px",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      width: "136px",
+                      marginRight: "23px",
+                      lineHeight: "64px",
+                    }
                     : {
-                        color: "black",
-                        marginLeft: "-8px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                        width: "136px",
-                        marginRight: "23px",
-                        lineHeight: "64px",
-                      }
+                      color: "black",
+                      marginLeft: "-8px",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      width: "136px",
+                      marginRight: "23px",
+                      lineHeight: "64px",
+                    }
                 }
               >
                 {isShared ? (
@@ -152,8 +152,8 @@ class BoardCard extends Component {
                     group
                   </Icon>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
                 {this.props.board.customName}
               </Typography>
             </Link>
@@ -170,8 +170,8 @@ class BoardCard extends Component {
                   color="primary"
                 />
               ) : (
-                ""
-              )}
+                  ""
+                )}
             </MuiThemeProvider>
             <Tooltip id="tooltip-bottom" title="More" placement="bottom">
               <IconButton
@@ -184,11 +184,11 @@ class BoardCard extends Component {
                   style={
                     this.props.nightMode
                       ? {
-                          color: "white",
-                        }
+                        color: "white",
+                      }
                       : {
-                          color: "black",
-                        }
+                        color: "black",
+                      }
                   }
                 >
                   more_vert
@@ -328,7 +328,7 @@ class BoardCard extends Component {
             </ListItemIcon>
             <ListItemText inset primary="Share" />
           </MenuItem>
-          <MenuItem
+          {!(this.props.userData.user.email === this.props.board.owner.email) && <MenuItem
             className="notSelectable"
             style={
               this.props.nightMode ? { color: "white" } : { color: "black" }
@@ -348,7 +348,7 @@ class BoardCard extends Component {
               </Icon>
             </ListItemIcon>
             <ListItemText inset primary="Leave board" />
-          </MenuItem>
+          </MenuItem>}
           <Divider />
           <MenuItem
             className="notSelectable"

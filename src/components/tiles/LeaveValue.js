@@ -24,20 +24,20 @@ function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
   ) : (
-    <Slide direction="up" {...props} />
-  )
+      <Slide direction="up" {...props} />
+    )
 }
 
-class LeaveDevice extends React.Component {
-  deleteDeviceMutation = () => {
-    this.props["DeleteDevice"]({
+class LeaveValue extends React.Component {
+  deleteValueMutation = () => {
+    this.props["DeleteValue"]({
       variables: {
-        id: this.props.device.id,
+        id: this.props.value.id,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        deleteDevice: {
-          id: this.props.device.id,
+        deleteValue: {
+          id: this.props.value.id,
         },
       },
     })
@@ -47,15 +47,15 @@ class LeaveDevice extends React.Component {
   stopSharing = () => {
     this.props.StopSharing({
       variables: {
-        deviceId: this.props.device.id,
+        valueId: this.props.value.id,
         email: this.props.userData.user.email,
       },
       optimisticResponse: {
         __typename: "Mutation",
         stopSharing: {
-          id: this.props.device.id,
+          id: this.props.value.id,
           email: this.props.userData.user.email,
-          __typename: "Device",
+          __typename: "Value",
         },
       },
     })
@@ -71,9 +71,9 @@ class LeaveDevice extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle style={{ width: "350px" }}>Leave device</DialogTitle>
-        <div style={{ paddingLeft: "24px",paddingRight:"24px", height: "100%" }}>
-          Are you sure you want to leave {this.props.device.customName}?
+        <DialogTitle style={{ width: "350px" }}>Leave value</DialogTitle>
+        <div style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}>
+          Are you sure you want to leave {this.props.value.customName}?
         </div>
         <br />
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
@@ -90,7 +90,7 @@ class LeaveDevice extends React.Component {
                 this.props.close()
               }}
             >
-              Leave device
+              Leave value
             </Button>
           </MuiThemeProvider>
         </DialogActions>
@@ -101,8 +101,8 @@ class LeaveDevice extends React.Component {
 
 export default graphql(
   gql`
-    mutation StopSharing($email: String!, $deviceId: ID!) {
-      stopSharingDevice(email: $email, deviceId: $deviceId) {
+    mutation StopSharing($email: String!, $valueId: ID!) {
+      stopSharingValue(email: $email, valueId: $valueId) {
         id
       }
     }
@@ -113,12 +113,12 @@ export default graphql(
 )(
   graphql(
     gql`
-      mutation DeleteDevice($id: ID!) {
-        deleteDevice(id: $id)
+      mutation DeleteValue($id: ID!) {
+        deleteValue(id: $id)
       }
     `,
     {
-      name: "DeleteDevice",
+      name: "DeleteValue",
     }
-  )(LeaveDevice)
+  )(LeaveValue)
 )

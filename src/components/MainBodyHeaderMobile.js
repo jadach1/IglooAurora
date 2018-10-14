@@ -3,7 +3,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import NotificationsDrawer from "./NotificationsDrawer"
 import DeviceInfo from "./devices/DeviceInfo"
-import { CopyToClipboard } from "react-copy-to-clipboard"
+// import { CopyToClipboard } from "react-copy-to-clipboard"
 import { Link } from "react-router-dom"
 import {
   Divider,
@@ -19,6 +19,8 @@ import {
 import DeleteDevice from "./devices/DeleteDevice"
 import ChangeBoard from "./devices/ChangeBoard"
 import RenameDevice from "./devices/RenameDevice"
+import ShareDevice from "./devices/ShareDevice"
+import LeaveDevice from "./devices/LeaveDevice"
 
 class MainBodyHeader extends Component {
   state = {
@@ -130,13 +132,13 @@ class MainBodyHeader extends Component {
               alt="device logo"
             />
           ) : (
-            <i
-              className="deviceIconBig material-icons"
-              style={{ cursor: "default" }}
-            >
-              lightbulb_outline
+              <i
+                className="deviceIconBig material-icons"
+                style={{ cursor: "default" }}
+              >
+                lightbulb_outline
             </i>
-          )}
+            )}
           <Typography
             variant="headline"
             className="title"
@@ -149,7 +151,6 @@ class MainBodyHeader extends Component {
               lineHeight: "64px",
             }}
           >
-            {" "}
             {device.customName}
           </Typography>
           {device && (
@@ -201,6 +202,57 @@ class MainBodyHeader extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Device information" />
                 </MenuItem>
+                <Divider />
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ anchorEl: null })
+                    this.setState({ shareOpen: true })
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      share
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Share" />
+                </MenuItem>
+                {!(this.props.userData.user.email === device.owner.email) &&     <MenuItem
+                  className="notSelectable"
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ leaveOpen: true })
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        this.props.nightMode
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      remove_circle
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Leave device" />
+                </MenuItem>}
                 {/* <MenuItem
                     className="notSelectable"
                     style={
@@ -222,7 +274,7 @@ class MainBodyHeader extends Component {
                     </ListItemIcon>
                     <ListItemText inset primary="See on the map" />
                   </MenuItem> */}
-                {navigator.share ? (
+                {/* {navigator.share ? (
                   <MenuItem
                     className="notSelectable"
                     style={
@@ -280,7 +332,7 @@ class MainBodyHeader extends Component {
                       <ListItemText inset primary="Get Link" />
                     </MenuItem>
                   </CopyToClipboard>
-                )}
+                        )} */}
                 <Divider />
                 {device.quietMode ? (
                   <MenuItem
@@ -357,7 +409,7 @@ class MainBodyHeader extends Component {
                             : { color: "black" }
                         }
                       >
-                        swap_vert
+                        swap_horiz
                       </Icon>
                     </ListItemIcon>
                     <ListItemText inset primary="Change board" />
@@ -463,6 +515,19 @@ class MainBodyHeader extends Component {
           createdAt={device.createdAt}
           devMode={this.props.devMode}
         />
+        <ShareDevice
+          open={this.state.shareOpen}
+          close={() => this.setState({ shareOpen: false })}
+          device={device}
+          userData={this.props.userData}
+        />
+        <LeaveDevice
+          open={this.state.leaveOpen}
+          close={() => this.setState({ leaveOpen: false })}
+          device={device}
+          userData={this.props.userData}
+          nightMode={this.props.nightMode}
+        />
         <ChangeBoard
           open={this.state.changeBoardOpen}
           close={() => this.setState({ changeBoardOpen: false })}
@@ -517,25 +582,25 @@ export default graphql(
           owner {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           admins {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           editors {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           spectators {
             id
             email
-            displayName
+            fullName
             profileIconColor
           }
           notifications {

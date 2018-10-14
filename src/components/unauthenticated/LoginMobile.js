@@ -31,17 +31,7 @@ const theme = createMuiTheme({
 export default class LoginMobile extends Component {
   constructor() {
     super()
-    let email = ""
-
-    if (typeof Storage !== "undefined") {
-      email = localStorage.getItem("email") || ""
-    }
-
     this.state = {
-      email,
-      emailError: "",
-      password: "",
-      passwordError: "",
       forgotPasswordOpen: false,
       isMailEmpty: false,
       isPasswordEmpty: false,
@@ -74,7 +64,8 @@ export default class LoginMobile extends Component {
 
   async signIn() {
     try {
-      this.setState({ emailError: "", passwordError: "" })
+      this.props.changePasswordError("")
+      this.props.changeEmailError("")
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!) {
@@ -85,13 +76,13 @@ export default class LoginMobile extends Component {
           }
         `,
         variables: {
-          email: this.state.email,
-          password: this.state.password,
+          email: this.props.email,
+          password: this.props.password,
         },
       })
 
       if (typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.state.email)
+        localStorage.setItem("email", this.props.email)
       }
 
       this.props.signIn(
@@ -102,14 +93,12 @@ export default class LoginMobile extends Component {
       this.setState({ showLoading: false })
 
       if (e.message === "GraphQL error: Wrong password") {
-        this.setState({ passwordError: "Wrong password" })
+        this.props.changePasswordError("Wrong password")
       } else if (
         e.message ===
         "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
       ) {
-        this.setState({
-          emailError: "This account does not exist",
-        })
+        this.props.changeEmailError("This account doesn't exist")
       } else {
       }
     }
@@ -150,7 +139,8 @@ export default class LoginMobile extends Component {
   }
 
   handleClickCancelEmail = () => {
-    this.setState({ email: "", isMailEmpty: true })
+    this.props.changePassword("")
+    this.setState({ isMailEmpty: true })
   }
 
   render() {
@@ -171,21 +161,21 @@ export default class LoginMobile extends Component {
             style={
               this.state.height >= 690
                 ? {
-                    width: "200px",
-                    paddingTop: "75px",
-                    marginBottom: "75px",
-                    display: "block",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                  }
+                  width: "200px",
+                  paddingTop: "75px",
+                  marginBottom: "75px",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }
                 : {
-                    width: "150px",
-                    paddingTop: "50px",
-                    marginBottom: "50px",
-                    display: "block",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                  }
+                  width: "150px",
+                  paddingTop: "50px",
+                  marginBottom: "50px",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }
             }
           />
           <Typography
@@ -215,12 +205,13 @@ export default class LoginMobile extends Component {
                     id="adornment-email-login"
                     placeholder="Email"
                     style={{ color: "white" }}
-                    value={this.state.email}
-                    onChange={event =>
+                    value={this.props.email}
+                    onChange={event => {
+                      this.props.changeEmail(event.target.value)
                       this.setState({
-                        email: event.target.value,
                         isMailEmpty: event.target.value === "",
                       })
+                    }
                     }
                     onKeyPress={event => {
                       if (event.key === "Enter") {
@@ -229,7 +220,7 @@ export default class LoginMobile extends Component {
                       }
                     }}
                     endAdornment={
-                      this.state.email ? (
+                      this.props.email ? (
                         <InputAdornment position="end">
                           <IconButton tabIndex="-1" style={{ color: "white" }}>
                             <Icon>clear</Icon>
@@ -266,15 +257,16 @@ export default class LoginMobile extends Component {
                   <Input
                     id="adornment-password-login"
                     type={this.state.showPassword ? "text" : "password"}
-                    value={this.state.password}
+                    value={this.props.password}
                     placeholder="Password"
                     style={{ color: "white" }}
-                    onChange={event =>
+                    onChange={event => {
+                      this.props.changePassword(event.target.value)
+                      this.props.changePasswordError("")
                       this.setState({
-                        password: event.target.value,
-                        passwordError: "",
                         isPasswordEmpty: event.target.value === "",
                       })
+                    }
                     }
                     onKeyPress={event => {
                       if (event.key === "Enter") {
@@ -283,7 +275,7 @@ export default class LoginMobile extends Component {
                       }
                     }}
                     endAdornment={
-                      this.state.password ? (
+                      this.props.password ? (
                         <InputAdornment position="end">
                           <IconButton
                             onClick={this.handleClickShowPassword}
@@ -296,8 +288,8 @@ export default class LoginMobile extends Component {
                                 visibility_off
                               </Icon>
                             ) : (
-                              <Icon style={{ color: "white" }}>visibility</Icon>
-                            )}
+                                <Icon style={{ color: "white" }}>visibility</Icon>
+                              )}
                           </IconButton>
                         </InputAdornment>
                       ) : null
@@ -307,7 +299,7 @@ export default class LoginMobile extends Component {
                     id="passowrd-error-text-login"
                     style={{ color: "white" }}
                   >
-                    {this.state.passwordError}
+                    {this.props.passwordError}
                     {this.state.isPasswordEmpty ? "This field is required" : ""}
                   </FormHelperText>
                 </FormControl>
@@ -325,12 +317,13 @@ export default class LoginMobile extends Component {
                     },
                   })}
                 >
-                <Checkbox
-                  onChange={event =>
-                    this.setState({ keepLoggedIn: event.target.checked })
-                  }
-                  checked={this.state.keepLoggedIn}
-                />
+                  <Checkbox
+                    onChange={event =>
+                      this.setState({ keepLoggedIn: event.target.checked })
+                    }
+                    checked={this.state.keepLoggedIn}
+                    style={{ color: "white" }}
+                  />
                 </MuiThemeProvider>
               }
               label={
@@ -368,8 +361,8 @@ export default class LoginMobile extends Component {
               color="secondary"
               disabled={
                 !(
-                  EmailValidator.validate(this.state.email) &&
-                  this.state.password
+                  EmailValidator.validate(this.props.email) &&
+                  this.props.password
                 ) || this.state.showLoading
               }
             >
@@ -414,7 +407,7 @@ export default class LoginMobile extends Component {
           recover={email => this.recover(email)}
           open={this.state.forgotPasswordOpen}
           close={() => this.setState({ forgotPasswordOpen: false })}
-          email={this.state.email}
+          email={this.props.email}
         />
         {this.state.redirect && <Redirect push to="/signup" />}
       </React.Fragment>

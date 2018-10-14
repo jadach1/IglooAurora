@@ -182,10 +182,10 @@ class TileSize extends Component {
 
 export default graphql(
   gql`
-    mutation ChangeSize($id: ID!, $size: TileSize, $relevance: ValueRelevance) {
-      floatValue(tileSize: $size, id: $id, relevance: $relevance) {
+    mutation ChangeSize($id: ID!, $size: TileSize, $visibility: ValueVisibility) {
+      floatValue(tileSize: $size, id: $id, visibility: $visibility) {
         id
-        relevance
+        visibility
         tileSize
       }
     }
@@ -199,12 +199,12 @@ export default graphql(
       mutation ChangeSize(
         $id: ID!
         $size: TileSize
-        $relevance: ValueRelevance
+        $visibility: ValueVisibility
       ) {
-        stringValue(tileSize: $size, id: $id, relevance: $relevance) {
+        stringValue(tileSize: $size, id: $id, visibility: $visibility) {
           id
           tileSize
-          relevance
+          visibility
         }
       }
     `,
@@ -217,11 +217,11 @@ export default graphql(
         mutation ChangeSize(
           $id: ID!
           $size: TileSize
-          $relevance: ValueRelevance
+          $visibility: ValueVisibility
         ) {
-          booleanValue(tileSize: $size, id: $id, relevance: $relevance) {
+          booleanValue(tileSize: $size, id: $id, visibility: $visibility) {
             id
-            relevance
+            visibility
             tileSize
           }
         }
@@ -235,11 +235,11 @@ export default graphql(
           mutation ChangeSize(
             $id: ID!
             $size: TileSize
-            $relevance: ValueRelevance
+            $visibility: ValueVisibility
           ) {
-            colourValue(tileSize: $size, id: $id, relevance: $relevance) {
+            colourValue(tileSize: $size, id: $id, visibility: $visibility) {
               id
-              relevance
+              visibility
               tileSize
             }
           }
@@ -253,11 +253,11 @@ export default graphql(
             mutation ChangeSize(
               $id: ID!
               $size: TileSize
-              $relevance: ValueRelevance
+              $visibility: ValueVisibility
             ) {
-              plotValue(tileSize: $size, id: $id, relevance: $relevance) {
+              plotValue(tileSize: $size, id: $id, visibility: $visibility) {
                 id
-                relevance
+                visibility
                 tileSize
               }
             }
@@ -271,11 +271,11 @@ export default graphql(
               mutation ChangeSize(
                 $id: ID!
                 $size: TileSize
-                $relevance: ValueRelevance
+                $visibility: ValueVisibility
               ) {
-                mapValue(tileSize: $size, id: $id, relevance: $relevance) {
+                mapValue(tileSize: $size, id: $id, visibility: $visibility) {
                   id
-                  relevance
+                  visibility
                   tileSize
                 }
               }
@@ -289,15 +289,15 @@ export default graphql(
                 mutation ChangeSize(
                   $id: ID!
                   $size: TileSize
-                  $relevance: ValueRelevance
+                  $visibility: ValueVisibility
                 ) {
                   stringPlotValue(
                     tileSize: $size
                     id: $id
-                    relevance: $relevance
+                    visibility: $visibility
                   ) {
                     id
-                    relevance
+                    visibility
                     tileSize
                   }
                 }

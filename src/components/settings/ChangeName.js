@@ -31,7 +31,7 @@ let oldName = ""
 class ChangeNameDialog extends React.Component {
   state = {
     nameDialogOpen: false,
-    displayName: "",
+    fullName: "",
   }
 
   closeNameDialog = () => {
@@ -51,13 +51,13 @@ class ChangeNameDialog extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.displayName !== this.state.displayName) {
-      this.setState({ displayName: nextProps.displayName })
+    if (nextProps.fullName !== this.state.fullName) {
+      this.setState({ fullName: nextProps.fullName })
     }
   }
 
   componentDidMount() {
-    oldName = this.props.displayName
+    oldName = this.props.fullName
   }
 
   render() {
@@ -68,16 +68,16 @@ class ChangeNameDialog extends React.Component {
     let changeName = () => {}
 
     if (user) {
-      changeName = displayName => {
+      changeName = fullName => {
         this.props["ChangeName"]({
           variables: {
-            displayName: displayName,
+            fullName: fullName,
           },
           optimisticResponse: {
             __typename: "Mutation",
             user: {
               id: user.id,
-              displayName: displayName,
+              fullName: fullName,
               __typename: "User",
             },
           },
@@ -99,10 +99,10 @@ class ChangeNameDialog extends React.Component {
           label="Change"
           primary={true}
           disabled={
-            !this.state.displayName || oldName === this.state.displayName
+            !this.state.fullName || oldName === this.state.fullName
           }
           onClick={() => {
-            changeName(this.state.displayName)
+            changeName(this.state.fullName)
           }}
         >
           Change
@@ -132,7 +132,7 @@ class ChangeNameDialog extends React.Component {
             }}
             className="defaultCursor"
           >
-            {this.getInitials(this.state.displayName)}
+            {this.getInitials(this.state.fullName)}
           </Avatar>
           <br />
           <MuiThemeProvider theme={theme}>
@@ -150,22 +150,22 @@ class ChangeNameDialog extends React.Component {
                   <Input
                     id="adornment-email-login"
                     placeholder="Email"
-                    value={this.state.displayName}
+                    value={this.state.fullName}
                     onChange={event => {
                       this.setState({
-                        displayName: event.target.value,
+                        fullName: event.target.value,
                       })
                     }}
                     onKeyPress={event => {
                       if (event.key === "Enter")
-                        changeName(this.state.displayName)
+                        changeName(this.state.fullName)
                     }}
                     endAdornment={
-                      this.state.displayName ? (
+                      this.state.fullName ? (
                         <InputAdornment position="end">
                           <IconButton
                             onClick={() => {
-                              this.setState({ displayName: "" })
+                              this.setState({ fullName: "" })
                             }}
                             onMouseDown={event => {
                               event.preventDefault()
@@ -190,10 +190,10 @@ class ChangeNameDialog extends React.Component {
 
 export default graphql(
   gql`
-    mutation ChangeName($displayName: String!) {
-      user(displayName: $displayName) {
+    mutation ChangeName($fullName: String!) {
+      user(fullName: $fullName) {
         id
-        displayName
+        fullName
       }
     }
   `,

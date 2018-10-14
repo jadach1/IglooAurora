@@ -73,15 +73,21 @@ export default class BoardsHeader extends Component {
                 </IconButton>
               </Tooltip>
             </a> */}
-              <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
-                <IconButton
-                  onClick={this.props.openSettings}
-                  className="sidebarHeaderButton"
-                  style={{ color: "white" }}
+              {this.props.user && (
+                <Tooltip
+                  id="tooltip-bottom"
+                  title="Settings"
+                  placement="bottom"
                 >
-                  <Icon color="primary">settings</Icon>
-                </IconButton>
-              </Tooltip>
+                  <IconButton
+                    onClick={this.props.openSettings}
+                    className="sidebarHeaderButton"
+                    style={{ color: "white" }}
+                  >
+                    <Icon color="primary">settings</Icon>
+                  </IconButton>
+                </Tooltip>
+              )}
               <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
                 <IconButton
                   onClick={this.props.logOut}

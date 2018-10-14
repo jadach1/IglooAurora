@@ -1,10 +1,24 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
 import Button from "material-ui-next/Button"
 import TextField from "material-ui/TextField"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
+
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
 
 const theme = createMuiTheme({
   palette: {
@@ -60,8 +74,38 @@ class RenameTileDialog extends React.Component {
   }
 
   render() {
-    const renameTileActions = [
-      <MuiThemeProvider theme={theme}>
+     return (
+      <Dialog
+        title="Rename card"
+        open={this.props.renameTileOpen}
+        onClose={this.props.handleRenameTileDialogClose}
+        className="notSelectable"
+        contentStyle={{
+          width: "350px",
+        }}
+        titleClassName="notSelectable defaultCursor"
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
+      >
+      <DialogTitle style={{ width: "350px"} }>
+        Rename card
+        </DialogTitle>
+        <div style={{paddingLeft:"24px",paddingRight:"24px",height:"100%"}}>
+        <TextField
+          floatingLabelText="Card name"
+          defaultValue={this.props.tileName}
+          floatingLabelShrinkStyle={{ color: "#0083ff" }}
+          underlineFocusStyle={{ borderColor: "#0083ff" }}
+          style={{ width: "100%" }}
+          onChange={event => this.setState({ customName: event.target.value })}
+          onKeyPress={event => {
+            if (event.key === "Enter") {
+              this.rename()
+            }
+          }}
+        />
+        </div>
+        <DialogActions><MuiThemeProvider theme={theme}>
         <Button
           onClick={this.props.handleRenameTileDialogClose}
           style={{ marginRight: "4px" }}
@@ -78,34 +122,8 @@ class RenameTileDialog extends React.Component {
         >
           Rename
         </Button>
-      </MuiThemeProvider>,
-    ]
-
-    return (
-      <Dialog
-        title="Rename card"
-        actions={renameTileActions}
-        open={this.props.renameTileOpen}
-        onRequestClose={this.props.handleRenameTileDialogClose}
-        className="notSelectable"
-        contentStyle={{
-          width: "350px",
-        }}
-        titleClassName="notSelectable defaultCursor"
-      >
-        <TextField
-          floatingLabelText="Card name"
-          defaultValue={this.props.tileName}
-          floatingLabelShrinkStyle={{ color: "#0083ff" }}
-          underlineFocusStyle={{ borderColor: "#0083ff" }}
-          style={{ width: "100%" }}
-          onChange={event => this.setState({ customName: event.target.value })}
-          onKeyPress={event => {
-            if (event.key === "Enter") {
-              this.rename()
-            }
-          }}
-        />
+      </MuiThemeProvider>
+          </DialogActions>
       </Dialog>
     )
   }

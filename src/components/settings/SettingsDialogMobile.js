@@ -265,9 +265,9 @@ class SettingsDialogMobile extends React.Component {
 
     let deviceList = "No devices"
 
-    let languageText = "English"
+    // let languageText = "English"
 
-    let displayName = ""
+    let fullName = ""
 
     let profileIconColor = ""
 
@@ -423,7 +423,7 @@ class SettingsDialogMobile extends React.Component {
           },
         })
       }
-
+      /*
       switch (user.language) {
         case "en":
           languageText = "English"
@@ -443,9 +443,9 @@ class SettingsDialogMobile extends React.Component {
         default:
           languageText = "English"
           break
-      }
+      } */
 
-      displayName = user.displayName
+      fullName = user.fullName
 
       profileIconColor = user.profileIconColor
     }
@@ -517,19 +517,20 @@ class SettingsDialogMobile extends React.Component {
                   <Subheader style={{ cursor: "default" }}>
                     Localization
                   </Subheader>
+                  {/*
                   <ListItem
                     primaryText="Change language"
                     secondaryText={languageText}
                     onClick={this.handleLanguageDialogOpen}
-                  />
+                  /> */}
                   <ListItem
                     primaryText="Change units of measurement"
                     secondaryText="SI, Celsius"
                     onClick={this.handleUnitDialogOpen}
                   />
-                  <Divider />
+                  {/*   <Divider />
                   <Subheader style={{ cursor: "default" }}>Time</Subheader>
-                  {/* <ListItem
+                   <ListItem
                     primaryText="Change time zone"
                     secondaryText={
                       "Auto: (UTC" +
@@ -813,7 +814,7 @@ class SettingsDialogMobile extends React.Component {
             this.props.isOpen && this.state.nameDialogOpen
           }
           userData={this.props.userData}
-          displayName={displayName}
+          fullName={fullName}
           profileIconColor={profileIconColor}
         />
         <ManageAuthorizations
