@@ -59,7 +59,6 @@ class Signup extends Component {
     super()
 
     this.state = {
-      emailError: "",
       passwordScore: null,
       isEmailValid: null,
       isNameValid: true,
@@ -75,7 +74,7 @@ class Signup extends Component {
 
   async signUp() {
     try {
-      this.setState({ emailError: "" })
+      this.props.changeEmailError("")
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!, $fullName: String!) {
@@ -106,10 +105,10 @@ class Signup extends Component {
       if (
         e.message === "GraphQL error: A user with this email already exists"
       ) {
-        this.setState({
-          emailError: "This email is already taken",
-        })
+        this.props.changeEmailError("This email is already taken")
+        this.props.changeLoginEmail(this.props.email)
       } else {
+        this.props.changeEmailError("Unexpected error")
       }
     }
   }
@@ -125,6 +124,22 @@ class Signup extends Component {
   handleClickCancelEmail = () => {
     this.props.changeEmail("")
     this.setState({ isMailEmpty: true })
+  }
+
+  componentDidMount() {
+    this.setState({
+      passwordScore: zxcvbn(
+        this.props.password,
+        [
+          this.props.email,
+          this.props.email.split("@")[0],
+          this.props.fullName,
+          "igloo",
+          "igloo aurora",
+          "aurora",
+        ]
+      ).score,
+    })
   }
 
   render() {
@@ -169,7 +184,7 @@ class Signup extends Component {
         break
     }
 
-    if (!this.state.password) scoreText = ""
+    if (!this.props.password) scoreText = ""
 
     let customDictionary = [
       this.props.email,
@@ -216,7 +231,9 @@ class Signup extends Component {
                     }
                     }
                     onKeyPress={event => {
-                      if (event.key === "Enter") {
+                      if (event.key === "Enter" && this.props.fullName &&
+                        this.state.isEmailValid &&
+                        this.state.passwordScore >= 2) {
                         this.setState({ showLoading: true })
                         this.signUp()
                       }
@@ -269,23 +286,25 @@ class Signup extends Component {
                     value={this.props.email}
                     error={
                       (!this.state.isEmailValid && this.props.email) ||
-                        this.state.emailError ||
+                        this.props.emailError ||
                         this.state.isMailEmpty
                         ? true
                         : false
                     }
                     onChange={event => {
                       this.props.changeEmail(event.target.value)
+                      this.props.changeEmailError("")
                       this.setState({
                         isEmailValid: EmailValidator.validate(
                           event.target.value
                         ),
-                        emailError: "",
                         isMailEmpty: event.target.value === "",
                       })
                     }}
                     onKeyPress={event => {
-                      if (event.key === "Enter") {
+                      if (event.key === "Enter" && this.props.fullName &&
+                        this.state.isEmailValid &&
+                        this.state.passwordScore >= 2) {
                         this.setState({ showLoading: true })
                         this.signUp()
                       }
@@ -308,13 +327,13 @@ class Signup extends Component {
                     id="name-error-text-signup"
                     style={
                       (!this.state.isEmailValid && this.props.email) ||
-                        this.state.emailError ||
+                        this.props.emailError ||
                         this.state.isMailEmpty
                         ? { color: "#f44336" }
                         : {}
                     }
                   >
-                    {this.state.emailError ||
+                    {this.props.emailError ||
                       (!this.state.isEmailValid && this.props.email
                         ? "Enter a valid email"
                         : "")}
@@ -355,7 +374,9 @@ class Signup extends Component {
                       })
                     }}
                     onKeyPress={event => {
-                      if (event.key === "Enter") {
+                      if (event.key === "Enter" && this.props.fullName &&
+                        this.state.isEmailValid &&
+                        this.state.passwordScore >= 2) {
                         this.setState({ showLoading: true })
                         this.signUp()
                       }
@@ -386,8 +407,7 @@ class Signup extends Component {
                         : { color: passwordColor }
                     }
                   >
-                    {scoreText}
-                    {this.state.isPasswordEmpty ? "This field is required" : ""}
+                    {this.state.isPasswordEmpty ? "This field is required" : scoreText}
                   </FormHelperText>
                 </FormControl>
               </Grid>

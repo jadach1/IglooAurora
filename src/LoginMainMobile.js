@@ -75,9 +75,10 @@ class UnAuthenticatedApp extends Component {
                 signIn={this.props.signIn}
                 goToSignup={() => this.setState({ slideIndex: 0 })}
                 password={this.props.password} changePassword={this.props.changePassword}
-                passwordError={this.props.passwordError} changePasswordError={this.props.changePassword}
+                passwordError={this.props.passwordError} changePasswordError={this.props.changePasswordError}
                 email={this.props.email} changeEmail={this.props.changeEmail}
-                emailError={this.state.loginEmailError} changeEmailError={this.props.changeEmailError}
+                emailError={this.props.emailError} changeEmailError={this.props.changeEmailError}
+                changeSignupEmail={this.props.changeSignupEmail}
               />
             </div>
           </div>

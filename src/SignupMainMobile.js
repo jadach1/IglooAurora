@@ -81,9 +81,12 @@ class UnAuthenticatedApp extends Component {
                 email={this.props.email}
                 password={this.props.password}
                 fullName={this.props.fullName}
+                emailError={this.props.emailError}
                 changeEmail={this.props.changeEmail}
                 changePassword={this.props.changePassword}
-                changeFullName={this.props.changeFullName} />
+                changeFullName={this.props.changeFullName}
+                changeEmailError={this.props.changeEmailError}                 changeLoginEmail={this.props.changeLoginEmail}
+                />
             </div>
           </div>
         </Online>

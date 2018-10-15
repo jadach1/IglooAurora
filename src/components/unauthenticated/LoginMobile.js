@@ -99,7 +99,9 @@ export default class LoginMobile extends Component {
         "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
       ) {
         this.props.changeEmailError("This account doesn't exist")
+        this.props.changeSignupEmail(this.props.email)
       } else {
+        this.props.changeEmailError("Unexpected error")
       }
     }
   }
@@ -216,7 +218,10 @@ export default class LoginMobile extends Component {
                     onKeyPress={event => {
                       if (event.key === "Enter") {
                         this.setState({ showLoading: true })
-                        this.signIn()
+                        if (
+                          EmailValidator.validate(this.props.email) &&
+                          this.props.password
+                        ) this.signIn()
                       }
                     }}
                     endAdornment={
@@ -235,7 +240,7 @@ export default class LoginMobile extends Component {
                   >
                     {this.state.isMailEmpty
                       ? "This field is required"
-                      : this.state.emailError}
+                      : this.props.emailError}
                   </FormHelperText>
                 </FormControl>
               </Grid>
@@ -271,7 +276,10 @@ export default class LoginMobile extends Component {
                     onKeyPress={event => {
                       if (event.key === "Enter") {
                         this.setState({ showLoading: true })
-                        this.signIn()
+                        if (
+                          EmailValidator.validate(this.props.email) &&
+                          this.props.password
+                        ) this.signIn()
                       }
                     }}
                     endAdornment={

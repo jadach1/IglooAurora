@@ -1,10 +1,13 @@
 import React, { Component } from "react"
-import Popover from "material-ui-next/Popover"
-import List, { ListItem, ListItemText } from "material-ui-next/List"
+import Popover from "@material-ui/core/Popover"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
 import Checkbox from "material-ui-next/Checkbox"
 import Typography from "material-ui-next/Typography"
 import Toolbar from "material-ui-next/Toolbar"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next"
+import {Redirect} from "react-router-dom"
 
 let removeDuplicates = inputArray => {
   var obj = {}
@@ -33,6 +36,10 @@ export default class FilterPopover extends Component {
     if (currentIndex === -1) {
       newChecked.push(value)
     } else {
+      if (this.props.currentDevice.deviceType === newChecked[currentIndex]) {
+        this.setState({redirect:true})
+      }
+
       newChecked.splice(currentIndex, 1)
     }
 
@@ -71,6 +78,7 @@ export default class FilterPopover extends Component {
     }
 
     return (
+      <React.Fragment>
       <Popover
         open={this.props.open}
         onClose={this.props.close}
@@ -102,12 +110,12 @@ export default class FilterPopover extends Component {
           <div
             style={
               96 + this.getLenght(uniqueDeviceTypeList) * 72 >
-              window.innerHeight
+                window.innerHeight
                 ? {
-                    height: "calc(100vh - 96px)",
-                    overflow: "auto",
-                    overflowX: "hidden",
-                  }
+                  height: "calc(100vh - 96px)",
+                  overflow: "auto",
+                  overflowX: "hidden",
+                }
                 : { overflowX: "hidden" }
             }
           >
@@ -152,6 +160,8 @@ export default class FilterPopover extends Component {
           </div>
         </div>
       </Popover>
+      { this.state.redirect && <Redirect to={"/dashboard?board=" + this.props.boardId} /> }
+      </React.Fragment>
     )
   }
 }
