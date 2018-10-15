@@ -97,6 +97,7 @@ class Login extends Component {
         "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
       ) {
         this.props.changeEmailError("This account doesn't exist")
+        this.props.changeSignupEmail(this.props.email)
       } else {
         this.props.changeEmailError("Unexpected error")
       }
@@ -184,8 +185,13 @@ class Login extends Component {
                       }
                       onKeyPress={event => {
                         if (event.key === "Enter") {
-                          this.setState({ showLoading: true })
-                          this.signIn()
+                          if (
+                            EmailValidator.validate(this.props.email) &&
+                            this.props.password
+                          ) {
+                            this.signIn()
+                            this.setState({ showLoading: true })
+                          }
                         }
                       }}
                       error={
@@ -215,10 +221,9 @@ class Login extends Component {
                           : {}
                       }
                     >
-                      {this.props.emailError +
-                        (this.state.isMailEmpty
-                          ? "This field is required"
-                          : "")}
+                      {this.state.isMailEmpty
+                        ? "This field is required"
+                        : this.props.emailError}
                     </FormHelperText>
                   </FormControl>
                 </Grid>
@@ -255,8 +260,13 @@ class Login extends Component {
                       }
                       onKeyPress={event => {
                         if (event.key === "Enter") {
-                          this.setState({ showLoading: true })
-                          this.signIn()
+                          if (
+                            EmailValidator.validate(this.props.email) &&
+                            this.props.password
+                          ) {
+                            this.signIn()
+                            this.setState({ showLoading: true })
+                          }
                         }
                       }}
                       endAdornment={
@@ -285,9 +295,7 @@ class Login extends Component {
                           : {}
                       }
                     >
-                      {this.state.isMailEmpty
-                        ? "This field is required"
-                        : this.props.emailError}
+                      {this.state.isPasswordEmpty ? "This field is required" : this.props.passwordError}
                     </FormHelperText>
                   </FormControl>
                 </Grid>

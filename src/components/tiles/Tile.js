@@ -450,7 +450,7 @@ class Tile extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Share" />
                 </MenuItem>
-                <MenuItem
+                {this.props.userData.user && !(this.props.userData.user.email === value.owner.email) &&     <MenuItem
                   className="notSelectable"
                   style={
                     this.props.nightMode
@@ -473,8 +473,8 @@ class Tile extends Component {
                       remove_circle
                     </Icon>
                   </ListItemIcon>
-                  <ListItemText inset primary="Leave device" />
-                </MenuItem>
+                  <ListItemText inset primary="Leave value" />
+                </MenuItem>}
                 <Divider
                   style={this.props.nightMode ? { background: "#21252b" } : {}}
                 />

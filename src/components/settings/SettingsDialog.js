@@ -493,6 +493,7 @@ class SettingsDialog extends React.Component {
               style={{
                 overflowY: "auto",
                 height: "calc(100vh - 220px)",
+                maxHeight:"550px"
               }}
             >
               <div style={listStyles.root}>
@@ -549,6 +550,7 @@ class SettingsDialog extends React.Component {
                 overflowY: "auto",
                 overflowX: "hidden",
                 height: "calc(100vh - 220px)",
+                maxHeight:"550px"
               }}
             >
               <div style={listStyles.root}>
@@ -569,6 +571,7 @@ class SettingsDialog extends React.Component {
               style={{
                 overflowY: "auto",
                 height: "calc(100vh - 220px)",
+                    maxHeight:"550px"
               }}
             >
               <List style={{ padding: "0" }}>
@@ -658,6 +661,7 @@ class SettingsDialog extends React.Component {
               style={{
                 overflowY: "auto",
                 height: "calc(100vh - 220px)",
+                maxHeight:"550px"
               }}
             >
               <List style={{ padding: "0" }}>

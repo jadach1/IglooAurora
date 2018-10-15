@@ -24,8 +24,6 @@ class SignupMobile extends Component {
     super()
 
     this.state = {
-      emailError: "",
-      passwordError: "",
       passwordScore: null,
       isEmailValid: null,
       isNameValid: true,
@@ -41,6 +39,19 @@ class SignupMobile extends Component {
   componentDidMount() {
     this.updateWindowDimensions()
     window.addEventListener("resize", this.updateWindowDimensions)
+    this.setState({
+      passwordScore: zxcvbn(
+        this.props.password,
+        [
+          this.props.email,
+          this.props.email.split("@")[0],
+          this.props.fullName,
+          "igloo",
+          "igloo aurora",
+          "aurora",
+        ]
+      ).score,
+    })
   }
 
   componentWillUnmount() {
@@ -53,7 +64,7 @@ class SignupMobile extends Component {
 
   async signUp() {
     try {
-      this.setState({ emailError: "", passwordError: "" })
+      this.props.changeEmailError("")
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!, $fullName: String!) {
@@ -69,7 +80,7 @@ class SignupMobile extends Component {
         `,
         variables: {
           email: this.props.email,
-          password: this.state.password,
+          password: this.props.password,
           fullName: this.props.fullName,
         },
       })
@@ -84,13 +95,10 @@ class SignupMobile extends Component {
       if (
         e.message === "GraphQL error: A user with this email already exists"
       ) {
-        this.setState({
-          emailError: "This email is already taken",
-        })
+        this.props.changeEmailError("This email is already taken")
+        this.props.changeLoginEmail(this.props.email)
       } else {
-        this.setState({
-          emailError: "Unexpected error",
-        })
+        this.props.changeEmailError("Unexpected error")
       }
     }
   }
@@ -110,6 +118,15 @@ class SignupMobile extends Component {
 
   render() {
     let scoreText = ""
+
+    let customDictionary = [
+      this.props.email,
+      this.props.email.split("@")[0],
+      this.props.fullName,
+      "igloo",
+      "igloo aurora",
+      "aurora",
+    ]
 
     switch (this.state.passwordScore) {
       case 0:
@@ -137,16 +154,7 @@ class SignupMobile extends Component {
         break
     }
 
-    if (!this.state.password) scoreText = ""
-
-    let customDictionary = [
-      this.props.email,
-      this.props.email.split("@")[0],
-      this.props.fullName,
-      "igloo",
-      "igloo aurora",
-      "aurora",
-    ]
+    if (!this.props.password) scoreText = ""
 
     return (
       <div
@@ -266,9 +274,9 @@ class SignupMobile extends Component {
                   value={this.props.email}
                   onChange={event => {
                     this.props.changeEmail(event.target.value)
+                    this.props.changeEmailError("")
                     this.setState({
                       isEmailValid: EmailValidator.validate(event.target.value),
-                      emailError: "",
                       isMailEmpty: event.target.value === "",
                     })
                   }
@@ -298,11 +306,10 @@ class SignupMobile extends Component {
                   id="name-error-text-signup"
                   style={{ color: "white" }}
                 >
-                  {this.state.emailError ||
+                  {this.state.isMailEmpty ? "This field is required" : (this.props.emailError ||
                     (!this.state.isEmailValid && this.props.email
                       ? "Enter a valid email"
-                      : "")}
-                  {this.state.isMailEmpty ? "This field is required" : ""}
+                      : ""))}
                 </FormHelperText>
               </FormControl>
             </Grid>
@@ -366,8 +373,7 @@ class SignupMobile extends Component {
                   id="password-error-text-signup"
                   style={{ color: "white" }}
                 >
-                  {scoreText}
-                  {this.state.isPasswordEmpty ? "This field is required" : ""}
+                  {this.state.isPasswordEmpty ? "This field is required" : scoreText}
                 </FormHelperText>
               </FormControl>
             </Grid>

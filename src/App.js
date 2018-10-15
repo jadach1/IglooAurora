@@ -235,6 +235,7 @@ class App extends Component {
                 passwordError={this.state.loginPasswordError} changePasswordError={loginPasswordError => this.setState({ loginPasswordError })}
                 email={this.state.loginEmail} changeEmail={loginEmail => this.setState({ loginEmail })}
                 emailError={this.state.loginEmailError} changeEmailError={loginEmailError => this.setState({ loginEmailError })}
+                changeSignupEmail={signupEmail => this.setState({ signupEmail })}
               />
             ) : (
                 <LoginMain
@@ -246,6 +247,7 @@ class App extends Component {
                   passwordError={this.state.loginPasswordError} changePasswordError={loginPasswordError => this.setState({ loginPasswordError })}
                   email={this.state.loginEmail} changeEmail={loginEmail => this.setState({ loginEmail })}
                   emailError={this.state.loginEmailError} changeEmailError={loginEmailError => this.setState({ loginEmailError })}
+                  changeSignupEmail={signupEmail => this.setState({ signupEmail })}
                 />
               )
           }
@@ -257,12 +259,18 @@ class App extends Component {
               <SignupMainMobile signIn={signIn}
                 fullName={this.state.fullName} changeFullName={fullName => this.setState({ fullName })}
                 password={this.state.signupPassword} changePassword={signupPassword => this.setState({ signupPassword })}
-                email={this.state.signupEmail} changeEmail={signupEmail => this.setState({ signupEmail })} />
+                email={this.state.signupEmail} changeEmail={signupEmail => this.setState({ signupEmail })}
+                emailError={this.state.signupEmailError} changeEmailError={signupEmailError => this.setState({ signupEmailError })}
+                changeLoginEmail={loginEmail => this.setState({ loginEmail })}
+              />
             ) : (
                 <SignupMain signIn={signIn}
                   fullName={this.state.fullName} changeFullName={fullName => this.setState({ fullName })}
                   password={this.state.signupPassword} changePassword={signupPassword => this.setState({ signupPassword })}
-                  email={this.state.signupEmail} changeEmail={signupEmail => this.setState({ signupEmail })} />
+                  email={this.state.signupEmail} changeEmail={signupEmail => this.setState({ signupEmail })}
+                  emailError={this.state.signupEmailError} changeEmailError={signupEmailError => this.setState({ signupEmailError })}
+                  changeLoginEmail={loginEmail => this.setState({ loginEmail })}
+                />
               )
           }
         />

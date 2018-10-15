@@ -186,7 +186,7 @@ class MainBodyHeader extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Share" />
                 </MenuItem>
-                {!(this.props.userData.user.email === device.owner.email) &&  <MenuItem
+                {this.props.userData.user && !(this.props.userData.user.email === device.owner.email) &&  <MenuItem
                   className="notSelectable"
                   style={
                     this.props.nightMode
