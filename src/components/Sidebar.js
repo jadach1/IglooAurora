@@ -1,24 +1,21 @@
 import React, { Component } from "react"
 import CenteredSpinner from "./CenteredSpinner"
-import FloatingActionButton from "material-ui/FloatingActionButton"
 import FilterPopover from "./FilterPopover"
 import { Link } from "react-router-dom"
-import {
-  FormControl,
-  Input,
-  IconButton,
-  Badge,
-  Tooltip,
-  ListItem,
-  ListItemIcon,
-  ListItemSecondaryAction,
-  ListItemText,
-  List,
-  InputAdornment,
-  MuiThemeProvider,
-  createMuiTheme,
-  Icon,
-} from "@material-ui/core"
+import FormControl from "@material-ui/core/FormControl"
+import Input from "@material-ui/core/Input"
+import IconButton from "@material-ui/core/IconButton"
+import Badge from "@material-ui/core/Badge"
+import Tooltip from "@material-ui/core/Tooltip"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import ListItemText from "@material-ui/core/ListItemText"
+import List from "@material-ui/core/List"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Icon from "@material-ui/core/Icon"
+import Button from "@material-ui/core/Button"
 
 const theme = createMuiTheme({
   palette: {
@@ -35,7 +32,9 @@ const theme2 = createMuiTheme({
 class Sidebar extends Component {
   state = {
     popoverOpen: false,
+    dialOpen: false,
     visibleDeviceTypes: [],
+    hidden: false,
   }
 
   handleMouseDownSearch = event => {
@@ -216,7 +215,11 @@ class Sidebar extends Component {
         <FilterPopover
           open={this.state.popoverOpen}
           boardId={this.props.selectedBoard}
-          currentDevice={user.devices.filter(device => device.id === this.props.selectedDevice)[0]}
+          currentDevice={
+            user.devices.filter(
+              device => device.id === this.props.selectedDevice
+            )[0]
+          }
           close={() => this.setState({ popoverOpen: false })}
           anchorEl={this.anchorEl}
           devices={user.devices}
@@ -225,7 +228,6 @@ class Sidebar extends Component {
           }}
           nightMode={this.props.nightMode}
         />
-
         <List
           style={{
             padding: "0",
@@ -467,23 +469,31 @@ class Sidebar extends Component {
                   </Link>
                 ))}
         </List>
-
-        <Tooltip id="tooltip-bottom" title="Edit list" placement="bottom">
-          <FloatingActionButton
-            className={
+        <MuiThemeProvider theme={theme}>
+          <Button
+            variant="fab"
+            color="primary"
+            style={
               this.props.isMobile
-                ? "notSelectable mobileDeviceEditFab"
-                : "notSelectable deviceEditFab"
+                ? {
+                    position: "absolute",
+                    right: "20px",
+                    bottom: "20px",
+                    transition:
+                      "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                  }
+                : {
+                    position: "absolute",
+                    left: "308px",
+                    bottom: "20px",
+                    transition:
+                      "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                  }
             }
-            backgroundColor="#ff4081"
-            style={{
-              transition:
-                "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
-            }}
           >
-            <Icon>mode_edit</Icon>
-          </FloatingActionButton>
-        </Tooltip>
+            <Icon>format_list_bulleted</Icon>
+          </Button>
+        </MuiThemeProvider>
       </React.Fragment>
     )
   }

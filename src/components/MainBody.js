@@ -12,68 +12,68 @@ class MainBody extends Component {
       subscription {
         valueCreated {
           id
-        myRole
-        owner {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        admins {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        editors {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        spectators {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        values {
-          id
-          permission
-          visibility
-          valueDetails
-          tileSize
-          customName
-          updatedAt
-          createdAt
-          device {
+          myRole
+          owner {
             id
+            email
+            fullName
+            profileIconColor
           }
-          ... on FloatValue {
-            floatValue: value
-            precision
-            boundaries
+          admins {
+            id
+            email
+            fullName
+            profileIconColor
           }
-          ... on StringValue {
-            stringValue: value
-            maxChars
-            allowedValues
+          editors {
+            id
+            email
+            fullName
+            profileIconColor
           }
-          ... on BooleanValue {
-            boolValue: value
+          spectators {
+            id
+            email
+            fullName
+            profileIconColor
           }
-          ... on ColourValue {
-            colourValue: value
-            allowedValues
-          }
-          ... on PlotValue {
-            plotValue: value {
+          values {
+            id
+            permission
+            visibility
+            valueDetails
+            tileSize
+            customName
+            updatedAt
+            createdAt
+            device {
               id
-              value
-              timestamp
+            }
+            ... on FloatValue {
+              floatValue: value
+              precision
+              boundaries
+            }
+            ... on StringValue {
+              stringValue: value
+              maxChars
+              allowedValues
+            }
+            ... on BooleanValue {
+              boolValue: value
+            }
+            ... on ColourValue {
+              colourValue: value
+              allowedValues
+            }
+            ... on PlotValue {
+              plotValue: value {
+                id
+                value
+                timestamp
+              }
             }
           }
-        }
         }
       }
     `
@@ -105,68 +105,68 @@ class MainBody extends Component {
       subscription {
         valueUpdated {
           id
-        myRole
-        owner {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        admins {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        editors {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        spectators {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        values {
-          id
-          permission
-          visibility
-          valueDetails
-          tileSize
-          customName
-          updatedAt
-          createdAt
-          device {
+          myRole
+          owner {
             id
+            email
+            fullName
+            profileIconColor
           }
-          ... on FloatValue {
-            floatValue: value
-            precision
-            boundaries
+          admins {
+            id
+            email
+            fullName
+            profileIconColor
           }
-          ... on StringValue {
-            stringValue: value
-            maxChars
-            allowedValues
+          editors {
+            id
+            email
+            fullName
+            profileIconColor
           }
-          ... on BooleanValue {
-            boolValue: value
+          spectators {
+            id
+            email
+            fullName
+            profileIconColor
           }
-          ... on ColourValue {
-            colourValue: value
-            allowedValues
-          }
-          ... on PlotValue {
-            plotValue: value {
+          values {
+            id
+            permission
+            visibility
+            valueDetails
+            tileSize
+            customName
+            updatedAt
+            createdAt
+            device {
               id
-              value
-              timestamp
+            }
+            ... on FloatValue {
+              floatValue: value
+              precision
+              boundaries
+            }
+            ... on StringValue {
+              stringValue: value
+              maxChars
+              allowedValues
+            }
+            ... on BooleanValue {
+              boolValue: value
+            }
+            ... on ColourValue {
+              colourValue: value
+              allowedValues
+            }
+            ... on PlotValue {
+              plotValue: value {
+                id
+                value
+                timestamp
+              }
             }
           }
-        }
         }
       }
     `
@@ -273,8 +273,8 @@ class MainBody extends Component {
             this.props.showHidden ? (
               <Icon>keyboard_arrow_up</Icon>
             ) : (
-                <Icon>keyboard_arrow_down</Icon>
-              )
+              <Icon>keyboard_arrow_down</Icon>
+            )
           }
           fullWidth={true}
           className="divider notSelectable"
@@ -382,12 +382,12 @@ export default graphql(
             id
           }
           myRole
-        owner {
-          id
-          email
-          fullName
-          profileIconColor
-        }
+          owner {
+            id
+            email
+            fullName
+            profileIconColor
+          }
           ... on FloatValue {
             floatValue: value
             precision

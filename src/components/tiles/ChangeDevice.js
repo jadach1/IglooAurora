@@ -98,29 +98,40 @@ class ChangeDevice extends React.Component {
         }}
         titleClassName="notSelectable defaultCursor"
       >
-        Device
-        <RadioButtonGroup
-          name="date"
-          onChange={(event, value) => this.setState({ newDevice: value })}
-          valueSelected={this.state.newDevice || this.props.value.device.id}
-        >
-          {user &&
-            user.devices.map(device => (
-              <RadioButton
-                value={device.id}
-                label={device.customName}
-                style={{
-                  marginTop: 12,
-                  marginBottom: 16,
-                }}
-                rippleStyle={{ color: "#0083ff" }}
-                checkedIcon={
-                  <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
+        {user &&
+          user.boards.filter(board => board.devices[0]).map(board => (
+            <React.Fragment>
+              {board.customName}
+              <RadioButtonGroup
+                name="device"
+                onChange={(event, value) => this.setState({ newDevice: value })}
+                valueSelected={
+                  this.state.newDevice || this.props.value.device.id
                 }
-                uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-              />
-            ))}
-        </RadioButtonGroup>
+              >
+                {user &&
+                  user.devices
+                    .filter(device => device.board.id === board.id)
+                    .map(device => (
+                      <RadioButton
+                        value={device.id}
+                        label={device.customName}
+                        style={{
+                          marginTop: 12,
+                          marginBottom: 16,
+                        }}
+                        rippleStyle={{ color: "#0083ff" }}
+                        checkedIcon={
+                          <Icon style={{ color: "#0083ff" }}>
+                            radio_button_checked
+                          </Icon>
+                        }
+                        uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
+                      />
+                    ))}
+              </RadioButtonGroup>
+            </React.Fragment>
+          ))}
       </Dialog>
     )
   }

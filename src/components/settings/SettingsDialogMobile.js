@@ -11,7 +11,7 @@ import CenteredSpinner from "../CenteredSpinner"
 import ChangeNameDialog from "./ChangeName"
 import TwoFactorDialog from "./Enable2FA"
 import DeleteAccountDialog from "./DeleteAccount"
-import ManageEmailDialog from "./ManageEmail"
+// import ManageEmailDialog from "./ManageEmail"
 import ChangePasswordDialog from "./ChangePassword"
 import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
@@ -35,6 +35,7 @@ import CreatePlotNode from "./CreatePlotNode"
 import Toolbar from "material-ui-next/Toolbar"
 import Translate from "translate-components"
 import Tooltip from "material-ui-next/Tooltip"
+import ChangeEmail from "./ChangeEmail"
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
@@ -592,7 +593,10 @@ class SettingsDialogMobile extends React.Component {
                   secondaryText="Add or delete emails you use to log in"
                   onClick={this.handleEmailDialogOpen}
                 /> */}
-                <ListItem primaryText="Change email" />
+                <ListItem
+                  primaryText="Change email"
+                  onClick={() => this.setState({ emailDialogOpen: true })}
+                />
                 <ListItem
                   primaryText="Change password"
                   onClick={this.handlePasswordDialogOpen}
@@ -779,13 +783,14 @@ class SettingsDialogMobile extends React.Component {
           }
           handlePasswordDialogClose={this.handlePasswordDialogClose}
         />
+        {/*
         <ManageEmailDialog
           confirmationDialogOpen={
             this.props.isOpen && this.state.emailDialogOpen
           }
           handleEmailDialogClose={this.handleEmailDialogClose}
           userData={this.props.userData}
-        />
+        /> */}
         <ChangeLanguageDialog
           handleLanguageDialogClose={this.handleLanguageDialogClose}
           languageDialogOpen={
@@ -853,6 +858,15 @@ class SettingsDialogMobile extends React.Component {
         <GDPRDataDownload
           open={this.props.isOpen && this.state.gdprOpen}
           close={() => this.setState({ gdprOpen: false })}
+        />
+        <ChangeEmail
+          confirmationDialogOpen={
+            this.props.isOpen && this.state.emailDialogOpen
+          }
+          handleEmailDialogClose={() =>
+            this.setState({ emailDialogOpen: false })
+          }
+          userData={this.props.userData}
         />
       </React.Fragment>
     )

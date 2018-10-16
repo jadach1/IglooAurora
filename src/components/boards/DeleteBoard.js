@@ -62,6 +62,7 @@ class DeleteBoard extends React.Component {
           <br />
           <br />
           Note that by deleting a board, you will delete all of its devices.
+          <br /> <br />
         </font>
         <DialogActions>
           <MuiThemeProvider theme={theme}>

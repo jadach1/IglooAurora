@@ -525,7 +525,7 @@ class GraphQLFetcher extends Component {
       emailIsVerified = user.emailIsVerified
     }
 
-    let changeLanguage = () => { }
+    let changeLanguage = () => {}
 
     if (user) {
       changeLanguage = language =>
@@ -590,10 +590,10 @@ class GraphQLFetcher extends Component {
       for (i = 0; i < user.devices.length; i++) {
         if (
           user.devices[i].id ===
-          queryString.parse("?" + window.location.href.split("?")[1])
-            .device &&
+            queryString.parse("?" + window.location.href.split("?")[1])
+              .device &&
           user.devices[i].board.id !==
-          queryString.parse("?" + window.location.href.split("?")[1]).board
+            queryString.parse("?" + window.location.href.split("?")[1]).board
         ) {
           return (
             <Redirect
@@ -806,6 +806,9 @@ export default graphql(
           quietMode
           avatar
           myRole
+          devices {
+            id
+          }
           owner {
             id
             email
@@ -833,6 +836,7 @@ export default graphql(
         }
         devices {
           id
+          index
           customName
           icon
           online

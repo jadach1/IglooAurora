@@ -119,16 +119,28 @@ class BoardsBodyMobile extends Component {
         <div
           style={
             nightMode
-              ? {
-                  width: "100vw",
-                  height: "calc(100vh - 128px)",
-                  backgroundColor: "#21252b",
-                }
-              : {
-                  width: "100vw",
-                  height: "calc(100vh - 128px)",
-                  backgroundColor: "#f2f2f2",
-                }
+              ? boardsList[0] && favoriteBoardsList[0]
+                ? {
+                    width: "100vw",
+                    height: "calc(100vh - 128px)",
+                    backgroundColor: "#21252b",
+                  }
+                : {
+                    width: "100vw",
+                    height: "calc(100vh - 64px)",
+                    backgroundColor: "#21252b",
+                  }
+              : boardsList[0] && favoriteBoardsList[0]
+                ? {
+                    width: "100vw",
+                    height: "calc(100vh - 128px)",
+                    backgroundColor: "#f2f2f2",
+                  }
+                : {
+                    width: "100vw",
+                    height: "calc(100vh - 64px)",
+                    backgroundColor: "#f2f2f2",
+                  }
           }
         >
           <div
@@ -198,14 +210,161 @@ class BoardsBodyMobile extends Component {
               </FormControl>
             </MuiThemeProvider>
           </div>
-          <SwipeableViews
-            index={this.state.slideIndex}
-            onChangeIndex={this.handleSettingsTabChanged}
-          >
+          {loading && (
             <div
               style={{
                 overflowY: "auto",
-                height: "calc(100vh - 192px)",
+                height: "calc(100vh - 128px)",
+              }}
+            >
+              <CenteredSpinner />
+            </div>
+          )}
+          {boardsList[0] && favoriteBoardsList[0] ? (
+            <SwipeableViews
+              index={this.state.slideIndex}
+              onChangeIndex={this.handleSettingsTabChanged}
+            >
+              <div
+                style={{
+                  overflowY: "auto",
+                  height: "calc(100vh - 192px)",
+                }}
+              >
+                <Typography
+                  variant="display1"
+                  className="notSelectable defaultCursor"
+                  style={
+                    nightMode
+                      ? {
+                          textAlign: "center",
+                          paddingTop: "8px",
+                          marginBottom: "16px",
+                          color: "white",
+                        }
+                      : {
+                          textAlign: "center",
+                          paddingTop: "8px",
+                          marginBottom: "16px",
+                          color: "black",
+                        }
+                  }
+                >
+                  Starred boards
+                </Typography>
+                <div
+                  style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}
+                >
+                  <Grid
+                    container
+                    justify="center"
+                    spacing={16}
+                    className="notSelectable defaultCursor"
+                    style={{
+                      width: "calc(100vw - 64px)",
+                      marginLeft: "32px",
+                      marginRight: "32px",
+                    }}
+                  >
+                    {favoriteBoardsList}
+                  </Grid>
+                </div>
+              </div>
+              <div
+                style={{
+                  overflowY: "auto",
+                  height: "calc(100vh - 192px)",
+                }}
+              >
+                <Typography
+                  variant="display1"
+                  className="notSelectable defaultCursor"
+                  style={
+                    nightMode
+                      ? {
+                          textAlign: "center",
+                          marginTop: "8px",
+                          marginBottom: "16px",
+                          color: "white",
+                        }
+                      : {
+                          textAlign: "center",
+                          marginTop: "8px",
+                          marginBottom: "16px",
+                          color: "black",
+                        }
+                  }
+                >
+                  Recent boards
+                </Typography>
+                <div
+                  style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}
+                >
+                  <Grid
+                    container
+                    justify="center"
+                    spacing={16}
+                    className="notSelectable defaultCursor"
+                    style={{
+                      width: "calc(100vw - 64px)",
+                      marginLeft: "32px",
+                      marginRight: "32px",
+                    }}
+                  >
+                    {boardsList}
+                  </Grid>
+                </div>
+              </div>
+            </SwipeableViews>
+          ) : boardsList[0] ? (
+            <div
+              style={{
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+              }}
+            >
+              <Typography
+                variant="display1"
+                className="notSelectable defaultCursor"
+                style={
+                  nightMode
+                    ? {
+                        textAlign: "center",
+                        marginTop: "8px",
+                        marginBottom: "16px",
+                        color: "white",
+                      }
+                    : {
+                        textAlign: "center",
+                        marginTop: "8px",
+                        marginBottom: "16px",
+                        color: "black",
+                      }
+                }
+              >
+                Recent boards
+              </Typography>
+              <div style={{ height: "calc(100vh - 193px)", overflowY: "auto" }}>
+                <Grid
+                  container
+                  justify="center"
+                  spacing={16}
+                  className="notSelectable defaultCursor"
+                  style={{
+                    width: "calc(100vw - 64px)",
+                    marginLeft: "32px",
+                    marginRight: "32px",
+                  }}
+                >
+                  {boardsList}
+                </Grid>
+              </div>
+            </div>
+          ) : favoriteBoardsList[0] ? (
+            <div
+              style={{
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
               }}
             >
               <Typography
@@ -245,103 +404,78 @@ class BoardsBodyMobile extends Component {
                 </Grid>
               </div>
             </div>
-            <div
-              style={{
-                overflowY: "auto",
-                height: "calc(100vh - 192px)",
-              }}
-            >
-              <Typography
-                variant="display1"
-                className="notSelectable defaultCursor"
-                style={
-                  nightMode
-                    ? {
-                        textAlign: "center",
-                        marginTop: "8px",
-                        marginBottom: "16px",
-                        color: "white",
-                      }
-                    : {
-                        textAlign: "center",
-                        marginTop: "8px",
-                        marginBottom: "16px",
-                        color: "black",
-                      }
-                }
+          ) : (
+            ""
+          )}
+          {user &&
+            !favoriteBoardsList[0] &&
+            !boardsList[0] && (
+              <div
+                style={{
+                  overflowY: "auto",
+                  height: "calc(100vh - 192px)",
+                }}
               >
-                Recent boards
-              </Typography>
-              <div style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}>
-                <Grid
-                  container
-                  justify="center"
-                  spacing={16}
-                  className="notSelectable defaultCursor"
-                  style={{
-                    width: "calc(100vw - 64px)",
-                    marginLeft: "32px",
-                    marginRight: "32px",
-                  }}
-                >
-                  {boardsList}
-                </Grid>
+                No boards UI
               </div>
-            </div>
-          </SwipeableViews>
-          <AppBar
-            position="static"
-            style={{
-              marginBottom: "0px",
-              marginTop: "auto",
-              height: "64px",
-            }}
-          >
-            <BottomNavigation
-              color="primary"
-              onChange={this.handleSettingsTabChanged}
-              value={this.state.slideIndex}
-              showLabels
-              style={
-                nightMode
-                  ? {
-                      height: "64px",
-                      backgroundColor: "#2f333d",
+            )}
+          {user &&
+            favoriteBoardsList[0] &&
+            boardsList[0] && (
+              <AppBar
+                position="static"
+                style={{
+                  marginBottom: "0px",
+                  marginTop: "auto",
+                  height: "64px",
+                }}
+              >
+                <BottomNavigation
+                  color="primary"
+                  onChange={this.handleSettingsTabChanged}
+                  value={this.state.slideIndex}
+                  showLabels
+                  style={
+                    nightMode
+                      ? {
+                          height: "64px",
+                          backgroundColor: "#2f333d",
+                        }
+                      : {
+                          height: "64px",
+                          backgroundColor: "#fff",
+                        }
+                  }
+                >
+                  <BottomNavigationAction
+                    icon={<Icon>star</Icon>}
+                    label="Starred"
+                    style={
+                      nightMode
+                        ? this.state.slideIndex === 0
+                          ? { color: "#fff" }
+                          : { color: "#fff", opacity: 0.5 }
+                        : this.state.slideIndex === 0
+                          ? { color: "#0083ff" }
+                          : { color: "#757575" }
                     }
-                  : {
-                      height: "64px",
-                      backgroundColor: "#fff",
+                  />
+                  <BottomNavigationAction
+                    icon={<Icon>history</Icon>}
+                    label="Recent"
+                    style={
+                      nightMode
+                        ? this.state.slideIndex === 1
+                          ? { color: "#fff" }
+                          : { color: "#fff", opacity: 0.5 }
+                        : this.state.slideIndex === 1
+                          ? { color: "#0083ff" }
+                          : { color: "#757575" }
                     }
-              }
-            >
-              <BottomNavigationAction
-                icon={<Icon>star</Icon>}
-                label="Starred"
-                style={
-                  nightMode
-                    ? this.state.slideIndex === 0
-                      ? { color: "#fff" }
-                      : { color: "#fff", opacity: 0.5 }
-                    : this.state.slideIndex === 0
-                      ? { color: "#0083ff" }
-                      : { color: "#757575" }
-                }
-              />
-              <BottomNavigationAction
-                icon={<Icon>history</Icon>}
-                label="Recent"
-                style={
-                  nightMode
-                    ? this.state.slideIndex === 1
-                      ? { color: "#fff" }
-                      : { color: "#fff", opacity: 0.5 }
-                    : this.state.slideIndex === 1
-                      ? { color: "#0083ff" }
-                      : { color: "#757575" }
-                }
-              />
-            </BottomNavigation>
-          </AppBar>
+                  />
+                </BottomNavigation>
+              </AppBar>
+            )}
           <MuiThemeProvider
             theme={createMuiTheme({
               palette: {
@@ -360,11 +494,19 @@ class BoardsBodyMobile extends Component {
               <Button
                 variant="fab"
                 color="primary"
-                style={{
-                  position: "absolute",
-                  right: "20px",
-                  bottom: "84px",
-                }}
+                style={
+                  favoriteBoardsList[0] && boardsList[0]
+                    ? {
+                        position: "absolute",
+                        right: "20px",
+                        bottom: "84px",
+                      }
+                    : {
+                        position: "absolute",
+                        right: "20px",
+                        bottom: "20px",
+                      }
+                }
                 onClick={() => this.setState({ createOpen: true })}
               >
                 <Icon>add</Icon>
@@ -381,11 +523,19 @@ class BoardsBodyMobile extends Component {
               <Button
                 variant="fab"
                 color="primary"
-                style={{
-                  position: "absolute",
-                  right: "20px",
-                  bottom: "84px",
-                }}
+                style={
+                  favoriteBoardsList[0] && boardsList[0]
+                    ? {
+                        position: "absolute",
+                        right: "20px",
+                        bottom: "84px",
+                      }
+                    : {
+                        position: "absolute",
+                        right: "20px",
+                        bottom: "20px",
+                      }
+                }
                 onClick={() => this.setState({ createOpen: true })}
               >
                 <Icon>add</Icon>
