@@ -1,17 +1,36 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import TextField from "material-ui/TextField"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import DropDownMenu from "material-ui/DropDownMenu"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Button from "@material-ui/core/Button"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import MenuItem from "material-ui/MenuItem"
 import CenteredSpinner from "../CenteredSpinner"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
+import Grid from "@material-ui/core/Grid"
+import Icon from "@material-ui/core/Icon"
+import FormControl from "@material-ui/core/FormControl"
+import Select from "@material-ui/core/Select"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#0083ff" },
   },
 })
+
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
 
 export default class CreateNotification extends React.Component {
   state = {
@@ -26,24 +45,6 @@ export default class CreateNotification extends React.Component {
       userData: { loading, error, user },
     } = this.props
 
-    const actions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          label="Change"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          disabled={!this.state.content}
-        >
-          Create
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     let deviceList = ""
 
     if (error) deviceList = "Unexpected error bear"
@@ -52,51 +53,121 @@ export default class CreateNotification extends React.Component {
 
     if (user)
       deviceList = (
-        <DropDownMenu
-          value={this.state.value}
-          onChange={this.handleChange}
-          maxHeight={250}
-          style={{ width: "300px" }}
-          anchorOrigin={{ horizontal: "middle", vertical: "top" }}
-          targetOrigin={{ horizontal: "middle", vertical: "top" }}
-        >
-          {user.devices.map(device => (
-            <MenuItem
-              value={user.devices.indexOf(device)}
-              primaryText={device.customName}
-              style={{ width: "300px" }}
-              className="notSelectable"
-            />
-          ))}
-        </DropDownMenu>
+        <MuiThemeProvider theme={theme}>
+          <Grid
+            container
+            spacing={0}
+            alignItems="flex-end"
+            style={{
+              width: "100%",
+            }}
+          >
+            <Grid item style={{ marginRight: "16px" }}>
+              <Icon>lightbulb_outline</Icon>
+            </Grid>
+            <Grid item style={{ width: "calc(100% - 40px)" }}>
+              <FormControl style={{ width: "100%" }}>
+                <Select
+                  value={this.state.value || 0}
+                  onChange={event => {
+                    this.setState({ board: event.target.value })
+                  }}
+                  name="device"
+                >
+                  {user.devices.map(device => (
+                    <MenuItem value={device.index}>
+                      {device.customName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </MuiThemeProvider>
       )
 
     return (
       <React.Fragment>
         <Dialog
-          title="Create notification"
-          actions={actions}
           open={this.props.open}
-          contentStyle={{ width: "350px" }}
-          onRequestClose={this.props.close}
+          onClose={this.props.close}
           className="notSelectable"
-          titleClassName="notSelectable defaultCursor"
+          TransitionComponent={Transition}
+          fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <div style={{ height: "200px" }}>
+          <DialogTitle style={{ width: "350px" }}>
+            Create notification
+          </DialogTitle>
+          <div
+            style={{
+              height: "100%",
+              paddingRight: "24px",
+              paddingLeft: "24px",
+            }}
+          >
             {deviceList}
             <br />
             <br />
-            <TextField
-              floatingLabelShrinkStyle={{ color: "#0083ff" }}
-              underlineFocusStyle={{ borderColor: "#0083ff" }}
-              floatingLabelText="Notification content"
-              style={{ width: "100%" }}
-              onChange={event => this.setState({ content: event.target.value })}
-              multiLine={true}
-              rows={3}
-              rowsMax={3}
-            />
+            <MuiThemeProvider theme={theme}>
+              <Grid
+                container
+                spacing={0}
+                alignItems="flex-end"
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Grid item style={{ marginRight: "16px" }}>
+                  <Icon>chat_bubble_outline</Icon>
+                </Grid>
+                <Grid item style={{ width: "calc(100% - 40px)" }}>
+                  <FormControl style={{ width: "100%" }}>
+                    <Input
+                      id="adornment-name-login"
+                      placeholder="Notification content"
+                      value={this.state.customName}
+                      onChange={event =>
+                        this.setState({ customName: event.target.value })
+                      }
+                      /*  onKeyPress={event => {
+                        if (event.key === "Enter") createDeviceMutation()
+                      }} */
+                      endAdornment={
+                        this.state.customName && (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => this.setState({ customName: "" })}
+                              tabIndex="-1"
+                            >
+                              <Icon>clear</Icon>
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </MuiThemeProvider>
           </div>
+          <br />
+          <DialogActions>
+            <MuiThemeProvider theme={theme}>
+              <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+                Never mind
+              </Button>
+              <Button
+                variant="raised"
+                color="primary"
+                label="Change"
+                primary={true}
+                buttonStyle={{ backgroundColor: "#0083ff" }}
+                disabled={!this.state.content}
+              >
+                Create
+              </Button>
+            </MuiThemeProvider>
+          </DialogActions>
         </Dialog>
       </React.Fragment>
     )

@@ -1,21 +1,18 @@
 import React, { Component } from "react"
 import { Link } from "react-router-dom"
-import {
-  Icon,
-  IconButton,
-  Tooltip,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Divider,
-  MuiThemeProvider,
-  Badge,
-  createMuiTheme,
-  Paper,
-  Typography,
-  Toolbar,
-} from "@material-ui/core"
+import Icon from "@material-ui/core/Icon"
+import IconButton from "@material-ui/core/IconButton"
+import Tooltip from "@material-ui/core/Tooltip"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemText from "@material-ui/core/ListItemText"
+import Divider from "@material-ui/core/Divider"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Badge from "@material-ui/core/Badge"
+import Paper from "@material-ui/core/Paper"
+import Typography from "@material-ui/core/Typography"
+import Toolbar from "@material-ui/core/Toolbar"
 import DeleteBoard from "./DeleteBoard"
 import RenameBoard from "./RenameBoard"
 import BoardInfo from "./BoardInfo"
@@ -84,15 +81,15 @@ class BoardCard extends Component {
           style={
             this.props.nightMode
               ? {
-                backgroundColor: "#2f333d",
-                width: "256px",
-                height: "192px",
-              }
+                  backgroundColor: "#2f333d",
+                  width: "256px",
+                  height: "192px",
+                }
               : {
-                backgroundColor: "#fff",
-                width: "256px",
-                height: "192px",
-              }
+                  backgroundColor: "#fff",
+                  width: "256px",
+                  height: "192px",
+                }
           }
         >
           <Toolbar
@@ -107,17 +104,17 @@ class BoardCard extends Component {
               style={
                 this.props.nightMode
                   ? {
-                    color: "white",
-                    textDecoration: "none",
-                    height: "64px",
-                    paddingLeft: "24px",
-                  }
+                      color: "white",
+                      textDecoration: "none",
+                      height: "64px",
+                      paddingLeft: "24px",
+                    }
                   : {
-                    color: "black",
-                    textDecoration: "none",
-                    height: "64px",
-                    paddingLeft: "24px",
-                  }
+                      color: "black",
+                      textDecoration: "none",
+                      height: "64px",
+                      paddingLeft: "24px",
+                    }
               }
             >
               <Typography
@@ -126,25 +123,25 @@ class BoardCard extends Component {
                 style={
                   this.props.nightMode
                     ? {
-                      color: "white",
-                      marginLeft: "-8px",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                      width: "136px",
-                      marginRight: "23px",
-                      lineHeight: "64px",
-                    }
+                        color: "white",
+                        marginLeft: "-8px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        width: "136px",
+                        marginRight: "23px",
+                        lineHeight: "64px",
+                      }
                     : {
-                      color: "black",
-                      marginLeft: "-8px",
-                      overflow: "hidden",
-                      whiteSpace: "nowrap",
-                      textOverflow: "ellipsis",
-                      width: "136px",
-                      marginRight: "23px",
-                      lineHeight: "64px",
-                    }
+                        color: "black",
+                        marginLeft: "-8px",
+                        overflow: "hidden",
+                        whiteSpace: "nowrap",
+                        textOverflow: "ellipsis",
+                        width: "136px",
+                        marginRight: "23px",
+                        lineHeight: "64px",
+                      }
                 }
               >
                 {isShared ? (
@@ -152,8 +149,8 @@ class BoardCard extends Component {
                     group
                   </Icon>
                 ) : (
-                    ""
-                  )}
+                  ""
+                )}
                 {this.props.board.customName}
               </Typography>
             </Link>
@@ -170,8 +167,8 @@ class BoardCard extends Component {
                   color="primary"
                 />
               ) : (
-                  ""
-                )}
+                ""
+              )}
             </MuiThemeProvider>
             <Tooltip id="tooltip-bottom" title="More" placement="bottom">
               <IconButton
@@ -184,11 +181,11 @@ class BoardCard extends Component {
                   style={
                     this.props.nightMode
                       ? {
-                        color: "white",
-                      }
+                          color: "white",
+                        }
                       : {
-                        color: "black",
-                      }
+                          color: "black",
+                        }
                   }
                 >
                   more_vert
@@ -328,27 +325,33 @@ class BoardCard extends Component {
             </ListItemIcon>
             <ListItemText inset primary="Share" />
           </MenuItem>
-          {!(this.props.userData.user.email === this.props.board.owner.email) && <MenuItem
-            className="notSelectable"
-            style={
-              this.props.nightMode ? { color: "white" } : { color: "black" }
-            }
-            onClick={() => {
-              this.setState({ leaveOpen: true })
-              this.handleMenuClose()
-            }}
-          >
-            <ListItemIcon>
-              <Icon
-                style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
-                }
-              >
-                remove_circle
-              </Icon>
-            </ListItemIcon>
-            <ListItemText inset primary="Leave board" />
-          </MenuItem>}
+          {!(
+            this.props.userData.user.email === this.props.board.owner.email
+          ) && (
+            <MenuItem
+              className="notSelectable"
+              style={
+                this.props.nightMode ? { color: "white" } : { color: "black" }
+              }
+              onClick={() => {
+                this.setState({ leaveOpen: true })
+                this.handleMenuClose()
+              }}
+            >
+              <ListItemIcon>
+                <Icon
+                  style={
+                    this.props.nightMode
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
+                  remove_circle
+                </Icon>
+              </ListItemIcon>
+              <ListItemText inset primary="Leave board" />
+            </MenuItem>
+          )}
           <Divider />
           <MenuItem
             className="notSelectable"

@@ -1,9 +1,17 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import TextField from "material-ui/TextField"
-import Snackbar from "material-ui-next/Snackbar"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import Dialog from "@material-ui/core/Dialog"
+import Button from "@material-ui/core/Button"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Icon from "@material-ui/core/Icon"
+import Grid from "@material-ui/core/Grid"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import FormControl from "@material-ui/core/FormControl"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
+import IconButton from "@material-ui/core/IconButton"
 
 const theme = createMuiTheme({
   palette: {
@@ -12,92 +20,170 @@ const theme = createMuiTheme({
   },
 })
 
-const passwordDialogContentStyle = {
-  width: "350px",
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
 }
 
 export default class ChangePasswordDialog extends React.Component {
   state = {
-    pwdSnackOpen: false,
-  }
-
-  handlePwdSnackOpen = () => {
-    this.setState({
-      pwdSnackOpen: true,
-    })
-    this.props.handlePasswordDialogClose()
-  }
-
-  handlePwdSnackClose = () => {
-    this.setState({
-      pwdSnackOpen: false,
-    })
+    showPassword: false,
   }
 
   render() {
-    const passwordDialogActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button
-          onClick={this.props.handlePasswordDialogClose}
-          style={{ marginRight: "4px" }}
-        >
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.handlePwdSnackOpen}
-        >
-          Change
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
-      <React.Fragment>
-        <Dialog
-          title="Change your password"
-          actions={passwordDialogActions}
-          open={this.props.passwordDialogOpen}
-          contentStyle={passwordDialogContentStyle}
-          onRequestClose={this.props.handlePasswordDialogClose}
-          className="notSelectable"
-          titleClassName="notSelectable defaultCursor"
+      <Dialog
+        open={this.props.passwordDialogOpen}
+        onClose={this.props.handlePasswordDialogClose}
+        className="notSelectable"
+        titleClassName="notSelectable defaultCursor"
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
+      >
+        <DialogTitle style={{ width: "350px" }}>
+          Change your password
+        </DialogTitle>
+        <div
+          style={{
+            paddingLeft: "24px",
+            paddingRight: "24px",
+            height: "100%",
+          }}
         >
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="Old Password"
-            type="password"
-            style={{ width: "100%" }}
-          />
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="New Password"
-            type="password"
-            style={{ width: "100%" }}
-            onKeyPress={event => {
-              if (event.key === "Enter") this.handlePwdSnackOpen()
-            }}
-          />
-        </Dialog>
-        <Snackbar
-          open={this.state.pwdSnackOpen}
-          message="You successfully changed your password"
-          autoHideDuration={4000}
-          onRequestClose={this.handlePwdSnackClose}
-          action={[
-            <MuiThemeProvider theme={theme}>
-              <Button key="close" color="secondary" size="small">
-                CLOSE
-              </Button>
-            </MuiThemeProvider>,
-          ]}
-        />
-      </React.Fragment>
+          <MuiThemeProvider theme={theme}>
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon>vpn_key</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-password-login"
+                    type={this.state.showPassword ? "text" : "password"}
+                    value={this.state.password}
+                    placeholder="Old password"
+                    onChange={event =>
+                      this.setState({
+                        password: event.target.value,
+                        passwordError: "",
+                        isPasswordEmpty: event.target.value === "",
+                      })
+                    }
+                    error={
+                      this.state.passwordError || this.state.isPasswordEmpty
+                        ? true
+                        : false
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") this.openMailDialog()
+                    }}
+                    endAdornment={
+                      this.state.password ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={this.handleClickShowPassword}
+                            onMouseDown={this.handleMouseDownPassword}
+                            tabIndex="-1"
+                          >
+                            {this.state.showPassword ? (
+                              <Icon>visibility_off</Icon>
+                            ) : (
+                              <Icon>visibility</Icon>
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <br />
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon>vpn_key</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-password-login"
+                    type={this.state.showPassword ? "text" : "password"}
+                    value={this.state.password}
+                    placeholder="New password"
+                    onChange={event =>
+                      this.setState({
+                        password: event.target.value,
+                        passwordError: "",
+                        isPasswordEmpty: event.target.value === "",
+                      })
+                    }
+                    error={
+                      this.state.passwordError || this.state.isPasswordEmpty
+                        ? true
+                        : false
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") this.openMailDialog()
+                    }}
+                    endAdornment={
+                      this.state.password ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={this.handleClickShowPassword}
+                            onMouseDown={this.handleMouseDownPassword}
+                            tabIndex="-1"
+                          >
+                            {this.state.showPassword ? (
+                              <Icon>visibility_off</Icon>
+                            ) : (
+                              <Icon>visibility</Icon>
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <br />
+          </MuiThemeProvider>
+        </div>
+        <DialogActions>
+          <MuiThemeProvider theme={theme}>
+            <Button
+              onClick={this.props.handlePasswordDialogClose}
+              style={{ marginRight: "4px" }}
+            >
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              onClick={this.handlePwdSnackOpen}
+            >
+              Change
+            </Button>
+          </MuiThemeProvider>
+        </DialogActions>
+      </Dialog>
     )
   }
 }

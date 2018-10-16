@@ -1,12 +1,10 @@
 import React from "react"
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 import moment from "moment"
 
 const MOBILE_WIDTH = 500

@@ -1,22 +1,19 @@
 import React from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-  Grid,
-  FormControl,
-  Input,
-  InputAdornment,
-  IconButton,
-  Icon,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Button from "@material-ui/core/Button"
+import Grid from "@material-ui/core/Grid"
+import FormControl from "@material-ui/core/FormControl"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
+import Icon from "@material-ui/core/Icon"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 import SwipeableViews from "react-swipeable-views"
 import fox from "../../styles/assets/fox.jpg"
 import northernLights from "../../styles/assets/northernLights.jpg"
@@ -36,8 +33,8 @@ function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
   ) : (
-      <Slide direction="up" {...props} />
-    )
+    <Slide direction="up" {...props} />
+  )
 }
 
 class RenameBoard extends React.Component {
@@ -168,7 +165,11 @@ class RenameBoard extends React.Component {
                 </FormControl>
               </Grid>
             </Grid>
-          </MuiThemeProvider>   <br />     <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>Choose a board image</p>
+          </MuiThemeProvider>{" "}
+          <br />{" "}
+          <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>
+            Choose a board image
+          </p>
           <SwipeableViews
             index={this.state.slideIndex}
             onChangeIndex={value => {
@@ -179,10 +180,10 @@ class RenameBoard extends React.Component {
             style={
               window.innerWidth < MOBILE_WIDTH
                 ? {
-                  width: "calc(100vw - 48px)",
-                  marginLeft: "24px",
-                  marginRight: "24px",
-                }
+                    width: "calc(100vw - 48px)",
+                    marginLeft: "24px",
+                    marginRight: "24px",
+                  }
                 : { width: "350px", marginLeft: "24px", marginRight: "24px" }
             }
           >

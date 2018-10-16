@@ -32,9 +32,9 @@ function setupWebPush(token) {
   // check support
   if ("serviceWorker" in navigator && "PushManager" in window) {
     // registering service worker
-    navigator.serviceWorker.register("webPushSw.js").then(function (swReg) {
+    navigator.serviceWorker.register("webPushSw.js").then(function(swReg) {
       // checking push subscription
-      swReg.pushManager.getSubscription().then(function (subscription) {
+      swReg.pushManager.getSubscription().then(function(subscription) {
         const isSubscribed = !(subscription === null)
 
         if (isSubscribed) {
@@ -50,7 +50,7 @@ function setupWebPush(token) {
               userVisibleOnly: true,
               applicationServerKey: applicationServerKey,
             })
-            .then(function (subscription) {
+            .then(function(subscription) {
               sendSubscriptionToServer(subscription)
             })
         }
@@ -128,7 +128,7 @@ class App extends Component {
       signupPassword: "",
       signupPasswordError: "",
       fullName: "",
-      fullNameError: ""
+      fullNameError: "",
     }
   }
 
@@ -167,7 +167,7 @@ class App extends Component {
 
       setupWebPush(bearer)
 
-      this.setState({ redirectToReferrer: true })
+      this.setState({ redirectToReferrer: true, loginPassword: "" })
     }
 
     const logOut = () => {
@@ -215,14 +215,14 @@ class App extends Component {
 
               return typeof Storage !== "undefined" &&
                 localStorage.getItem("email") ? (
-                  <Redirect
-                    to={{
-                      pathname: "/login",
-                    }}
-                  />
-                ) : (
-                  <Redirect to={{ pathname: "/signup" }} />
-                )
+                <Redirect
+                  to={{
+                    pathname: "/login",
+                  }}
+                />
+              ) : (
+                <Redirect to={{ pathname: "/signup" }} />
+              )
             }
           }}
         />
@@ -230,48 +230,91 @@ class App extends Component {
           path="/login"
           render={() =>
             this.state.isMobile ? (
-              <LoginMainMobile signIn={signIn}
-                password={this.state.loginPassword} changePassword={loginPassword => this.setState({ loginPassword })}
-                passwordError={this.state.loginPasswordError} changePasswordError={loginPasswordError => this.setState({ loginPasswordError })}
-                email={this.state.loginEmail} changeEmail={loginEmail => this.setState({ loginEmail })}
-                emailError={this.state.loginEmailError} changeEmailError={loginEmailError => this.setState({ loginEmailError })}
-                changeSignupEmail={signupEmail => this.setState({ signupEmail })}
+              <LoginMainMobile
+                signIn={signIn}
+                password={this.state.loginPassword}
+                changePassword={loginPassword =>
+                  this.setState({ loginPassword })
+                }
+                passwordError={this.state.loginPasswordError}
+                changePasswordError={loginPasswordError =>
+                  this.setState({ loginPasswordError })
+                }
+                email={this.state.loginEmail}
+                changeEmail={loginEmail => this.setState({ loginEmail })}
+                emailError={this.state.loginEmailError}
+                changeEmailError={loginEmailError =>
+                  this.setState({ loginEmailError })
+                }
+                changeSignupEmail={signupEmail =>
+                  this.setState({ signupEmail })
+                }
               />
             ) : (
-                <LoginMain
-                  signIn={signIn}
-                  setBoards={(count, id) =>
-                    this.setState({ boardsCount: count, boardId: id })
-                  }
-                  password={this.state.loginPassword} changePassword={loginPassword => this.setState({ loginPassword: loginPassword })}
-                  passwordError={this.state.loginPasswordError} changePasswordError={loginPasswordError => this.setState({ loginPasswordError })}
-                  email={this.state.loginEmail} changeEmail={loginEmail => this.setState({ loginEmail })}
-                  emailError={this.state.loginEmailError} changeEmailError={loginEmailError => this.setState({ loginEmailError })}
-                  changeSignupEmail={signupEmail => this.setState({ signupEmail })}
-                />
-              )
+              <LoginMain
+                signIn={signIn}
+                setBoards={(count, id) =>
+                  this.setState({ boardsCount: count, boardId: id })
+                }
+                password={this.state.loginPassword}
+                changePassword={loginPassword =>
+                  this.setState({ loginPassword: loginPassword })
+                }
+                passwordError={this.state.loginPasswordError}
+                changePasswordError={loginPasswordError =>
+                  this.setState({ loginPasswordError })
+                }
+                email={this.state.loginEmail}
+                changeEmail={loginEmail => this.setState({ loginEmail })}
+                emailError={this.state.loginEmailError}
+                changeEmailError={loginEmailError =>
+                  this.setState({ loginEmailError })
+                }
+                changeSignupEmail={signupEmail =>
+                  this.setState({ signupEmail })
+                }
+              />
+            )
           }
         />
         <Route
           path="/signup"
           render={() =>
             this.state.isMobile ? (
-              <SignupMainMobile signIn={signIn}
-                fullName={this.state.fullName} changeFullName={fullName => this.setState({ fullName })}
-                password={this.state.signupPassword} changePassword={signupPassword => this.setState({ signupPassword })}
-                email={this.state.signupEmail} changeEmail={signupEmail => this.setState({ signupEmail })}
-                emailError={this.state.signupEmailError} changeEmailError={signupEmailError => this.setState({ signupEmailError })}
+              <SignupMainMobile
+                signIn={signIn}
+                fullName={this.state.fullName}
+                changeFullName={fullName => this.setState({ fullName })}
+                password={this.state.signupPassword}
+                changePassword={signupPassword =>
+                  this.setState({ signupPassword })
+                }
+                email={this.state.signupEmail}
+                changeEmail={signupEmail => this.setState({ signupEmail })}
+                emailError={this.state.signupEmailError}
+                changeEmailError={signupEmailError =>
+                  this.setState({ signupEmailError })
+                }
                 changeLoginEmail={loginEmail => this.setState({ loginEmail })}
               />
             ) : (
-                <SignupMain signIn={signIn}
-                  fullName={this.state.fullName} changeFullName={fullName => this.setState({ fullName })}
-                  password={this.state.signupPassword} changePassword={signupPassword => this.setState({ signupPassword })}
-                  email={this.state.signupEmail} changeEmail={signupEmail => this.setState({ signupEmail })}
-                  emailError={this.state.signupEmailError} changeEmailError={signupEmailError => this.setState({ signupEmailError })}
-                  changeLoginEmail={loginEmail => this.setState({ loginEmail })}
-                />
-              )
+              <SignupMain
+                signIn={signIn}
+                fullName={this.state.fullName}
+                changeFullName={fullName => this.setState({ fullName })}
+                password={this.state.signupPassword}
+                changePassword={signupPassword =>
+                  this.setState({ signupPassword })
+                }
+                email={this.state.signupEmail}
+                changeEmail={signupEmail => this.setState({ signupEmail })}
+                emailError={this.state.signupEmailError}
+                changeEmailError={signupEmailError =>
+                  this.setState({ signupEmailError })
+                }
+                changeLoginEmail={loginEmail => this.setState({ loginEmail })}
+              />
+            )
           }
         />
         <Route
