@@ -3,15 +3,18 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
-import TextField from "material-ui/TextField"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import Icon from "@material-ui/core/Icon"
-import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
-import MobileStepper from "@material-ui/core/MobileStepper"
-import SwipeableViews from "react-swipeable-views"
-import DropDownMenu from "material-ui/DropDownMenu"
 import MenuItem from "material-ui/MenuItem"
 import CenteredSpinner from "../CenteredSpinner"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
+import Grid from "@material-ui/core/Grid"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
+import Select from "@material-ui/core/Select"
+import FormControl from "@material-ui/core/FormControl"
 
 const theme = createMuiTheme({
   palette: {
@@ -20,10 +23,20 @@ const theme = createMuiTheme({
   },
 })
 
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
+
 export default class CreateValue extends React.Component {
   state = {
-    customName: false,
-    activeStep: 0,
+    customName: "",
+    device: 0,
   }
 
   handleNext = () => {
@@ -49,281 +62,227 @@ export default class CreateValue extends React.Component {
       userData: { loading, error, user },
     } = this.props
 
-    let deviceList = ""
+    let devices = ""
 
-    if (error) deviceList = "Unexpected error bear"
+    if (error) devices = "Unexpected error"
 
-    if (loading) deviceList = <CenteredSpinner />
+    if (loading) devices = <CenteredSpinner />
 
     if (user)
-      deviceList = (
-        <DropDownMenu
-          value={this.state.value}
-          onChange={this.handleChange}
-          maxHeight={250}
-          style={{ width: "300px" }}
-          anchorOrigin={{ horizontal: "middle", vertical: "top" }}
-          targetOrigin={{ horizontal: "middle", vertical: "top" }}
-        >
-          {user.devices.map(device => (
-            <MenuItem
-              value={user.devices.indexOf(device)}
-              primaryText={device.customName}
-              style={{ width: "300px" }}
-              className="notSelectable"
-            />
-          ))}
-        </DropDownMenu>
+      devices = (
+        <MuiThemeProvider theme={theme}>
+          <Grid
+            container
+            spacing={0}
+            alignItems="flex-end"
+            style={{
+              width: "100%",
+            }}
+          >
+            <Grid item style={{ marginRight: "16px" }}>
+              <Icon>lightbulb_outline</Icon>
+            </Grid>
+            <Grid item style={{ width: "calc(100% - 40px)" }}>
+              <FormControl style={{ width: "100%" }}>
+                <Select
+                  value={this.state.device}
+                  onChange={event => {
+                    this.setState({ device: event.target.value })
+                  }}
+                  name="device"
+                >
+                  {user.devices.map(device => (
+                    <MenuItem value={device.index}>
+                      {device.customName}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
+        </MuiThemeProvider>
       )
 
-    const { activeStep } = this.state
-
-    const maxSteps = 5
+    let createDeviceMutation = () => {
+      this.props["CreateVaòue"]({
+        variables: {
+          deviceType: this.state.deviceType,
+          customName: this.state.customName,
+          boardId: user.boards[this.state.board].id,
+          firmware: this.state.firmware,
+        },
+      })
+    }
 
     return (
       <React.Fragment>
         <Dialog
-          title="Create value"
           open={this.props.open}
           onClose={this.props.close}
           className="notSelectable"
+          TransitionComponent={Transition}
+          fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-<DialogTitle style={{width:"350px"}}>
-	Create value
-</DialogTitle>
-          <SwipeableViews
-            axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-            index={this.state.activeStep}
-            onChangeIndex={this.handleStepChange}
-            style={{ height: "220px" }}
+          <DialogTitle style={{ width: "350px" }}>Create value</DialogTitle>
+          <div
+            style={{ marginLeft: "24px", marginRight: "24px", height: "100%" }}
           >
-            <div style={{ height: "200px" }}>{deviceList}</div>
-            <div style={{ height: "200px" }}>
-              <TextField
-                floatingLabelShrinkStyle={{ color: "#0083ff" }}
-                underlineFocusStyle={{ borderColor: "#0083ff" }}
-                floatingLabelText="Value name"
-                style={{ width: "100%" }}
-                onChange={event =>
-                  this.setState({ customName: event.target.value })
-                }
-              />
-            </div>
-            <div style={{ height: "200px" }}>
-              <RadioButtonGroup
-                name="Value"
-                style={{ marginLeft: "12px", marginTop: "12px" }}
+            <MuiThemeProvider theme={theme}>
+              <Grid
+                container
+                spacing={0}
+                alignItems="flex-end"
+                style={{
+                  width: "100%",
+                }}
               >
-                <RadioButton
-                  value="bool"
-                  label="Boolean"
-                  style={{
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-                <RadioButton
-                  value="color"
-                  label="Color"
-                  style={{
-                    marginTop: 12,
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-                <RadioButton
-                  value="float"
-                  label="Float"
-                  style={{
-                    marginTop: 12,
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-                <RadioButton
-                  value="plot"
-                  label="Plot"
-                  style={{
-                    marginTop: 12,
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-                <RadioButton
-                  value="string"
-                  label="String"
-                  style={{
-                    marginTop: 12,
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-              </RadioButtonGroup>
-            </div>
-            <div style={{ height: "200px" }}>
-              <RadioButtonGroup
-                name="Permission"
-                style={{ marginLeft: "12px", marginTop: "12px" }}
+                <Grid item style={{ marginRight: "16px" }}>
+                  <Icon>lightbulb_outline</Icon>
+                </Grid>
+                <Grid item style={{ width: "calc(100% - 40px)" }}>
+                  <FormControl style={{ width: "100%" }}>
+                    <Input
+                      id="adornment-name-login"
+                      placeholder="Custom name"
+                      value={this.state.customName}
+                      onChange={event =>
+                        this.setState({ customName: event.target.value })
+                      }
+                      onKeyPress={event => {
+                        if (event.key === "Enter") createDeviceMutation()
+                      }}
+                      endAdornment={
+                        this.state.customName && (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => this.setState({ customName: "" })}
+                              tabIndex="-1"
+                            >
+                              <Icon>clear</Icon>
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <br /> {devices}
+              <br />
+              <Grid
+                container
+                spacing={0}
+                alignItems="flex-end"
+                style={{
+                  width: "100%",
+                }}
               >
-                <RadioButton
-                  value="readOnly"
-                  label="Read only"
-                  style={{
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-                <RadioButton
-                  value="readWrite"
-                  label="Read write"
-                  style={{
-                    marginTop: 12,
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-              </RadioButtonGroup>
-            </div>
-            <div style={{ height: "200px" }}>
-              <RadioButtonGroup
-                name="Permission"
-                style={{ marginLeft: "12px", marginTop: "12px" }}
+                <Grid item style={{ marginRight: "16px" }}>
+                  <Icon>lightbulb_outline</Icon>
+                </Grid>
+                <Grid item style={{ width: "calc(100% - 40px)" }}>
+                  <FormControl style={{ width: "100%" }}>
+                    <Select
+                      value={this.state.permission}
+                      onChange={event => {
+                        this.setState({ permission: event.target.value })
+                      }}
+                      name="permission"
+                    >
+                      <MenuItem value="readOnly">Read only</MenuItem>
+                      <MenuItem value="readWrite">Read and write</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <br />
+              <Grid
+                container
+                spacing={0}
+                alignItems="flex-end"
+                style={{
+                  width: "100%",
+                }}
               >
-                <RadioButton
-                  value="visible"
-                  label="Visible"
-                  style={{
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-                <RadioButton
-                  value="hidden"
-                  label="Hidden"
-                  style={{
-                    marginTop: 12,
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-                <RadioButton
-                  value="invisible"
-                  label="Invisible"
-                  style={{
-                    marginTop: 12,
-                    marginBottom: 16,
-                  }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  checkedIcon={
-                    <Icon style={{ color: "#0083ff" }}>
-                      radio_button_checked
-                    </Icon>
-                  }
-                  uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                />
-              </RadioButtonGroup>
-            </div>
-          </SwipeableViews>
-          <MuiThemeProvider theme={theme}>
-            <MobileStepper
-              steps={maxSteps}
-              position="static"
-              activeStep={activeStep}
-              style={{ backgroundColor: "#ffffff" }}
-              nextButton={
-                <Button
-                  size="small"
-                  onClick={this.handleNext}
-                  disabled={activeStep === maxSteps - 1}
-                >
-                  Next
-                  <Icon>keyboard_arrow_right</Icon>
-                </Button>
-              }
-              backButton={
-                <Button
-                  size="small"
-                  onClick={this.handleBack}
-                  disabled={activeStep === 0}
-                >
-                  <Icon>keyboard_arrow_left</Icon>
-                  Back
-                </Button>
-              }
-            />
-          </MuiThemeProvider>
-<DialogActions>
-	<MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          label="Change"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.props.close}
-          disabled={true}
-        >
-          Create
-        </Button>
-      </MuiThemeProvider>
-</DialogActions>
+                <Grid item style={{ marginRight: "16px" }}>
+                  <Icon>lightbulb_outline</Icon>
+                </Grid>
+                <Grid item style={{ width: "calc(100% - 40px)" }}>
+                  <FormControl style={{ width: "100%" }}>
+                    <Select
+                      value={this.state.visibility}
+                      onChange={event => {
+                        this.setState({ visibility: event.target.value })
+                      }}
+                      name="visibility"
+                    >
+                      <MenuItem value="readOnly">Visible</MenuItem>
+                      <MenuItem value="readWrite">Hidden</MenuItem>{" "}
+                      <MenuItem value="readWrite">Invisible</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <br />
+              <Grid
+                container
+                spacing={0}
+                alignItems="flex-end"
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Grid item style={{ marginRight: "16px" }}>
+                  <Icon>lightbulb_outline</Icon>
+                </Grid>
+                <Grid item style={{ width: "calc(100% - 40px)" }}>
+                  <FormControl style={{ width: "100%" }}>
+                    <Input
+                      id="adornment-name-login"
+                      placeholder="Custom name"
+                      value={this.state.details}
+                      onChange={event =>
+                        this.setState({ details: event.target.value })
+                      }
+                      onKeyPress={event => {
+                        if (event.key === "Enter") createDeviceMutation()
+                      }}
+                      endAdornment={
+                        this.state.details && (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() => this.setState({ details: "" })}
+                              tabIndex="-1"
+                            >
+                              <Icon>clear</Icon>
+                            </IconButton>
+                          </InputAdornment>
+                        )
+                      }
+                    />
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </MuiThemeProvider>
+            <br />
+          </div>
+          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+            <MuiThemeProvider theme={theme}>
+              <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+                Never mind
+              </Button>
+              <Button
+                variant="raised"
+                color="primary"
+                label="Change"
+                buttonStyle={{ backgroundColor: "#0083ff" }}
+                onClick={this.props.close}
+                disabled={true}
+              >
+                Create
+              </Button>
+            </MuiThemeProvider>
+          </DialogActions>
         </Dialog>
       </React.Fragment>
     )

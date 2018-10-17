@@ -105,7 +105,7 @@ class RenameTileDialog extends React.Component {
           }}
         />
         </div>
-        <DialogActions><MuiThemeProvider theme={theme}>
+                <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}><MuiThemeProvider theme={theme}>
         <Button
           onClick={this.props.handleRenameTileDialogClose}
           style={{ marginRight: "4px" }}

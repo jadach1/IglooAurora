@@ -16,7 +16,7 @@ class ReadWriteBooleanTile extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.defaultValue !== this.state.value) {
+    if (nextProps.defaultValue !== this.state.value && this.state.value) {
       this.setState({ value: nextProps.defaultValue })
     }
   }

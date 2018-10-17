@@ -59,7 +59,7 @@ class DeviceInfo extends React.Component {
             </React.Fragment>
           )}
         </div>
-        <DialogActions>
+                <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>

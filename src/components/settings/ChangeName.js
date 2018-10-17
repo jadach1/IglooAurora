@@ -174,7 +174,7 @@ class ChangeNameDialog extends React.Component {
             </MuiThemeProvider>
             <br />
           </div>
-          <DialogActions>
+                  <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
             <MuiThemeProvider theme={theme}>
               <Button
                 onClick={this.props.handleNameDialogClose}

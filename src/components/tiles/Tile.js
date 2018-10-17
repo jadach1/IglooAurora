@@ -21,16 +21,14 @@ import Divider from "material-ui/Divider"
 import RenameTileDialog from "./RenameTile"
 import DeleteTileDialog from "./DeleteTile"
 import InfoDialog from "./InfoDialog.js"
-import {
-  Typography,
-  Icon,
-  Tooltip,
-  IconButton,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-} from "@material-ui/core"
+import Typography from "@material-ui/core/Typography"
+import Icon from "@material-ui/core/Icon"
+import Tooltip from "@material-ui/core/Tooltip"
+import IconButton from "@material-ui/core/IconButton"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemText from "@material-ui/core/ListItemText"
 import TileSize from "../TileSize"
 import DataSettings from "./DataSettings"
 import ChangeDevice from "./ChangeDevice"
@@ -49,7 +47,7 @@ class Tile extends Component {
     tileSizeOpen: false,
     dataSettingsOpen: false,
     shareValueOpen: false,
-    leaveOpen: false
+    leaveOpen: false,
   }
 
   handleClick = event => {
@@ -217,7 +215,7 @@ class Tile extends Component {
       specificTile = ""
     }
 
-    const updateShown = visible => () =>
+    const updateShown = visible =>
       this.props[
         value.__typename === "FloatValue"
           ? "ChangeFloatSize"
@@ -274,17 +272,17 @@ class Tile extends Component {
             style={
               this.props.nightMode
                 ? {
-                  background: "#21252b",
-                  display: "flex",
-                  alignItems: "center",
-                  height: "64px",
-                }
+                    background: "#21252b",
+                    display: "flex",
+                    alignItems: "center",
+                    height: "64px",
+                  }
                 : {
-                  background: "#f2f2f2",
-                  display: "flex",
-                  alignItems: "center",
-                  height: "64px",
-                }
+                    background: "#f2f2f2",
+                    display: "flex",
+                    alignItems: "center",
+                    height: "64px",
+                  }
             }
           >
             <Typography
@@ -293,23 +291,23 @@ class Tile extends Component {
               style={
                 this.props.nightMode
                   ? {
-                    cursor: "default",
-                    color: "white",
-                    marginLeft: "16px",
-                    width: "calc(100% - 80px)",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    textOverflow: "ellipsis",
-                  }
+                      cursor: "default",
+                      color: "white",
+                      marginLeft: "16px",
+                      width: "calc(100% - 80px)",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                    }
                   : {
-                    cursor: "default",
-                    color: "black",
-                    marginLeft: "16px",
-                    width: "calc(100% - 80px)",
-                    overflow: "hidden",
-                    whiteSpace: "nowrap",
-                    textOverflow: "ellipsis",
-                  }
+                      cursor: "default",
+                      color: "black",
+                      marginLeft: "16px",
+                      width: "calc(100% - 80px)",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                    }
               }
             >
               {valueTitle}
@@ -336,13 +334,13 @@ class Tile extends Component {
                     style={
                       this.props.nightMode
                         ? {
-                          padding: "0",
-                          color: "white",
-                        }
+                            padding: "0",
+                            color: "white",
+                          }
                         : {
-                          padding: "0",
-                          color: "black",
-                        }
+                            padding: "0",
+                            color: "black",
+                          }
                     }
                   >
                     <Icon>fullscreen</Icon>
@@ -354,13 +352,13 @@ class Tile extends Component {
                   style={
                     this.props.nightMode
                       ? {
-                        padding: "0",
-                        color: "white",
-                      }
+                          padding: "0",
+                          color: "white",
+                        }
                       : {
-                        padding: "0",
-                        color: "black",
-                      }
+                          padding: "0",
+                          color: "black",
+                        }
                   }
                   onClick={event =>
                     this.setState({ anchorEl: event.currentTarget })
@@ -450,31 +448,34 @@ class Tile extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Share" />
                 </MenuItem>
-                {this.props.userData.user && !(this.props.userData.user.email === value.owner.email) &&     <MenuItem
-                  className="notSelectable"
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.setState({ leaveOpen: true })
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
+                {this.props.userData.user &&
+                  !(this.props.userData.user.email === value.owner.email) && (
+                    <MenuItem
+                      className="notSelectable"
                       style={
                         this.props.nightMode
                           ? { color: "white" }
                           : { color: "black" }
                       }
+                      onClick={() => {
+                        this.setState({ leaveOpen: true })
+                        this.handleMenuClose()
+                      }}
                     >
-                      remove_circle
-                    </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Leave value" />
-                </MenuItem>}
+                      <ListItemIcon>
+                        <Icon
+                          style={
+                            this.props.nightMode
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          remove_circle
+                        </Icon>
+                      </ListItemIcon>
+                      <ListItemText inset primary="Leave value" />
+                    </MenuItem>
+                  )}
                 <Divider
                   style={this.props.nightMode ? { background: "#21252b" } : {}}
                 />
@@ -504,8 +505,8 @@ class Tile extends Component {
                       {value.visibility === "VISIBLE" ? (
                         <Icon>visibility_off</Icon>
                       ) : (
-                          <Icon>visibility</Icon>
-                        )}
+                        <Icon>visibility</Icon>
+                      )}
                     </Icon>
                   </ListItemIcon>
                   <ListItemText
@@ -573,7 +574,7 @@ class Tile extends Component {
                 <Divider
                   style={this.props.nightMode ? { background: "#21252b" } : {}}
                 />
-                {this.props.userData.user.devices.length > 1 &&
+                {this.props.userData.user.devices.length > 1 && (
                   <MenuItem
                     className="notSelectable"
                     style={
@@ -595,10 +596,11 @@ class Tile extends Component {
                         }
                       >
                         swap_horiz
-                    </Icon>
+                      </Icon>
                     </ListItemIcon>
                     <ListItemText inset primary="Change device" />
-                  </MenuItem>}
+                  </MenuItem>
+                )}
                 <MenuItem
                   primaryText="Rename"
                   className="notSelectable"
@@ -711,7 +713,11 @@ class Tile extends Component {
 
 export default graphql(
   gql`
-    mutation ChangeSize($id: ID!, $size: TileSize, $visibility: ValueVisibility) {
+    mutation ChangeSize(
+      $id: ID!
+      $size: TileSize
+      $visibility: ValueVisibility
+    ) {
       floatValue(tileSize: $size, id: $id, visibility: $visibility) {
         id
         visibility
