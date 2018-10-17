@@ -233,6 +233,7 @@ class CreateDevice extends React.Component {
                 </Grid>
               </Grid>
             </MuiThemeProvider>
+            <br />
           </div>
           <DialogActions style={{ marginRight: "8px" }}>
             <MuiThemeProvider theme={theme}>

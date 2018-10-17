@@ -133,7 +133,7 @@ class DataSettings extends Component {
             uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
         </RadioButtonGroup>
-        <DialogActions>
+                <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>

@@ -262,7 +262,7 @@ class RenameBoard extends React.Component {
             </Button>
           </div>
         </div>
-        <DialogActions>
+                <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <MuiThemeProvider theme={theme}>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind

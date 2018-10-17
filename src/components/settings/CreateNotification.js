@@ -151,7 +151,7 @@ export default class CreateNotification extends React.Component {
             </MuiThemeProvider>
           </div>
           <br />
-          <DialogActions>
+                  <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
             <MuiThemeProvider theme={theme}>
               <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
                 Never mind

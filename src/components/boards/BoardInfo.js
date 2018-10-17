@@ -74,7 +74,7 @@ class BoardInfo extends React.Component {
             ""
           )}
         </div>
-        <DialogActions>
+        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <MuiThemeProvider theme={theme}>
             <Button onClick={this.props.close}>Close</Button>
           </MuiThemeProvider>

@@ -2,17 +2,24 @@ import React from "react"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
-import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
-import TextField from "material-ui/TextField"
+import Button from "@material-ui/core/Button"
 import { List, ListItem } from "material-ui/List"
-import IconButton from "material-ui-next/IconButton"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Icon from "material-ui-next/Icon"
+import IconButton from "@material-ui/core/IconButton"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Icon from "@material-ui/core/Icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
 import moment from "moment"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
+import Grid from "@material-ui/core/Grid"
+import FormControl from "@material-ui/core/FormControl"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
 
 const theme = createMuiTheme({
   palette: {
@@ -21,8 +28,14 @@ const theme = createMuiTheme({
   },
 })
 
-const authDialogContentStyle = {
-  width: "350px",
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
 }
 
 class AuthDialog extends React.Component {
@@ -95,48 +108,6 @@ class AuthDialog extends React.Component {
   }
 
   render() {
-    const confirmationDialogActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button
-          onClick={this.props.handleAuthDialogClose}
-          style={{ marginRight: "4px" }}
-        >
-          Never Mind
-        </Button>
-        <Button variant="raised" color="primary" onClick={this.openAuthDialog}>
-          Proceed
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
-    const authDialogActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.closeAuthDialog}>Close</Button>
-      </MuiThemeProvider>,
-    ]
-
-    const tokenNameActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button
-          onClick={() =>
-            this.setState({ nameOpen: false, authDialogOpen: true })
-          }
-        >
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          onClick={() => {
-            this.getPermanentToken()
-            this.setState({ nameOpen: false, authDialogOpen: true })
-          }}
-        >
-          Get token
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     let tokenList = ""
 
     if (this.props.userData.error) tokenList = "Unexpected error"
@@ -178,60 +149,212 @@ class AuthDialog extends React.Component {
     return (
       <React.Fragment>
         <Dialog
-          title="Type your password"
-          actions={confirmationDialogActions}
           open={this.props.confirmationDialogOpen}
-          contentStyle={authDialogContentStyle}
-          onRequestClose={this.props.handleAuthDialogClose}
+          onClose={this.props.handleAuthDialogClose}
           className="notSelectable"
-          titleClassName="notSelectable defaultCursor"
+          TransitionComponent={Transition}
+          fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="Password"
-            type="password"
-            style={{ width: "100%" }}
-            onChange={event => this.setState({ password: event.target.value })}
-            onKeyPress={event => {
-              if (event.key === "Enter") this.openAuthDialog()
+          <DialogTitle style={{ width: "350px" }}>
+            Type your password
+          </DialogTitle>
+          <div
+            style={{
+              paddingRight: "24px",
+              paddingLeft: "24px",
+              height: "100%",
             }}
-          />
+          >
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon>vpn_key</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-password-login"
+                    type={this.state.showPassword ? "text" : "password"}
+                    value={this.state.password}
+                    placeholder="Password"
+                    onChange={event =>
+                      this.setState({
+                        password: event.target.value,
+                        passwordError: "",
+                        isPasswordEmpty: event.target.value === "",
+                      })
+                    }
+                    error={
+                      this.state.passwordError || this.state.isPasswordEmpty
+                        ? true
+                        : false
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") this.openAuthDialog()
+                    }}
+                    endAdornment={
+                      this.state.password ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={this.handleClickShowPassword}
+                            onMouseDown={this.handleMouseDownPassword}
+                            tabIndex="-1"
+                          >
+                            {this.state.showPassword ? (
+                              <Icon>visibility_off</Icon>
+                            ) : (
+                              <Icon>visibility</Icon>
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <br />
+          </div>
+          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+            <MuiThemeProvider theme={theme}>
+              <Button
+                onClick={this.props.handleAuthDialogClose}
+                style={{ marginRight: "4px" }}
+              >
+                Never Mind
+              </Button>
+              <Button
+                variant="raised"
+                color="primary"
+                onClick={this.openAuthDialog}
+              >
+                Proceed
+              </Button>
+            </MuiThemeProvider>
+          </DialogActions>
         </Dialog>
         <Dialog
-          title="Manage authorizations"
-          actions={authDialogActions}
           open={this.state.authDialogOpen}
-          contentStyle={authDialogContentStyle}
-          onRequestClose={this.closeAuthDialog}
+          onClose={this.closeAuthDialog}
           className="notSelectable"
-          bodyStyle={{
-            paddingLeft: "8px",
-            paddingRight: "8px",
-            paddingBottom: "0px",
-          }}
-          titleClassName="notSelectable defaultCursor"
+          TransitionComponent={Transition}
+          fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          {tokenList}
+          <DialogTitle style={{ width: "350px" }}>
+            Manage authorizations
+          </DialogTitle>
+          <div
+            style={{
+              paddingLeft: "8px",
+              paddingRight: "8px",
+              paddingBottom: "0px",
+              height: "100%",
+            }}
+          >
+            {tokenList}
+          </div>
+          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+            <MuiThemeProvider theme={theme}>
+              <Button onClick={this.closeAuthDialog}>Close</Button>
+            </MuiThemeProvider>
+          </DialogActions>
         </Dialog>
         <Dialog
-          title="Choose a token name"
-          actions={tokenNameActions}
           open={this.state.nameOpen}
-          contentStyle={authDialogContentStyle}
-          onRequestClose={() => this.setState({ nameOpen: false })}
+          onClose={() => this.setState({ nameOpen: false })}
           className="notSelectable"
+          TransitionComponent={Transition}
+          fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <TextField
-            floatingLabelShrinkStyle={{ color: "#0083ff" }}
-            underlineFocusStyle={{ borderColor: "#0083ff" }}
-            floatingLabelText="Token name"
-            style={{ width: "100%" }}
-            onChange={event => this.setState({ tokenName: event.target.value })}
-            onKeyPress={event => {
-              if (event.key === "Enter") this.getPermanentToken()
+          <DialogTitle style={{ width: "350px" }}>
+            Choose a token name
+          </DialogTitle>
+          <div
+            style={{
+              paddingRight: "24px",
+              paddingLeft: "24px",
+              height: "100%",
             }}
-          />
+          >
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{ width: "100%" }}
+            >
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon>vpn_key</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-password-login"
+                    type={this.state.showPassword ? "text" : "password"}
+                    value={this.state.password}
+                    placeholder="Password"
+                    onChange={event =>
+                      this.setState({
+                        password: event.target.value,
+                        passwordError: "",
+                        isPasswordEmpty: event.target.value === "",
+                      })
+                    }
+                    error={
+                      this.state.passwordError || this.state.isPasswordEmpty
+                        ? true
+                        : false
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") this.getPermanentToken()
+                    }}
+                    endAdornment={
+                      this.state.password ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={this.handleClickShowPassword}
+                            onMouseDown={this.handleMouseDownPassword}
+                            tabIndex="-1"
+                          >
+                            {this.state.showPassword ? (
+                              <Icon>visibility_off</Icon>
+                            ) : (
+                              <Icon>visibility</Icon>
+                            )}
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+            <br />
+          </div>
+          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+            <MuiThemeProvider theme={theme}>
+              <Button
+                onClick={() =>
+                  this.setState({ nameOpen: false, authDialogOpen: true })
+                }
+              >
+                Never mind
+              </Button>
+              <Button
+                variant="raised"
+                color="primary"
+                onClick={() => {
+                  this.getPermanentToken()
+                  this.setState({ nameOpen: false, authDialogOpen: true })
+                }}
+              >
+                Get token
+              </Button>
+            </MuiThemeProvider>
+          </DialogActions>
         </Dialog>
       </React.Fragment>
     )

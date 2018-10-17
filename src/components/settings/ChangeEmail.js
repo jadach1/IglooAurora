@@ -91,7 +91,6 @@ class ChangeMailDialog extends React.Component {
           open={this.props.confirmationDialogOpen}
           onClose={this.props.handleEmailDialogClose}
           className="notSelectable"
-          titleClassName="notSelectable defaultCursor"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
@@ -159,7 +158,7 @@ class ChangeMailDialog extends React.Component {
             </Grid>
           </div>
           <br />
-          <DialogActions>
+          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
             <MuiThemeProvider theme={theme}>
               <Button
                 onClick={this.props.handleEmailDialogClose}
@@ -242,7 +241,7 @@ class ChangeMailDialog extends React.Component {
             </Grid>
             <br />
           </div>
-          <DialogActions>
+          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
             <MuiThemeProvider theme={theme}>
               <Button
                 onClick={this.closeMailDialog}

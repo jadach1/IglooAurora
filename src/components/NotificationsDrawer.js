@@ -1,21 +1,19 @@
 import React from "react"
 import CenteredSpinner from "./CenteredSpinner"
-import {
-  List,
-  ListItem,
-  ListItemText,
-  ListItemSecondaryAction,
-  AppBar,
-  Typography,
-  Icon,
-  Badge,
-  Tooltip,
-  SwipeableDrawer,
-  IconButton,
-  MenuItem,
-  ListItemIcon,
-  Menu,
-} from "@material-ui/core"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import AppBar from "@material-ui/core/AppBar"
+import Typography from "@material-ui/core/Typography"
+import Icon from "@material-ui/core/Icon"
+import Badge from "@material-ui/core/Badge"
+import Tooltip from "@material-ui/core/Tooltip"
+import SwipeableDrawer from "@material-ui/core/SwipeableDrawer"
+import IconButton from "@material-ui/core/IconButton"
+import MenuItem from "@material-ui/core/MenuItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import Menu from "@material-ui/core/Menu"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import FlatButton from "material-ui/FlatButton"
@@ -191,6 +189,23 @@ class NotificationsDrawer extends React.Component {
           deleteNotification: {
             id: id,
             __typename: "Notification",
+          },
+        },
+      })
+    }
+
+    let toggleQuietMode = (id, quietMode) => {
+      this.props["ToggleQuietMode"]({
+        variables: {
+          id: id,
+          quietMode: quietMode,
+        },
+        optimisticResponse: {
+          __typename: "Mutation",
+          device: {
+            id: id,
+            quietMode: quietMode,
+            __typename: "Device",
           },
         },
       })
@@ -493,7 +508,6 @@ class NotificationsDrawer extends React.Component {
                       <Icon>chevron_right</Icon>
                     </Tooltip>
                   </IconButton>
-
                   <IconButton
                     style={{
                       padding: "0",
@@ -504,13 +518,27 @@ class NotificationsDrawer extends React.Component {
                       marginLeft: "auto",
                       float: "right",
                     }}
+                    onClick={() =>
+                      toggleQuietMode(
+                        this.props.device.id,
+                        !this.props.device.quietMode
+                      )
+                    }
                   >
                     <Tooltip
                       id="tooltip-bottom"
-                      title="Mute device"
+                      title={
+                        this.props.device.quietMode
+                          ? "Unmute device"
+                          : "Mute device"
+                      }
                       placement="bottom"
                     >
-                      <Icon>notifications_off</Icon>
+                      <Icon>
+                        {this.props.device.quietMode
+                          ? "notifications"
+                          : "notifications_off"}
+                      </Icon>
                     </Tooltip>
                   </IconButton>
                 </div>
@@ -590,7 +618,21 @@ export default graphql(
         {
           name: "DeleteNotification",
         }
-      )(hotkeys(NotificationsDrawer))
+      )(
+        graphql(
+          gql`
+            mutation ToggleQuietMode($id: ID!, $quietMode: Boolean!) {
+              device(id: $id, quietMode: $quietMode) {
+                id
+                quietMode
+              }
+            }
+          `,
+          {
+            name: "ToggleQuietMode",
+          }
+        )(hotkeys(NotificationsDrawer))
+      )
     )
   )
 )
