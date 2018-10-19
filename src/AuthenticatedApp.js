@@ -19,8 +19,13 @@ class AuthenticatedApp extends Component {
     const bearer = props.bearer
     const wsLink = new WebSocketLink({
       uri:
-        process.env.DEV_MODE === "SERVER"
-          ? "wss://localhost:3000/subscriptions"
+        typeof Storage !== "undefined" && localStorage.getItem("server")
+          ? "wss://" +
+            localStorage
+              .getItem("server")
+              .replace("https://", "")
+              .replace("http://", "") +
+            "/subscriptions"
           : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
@@ -32,9 +37,9 @@ class AuthenticatedApp extends Component {
 
     const httpLink = new HttpLink({
       uri:
-        process.env.DEV_MODE === "SERVER"
-          ? "localhost:3000/graphql"
-          : "https://iglooql.herokuapp.com/graphql",
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://iglooql.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + bearer,
       },

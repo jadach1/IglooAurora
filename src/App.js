@@ -61,9 +61,9 @@ function setupWebPush(token) {
 
   function sendSubscriptionToServer(subscription) {
     const serverUrl =
-      process.env.DEV_MODE === "SERVER"
-        ? "localhost:3000/webPushSubscribe"
-        : `http://iglooql.herokuapp.com/graphql`
+    typeof Storage !== "undefined" && localStorage.getItem("server")!==""
+    ? localStorage.getItem("server") + "/graphql"
+    : `http://iglooql.herokuapp.com/graphql`
 
     fetch(serverUrl, {
       body: JSON.stringify(subscription), // must match 'Content-Type' header

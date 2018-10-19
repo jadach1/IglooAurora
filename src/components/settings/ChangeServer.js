@@ -23,6 +23,10 @@ const theme = createMuiTheme({
 
 const MOBILE_WIDTH = 500
 
+let oldUrl = ""
+
+let oldMode =""
+
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
@@ -33,10 +37,38 @@ function Transition(props) {
 
 export default class ChangePasswordDialog extends React.Component {
   state = {
-    url: "",
+    url:
+      (typeof Storage !== "undefined" && localStorage.getItem("server")) ||
+      localStorage.getItem("manualServer") ||
+      "http://iglooql.herokuapp.com",
+    mode:
+      typeof Storage !== "undefined" && localStorage.getItem("server")
+        ? "manual"
+        : "auto",
   }
 
   render() {
+    let confirm = () => {
+      if (typeof Storage !== "undefined") {
+        localStorage.setItem("server", this.state.url)
+        localStorage.setItem("manualServer", this.state.url)
+      }
+
+      oldUrl=this.state.url
+
+      window.location.reload()
+    }
+
+    if (oldUrl === "") {
+      oldUrl = typeof Storage !== "undefined" && localStorage.getItem("server")
+    }
+
+    if (oldMode === ""){
+      oldMode = typeof Storage !== "undefined" && localStorage.getItem("server")
+      ? "manual"
+      : "auto"
+    }
+
     return (
       <Dialog
         open={this.props.open}
@@ -56,7 +88,20 @@ export default class ChangePasswordDialog extends React.Component {
             height: "100%",
           }}
         >
-          <RadioButtonGroup name="time" defaultSelected="auto">
+          <RadioButtonGroup
+            name="time"
+            defaultSelected={this.state.mode || "auto"}
+            onChange={(event, value) => {
+              this.setState({ mode: value })
+              if (typeof Storage !== "undefined") {
+                if (value === "auto") {
+                  localStorage.setItem("server", "")
+                } else {
+                  localStorage.setItem("server", "http://iglooql.herokuapp.com")
+                }
+              }
+            }}
+          >
             <RadioButton
               value="auto"
               label="Auto"
@@ -91,7 +136,11 @@ export default class ChangePasswordDialog extends React.Component {
               style={{ width: "100%" }}
             >
               <Grid item style={{ marginRight: "16px" }}>
-                <Icon>link</Icon>
+                <Icon
+                  style={this.state.mode === "auto" ? { opacity: "0.5" } : {}}
+                >
+                  link
+                </Icon>
               </Grid>
               <Grid item style={{ width: "calc(100% - 40px)" }}>
                 <FormControl style={{ width: "100%" }}>
@@ -104,6 +153,7 @@ export default class ChangePasswordDialog extends React.Component {
                         url: event.target.value,
                       })
                     }}
+                    disabled={this.state.mode === "auto"}
                     endAdornment={
                       this.state.url ? (
                         <InputAdornment position="end">
@@ -115,6 +165,7 @@ export default class ChangePasswordDialog extends React.Component {
                               event.preventDefault()
                             }}
                             tabIndex="-1"
+                            disabled={this.state.mode === "auto"}
                           >
                             <Icon>clear</Icon>
                           </IconButton>
@@ -130,10 +181,7 @@ export default class ChangePasswordDialog extends React.Component {
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <MuiThemeProvider theme={theme}>
-            <Button
-              onClick={this.props.handlePasswordDialogClose}
-              style={{ marginRight: "4px" }}
-            >
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind
             </Button>
             <Button
@@ -141,7 +189,12 @@ export default class ChangePasswordDialog extends React.Component {
               color="primary"
               primary={true}
               buttonStyle={{ backgroundColor: "#0083ff" }}
-              onClick={this.handlePwdSnackOpen}
+              onClick={confirm}
+              disabled={oldMode === this.state.mode || (this.state.mode==="manual" &&
+                (!this.state.url ||
+                typeof Storage === "undefined" ||
+                oldUrl === this.state.url))
+              }
             >
               Change
             </Button>

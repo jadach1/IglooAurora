@@ -36,6 +36,7 @@ import Toolbar from "material-ui-next/Toolbar"
 import Translate from "translate-components"
 import Tooltip from "material-ui-next/Tooltip"
 import ChangeEmail from "./ChangeEmail"
+import ChangeServer from "./ChangeServer"
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
@@ -876,6 +877,9 @@ class SettingsDialogMobile extends React.Component {
           }
           userData={this.props.userData}
         />
+        <ChangeServer
+          open={this.props.isOpen && this.state.serverOpen}
+          close={() => this.setState({ serverOpen: false })}/>
       </React.Fragment>
     )
   }
