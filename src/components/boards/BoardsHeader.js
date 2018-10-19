@@ -84,7 +84,9 @@ export default class BoardsHeader extends Component {
                     className="sidebarHeaderButton"
                     style={{ color: "white" }}
                   >
-                    <Icon color="primary">settings</Icon>
+                    <Icon color="primary" style={{ color: "white" }}>
+                      settings
+                    </Icon>
                   </IconButton>
                 </Tooltip>
               )}
@@ -94,7 +96,9 @@ export default class BoardsHeader extends Component {
                   className="sidebarHeaderButton"
                   style={{ color: "white" }}
                 >
-                  <Icon color="primary">exit_to_app</Icon>
+                  <Icon color="primary" style={{ color: "white" }}>
+                    exit_to_app
+                  </Icon>
                 </IconButton>
               </Tooltip>
             </MuiThemeProvider>

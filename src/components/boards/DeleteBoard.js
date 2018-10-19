@@ -64,7 +64,7 @@ class DeleteBoard extends React.Component {
           Note that by deleting a board, you will delete all of its devices.
           <br /> <br />
         </font>
-                <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <MuiThemeProvider theme={theme}>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind
@@ -75,7 +75,6 @@ class DeleteBoard extends React.Component {
               primary={true}
               buttonStyle={{ backgroundColor: "#f44336" }}
               onClick={this.deleteBoardMutation}
-              style={{ marginRight: "4px" }}
             >
               Delete
             </Button>

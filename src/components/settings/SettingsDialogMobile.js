@@ -73,6 +73,7 @@ const allDialogsClosed = {
   createNodeOpen: false,
   createNotificationOpen: false,
   gdprOpen: false,
+  serverOpen:false
 }
 
 class SettingsDialogMobile extends React.Component {
@@ -694,6 +695,13 @@ class SettingsDialogMobile extends React.Component {
                   primaryText="Create a new notification"
                   onClick={() =>
                     this.setState({ createNotificationOpen: true })
+                  }
+                />
+                   <Subheader style={{ cursor: "default" }}>Testing</Subheader>
+<ListItem
+                  primaryText="Change connected server"
+                  onClick={() =>
+                    this.setState({ serverOpen: true })
                   }
                 />
               </List>
