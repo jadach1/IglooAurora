@@ -1,14 +1,12 @@
 import React from "react"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
-import {
-  Icon,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import Icon from "@material-ui/core/Icon"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 
 const MOBILE_WIDTH = 500
 

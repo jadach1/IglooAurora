@@ -4,18 +4,16 @@ import gql from "graphql-tag"
 import NotificationsDrawer from "./NotificationsDrawer"
 import DeviceInfo from "./devices/DeviceInfo"
 // import { CopyToClipboard } from "react-copy-to-clipboard"
-import { Link } from "react-router-dom"
-import {
-  Divider,
-  Tooltip,
-  Icon,
-  IconButton,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemText,
-  Typography,
-} from "@material-ui/core"
+import { Redirect } from "react-router-dom"
+import Divider from "@material-ui/core/Divider"
+import Tooltip from "@material-ui/core/Tooltip"
+import Icon from "@material-ui/core/Icon"
+import IconButton from "@material-ui/core/IconButton"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemText from "@material-ui/core/ListItemText"
+import Typography from "@material-ui/core/Typography"
 import DeleteDevice from "./devices/DeleteDevice"
 import ChangeBoard from "./devices/ChangeBoard"
 import RenameDevice from "./devices/RenameDevice"
@@ -73,24 +71,25 @@ class MainBodyHeader extends Component {
           className="mainBodyHeader"
           style={{ height: "64px", width: "100vw" }}
         >
-          <Tooltip id="tooltip-bottom" title="Devices" placement="bottom">
-            <Link
-              to="/dashboard/"
-              style={{ textDecoration: "none", color: "white" }}
+          <Tooltip id="tooltip-bottom" title="Devices list" placement="bottom">
+            <IconButton
+              style={{
+                color: "white",
+                marginTop: "auto",
+                marginBottom: "auto",
+                marginLeft: "8px",
+              }}
+              onClick={() => this.setState({ goToDevices: true })}
             >
-              <IconButton
-                style={{
-                  color: "white",
-                  marginTop: "auto",
-                  marginBottom: "auto",
-                  marginLeft: "8px",
-                }}
-                onClick={() => this.props.selectDevice(null)}
-              >
-                <Icon>chevron_left</Icon>
-              </IconButton>
-            </Link>
+              <Icon>chevron_left</Icon>
+            </IconButton>
           </Tooltip>
+          {this.state.goToDevices && (
+            <Redirect
+              push
+              to={"/dashboard?board=" + this.props.selectedBoard}
+            />
+          )}
         </div>
       )
     }
@@ -109,20 +108,19 @@ class MainBodyHeader extends Component {
           }}
         >
           <div className="mobileBackIcon">
-            <Tooltip id="tooltip-bottom" title="Device list" placement="bottom">
-              <Link
-                to={"/dashboard?board=" + this.props.selectedBoard}
-                style={{ textDecoration: "none", color: "black" }}
+            <Tooltip
+              id="tooltip-bottom"
+              title="Devices list"
+              placement="bottom"
+            >
+              <IconButton
+                style={{
+                  color: "white",
+                }}
+                onClick={() => this.setState({ goToDevices: true })}
               >
-                <IconButton
-                  style={{
-                    color: "white",
-                  }}
-                  onClick={() => this.props.selectDevice(null)}
-                >
-                  <Icon>chevron_left</Icon>
-                </IconButton>
-              </Link>
+                <Icon>chevron_left</Icon>
+              </IconButton>
             </Tooltip>
           </div>
           {device.icon ? (
@@ -132,13 +130,13 @@ class MainBodyHeader extends Component {
               alt="device logo"
             />
           ) : (
-              <i
-                className="deviceIconBig material-icons"
-                style={{ cursor: "default" }}
-              >
-                lightbulb_outline
+            <i
+              className="deviceIconBig material-icons"
+              style={{ cursor: "default" }}
+            >
+              lightbulb_outline
             </i>
-            )}
+          )}
           <Typography
             variant="headline"
             className="title"
@@ -228,31 +226,33 @@ class MainBodyHeader extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Share" />
                 </MenuItem>
-                {!(this.props.userData.user.email === device.owner.email) &&     <MenuItem
-                  className="notSelectable"
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.setState({ leaveOpen: true })
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      remove_circle
-                    </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Leave device" />
-                </MenuItem>}
+                {!(this.props.userData.user.email === device.owner.email) && (
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      this.props.nightMode
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      this.setState({ leaveOpen: true })
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          this.props.nightMode
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        remove_circle
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Leave device" />
+                  </MenuItem>
+                )}
                 {/* <MenuItem
                     className="notSelectable"
                     style={
@@ -544,6 +544,9 @@ class MainBodyHeader extends Component {
           close={() => this.setState({ deleteOpen: false })}
           device={device}
         />
+        {this.state.goToDevices && (
+          <Redirect push to={"/dashboard?board=" + this.props.selectedBoard} />
+        )}
       </React.Fragment>
     )
   }

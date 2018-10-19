@@ -78,6 +78,7 @@ class GraphQLFetcher extends Component {
           ...prev.user.devices,
           subscriptionData.data.deviceCreated,
         ]
+
         return {
           user: {
             ...prev.user,
@@ -251,6 +252,28 @@ class GraphQLFetcher extends Component {
           quietMode
           avatar
           myRole
+          devices {
+            id
+            index
+            customName
+            icon
+            online
+            batteryStatus
+            batteryCharging
+            signalStatus
+            deviceType
+            createdAt
+            updatedAt
+            board {
+              id
+            }
+            notifications {
+              id
+              content
+              date
+              visualized
+            }
+          }
           owner {
             id
             email
@@ -311,6 +334,28 @@ class GraphQLFetcher extends Component {
           quietMode
           avatar
           myRole
+          devices {
+            id
+            index
+            customName
+            icon
+            online
+            batteryStatus
+            batteryCharging
+            signalStatus
+            deviceType
+            createdAt
+            updatedAt
+            board {
+              id
+            }
+            notifications {
+              id
+              content
+              date
+              visualized
+            }
+          }
           owner {
             id
             email
@@ -371,6 +416,28 @@ class GraphQLFetcher extends Component {
           quietMode
           avatar
           myRole
+          devices {
+            id
+            index
+            customName
+            icon
+            online
+            batteryStatus
+            batteryCharging
+            signalStatus
+            deviceType
+            createdAt
+            updatedAt
+            board {
+              id
+            }
+            notifications {
+              id
+              content
+              date
+              visualized
+            }
+          }
           owner {
             id
             email

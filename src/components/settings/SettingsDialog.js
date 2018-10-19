@@ -34,7 +34,7 @@ import CreateNotification from "./CreateNotification"
 import CreatePlotNode from "./CreatePlotNode"
 import GDPRDataDownload from "./GDPRDataDownload"
 import ChangeEmail from "./ChangeEmail"
-
+import ChangeServer from "./ChangeServer"
 // var moment = require("moment-timezone")
 
 function Transition(props) {
@@ -66,6 +66,7 @@ const allDialogsClosed = {
   createNotificationOpen: false,
   createNodeOpen: false,
   gdprOpen: false,
+  serverOpen:false,
   keepLoggedIn:
     typeof Storage !== "undefined" &&
     localStorage.getItem("keepLoggedIn") === true,
@@ -692,6 +693,12 @@ class SettingsDialog extends React.Component {
                   onClick={() =>
                     this.setState({ createNotificationOpen: true })
                   }
+                />                <Subheader style={{ cursor: "default" }}>Testing</Subheader>
+<ListItem
+                  primaryText="Change connected server"
+                  onClick={() =>
+                    this.setState({ serverOpen: true })
+                  }
                 />
               </List>
             </div>
@@ -812,6 +819,9 @@ class SettingsDialog extends React.Component {
           }
           userData={this.props.userData}
         />
+        <ChangeServer
+          open={this.props.isOpen && this.state.serverOpen}
+          close={() => this.setState({ serverOpen: false })}/>
       </React.Fragment>
     )
   }

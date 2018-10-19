@@ -1,20 +1,17 @@
 import React, { Component } from "react"
-import {
-  Typography,
-  Icon,
-  Grid,
-  Button,
-  MuiThemeProvider,
-  createMuiTheme,
-  AppBar,
-  BottomNavigation,
-  BottomNavigationAction,
-  Zoom,
-  IconButton,
-  Input,
-  InputAdornment,
-  FormControl,
-} from "@material-ui/core"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Typography from "@material-ui/core/Typography"
+import Icon from "@material-ui/core/Icon"
+import Grid from "@material-ui/core/Grid"
+import Button from "@material-ui/core/Button"
+import AppBar from "@material-ui/core/AppBar"
+import BottomNavigation from "@material-ui/core/BottomNavigation"
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction"
+import Zoom from "@material-ui/core/Zoom"
+import IconButton from "@material-ui/core/IconButton"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import FormControl from "@material-ui/core/FormControl"
 import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"

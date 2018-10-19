@@ -1,13 +1,10 @@
 import React, { Component } from "react"
 import { hotkeys } from "react-keyboard-shortcuts"
-import Icon from "material-ui-next/Icon"
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  Typography,
-  Tooltip,
-  IconButton,
-} from "@material-ui/core"
+import Icon from "@material-ui/core/Icon"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Typography from "@material-ui/core/Typography"
+import Tooltip from "@material-ui/core/Tooltip"
+import IconButton from "@material-ui/core/IconButton"
 import { Redirect } from "react-router-dom"
 
 const theme = createMuiTheme({
@@ -114,7 +111,7 @@ class SidebarHeader extends Component {
             </Tooltip>
           </MuiThemeProvider>
         </div>
-        {this.state.goToBoards && <Redirect to="/dashboard" />}
+        {this.state.goToBoards && <Redirect push to="/dashboard" />}
       </div>
     )
   }
