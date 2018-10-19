@@ -150,8 +150,10 @@ class CustomizedSnackbars extends React.Component {
             <br />
             If that's not the case, click on "Send again" and we'll send you
             another email.
+            <br />
+            <br />
           </div>
-                  <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
             <MuiThemeProvider theme={theme}>
               <Button
                 style={{ marginRight: "4px" }}
@@ -165,6 +167,7 @@ class CustomizedSnackbars extends React.Component {
                 primary={true}
                 onClick={() => {
                   this.props.ResendVerificationEmail()
+                  this.setState({ dialogOpen: false })
                 }}
               >
                 Send again

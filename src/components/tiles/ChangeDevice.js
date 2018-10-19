@@ -1,13 +1,14 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-  Icon,
-} from "@material-ui/core"
+import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import Button from "@material-ui/core/Button"
+import Icon from "@material-ui/core/Icon"
 import { RadioButtonGroup, RadioButton } from "material-ui"
 
 const theme = createMuiTheme({
@@ -15,6 +16,16 @@ const theme = createMuiTheme({
     primary: { main: "#0083ff" },
   },
 })
+
+const MOBILE_WIDTH = 500
+
+function Transition(props) {
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
+}
 
 class ChangeDevice extends React.Component {
   state = { newDevice: this.props.value.device.id }
@@ -68,70 +79,72 @@ class ChangeDevice extends React.Component {
       userData: { user },
     } = this.props
 
-    const changeDeviceActions = [
-      <MuiThemeProvider theme={theme}>
-        <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-          Never mind
-        </Button>
-        <Button
-          variant="raised"
-          color="primary"
-          primary={true}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
-          onClick={this.changeDevice}
-          disabled={this.state.newDevice === this.props.value.device.id}
-        >
-          Change device
-        </Button>
-      </MuiThemeProvider>,
-    ]
-
     return (
       <Dialog
-        title="Change device"
-        actions={changeDeviceActions}
         open={this.props.open}
-        onRequestClose={this.props.close}
+        onClose={this.props.close}
         className="notSelectable"
-        contentStyle={{
-          width: "350px",
-        }}
-        titleClassName="notSelectable defaultCursor"
+        TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        {user &&
-          user.boards.filter(board => board.devices[0]).map(board => (
-            <React.Fragment>
-              {board.customName}
-              <RadioButtonGroup
-                name="device"
-                onChange={(event, value) => this.setState({ newDevice: value })}
-                valueSelected={
-                  this.state.newDevice || this.props.value.device.id
-                }
-              >
-                {user &&
-                  user.devices
-                    .filter(device => device.board.id === board.id)
-                    .map(device => (
-                      <RadioButton
-                        value={device.id}
-                        label={device.customName}
-                        style={{
-                          marginTop: 12,
-                          marginBottom: 16,
-                        }}
-                        rippleStyle={{ color: "#0083ff" }}
-                        checkedIcon={
-                          <Icon style={{ color: "#0083ff" }}>
-                            radio_button_checked
-                          </Icon>
-                        }
-                        uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-                      />
-                    ))}
-              </RadioButtonGroup>
-            </React.Fragment>
-          ))}
+        <DialogTitle style={{ width: "350px" }}>Change device</DialogTitle>
+        <div
+          style={{ paddingRight: "24px", paddingLeft: "24px", height: "100%" }}
+        >
+          {user &&
+            user.boards.filter(board => board.devices[0]).map(board => (
+              <React.Fragment>
+                {board.customName}
+                <RadioButtonGroup
+                  name="device"
+                  onChange={(event, value) =>
+                    this.setState({ newDevice: value })
+                  }
+                  valueSelected={
+                    this.state.newDevice || this.props.value.device.id
+                  }
+                >
+                  {user &&
+                    user.devices
+                      .filter(device => device.board.id === board.id)
+                      .map(device => (
+                        <RadioButton
+                          value={device.id}
+                          label={device.customName}
+                          style={{
+                            marginTop: 12,
+                            marginBottom: 16,
+                          }}
+                          rippleStyle={{ color: "#0083ff" }}
+                          checkedIcon={
+                            <Icon style={{ color: "#0083ff" }}>
+                              radio_button_checked
+                            </Icon>
+                          }
+                          uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
+                        />
+                      ))}
+                </RadioButtonGroup>
+              </React.Fragment>
+            ))}
+        </div>
+        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <MuiThemeProvider theme={theme}>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              onClick={this.changeDevice}
+              disabled={this.state.newDevice === this.props.value.device.id}
+            >
+              Change device
+            </Button>
+          </MuiThemeProvider>
+        </DialogActions>
       </Dialog>
     )
   }

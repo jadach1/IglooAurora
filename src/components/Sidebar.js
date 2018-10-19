@@ -16,6 +16,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
 import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
+import Zoom from "@material-ui/core/Zoom"
 
 const theme = createMuiTheme({
   palette: {
@@ -408,7 +409,17 @@ class Sidebar extends Component {
                         )}
                       </ListItemIcon>
                       <ListItemText
-                        primary={device.customName}
+                        primary={
+                          <span
+                            style={
+                              this.props.nightMode
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
+                          >
+                            {device.customName}
+                          </span>
+                        }
                         style={{
                           cursor: "default",
                           whiteSpace: "nowrap",
@@ -416,28 +427,37 @@ class Sidebar extends Component {
                           textOverflow: "ellipsis",
                         }}
                         secondary={
-                          device.notifications
-                            .filter(
-                              notification => notification.visualized === false
-                            )
-                            .map(notification => notification.content)
-                            .reverse()[0]
-                            ? device.notifications
-                                .filter(
-                                  notification =>
-                                    notification.visualized === false
-                                )
-                                .map(notification => notification.content)
-                                .reverse()[0]
-                            : device.notifications
-                                .filter(
-                                  notification =>
-                                    notification.visualized === true
-                                )
-                                .map(notification => notification.content)
-                                .reverse()[0]
-                              ? "No unread notifications"
-                              : "No notifications"
+                          <span
+                            style={
+                              this.props.nightMode
+                                ? { color: "#c1c2c5" }
+                                : { color: "#7a7a7a" }
+                            }
+                          >
+                            {device.notifications
+                              .filter(
+                                notification =>
+                                  notification.visualized === false
+                              )
+                              .map(notification => notification.content)
+                              .reverse()[0]
+                              ? device.notifications
+                                  .filter(
+                                    notification =>
+                                      notification.visualized === false
+                                  )
+                                  .map(notification => notification.content)
+                                  .reverse()[0]
+                              : device.notifications
+                                  .filter(
+                                    notification =>
+                                      notification.visualized === true
+                                  )
+                                  .map(notification => notification.content)
+                                  .reverse()[0]
+                                ? "No unread notifications"
+                                : "No notifications"}
+                          </span>
                         }
                       />
                       {device.notifications
@@ -470,29 +490,31 @@ class Sidebar extends Component {
                 ))}
         </List>
         <MuiThemeProvider theme={theme}>
-          <Button
-            variant="fab"
-            color="primary"
-            style={
-              this.props.isMobile
-                ? {
-                    position: "absolute",
-                    right: "20px",
-                    bottom: "20px",
-                    transition:
-                      "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
-                  }
-                : {
-                    position: "absolute",
-                    left: "308px",
-                    bottom: "20px",
-                    transition:
-                      "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
-                  }
-            }
-          >
-            <Icon>format_list_bulleted</Icon>
-          </Button>
+          <Zoom in={user}>
+            <Button
+              variant="fab"
+              color="primary"
+              style={
+                this.props.isMobile
+                  ? {
+                      position: "absolute",
+                      right: "20px",
+                      bottom: "20px",
+                      transition:
+                        "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                    }
+                  : {
+                      position: "absolute",
+                      left: "308px",
+                      bottom: "20px",
+                      transition:
+                        "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                    }
+              }
+            >
+              <Icon>format_list_bulleted</Icon>
+            </Button>
+          </Zoom>
         </MuiThemeProvider>
       </React.Fragment>
     )
