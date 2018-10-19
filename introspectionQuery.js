@@ -2,8 +2,8 @@ const fetch = require("node-fetch")
 const fs = require("fs")
 
 const serverUrl =
-  process.env.DEV_MODE === "SERVER"
-    ? "localhost:3000/graphql"
+typeof Storage !== "undefined" && localStorage.getItem("server")!==""
+    ? localStorage.getItem("server") + "/graphql"
     : `http://iglooql.herokuapp.com/graphql`
 
 fetch(serverUrl, {
