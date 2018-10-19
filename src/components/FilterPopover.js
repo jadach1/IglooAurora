@@ -7,7 +7,7 @@ import Checkbox from "material-ui-next/Checkbox"
 import Typography from "material-ui-next/Typography"
 import Toolbar from "material-ui-next/Toolbar"
 import { MuiThemeProvider, createMuiTheme } from "material-ui-next"
-import {Redirect} from "react-router-dom"
+import { Redirect } from "react-router-dom"
 
 let removeDuplicates = inputArray => {
   var obj = {}
@@ -37,7 +37,7 @@ export default class FilterPopover extends Component {
       newChecked.push(value)
     } else {
       if (this.props.currentDevice.deviceType === newChecked[currentIndex]) {
-        this.setState({redirect:true})
+        this.setState({ redirect: true })
       }
 
       newChecked.splice(currentIndex, 1)
@@ -79,88 +79,108 @@ export default class FilterPopover extends Component {
 
     return (
       <React.Fragment>
-      <Popover
-        open={this.props.open}
-        onClose={this.props.close}
-        anchorEl={this.props.anchorEl}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "center",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
-        className="notSelectable"
-      >
-        <div
-          style={this.props.nightMode ? { backgroundColor: "#2f333d" } : null}
+        <Popover
+          open={this.props.open}
+          onClose={this.props.close}
+          anchorEl={this.props.anchorEl}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "center",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "center",
+          }}
+          className="notSelectable"
         >
-          <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
-            <Typography
-              variant="title"
-              className="defaultCursor"
-              style={{
-                marginLeft: "-8px",
-              }}
-            >
-              Filter by device type
-            </Typography>
-          </Toolbar>
           <div
-            style={
-              96 + this.getLenght(uniqueDeviceTypeList) * 72 >
-                window.innerHeight
-                ? {
-                  height: "calc(100vh - 96px)",
-                  overflow: "auto",
-                  overflowX: "hidden",
-                }
-                : { overflowX: "hidden" }
-            }
+            style={this.props.nightMode ? { backgroundColor: "#2f333d" } : null}
           >
-            <List style={{ width: "256px", padding: "0" }}>
-              {uniqueDeviceTypeList.map(deviceType => (
-                <ListItem
-                  key={deviceType}
-                  role={undefined}
-                  button
-                  onClick={this.handleToggle(deviceType)}
-                >
-                  <MuiThemeProvider
-                    theme={createMuiTheme({
-                      palette: {
-                        secondary: { main: "#ff4081" },
-                      },
-                    })}
-                  >
-                    <Checkbox
-                      checked={this.state.checked.indexOf(deviceType) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      onChange={this.handleToggle(deviceType)}
-                    />
-                  </MuiThemeProvider>
-                  <ListItemText
-                    primary={deviceType}
-                    style={{
-                      cursor: "default",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                    secondary={
-                      occurrences[deviceType] +
-                      (occurrences[deviceType] === 1 ? " device" : " devices")
+            <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
+              <Typography
+                variant="title"
+                className="defaultCursor"
+                style={
+                  this.props.nightMode
+                    ? {
+                        marginLeft: "-8px",
+                        color: "white",
+                      }
+                    : {
+                        marginLeft: "-8px",
+                        color: "black",
+                      }
+                }
+              >
+                Filter by device type
+              </Typography>
+            </Toolbar>
+            <div
+              style={
+                96 + this.getLenght(uniqueDeviceTypeList) * 72 >
+                window.innerHeight
+                  ? {
+                      height: "calc(100vh - 96px)",
+                      overflow: "auto",
+                      overflowX: "hidden",
                     }
-                  />
-                </ListItem>
-              ))}
-            </List>
+                  : { overflowX: "hidden" }
+              }
+            >
+              <List style={{ width: "256px", padding: "0" }}>
+                {uniqueDeviceTypeList.map(deviceType => (
+                  <ListItem
+                    key={deviceType}
+                    role={undefined}
+                    button
+                    onClick={this.handleToggle(deviceType)}
+                  >
+                    <MuiThemeProvider
+                      theme={createMuiTheme({
+                        palette: {
+                          secondary: { main: "#ff4081" },
+                        },
+                      })}
+                    >
+                      <Checkbox
+                        checked={this.state.checked.indexOf(deviceType) !== -1}
+                        tabIndex={-1}
+                        disableRipple
+                        onChange={this.handleToggle(deviceType)}
+                      />
+                    </MuiThemeProvider>
+                    <ListItemText
+                      primary={
+                        <span
+                          style={
+                            this.props.nightMode
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          {deviceType}
+                        </span>
+                      }
+                      style={{
+                        cursor: "default",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                      secondary={
+                        occurrences[deviceType] +
+                        (occurrences[deviceType] === 1 ? " device" : " devices")
+                      }
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </div>
           </div>
-        </div>
-      </Popover>
-      { this.state.redirect && <Redirect to={"/dashboard?board=" + this.props.boardId} /> }
+        </Popover>
+        {this.state.redirect && (
+          <Redirect to={"/dashboard?board=" + this.props.boardId} />
+        )}
       </React.Fragment>
     )
   }

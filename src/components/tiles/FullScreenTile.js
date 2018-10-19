@@ -1,11 +1,19 @@
 import React from "react"
-import Dialog from "material-ui/Dialog"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Button from "@material-ui/core/Button"
+import Slide from "@material-ui/core/Slide"
+import Grow from "@material-ui/core/Grow"
 
-import Button from "material-ui-next/Button"
-import Slide from "material-ui-next/transitions/Slide"
+const MOBILE_WIDTH = 500
 
 function Transition(props) {
-  return <Slide direction="up" {...props} />
+  return window.innerWidth > MOBILE_WIDTH ? (
+    <Grow {...props} />
+  ) : (
+    <Slide direction="up" {...props} />
+  )
 }
 
 export default class FullScreenTile extends React.Component {
@@ -16,15 +24,17 @@ export default class FullScreenTile extends React.Component {
     return (
       <Dialog
         open={this.props.fullScreen}
-        onRequestClose={this.props.handleClose}
+        onClose={this.props.handleClose}
         className="notSelectable"
         TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
         title={valueTitle}
-        actions={<Button onClick={this.props.handleClose}>Close</Button>}
-        modal={false}
-        titleClassName="notSelectable defaultCursor"
       >
-        {this.props.specificTile}
+        <DialogTitle>{valueTitle}</DialogTitle>
+        <div style={{ height: "100%" }}>{this.props.specificTile}</div>
+        <DialogActions>
+          <Button onClick={this.props.handleClose}>Close</Button>
+        </DialogActions>
       </Dialog>
     )
   }

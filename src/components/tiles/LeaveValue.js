@@ -24,8 +24,8 @@ function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
   ) : (
-      <Slide direction="up" {...props} />
-    )
+    <Slide direction="up" {...props} />
+  )
 }
 
 class LeaveValue extends React.Component {
@@ -67,12 +67,13 @@ class LeaveValue extends React.Component {
         open={this.props.open}
         onClose={this.props.close}
         className="notSelectable defaultCursor"
-        titleClassName="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
         <DialogTitle style={{ width: "350px" }}>Leave value</DialogTitle>
-        <div style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}>
+        <div
+          style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
+        >
           Are you sure you want to leave {this.props.value.customName}?
         </div>
         <br />
