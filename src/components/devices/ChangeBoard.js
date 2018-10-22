@@ -1,17 +1,15 @@
 import React from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-  Icon,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import Button from "@material-ui/core/Button"
+import Icon from "@material-ui/core/Icon"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 import { RadioButtonGroup, RadioButton } from "material-ui"
 
 const theme = createMuiTheme({
@@ -93,7 +91,7 @@ class ChangeBoard extends React.Component {
               />
             ))}
         </RadioButtonGroup>
-                <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <MuiThemeProvider theme={theme}>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind

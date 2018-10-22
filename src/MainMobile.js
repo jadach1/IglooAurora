@@ -38,11 +38,11 @@ class Main extends Component {
       handler: event => {
         !this.state.drawer
           ? this.setState(oldState => ({
-            showMainHidden: !oldState.showMainHidden,
-          }))
+              showMainHidden: !oldState.showMainHidden,
+            }))
           : this.setState(oldState => ({
-            hiddenNotifications: !oldState.hiddenNotifications,
-          }))
+              hiddenNotifications: !oldState.hiddenNotifications,
+            }))
       },
     },
     "alt+1": {
@@ -296,7 +296,9 @@ class Main extends Component {
     let idList = []
 
     if (user) {
-      nightMode = user.nightMode
+      nightMode =
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("nightMode") === "true"
       devMode = user.devMode
 
       idList = user.devices.map(device => device.id)
@@ -415,18 +417,18 @@ class Main extends Component {
                   </div>
                 </React.Fragment>
               ) : (
-                  <Redirect
-                    exact
-                    to={
-                      this.props.selectedBoard
-                        ? "/dashboard?board=" + this.props.selectedBoard
-                        : "/dashboard"
-                    }
-                  />
-                )
+                <Redirect
+                  exact
+                  to={
+                    this.props.selectedBoard
+                      ? "/dashboard?board=" + this.props.selectedBoard
+                      : "/dashboard"
+                  }
+                />
+              )
             ) : (
-                  ""
-                )}
+              ""
+            )}
           </div>
         </Online>
         <Offline key="offlineMainBody">

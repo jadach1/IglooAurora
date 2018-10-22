@@ -1,9 +1,11 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import Input, { InputLabel, InputAdornment } from "material-ui-next/Input"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import { FormControl } from "material-ui-next/Form"
+import Input from "@material-ui/core/Input"
+import InputLabel from "@material-ui/core/InputLabel"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import FormControl from "@material-ui/core/FormControl"
 
 const theme = createMuiTheme({
   palette: {

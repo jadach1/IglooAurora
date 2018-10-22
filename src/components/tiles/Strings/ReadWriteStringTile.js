@@ -1,8 +1,8 @@
 import React, { Component } from "react"
-import TextField from "material-ui-next/TextField"
+import TextField from "@material-ui/core/TextField"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 
 const theme = createMuiTheme({
   palette: {

@@ -1,14 +1,12 @@
 import React from "react"
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -72,7 +70,9 @@ class LeaveDevice extends React.Component {
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
         <DialogTitle style={{ width: "350px" }}>Leave device</DialogTitle>
-        <div style={{ paddingLeft: "24px",paddingRight:"24px", height: "100%" }}>
+        <div
+          style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
+        >
           Are you sure you want to leave {this.props.device.customName}?
         </div>
         <br />

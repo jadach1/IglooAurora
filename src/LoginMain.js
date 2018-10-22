@@ -33,7 +33,7 @@ class UnAuthenticatedApp extends Component {
     const link = new HttpLink({
       uri:
       typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-      ? localStorage.getItem("server") + "graphql"
+      ? localStorage.getItem("server") + "/graphql"
       : `http://iglooql.herokuapp.com/graphql`,
     })
 

@@ -13,7 +13,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import ListItemText from "@material-ui/core/ListItemText"
 import List from "@material-ui/core/List"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
 import Zoom from "@material-ui/core/Zoom"

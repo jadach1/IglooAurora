@@ -8,7 +8,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import Divider from "@material-ui/core/Divider"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Badge from "@material-ui/core/Badge"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"

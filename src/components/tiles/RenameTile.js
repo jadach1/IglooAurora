@@ -2,7 +2,7 @@ import React from "react"
 import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"

@@ -4,7 +4,7 @@ import LargeCenteredSpinner from "./LargeCenteredSpinner"
 import FlatButton from "material-ui/FlatButton"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import Icon from "material-ui-next/Icon"
+import Icon from "@material-ui/core/Icon"
 
 class MainBody extends Component {
   componentDidMount() {

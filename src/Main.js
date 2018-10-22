@@ -306,7 +306,7 @@ class Main extends Component {
     let deviceIdList = []
 
     if (user) {
-      nightMode = user.nightMode
+      nightMode = typeof Storage !== "undefined" && localStorage.getItem("nightMode")==="true"
       devMode = user.devMode
 
       deviceIdList = user.devices.map(device => device.id)

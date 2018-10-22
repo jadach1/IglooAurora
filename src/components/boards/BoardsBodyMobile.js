@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Typography from "@material-ui/core/Typography"
 import Icon from "@material-ui/core/Icon"
 import Grid from "@material-ui/core/Grid"
@@ -67,7 +67,7 @@ class BoardsBodyMobile extends Component {
     }
 
     if (user) {
-      nightMode = user.nightMode
+      nightMode =     typeof Storage !== "undefined" && localStorage.getItem("nightMode")==="true"
       devMode = user.devMode
 
       favoriteBoardsList = user.boards

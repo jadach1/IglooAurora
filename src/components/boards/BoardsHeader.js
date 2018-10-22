@@ -1,12 +1,10 @@
 import React, { Component } from "react"
-import {
-  IconButton,
-  Icon,
-  Tooltip,
-  createMuiTheme,
-  MuiThemeProvider,
-  AppBar,
-} from "material-ui-next"
+import IconButton from "@material-ui/core/IconButton"
+import Icon from "@material-ui/core/Icon"
+import Tooltip from "@material-ui/core/Tooltip"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import AppBar from "@material-ui/core/AppBar"
 import logo from "../../styles/assets/logo.svg"
 
 const theme = createMuiTheme({

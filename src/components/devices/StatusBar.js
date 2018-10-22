@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Icon from "material-ui-next/Icon"
+import Icon from "@material-ui/core/Icon"
 import gql from "graphql-tag"
 import moment from "moment"
 

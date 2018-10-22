@@ -5,7 +5,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import moment from "moment"
 
 const theme = createMuiTheme({

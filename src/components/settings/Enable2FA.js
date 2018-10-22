@@ -1,10 +1,10 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
+import Button from "@material-ui/core/Button"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import TextField from "material-ui/TextField"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Icon from "material-ui-next/Icon"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import Icon from "@material-ui/core/Icon"
 
 const theme = createMuiTheme({
   palette: {

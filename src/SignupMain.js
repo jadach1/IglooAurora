@@ -7,7 +7,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import Signup from "./components/unauthenticated/Signup"
 import { hotkeys } from "react-keyboard-shortcuts"
 import { Offline, Online } from "react-detect-offline"
-import { Typography } from "material-ui-next"
+import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
 import logo from "./styles/assets/logo.svg"
 import iglooTitle from "./styles/assets/iglooTitle.svg"
@@ -31,9 +31,9 @@ class UnAuthenticatedApp extends Component {
 
     const link = new HttpLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-      ? localStorage.getItem("server") + "graphql"
-      : `http://iglooql.herokuapp.com/graphql`
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://iglooql.herokuapp.com/graphql`,
     })
 
     this.client = new ApolloClient({

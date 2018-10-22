@@ -1,13 +1,11 @@
 import React, { Component } from "react"
-import {
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Button,
-  Icon,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Button from "@material-ui/core/Button"
+import Icon from "@material-ui/core/Icon"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 import { RadioButton, RadioButtonGroup } from "material-ui"
 
 const MOBILE_WIDTH = 500
@@ -133,7 +131,7 @@ class DataSettings extends Component {
             uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
         </RadioButtonGroup>
-                <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>
