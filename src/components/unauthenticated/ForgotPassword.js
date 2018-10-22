@@ -1,21 +1,19 @@
 import React from "react"
 import * as EmailValidator from "email-validator"
-import {
-  Dialog,
-  Button,
-  MuiThemeProvider,
-  createMuiTheme,
-  Input,
-  InputAdornment,
-  Grid,
-  FormControl,
-  IconButton,
-  Icon,
-  DialogTitle,
-  DialogActions,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import Dialog from "@material-ui/core/Dialog"
+import Button from "@material-ui/core/Button"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import Grid from "@material-ui/core/Grid"
+import FormControl from "@material-ui/core/FormControl"
+import IconButton from "@material-ui/core/IconButton"
+import Icon from "@material-ui/core/Icon"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 
 const MOBILE_WIDTH = 500
 
@@ -115,6 +113,7 @@ export default class ForgotPassword extends React.Component {
                 </Grid>
               </Grid>
             </div>
+            <br />
           </MuiThemeProvider>
           <div style={{ height: "100%" }} />
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>

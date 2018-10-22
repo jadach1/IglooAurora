@@ -4,17 +4,15 @@ import gql from "graphql-tag"
 import NotificationsDrawer from "./NotificationsDrawer"
 import DeviceInfo from "./devices/DeviceInfo"
 // import { CopyToClipboard } from "react-copy-to-clipboard"
-import {
-  Typography,
-  Tooltip,
-  Icon,
-  IconButton,
-  ListItemText,
-  MenuItem,
-  Divider,
-  ListItemIcon,
-  Menu,
-} from "@material-ui/core"
+import Typography from "@material-ui/core/Typography"
+import Tooltip from "@material-ui/core/Tooltip"
+import Icon from "@material-ui/core/Icon"
+import IconButton from "@material-ui/core/IconButton"
+import ListItemText from "@material-ui/core/ListItemText"
+import MenuItem from "@material-ui/core/MenuItem"
+import Divider from "@material-ui/core/Divider"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import Menu from "@material-ui/core/Menu"
 import ShareDevice from "./devices/ShareDevice"
 import DeleteDevice from "./devices/DeleteDevice"
 import RenameDevice from "./devices/RenameDevice"
@@ -66,11 +64,11 @@ class MainBodyHeader extends Component {
         },
       })
 
-    if (loading) {
+    if (loading || this.props.userData.loading) {
       return <div className="mainBodyHeader" />
     }
 
-    if (error) {
+    if (error || this.props.userData.error) {
       return <div className="mainBodyHeader" />
     }
 

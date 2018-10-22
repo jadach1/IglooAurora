@@ -1,12 +1,16 @@
 import React, { Component } from "react"
-import Button from "material-ui-next/Button"
+import Button from "@material-ui/core/Button"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
-import Input, { InputAdornment } from "material-ui-next/Input"
-import { FormControl, FormHelperText } from "material-ui-next/Form"
-import IconButton from "material-ui-next/IconButton"
-import Icon from "material-ui-next/Icon"
-import { Typography, Grid, CircularProgress } from "material-ui-next"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import FormControl from "@material-ui/core/FormControl"
+import FormHelperText from "@material-ui/core/FormHelperText"
+import IconButton from "@material-ui/core/IconButton"
+import Icon from "@material-ui/core/Icon"
+import Typography from "@material-ui/core/Typography"
+import Grid from "@material-ui/core/Grid"
+import CircularProgress from "@material-ui/core/CircularProgress"
 import zxcvbn from "zxcvbn"
 import * as EmailValidator from "email-validator"
 import logo from "../../styles/assets/logo.svg"
@@ -40,17 +44,14 @@ class SignupMobile extends Component {
     this.updateWindowDimensions()
     window.addEventListener("resize", this.updateWindowDimensions)
     this.setState({
-      passwordScore: zxcvbn(
-        this.props.password,
-        [
-          this.props.email,
-          this.props.email.split("@")[0],
-          this.props.fullName,
-          "igloo",
-          "igloo aurora",
-          "aurora",
-        ]
-      ).score,
+      passwordScore: zxcvbn(this.props.password, [
+        this.props.email,
+        this.props.email.split("@")[0],
+        this.props.fullName,
+        "igloo",
+        "igloo aurora",
+        "aurora",
+      ]).score,
     })
   }
 
@@ -168,21 +169,21 @@ class SignupMobile extends Component {
           style={
             this.state.height >= 690
               ? {
-                width: "200px",
-                paddingTop: "75px",
-                marginBottom: "75px",
-                display: "block",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }
+                  width: "200px",
+                  paddingTop: "75px",
+                  marginBottom: "75px",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }
               : {
-                width: "150px",
-                paddingTop: "50px",
-                marginBottom: "50px",
-                display: "block",
-                marginLeft: "auto",
-                marginRight: "auto",
-              }
+                  width: "150px",
+                  paddingTop: "50px",
+                  marginBottom: "50px",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }
           }
         />
         <Typography
@@ -218,8 +219,7 @@ class SignupMobile extends Component {
                     this.setState({
                       isNameValid: event.target.value !== "",
                     })
-                  }
-                  }
+                  }}
                   onKeyPress={event => {
                     if (event.key === "Enter") {
                       this.setState({ showLoading: true })
@@ -279,8 +279,7 @@ class SignupMobile extends Component {
                       isEmailValid: EmailValidator.validate(event.target.value),
                       isMailEmpty: event.target.value === "",
                     })
-                  }
-                  }
+                  }}
                   onKeyPress={event => {
                     if (event.key === "Enter") {
                       this.setState({ showLoading: true })
@@ -306,10 +305,12 @@ class SignupMobile extends Component {
                   id="name-error-text-signup"
                   style={{ color: "white" }}
                 >
-                  {this.state.isMailEmpty ? "This field is required" : (this.props.emailError ||
-                    (!this.state.isEmailValid && this.props.email
-                      ? "Enter a valid email"
-                      : ""))}
+                  {this.state.isMailEmpty
+                    ? "This field is required"
+                    : this.props.emailError ||
+                      (!this.state.isEmailValid && this.props.email
+                        ? "Enter a valid email"
+                        : "")}
                 </FormHelperText>
               </FormControl>
             </Grid>
@@ -362,8 +363,8 @@ class SignupMobile extends Component {
                           {this.state.showPassword ? (
                             <Icon>visibility_off</Icon>
                           ) : (
-                              <Icon>visibility</Icon>
-                            )}
+                            <Icon>visibility</Icon>
+                          )}
                         </IconButton>
                       </InputAdornment>
                     ) : null
@@ -373,7 +374,9 @@ class SignupMobile extends Component {
                   id="password-error-text-signup"
                   style={{ color: "white" }}
                 >
-                  {this.state.isPasswordEmpty ? "This field is required" : scoreText}
+                  {this.state.isPasswordEmpty
+                    ? "This field is required"
+                    : scoreText}
                 </FormHelperText>
               </FormControl>
             </Grid>

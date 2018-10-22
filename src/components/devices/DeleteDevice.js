@@ -1,14 +1,12 @@
 import React from "react"
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import Button from "@material-ui/core/Button"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 

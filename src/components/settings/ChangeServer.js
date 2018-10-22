@@ -3,7 +3,7 @@ import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Icon from "@material-ui/core/Icon"
 import Grid from "@material-ui/core/Grid"
 import Input from "@material-ui/core/Input"
@@ -96,8 +96,6 @@ export default class ChangePasswordDialog extends React.Component {
               if (typeof Storage !== "undefined") {
                 if (value === "auto") {
                   localStorage.setItem("server", "")
-                } else {
-                  localStorage.setItem("server", "http://iglooql.herokuapp.com")
                 }
               }
             }}

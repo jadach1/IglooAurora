@@ -1,17 +1,18 @@
 import React from "react"
 import classNames from "classnames"
-import IconButton from "material-ui-next/IconButton"
-import Snackbar from "material-ui-next/Snackbar"
+import IconButton from "@material-ui/core/IconButton"
+import Snackbar from "@material-ui/core/Snackbar"
 import SnackbarContent from "@material-ui/core/SnackbarContent"
-import { withStyles } from "@material-ui/core/styles"
-import Icon from "material-ui-next/Icon"
+import withStyles from "@material-ui/core/styles/withStyles"
+import Icon from "@material-ui/core/Icon"
 import Slide from "@material-ui/core/Slide"
 import Grow from "@material-ui/core/Grow"
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -76,7 +77,13 @@ function MySnackbarContent(props) {
         </span>
       }
       action={[
-        <IconButton style={{ color: "white" }} onClick={openDialog}>
+        <IconButton
+          style={{ color: "white" }}
+          onClick={() => {
+            openDialog()
+            closeSnackbar()
+          }}
+        >
           <Icon>notes</Icon>
         </IconButton>,
         <IconButton

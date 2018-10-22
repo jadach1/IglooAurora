@@ -61,9 +61,9 @@ function setupWebPush(token) {
 
   function sendSubscriptionToServer(subscription) {
     const serverUrl =
-    typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-    ? localStorage.getItem("server") + "/graphql"
-    : `http://iglooql.herokuapp.com/graphql`
+      typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+        ? localStorage.getItem("server") + "/graphql"
+        : `http://iglooql.herokuapp.com/graphql`
 
     fetch(serverUrl, {
       body: JSON.stringify(subscription), // must match 'Content-Type' header
@@ -229,7 +229,9 @@ class App extends Component {
         <Route
           path="/login"
           render={() =>
-            this.state.isMobile ? (
+            this.state.bearer ? (
+              <Redirect to="/dashboard" />
+            ) : this.state.isMobile ? (
               <LoginMainMobile
                 signIn={signIn}
                 password={this.state.loginPassword}
@@ -280,7 +282,9 @@ class App extends Component {
         <Route
           path="/signup"
           render={() =>
-            this.state.isMobile ? (
+            this.state.bearer ? (
+              <Redirect to="/dashboard" />
+            ) : this.state.isMobile ? (
               <SignupMainMobile
                 signIn={signIn}
                 fullName={this.state.fullName}

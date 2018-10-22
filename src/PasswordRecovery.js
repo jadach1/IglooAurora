@@ -1,18 +1,16 @@
 import React, { Component } from "react"
-import {
-  FormControl,
-  FormHelperText,
-  Input,
-  InputAdornment,
-  IconButton,
-  Button,
-  Icon,
-  Grid,
-  createMuiTheme,
-  MuiThemeProvider,
-  Typography,
-  CircularProgress,
-} from "material-ui-next"
+import FormControl from "@material-ui/core/FormControl"
+import FormHelperText from "@material-ui/core/FormHelperText"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
+import Button from "@material-ui/core/Button"
+import Icon from "@material-ui/core/Icon"
+import Grid from "@material-ui/core/Grid"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import Typography from "@material-ui/core/Typography"
+import CircularProgress from "@material-ui/core/CircularProgress"
 import { Link } from "react-router-dom"
 import zxcvbn from "zxcvbn"
 import gql from "graphql-tag"

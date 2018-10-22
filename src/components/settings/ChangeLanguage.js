@@ -1,6 +1,6 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
+import Button from "@material-ui/core/Button"
 import { List, ListItem, makeSelectable } from "material-ui/List"
 import Translate from "translate-components"
 import { graphql } from "react-apollo"

@@ -6,7 +6,7 @@ import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import LoginMobile from "./components/unauthenticated/LoginMobile"
 import { hotkeys } from "react-keyboard-shortcuts"
 import { Offline, Online } from "react-detect-offline"
-import { Typography } from "material-ui-next"
+import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
 
 class UnAuthenticatedApp extends Component {
@@ -29,7 +29,7 @@ class UnAuthenticatedApp extends Component {
     const link = new HttpLink({
       uri:
       typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-      ? localStorage.getItem("server") + "graphql"
+      ? localStorage.getItem("server") + "/graphql"
       : `http://iglooql.herokuapp.com/graphql`,
     })
 

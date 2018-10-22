@@ -1,17 +1,15 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import {
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Button,
-  Icon,
-  createMuiTheme,
-  MuiThemeProvider,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Button from "@material-ui/core/Button"
+import Icon from "@material-ui/core/Icon"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 import { RadioButton, RadioButtonGroup } from "material-ui"
 
 const MOBILE_WIDTH = 500
@@ -182,7 +180,11 @@ class TileSize extends Component {
 
 export default graphql(
   gql`
-    mutation ChangeSize($id: ID!, $size: TileSize, $visibility: ValueVisibility) {
+    mutation ChangeSize(
+      $id: ID!
+      $size: TileSize
+      $visibility: ValueVisibility
+    ) {
       floatValue(tileSize: $size, id: $id, visibility: $visibility) {
         id
         visibility

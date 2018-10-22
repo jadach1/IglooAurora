@@ -1,21 +1,19 @@
 import React, { Component } from "react"
 import gql from "graphql-tag"
-import {
-  FormControl,
-  FormHelperText,
-  CircularProgress,
-  InputAdornment,
-  Input,
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-  Typography,
-  Grid,
-  FormControlLabel,
-  Checkbox,
-  Icon,
-  IconButton,
-} from "@material-ui/core"
+import FormControl from "@material-ui/core/FormControl"
+import FormHelperText from "@material-ui/core/FormHelperText"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import Input from "@material-ui/core/Input"
+import Button from "@material-ui/core/Button"
+import Typography from "@material-ui/core/Typography"
+import Grid from "@material-ui/core/Grid"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Checkbox from "@material-ui/core/Checkbox"
+import Icon from "@material-ui/core/Icon"
+import IconButton from "@material-ui/core/IconButton"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 import { Redirect } from "react-router-dom"
@@ -181,8 +179,7 @@ class Login extends Component {
                         this.setState({
                           isMailEmpty: event.target.value === "",
                         })
-                      }
-                      }
+                      }}
                       onKeyPress={event => {
                         if (event.key === "Enter") {
                           if (
@@ -251,8 +248,7 @@ class Login extends Component {
                         this.setState({
                           isPasswordEmpty: event.target.value === "",
                         })
-                      }
-                      }
+                      }}
                       error={
                         this.props.passwordError || this.state.isPasswordEmpty
                           ? true
@@ -280,8 +276,8 @@ class Login extends Component {
                               {this.state.showPassword ? (
                                 <Icon>visibility_off</Icon>
                               ) : (
-                                  <Icon>visibility</Icon>
-                                )}
+                                <Icon>visibility</Icon>
+                              )}
                             </IconButton>
                           </InputAdornment>
                         ) : null
@@ -295,7 +291,9 @@ class Login extends Component {
                           : {}
                       }
                     >
-                      {this.state.isPasswordEmpty ? "This field is required" : this.props.passwordError}
+                      {this.state.isPasswordEmpty
+                        ? "This field is required"
+                        : this.props.passwordError}
                     </FormHelperText>
                   </FormControl>
                 </Grid>

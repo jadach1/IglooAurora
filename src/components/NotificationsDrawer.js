@@ -17,7 +17,7 @@ import Menu from "@material-ui/core/Menu"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import FlatButton from "material-ui/FlatButton"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import { hotkeys } from "react-keyboard-shortcuts"
 import moment from "moment"
 
@@ -31,6 +31,8 @@ const sleep = time =>
   new Promise((resolve, reject) => {
     setTimeout(() => resolve(), time)
   })
+
+let unreadNotifications = []
 
 class NotificationsDrawer extends React.Component {
   state = { showVisualized: false }
@@ -215,7 +217,8 @@ class NotificationsDrawer extends React.Component {
       const notificationsToFlush = user.notifications.filter(
         notification =>
           notification.device.id === this.props.device.id &&
-          notification.visualized === false
+          notification.visualized === false &&
+          unreadNotifications.indexOf(notification.id) === -1
       )
 
       for (let i = 0; i < notificationsToFlush.length; i++) {
@@ -401,6 +404,7 @@ class NotificationsDrawer extends React.Component {
             onClick={() => {
               markAsUnread(this.state.targetNotification.id)
               this.setState({ anchorEl: null })
+              unreadNotifications.push(this.state.targetNotification.id)
             }}
           >
             <ListItemIcon>

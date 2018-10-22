@@ -1,10 +1,10 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
-import Button from "material-ui-next/Button"
+import Button from "@material-ui/core/Button"
 import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
 import DropDownMenu from "material-ui/DropDownMenu"
 import MenuItem from "material-ui/MenuItem"
-import Icon from "material-ui-next/Icon"
+import Icon from "@material-ui/core/Icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -2095,7 +2095,7 @@ class TimeZoneDialog extends React.Component {
             value="(UTC+10:00) Guam"
             primaryText="(UTC+10:00) Guam"
             className="notSelectable"
-          />                 
+          />
           <MenuItem
             value="(UTC+10:00) Port Moresby"
             primaryText="(UTC+10:00) Port Moresby"
@@ -2110,12 +2110,12 @@ class TimeZoneDialog extends React.Component {
             value="(UTC+10:00) Truk"
             primaryText="(UTC+10:00) Truk"
             className="notSelectable"
-          />         
+          />
           <MenuItem
             value="(UTC+10:00) Ust-Nera"
             primaryText="(UTC+10:00) Ust-Nera"
             className="notSelectable"
-          />        
+          />
           <MenuItem
             value="(UTC+10:00) Victoria"
             primaryText="(UTC+10:00) Victoria"

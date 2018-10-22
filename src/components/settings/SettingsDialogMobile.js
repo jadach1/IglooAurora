@@ -1,5 +1,5 @@
 import React from "react"
-import Dialog from "material-ui-next/Dialog"
+import Dialog from "@material-ui/core/Dialog"
 import Toggle from "material-ui/Toggle"
 import { List, ListItem } from "material-ui/List"
 import Subheader from "material-ui/Subheader"
@@ -18,23 +18,24 @@ import TimeFormatDialog from "./TimeFormat"
 // import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import Shortcuts from "./Shortcuts"
-import Icon from "material-ui-next/Icon"
-import Slide from "material-ui-next/transitions/Slide"
-import BottomNavigation from "material-ui-next/BottomNavigation"
-import BottomNavigationAction from "material-ui-next/BottomNavigation/BottomNavigationAction"
+import Icon from "@material-ui/core/Icon"
+import Slide from "@material-ui/core/Slide"
+import BottomNavigation from "@material-ui/core/BottomNavigation"
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction"
 import ManageAuthorizations from "./ManageAuthorizations"
-import AppBar from "material-ui-next/AppBar"
-import IconButton from "material-ui-next/IconButton"
-import Typography from "material-ui-next/Typography"
-import { MuiThemeProvider, createMuiTheme } from "material-ui-next/styles"
+import AppBar from "@material-ui/core/AppBar"
+import IconButton from "@material-ui/core/IconButton"
+import Typography from "@material-ui/core/Typography"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import CreateValue from "./CreateValue"
 import CreateDevice from "./CreateDevice"
 import CreateNotification from "./CreateNotification"
 import GDPRDataDownload from "./GDPRDataDownload"
 import CreatePlotNode from "./CreatePlotNode"
-import Toolbar from "material-ui-next/Toolbar"
+import Toolbar from "@material-ui/core/Toolbar"
 import Translate from "translate-components"
-import Tooltip from "material-ui-next/Tooltip"
+import Tooltip from "@material-ui/core/Tooltip"
 import ChangeEmail from "./ChangeEmail"
 import ChangeServer from "./ChangeServer"
 
@@ -74,7 +75,7 @@ const allDialogsClosed = {
   createNodeOpen: false,
   createNotificationOpen: false,
   gdprOpen: false,
-  serverOpen:false
+  serverOpen: false,
 }
 
 class SettingsDialogMobile extends React.Component {
@@ -215,6 +216,18 @@ class SettingsDialogMobile extends React.Component {
       userData: { loading, error, user },
     } = this.props
 
+    let toggleNightMode = () => {
+      if (typeof Storage !== "undefined") {
+        !localStorage.getItem("nightMode") &&
+          localStorage.setItem("nightMode", "false")
+
+        localStorage.setItem(
+          "nightMode",
+          !(localStorage.getItem("nightMode") === "true")
+        )
+      }
+    }
+
     let devModeSetting = (
       <ListItem
         primaryText="Developer mode"
@@ -229,7 +242,7 @@ class SettingsDialogMobile extends React.Component {
       />
     )
 
-    let nightModeSetting = (
+    let nightModeSetting = typeof Storage !== "undefined" && (
       <ListItem
         primaryText="Night mode"
         rightToggle={
@@ -237,7 +250,8 @@ class SettingsDialogMobile extends React.Component {
             thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
             trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
             rippleStyle={{ color: "#0083ff" }}
-            disabled
+            defaultToggled={localStorage.getItem("nightMode") === "true"}
+            onToggle={toggleNightMode}
           />
         }
       />
@@ -261,8 +275,6 @@ class SettingsDialogMobile extends React.Component {
     let devModeTab = ""
 
     let toggleDevMode = () => {}
-
-    let toggleNightMode = () => {}
 
     let toggleQuietMode = () => {}
 
@@ -330,23 +342,6 @@ class SettingsDialogMobile extends React.Component {
         />
       )
 
-      nightModeSetting = (
-        <ListItem
-          primaryText="Night mode"
-          rightToggle={
-            <Toggle
-              thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-              trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-              rippleStyle={{ color: "#0083ff" }}
-              defaultToggled={user.nightMode}
-              onToggle={() => {
-                user.nightMode ? toggleNightMode(false) : toggleNightMode(true)
-              }}
-            />
-          }
-        />
-      )
-
       quietModeSetting = (
         <ListItem
           primaryText="Quiet mode"
@@ -395,22 +390,6 @@ class SettingsDialogMobile extends React.Component {
         })
       }
 
-      toggleNightMode = nightMode => {
-        this.props["ToggleNightMode"]({
-          variables: {
-            nightMode: nightMode,
-          },
-          optimisticResponse: {
-            __typename: "Mutation",
-            user: {
-              id: user.id,
-              nightMode: nightMode,
-              __typename: "User",
-            },
-          },
-        })
-      }
-
       toggleQuietMode = quietMode => {
         this.props["ToggleQuietMode"]({
           variables: {
@@ -452,6 +431,165 @@ class SettingsDialogMobile extends React.Component {
 
       profileIconColor = user.profileIconColor
     }
+
+    let uiSettings = (
+      <div
+        style={{
+          overflowY: "auto",
+          height: "calc(100vh - 128px)",
+          overflowX: "hidden",
+        }}
+      >
+        <div style={listStyles.root}>
+          <List style={{ width: "100%", padding: "0" }}>
+            <Subheader style={{ cursor: "default" }}>Appearance</Subheader>
+            {nightModeSetting}
+            <Divider />
+            <Subheader style={{ cursor: "default" }}>Localization</Subheader>
+            {/*
+  <ListItem
+    primaryText="Change language"
+    secondaryText={languageText}
+    onClick={this.handleLanguageDialogOpen}
+  /> */}
+            <ListItem
+              primaryText="Change units of measurement"
+              secondaryText="SI, Celsius"
+              onClick={this.handleUnitDialogOpen}
+            />
+            {/*     <Divider />
+  <Subheader style={{ cursor: "default" }}>Time</Subheader>
+<ListItem
+    primaryText="Change time zone"
+    secondaryText={
+      "Auto: (UTC" +
+      moment.tz(moment.tz.guess()).format("Z") +
+      ") " +
+      moment.tz.guess().split("/")[1]
+    }
+    onClick={this.handleTimeDialogOpen}
+  /> */}
+            <ListItem
+              primaryText="Change date and time format"
+              secondaryText="DD/MM/YYYY, 24-hour clock"
+              onClick={this.handleTimeFormatDialogOpen}
+            />
+            <Divider />
+            <Subheader style={{ cursor: "default" }}>Accessibility</Subheader>
+            <ListItem
+              primaryText="Keyboard shortcuts"
+              onClick={this.handleShortcutDialogOpen}
+            />
+          </List>
+        </div>
+      </div>
+    )
+
+    let notificationsSettings = (
+      <div
+        style={{
+          overflowY: "auto",
+          height: "calc(100vh - 128px)",
+          overflowX: "hidden",
+        }}
+      >
+        <div style={listStyles.root}>
+          <List style={{ width: "100%", padding: "0" }}>
+            <Subheader style={{ cursor: "default" }}>Lorem Ipsum</Subheader>
+            {quietModeSetting}
+            <Divider />
+            <Subheader style={{ cursor: "default" }}>Lorem Ipsum</Subheader>
+            {deviceList}
+          </List>
+        </div>
+      </div>
+    )
+
+    let accountSettings = (
+      <div
+        style={{
+          overflowY: "auto",
+          height: "calc(100vh - 128px)",
+          overflowX: "hidden",
+        }}
+      >
+        <List style={{ padding: "0" }}>
+          <Subheader style={{ cursor: "default" }}>Authentication</Subheader>
+          {/* <ListItem
+primaryText="Manage emails"
+secondaryText="Add or delete emails you use to log in"
+onClick={this.handleEmailDialogOpen}
+/> */}
+          <ListItem
+            primaryText="Change email"
+            onClick={() => this.setState({ emailDialogOpen: true })}
+          />
+          <ListItem
+            primaryText="Change password"
+            onClick={this.handlePasswordDialogOpen}
+          />
+          <ListItem
+            primaryText="Log out at the end of every session"
+            rightToggle={
+              <Toggle
+                thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                rippleStyle={{ color: "#0083ff" }}
+                onClick={() =>
+                  localStorage.setItem("keepLoggedIn", !this.state.keepLoggedIn)
+                }
+              />
+            }
+          />
+          {/*       <ListItem
+primaryText="Two-factor authentication"
+secondaryText="Make your account safer by verifying it is actually you"
+rightToggle={
+<Toggle
+  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+  rippleStyle={{ color: "#0083ff" }}
+  onToggle={this.handleTwoFactorDialogOpen}
+/>
+}
+/>
+<ListItem
+primaryText="Passwordless authentication"
+secondaryText="Use your fingerprint, your face or an external device to log in"
+rightToggle={
+<Toggle
+  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+  rippleStyle={{ color: "#0083ff" }}
+  onToggle={this.handleTwoFactorDialogOpen}
+/>
+}
+/> */}
+          <Divider />
+          <Subheader style={{ cursor: "default" }}>For developers</Subheader>
+          {devModeSetting}
+          <Divider />
+          <Subheader style={{ cursor: "default" }}>
+            Account management
+          </Subheader>
+          <ListItem
+            primaryText="Manage your profile"
+            secondaryText="Change your profile photo and name"
+            onClick={this.handleNameDialogOpen}
+          />
+          <ListItem
+            primaryText="Download your data"
+            secondaryText="Transfer your data to another service"
+            onClick={() => this.setState({ gdprOpen: true })}
+          />
+          <ListItem
+            primaryText="Delete your account"
+            onClick={this.handleDeleteDialogOpen}
+            style={{ color: "#F44336" }}
+          />
+        </List>
+      </div>
+    )
 
     return (
       <React.Fragment>
@@ -500,214 +638,68 @@ class SettingsDialogMobile extends React.Component {
               </Toolbar>
             </AppBar>
           </MuiThemeProvider>
-          <SwipeableViews
-            index={this.props.slideIndex}
-            onChangeIndex={this.props.handleChange}
-          >
-            <div
-              style={{
-                overflowY: "auto",
-                height: "calc(100vh - 128px)",
-              }}
+          {user && user.devMode ? (
+            <SwipeableViews
+              index={this.props.slideIndex}
+              onChangeIndex={this.props.handleChange}
             >
-              <div style={listStyles.root}>
-                <List style={{ width: "100%", padding: "0" }}>
-                  <Subheader style={{ cursor: "default" }}>
-                    Appearance
-                  </Subheader>
-                  {nightModeSetting}
+              {uiSettings}
+              {notificationsSettings}
+              {accountSettings}
+              <div
+                style={{
+                  overflowY: "auto",
+                  height: "calc(100vh - 220px)",
+                  maxHeight: "550px",
+                }}
+              >
+                <List style={{ padding: "0" }}>
+                  <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
+                  <ListItem
+                    primaryText="Manage authorizations"
+                    secondaryText="Generate, view and delete your account's access tokens"
+                    onClick={this.handleAuthDialogOpen}
+                  />
                   <Divider />
                   <Subheader style={{ cursor: "default" }}>
-                    Localization
+                    Devices and values
                   </Subheader>
-                  {/*
                   <ListItem
-                    primaryText="Change language"
-                    secondaryText={languageText}
-                    onClick={this.handleLanguageDialogOpen}
-                  /> */}
-                  <ListItem
-                    primaryText="Change units of measurement"
-                    secondaryText="SI, Celsius"
-                    onClick={this.handleUnitDialogOpen}
+                    primaryText="Create a new device"
+                    onClick={() => this.setState({ createDeviceOpen: true })}
                   />
-                  {/*   <Divider />
-                  <Subheader style={{ cursor: "default" }}>Time</Subheader>
-                   <ListItem
-                    primaryText="Change time zone"
-                    secondaryText={
-                      "Auto: (UTC" +
-                      moment.tz(moment.tz.guess()).format("Z") +
-                      ") " +
-                      moment.tz.guess().split("/")[1]
+                  <ListItem
+                    primaryText="Create a new value"
+                    onClick={() => this.setState({ createValueOpen: true })}
+                  />
+                  <ListItem
+                    primaryText="Create a new plot node"
+                    onClick={() => this.setState({ createNodeOpen: true })}
+                  />
+                  <ListItem
+                    primaryText="Create a new notification"
+                    onClick={() =>
+                      this.setState({ createNotificationOpen: true })
                     }
-                    onClick={this.handleTimeDialogOpen}
-                  /> */}
-                  <ListItem
-                    primaryText="Change date and time format"
-                    secondaryText="DD/MM/YYYY, 24-hour clock"
-                    onClick={this.handleTimeFormatDialogOpen}
                   />
-                  <Divider />
-                  <Subheader style={{ cursor: "default" }}>
-                    Accessibility
-                  </Subheader>
+                  <Subheader style={{ cursor: "default" }}>Testing</Subheader>
                   <ListItem
-                    primaryText="Keyboard shortcuts"
-                    onClick={this.handleShortcutDialogOpen}
+                    primaryText="Change connected server"
+                    onClick={() => this.setState({ serverOpen: true })}
                   />
                 </List>
               </div>
-            </div>
-            <div
-              style={{
-                overflowY: "auto",
-                height: "calc(100vh - 128px)",
-                overflowX: "hidden",
-              }}
+            </SwipeableViews>
+          ) : (
+            <SwipeableViews
+              index={this.props.slideIndex}
+              onChangeIndex={this.props.handleChange}
             >
-              <div style={listStyles.root}>
-                <List style={{ width: "100%", padding: "0" }}>
-                  <Subheader style={{ cursor: "default" }}>
-                    Lorem Ipsum
-                  </Subheader>
-                  {quietModeSetting}
-                  <Divider />
-                  <Subheader style={{ cursor: "default" }}>
-                    Lorem Ipsum
-                  </Subheader>
-                  {deviceList}
-                </List>
-              </div>
-            </div>
-            <div
-              style={{
-                overflowY: "auto",
-                height: "calc(100vh - 128px)",
-              }}
-            >
-              <List style={{ padding: "0" }}>
-                <Subheader style={{ cursor: "default" }}>
-                  Authentication
-                </Subheader>
-                {/* <ListItem
-                  primaryText="Manage emails"
-                  secondaryText="Add or delete emails you use to log in"
-                  onClick={this.handleEmailDialogOpen}
-                /> */}
-                <ListItem
-                  primaryText="Change email"
-                  onClick={() => this.setState({ emailDialogOpen: true })}
-                />
-                <ListItem
-                  primaryText="Change password"
-                  onClick={this.handlePasswordDialogOpen}
-                />
-                <ListItem
-                  primaryText="Log out at the end of every session"
-                  rightToggle={
-                    <Toggle
-                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                      rippleStyle={{ color: "#0083ff" }}
-                    />
-                  }
-                />
-                {/*  <ListItem
-                  primaryText="Two-factor authentication"
-                  secondaryText="Make your account safer by verifying it is actually you"
-                  rightToggle={
-                    <Toggle
-                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                      rippleStyle={{ color: "#0083ff" }}
-                      onToggle={this.handleTwoFactorDialogOpen}
-                    />
-                  }
-                />
-                <ListItem
-                  primaryText="Passwordless authentication"
-                  secondaryText="Use your fingerprint, your face or an external device to log in"
-                  rightToggle={
-                    <Toggle
-                      thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                      trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                      rippleStyle={{ color: "#0083ff" }}
-                      onToggle={this.handleTwoFactorDialogOpen}
-                    />
-                  }
-                /> */}
-                <Divider />
-                <Subheader style={{ cursor: "default" }}>
-                  For developers
-                </Subheader>
-                {devModeSetting}
-                <Divider />
-                <Subheader style={{ cursor: "default" }}>
-                  Account management
-                </Subheader>
-                <ListItem
-                  primaryText="Manage your profile"
-                  secondaryText="Change your profile photo and name"
-                  onClick={this.handleNameDialogOpen}
-                />
-                <ListItem
-                  primaryText="Download your data"
-                  secondaryText="Transfer your data to another service"
-                  onClick={() => this.setState({ gdprOpen: true })}
-                />
-                <ListItem
-                  primaryText="Delete your account"
-                  onClick={this.handleDeleteDialogOpen}
-                  style={{ color: "#F44336" }}
-                />
-              </List>
-            </div>
-            <div
-              style={{
-                overflowY: "auto",
-                height: "calc(100vh - 128px)",
-              }}
-            >
-              <List style={{ padding: "0" }}>
-                <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
-                <ListItem
-                  primaryText="Manage authorizations"
-                  secondaryText="Generate, view and delete your account's access tokens"
-                  onClick={this.handleAuthDialogOpen}
-                />
-                <Divider />
-                <Subheader style={{ cursor: "default" }}>
-                  Devices and values
-                </Subheader>
-                <ListItem
-                  primaryText="Create a new device"
-                  onClick={() => this.setState({ createDeviceOpen: true })}
-                />
-                <ListItem
-                  primaryText="Create a new value"
-                  onClick={() => this.setState({ createValueOpen: true })}
-                />
-                <ListItem
-                  primaryText="Create a new plot node"
-                  onClick={() => this.setState({ createNodeOpen: true })}
-                />
-                <ListItem
-                  primaryText="Create a new notification"
-                  onClick={() =>
-                    this.setState({ createNotificationOpen: true })
-                  }
-                />
-                   <Subheader style={{ cursor: "default" }}>Testing</Subheader>
-<ListItem
-                  primaryText="Change connected server"
-                  onClick={() =>
-                    this.setState({ serverOpen: true })
-                  }
-                />
-              </List>
-            </div>
-          </SwipeableViews>
+              {uiSettings}
+              {notificationsSettings}
+              {accountSettings}
+            </SwipeableViews>
+          )}
           <AppBar
             color="default"
             position="static"
@@ -718,7 +710,8 @@ class SettingsDialogMobile extends React.Component {
               value={this.props.slideIndex}
               showLabels
               style={
-                user && user.nightMode
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
                   ? {
                       height: "64px",
                       backgroundColor: "#2f333d",
@@ -733,7 +726,8 @@ class SettingsDialogMobile extends React.Component {
                 icon={<Icon>dashboard</Icon>}
                 label="Interface"
                 style={
-                  user && user.nightMode
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
                     ? this.props.slideIndex === 0
                       ? { color: "#fff" }
                       : { color: "#fff", opacity: 0.5 }
@@ -746,7 +740,8 @@ class SettingsDialogMobile extends React.Component {
                 icon={<Icon>notifications</Icon>}
                 label="Notifications"
                 style={
-                  user && user.nightMode
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
                     ? this.props.slideIndex === 1
                       ? { color: "#fff" }
                       : { color: "#fff", opacity: 0.5 }
@@ -759,7 +754,8 @@ class SettingsDialogMobile extends React.Component {
                 icon={<Icon>account_box</Icon>}
                 label="Account"
                 style={
-                  user && user.nightMode
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
                     ? this.props.slideIndex === 2
                       ? { color: "#fff" }
                       : { color: "#fff", opacity: 0.5 }
@@ -879,7 +875,8 @@ class SettingsDialogMobile extends React.Component {
         />
         <ChangeServer
           open={this.props.isOpen && this.state.serverOpen}
-          close={() => this.setState({ serverOpen: false })}/>
+          close={() => this.setState({ serverOpen: false })}
+        />
       </React.Fragment>
     )
   }

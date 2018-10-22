@@ -1,31 +1,29 @@
 import React from "react"
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemText,
-  Typography,
-  ListItemSecondaryAction,
-  IconButton,
-  Icon,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemAvatar,
-  Avatar,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Grow,
-  Slide,
-  Grid,
-  FormControl,
-  Input,
-  InputAdornment,
-} from "@material-ui/core"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import Button from "@material-ui/core/Button"
+import List from "@material-ui/core/List"
+import ListSubheader from "@material-ui/core/ListSubheader"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
+import Typography from "@material-ui/core/Typography"
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import IconButton from "@material-ui/core/IconButton"
+import Icon from "@material-ui/core/Icon"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemAvatar from "@material-ui/core/ListItemAvatar"
+import Avatar from "@material-ui/core/Avatar"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
+import Grid from "@material-ui/core/Grid"
+import FormControl from "@material-ui/core/FormControl"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { RadioButtonGroup, RadioButton } from "material-ui"

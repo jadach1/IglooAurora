@@ -1,20 +1,18 @@
 import React from "react"
-import {
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Grow,
-  Slide,
-  Grid,
-  Icon,
-  FormControl,
-  Input,
-  InputAdornment,
-  IconButton,
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-} from "@material-ui/core"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
+import Grid from "@material-ui/core/Grid"
+import Icon from "@material-ui/core/Icon"
+import FormControl from "@material-ui/core/FormControl"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
+import Button from "@material-ui/core/Button"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 

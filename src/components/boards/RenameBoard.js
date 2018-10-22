@@ -1,7 +1,7 @@
 import React from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Button from "@material-ui/core/Button"
 import Grid from "@material-ui/core/Grid"
 import FormControl from "@material-ui/core/FormControl"

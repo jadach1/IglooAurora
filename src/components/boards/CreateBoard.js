@@ -1,24 +1,22 @@
 import React from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import {
-  FormControlLabel,
-  Checkbox,
-  Icon,
-  Button,
-  MuiThemeProvider,
-  createMuiTheme,
-  Grid,
-  FormControl,
-  Input,
-  InputAdornment,
-  IconButton,
-  Dialog,
-  DialogActions,
-  DialogTitle,
-  Grow,
-  Slide,
-} from "@material-ui/core"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Checkbox from "@material-ui/core/Checkbox"
+import Icon from "@material-ui/core/Icon"
+import Button from "@material-ui/core/Button"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import Grid from "@material-ui/core/Grid"
+import FormControl from "@material-ui/core/FormControl"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
+import Dialog from "@material-ui/core/Dialog"
+import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
 import fox from "../../styles/assets/fox.jpg"
 import northernLights from "../../styles/assets/northernLights.jpg"
 import denali from "../../styles/assets/denali.jpg"
@@ -38,8 +36,8 @@ function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
   ) : (
-      <Slide direction="up" {...props} />
-    )
+    <Slide direction="up" {...props} />
+  )
 }
 
 class CreateBoard extends React.Component {
@@ -167,7 +165,9 @@ class CreateBoard extends React.Component {
           style={{ paddingLeft: "24px", paddingRight: "24px" }}
           label="Set as favorite"
         />
-        <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>Choose a board image</p>
+        <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>
+          Choose a board image
+        </p>
         <SwipeableViews
           index={this.state.slideIndex}
           onChangeIndex={value => {
@@ -178,10 +178,10 @@ class CreateBoard extends React.Component {
           style={
             window.innerWidth < MOBILE_WIDTH
               ? {
-                width: "calc(100vw - 48px)",
-                marginLeft: "24px",
-                marginRight: "24px",
-              }
+                  width: "calc(100vw - 48px)",
+                  marginLeft: "24px",
+                  marginRight: "24px",
+                }
               : { width: "350px", marginLeft: "24px", marginRight: "24px" }
           }
         >

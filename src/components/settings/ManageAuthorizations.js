@@ -5,7 +5,7 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import Button from "@material-ui/core/Button"
 import { List, ListItem } from "material-ui/List"
 import IconButton from "@material-ui/core/IconButton"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Icon from "@material-ui/core/Icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
@@ -53,7 +53,7 @@ class AuthDialog extends React.Component {
     const link = new HttpLink({
       uri:
       typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-    ? localStorage.getItem("server") + "graphql"
+    ? localStorage.getItem("server") + "/graphql"
     : `http://iglooql.herokuapp.com/graphql`,
     })
 

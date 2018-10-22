@@ -2,20 +2,18 @@ import React, { Component } from "react"
 import gql from "graphql-tag"
 import zxcvbn from "zxcvbn"
 import * as EmailValidator from "email-validator"
-import {
-  CircularProgress,
-  Button,
-  MuiThemeProvider,
-  createMuiTheme,
-  Input,
-  InputAdornment,
-  FormControl,
-  FormHelperText,
-  IconButton,
-  Icon,
-  Grid,
-  Typography,
-} from "@material-ui/core"
+import Button from "@material-ui/core/Button"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import FormControl from "@material-ui/core/FormControl"
+import FormHelperText from "@material-ui/core/FormHelperText"
+import IconButton from "@material-ui/core/IconButton"
+import Icon from "@material-ui/core/Icon"
+import Typography from "@material-ui/core/Typography"
+import Grid from "@material-ui/core/Grid"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import { Redirect } from "react-router-dom"
 
 const theme = createMuiTheme({
@@ -128,17 +126,14 @@ class Signup extends Component {
 
   componentDidMount() {
     this.setState({
-      passwordScore: zxcvbn(
-        this.props.password,
-        [
-          this.props.email,
-          this.props.email.split("@")[0],
-          this.props.fullName,
-          "igloo",
-          "igloo aurora",
-          "aurora",
-        ]
-      ).score,
+      passwordScore: zxcvbn(this.props.password, [
+        this.props.email,
+        this.props.email.split("@")[0],
+        this.props.fullName,
+        "igloo",
+        "igloo aurora",
+        "aurora",
+      ]).score,
     })
   }
 
@@ -228,12 +223,14 @@ class Signup extends Component {
                       this.setState({
                         isNameValid: event.target.value !== "",
                       })
-                    }
-                    }
+                    }}
                     onKeyPress={event => {
-                      if (event.key === "Enter" && this.props.fullName &&
+                      if (
+                        event.key === "Enter" &&
+                        this.props.fullName &&
                         this.state.isEmailValid &&
-                        this.state.passwordScore >= 2) {
+                        this.state.passwordScore >= 2
+                      ) {
                         this.setState({ showLoading: true })
                         this.signUp()
                       }
@@ -249,8 +246,7 @@ class Signup extends Component {
                               this.setState({
                                 isNameValid: false,
                               })
-                            }
-                            }
+                            }}
                             onMouseDown={this.handleMouseDownPassword}
                           >
                             <Icon>clear</Icon>
@@ -286,8 +282,8 @@ class Signup extends Component {
                     value={this.props.email}
                     error={
                       (!this.state.isEmailValid && this.props.email) ||
-                        this.props.emailError ||
-                        this.state.isMailEmpty
+                      this.props.emailError ||
+                      this.state.isMailEmpty
                         ? true
                         : false
                     }
@@ -302,9 +298,12 @@ class Signup extends Component {
                       })
                     }}
                     onKeyPress={event => {
-                      if (event.key === "Enter" && this.props.fullName &&
+                      if (
+                        event.key === "Enter" &&
+                        this.props.fullName &&
                         this.state.isEmailValid &&
-                        this.state.passwordScore >= 2) {
+                        this.state.passwordScore >= 2
+                      ) {
                         this.setState({ showLoading: true })
                         this.signUp()
                       }
@@ -327,8 +326,8 @@ class Signup extends Component {
                     id="name-error-text-signup"
                     style={
                       (!this.state.isEmailValid && this.props.email) ||
-                        this.props.emailError ||
-                        this.state.isMailEmpty
+                      this.props.emailError ||
+                      this.state.isMailEmpty
                         ? { color: "#f44336" }
                         : {}
                     }
@@ -374,9 +373,12 @@ class Signup extends Component {
                       })
                     }}
                     onKeyPress={event => {
-                      if (event.key === "Enter" && this.props.fullName &&
+                      if (
+                        event.key === "Enter" &&
+                        this.props.fullName &&
                         this.state.isEmailValid &&
-                        this.state.passwordScore >= 2) {
+                        this.state.passwordScore >= 2
+                      ) {
                         this.setState({ showLoading: true })
                         this.signUp()
                       }
@@ -392,8 +394,8 @@ class Signup extends Component {
                             {this.state.showPassword ? (
                               <Icon>visibility_off</Icon>
                             ) : (
-                                <Icon>visibility</Icon>
-                              )}
+                              <Icon>visibility</Icon>
+                            )}
                           </IconButton>
                         </InputAdornment>
                       ) : null
@@ -407,7 +409,9 @@ class Signup extends Component {
                         : { color: passwordColor }
                     }
                   >
-                    {this.state.isPasswordEmpty ? "This field is required" : scoreText}
+                    {this.state.isPasswordEmpty
+                      ? "This field is required"
+                      : scoreText}
                   </FormHelperText>
                 </FormControl>
               </Grid>

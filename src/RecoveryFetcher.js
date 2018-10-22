@@ -24,9 +24,12 @@ export default class RecoveryFetcher extends Component {
 
     const wsLink = new WebSocketLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-      ? "wss://" + localStorage.getItem("server") + "/subscriptions"
-      : `wss://iglooql.herokuapp.com/subscriptions`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? "wss://" + localStorage
+          .getItem("server")
+          .replace("https://", "")
+          .replace("http://", "") + "/subscriptions"
+          : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -37,9 +40,9 @@ export default class RecoveryFetcher extends Component {
 
     const httpLink = new HttpLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-      ? "wss://" + localStorage.getItem("server") + "/subscriptions"
-      : `wss://iglooql.herokuapp.com/subscriptions`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ?  localStorage.getItem("server") + "/graphql"
+          : `https://iglooql.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },

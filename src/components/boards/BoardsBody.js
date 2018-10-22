@@ -1,17 +1,14 @@
 import React, { Component } from "react"
-import {
-  Typography,
-  Icon,
-  Grid,
-  Button,
-  MuiThemeProvider,
-  createMuiTheme,
-  Zoom,
-  IconButton,
-  FormControl,
-  Input,
-  InputAdornment,
-} from "@material-ui/core"
+import Typography from "@material-ui/core/Typography"
+import Icon from "@material-ui/core/Icon"
+import Grid from "@material-ui/core/Grid"
+import Button from "@material-ui/core/Button"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import Zoom from "@material-ui/core/Zoom"
+import IconButton from "@material-ui/core/IconButton"
+import FormControl from "@material-ui/core/FormControl"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
 import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
@@ -60,7 +57,9 @@ export default class BoardsBody extends Component {
     }
 
     if (user) {
-      nightMode = user.nightMode
+      nightMode =
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("nightMode") === "true"
       devMode = user.devMode
 
       favoriteBoardsList = user.boards
@@ -93,7 +92,7 @@ export default class BoardsBody extends Component {
         .map(board => (
           <Grid key={board.id} item>
             <BoardCard
-                          userData={this.props.userData}
+              userData={this.props.userData}
               board={board}
               nightMode={nightMode}
               devMode={devMode}

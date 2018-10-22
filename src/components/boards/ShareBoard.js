@@ -1,31 +1,29 @@
 import React from "react"
-import {
-  MuiThemeProvider,
-  createMuiTheme,
-  Button,
-  List,
-  ListSubheader,
-  ListItem,
-  ListItemText,
-  Typography,
-  ListItemSecondaryAction,
-  IconButton,
-  Icon,
-  Menu,
-  MenuItem,
-  ListItemIcon,
-  ListItemAvatar,
-  Avatar,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  Grow,
-  Slide,
-  Grid,
-  FormControl,
-  Input,
-  InputAdornment,
-} from "@material-ui/core"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import Button from "@material-ui/core/Button"
+import List from "@material-ui/core/List"
+import ListSubheader from "@material-ui/core/ListSubheader"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
+import Typography from "@material-ui/core/Typography"
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import IconButton from "@material-ui/core/IconButton"
+import Icon from "@material-ui/core/Icon"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemAvatar from "@material-ui/core/ListItemAvatar"
+import Avatar from "@material-ui/core/Avatar"
+import Dialog from "@material-ui/core/Dialog"
+import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
+import Grow from "@material-ui/core/Grow"
+import Slide from "@material-ui/core/Slide"
+import Grid from "@material-ui/core/Grid"
+import FormControl from "@material-ui/core/FormControl"
+import Input from "@material-ui/core/Input"
+import InputAdornment from "@material-ui/core/InputAdornment"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { RadioButtonGroup, RadioButton } from "material-ui"
@@ -42,8 +40,8 @@ function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
   ) : (
-      <Slide direction="up" {...props} />
-    )
+    <Slide direction="up" {...props} />
+  )
 }
 
 class ShareBoard extends React.Component {
@@ -183,224 +181,258 @@ class ShareBoard extends React.Component {
                   <ListItemText
                     primary={
                       this.props.userData.user.email ===
-                        this.props.board.owner.email
+                      this.props.board.owner.email
                         ? "You"
                         : this.props.board.owner.fullName
                     }
                     secondary={
                       this.props.userData.user.email ===
-                        this.props.board.owner.email
+                      this.props.board.owner.email
                         ? ""
                         : this.props.board.owner.email
                     }
                   />
                   {this.props.userData.user.email ===
                     this.props.board.owner.email && (
-                      <ListItemSecondaryAction>
-                        <IconButton>
-                          <Icon>swap_horiz</Icon>
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    )}
+                    <ListItemSecondaryAction>
+                      <IconButton>
+                        <Icon>swap_horiz</Icon>
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  )}
                 </ListItem>
               </ul>
             </li>
-            {!((this.props.board.myRole === "EDITOR" || this.props.board.myRole === "SPECTATOR") && !this.props.board.admins[0]) && < li key="Admins">
-              <ul style={{ padding: "0" }}>
-                <ListSubheader
-                  style={{ backgroundColor: "white" }}
-                  className="notSelectable defaultCursor"
-                >
-                  Admins
-                </ListSubheader>
-                {this.props.board.admins.map(item => (
-                  <ListItem key={item.id}>
-                    <ListItemAvatar
-                      style={{
-                        backgroundColor: item.profileIconColor,
-                      }}
-                    >
-                      <Avatar>{this.getInitials(item.fullName)}</Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        this.props.userData.user.email === item.email
-                          ? "You"
-                          : item.fullName
-                      }
-                      secondary={
-                        this.props.userData.user.email === item.email
-                          ? ""
-                          : item.email
-                      }
-                    />
-                    {this.props.userData.user.email !== item.email && (
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          onClick={event =>
-                            this.setState({
-                              anchorEl: event.currentTarget,
-                              menuTarget: item,
-                              selectedUserForCHangeRoleDialog: "admin",
-                            })
-                          }
-                        >
-                          <Icon>more_vert</Icon>
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    )}
-                  </ListItem>
-                ))}
-                {(this.props.board.myRole === "ADMIN" || this.props.board.myRole === "OWNER") && <ListItem
-                  button
-                  onClick={() =>
-                    this.setState({
-                      addAdminOpen: true,
-                      selectedUserType: "admin",
-                    })
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      style={{ backgroundColor: "transparent", color: "#000" }}
-                    >
-                      <Icon>person_add</Icon>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Invite an admin" />
-                </ListItem>}
-              </ul>
-            </li>}
-            {!(( this.props.board.myRole === "SPECTATOR") && !this.props.board.admins[0]) && <li key="Editors">
-              <ul style={{ padding: "0" }}>
-                <ListSubheader style={{ backgroundColor: "white" }}>
-                  Editors
-                </ListSubheader>
-                {this.props.board.editors.map(item => (
-                  <ListItem key={item.id}>
-                    <ListItemAvatar>
-                      <Avatar
+            {!(
+              (this.props.board.myRole === "EDITOR" ||
+                this.props.board.myRole === "SPECTATOR") &&
+              !this.props.board.admins[0]
+            ) && (
+              <li key="Admins">
+                <ul style={{ padding: "0" }}>
+                  <ListSubheader
+                    style={{ backgroundColor: "white" }}
+                    className="notSelectable defaultCursor"
+                  >
+                    Admins
+                  </ListSubheader>
+                  {this.props.board.admins.map(item => (
+                    <ListItem key={item.id}>
+                      <ListItemAvatar
                         style={{
                           backgroundColor: item.profileIconColor,
                         }}
                       >
-                        {this.getInitials(item.fullName)}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        this.props.userData.user.email === item.email
-                          ? "You"
-                          : item.fullName
+                        <Avatar>{this.getInitials(item.fullName)}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          this.props.userData.user.email === item.email
+                            ? "You"
+                            : item.fullName
+                        }
+                        secondary={
+                          this.props.userData.user.email === item.email
+                            ? ""
+                            : item.email
+                        }
+                      />
+                      {this.props.userData.user.email !== item.email && (
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            onClick={event =>
+                              this.setState({
+                                anchorEl: event.currentTarget,
+                                menuTarget: item,
+                                selectedUserForCHangeRoleDialog: "admin",
+                              })
+                            }
+                          >
+                            <Icon>more_vert</Icon>
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      )}
+                    </ListItem>
+                  ))}
+                  {(this.props.board.myRole === "ADMIN" ||
+                    this.props.board.myRole === "OWNER") && (
+                    <ListItem
+                      button
+                      onClick={() =>
+                        this.setState({
+                          addAdminOpen: true,
+                          selectedUserType: "admin",
+                        })
                       }
-                      secondary={
-                        this.props.userData.user.email === item.email
-                          ? ""
-                          : item.email
-                      }
-                    />
-                    {this.props.userData.user.email !== item.email && (
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          onClick={event =>
-                            this.setState({
-                              anchorEl: event.currentTarget,
-                              menuTarget: item,
-                              selectedUserForCHangeRoleDialog: "editor",
-                            })
-                          }
-                        >
-                          <Icon>more_vert</Icon>
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    )}
-                  </ListItem>
-                ))}
-                {(this.props.board.myRole === "ADMIN" || this.props.board.myRole === "OWNER") && <ListItem
-                  button
-                  onClick={() =>
-                    this.setState({
-                      addAdminOpen: true,
-                      selectedUserType: "editor",
-                    })
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      style={{ backgroundColor: "transparent", color: "#000" }}
                     >
-                      <Icon>person_add</Icon>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Invite an editor" />
-                </ListItem>}
-              </ul>
-            </li>}
-            {!(( this.props.board.myRole === "EDITOR") && !this.props.board.admins[0]) &&     <li key="Spectators">
-              <ul style={{ padding: "0" }}>
-                <ListSubheader style={{ backgroundColor: "white" }}>
-                  Spectators
-                </ListSubheader>
-                {this.props.board.spectators.map(item => (
-                  <ListItem key={item.id}>
-                    <ListItemAvatar>
-                      <Avatar
-                        style={{
-                          backgroundColor: item.profileIconColor,
-                        }}
-                      >
-                        {this.getInitials(item.fullName)}
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={
-                        this.props.userData.user.email === item.email
-                          ? "You"
-                          : item.fullName
-                      }
-                      secondary={
-                        this.props.userData.user.email === item.email
-                          ? ""
-                          : item.email
-                      }
-                    />
-                    {this.props.userData.user.email !== item.email && (
-                      <ListItemSecondaryAction>
-                        <IconButton
-                          onClick={event =>
-                            this.setState({
-                              anchorEl: event.currentTarget,
-                              menuTarget: item,
-                              selectedUserForCHangeRoleDialog: "spectator",
-                            })
-                          }
+                      <ListItemAvatar>
+                        <Avatar
+                          style={{
+                            backgroundColor: "transparent",
+                            color: "#000",
+                          }}
                         >
-                          <Icon>more_vert</Icon>
-                        </IconButton>
-                      </ListItemSecondaryAction>
-                    )}
-                  </ListItem>
-                ))}
-                {(this.props.board.myRole === "ADMIN" || this.props.board.myRole === "OWNER") && <ListItem
-                  button
-                  onClick={() =>
-                    this.setState({
-                      addAdminOpen: true,
-                      selectedUserType: "spectator",
-                    })
-                  }
-                >
-                  <ListItemAvatar>
-                    <Avatar
-                      style={{ backgroundColor: "transparent", color: "#000" }}
+                          <Icon>person_add</Icon>
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Invite an admin" />
+                    </ListItem>
+                  )}
+                </ul>
+              </li>
+            )}
+            {!(
+              this.props.board.myRole === "SPECTATOR" &&
+              !this.props.board.admins[0]
+            ) && (
+              <li key="Editors">
+                <ul style={{ padding: "0" }}>
+                  <ListSubheader style={{ backgroundColor: "white" }}>
+                    Editors
+                  </ListSubheader>
+                  {this.props.board.editors.map(item => (
+                    <ListItem key={item.id}>
+                      <ListItemAvatar>
+                        <Avatar
+                          style={{
+                            backgroundColor: item.profileIconColor,
+                          }}
+                        >
+                          {this.getInitials(item.fullName)}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          this.props.userData.user.email === item.email
+                            ? "You"
+                            : item.fullName
+                        }
+                        secondary={
+                          this.props.userData.user.email === item.email
+                            ? ""
+                            : item.email
+                        }
+                      />
+                      {this.props.userData.user.email !== item.email && (
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            onClick={event =>
+                              this.setState({
+                                anchorEl: event.currentTarget,
+                                menuTarget: item,
+                                selectedUserForCHangeRoleDialog: "editor",
+                              })
+                            }
+                          >
+                            <Icon>more_vert</Icon>
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      )}
+                    </ListItem>
+                  ))}
+                  {(this.props.board.myRole === "ADMIN" ||
+                    this.props.board.myRole === "OWNER") && (
+                    <ListItem
+                      button
+                      onClick={() =>
+                        this.setState({
+                          addAdminOpen: true,
+                          selectedUserType: "editor",
+                        })
+                      }
                     >
-                      <Icon>person_add</Icon>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText primary="Invite a spectator" />
-                </ListItem>}
-              </ul>
-            </li>}
+                      <ListItemAvatar>
+                        <Avatar
+                          style={{
+                            backgroundColor: "transparent",
+                            color: "#000",
+                          }}
+                        >
+                          <Icon>person_add</Icon>
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Invite an editor" />
+                    </ListItem>
+                  )}
+                </ul>
+              </li>
+            )}
+            {!(
+              this.props.board.myRole === "EDITOR" &&
+              !this.props.board.admins[0]
+            ) && (
+              <li key="Spectators">
+                <ul style={{ padding: "0" }}>
+                  <ListSubheader style={{ backgroundColor: "white" }}>
+                    Spectators
+                  </ListSubheader>
+                  {this.props.board.spectators.map(item => (
+                    <ListItem key={item.id}>
+                      <ListItemAvatar>
+                        <Avatar
+                          style={{
+                            backgroundColor: item.profileIconColor,
+                          }}
+                        >
+                          {this.getInitials(item.fullName)}
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          this.props.userData.user.email === item.email
+                            ? "You"
+                            : item.fullName
+                        }
+                        secondary={
+                          this.props.userData.user.email === item.email
+                            ? ""
+                            : item.email
+                        }
+                      />
+                      {this.props.userData.user.email !== item.email && (
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            onClick={event =>
+                              this.setState({
+                                anchorEl: event.currentTarget,
+                                menuTarget: item,
+                                selectedUserForCHangeRoleDialog: "spectator",
+                              })
+                            }
+                          >
+                            <Icon>more_vert</Icon>
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      )}
+                    </ListItem>
+                  ))}
+                  {(this.props.board.myRole === "ADMIN" ||
+                    this.props.board.myRole === "OWNER") && (
+                    <ListItem
+                      button
+                      onClick={() =>
+                        this.setState({
+                          addAdminOpen: true,
+                          selectedUserType: "spectator",
+                        })
+                      }
+                    >
+                      <ListItemAvatar>
+                        <Avatar
+                          style={{
+                            backgroundColor: "transparent",
+                            color: "#000",
+                          }}
+                        >
+                          <Icon>person_add</Icon>
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText primary="Invite a spectator" />
+                    </ListItem>
+                  )}
+                </ul>
+              </li>
+            )}
           </List>
           <Menu
             anchorEl={this.state.anchorEl}
@@ -689,7 +721,7 @@ class ShareBoard extends React.Component {
             </MuiThemeProvider>
           </DialogActions>
         </Dialog>
-      </React.Fragment >
+      </React.Fragment>
     )
   }
 }
@@ -697,11 +729,11 @@ class ShareBoard extends React.Component {
 export default graphql(
   gql`
     mutation StopSharing($email: String!, $boardId: ID!) {
-          stopSharingBoard(email: $email, boardId: $boardId) {
-          id
-        }
-        }
-      `,
+      stopSharingBoard(email: $email, boardId: $boardId) {
+        id
+      }
+    }
+  `,
   {
     name: "StopSharing",
   }
@@ -709,11 +741,11 @@ export default graphql(
   graphql(
     gql`
       mutation InviteUser($email: String!, $boardId: ID!, $role: Role!) {
-          shareBoard(email: $email, boardId: $boardId, role: $role) {
+        shareBoard(email: $email, boardId: $boardId, role: $role) {
           id
         }
-        }
-      `,
+      }
+    `,
     {
       name: "InviteUser",
     }

@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "@material-ui/core/Icon"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Typography from "@material-ui/core/Typography"
 import Tooltip from "@material-ui/core/Tooltip"
 import IconButton from "@material-ui/core/IconButton"

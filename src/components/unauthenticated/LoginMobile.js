@@ -1,21 +1,19 @@
 import React, { Component } from "react"
 import gql from "graphql-tag"
-import {
-  Typography,
-  Grid,
-  FormControlLabel,
-  Checkbox,
-  CircularProgress,
-  InputAdornment,
-  Input,
-  Icon,
-  IconButton,
-  Button,
-  FormControl,
-  FormHelperText,
-  createMuiTheme,
-  MuiThemeProvider,
-} from "@material-ui/core"
+import Typography from "@material-ui/core/Typography"
+import Grid from "@material-ui/core/Grid"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Checkbox from "@material-ui/core/Checkbox"
+import CircularProgress from "@material-ui/core/CircularProgress"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import Icon from "@material-ui/core/Icon"
+import Input from "@material-ui/core/Input"
+import IconButton from "@material-ui/core/IconButton"
+import Button from "@material-ui/core/Button"
+import FormControl from "@material-ui/core/FormControl"
+import FormHelperText from "@material-ui/core/FormHelperText"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 import logo from "../../styles/assets/logo.svg"
@@ -163,21 +161,21 @@ export default class LoginMobile extends Component {
             style={
               this.state.height >= 690
                 ? {
-                  width: "200px",
-                  paddingTop: "75px",
-                  marginBottom: "75px",
-                  display: "block",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }
+                    width: "200px",
+                    paddingTop: "75px",
+                    marginBottom: "75px",
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }
                 : {
-                  width: "150px",
-                  paddingTop: "50px",
-                  marginBottom: "50px",
-                  display: "block",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }
+                    width: "150px",
+                    paddingTop: "50px",
+                    marginBottom: "50px",
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }
             }
           />
           <Typography
@@ -213,15 +211,15 @@ export default class LoginMobile extends Component {
                       this.setState({
                         isMailEmpty: event.target.value === "",
                       })
-                    }
-                    }
+                    }}
                     onKeyPress={event => {
                       if (event.key === "Enter") {
                         this.setState({ showLoading: true })
                         if (
                           EmailValidator.validate(this.props.email) &&
                           this.props.password
-                        ) this.signIn()
+                        )
+                          this.signIn()
                       }
                     }}
                     endAdornment={
@@ -271,15 +269,15 @@ export default class LoginMobile extends Component {
                       this.setState({
                         isPasswordEmpty: event.target.value === "",
                       })
-                    }
-                    }
+                    }}
                     onKeyPress={event => {
                       if (event.key === "Enter") {
                         this.setState({ showLoading: true })
                         if (
                           EmailValidator.validate(this.props.email) &&
                           this.props.password
-                        ) this.signIn()
+                        )
+                          this.signIn()
                       }
                     }}
                     endAdornment={
@@ -296,8 +294,8 @@ export default class LoginMobile extends Component {
                                 visibility_off
                               </Icon>
                             ) : (
-                                <Icon style={{ color: "white" }}>visibility</Icon>
-                              )}
+                              <Icon style={{ color: "white" }}>visibility</Icon>
+                            )}
                           </IconButton>
                         </InputAdornment>
                       ) : null

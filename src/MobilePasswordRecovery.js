@@ -1,8 +1,6 @@
 import React, { Component } from "react"
-import {
-  createMuiTheme,
-  MuiThemeProvider,
-} from "@material-ui/core/styles"
+import   createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import   MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"

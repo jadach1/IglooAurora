@@ -6,7 +6,7 @@ import FormControl from "@material-ui/core/FormControl"
 import Select from "@material-ui/core/Select"
 import MenuItem from "@material-ui/core/MenuItem"
 import Button from "@material-ui/core/Button"
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
@@ -83,9 +83,16 @@ class CreateDevice extends React.Component {
                   }}
                   name="board"
                 >
-                  {user.boards.map(board => (
-                    <MenuItem value={board.index}>{board.customName}</MenuItem>
-                  ))}
+                  {user.boards
+                    .filter(
+                      board =>
+                        board.myRole === "ADMIN" || board.myRole === "OWNER"
+                    )
+                    .map(board => (
+                      <MenuItem value={board.index}>
+                        {board.customName}
+                      </MenuItem>
+                    ))}
                 </Select>
               </FormControl>
             </Grid>
@@ -111,127 +118,143 @@ class CreateDevice extends React.Component {
             }}
           >
             <MuiThemeProvider theme={theme}>
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>lightbulb_outline</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Custom name"
-                      value={this.state.customName}
-                      onChange={event =>
-                        this.setState({ customName: event.target.value })
-                      }
-                      onKeyPress={event => {
-                        if (event.key === "Enter") createDeviceMutation()
-                      }}
-                      endAdornment={
-                        this.state.customName && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ customName: "" })}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <br />
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>lightbulb_outline</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Device type"
-                      value={this.state.deviceType}
-                      onChange={event =>
-                        this.setState({ deviceType: event.target.value })
-                      }
-                      onKeyPress={event => {
-                        if (event.key === "Enter") createDeviceMutation()
-                      }}
-                      endAdornment={
-                        this.state.deviceType && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ deviceType: "" })}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <br />
-              {boards}
-              <br />
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>code</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Firmware"
-                      value={this.state.firmware}
-                      onChange={event =>
-                        this.setState({ firmware: event.target.value })
-                      }
-                      onKeyPress={event => {
-                        if (event.key === "Enter") createDeviceMutation()
-                      }}
-                      endAdornment={
-                        this.state.firmware && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ firmware: "" })}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
+              {user &&
+              user.boards.filter(
+                board => board.myRole === "ADMIN" || board.myRole === "OWNER"
+              )[0] ? (
+                <React.Fragment>
+                  {" "}
+                  <Grid
+                    container
+                    spacing={0}
+                    alignItems="flex-end"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Grid item style={{ marginRight: "16px" }}>
+                      <Icon>lightbulb_outline</Icon>
+                    </Grid>
+                    <Grid item style={{ width: "calc(100% - 40px)" }}>
+                      <FormControl style={{ width: "100%" }}>
+                        <Input
+                          id="adornment-name-login"
+                          placeholder="Custom name"
+                          value={this.state.customName}
+                          onChange={event =>
+                            this.setState({ customName: event.target.value })
+                          }
+                          onKeyPress={event => {
+                            if (event.key === "Enter") createDeviceMutation()
+                          }}
+                          endAdornment={
+                            this.state.customName && (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={() =>
+                                    this.setState({ customName: "" })
+                                  }
+                                  tabIndex="-1"
+                                >
+                                  <Icon>clear</Icon>
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                          }
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                  <br />
+                  <Grid
+                    container
+                    spacing={0}
+                    alignItems="flex-end"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Grid item style={{ marginRight: "16px" }}>
+                      <Icon>lightbulb_outline</Icon>
+                    </Grid>
+                    <Grid item style={{ width: "calc(100% - 40px)" }}>
+                      <FormControl style={{ width: "100%" }}>
+                        <Input
+                          id="adornment-name-login"
+                          placeholder="Device type"
+                          value={this.state.deviceType}
+                          onChange={event =>
+                            this.setState({ deviceType: event.target.value })
+                          }
+                          onKeyPress={event => {
+                            if (event.key === "Enter") createDeviceMutation()
+                          }}
+                          endAdornment={
+                            this.state.deviceType && (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={() =>
+                                    this.setState({ deviceType: "" })
+                                  }
+                                  tabIndex="-1"
+                                >
+                                  <Icon>clear</Icon>
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                          }
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                  <br />
+                  {boards}
+                  <br />
+                  <Grid
+                    container
+                    spacing={0}
+                    alignItems="flex-end"
+                    style={{
+                      width: "100%",
+                    }}
+                  >
+                    <Grid item style={{ marginRight: "16px" }}>
+                      <Icon>code</Icon>
+                    </Grid>
+                    <Grid item style={{ width: "calc(100% - 40px)" }}>
+                      <FormControl style={{ width: "100%" }}>
+                        <Input
+                          id="adornment-name-login"
+                          placeholder="Firmware"
+                          value={this.state.firmware}
+                          onChange={event =>
+                            this.setState({ firmware: event.target.value })
+                          }
+                          onKeyPress={event => {
+                            if (event.key === "Enter") createDeviceMutation()
+                          }}
+                          endAdornment={
+                            this.state.firmware && (
+                              <InputAdornment position="end">
+                                <IconButton
+                                  onClick={() =>
+                                    this.setState({ firmware: "" })
+                                  }
+                                  tabIndex="-1"
+                                >
+                                  <Icon>clear</Icon>
+                                </IconButton>
+                              </InputAdornment>
+                            )
+                          }
+                        />
+                      </FormControl>
+                    </Grid>
+                  </Grid>
+                </React.Fragment>
+              ) : (
+                "None of your boards allows you to create new devices"
+              )}
             </MuiThemeProvider>
             <br />
           </div>
