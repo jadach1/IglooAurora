@@ -638,10 +638,6 @@ class Tile extends Component {
           value={value}
           userData={this.props.userData}
         />
-        {/*
-      <ShareValue open={this.state.shareValueOpen} close={() => this.setState({ shareValueOpen: "" })}
-          value={value} userData={this.props.userData}
-        /> */}
       </React.Fragment>
     )
   }

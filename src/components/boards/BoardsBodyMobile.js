@@ -1,13 +1,13 @@
 import React, { Component } from "react"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Typography from "@material-ui/core/Typography"
 import Icon from "@material-ui/core/Icon"
 import Grid from "@material-ui/core/Grid"
-import Button from "@material-ui/core/Button"
 import AppBar from "@material-ui/core/AppBar"
+import Paper from "@material-ui/core/Paper"
 import BottomNavigation from "@material-ui/core/BottomNavigation"
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction"
-import Zoom from "@material-ui/core/Zoom"
 import IconButton from "@material-ui/core/IconButton"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -16,8 +16,6 @@ import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
 import SwipeableViews from "react-swipeable-views"
-
-let zoomAnimation = false
 
 const theme = createMuiTheme({
   palette: {
@@ -38,10 +36,6 @@ class BoardsBodyMobile extends Component {
     this.setState({
       slideIndex: value,
     })
-  }
-
-  componentDidMount() {
-    zoomAnimation = true
   }
 
   render() {
@@ -67,11 +61,13 @@ class BoardsBodyMobile extends Component {
     }
 
     if (user) {
-      nightMode =     typeof Storage !== "undefined" && localStorage.getItem("nightMode")==="true"
+      nightMode =
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("nightMode") === "true"
       devMode = user.devMode
 
       favoriteBoardsList = user.boards
-        .filter(board => board.favorite)
+        .filter(board => board.myRole === "OWNER")
         .filter(board =>
           board.customName
             .toLowerCase()
@@ -91,7 +87,7 @@ class BoardsBodyMobile extends Component {
         ))
 
       boardsList = user.boards
-        .filter(board => !board.favorite)
+        .filter(board => board.myRole !== "OWNER")
         .filter(board =>
           board.customName
             .toLowerCase()
@@ -217,7 +213,7 @@ class BoardsBodyMobile extends Component {
               <CenteredSpinner />
             </div>
           )}
-          {boardsList[0] && favoriteBoardsList[0] ? (
+          {favoriteBoardsList[0] ? (
             <SwipeableViews
               index={this.state.slideIndex}
               onChangeIndex={this.handleSettingsTabChanged}
@@ -247,7 +243,7 @@ class BoardsBodyMobile extends Component {
                         }
                   }
                 >
-                  Starred boards
+                  Your boards
                 </Typography>
                 <div
                   style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}
@@ -263,7 +259,28 @@ class BoardsBodyMobile extends Component {
                       marginRight: "32px",
                     }}
                   >
-                    {favoriteBoardsList}
+                    {boardsList}
+                    <Grid key="create" item>
+                      <Paper
+                        style={{
+                          width: "256px",
+                          height: "192px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                        }}
+                        onClick={() => this.setState({ createOpen: true })}
+                      >
+                        <div
+                          style={{ paddingTop: "50px", paddingBottom: "50px" }}
+                        >
+                          <Icon style={{ fontSize: "64px" }}>add</Icon>
+                          <br />
+                          <Typography variant="title">
+                            Create new board
+                          </Typography>
+                        </div>
+                      </Paper>
+                    </Grid>
                   </Grid>
                 </div>
               </div>
@@ -292,7 +309,7 @@ class BoardsBodyMobile extends Component {
                         }
                   }
                 >
-                  Recent boards
+                  Shared with you
                 </Typography>
                 <div
                   style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}
@@ -308,12 +325,12 @@ class BoardsBodyMobile extends Component {
                       marginRight: "32px",
                     }}
                   >
-                    {boardsList}
+                    {favoriteBoardsList}
                   </Grid>
                 </div>
               </div>
             </SwipeableViews>
-          ) : boardsList[0] ? (
+          ) : (
             <div
               style={{
                 overflowY: "auto",
@@ -339,7 +356,7 @@ class BoardsBodyMobile extends Component {
                       }
                 }
               >
-                Recent boards
+                Shared with you
               </Typography>
               <div style={{ height: "calc(100vh - 193px)", overflowY: "auto" }}>
                 <Grid
@@ -354,55 +371,30 @@ class BoardsBodyMobile extends Component {
                   }}
                 >
                   {boardsList}
+                  <Grid key="create" item>
+                    <Paper
+                      style={{
+                        width: "256px",
+                        height: "192px",
+                        cursor: "pointer",
+                        textAlign: "center",
+                      }}
+                      onClick={() => this.setState({ createOpen: true })}
+                    >
+                      <div
+                        style={{ paddingTop: "50px", paddingBottom: "50px" }}
+                      >
+                        <Icon style={{ fontSize: "64px" }}>add</Icon>
+                        <br />
+                        <Typography variant="title">
+                          Create new board
+                        </Typography>
+                      </div>
+                    </Paper>
+                  </Grid>
                 </Grid>
               </div>
             </div>
-          ) : favoriteBoardsList[0] ? (
-            <div
-              style={{
-                overflowY: "auto",
-                height: "calc(100vh - 128px)",
-              }}
-            >
-              <Typography
-                variant="display1"
-                className="notSelectable defaultCursor"
-                style={
-                  nightMode
-                    ? {
-                        textAlign: "center",
-                        paddingTop: "8px",
-                        marginBottom: "16px",
-                        color: "white",
-                      }
-                    : {
-                        textAlign: "center",
-                        paddingTop: "8px",
-                        marginBottom: "16px",
-                        color: "black",
-                      }
-                }
-              >
-                Starred boards
-              </Typography>
-              <div style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}>
-                <Grid
-                  container
-                  justify="center"
-                  spacing={16}
-                  className="notSelectable defaultCursor"
-                  style={{
-                    width: "calc(100vw - 64px)",
-                    marginLeft: "32px",
-                    marginRight: "32px",
-                  }}
-                >
-                  {favoriteBoardsList}
-                </Grid>
-              </div>
-            </div>
-          ) : (
-            ""
           )}
           {user &&
             !favoriteBoardsList[0] &&
@@ -445,8 +437,8 @@ class BoardsBodyMobile extends Component {
                   }
                 >
                   <BottomNavigationAction
-                    icon={<Icon>star</Icon>}
-                    label="Starred"
+                    icon={<Icon>person</Icon>}
+                    label="Your boards"
                     style={
                       nightMode
                         ? this.state.slideIndex === 0
@@ -458,8 +450,8 @@ class BoardsBodyMobile extends Component {
                     }
                   />
                   <BottomNavigationAction
-                    icon={<Icon>history</Icon>}
-                    label="Recent"
+                    icon={<Icon>group</Icon>}
+                    label="Shared with you"
                     style={
                       nightMode
                         ? this.state.slideIndex === 1
@@ -473,72 +465,6 @@ class BoardsBodyMobile extends Component {
                 </BottomNavigation>
               </AppBar>
             )}
-          <MuiThemeProvider
-            theme={createMuiTheme({
-              palette: {
-                primary: { main: "#ff4081" },
-              },
-            })}
-          >
-            <Zoom
-              in={zoomAnimation && this.state.slideIndex === 1}
-              style={
-                this.state.slideIndex === 1
-                  ? { transitionDelay: 200 }
-                  : { transitionDelay: 0 }
-              }
-            >
-              <Button
-                variant="fab"
-                color="primary"
-                style={
-                  favoriteBoardsList[0] && boardsList[0]
-                    ? {
-                        position: "absolute",
-                        right: "20px",
-                        bottom: "84px",
-                      }
-                    : {
-                        position: "absolute",
-                        right: "20px",
-                        bottom: "20px",
-                      }
-                }
-                onClick={() => this.setState({ createOpen: true })}
-              >
-                <Icon>add</Icon>
-              </Button>
-            </Zoom>
-            <Zoom
-              in={zoomAnimation && this.state.slideIndex === 0}
-              style={
-                this.state.slideIndex === 0
-                  ? { transitionDelay: 200 }
-                  : { transitionDelay: 0 }
-              }
-            >
-              <Button
-                variant="fab"
-                color="primary"
-                style={
-                  favoriteBoardsList[0] && boardsList[0]
-                    ? {
-                        position: "absolute",
-                        right: "20px",
-                        bottom: "84px",
-                      }
-                    : {
-                        position: "absolute",
-                        right: "20px",
-                        bottom: "20px",
-                      }
-                }
-                onClick={() => this.setState({ createOpen: true })}
-              >
-                <Icon>add</Icon>
-              </Button>
-            </Zoom>
-          </MuiThemeProvider>
         </div>
         <CreateBoard
           open={this.state.createOpen}

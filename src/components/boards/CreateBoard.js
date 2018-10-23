@@ -92,8 +92,6 @@ class CreateBoard extends React.Component {
         className="notSelectable"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
-        n
-        start
       >
         <DialogTitle
           className="notSelectable defaultCursor"
@@ -101,165 +99,170 @@ class CreateBoard extends React.Component {
         >
           Create board
         </DialogTitle>
-        <MuiThemeProvider theme={theme}>
-          <Grid
-            container
-            spacing={0}
-            alignItems="flex-end"
-            style={{ width: "100%", paddingLeft: "24px", paddingRight: "24px" }}
-          >
-            <Grid item style={{ marginRight: "16px" }}>
-              <Icon>widgets</Icon>
-            </Grid>
-            <Grid item style={{ width: "calc(100% - 40px)" }}>
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  id="adornment-name-login"
-                  placeholder="Board Name"
-                  value={this.state.customName}
-                  onChange={event =>
-                    this.setState({
-                      customName: event.target.value,
-                    })
-                  }
-                  onKeyPress={event => {
-                    if (event.key === "Enter") this.createBoardMutation()
-                  }}
-                  endAdornment={
-                    this.state.customName ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => this.setState({ customName: "" })}
-                          onMouseDown={this.handleMouseDownPassword}
-                          tabIndex="-1"
-                        >
-                          <Icon>clear</Icon>
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-              </FormControl>
-            </Grid>
-          </Grid>
-        </MuiThemeProvider>
-        <br />
-        <FormControlLabel
-          control={
-            <MuiThemeProvider
-              theme={createMuiTheme({
-                palette: {
-                  secondary: { main: "#0083ff" },
-                },
-              })}
+        <div style={{ height: "100%" }}>
+          <MuiThemeProvider theme={theme}>
+            <Grid
+              container
+              spacing={0}
+              alignItems="flex-end"
+              style={{
+                width: "100%",
+                paddingLeft: "24px",
+                paddingRight: "24px",
+              }}
             >
-              <Checkbox
-                onChange={event =>
-                  this.setState({ favorite: event.target.checked })
-                }
-                icon={<Icon>star_border</Icon>}
-                checkedIcon={<Icon>star</Icon>}
-              />
-            </MuiThemeProvider>
-          }
-          style={{ paddingLeft: "24px", paddingRight: "24px" }}
-          label="Set as favorite"
-        />
-        <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>
-          Choose a board image
-        </p>
-        <SwipeableViews
-          index={this.state.slideIndex}
-          onChangeIndex={value => {
-            this.setState({
-              slideIndex: value,
-            })
-          }}
-          style={
-            window.innerWidth < MOBILE_WIDTH
-              ? {
-                  width: "calc(100vw - 48px)",
-                  marginLeft: "24px",
-                  marginRight: "24px",
-                }
-              : { width: "350px", marginLeft: "24px", marginRight: "24px" }
-          }
-        >
-          <img
-            src={denali}
-            alt="Mt. Denali"
-            className="notSelectable"
-            style={{
-              width: "100%",
-            }}
-          />
-          <img
-            src={fox}
-            alt="Fox"
-            className="notSelectable"
-            style={{
-              width: "100%",
-            }}
-          />
-          <img
-            src={treetops}
-            alt="treetops"
-            className="notSelectable"
-            style={{
-              width: "100%",
-            }}
-          />
-          <img
-            src={puffin}
-            alt="Puffin"
-            className="notSelectable"
-            style={{
-              width: "100%",
-            }}
-          />
-          <img
-            src={northernLights}
-            alt="Northern lights"
-            className="notSelectable"
-            style={{
-              width: "100%",
-            }}
-          />
-        </SwipeableViews>
-        <div>
-          <Button
-            size="small"
-            onClick={() =>
-              this.setState(oldState => ({
-                slideIndex: oldState.slideIndex - 1,
-              }))
+              <Grid item style={{ marginRight: "16px" }}>
+                <Icon>widgets</Icon>
+              </Grid>
+              <Grid item style={{ width: "calc(100% - 40px)" }}>
+                <FormControl style={{ width: "100%" }}>
+                  <Input
+                    id="adornment-name-login"
+                    placeholder="Board Name"
+                    value={this.state.customName}
+                    onChange={event =>
+                      this.setState({
+                        customName: event.target.value,
+                      })
+                    }
+                    onKeyPress={event => {
+                      if (event.key === "Enter") this.createBoardMutation()
+                    }}
+                    endAdornment={
+                      this.state.customName ? (
+                        <InputAdornment position="end">
+                          <IconButton
+                            onClick={() => this.setState({ customName: "" })}
+                            onMouseDown={this.handleMouseDownPassword}
+                            tabIndex="-1"
+                          >
+                            <Icon>clear</Icon>
+                          </IconButton>
+                        </InputAdornment>
+                      ) : null
+                    }
+                  />
+                </FormControl>
+              </Grid>
+            </Grid>
+          </MuiThemeProvider>
+          <br />
+          <FormControlLabel
+            control={
+              <MuiThemeProvider
+                theme={createMuiTheme({
+                  palette: {
+                    secondary: { main: "#0083ff" },
+                  },
+                })}
+              >
+                <Checkbox
+                  onChange={event =>
+                    this.setState({ favorite: event.target.checked })
+                  }
+                  icon={<Icon>star_border</Icon>}
+                  checkedIcon={<Icon>star</Icon>}
+                />
+              </MuiThemeProvider>
             }
-            disabled={this.state.slideIndex === 0}
-            style={{ width: "73px", marginLeft: "24px" }}
-          >
-            <Icon>keyboard_arrow_left</Icon>
-            Back
-          </Button>
-          <Button
-            size="small"
-            onClick={() =>
-              this.setState(oldState => ({
-                slideIndex: oldState.slideIndex + 1,
-              }))
-            }
-            disabled={this.state.slideIndex === 4}
-            style={{
-              width: "73px",
-              float: "right",
-              marginRight: "24px",
-              marginLeft: "auto",
+            style={{ paddingLeft: "24px", paddingRight: "24px" }}
+            label="Set as favorite"
+          />
+          <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>
+            Choose a board image
+          </p>
+          <SwipeableViews
+            index={this.state.slideIndex}
+            onChangeIndex={value => {
+              this.setState({
+                slideIndex: value,
+              })
             }}
+            style={
+              window.innerWidth < MOBILE_WIDTH
+                ? {
+                    width: "calc(100vw - 48px)",
+                    marginLeft: "24px",
+                    marginRight: "24px",
+                  }
+                : { width: "350px", marginLeft: "24px", marginRight: "24px" }
+            }
           >
-            Next
-            <Icon>keyboard_arrow_right</Icon>
-          </Button>
+            <img
+              src={denali}
+              alt="Mt. Denali"
+              className="notSelectable"
+              style={{
+                width: "100%",
+              }}
+            />
+            <img
+              src={fox}
+              alt="Fox"
+              className="notSelectable"
+              style={{
+                width: "100%",
+              }}
+            />
+            <img
+              src={treetops}
+              alt="treetops"
+              className="notSelectable"
+              style={{
+                width: "100%",
+              }}
+            />
+            <img
+              src={puffin}
+              alt="Puffin"
+              className="notSelectable"
+              style={{
+                width: "100%",
+              }}
+            />
+            <img
+              src={northernLights}
+              alt="Northern lights"
+              className="notSelectable"
+              style={{
+                width: "100%",
+              }}
+            />
+          </SwipeableViews>
+          <div>
+            <Button
+              size="small"
+              onClick={() =>
+                this.setState(oldState => ({
+                  slideIndex: oldState.slideIndex - 1,
+                }))
+              }
+              disabled={this.state.slideIndex === 0}
+              style={{ width: "73px", marginLeft: "24px" }}
+            >
+              <Icon>keyboard_arrow_left</Icon>
+              Back
+            </Button>
+            <Button
+              size="small"
+              onClick={() =>
+                this.setState(oldState => ({
+                  slideIndex: oldState.slideIndex + 1,
+                }))
+              }
+              disabled={this.state.slideIndex === 4}
+              style={{
+                width: "73px",
+                float: "right",
+                marginRight: "24px",
+                marginLeft: "auto",
+              }}
+            >
+              Next
+              <Icon>keyboard_arrow_right</Icon>
+            </Button>
+          </div>
         </div>
-        <div style={{ height: "100%" }} />
         <DialogActions
           className="notSelectable defaultCursor"
           style={{ marginLeft: "8px", marginRight: "8px" }}

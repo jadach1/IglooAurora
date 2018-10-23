@@ -8,7 +8,8 @@ import MenuItem from "@material-ui/core/MenuItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import Divider from "@material-ui/core/Divider"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Badge from "@material-ui/core/Badge"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
@@ -71,9 +72,10 @@ class BoardCard extends Component {
 
   render() {
     let isShared =
-      this.props.board.admins[0] ||
-      this.props.board.editors[0] ||
-      this.props.board.spectators[0]
+      this.props.board.myRole === "OWNER" &&
+      (this.props.board.admins[0] ||
+        this.props.board.editors[0] ||
+        this.props.board.spectators[0])
 
     return (
       <React.Fragment>
@@ -380,30 +382,6 @@ class BoardCard extends Component {
             />
           </MenuItem>
           <Divider />
-          <MenuItem
-            className="notSelectable"
-            style={
-              this.props.nightMode ? { color: "white" } : { color: "black" }
-            }
-            onClick={() => {
-              this.toggleFavorite(!this.props.board.favorite)
-              this.handleMenuClose()
-            }}
-          >
-            <ListItemIcon>
-              <Icon
-                style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
-                }
-              >
-                {!this.props.board.favorite ? "star" : "star_border"}
-              </Icon>
-            </ListItemIcon>
-            <ListItemText
-              inset
-              primary={!this.props.board.favorite ? "Star" : "Unstar"}
-            />
-          </MenuItem>
           <MenuItem
             className="notSelectable"
             style={
