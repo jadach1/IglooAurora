@@ -37,7 +37,7 @@ function Transition(props) {
   )
 }
 
-class RenameBoard extends React.Component {
+class CustomizeBoard extends React.Component {
   state = {
     customName: this.props.board.customName,
     slideIndex: 0,
@@ -302,4 +302,4 @@ export default graphql(
   {
     name: "Rename",
   }
-)(RenameBoard)
+)(CustomizeBoard)
