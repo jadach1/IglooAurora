@@ -17,8 +17,6 @@ import Typography from "@material-ui/core/Typography"
 import DeleteDevice from "./devices/DeleteDevice"
 import ChangeBoard from "./devices/ChangeBoard"
 import RenameDevice from "./devices/RenameDevice"
-import ShareDevice from "./devices/ShareDevice"
-import LeaveDevice from "./devices/LeaveDevice"
 
 class MainBodyHeader extends Component {
   state = {
@@ -200,59 +198,6 @@ class MainBodyHeader extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Device information" />
                 </MenuItem>
-                <Divider />
-                <MenuItem
-                  className="notSelectable"
-                  style={
-                    this.props.nightMode
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.setState({ anchorEl: null })
-                    this.setState({ shareOpen: true })
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={
-                        this.props.nightMode
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      share
-                    </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Share" />
-                </MenuItem>
-                {!(this.props.userData.user.email === device.owner.email) && (
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      this.props.nightMode
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                    onClick={() => {
-                      this.setState({ leaveOpen: true })
-                      this.handleMenuClose()
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Icon
-                        style={
-                          this.props.nightMode
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        remove_circle
-                      </Icon>
-                    </ListItemIcon>
-                    <ListItemText inset primary="Leave device" />
-                  </MenuItem>
-                )}
                 {/* <MenuItem
                     className="notSelectable"
                     style={
@@ -514,19 +459,6 @@ class MainBodyHeader extends Component {
           updatedAt={device.updatedAt}
           createdAt={device.createdAt}
           devMode={this.props.devMode}
-        />
-        <ShareDevice
-          open={this.state.shareOpen}
-          close={() => this.setState({ shareOpen: false })}
-          device={device}
-          userData={this.props.userData}
-        />
-        <LeaveDevice
-          open={this.state.leaveOpen}
-          close={() => this.setState({ leaveOpen: false })}
-          device={device}
-          userData={this.props.userData}
-          nightMode={this.props.nightMode}
         />
         <ChangeBoard
           open={this.state.changeBoardOpen}

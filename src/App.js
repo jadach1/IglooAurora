@@ -195,6 +195,9 @@ class App extends Component {
       )
     }
 
+    if (localStorage.getItem("server") === null)
+      localStorage.setItem("server", "")
+
     return (
       <Switch>
         <Route
