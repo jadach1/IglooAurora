@@ -3,7 +3,8 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import MenuItem from "material-ui/MenuItem"
 import CenteredSpinner from "../CenteredSpinner"
@@ -33,10 +34,11 @@ function Transition(props) {
   )
 }
 
-export default class CreateValue extends React.Component {
+class CreateValue extends React.Component {
   state = {
     customName: "",
     device: 0,
+    type: "",
   }
 
   handleNext = () => {
@@ -183,6 +185,37 @@ export default class CreateValue extends React.Component {
                 <Grid item style={{ width: "calc(100% - 40px)" }}>
                   <FormControl style={{ width: "100%" }}>
                     <Select
+                      value={this.state.type}
+                      onChange={event => {
+                        this.setState({ type: event.target.value })
+                      }}
+                      name="visibility"
+                    >
+                      <MenuItem value="float">Float</MenuItem>
+                      <MenuItem value="string">String</MenuItem>
+                      <MenuItem value="boolean">Boolean</MenuItem>
+                      <MenuItem value="color">Color</MenuItem>
+                      <MenuItem value="plot">Plot</MenuItem>
+                      <MenuItem value="stringPlot">String plot</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+              <br />
+              <Grid
+                container
+                spacing={0}
+                alignItems="flex-end"
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Grid item style={{ marginRight: "16px" }}>
+                  <Icon>lightbulb_outline</Icon>
+                </Grid>
+                <Grid item style={{ width: "calc(100% - 40px)" }}>
+                  <FormControl style={{ width: "100%" }}>
+                    <Select
                       value={this.state.permission}
                       onChange={event => {
                         this.setState({ permission: event.target.value })
@@ -217,49 +250,9 @@ export default class CreateValue extends React.Component {
                       name="visibility"
                     >
                       <MenuItem value="readOnly">Visible</MenuItem>
-                      <MenuItem value="readWrite">Hidden</MenuItem>{" "}
+                      <MenuItem value="readWrite">Hidden</MenuItem>
                       <MenuItem value="readWrite">Invisible</MenuItem>
                     </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <br />
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>lightbulb_outline</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Custom name"
-                      value={this.state.details}
-                      onChange={event =>
-                        this.setState({ details: event.target.value })
-                      }
-                      onKeyPress={event => {
-                        if (event.key === "Enter") createDeviceMutation()
-                      }}
-                      endAdornment={
-                        this.state.details && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ details: "" })}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
-                    />
                   </FormControl>
                 </Grid>
               </Grid>
@@ -288,3 +281,5 @@ export default class CreateValue extends React.Component {
     )
   }
 }
+
+export default CreateValue
