@@ -15,7 +15,7 @@ import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
 import DeleteBoard from "./DeleteBoard"
-import RenameBoard from "./RenameBoard"
+import CustomizeBoard from "./CustomizeBoard"
 import BoardInfo from "./BoardInfo"
 import ShareBoard from "./ShareBoard"
 import LeaveBoard from "./LeaveBoard"
@@ -83,15 +83,15 @@ class BoardCard extends Component {
           style={
             this.props.nightMode
               ? {
-                  backgroundColor: "#2f333d",
-                  width: "256px",
-                  height: "192px",
-                }
+                backgroundColor: "#2f333d",
+                width: "256px",
+                height: "192px",
+              }
               : {
-                  backgroundColor: "#fff",
-                  width: "256px",
-                  height: "192px",
-                }
+                backgroundColor: "#fff",
+                width: "256px",
+                height: "192px",
+              }
           }
         >
           <Toolbar
@@ -106,17 +106,17 @@ class BoardCard extends Component {
               style={
                 this.props.nightMode
                   ? {
-                      color: "white",
-                      textDecoration: "none",
-                      height: "64px",
-                      paddingLeft: "24px",
-                    }
+                    color: "white",
+                    textDecoration: "none",
+                    height: "64px",
+                    paddingLeft: "24px",
+                  }
                   : {
-                      color: "black",
-                      textDecoration: "none",
-                      height: "64px",
-                      paddingLeft: "24px",
-                    }
+                    color: "black",
+                    textDecoration: "none",
+                    height: "64px",
+                    paddingLeft: "24px",
+                  }
               }
             >
               <Typography
@@ -125,25 +125,25 @@ class BoardCard extends Component {
                 style={
                   this.props.nightMode
                     ? {
-                        color: "white",
-                        marginLeft: "-8px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                        width: "136px",
-                        marginRight: "23px",
-                        lineHeight: "64px",
-                      }
+                      color: "white",
+                      marginLeft: "-8px",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      width: "136px",
+                      marginRight: "23px",
+                      lineHeight: "64px",
+                    }
                     : {
-                        color: "black",
-                        marginLeft: "-8px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                        width: "136px",
-                        marginRight: "23px",
-                        lineHeight: "64px",
-                      }
+                      color: "black",
+                      marginLeft: "-8px",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                      textOverflow: "ellipsis",
+                      width: "136px",
+                      marginRight: "23px",
+                      lineHeight: "64px",
+                    }
                 }
               >
                 {isShared ? (
@@ -151,8 +151,8 @@ class BoardCard extends Component {
                     group
                   </Icon>
                 ) : (
-                  ""
-                )}
+                    ""
+                  )}
                 {this.props.board.customName}
               </Typography>
             </Link>
@@ -169,8 +169,8 @@ class BoardCard extends Component {
                   color="primary"
                 />
               ) : (
-                ""
-              )}
+                  ""
+                )}
             </MuiThemeProvider>
             <Tooltip id="tooltip-bottom" title="More" placement="bottom">
               <IconButton
@@ -183,11 +183,11 @@ class BoardCard extends Component {
                   style={
                     this.props.nightMode
                       ? {
-                          color: "white",
-                        }
+                        color: "white",
+                      }
                       : {
-                          color: "black",
-                        }
+                        color: "black",
+                      }
                   }
                 >
                   more_vert
@@ -427,7 +427,7 @@ class BoardCard extends Component {
           board={this.props.board}
           devMode={this.props.devMode}
         />
-        <RenameBoard
+        <CustomizeBoard
           open={this.state.renameOpen}
           close={() => this.setState({ renameOpen: false })}
           board={this.props.board}
