@@ -6,15 +6,9 @@ import SnackbarContent from "@material-ui/core/SnackbarContent"
 import withStyles from "@material-ui/core/styles/withStyles"
 import Icon from "@material-ui/core/Icon"
 import Slide from "@material-ui/core/Slide"
-import Grow from "@material-ui/core/Grow"
-import Dialog from "@material-ui/core/Dialog"
-import DialogTitle from "@material-ui/core/DialogTitle"
-import DialogActions from "@material-ui/core/DialogActions"
-import Button from "@material-ui/core/Button"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import VerifyEmailDialog from "./VerifyEmailDialog"
 
 const styles1 = theme => ({
   warning: {
@@ -26,29 +20,12 @@ const styles1 = theme => ({
   },
 })
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
-  },
-})
-
 function TransitionLeft(props) {
   return <Slide {...props} direction="left" />
 }
 
 function TransitionUp(props) {
   return <Slide {...props} direction="up" />
-}
-
-const MOBILE_WIDTH = 500
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
 }
 
 function MySnackbarContent(props) {
@@ -132,56 +109,6 @@ class CustomizedSnackbars extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Dialog
-          open={this.state.dialogOpen}
-          onClose={() => {
-            this.setState({ dialogOpen: false })
-          }}
-          titleClassName="notSelectable defaultCursor"
-          className="notSelectable defaultCursor"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
-        >
-          <DialogTitle style={{ width: "350px" }}>
-            Your account isn't verified
-          </DialogTitle>
-          <div
-            style={{
-              height: "100%",
-              paddingLeft: "24px",
-              paddingRight: "24px",
-            }}
-          >
-            You should have received a verification email.
-            <br />
-            <br />
-            If that's not the case, click on "Send again" and we'll send you
-            another email.
-            <br />
-            <br />
-          </div>
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-            <MuiThemeProvider theme={theme}>
-              <Button
-                style={{ marginRight: "4px" }}
-                onClick={() => this.setState({ dialogOpen: false })}
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                primary={true}
-                onClick={() => {
-                  this.props.ResendVerificationEmail()
-                  this.setState({ dialogOpen: false })
-                }}
-              >
-                Send again
-              </Button>
-            </MuiThemeProvider>
-          </DialogActions>
-        </Dialog>
         <Snackbar
           anchorOrigin={{
             vertical: "bottom",
@@ -205,6 +132,11 @@ class CustomizedSnackbars extends React.Component {
             mobile={this.props.mobile}
           />
         </Snackbar>
+        <VerifyEmailDialog
+          ResendVerificationEmail={this.props.ResendVerificationEmail}
+          open={this.state.dialogOpen}
+          close={() => this.setState({ dialogOpen: false })}
+        />
       </React.Fragment>
     )
   }

@@ -4,9 +4,9 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
-import Grid from "@material-ui/core/Grid"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import FormControl from "@material-ui/core/FormControl"
@@ -97,67 +97,67 @@ class ChangeMailDialog extends React.Component {
           <DialogTitle style={{ width: "350px" }}>
             Type your password
           </DialogTitle>
-          <div
-            style={{
-              paddingLeft: "24px",
-              paddingRight: "24px",
-              height: "100%",
-            }}
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#0083ff" },
+              },
+            })}
           >
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
+            <div
+              style={{
+                paddingLeft: "24px",
+                paddingRight: "24px",
+                height: "100%",
+              }}
             >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon>vpn_key</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-password-login"
-                    type={this.state.showPassword ? "text" : "password"}
-                    value={this.state.password}
-                    placeholder="Password"
-                    onChange={event =>
-                      this.setState({
-                        password: event.target.value,
-                        passwordError: "",
-                        isPasswordEmpty: event.target.value === "",
-                      })
-                    }
-                    error={
-                      this.state.passwordError || this.state.isPasswordEmpty
-                        ? true
-                        : false
-                    }
-                    onKeyPress={event => {
-                      if (event.key === "Enter") this.openMailDialog()
-                    }}
-                    endAdornment={
-                      this.state.password ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={this.handleClickShowPassword}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                          >
-                            {this.state.showPassword ? (
-                              <Icon>visibility_off</Icon>
-                            ) : (
-                              <Icon>visibility</Icon>
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-          </div>
-          <br />
+              <FormControl
+                style={{
+                  width: "100%",
+                }}
+              >
+                <Input
+                  id="adornment-password-login"
+                  type={this.state.showPassword ? "text" : "password"}
+                  value={this.state.password}
+                  placeholder="Password"
+                  onChange={event =>
+                    this.setState({
+                      password: event.target.value,
+                      passwordError: "",
+                      isPasswordEmpty: event.target.value === "",
+                    })
+                  }
+                  error={
+                    this.state.passwordError || this.state.isPasswordEmpty
+                      ? true
+                      : false
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") this.openMailDialog()
+                  }}
+                  endAdornment={
+                    this.state.password ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={this.handleClickShowPassword}
+                          onMouseDown={this.handleMouseDownPassword}
+                          tabIndex="-1"
+                        >
+                          {this.state.showPassword ? (
+                            <Icon>visibility_off</Icon>
+                          ) : (
+                            <Icon>visibility</Icon>
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null
+                  }
+                />
+              </FormControl>
+            </div>
+            <br />
+          </MuiThemeProvider>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
             <MuiThemeProvider theme={theme}>
               <Button
@@ -186,61 +186,57 @@ class ChangeMailDialog extends React.Component {
           <DialogTitle style={{ width: "350px" }}>
             Manage your emails
           </DialogTitle>
-          <div
-            style={{
-              paddingLeft: "24px",
-              paddingRight: "24px",
-              height: "100%",
-            }}
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#0083ff" },
+              },
+            })}
           >
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
+            <div
+              style={{
+                paddingLeft: "24px",
+                paddingRight: "24px",
+                height: "100%",
+              }}
             >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon>email</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-email-login"
-                    placeholder="Email"
-                    value={this.state.email}
-                    onChange={event =>
-                      this.setState({
-                        email: event.target.value,
-                        isMailEmpty: event.target.value === "",
-                      })
-                    }
-                    onKeyPress={event => {
-                      if (event.key === "Enter") this.signIn()
-                    }}
-                    error={
-                      this.state.emailError || this.state.isMailEmpty
-                        ? true
-                        : false
-                    }
-                    endAdornment={
-                      this.state.email ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={this.handleClickCancelEmail}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                          >
-                            <Icon>clear</Icon>
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-            <br />
-          </div>
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-email-login"
+                  placeholder="Email"
+                  value={this.state.email}
+                  onChange={event =>
+                    this.setState({
+                      email: event.target.value,
+                      isMailEmpty: event.target.value === "",
+                    })
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") this.signIn()
+                  }}
+                  error={
+                    this.state.emailError || this.state.isMailEmpty
+                      ? true
+                      : false
+                  }
+                  endAdornment={
+                    this.state.email ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={this.handleClickCancelEmail}
+                          onMouseDown={this.handleMouseDownPassword}
+                          tabIndex="-1"
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null
+                  }
+                />
+              </FormControl>
+              <br />
+            </div>
+          </MuiThemeProvider>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
             <MuiThemeProvider theme={theme}>
               <Button

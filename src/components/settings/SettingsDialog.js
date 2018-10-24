@@ -33,6 +33,7 @@ import CreatePlotNode from "./CreatePlotNode"
 import GDPRDataDownload from "./GDPRDataDownload"
 import ChangeEmail from "./ChangeEmail"
 import ChangeServer from "./ChangeServer"
+import VerifyEmailDialog from "../VerifyEmailDialog"
 // var moment = require("moment-timezone")
 
 function Transition(props) {
@@ -65,6 +66,7 @@ const allDialogsClosed = {
   createNodeOpen: false,
   gdprOpen: false,
   serverOpen: false,
+  verifyOpen: false,
 }
 
 class SettingsDialog extends React.Component {
@@ -420,11 +422,21 @@ class SettingsDialog extends React.Component {
 
     let uiSettings = (
       <div
-        style={{
-          overflowY: "auto",
-          height: "calc(100vh - 220px)",
-          maxHeight: "550px",
-        }}
+        style={
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("nightMode") === "true"
+            ? {
+                overflowY: "auto",
+                height: "calc(100vh - 220px)",
+                maxHeight: "550px",
+                background: "#2f333d",
+              }
+            : {
+                overflowY: "auto",
+                height: "calc(100vh - 220px)",
+                maxHeight: "550px",
+              }
+        }
       >
         <div style={listStyles.root}>
           <List style={{ width: "100%", padding: "0" }}>
@@ -473,12 +485,23 @@ class SettingsDialog extends React.Component {
 
     let notificationsSettings = (
       <div
-        style={{
-          overflowY: "auto",
-          overflowX: "hidden",
-          height: "calc(100vh - 220px)",
-          maxHeight: "550px",
-        }}
+        style={
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("nightMode") === "true"
+            ? {
+                overflowY: "auto",
+                overflowX: "hidden",
+                height: "calc(100vh - 220px)",
+                maxHeight: "550px",
+                background: "#2f333d",
+              }
+            : {
+                overflowY: "auto",
+                overflowX: "hidden",
+                height: "calc(100vh - 220px)",
+                maxHeight: "550px",
+              }
+        }
       >
         <div style={listStyles.root}>
           <List style={{ width: "100%", padding: "0" }}>
@@ -494,11 +517,22 @@ class SettingsDialog extends React.Component {
 
     let accountSettings = (
       <div
-        style={{
-          overflowY: "auto",
-          height: "calc(100vh - 220px)",
-          maxHeight: "550px",
-        }}
+        style={
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("nightMode") === "true"
+            ? {
+                overflowY: "auto",
+                height: "calc(100vh - 220px)",
+                maxHeight: "550px",
+                background: "#2f333d",
+              }
+            : {
+                overflowY: "auto",
+                overflowX: "hidden",
+                height: "calc(100vh - 220px)",
+                maxHeight: "550px",
+              }
+        }
       >
         <List style={{ padding: "0" }}>
           <Subheader style={{ cursor: "default" }}>Authentication</Subheader>
@@ -559,6 +593,13 @@ rightToggle={
           <Subheader style={{ cursor: "default" }}>
             Account management
           </Subheader>
+          {user &&
+            !user.emailIsVerified && (
+              <ListItem
+                primaryText="Resend verifcation email"
+                onClick={() => this.setState({ verifyOpen: true })}
+              />
+            )}
           <ListItem
             primaryText="Manage your profile"
             secondaryText="Change your profile photo and name"
@@ -628,11 +669,21 @@ rightToggle={
               {notificationsSettings}
               {accountSettings}
               <div
-                style={{
-                  overflowY: "auto",
-                  height: "calc(100vh - 220px)",
-                  maxHeight: "550px",
-                }}
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? {
+                        overflowY: "auto",
+                        height: "calc(100vh - 220px)",
+                        maxHeight: "550px",
+                        background: "#2f333d",
+                      }
+                    : {
+                        overflowY: "auto",
+                        height: "calc(100vh - 220px)",
+                        maxHeight: "550px",
+                      }
+                }
               >
                 <List style={{ padding: "0" }}>
                   <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
@@ -683,10 +734,27 @@ rightToggle={
           )}
           <DialogActions
             className="notSelectable defaultCursor"
-            style={{ marginLeft: "8px", marginRight: "8px" }}
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    padding: "8px",
+                    margin: "0",
+                    background: "#2f333d",
+                  }
+                : {
+                    padding: "8px",
+                    margin: "0",
+                  }
+            }
           >
             <Button
-              style={{ float: "right" }}
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { float: "right", color: "white" }
+                  : { float: "right", color: "black" }
+              }
               onClick={this.props.closeSettingsDialog}
             >
               Close
@@ -800,6 +868,10 @@ rightToggle={
         <ChangeServer
           open={this.props.isOpen && this.state.serverOpen}
           close={() => this.setState({ serverOpen: false })}
+        />
+        <VerifyEmailDialog
+          open={this.props.isOpen && this.state.verifyOpen}
+          close={() => this.setState({ verifyOpen: false })}
         />
       </React.Fragment>
     )

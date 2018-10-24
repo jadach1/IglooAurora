@@ -44,7 +44,7 @@ class BoardsBodyMobile extends Component {
     } = this.props
 
     let boardsList = ""
-    let favoriteBoardsList = ""
+    let yourBoardsList = ""
 
     let nightMode = false
 
@@ -52,12 +52,12 @@ class BoardsBodyMobile extends Component {
 
     if (loading) {
       boardsList = <CenteredSpinner />
-      favoriteBoardsList = <CenteredSpinner />
+      yourBoardsList = <CenteredSpinner />
     }
 
     if (error) {
       boardsList = "Unexpected error"
-      favoriteBoardsList = "Unexpected error"
+      yourBoardsList = "Unexpected error"
     }
 
     if (user) {
@@ -66,7 +66,7 @@ class BoardsBodyMobile extends Component {
         localStorage.getItem("nightMode") === "true"
       devMode = user.devMode
 
-      favoriteBoardsList = user.boards
+      yourBoardsList = user.boards
         .filter(board => board.myRole === "OWNER")
         .filter(board =>
           board.customName
@@ -112,7 +112,7 @@ class BoardsBodyMobile extends Component {
         <div
           style={
             nightMode
-              ? boardsList[0] && favoriteBoardsList[0]
+              ? boardsList[0] && yourBoardsList[0]
                 ? {
                     width: "100vw",
                     height: "calc(100vh - 128px)",
@@ -123,7 +123,7 @@ class BoardsBodyMobile extends Component {
                     height: "calc(100vh - 64px)",
                     backgroundColor: "#21252b",
                   }
-              : boardsList[0] && favoriteBoardsList[0]
+              : boardsList[0] && yourBoardsList[0]
                 ? {
                     width: "100vw",
                     height: "calc(100vh - 128px)",
@@ -213,15 +213,153 @@ class BoardsBodyMobile extends Component {
               <CenteredSpinner />
             </div>
           )}
-          {favoriteBoardsList[0] ? (
-            <SwipeableViews
-              index={this.state.slideIndex}
-              onChangeIndex={this.handleSettingsTabChanged}
-            >
+          {user &&
+            (boardsList[0] ? (
+              <SwipeableViews
+                index={this.state.slideIndex}
+                onChangeIndex={this.handleSettingsTabChanged}
+              >
+                <div
+                  style={{
+                    overflowY: "auto",
+                    height: "calc(100vh - 192px)",
+                  }}
+                >
+                  <Typography
+                    variant="display1"
+                    className="notSelectable defaultCursor"
+                    style={
+                      nightMode
+                        ? {
+                            textAlign: "center",
+                            paddingTop: "8px",
+                            marginBottom: "16px",
+                            color: "white",
+                          }
+                        : {
+                            textAlign: "center",
+                            paddingTop: "8px",
+                            marginBottom: "16px",
+                            color: "black",
+                          }
+                    }
+                  >
+                    Your boards
+                  </Typography>
+                  <div
+                    style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}
+                  >
+                    <Grid
+                      container
+                      justify="center"
+                      spacing={16}
+                      className="notSelectable defaultCursor"
+                      style={{
+                        width: "calc(100vw - 64px)",
+                        marginLeft: "32px",
+                        marginRight: "32px",
+                      }}
+                    >
+                      {yourBoardsList}
+                      <Grid key="create" item>
+                        <Paper
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? {
+                                  backgroundColor: "#2f333d",
+                                  width: "256px",
+                                  height: "192px",
+                                  cursor: "pointer",
+                                  textAlign: "center",
+                                  color: "white",
+                                }
+                              : {
+                                  backgroundColor: "#fff",
+                                  width: "256px",
+                                  height: "192px",
+                                  cursor: "pointer",
+                                  textAlign: "center",
+                                }
+                          }
+                          onClick={() => this.setState({ createOpen: true })}
+                        >
+                          <div
+                            style={{
+                              paddingTop: "50px",
+                              paddingBottom: "50px",
+                            }}
+                          >
+                            <Icon style={{ fontSize: "64px" }}>add</Icon>
+                            <br />
+                            <Typography
+                              variant="title"
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : {}
+                              }
+                            >
+                              Create new board
+                            </Typography>
+                          </div>
+                        </Paper>
+                      </Grid>
+                    </Grid>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    overflowY: "auto",
+                    height: "calc(100vh - 192px)",
+                  }}
+                >
+                  <Typography
+                    variant="display1"
+                    className="notSelectable defaultCursor"
+                    style={
+                      nightMode
+                        ? {
+                            textAlign: "center",
+                            marginTop: "8px",
+                            marginBottom: "16px",
+                            color: "white",
+                          }
+                        : {
+                            textAlign: "center",
+                            marginTop: "8px",
+                            marginBottom: "16px",
+                            color: "black",
+                          }
+                    }
+                  >
+                    Shared with you
+                  </Typography>
+                  <div
+                    style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}
+                  >
+                    <Grid
+                      container
+                      justify="center"
+                      spacing={16}
+                      className="notSelectable defaultCursor"
+                      style={{
+                        width: "calc(100vw - 64px)",
+                        marginLeft: "32px",
+                        marginRight: "32px",
+                      }}
+                    >
+                      {boardsList}
+                    </Grid>
+                  </div>
+                </div>
+              </SwipeableViews>
+            ) : (
               <div
                 style={{
                   overflowY: "auto",
-                  height: "calc(100vh - 192px)",
+                  height: "calc(100vh - 128px)",
                 }}
               >
                 <Typography
@@ -246,7 +384,7 @@ class BoardsBodyMobile extends Component {
                   Your boards
                 </Typography>
                 <div
-                  style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}
+                  style={{ height: "calc(100vh - 193px)", overflowY: "auto" }}
                 >
                   <Grid
                     container
@@ -259,15 +397,28 @@ class BoardsBodyMobile extends Component {
                       marginRight: "32px",
                     }}
                   >
-                    {boardsList}
+                    {yourBoardsList}
                     <Grid key="create" item>
                       <Paper
-                        style={{
-                          width: "256px",
-                          height: "192px",
-                          cursor: "pointer",
-                          textAlign: "center",
-                        }}
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? {
+                                backgroundColor: "#2f333d",
+                                width: "256px",
+                                height: "192px",
+                                cursor: "pointer",
+                                textAlign: "center",
+                                color: "white",
+                              }
+                            : {
+                                backgroundColor: "#fff",
+                                width: "256px",
+                                height: "192px",
+                                cursor: "pointer",
+                                textAlign: "center",
+                              }
+                        }
                         onClick={() => this.setState({ createOpen: true })}
                       >
                         <div
@@ -275,7 +426,15 @@ class BoardsBodyMobile extends Component {
                         >
                           <Icon style={{ fontSize: "64px" }}>add</Icon>
                           <br />
-                          <Typography variant="title">
+                          <Typography
+                            variant="title"
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : {}
+                            }
+                          >
                             Create new board
                           </Typography>
                         </div>
@@ -284,120 +443,9 @@ class BoardsBodyMobile extends Component {
                   </Grid>
                 </div>
               </div>
-              <div
-                style={{
-                  overflowY: "auto",
-                  height: "calc(100vh - 192px)",
-                }}
-              >
-                <Typography
-                  variant="display1"
-                  className="notSelectable defaultCursor"
-                  style={
-                    nightMode
-                      ? {
-                          textAlign: "center",
-                          marginTop: "8px",
-                          marginBottom: "16px",
-                          color: "white",
-                        }
-                      : {
-                          textAlign: "center",
-                          marginTop: "8px",
-                          marginBottom: "16px",
-                          color: "black",
-                        }
-                  }
-                >
-                  Shared with you
-                </Typography>
-                <div
-                  style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}
-                >
-                  <Grid
-                    container
-                    justify="center"
-                    spacing={16}
-                    className="notSelectable defaultCursor"
-                    style={{
-                      width: "calc(100vw - 64px)",
-                      marginLeft: "32px",
-                      marginRight: "32px",
-                    }}
-                  >
-                    {favoriteBoardsList}
-                  </Grid>
-                </div>
-              </div>
-            </SwipeableViews>
-          ) : (
-            <div
-              style={{
-                overflowY: "auto",
-                height: "calc(100vh - 128px)",
-              }}
-            >
-              <Typography
-                variant="display1"
-                className="notSelectable defaultCursor"
-                style={
-                  nightMode
-                    ? {
-                        textAlign: "center",
-                        marginTop: "8px",
-                        marginBottom: "16px",
-                        color: "white",
-                      }
-                    : {
-                        textAlign: "center",
-                        marginTop: "8px",
-                        marginBottom: "16px",
-                        color: "black",
-                      }
-                }
-              >
-                Shared with you
-              </Typography>
-              <div style={{ height: "calc(100vh - 193px)", overflowY: "auto" }}>
-                <Grid
-                  container
-                  justify="center"
-                  spacing={16}
-                  className="notSelectable defaultCursor"
-                  style={{
-                    width: "calc(100vw - 64px)",
-                    marginLeft: "32px",
-                    marginRight: "32px",
-                  }}
-                >
-                  {boardsList}
-                  <Grid key="create" item>
-                    <Paper
-                      style={{
-                        width: "256px",
-                        height: "192px",
-                        cursor: "pointer",
-                        textAlign: "center",
-                      }}
-                      onClick={() => this.setState({ createOpen: true })}
-                    >
-                      <div
-                        style={{ paddingTop: "50px", paddingBottom: "50px" }}
-                      >
-                        <Icon style={{ fontSize: "64px" }}>add</Icon>
-                        <br />
-                        <Typography variant="title">
-                          Create new board
-                        </Typography>
-                      </div>
-                    </Paper>
-                  </Grid>
-                </Grid>
-              </div>
-            </div>
-          )}
+            ))}
           {user &&
-            !favoriteBoardsList[0] &&
+            !yourBoardsList[0] &&
             !boardsList[0] && (
               <div
                 style={{
@@ -409,7 +457,7 @@ class BoardsBodyMobile extends Component {
               </div>
             )}
           {user &&
-            favoriteBoardsList[0] &&
+            yourBoardsList[0] &&
             boardsList[0] && (
               <AppBar
                 position="static"
