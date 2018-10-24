@@ -226,18 +226,41 @@ export default class BoardsBody extends Component {
                 {yourBoardsList}
                 <Grid key="create" item>
                   <Paper
-                    style={{
-                      width: "256px",
-                      height: "192px",
-                      cursor: "pointer",
-                      textAlign: "center",
-                    }}
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? {
+                            backgroundColor: "#2f333d",
+                            width: "256px",
+                            height: "192px",
+                            cursor: "pointer",
+                            textAlign: "center",
+                            color: "white",
+                          }
+                        : {
+                            backgroundColor: "#fff",
+                            width: "256px",
+                            height: "192px",
+                            cursor: "pointer",
+                            textAlign: "center",
+                          }
+                    }
                     onClick={() => this.setState({ createOpen: true })}
                   >
                     <div style={{ paddingTop: "50px", paddingBottom: "50px" }}>
                       <Icon style={{ fontSize: "64px" }}>add</Icon>
                       <br />
-                      <Typography variant="title">Create new board</Typography>
+                      <Typography
+                        variant="title"
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : {}
+                        }
+                      >
+                        Create new board
+                      </Typography>
                     </div>
                   </Paper>
                 </Grid>

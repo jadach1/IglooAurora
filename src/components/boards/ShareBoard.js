@@ -20,7 +20,6 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Grid from "@material-ui/core/Grid"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -501,55 +500,43 @@ class ShareBoard extends React.Component {
             Invite an {this.state.selectedUserType}
           </DialogTitle>
           <MuiThemeProvider theme={theme}>
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
+            <FormControl
               style={{
-                width: "100%",
+                width: "calc(100% - 48px)",
                 paddingLeft: "24px",
                 paddingRight: "24px",
               }}
             >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon>email</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-email-login"
-                    placeholder="Email"
-                    value={this.state.email}
-                    onChange={event =>
-                      this.setState({
-                        email: event.target.value,
-                      })
-                    }
-                    onKeyPress={event => {
-                      if (event.key === "Enter") {
-                        this.setState({ addAdminOpen: false })
-                        this.inviteUser(
-                          this.state.selectedUserType.toUpperCase()
-                        )
-                      }
-                    }}
-                    endAdornment={
-                      this.state.email ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => this.setState({ email: "" })}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                          >
-                            <Icon>clear</Icon>
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
+              <Input
+                id="adornment-email-login"
+                placeholder="Email"
+                value={this.state.email}
+                onChange={event =>
+                  this.setState({
+                    email: event.target.value,
+                  })
+                }
+                onKeyPress={event => {
+                  if (event.key === "Enter") {
+                    this.setState({ addAdminOpen: false })
+                    this.inviteUser(this.state.selectedUserType.toUpperCase())
+                  }
+                }}
+                endAdornment={
+                  this.state.email ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => this.setState({ email: "" })}
+                        onMouseDown={this.handleMouseDownPassword}
+                        tabIndex="-1"
+                      >
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
           </MuiThemeProvider>
           <div style={{ height: "100%" }} />
           <br />

@@ -1,9 +1,9 @@
 import React from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Button from "@material-ui/core/Button"
-import Grid from "@material-ui/core/Grid"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -121,55 +121,43 @@ class CustomizeBoard extends React.Component {
         <DialogTitle style={{ width: "350px" }}>Customize board</DialogTitle>
         <div style={{ height: "100%" }}>
           <MuiThemeProvider theme={theme}>
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
+            <FormControl
               style={{
-                width: "100%",
+                width: "calc(100% - 48px)",
                 paddingLeft: "24px",
                 paddingRight: "24px",
               }}
             >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon>widgets</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-name-login"
-                    placeholder="Board Name"
-                    value={this.state.customName}
-                    onChange={event =>
-                      this.setState({
-                        customName: event.target.value,
-                      })
-                    }
-                    onKeyPress={event => {
-                      if (event.key === "Enter") this.rename()
-                    }}
-                    endAdornment={
-                      this.state.customName ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => this.setState({ customName: "" })}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                          >
-                            <Icon>clear</Icon>
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
-          </MuiThemeProvider>{" "}
-          <br />{" "}
-          <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>
-            Choose a board image
-          </p>
+              <Input
+                id="adornment-name-login"
+                placeholder="Board Name"
+                value={this.state.customName}
+                onChange={event =>
+                  this.setState({
+                    customName: event.target.value,
+                  })
+                }
+                onKeyPress={event => {
+                  if (event.key === "Enter") this.rename()
+                }}
+                endAdornment={
+                  this.state.customName ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => this.setState({ customName: "" })}
+                        onMouseDown={this.handleMouseDownPassword}
+                        tabIndex="-1"
+                      >
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
+          </MuiThemeProvider>
+          <br />
+          <br />
           <SwipeableViews
             index={this.state.slideIndex}
             onChangeIndex={value => {
@@ -262,7 +250,7 @@ class CustomizeBoard extends React.Component {
             </Button>
           </div>
         </div>
-                <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <MuiThemeProvider theme={theme}>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind

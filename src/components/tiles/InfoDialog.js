@@ -5,7 +5,8 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import moment from "moment"
 
 const theme = createMuiTheme({
@@ -32,11 +33,15 @@ class InfoDialog extends React.Component {
       <Dialog
         open={this.props.infoOpen}
         onClose={this.props.handleInfoClose}
-        className="notSelectable"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle style={{ width: "350px" }}>Card information</DialogTitle>
+        <DialogTitle
+          style={{ width: "350px" }}
+          className="notSelectable defaultCursor"
+        >
+          Device information
+        </DialogTitle>
         <div
           style={{ paddingRight: "24px", marginLeft: "24px", height: "100%" }}
         >

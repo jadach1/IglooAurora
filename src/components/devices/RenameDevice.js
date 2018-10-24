@@ -4,7 +4,6 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Grid from "@material-ui/core/Grid"
 import Icon from "@material-ui/core/Icon"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
@@ -70,50 +69,40 @@ class RenameDevice extends React.Component {
         </DialogTitle>
         <div style={{ height: "100%" }}>
           <MuiThemeProvider theme={theme}>
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
+            <FormControl
               style={{
-                width: "100%",
+                width: "calc(100% - 48px)",
                 paddingLeft: "24px",
                 paddingRight: "24px",
               }}
             >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon>lightbulb_outline</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-name-login"
-                    placeholder="Board Name"
-                    value={this.state.customName}
-                    onChange={event =>
-                      this.setState({
-                        customName: event.target.value,
-                      })
-                    }
-                    onKeyPress={event => {
-                      if (event.key === "Enter") this.rename()
-                    }}
-                    endAdornment={
-                      this.state.customName ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => this.setState({ customName: "" })}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                          >
-                            <Icon>clear</Icon>
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
+              <Input
+                id="adornment-name-login"
+                placeholder="Board Name"
+                value={this.state.customName}
+                onChange={event =>
+                  this.setState({
+                    customName: event.target.value,
+                  })
+                }
+                onKeyPress={event => {
+                  if (event.key === "Enter") this.rename()
+                }}
+                endAdornment={
+                  this.state.customName ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => this.setState({ customName: "" })}
+                        onMouseDown={this.handleMouseDownPassword}
+                        tabIndex="-1"
+                      >
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
           </MuiThemeProvider>
         </div>
         <br />
