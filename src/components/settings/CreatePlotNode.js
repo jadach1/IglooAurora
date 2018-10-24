@@ -3,7 +3,8 @@ import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 //import CenteredSpinner from "../CenteredSpinner"
@@ -60,7 +61,30 @@ export default class CreatePlotNode extends React.Component {
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <DialogTitle style={{ width: "350px" }}>Create plot node</DialogTitle>
+          <DialogTitle
+            style={
+              window.innerWidth < MOBILE_WIDTH
+                ? typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
+                  : { width: "calc(100% - 48px)", background: "#fff" }
+                : typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? { width: "350px", background: "#2f333d" }
+                  : { width: "350px", background: "#fff" }
+            }
+          >
+            <font
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "#fff" }
+                  : {}
+              }
+            >
+              Create plot node
+            </font>
+          </DialogTitle>
           <div
             style={{
               paddingRight: "24px",

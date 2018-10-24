@@ -1,13 +1,10 @@
 import React from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
-import Checkbox from "@material-ui/core/Checkbox"
 import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import Grid from "@material-ui/core/Grid"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -101,76 +98,43 @@ class CreateBoard extends React.Component {
         </DialogTitle>
         <div style={{ height: "100%" }}>
           <MuiThemeProvider theme={theme}>
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
+            <FormControl
               style={{
-                width: "100%",
+                width: "calc(100% - 48px)",
                 paddingLeft: "24px",
                 paddingRight: "24px",
               }}
             >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon>widgets</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-name-login"
-                    placeholder="Board Name"
-                    value={this.state.customName}
-                    onChange={event =>
-                      this.setState({
-                        customName: event.target.value,
-                      })
-                    }
-                    onKeyPress={event => {
-                      if (event.key === "Enter") this.createBoardMutation()
-                    }}
-                    endAdornment={
-                      this.state.customName ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => this.setState({ customName: "" })}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                          >
-                            <Icon>clear</Icon>
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
+              <Input
+                id="adornment-name-login"
+                placeholder="Board Name"
+                value={this.state.customName}
+                onChange={event =>
+                  this.setState({
+                    customName: event.target.value,
+                  })
+                }
+                onKeyPress={event => {
+                  if (event.key === "Enter") this.createBoardMutation()
+                }}
+                endAdornment={
+                  this.state.customName ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => this.setState({ customName: "" })}
+                        onMouseDown={this.handleMouseDownPassword}
+                        tabIndex="-1"
+                      >
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
           </MuiThemeProvider>
           <br />
-          <FormControlLabel
-            control={
-              <MuiThemeProvider
-                theme={createMuiTheme({
-                  palette: {
-                    secondary: { main: "#0083ff" },
-                  },
-                })}
-              >
-                <Checkbox
-                  onChange={event =>
-                    this.setState({ favorite: event.target.checked })
-                  }
-                  icon={<Icon>star_border</Icon>}
-                  checkedIcon={<Icon>star</Icon>}
-                />
-              </MuiThemeProvider>
-            }
-            style={{ paddingLeft: "24px", paddingRight: "24px" }}
-            label="Set as favorite"
-          />
-          <p style={{ paddingLeft: "24px", paddingRight: "24px" }}>
-            Choose a board image
-          </p>
+          <br />
           <SwipeableViews
             index={this.state.slideIndex}
             onChangeIndex={value => {

@@ -13,10 +13,12 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import ListItemText from "@material-ui/core/ListItemText"
 import List from "@material-ui/core/List"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
 import Zoom from "@material-ui/core/Zoom"
+import Checkbox from "@material-ui/core/Checkbox"
 
 const theme = createMuiTheme({
   palette: {
@@ -36,6 +38,7 @@ class Sidebar extends Component {
     dialOpen: false,
     visibleDeviceTypes: [],
     hidden: false,
+    selectionMode: false,
   }
 
   handleMouseDownSearch = event => {
@@ -278,25 +281,37 @@ class Sidebar extends Component {
                       }
                       key={device.id}
                     >
-                      <ListItemIcon>
-                        {device.icon ? (
-                          <img
-                            className="deviceIcon"
-                            src={device.icon}
-                            alt="device logo"
-                          />
-                        ) : (
-                          <Icon
-                            style={
-                              this.props.nightMode
-                                ? { color: "#c1c2c5" }
-                                : { color: "#7a7a7a" }
-                            }
-                          >
-                            lightbulb_outline
-                          </Icon>
-                        )}
-                      </ListItemIcon>
+                      {this.state.selectionMode ? (
+                        <MuiThemeProvider
+                          theme={createMuiTheme({
+                            palette: {
+                              secondary: { main: "#ff4081" },
+                            },
+                          })}
+                        >
+                          <Checkbox tabIndex={-1} disableRipple />
+                        </MuiThemeProvider>
+                      ) : (
+                        <ListItemIcon>
+                          {device.icon ? (
+                            <img
+                              className="deviceIcon"
+                              src={device.icon}
+                              alt="device logo"
+                            />
+                          ) : (
+                            <Icon
+                              style={
+                                this.props.nightMode
+                                  ? { color: "#c1c2c5" }
+                                  : { color: "#7a7a7a" }
+                              }
+                            >
+                              lightbulb_outline
+                            </Icon>
+                          )}
+                        </ListItemIcon>
+                      )}
                       <ListItemText
                         style={{
                           whiteSpace: "nowrap",
@@ -389,25 +404,37 @@ class Sidebar extends Component {
                       }
                       key={device.id}
                     >
-                      <ListItemIcon>
-                        {device.icon ? (
-                          <img
-                            className="deviceIcon"
-                            src={device.icon}
-                            alt="device logo"
-                          />
-                        ) : (
-                          <Icon
-                            style={
-                              this.props.nightMode
-                                ? { color: "#c1c2c5" }
-                                : { color: "#7a7a7a" }
-                            }
-                          >
-                            lightbulb_outline
-                          </Icon>
-                        )}
-                      </ListItemIcon>
+                      {this.state.selectionMode ? (
+                        <MuiThemeProvider
+                          theme={createMuiTheme({
+                            palette: {
+                              secondary: { main: "#ff4081" },
+                            },
+                          })}
+                        >
+                          <Checkbox tabIndex={-1} disableRipple />
+                        </MuiThemeProvider>
+                      ) : (
+                        <ListItemIcon>
+                          {device.icon ? (
+                            <img
+                              className="deviceIcon"
+                              src={device.icon}
+                              alt="device logo"
+                            />
+                          ) : (
+                            <Icon
+                              style={
+                                this.props.nightMode
+                                  ? { color: "#c1c2c5" }
+                                  : { color: "#7a7a7a" }
+                              }
+                            >
+                              lightbulb_outline
+                            </Icon>
+                          )}
+                        </ListItemIcon>
+                      )}
                       <ListItemText
                         primary={
                           <span
@@ -510,6 +537,11 @@ class Sidebar extends Component {
                       transition:
                         "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
                     }
+              }
+              onClick={() =>
+                this.setState(oldState => ({
+                  selectionMode: !oldState.selectionMode,
+                }))
               }
             >
               <Icon>format_list_bulleted</Icon>

@@ -38,6 +38,7 @@ import Translate from "translate-components"
 import Tooltip from "@material-ui/core/Tooltip"
 import ChangeEmail from "./ChangeEmail"
 import ChangeServer from "./ChangeServer"
+import VerifyEmailDialog from "../VerifyEmailDialog"
 
 function Transition(props) {
   return <Slide direction="up" {...props} />
@@ -70,12 +71,14 @@ const allDialogsClosed = {
   unitDialogOpen: false,
   nameDialogOpen: false,
   shortcutDialogOpen: false,
+  authDialogOpen: false,
   createValueOpen: false,
   createDeviceOpen: false,
-  createNodeOpen: false,
   createNotificationOpen: false,
+  createNodeOpen: false,
   gdprOpen: false,
   serverOpen: false,
+  verifyOpen: false,
 }
 
 class SettingsDialogMobile extends React.Component {
@@ -365,9 +368,14 @@ class SettingsDialogMobile extends React.Component {
           icon={<Icon>code</Icon>}
           label="Development"
           style={
-            this.props.slideIndex === 3
-              ? { color: "#0083ff" }
-              : { color: "#757575" }
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? this.props.slideIndex === 3
+                ? { color: "#fff" }
+                : { color: "#fff", opacity: 0.5 }
+              : this.props.slideIndex === 3
+                ? { color: "#0083ff" }
+                : { color: "#757575" }
           }
         />
       ) : (
@@ -434,11 +442,21 @@ class SettingsDialogMobile extends React.Component {
 
     let uiSettings = (
       <div
-        style={{
-          overflowY: "auto",
-          height: "calc(100vh - 128px)",
-          overflowX: "hidden",
-        }}
+        style={
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("nightMode") === "true"
+            ? {
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+                overflowX: "hidden",
+                background: "rgb(33, 37, 43)",
+              }
+            : {
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+                overflowX: "hidden",
+              }
+        }
       >
         <div style={listStyles.root}>
           <List style={{ width: "100%", padding: "0" }}>
@@ -487,11 +505,21 @@ class SettingsDialogMobile extends React.Component {
 
     let notificationsSettings = (
       <div
-        style={{
-          overflowY: "auto",
-          height: "calc(100vh - 128px)",
-          overflowX: "hidden",
-        }}
+        style={
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("nightMode") === "true"
+            ? {
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+                overflowX: "hidden",
+                background: "rgb(33, 37, 43)",
+              }
+            : {
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+                overflowX: "hidden",
+              }
+        }
       >
         <div style={listStyles.root}>
           <List style={{ width: "100%", padding: "0" }}>
@@ -507,11 +535,21 @@ class SettingsDialogMobile extends React.Component {
 
     let accountSettings = (
       <div
-        style={{
-          overflowY: "auto",
-          height: "calc(100vh - 128px)",
-          overflowX: "hidden",
-        }}
+        style={
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("nightMode") === "true"
+            ? {
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+                overflowX: "hidden",
+                background: "rgb(33, 37, 43)",
+              }
+            : {
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+                overflowX: "hidden",
+              }
+        }
       >
         <List style={{ padding: "0" }}>
           <Subheader style={{ cursor: "default" }}>Authentication</Subheader>
@@ -572,6 +610,13 @@ rightToggle={
           <Subheader style={{ cursor: "default" }}>
             Account management
           </Subheader>
+          {user &&
+            !user.emailIsVerified && (
+              <ListItem
+                primaryText="Resend verifcation email"
+                onClick={() => this.setState({ verifyOpen: true })}
+              />
+            )}
           <ListItem
             primaryText="Manage your profile"
             secondaryText="Change your profile photo and name"
@@ -647,11 +692,21 @@ rightToggle={
               {notificationsSettings}
               {accountSettings}
               <div
-                style={{
-                  overflowY: "auto",
-                  height: "calc(100vh - 220px)",
-                  maxHeight: "550px",
-                }}
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? {
+                        overflowY: "auto",
+                        height: "calc(100vh - 128px)",
+                        overflowX: "hidden",
+                        background: "rgb(33, 37, 43)",
+                      }
+                    : {
+                        overflowY: "auto",
+                        height: "calc(100vh - 128px)",
+                        overflowX: "hidden",
+                      }
+                }
               >
                 <List style={{ padding: "0" }}>
                   <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
@@ -876,6 +931,10 @@ rightToggle={
         <ChangeServer
           open={this.props.isOpen && this.state.serverOpen}
           close={() => this.setState({ serverOpen: false })}
+        />
+        <VerifyEmailDialog
+          open={this.props.isOpen && this.state.verifyOpen}
+          close={() => this.setState({ verifyOpen: false })}
         />
       </React.Fragment>
     )

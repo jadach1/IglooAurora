@@ -3,7 +3,8 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import moment from "moment"
@@ -44,9 +45,28 @@ class BoardInfo extends React.Component {
       >
         <DialogTitle
           className="notSelectable defaultCursor"
-          style={{ width: "350px" }}
+          style={
+            window.innerWidth < MOBILE_WIDTH
+              ? typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                ? { width: "calc(100% - 48px)", background: "#2f333d" }
+                : { width: "calc(100% - 48px)", background: "#fff" }
+              : typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                ? { width: "350px", background: "#2f333d" }
+                : { width: "350px", background: "#fff" }
+          }
         >
-          Board information
+          <font
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? { color: "#fff" }
+                : {}
+            }
+          >
+            Board information
+          </font>
         </DialogTitle>
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}

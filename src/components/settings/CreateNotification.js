@@ -1,14 +1,16 @@
 import React from "react"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MenuItem from "material-ui/MenuItem"
 import CenteredSpinner from "../CenteredSpinner"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Grid from "@material-ui/core/Grid"
 import Icon from "@material-ui/core/Icon"
 import FormControl from "@material-ui/core/FormControl"
 import Select from "@material-ui/core/Select"
@@ -32,7 +34,7 @@ function Transition(props) {
   )
 }
 
-export default class CreateNotification extends React.Component {
+class CreateNotification extends React.Component {
   state = {
     content: "",
     activeStep: 0,
@@ -45,6 +47,14 @@ export default class CreateNotification extends React.Component {
       userData: { loading, error, user },
     } = this.props
 
+    let createNotificationMutation = () => {
+      this.props["CreateNotification"]({
+        variables: {
+          deviceId: user.devices[this.props.device].id,
+        },
+      })
+    }
+
     let deviceList = ""
 
     if (error) deviceList = "Unexpected error bear"
@@ -54,35 +64,19 @@ export default class CreateNotification extends React.Component {
     if (user)
       deviceList = (
         <MuiThemeProvider theme={theme}>
-          <Grid
-            container
-            spacing={0}
-            alignItems="flex-end"
-            style={{
-              width: "100%",
-            }}
-          >
-            <Grid item style={{ marginRight: "16px" }}>
-              <Icon>lightbulb_outline</Icon>
-            </Grid>
-            <Grid item style={{ width: "calc(100% - 40px)" }}>
-              <FormControl style={{ width: "100%" }}>
-                <Select
-                  value={this.state.value || 0}
-                  onChange={event => {
-                    this.setState({ board: event.target.value })
-                  }}
-                  name="device"
-                >
-                  {user.devices.map(device => (
-                    <MenuItem value={device.index}>
-                      {device.customName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
+          <FormControl style={{ width: "100%" }}>
+            <Select
+              value={this.state.device || 0}
+              onChange={event => {
+                this.setState({ device: event.target.value })
+              }}
+              name="device"
+            >
+              {user.devices.map(device => (
+                <MenuItem value={device.index}>{device.customName}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </MuiThemeProvider>
       )
 
@@ -95,66 +89,106 @@ export default class CreateNotification extends React.Component {
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <DialogTitle style={{ width: "350px" }}>
-            Create notification
+          <DialogTitle
+            style={
+              window.innerWidth < MOBILE_WIDTH
+                ? typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
+                  : { width: "calc(100% - 48px)", background: "#fff" }
+                : typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? { width: "350px", background: "#2f333d" }
+                  : { width: "350px", background: "#fff" }
+            }
+          >
+            <font
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "#fff" }
+                  : {}
+              }
+            >
+              Create notification
+            </font>
           </DialogTitle>
           <div
-            style={{
-              height: "100%",
-              paddingRight: "24px",
-              paddingLeft: "24px",
-            }}
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    height: "100%",
+                    paddingRight: "24px",
+                    paddingLeft: "24px",
+                    background: "#2f333d",
+                  }
+                : {
+                    height: "100%",
+                    paddingRight: "24px",
+                    paddingLeft: "24px",
+                  }
+            }
           >
             {deviceList}
             <br />
             <br />
             <MuiThemeProvider theme={theme}>
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>chat_bubble_outline</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Notification content"
-                      value={this.state.customName}
-                      onChange={event =>
-                        this.setState({ customName: event.target.value })
-                      }
-                      /*  onKeyPress={event => {
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-name-login"
+                  placeholder="Notification content"
+                  value={this.state.content}
+                  onChange={event =>
+                    this.setState({ content: event.target.value })
+                  }
+                  /*  onKeyPress={event => {
                         if (event.key === "Enter") createDeviceMutation()
                       }} */
-                      endAdornment={
-                        this.state.customName && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ customName: "" })}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
+                  endAdornment={
+                    this.state.content && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ content: "" })}
+                          tabIndex="-1"
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                />
+              </FormControl>
             </MuiThemeProvider>
+            <br />
           </div>
-          <br />
-                  <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    padding: "8px",
+                    margin: "0",
+                    background: "#2f333d",
+                  }
+                : {
+                    padding: "8px",
+                    margin: "0",
+                  }
+            }
+          >
             <MuiThemeProvider theme={theme}>
               <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-                Never mind
+                <font
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : {}
+                  }
+                >
+                  Never mind
+                </font>
               </Button>
               <Button
                 variant="raised"
@@ -162,7 +196,11 @@ export default class CreateNotification extends React.Component {
                 label="Change"
                 primary={true}
                 buttonStyle={{ backgroundColor: "#0083ff" }}
-                disabled={!this.state.content}
+                disabled={!this.state.content || !this.state.device}
+                onClick={() => {
+                  createNotificationMutation()
+                  this.props.close()
+                }}
               >
                 Create
               </Button>
@@ -173,3 +211,26 @@ export default class CreateNotification extends React.Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    mutation CreateDevice(
+      $deviceType: String
+      $customName: String!
+      $boardId: ID!
+      $firmware: String
+    ) {
+      CreateDevice(
+        deviceType: $deviceType
+        customName: $customName
+        boardId: $boardId
+        firmware: $firmware
+      ) {
+        id
+      }
+    }
+  `,
+  {
+    name: "CreateDevice",
+  }
+)(CreateNotification)
