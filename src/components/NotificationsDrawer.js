@@ -266,7 +266,6 @@ class NotificationsDrawer extends React.Component {
                   />
                   <ListItemSecondaryAction>
                     <IconButton
-                      aria-label="Delete"
                       onClick={() => deleteNotification(notification.id)}
                     >
                       <i class="material-icons">delete</i>
@@ -373,7 +372,7 @@ class NotificationsDrawer extends React.Component {
             key="showMoreLessButton"
             style={
               this.props.hiddenNotifications
-                ? this.props.nightMode
+                ? typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                   ? { backgroundColor: "#282c34" }
                   : { backgroundColor: "#d4d4d4" }
                 : null
@@ -410,7 +409,7 @@ class NotificationsDrawer extends React.Component {
             <ListItemIcon>
               <Icon
                 style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
                 }
               >
                 markunread
@@ -475,7 +474,7 @@ class NotificationsDrawer extends React.Component {
         >
           <div
             style={
-              this.props.nightMode
+              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                 ? { background: "#2f333d", height: "100%" }
                 : { background: "white", height: "100%" }
             }

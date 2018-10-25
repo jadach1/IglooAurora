@@ -2,13 +2,13 @@ import React from "react"
 import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Grid from "@material-ui/core/Grid"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -97,50 +97,38 @@ class RenameTileDialog extends React.Component {
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
           <MuiThemeProvider theme={theme}>
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon>extension</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-email-login"
-                    placeholder="Card name"
-                    value={this.state.tileName}
-                    onChange={event => {
-                      this.setState({
-                        tileName: event.target.value,
-                      })
-                    }}
-                    onKeyPress={event => {
-                      if (event.key === "Enter") this.rename()
-                    }}
-                    endAdornment={
-                      this.state.tileName ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => {
-                              this.setState({ tileName: "" })
-                            }}
-                            onMouseDown={event => {
-                              event.preventDefault()
-                            }}
-                            tabIndex="-1"
-                          >
-                            <Icon>clear</Icon>
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="adornment-email-login"
+                placeholder="Card name"
+                value={this.state.tileName}
+                onChange={event => {
+                  this.setState({
+                    tileName: event.target.value,
+                  })
+                }}
+                onKeyPress={event => {
+                  if (event.key === "Enter") this.rename()
+                }}
+                endAdornment={
+                  this.state.tileName ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => {
+                          this.setState({ tileName: "" })
+                        }}
+                        onMouseDown={event => {
+                          event.preventDefault()
+                        }}
+                        tabIndex="-1"
+                      >
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
           </MuiThemeProvider>
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>

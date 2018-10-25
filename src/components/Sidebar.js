@@ -55,7 +55,16 @@ class Sidebar extends Component {
     } = this.props
 
     if (loading) {
-      return <CenteredSpinner />
+      return (
+        <CenteredSpinner
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? { background: "#282c34" }
+              : {}
+          }
+        />
+      )
     }
 
     if (error) {
@@ -78,7 +87,7 @@ class Sidebar extends Component {
                 color="primary"
                 className="notSelectable"
                 style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
                 }
                 disabled={
                   !user.devices
@@ -101,7 +110,7 @@ class Sidebar extends Component {
                   >
                     <Icon
                       style={
-                        this.props.nightMode
+                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                           ? !user.devices
                               .filter(
                                 device =>
@@ -141,7 +150,7 @@ class Sidebar extends Component {
                         onClick={this.handleClickCancelSearch}
                         onMouseDown={this.handleMouseDownSearch}
                         style={
-                          this.props.nightMode
+                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -180,7 +189,7 @@ class Sidebar extends Component {
             >
               <Icon
                 style={
-                  this.props.nightMode
+                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                     ? !user.devices
                         .filter(
                           device => device.board.id === this.props.selectedBoard
@@ -230,7 +239,7 @@ class Sidebar extends Component {
           setVisibleTypes={visibleTypes => {
             this.setState({ visibleDeviceTypes: visibleTypes })
           }}
-          nightMode={this.props.nightMode}
+          nightMode={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"}
         />
         <List
           style={{
@@ -274,7 +283,7 @@ class Sidebar extends Component {
                       style={
                         this.props.selectedDevice === device.id &&
                         !this.props.isMobile
-                          ? this.props.nightMode
+                          ? typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { backgroundColor: "#282c34" }
                             : { backgroundColor: "#d4d4d4" }
                           : null
@@ -302,7 +311,7 @@ class Sidebar extends Component {
                           ) : (
                             <Icon
                               style={
-                                this.props.nightMode
+                                typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                                   ? { color: "#c1c2c5" }
                                   : { color: "#7a7a7a" }
                               }
@@ -397,7 +406,7 @@ class Sidebar extends Component {
                       className="notSelectable"
                       style={
                         this.props.selectedDevice === device.id
-                          ? this.props.nightMode
+                          ? typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { backgroundColor: "#282c34" }
                             : { backgroundColor: "#d4d4d4" }
                           : null
@@ -425,7 +434,7 @@ class Sidebar extends Component {
                           ) : (
                             <Icon
                               style={
-                                this.props.nightMode
+                                typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                                   ? { color: "#c1c2c5" }
                                   : { color: "#7a7a7a" }
                               }
@@ -439,7 +448,7 @@ class Sidebar extends Component {
                         primary={
                           <span
                             style={
-                              this.props.nightMode
+                              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                                 ? { color: "white" }
                                 : { color: "black" }
                             }
@@ -456,7 +465,7 @@ class Sidebar extends Component {
                         secondary={
                           <span
                             style={
-                              this.props.nightMode
+                              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                                 ? { color: "#c1c2c5" }
                                 : { color: "#7a7a7a" }
                             }

@@ -81,7 +81,7 @@ class BoardCard extends Component {
       <React.Fragment>
         <Paper
           style={
-            this.props.nightMode
+            typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
               ? {
                   backgroundColor: "#2f333d",
                   width: "256px",
@@ -104,7 +104,7 @@ class BoardCard extends Component {
             <Link
               to={"/dashboard?board=" + this.props.board.id}
               style={
-                this.props.nightMode
+                typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                   ? {
                       color: "white",
                       textDecoration: "none",
@@ -123,7 +123,7 @@ class BoardCard extends Component {
                 variant="title"
                 className="notSelectable"
                 style={
-                  this.props.nightMode
+                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                     ? {
                         color: "white",
                         marginLeft: "-8px",
@@ -181,7 +181,7 @@ class BoardCard extends Component {
               >
                 <Icon
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? {
                           color: "white",
                         }
@@ -198,7 +198,7 @@ class BoardCard extends Component {
           <Link
             to={"/dashboard?board=" + this.props.board.id}
             style={
-              this.props.nightMode
+              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                 ? { color: "white", textDecoration: "none" }
                 : { color: "black", textDecoration: "none" }
             }
@@ -287,7 +287,7 @@ class BoardCard extends Component {
           <MenuItem
             className="notSelectable"
             style={
-              this.props.nightMode ? { color: "white" } : { color: "black" }
+              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
             }
             onClick={() => {
               this.setState({ infoOpen: true })
@@ -297,7 +297,7 @@ class BoardCard extends Component {
             <ListItemIcon>
               <Icon
                 style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
                 }
               >
                 info
@@ -309,7 +309,7 @@ class BoardCard extends Component {
           <MenuItem
             className="notSelectable"
             style={
-              this.props.nightMode ? { color: "white" } : { color: "black" }
+              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
             }
             onClick={() => {
               this.setState({ anchorEl: null })
@@ -319,7 +319,7 @@ class BoardCard extends Component {
             <ListItemIcon>
               <Icon
                 style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
                 }
               >
                 share
@@ -333,7 +333,7 @@ class BoardCard extends Component {
             <MenuItem
               className="notSelectable"
               style={
-                this.props.nightMode ? { color: "white" } : { color: "black" }
+                typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
               }
               onClick={() => {
                 this.setState({ leaveOpen: true })
@@ -343,7 +343,7 @@ class BoardCard extends Component {
               <ListItemIcon>
                 <Icon
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -358,7 +358,7 @@ class BoardCard extends Component {
           <MenuItem
             className="notSelectable"
             style={
-              this.props.nightMode ? { color: "white" } : { color: "black" }
+              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
             }
             onClick={() => {
               this.toggleQuietMode(this.props.board.quietMode ? false : true)
@@ -368,7 +368,7 @@ class BoardCard extends Component {
             <ListItemIcon>
               <Icon
                 style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
                 }
               >
                 {this.props.board.quietMode
@@ -388,7 +388,7 @@ class BoardCard extends Component {
               <MenuItem
                 className="notSelectable"
                 style={
-                  this.props.nightMode ? { color: "white" } : { color: "black" }
+                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
                 }
                 onClick={() => {
                   this.setState({ renameOpen: true })
@@ -398,7 +398,7 @@ class BoardCard extends Component {
                 <ListItemIcon>
                   <Icon
                     style={
-                      this.props.nightMode
+                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                         ? { color: "white" }
                         : { color: "black" }
                     }
@@ -415,7 +415,7 @@ class BoardCard extends Component {
             <MenuItem
               className="notSelectable"
               style={
-                this.props.nightMode ? { color: "white" } : { color: "black" }
+                typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
               }
               onClick={() => {
                 this.setState({ deleteOpen: true })
@@ -452,14 +452,14 @@ class BoardCard extends Component {
           close={() => this.setState({ shareOpen: false })}
           board={this.props.board}
           userData={this.props.userData}
-          nightMode={this.props.nightMode}
+          nightMode={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"}
         />
         <LeaveBoard
           open={this.state.leaveOpen}
           close={() => this.setState({ leaveOpen: false })}
           board={this.props.board}
           userData={this.props.userData}
-          nightMode={this.props.nightMode}
+          nightMode={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"}
         />
       </React.Fragment>
     )

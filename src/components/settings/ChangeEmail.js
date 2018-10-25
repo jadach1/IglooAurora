@@ -235,6 +235,7 @@ class ChangeMailDialog extends React.Component {
                 />
               </FormControl>
               <br />
+              <br />
             </div>
           </MuiThemeProvider>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>

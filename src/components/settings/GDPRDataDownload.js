@@ -5,7 +5,8 @@ import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -51,7 +52,7 @@ class GDPRDataDownload extends React.Component {
               height: "100%",
             }}
           >
-            Download you data and trasfer it to another service
+            Download your data and trasfer it to another service.
             <br /> <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>

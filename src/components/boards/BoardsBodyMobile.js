@@ -51,12 +51,10 @@ class BoardsBodyMobile extends Component {
     let devMode = false
 
     if (loading) {
-      boardsList = <CenteredSpinner />
       yourBoardsList = <CenteredSpinner />
     }
 
     if (error) {
-      boardsList = "Unexpected error"
       yourBoardsList = "Unexpected error"
     }
 

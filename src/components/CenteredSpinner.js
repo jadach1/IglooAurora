@@ -6,8 +6,8 @@ export default props => (
     {...props}
     style={
       props.style
-        ? { ...props.style, width: "100%", textAlign: "center" }
-        : { width: "100%", textAlign: "center" }
+        ? { ...props.style, width: "100%", textAlign: "center", height: "100%" }
+        : { width: "100%", textAlign: "center", height: "100%" }
     }
   >
     <br />

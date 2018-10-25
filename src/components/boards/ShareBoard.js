@@ -454,7 +454,7 @@ class ShareBoard extends React.Component {
               <ListItemIcon>
                 <Icon
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }

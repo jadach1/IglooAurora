@@ -6,12 +6,12 @@ class ReadOnlyFloatTile extends Component {
       <div className="readOnlyFloatTile">
         <div
           className="number"
-          style={this.props.nightMode ? { color: "white" } : {}}
+          style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : {}}
         >
           {this.props.value}{" "}
           <font
             style={
-              this.props.nightMode ? { color: "#c1c2c5" } : { color: "#7a7a7a" }
+              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "#c1c2c5" } : { color: "#7a7a7a" }
             }
           >
             {" "}

@@ -114,7 +114,7 @@ export default class StatusBar extends Component {
     return (
       <div
         style={
-          this.props.nightMode
+          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
             ? { background: "#2f333d", color: "white", height: "32px" }
             : { background: "white", color: "black", height: "32px" }
         }

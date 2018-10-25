@@ -3,9 +3,9 @@ import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
-import Grid from "@material-ui/core/Grid"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import FormControl from "@material-ui/core/FormControl"
@@ -25,7 +25,7 @@ const MOBILE_WIDTH = 500
 
 let oldUrl = ""
 
-let oldMode =""
+let oldMode = ""
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
@@ -54,7 +54,7 @@ export default class ChangePasswordDialog extends React.Component {
         localStorage.setItem("manualServer", this.state.url)
       }
 
-      oldUrl=this.state.url
+      oldUrl = this.state.url
 
       window.location.reload()
     }
@@ -63,10 +63,11 @@ export default class ChangePasswordDialog extends React.Component {
       oldUrl = typeof Storage !== "undefined" && localStorage.getItem("server")
     }
 
-    if (oldMode === ""){
-      oldMode = typeof Storage !== "undefined" && localStorage.getItem("server")
-      ? "manual"
-      : "auto"
+    if (oldMode === "") {
+      oldMode =
+        typeof Storage !== "undefined" && localStorage.getItem("server")
+          ? "manual"
+          : "auto"
     }
 
     return (
@@ -127,54 +128,39 @@ export default class ChangePasswordDialog extends React.Component {
             />
           </RadioButtonGroup>
           <MuiThemeProvider theme={theme}>
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon
-                  style={this.state.mode === "auto" ? { opacity: "0.5" } : {}}
-                >
-                  link
-                </Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-email-login"
-                    placeholder="Server address"
-                    value={this.state.url}
-                    onChange={event => {
-                      this.setState({
-                        url: event.target.value,
-                      })
-                    }}
-                    disabled={this.state.mode === "auto"}
-                    endAdornment={
-                      this.state.url ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => {
-                              this.setState({ url: "" })
-                            }}
-                            onMouseDown={event => {
-                              event.preventDefault()
-                            }}
-                            tabIndex="-1"
-                            disabled={this.state.mode === "auto"}
-                          >
-                            <Icon>clear</Icon>
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="adornment-email-login"
+                placeholder="Server address"
+                value={this.state.url}
+                onChange={event => {
+                  this.setState({
+                    url: event.target.value,
+                  })
+                }}
+                disabled={this.state.mode === "auto"}
+                endAdornment={
+                  this.state.url ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => {
+                          this.setState({ url: "" })
+                        }}
+                        onMouseDown={event => {
+                          event.preventDefault()
+                        }}
+                        tabIndex="-1"
+                        disabled={this.state.mode === "auto"}
+                      >
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
           </MuiThemeProvider>
+          <br />
           <br />
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
@@ -188,10 +174,12 @@ export default class ChangePasswordDialog extends React.Component {
               primary={true}
               buttonStyle={{ backgroundColor: "#0083ff" }}
               onClick={confirm}
-              disabled={oldMode === this.state.mode || (this.state.mode==="manual" &&
-                (!this.state.url ||
-                typeof Storage === "undefined" ||
-                oldUrl === this.state.url))
+              disabled={
+                oldMode === this.state.mode ||
+                (this.state.mode === "manual" &&
+                  (!this.state.url ||
+                    typeof Storage === "undefined" ||
+                    oldUrl === this.state.url))
               }
             >
               Change

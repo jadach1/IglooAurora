@@ -6,7 +6,6 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import Grid from "@material-ui/core/Grid"
 import FormControl from "@material-ui/core/FormControl"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
@@ -70,48 +69,34 @@ export default class ForgotPassword extends React.Component {
                 your password
               </div>
               <br />
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>email</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Email"
-                      value={this.state.email}
-                      onChange={event =>
-                        this.setState({
-                          customName: event.target.value,
-                        })
-                      }
-                      onKeyPress={event => {
-                        if (event.key === "Enter") this.rename()
-                      }}
-                      endAdornment={
-                        this.state.customName ? (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ email: "" })}
-                              onMouseDown={this.handleMouseDownPassword}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        ) : null
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-name-login"
+                  placeholder="Email"
+                  value={this.state.email}
+                  onChange={event =>
+                    this.setState({
+                      customName: event.target.value,
+                    })
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") this.rename()
+                  }}
+                  endAdornment={
+                    this.state.customName ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ email: "" })}
+                          onMouseDown={this.handleMouseDownPassword}
+                          tabIndex="-1"
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null
+                  }
+                />
+              </FormControl>
             </div>
             <br />
           </MuiThemeProvider>
