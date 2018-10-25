@@ -209,14 +209,16 @@ class MainBody extends Component {
       return (
         <div
           style={
-            this.props.nightMode
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
               ? { background: "#2f333d", height: "100%" }
               : { background: "white", height: "100%" }
           }
         >
           <div
             className={
-              this.props.nightMode
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
                 ? "mainBody darkMainBodyBG"
                 : "mainBody mainBodyBG"
             }
@@ -232,7 +234,8 @@ class MainBody extends Component {
       return (
         <div
           className={
-            this.props.nightMode
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
               ? "mainBody darkMainBodyBG"
               : "mainBody mainBodyBG"
           }
@@ -251,7 +254,7 @@ class MainBody extends Component {
       <Tile
         value={value}
         key={value.id}
-        nightMode={this.props.nightMode}
+        nightMode={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"}
         devMode={this.props.devMode}
         userData={this.props.userData}
       />
@@ -281,10 +284,10 @@ class MainBody extends Component {
           key="showMoreLessButton"
           style={
             this.props.showHidden
-              ? this.props.nightMode
+              ? typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                 ? { backgroundColor: "#282c34", color: "white" }
                 : { backgroundColor: "#d4d4d4", color: "black" }
-              : this.props.nightMode
+              : typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                 ? { backgroundColor: "transparent", color: "white" }
                 : { backgroundColor: "transparent", color: "black" }
           }
@@ -315,14 +318,14 @@ class MainBody extends Component {
     return (
       <div
         style={
-          this.props.nightMode
+          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
             ? { background: "#2f333d", height: "calc(100vh - 96px)" }
             : { background: "white", height: "calc(100vh - 96px)" }
         }
       >
         <div
           className={
-            this.props.nightMode
+            typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
               ? "mainBody darkMainBodyBG"
               : "mainBody mainBodyBG"
           }

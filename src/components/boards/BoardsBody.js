@@ -36,24 +36,20 @@ export default class BoardsBody extends Component {
     let boardsList = ""
     let yourBoardsList = ""
 
-    let nightMode = false
-
+    let   nightMode =
+    typeof Storage !== "undefined" &&
+    localStorage.getItem("nightMode") === "true"
     let devMode = false
 
     if (loading) {
-      boardsList = <CenteredSpinner />
       yourBoardsList = <CenteredSpinner />
     }
 
     if (error) {
-      boardsList = "Unexpected error"
       yourBoardsList = "Unexpected error"
     }
 
     if (user) {
-      nightMode =
-        typeof Storage !== "undefined" &&
-        localStorage.getItem("nightMode") === "true"
       devMode = user.devMode
 
       yourBoardsList = user.boards
@@ -138,7 +134,8 @@ export default class BoardsBody extends Component {
                   >
                     <Icon
                       style={
-                        nightMode
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
                           ? user && user.boards[0]
                             ? { color: "white" }
                             : { color: "white", opacity: "0.5" }
@@ -158,7 +155,8 @@ export default class BoardsBody extends Component {
                         onClick={() => this.props.searchBoards("")}
                         onMouseDown={this.handleMouseDownSearch}
                         style={
-                          nightMode ? { color: "white" } : { color: "black" }
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
                         }
                       >
                         <Icon>clear</Icon>

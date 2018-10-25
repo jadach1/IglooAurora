@@ -161,6 +161,7 @@ class CreateNotification extends React.Component {
               </FormControl>
             </MuiThemeProvider>
             <br />
+            <br />
           </div>
           <DialogActions
             style={

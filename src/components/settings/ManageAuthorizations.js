@@ -5,7 +5,8 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import Button from "@material-ui/core/Button"
 import { List, ListItem } from "material-ui/List"
 import IconButton from "@material-ui/core/IconButton"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
@@ -16,7 +17,6 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Grid from "@material-ui/core/Grid"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -52,9 +52,9 @@ class AuthDialog extends React.Component {
 
     const link = new HttpLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-    ? localStorage.getItem("server") + "/graphql"
-    : `http://iglooql.herokuapp.com/graphql`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://iglooql.herokuapp.com/graphql`,
     })
 
     this.client = new ApolloClient({
@@ -165,58 +165,47 @@ class AuthDialog extends React.Component {
               height: "100%",
             }}
           >
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon>vpn_key</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-password-login"
-                    type={this.state.showPassword ? "text" : "password"}
-                    value={this.state.password}
-                    placeholder="Password"
-                    onChange={event =>
-                      this.setState({
-                        password: event.target.value,
-                        passwordError: "",
-                        isPasswordEmpty: event.target.value === "",
-                      })
-                    }
-                    error={
-                      this.state.passwordError || this.state.isPasswordEmpty
-                        ? true
-                        : false
-                    }
-                    onKeyPress={event => {
-                      if (event.key === "Enter") this.openAuthDialog()
-                    }}
-                    endAdornment={
-                      this.state.password ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={this.handleClickShowPassword}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                          >
-                            {this.state.showPassword ? (
-                              <Icon>visibility_off</Icon>
-                            ) : (
-                              <Icon>visibility</Icon>
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="adornment-password-login"
+                type={this.state.showPassword ? "text" : "password"}
+                value={this.state.password}
+                placeholder="Password"
+                onChange={event =>
+                  this.setState({
+                    password: event.target.value,
+                    passwordError: "",
+                    isPasswordEmpty: event.target.value === "",
+                  })
+                }
+                error={
+                  this.state.passwordError || this.state.isPasswordEmpty
+                    ? true
+                    : false
+                }
+                onKeyPress={event => {
+                  if (event.key === "Enter") this.openAuthDialog()
+                }}
+                endAdornment={
+                  this.state.password ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={this.handleClickShowPassword}
+                        onMouseDown={this.handleMouseDownPassword}
+                        tabIndex="-1"
+                      >
+                        {this.state.showPassword ? (
+                          <Icon>visibility_off</Icon>
+                        ) : (
+                          <Icon>visibility</Icon>
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
+            <br />
             <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
@@ -280,58 +269,47 @@ class AuthDialog extends React.Component {
               height: "100%",
             }}
           >
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon>vpn_key</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-password-login"
-                    type={this.state.showPassword ? "text" : "password"}
-                    value={this.state.password}
-                    placeholder="Password"
-                    onChange={event =>
-                      this.setState({
-                        password: event.target.value,
-                        passwordError: "",
-                        isPasswordEmpty: event.target.value === "",
-                      })
-                    }
-                    error={
-                      this.state.passwordError || this.state.isPasswordEmpty
-                        ? true
-                        : false
-                    }
-                    onKeyPress={event => {
-                      if (event.key === "Enter") this.getPermanentToken()
-                    }}
-                    endAdornment={
-                      this.state.password ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={this.handleClickShowPassword}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                          >
-                            {this.state.showPassword ? (
-                              <Icon>visibility_off</Icon>
-                            ) : (
-                              <Icon>visibility</Icon>
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                </FormControl>
-              </Grid>
-            </Grid>
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="adornment-password-login"
+                type={this.state.showPassword ? "text" : "password"}
+                value={this.state.password}
+                placeholder="Password"
+                onChange={event =>
+                  this.setState({
+                    password: event.target.value,
+                    passwordError: "",
+                    isPasswordEmpty: event.target.value === "",
+                  })
+                }
+                error={
+                  this.state.passwordError || this.state.isPasswordEmpty
+                    ? true
+                    : false
+                }
+                onKeyPress={event => {
+                  if (event.key === "Enter") this.getPermanentToken()
+                }}
+                endAdornment={
+                  this.state.password ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={this.handleClickShowPassword}
+                        onMouseDown={this.handleMouseDownPassword}
+                        tabIndex="-1"
+                      >
+                        {this.state.showPassword ? (
+                          <Icon>visibility_off</Icon>
+                        ) : (
+                          <Icon>visibility</Icon>
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
+            <br />
             <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>

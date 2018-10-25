@@ -10,7 +10,6 @@ import MenuItem from "material-ui/MenuItem"
 import CenteredSpinner from "../CenteredSpinner"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Grid from "@material-ui/core/Grid"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
@@ -73,35 +72,19 @@ class CreateValue extends React.Component {
     if (user)
       devices = (
         <MuiThemeProvider theme={theme}>
-          <Grid
-            container
-            spacing={0}
-            alignItems="flex-end"
-            style={{
-              width: "100%",
-            }}
-          >
-            <Grid item style={{ marginRight: "16px" }}>
-              <Icon>lightbulb_outline</Icon>
-            </Grid>
-            <Grid item style={{ width: "calc(100% - 40px)" }}>
-              <FormControl style={{ width: "100%" }}>
-                <Select
-                  value={this.state.device}
-                  onChange={event => {
-                    this.setState({ device: event.target.value })
-                  }}
-                  name="device"
-                >
-                  {user.devices.map(device => (
-                    <MenuItem value={device.index}>
-                      {device.customName}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
+          <FormControl style={{ width: "100%" }}>
+            <Select
+              value={this.state.device}
+              onChange={event => {
+                this.setState({ device: event.target.value })
+              }}
+              name="device"
+            >
+              {user.devices.map(device => (
+                <MenuItem value={device.index}>{device.customName}</MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </MuiThemeProvider>
       )
 
@@ -153,133 +136,81 @@ class CreateValue extends React.Component {
             style={{ marginLeft: "24px", marginRight: "24px", height: "100%" }}
           >
             <MuiThemeProvider theme={theme}>
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>lightbulb_outline</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Custom name"
-                      value={this.state.customName}
-                      onChange={event =>
-                        this.setState({ customName: event.target.value })
-                      }
-                      onKeyPress={event => {
-                        if (event.key === "Enter") createDeviceMutation()
-                      }}
-                      endAdornment={
-                        this.state.customName && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ customName: "" })}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
-                    />
-                  </FormControl>
-                </Grid>
-              </Grid>
-              <br /> {devices}
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-name-login"
+                  placeholder="Custom name"
+                  value={this.state.customName}
+                  onChange={event =>
+                    this.setState({ customName: event.target.value })
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") createDeviceMutation()
+                  }}
+                  endAdornment={
+                    this.state.customName && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ customName: "" })}
+                          tabIndex="-1"
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                />
+              </FormControl>
+              <br /> <br /> {devices}
               <br />
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>lightbulb_outline</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Select
-                      value={this.state.type}
-                      onChange={event => {
-                        this.setState({ type: event.target.value })
-                      }}
-                      name="visibility"
-                    >
-                      <MenuItem value="float">Float</MenuItem>
-                      <MenuItem value="string">String</MenuItem>
-                      <MenuItem value="boolean">Boolean</MenuItem>
-                      <MenuItem value="color">Color</MenuItem>
-                      <MenuItem value="plot">Plot</MenuItem>
-                      <MenuItem value="stringPlot">String plot</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
               <br />
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>lightbulb_outline</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Select
-                      value={this.state.permission}
-                      onChange={event => {
-                        this.setState({ permission: event.target.value })
-                      }}
-                      name="permission"
-                    >
-                      <MenuItem value="readOnly">Read only</MenuItem>
-                      <MenuItem value="readWrite">Read and write</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
+              <FormControl style={{ width: "100%" }}>
+                <Select
+                  value={this.state.type}
+                  onChange={event => {
+                    this.setState({ type: event.target.value })
+                  }}
+                  name="visibility"
+                >
+                  <MenuItem value="float">Float</MenuItem>
+                  <MenuItem value="string">String</MenuItem>
+                  <MenuItem value="boolean">Boolean</MenuItem>
+                  <MenuItem value="color">Color</MenuItem>
+                  <MenuItem value="plot">Plot</MenuItem>
+                  <MenuItem value="stringPlot">String plot</MenuItem>
+                </Select>
+              </FormControl>
               <br />
-              <Grid
-                container
-                spacing={0}
-                alignItems="flex-end"
-                style={{
-                  width: "100%",
-                }}
-              >
-                <Grid item style={{ marginRight: "16px" }}>
-                  <Icon>lightbulb_outline</Icon>
-                </Grid>
-                <Grid item style={{ width: "calc(100% - 40px)" }}>
-                  <FormControl style={{ width: "100%" }}>
-                    <Select
-                      value={this.state.visibility}
-                      onChange={event => {
-                        this.setState({ visibility: event.target.value })
-                      }}
-                      name="visibility"
-                    >
-                      <MenuItem value="readOnly">Visible</MenuItem>
-                      <MenuItem value="readWrite">Hidden</MenuItem>
-                      <MenuItem value="readWrite">Invisible</MenuItem>
-                    </Select>
-                  </FormControl>
-                </Grid>
-              </Grid>
+              <br />
+              <FormControl style={{ width: "100%" }}>
+                <Select
+                  value={this.state.permission}
+                  onChange={event => {
+                    this.setState({ permission: event.target.value })
+                  }}
+                  name="permission"
+                >
+                  <MenuItem value="readOnly">Read only</MenuItem>
+                  <MenuItem value="readWrite">Read and write</MenuItem>
+                </Select>
+              </FormControl>
+              <br />
+              <br />
+              <FormControl style={{ width: "100%" }}>
+                <Select
+                  value={this.state.visibility}
+                  onChange={event => {
+                    this.setState({ visibility: event.target.value })
+                  }}
+                  name="visibility"
+                >
+                  <MenuItem value="readOnly">Visible</MenuItem>
+                  <MenuItem value="readWrite">Hidden</MenuItem>
+                  <MenuItem value="readWrite">Invisible</MenuItem>
+                </Select>
+              </FormControl>
             </MuiThemeProvider>
+            <br />
             <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>

@@ -144,7 +144,7 @@ class Tile extends Component {
         <ReadOnlyFloatTile
           value={value.floatValue}
           valueDetails={value.valueDetails}
-          nightMode={this.props.nightMode}
+          nightMode={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"}
         />
       )
     } else if (
@@ -261,14 +261,14 @@ class Tile extends Component {
           className={value.tileSize.toLowerCase()}
           zDepth={2}
           style={
-            this.props.nightMode
+            typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
               ? { background: "#2f333d" }
               : { background: "white" }
           }
         >
           <div
             style={
-              this.props.nightMode
+              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                 ? {
                     background: "#21252b",
                     display: "flex",
@@ -287,7 +287,7 @@ class Tile extends Component {
               variant="title"
               className="notSelectable"
               style={
-                this.props.nightMode
+                typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                   ? {
                       cursor: "default",
                       color: "white",
@@ -330,7 +330,7 @@ class Tile extends Component {
                       this.setState({ isTileFullScreen: true })
                     }}
                     style={
-                      this.props.nightMode
+                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                         ? {
                             padding: "0",
                             color: "white",
@@ -348,7 +348,7 @@ class Tile extends Component {
               <Tooltip id="tooltip-more" title="More" placement="bottom">
                 <IconButton
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? {
                           padding: "0",
                           color: "white",
@@ -384,13 +384,13 @@ class Tile extends Component {
                   className="notSelectable"
                   leftIcon={<Icon>place</Icon>}
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
                 />
                 <Divider
-                  style={this.props.nightMode ? { background: "#21252b" } : {}}
+                  style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { background: "#21252b" } : {}}
                 /> */}
                 <MenuItem
                   className="notSelectable"
@@ -400,7 +400,7 @@ class Tile extends Component {
                   }}
                   leftIcon={<Icon>info</Icon>}
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -408,7 +408,7 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        this.props.nightMode
+                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -419,7 +419,7 @@ class Tile extends Component {
                   <ListItemText inset primary="Information" />
                 </MenuItem>
                 <Divider
-                  style={this.props.nightMode ? { background: "#21252b" } : {}}
+                  style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { background: "#21252b" } : {}}
                 />
                 <MenuItem
                   primaryText={value.visibility === "VISIBLE" ? "Hide" : "Show"}
@@ -431,7 +431,7 @@ class Tile extends Component {
                     this.handleMenuClose()
                   }}
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -439,7 +439,7 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        this.props.nightMode
+                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -462,7 +462,7 @@ class Tile extends Component {
                   className="notSelectable"
                   leftIcon={<Icon>aspect_ratio</Icon>}
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -474,7 +474,7 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        this.props.nightMode
+                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -491,7 +491,7 @@ class Tile extends Component {
                   animation={PopoverAnimationVertical}
                   leftIcon={<Icon>aspect_ratio</Icon>}
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -503,7 +503,7 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        this.props.nightMode
+                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -514,13 +514,13 @@ class Tile extends Component {
                   <ListItemText inset primary="Data settings" />
                 </MenuItem>
                 <Divider
-                  style={this.props.nightMode ? { background: "#21252b" } : {}}
+                  style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { background: "#21252b" } : {}}
                 />
                 {this.props.userData.user.devices.length > 1 && (
                   <MenuItem
                     className="notSelectable"
                     style={
-                      this.props.nightMode
+                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                         ? { color: "white" }
                         : { color: "black" }
                     }
@@ -532,7 +532,7 @@ class Tile extends Component {
                     <ListItemIcon>
                       <Icon
                         style={
-                          this.props.nightMode
+                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -552,7 +552,7 @@ class Tile extends Component {
                     this.handleMenuClose()
                   }}
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -560,7 +560,7 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        this.props.nightMode
+                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -573,7 +573,7 @@ class Tile extends Component {
                 <MenuItem
                   className="notSelectable"
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }

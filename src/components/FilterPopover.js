@@ -95,14 +95,14 @@ export default class FilterPopover extends Component {
           className="notSelectable"
         >
           <div
-            style={this.props.nightMode ? { backgroundColor: "#2f333d" } : null}
+            style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { backgroundColor: "#2f333d" } : null}
           >
             <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
               <Typography
                 variant="title"
                 className="defaultCursor"
                 style={
-                  this.props.nightMode
+                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                     ? {
                         marginLeft: "-8px",
                         color: "white",
@@ -154,7 +154,7 @@ export default class FilterPopover extends Component {
                       primary={
                         <span
                           style={
-                            this.props.nightMode
+                            typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                               ? { color: "white" }
                               : { color: "black" }
                           }

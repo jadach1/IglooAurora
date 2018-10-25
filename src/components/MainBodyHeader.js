@@ -133,7 +133,7 @@ class MainBodyHeader extends Component {
                 <MenuItem
                   className="notSelectable"
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -145,7 +145,7 @@ class MainBodyHeader extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        this.props.nightMode
+                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -159,7 +159,7 @@ class MainBodyHeader extends Component {
                 {/* <MenuItem
                     className="notSelectable"
                     style={
-                      this.props.nightMode
+                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                         ? { color: "white" }
                         : { color: "black" }
                     }
@@ -167,7 +167,7 @@ class MainBodyHeader extends Component {
                     <ListItemIcon>
                       <Icon
                         style={
-                          this.props.nightMode
+                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -181,7 +181,7 @@ class MainBodyHeader extends Component {
                   <MenuItem
                     className="notSelectable"
                     style={
-                      this.props.nightMode
+                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                         ? { color: "white" }
                         : { color: "black" }
                     }
@@ -197,7 +197,7 @@ class MainBodyHeader extends Component {
                     <ListItemIcon>
                       <Icon
                         style={
-                          this.props.nightMode
+                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -212,7 +212,7 @@ class MainBodyHeader extends Component {
                     <MenuItem
                       className="notSelectable"
                       style={
-                        this.props.nightMode
+                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -224,7 +224,7 @@ class MainBodyHeader extends Component {
                       <ListItemIcon>
                         <Icon
                           style={
-                            this.props.nightMode
+                            typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                               ? { color: "white" }
                               : { color: "black" }
                           }
@@ -240,7 +240,7 @@ class MainBodyHeader extends Component {
                   <MenuItem
                     className="notSelectable"
                     style={
-                      this.props.nightMode
+                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                         ? { color: "white" }
                         : { color: "black" }
                     }
@@ -252,7 +252,7 @@ class MainBodyHeader extends Component {
                     <ListItemIcon>
                       <Icon
                         style={
-                          this.props.nightMode
+                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -266,7 +266,7 @@ class MainBodyHeader extends Component {
                   <MenuItem
                     className="notSelectable"
                     style={
-                      this.props.nightMode
+                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                         ? { color: "white" }
                         : { color: "black" }
                     }
@@ -278,7 +278,7 @@ class MainBodyHeader extends Component {
                     <ListItemIcon>
                       <Icon
                         style={
-                          this.props.nightMode
+                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -294,7 +294,7 @@ class MainBodyHeader extends Component {
                   <MenuItem
                     className="notSelectable"
                     style={
-                      this.props.nightMode
+                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                         ? { color: "white" }
                         : { color: "black" }
                     }
@@ -306,7 +306,7 @@ class MainBodyHeader extends Component {
                     <ListItemIcon>
                       <Icon
                         style={
-                          this.props.nightMode
+                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -321,7 +321,7 @@ class MainBodyHeader extends Component {
                   <MenuItem
                     className="notSelectable"
                     style={
-                      this.props.nightMode
+                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                         ? { color: "white" }
                         : { color: "black" }
                     }
@@ -333,7 +333,7 @@ class MainBodyHeader extends Component {
                     <ListItemIcon>
                       <Icon
                         style={
-                          this.props.nightMode
+                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -347,7 +347,7 @@ class MainBodyHeader extends Component {
                 <MenuItem
                   className="notSelectable"
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -359,7 +359,7 @@ class MainBodyHeader extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        this.props.nightMode
+                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -372,7 +372,7 @@ class MainBodyHeader extends Component {
                 <MenuItem
                   className="notSelectable"
                   style={
-                    this.props.nightMode
+                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -395,7 +395,7 @@ class MainBodyHeader extends Component {
                 changeDrawerState={this.props.changeDrawerState}
                 hiddenNotifications={this.props.hiddenNotifications}
                 showHiddenNotifications={this.props.showHiddenNotifications}
-                nightMode={this.props.nightMode}
+                nightMode={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"}
               />
               <Tooltip id="tooltip-more" title="More" placement="bottom">
                 <IconButton

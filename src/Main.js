@@ -36,11 +36,11 @@ class Main extends Component {
       handler: event => {
         !this.state.drawer
           ? this.setState(oldState => ({
-            showMainHidden: !oldState.showMainHidden,
-          }))
+              showMainHidden: !oldState.showMainHidden,
+            }))
           : this.setState(oldState => ({
-            hiddenNotifications: !oldState.hiddenNotifications,
-          }))
+              hiddenNotifications: !oldState.hiddenNotifications,
+            }))
       },
     },
     "alt+1": {
@@ -306,7 +306,9 @@ class Main extends Component {
     let deviceIdList = []
 
     if (user) {
-      nightMode = typeof Storage !== "undefined" && localStorage.getItem("nightMode")==="true"
+      nightMode =
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("nightMode") === "true"
       devMode = user.devMode
 
       deviceIdList = user.devices.map(device => device.id)
@@ -396,8 +398,8 @@ class Main extends Component {
                 userData={this.props.userData}
               />
             ) : (
-                <div className="mainBodyHeader" key="mainBodyHeader" />
-              )}
+              <div className="mainBodyHeader" key="mainBodyHeader" />
+            )}
             {this.props.selectedDevice !== null ? (
               user ? (
                 deviceIdList.includes(this.props.selectedDevice) ? (
@@ -417,43 +419,50 @@ class Main extends Component {
                     />
                   </React.Fragment>
                 ) : (
-                    <Redirect
-                      exact
-                      to={
-                        this.props.selectedBoard
-                          ? "/dashboard?board=" + this.props.selectedBoard
-                          : "/dashboard"
-                      }
-                    />
-                  )
-              ) : (
-                  ""
-                )
-            ) : (
-                <React.Fragment>
-                  <div
-                    style={
-                      nightMode
-                        ? { background: "#2f333d" }
-                        : { background: "white" }
-                    }
-                    className="mainBody"
-                  >
-                    <div
-                      className={nightMode ? "darkMainBodyBG" : "mainBodyBG"}
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                  </div>
-                  <div
-                    className="statusBar"
-                    style={
-                      nightMode
-                        ? { background: "#2f333d" }
-                        : { background: "white" }
+                  <Redirect
+                    exact
+                    to={
+                      this.props.selectedBoard
+                        ? "/dashboard?board=" + this.props.selectedBoard
+                        : "/dashboard"
                     }
                   />
-                </React.Fragment>
-              )}
+                )
+              ) : (
+                ""
+              )
+            ) : (
+              <React.Fragment>
+                <div
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { background: "#2f333d" }
+                      : { background: "white" }
+                  }
+                  className="mainBody"
+                >
+                  <div
+                    className={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? "darkMainBodyBG"
+                        : "mainBodyBG"
+                    }
+                    style={{ width: "100%", height: "100%" }}
+                  />
+                </div>
+                <div
+                  className="statusBar"
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { background: "#2f333d" }
+                      : { background: "white" }
+                  }
+                />
+              </React.Fragment>
+            )}
           </div>
         </Online>
         <Offline key="offlineMainBody">

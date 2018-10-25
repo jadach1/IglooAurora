@@ -1,6 +1,6 @@
 import React, { Component } from "react"
-import   createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import   MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
@@ -117,8 +117,8 @@ class MobilePasswordRecovery extends Component {
             marginRight: "32px",
             maxWidth: "400px",
             textAlign: "center",
-            paddingTop:"32px",
-            paddingBottom:"32px"
+            paddingTop: "32px",
+            paddingBottom: "32px",
           }}
         >
           <img

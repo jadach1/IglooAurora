@@ -671,7 +671,6 @@ rightToggle={
                   <IconButton
                     color="inherit"
                     onClick={this.props.closeSettingsDialog}
-                    aria-label="Close"
                     style={{
                       marginRight: "-16px",
                       marginLeft: "auto",
