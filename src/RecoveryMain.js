@@ -3,9 +3,10 @@ import PasswordRecovery from "./PasswordRecovery"
 import MobilePasswordRecovery from "./MobilePasswordRecovery"
 import gql from "graphql-tag"
 import { graphql } from "react-apollo"
+import jwtDecode from "jwt-decode"
 
 class RecoveryMain extends Component {
-  state = { recoveryPassword: "" }
+  state = { recoveryPassword: "", decodeToken: jwtDecode(this.props.token) }
 
   render() {
     return this.props.mobile ? (
@@ -15,6 +16,7 @@ class RecoveryMain extends Component {
           this.setState({ recoveryPassword: password })
         }
         userData={this.props.userData}
+        isTokenValid={this.state.decodeToken.tokenType !== "PASSWORD_RECOVERY"}
       />
     ) : (
       <PasswordRecovery
@@ -23,6 +25,7 @@ class RecoveryMain extends Component {
           this.setState({ recoveryPassword: password })
         }
         userData={this.props.userData}
+        isTokenValid={this.state.decodeToken.tokenType !== "PASSWORD_RECOVERY"}
       />
     )
   }

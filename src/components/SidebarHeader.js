@@ -1,7 +1,8 @@
 import React, { Component } from "react"
 import { hotkeys } from "react-keyboard-shortcuts"
 import Icon from "@material-ui/core/Icon"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Typography from "@material-ui/core/Typography"
 import Tooltip from "@material-ui/core/Tooltip"
 import IconButton from "@material-ui/core/IconButton"
@@ -67,12 +68,22 @@ class SidebarHeader extends Component {
           {this.props.boardName}
         </Typography>
         <div
-          style={{
-            padding: "0",
-            marginLeft: "auto",
-            marginRight: "8px",
-            float: "right",
-          }}
+          style={
+            this.props.user
+              ? {
+                  padding: "0",
+                  marginLeft: "auto",
+                  marginRight: "8px",
+                  float: "right",
+                  minWidth: "96px",
+                }
+              : {
+                  padding: "0",
+                  marginLeft: "auto",
+                  marginRight: "8px",
+                  float: "right",
+                }
+          }
         >
           <MuiThemeProvider theme={theme}>
             {/* <a href="https://igloocloud.github.io/IglooMagellan">
