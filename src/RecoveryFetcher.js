@@ -22,62 +22,71 @@ export default class RecoveryFetcher extends Component {
       token: queryString.parse("?" + window.location.href.split("?")[1]).token,
     }
 
-    const wsLink = new WebSocketLink({
-      uri:
-        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-          ? "wss://" + localStorage
-          .getItem("server")
-          .replace("https://", "")
-          .replace("http://", "") + "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
-      options: {
-        reconnect: true,
-        connectionParams: {
+    if (queryString.parse("?" + window.location.href.split("?")[1]).token) {
+      const wsLink = new WebSocketLink({
+        uri:
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("server") !== ""
+            ? "wss://" +
+              localStorage
+                .getItem("server")
+                .replace("https://", "")
+                .replace("http://", "") +
+              "/subscriptions"
+            : `wss://iglooql.herokuapp.com/subscriptions`,
+        options: {
+          reconnect: true,
+          connectionParams: {
+            Authorization: "Bearer " + this.state.token,
+          },
+        },
+      })
+
+      const httpLink = new HttpLink({
+        uri:
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("server") !== ""
+            ? localStorage.getItem("server") + "/graphql"
+            : `https://iglooql.herokuapp.com/graphql`,
+        headers: {
           Authorization: "Bearer " + this.state.token,
         },
-      },
-    })
+      })
 
-    const httpLink = new HttpLink({
-      uri:
-        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-          ?  localStorage.getItem("server") + "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
-      headers: {
-        Authorization: "Bearer " + this.state.token,
-      },
-    })
+      const link = split(
+        // split based on operation type
+        ({ query }) => {
+          const { kind, operation } = getMainDefinition(query)
+          return kind === "OperationDefinition" && operation === "subscription"
+        },
+        wsLink,
+        httpLink
+      )
 
-    const link = split(
-      // split based on operation type
-      ({ query }) => {
-        const { kind, operation } = getMainDefinition(query)
-        return kind === "OperationDefinition" && operation === "subscription"
-      },
-      wsLink,
-      httpLink
-    )
+      const fragmentMatcher = new IntrospectionFragmentMatcher({
+        introspectionQueryResultData,
+      })
 
-    const fragmentMatcher = new IntrospectionFragmentMatcher({
-      introspectionQueryResultData,
-    })
-
-    this.client = new ApolloClient({
-      // By default, this client will send queries to the
-      //  `/graphql` endpoint on the same host
-      link,
-      cache: new InMemoryCache({ fragmentMatcher }),
-    })
+      this.client = new ApolloClient({
+        // By default, this client will send queries to the
+        //  `/graphql` endpoint on the same host
+        link,
+        cache: new InMemoryCache({ fragmentMatcher }),
+      })
+    }
   }
 
   render() {
     return (
-      <ApolloProvider client={this.client}>
-        <RecoveryMain mobile={this.props.mobile} />
-        {!queryString.parse("?" + window.location.href.split("?")[1]).token && (
-          <Redirect to="/boards" />
+      <React.Fragment>
+        {queryString.parse("?" + window.location.href.split("?")[1]).token ? (
+          <ApolloProvider client={this.client}>
+            <RecoveryMain mobile={this.props.mobile} token={this.state.token} />
+          </ApolloProvider>
+        ) : (
+          <Redirect to="/dashboard" />
         )}
-      </ApolloProvider>
+      </React.Fragment>
     )
   }
 }
