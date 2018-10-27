@@ -62,10 +62,6 @@ class MainBody extends Component {
             ... on BooleanValue {
               boolValue: value
             }
-            ... on ColourValue {
-              colourValue: value
-              allowedValues
-            }
             ... on PlotValue {
               plotValue: value {
                 id
@@ -154,10 +150,6 @@ class MainBody extends Component {
             }
             ... on BooleanValue {
               boolValue: value
-            }
-            ... on ColourValue {
-              colourValue: value
-              allowedValues
             }
             ... on PlotValue {
               plotValue: value {
@@ -254,7 +246,10 @@ class MainBody extends Component {
       <Tile
         value={value}
         key={value.id}
-        nightMode={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"}
+        nightMode={
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("nightMode") === "true"
+        }
         devMode={this.props.devMode}
         userData={this.props.userData}
       />
@@ -284,10 +279,12 @@ class MainBody extends Component {
           key="showMoreLessButton"
           style={
             this.props.showHidden
-              ? typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+              ? typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
                 ? { backgroundColor: "#282c34", color: "white" }
                 : { backgroundColor: "#d4d4d4", color: "black" }
-              : typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+              : typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
                 ? { backgroundColor: "transparent", color: "white" }
                 : { backgroundColor: "transparent", color: "black" }
           }
@@ -318,14 +315,16 @@ class MainBody extends Component {
     return (
       <div
         style={
-          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("nightMode") === "true"
             ? { background: "#2f333d", height: "calc(100vh - 96px)" }
             : { background: "white", height: "calc(100vh - 96px)" }
         }
       >
         <div
           className={
-            typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
               ? "mainBody darkMainBodyBG"
               : "mainBody mainBodyBG"
           }
@@ -403,10 +402,6 @@ export default graphql(
           }
           ... on BooleanValue {
             boolValue: value
-          }
-          ... on ColourValue {
-            colourValue: value
-            allowedValues
           }
           ... on PlotValue {
             plotValue: value {
