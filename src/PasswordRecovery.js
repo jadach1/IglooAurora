@@ -97,6 +97,67 @@ class PasswordRecovery extends Component {
       )
     }
 
+    if (this.props.isTokenValid) {
+      return (
+        <div
+          style={{
+            width: "100vw",
+            height: "100vh",
+            backgroundColor: "#0057cb",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+          className="notSelectable defaultCursor"
+        >
+          <div
+            style={{
+              margin: "auto",
+              textAlign: "center",
+              width: "327px",
+            }}
+          >
+            <img
+              src={logo}
+              alt="Igloo logo"
+              className="notSelectable"
+              style={
+                window.innerHeight >= 690
+                  ? {
+                      width: "200px",
+                      marginBottom: "100px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }
+                  : {
+                      width: "200px",
+                      marginBottom: "50px",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }
+              }
+            />
+            <Typography variant="display1" style={{ color: "white" }}>
+              Invalid token
+            </Typography>
+            <br />
+            <br />
+            <MuiThemeProvider>
+              <Link
+                to="/dashboard"
+                style={{ textDecoration: "none", color: "black" }}
+              >
+                <Button variant="raised" color="secondary">
+                  Take me away!
+                </Button>
+              </Link>
+            </MuiThemeProvider>
+          </div>
+          {this.state.redirect && <Redirect push to="/dashboard" />}
+        </div>
+      )
+    }
+
     return (
       <div
         style={{
