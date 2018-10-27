@@ -37,15 +37,13 @@ class ChangeDevice extends React.Component {
         ? "ChangeDeviceFloat"
         : this.props.value.__typename === "StringValue"
           ? "ChangeDeviceString"
-          : this.props.value.__typename === "ColourValue"
-            ? "ChangeDeviceColour"
-            : this.props.value.__typename === "PlotValue"
-              ? "ChangeDevicePlot"
-              : this.props.value.__typename === "StringPlotValue"
-                ? "ChangeDeviceStringPlot"
-                : this.props.value.__typename === "MapValue"
-                  ? "ChangeDeviceMap"
-                  : "ChangeDeviceBoolean"
+          : this.props.value.__typename === "PlotValue"
+            ? "ChangeDevicePlot"
+            : this.props.value.__typename === "StringPlotValue"
+              ? "ChangeDeviceStringPlot"
+              : this.props.value.__typename === "MapValue"
+                ? "ChangeDeviceMap"
+                : "ChangeDeviceBoolean"
     ]({
       variables: {
         id: this.props.value.id,
@@ -57,15 +55,13 @@ class ChangeDevice extends React.Component {
           ? "floatValue"
           : this.props.value.__typename === "StringValue"
             ? "stringValue"
-            : this.props.value.__typename === "ColourValue"
-              ? "colourValue"
-              : this.props.value.__typename === "PlotValue"
-                ? "plotValue"
-                : this.props.value.__typename === "StringPlotValue"
-                  ? "stringPlotValue"
-                  : this.props.value.__typename === "MapValue"
-                    ? "mapValue"
-                    : "booleanValue"]: {
+            : this.props.value.__typename === "PlotValue"
+              ? "plotValue"
+              : this.props.value.__typename === "StringPlotValue"
+                ? "stringPlotValue"
+                : this.props.value.__typename === "MapValue"
+                  ? "mapValue"
+                  : "booleanValue"]: {
           __typename: this.props.value.__typename,
           id: this.props.value.id,
           deviceId: this.state.newDevice,
@@ -229,7 +225,7 @@ export default graphql(
           graphql(
             gql`
               mutation ChangeDevice($id: ID!, $deviceId: ID) {
-                colourValue(id: $id, deviceId: $deviceId) {
+                stringPlotValue(id: $id, deviceId: $deviceId) {
                   id
                   device {
                     id
@@ -238,25 +234,9 @@ export default graphql(
               }
             `,
             {
-              name: "ChangeDeviceColour",
+              name: "ChangeDeviceStringPlot",
             }
-          )(
-            graphql(
-              gql`
-                mutation ChangeDevice($id: ID!, $deviceId: ID) {
-                  stringPlotValue(id: $id, deviceId: $deviceId) {
-                    id
-                    device {
-                      id
-                    }
-                  }
-                }
-              `,
-              {
-                name: "ChangeDeviceStringPlot",
-              }
-            )(ChangeDevice)
-          )
+          )(ChangeDevice)
         )
       )
     )

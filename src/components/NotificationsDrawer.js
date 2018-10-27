@@ -13,11 +13,13 @@ import SwipeableDrawer from "@material-ui/core/SwipeableDrawer"
 import IconButton from "@material-ui/core/IconButton"
 import MenuItem from "@material-ui/core/MenuItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListSubheader from "@material-ui/core/ListSubheader"
 import Menu from "@material-ui/core/Menu"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import FlatButton from "material-ui/FlatButton"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { hotkeys } from "react-keyboard-shortcuts"
 import moment from "moment"
 
@@ -279,44 +281,50 @@ class NotificationsDrawer extends React.Component {
 
       readNotifications = (
         <List style={{ padding: "0" }}>
-          {user.notifications &&
-            user.notifications
-              .filter(
-                notification => notification.device.id === this.props.device.id
-              )
-              .filter(notification => notification.visualized === true)
-              .map(notification => (
-                <ListItem
-                  key={notification.id}
-                  className="notSelectable"
-                  id={notification.id}
-                >
-                  <ListItemText
-                    primary={notification.content}
-                    secondary={moment
-                      .utc(
-                        notification.date.split(".")[0],
-                        "YYYY-MM-DDTh:mm:ss"
-                      )
-                      .fromNow()}
-                  />
-                  <ListItemSecondaryAction>
-                    <Tooltip title="More" placement="bottom">
-                      <IconButton
-                        onClick={event =>
-                          this.setState({
-                            anchorEl: event.currentTarget,
-                            targetNotification: notification,
-                          })
-                        }
-                      >
-                        <i class="material-icons">more_vert</i>
-                      </IconButton>
-                    </Tooltip>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))
-              .reverse()}
+          {["Today","Yesterday"].map(sectionId => (
+            <li>
+              <ListSubheader>{sectionId}</ListSubheader>
+              {user.notifications &&
+                user.notifications
+                  .filter(
+                    notification =>
+                      notification.device.id === this.props.device.id
+                  )
+                  .filter(notification => notification.visualized === true)
+                  .map(notification => (
+                    <ListItem
+                      key={notification.id}
+                      className="notSelectable"
+                      id={notification.id}
+                    >
+                      <ListItemText
+                        primary={notification.content}
+                        secondary={moment
+                          .utc(
+                            notification.date.split(".")[0],
+                            "YYYY-MM-DDTh:mm:ss"
+                          )
+                          .fromNow()}
+                      />
+                      <ListItemSecondaryAction>
+                        <Tooltip title="More" placement="bottom">
+                          <IconButton
+                            onClick={event =>
+                              this.setState({
+                                anchorEl: event.currentTarget,
+                                targetNotification: notification,
+                              })
+                            }
+                          >
+                            <i class="material-icons">more_vert</i>
+                          </IconButton>
+                        </Tooltip>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))
+                  .reverse()}
+            </li>
+          ))}
         </List>
       )
 
@@ -372,7 +380,8 @@ class NotificationsDrawer extends React.Component {
             key="showMoreLessButton"
             style={
               this.props.hiddenNotifications
-                ? typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                ? typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
                   ? { backgroundColor: "#282c34" }
                   : { backgroundColor: "#d4d4d4" }
                 : null
@@ -409,7 +418,10 @@ class NotificationsDrawer extends React.Component {
             <ListItemIcon>
               <Icon
                 style={
-                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
                 }
               >
                 markunread
@@ -474,7 +486,8 @@ class NotificationsDrawer extends React.Component {
         >
           <div
             style={
-              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
                 ? { background: "#2f333d", height: "100%" }
                 : { background: "white", height: "100%" }
             }

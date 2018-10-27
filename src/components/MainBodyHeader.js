@@ -45,21 +45,22 @@ class MainBodyHeader extends Component {
   render() {
     const { loading, error, device } = this.props.data
 
-    const toggleQuietMode = quietMode =>
-      this.props.ToggleQuietMode({
+    let toggleQuietMode = quietMode => {
+      this.props["ToggleQuietMode"]({
         variables: {
           id: device.id,
-          quietMode,
+          quietMode: quietMode,
         },
         optimisticResponse: {
           __typename: "Mutation",
           device: {
             id: device.id,
-            quietMode,
+            quietMode: quietMode,
             __typename: "Device",
           },
         },
       })
+    }
 
     if (loading || this.props.userData.loading) {
       return <div className="mainBodyHeader" />

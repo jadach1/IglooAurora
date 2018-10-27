@@ -34,15 +34,13 @@ class TileSize extends Component {
           ? "ChangeFloatSize"
           : this.props.value.__typename === "StringValue"
             ? "ChangeStringSize"
-            : this.props.value.__typename === "ColourValue"
-              ? "ChangeColourSize"
-              : this.props.value.__typename === "PlotValue"
-                ? "ChangePlotSize"
-                : this.props.value.__typename === "StringValue"
-                  ? "ChangeStringPlotSize"
-                  : this.props.value.__typename === "MapValue"
-                    ? "ChangeMapSize"
-                    : "ChangeBooleanSize"
+            : this.props.value.__typename === "PlotValue"
+              ? "ChangePlotSize"
+              : this.props.value.__typename === "StringValue"
+                ? "ChangeStringPlotSize"
+                : this.props.value.__typename === "MapValue"
+                  ? "ChangeMapSize"
+                  : "ChangeBooleanSize"
       ]({
         variables: {
           id: this.props.value.id,
@@ -54,15 +52,13 @@ class TileSize extends Component {
             ? "floatValue"
             : this.props.value.__typename === "stringValue"
               ? "stringValue"
-              : this.props.value.__typename === "colourValue"
-                ? "colourValue"
-                : this.props.value.__typename === "plotValue"
-                  ? "plotValue"
-                  : this.props.value.__typename === "stringPlotValue"
-                    ? "stringValue"
-                    : this.props.value.__typename === "mapValue"
-                      ? "mapValue"
-                      : "booleanValue"]: {
+              : this.props.value.__typename === "plotValue"
+                ? "plotValue"
+                : this.props.value.__typename === "stringPlotValue"
+                  ? "stringValue"
+                  : this.props.value.__typename === "mapValue"
+                    ? "mapValue"
+                    : "booleanValue"]: {
             __typename: this.props.value.__typename,
             id: this.props.value.id,
             tileSize: size,
@@ -239,7 +235,7 @@ export default graphql(
             $size: TileSize
             $visibility: ValueVisibility
           ) {
-            colourValue(tileSize: $size, id: $id, visibility: $visibility) {
+            plotValue(tileSize: $size, id: $id, visibility: $visibility) {
               id
               visibility
               tileSize
@@ -247,7 +243,7 @@ export default graphql(
           }
         `,
         {
-          name: "ChangeColourSize",
+          name: "ChangePlotSize",
         }
       )(
         graphql(
@@ -257,7 +253,7 @@ export default graphql(
               $size: TileSize
               $visibility: ValueVisibility
             ) {
-              plotValue(tileSize: $size, id: $id, visibility: $visibility) {
+              mapValue(tileSize: $size, id: $id, visibility: $visibility) {
                 id
                 visibility
                 tileSize
@@ -265,7 +261,7 @@ export default graphql(
             }
           `,
           {
-            name: "ChangePlotSize",
+            name: "ChangeMapSize",
           }
         )(
           graphql(
@@ -275,7 +271,11 @@ export default graphql(
                 $size: TileSize
                 $visibility: ValueVisibility
               ) {
-                mapValue(tileSize: $size, id: $id, visibility: $visibility) {
+                stringPlotValue(
+                  tileSize: $size
+                  id: $id
+                  visibility: $visibility
+                ) {
                   id
                   visibility
                   tileSize
@@ -283,32 +283,9 @@ export default graphql(
               }
             `,
             {
-              name: "ChangeMapSize",
+              name: "ChangeStringPlotSize",
             }
-          )(
-            graphql(
-              gql`
-                mutation ChangeSize(
-                  $id: ID!
-                  $size: TileSize
-                  $visibility: ValueVisibility
-                ) {
-                  stringPlotValue(
-                    tileSize: $size
-                    id: $id
-                    visibility: $visibility
-                  ) {
-                    id
-                    visibility
-                    tileSize
-                  }
-                }
-              `,
-              {
-                name: "ChangeStringPlotSize",
-              }
-            )(TileSize)
-          )
+          )(TileSize)
         )
       )
     )
