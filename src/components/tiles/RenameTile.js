@@ -40,15 +40,13 @@ class RenameTileDialog extends React.Component {
         ? "RenameFloatValue"
         : this.props.value.__typename === "StringValue"
           ? "RenameStringValue"
-          : this.props.value.__typename === "ColourValue"
-            ? "RenameColourValue"
-            : this.props.value.__typename === "PlotValue"
-              ? "RenamePlotValue"
-              : this.props.value.__typename === "StringPlotValue"
-                ? "RenameStringPlotValue"
-                : this.props.value.__typename === "MapValue"
-                  ? "RenameMapValue"
-                  : "RenameBooleanValue"
+          : this.props.value.__typename === "PlotValue"
+            ? "RenamePlotValue"
+            : this.props.value.__typename === "StringPlotValue"
+              ? "RenameStringPlotValue"
+              : this.props.value.__typename === "MapValue"
+                ? "RenameMapValue"
+                : "RenameBooleanValue"
     ]({
       variables: {
         id: this.props.value.id,
@@ -60,15 +58,13 @@ class RenameTileDialog extends React.Component {
           ? "floatValue"
           : this.props.value.__typename === "StringValue"
             ? "stringValue"
-            : this.props.value.__typename === "ColourValue"
-              ? "colourValue"
-              : this.props.value.__typename === "PlotValue"
-                ? "plotValue"
-                : this.props.value.__typename === "StringPlotValue"
-                  ? "stringPlotValue"
-                  : this.props.value.__typename === "MapValue"
-                    ? "mapValue"
-                    : "booleanValue"]: {
+            : this.props.value.__typename === "PlotValue"
+              ? "plotValue"
+              : this.props.value.__typename === "StringPlotValue"
+                ? "stringPlotValue"
+                : this.props.value.__typename === "MapValue"
+                  ? "mapValue"
+                  : "booleanValue"]: {
           __typename: this.props.value.__typename,
           id: this.props.value.id,
           customName: this.state.customName,
@@ -185,69 +181,55 @@ export default graphql(
     graphql(
       gql`
         mutation Rename($id: ID!, $customName: String) {
-          floatValue(id: $id, customName: $customName) {
+          booleanValue(id: $id, customName: $customName) {
             id
             customName
           }
         }
       `,
       {
-        name: "RenameColourValue",
+        name: "RenameBooleanValue",
       }
     )(
       graphql(
         gql`
           mutation Rename($id: ID!, $customName: String) {
-            booleanValue(id: $id, customName: $customName) {
+            plotValue(id: $id, customName: $customName) {
               id
               customName
             }
           }
         `,
         {
-          name: "RenameBooleanValue",
+          name: "RenamePlotValue",
         }
       )(
         graphql(
           gql`
             mutation Rename($id: ID!, $customName: String) {
-              plotValue(id: $id, customName: $customName) {
+              stringPlotValue(id: $id, customName: $customName) {
                 id
                 customName
               }
             }
           `,
           {
-            name: "RenamePlotValue",
+            name: "RenameStringPlotValue",
           }
         )(
           graphql(
             gql`
               mutation Rename($id: ID!, $customName: String) {
-                stringPlotValue(id: $id, customName: $customName) {
+                mapValue(id: $id, customName: $customName) {
                   id
                   customName
                 }
               }
             `,
             {
-              name: "RenameStringPlotValue",
+              name: "RenameMapValue",
             }
-          )(
-            graphql(
-              gql`
-                mutation Rename($id: ID!, $customName: String) {
-                  mapValue(id: $id, customName: $customName) {
-                    id
-                    customName
-                  }
-                }
-              `,
-              {
-                name: "RenameMapValue",
-              }
-            )(RenameTileDialog)
-          )
+          )(RenameTileDialog)
         )
       )
     )

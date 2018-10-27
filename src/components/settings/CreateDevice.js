@@ -243,18 +243,13 @@ class CreateDevice extends React.Component {
             <MuiThemeProvider theme={theme}>
               <Button
                 onClick={this.props.close}
-                style={{ marginRight: "4px", color: "white" }}
-              >
-                <font
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : {}
-                  }
-                >
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white",marginRight:"4px" }
+                    : { marginRight: "4px"}
+                } >
                   Never mind
-                </font>
               </Button>
               <Button
                 variant="raised"

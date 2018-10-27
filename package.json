@@ -40,8 +40,7 @@
     "build": "node ./introspectionQuery.js && react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "predeploy": "npm run build"
   },
   "devDependencies": {
     "@hint/configuration-development": "^1.1.1",

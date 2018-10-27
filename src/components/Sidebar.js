@@ -18,7 +18,7 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
 import Zoom from "@material-ui/core/Zoom"
-import Checkbox from "@material-ui/core/Checkbox"
+import AddDevice from "./AddDevice"
 
 const theme = createMuiTheme({
   palette: {
@@ -38,7 +38,7 @@ class Sidebar extends Component {
     dialOpen: false,
     visibleDeviceTypes: [],
     hidden: false,
-    selectionMode: false,
+    addDeviceOpen:false
   }
 
   handleMouseDownSearch = event => {
@@ -87,7 +87,10 @@ class Sidebar extends Component {
                 color="primary"
                 className="notSelectable"
                 style={
-                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
                 }
                 disabled={
                   !user.devices
@@ -110,7 +113,8 @@ class Sidebar extends Component {
                   >
                     <Icon
                       style={
-                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
                           ? !user.devices
                               .filter(
                                 device =>
@@ -150,7 +154,8 @@ class Sidebar extends Component {
                         onClick={this.handleClickCancelSearch}
                         onMouseDown={this.handleMouseDownSearch}
                         style={
-                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -189,7 +194,8 @@ class Sidebar extends Component {
             >
               <Icon
                 style={
-                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
                     ? !user.devices
                         .filter(
                           device => device.board.id === this.props.selectedBoard
@@ -239,7 +245,10 @@ class Sidebar extends Component {
           setVisibleTypes={visibleTypes => {
             this.setState({ visibleDeviceTypes: visibleTypes })
           }}
-          nightMode={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"}
+          nightMode={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+          }
         />
         <List
           style={{
@@ -283,44 +292,34 @@ class Sidebar extends Component {
                       style={
                         this.props.selectedDevice === device.id &&
                         !this.props.isMobile
-                          ? typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                          ? typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
                             ? { backgroundColor: "#282c34" }
                             : { backgroundColor: "#d4d4d4" }
                           : null
                       }
                       key={device.id}
                     >
-                      {this.state.selectionMode ? (
-                        <MuiThemeProvider
-                          theme={createMuiTheme({
-                            palette: {
-                              secondary: { main: "#ff4081" },
-                            },
-                          })}
-                        >
-                          <Checkbox tabIndex={-1} disableRipple />
-                        </MuiThemeProvider>
-                      ) : (
-                        <ListItemIcon>
-                          {device.icon ? (
-                            <img
-                              className="deviceIcon"
-                              src={device.icon}
-                              alt="device logo"
-                            />
-                          ) : (
-                            <Icon
-                              style={
-                                typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
-                                  ? { color: "#c1c2c5" }
-                                  : { color: "#7a7a7a" }
-                              }
-                            >
-                              lightbulb_outline
-                            </Icon>
-                          )}
-                        </ListItemIcon>
-                      )}
+                      <ListItemIcon>
+                        {device.icon ? (
+                          <img
+                            className="deviceIcon"
+                            src={device.icon}
+                            alt="device logo"
+                          />
+                        ) : (
+                          <Icon
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "#c1c2c5" }
+                                : { color: "#7a7a7a" }
+                            }
+                          >
+                            lightbulb_outline
+                          </Icon>
+                        )}
+                      </ListItemIcon>
                       <ListItemText
                         style={{
                           whiteSpace: "nowrap",
@@ -406,49 +405,40 @@ class Sidebar extends Component {
                       className="notSelectable"
                       style={
                         this.props.selectedDevice === device.id
-                          ? typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                          ? typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
                             ? { backgroundColor: "#282c34" }
                             : { backgroundColor: "#d4d4d4" }
                           : null
                       }
                       key={device.id}
                     >
-                      {this.state.selectionMode ? (
-                        <MuiThemeProvider
-                          theme={createMuiTheme({
-                            palette: {
-                              secondary: { main: "#ff4081" },
-                            },
-                          })}
-                        >
-                          <Checkbox tabIndex={-1} disableRipple />
-                        </MuiThemeProvider>
-                      ) : (
-                        <ListItemIcon>
-                          {device.icon ? (
-                            <img
-                              className="deviceIcon"
-                              src={device.icon}
-                              alt="device logo"
-                            />
-                          ) : (
-                            <Icon
-                              style={
-                                typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
-                                  ? { color: "#c1c2c5" }
-                                  : { color: "#7a7a7a" }
-                              }
-                            >
-                              lightbulb_outline
-                            </Icon>
-                          )}
-                        </ListItemIcon>
-                      )}
+                      <ListItemIcon>
+                        {device.icon ? (
+                          <img
+                            className="deviceIcon"
+                            src={device.icon}
+                            alt="device logo"
+                          />
+                        ) : (
+                          <Icon
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "#c1c2c5" }
+                                : { color: "#7a7a7a" }
+                            }
+                          >
+                            lightbulb_outline
+                          </Icon>
+                        )}
+                      </ListItemIcon>
                       <ListItemText
                         primary={
                           <span
                             style={
-                              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
                                 ? { color: "white" }
                                 : { color: "black" }
                             }
@@ -465,7 +455,8 @@ class Sidebar extends Component {
                         secondary={
                           <span
                             style={
-                              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
                                 ? { color: "#c1c2c5" }
                                 : { color: "#7a7a7a" }
                             }
@@ -547,16 +538,13 @@ class Sidebar extends Component {
                         "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
                     }
               }
-              onClick={() =>
-                this.setState(oldState => ({
-                  selectionMode: !oldState.selectionMode,
-                }))
-              }
+              onClick={()=>this.setState({addDeviceOpen:true})}
             >
-              <Icon>format_list_bulleted</Icon>
+              <Icon>add</Icon>
             </Button>
           </Zoom>
         </MuiThemeProvider>
+        <AddDevice open={this.state.addDeviceOpen} close={()=>this.setState({addDeviceOpen:false})}/>
       </React.Fragment>
     )
   }

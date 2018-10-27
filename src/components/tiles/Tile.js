@@ -4,8 +4,6 @@ import ReadOnlyBooleanTile from "./Booleans/ReadOnlyBooleanTile"
 import ReadWriteBooleanTile from "./Booleans/ReadWriteBooleanTile"
 import ReadWriteBoundedFloatTile from "./Floats/ReadWriteBoundedFloatTile"
 import ReadOnlyBoundedFloatTile from "./Floats/ReadOnlyBoundedFloatTile"
-import ReadOnlyColourTile from "./Colors/ReadOnlyColourTile"
-import ReadWriteColourTile from "./Colors/ReadWriteColourTile"
 import ReadOnlyFloatTile from "./Floats/ReadOnlyFloatTile"
 import ReadOnlyStringTile from "./Strings/ReadOnlyStringTile"
 import ReadWriteAllowedStringTile from "./Strings/ReadWriteAllowedStringTile"
@@ -144,20 +142,11 @@ class Tile extends Component {
         <ReadOnlyFloatTile
           value={value.floatValue}
           valueDetails={value.valueDetails}
-          nightMode={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"}
+          nightMode={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+          }
         />
-      )
-    } else if (
-      value.__typename === "ColourValue" &&
-      value.permission === "READ_ONLY"
-    ) {
-      specificTile = <ReadOnlyColourTile colour={value.colourValue} />
-    } else if (
-      value.__typename === "ColourValue" &&
-      value.permission === "READ_WRITE"
-    ) {
-      specificTile = (
-        <ReadWriteColourTile value={value.colourValue} id={value.id} />
       )
     } else if (
       value.__typename === "StringValue" &&
@@ -219,15 +208,13 @@ class Tile extends Component {
           ? "ChangeFloatSize"
           : value.__typename === "StringValue"
             ? "ChangeStringSize"
-            : value.__typename === "ColourValue"
-              ? "ChangeColourSize"
-              : value.__typename === "PlotValue"
-                ? "ChangePlotSize"
-                : value.__typename === "StringPlotValue"
-                  ? "ChangeStringPlotSize"
-                  : value.__typename === "MapValue"
-                    ? "ChangeMapSize"
-                    : "ChangeBooleanSize"
+            : value.__typename === "PlotValue"
+              ? "ChangePlotSize"
+              : value.__typename === "StringPlotValue"
+                ? "ChangeStringPlotSize"
+                : value.__typename === "MapValue"
+                  ? "ChangeMapSize"
+                  : "ChangeBooleanSize"
       ]({
         variables: {
           id: value.id,
@@ -239,15 +226,13 @@ class Tile extends Component {
             ? "floatValue"
             : value.__typename === "StringValue"
               ? "stringValue"
-              : value.__typename === "ColourValue"
-                ? "colourValue"
-                : value.__typename === "PlotValue"
-                  ? "plotValue"
-                  : value.__typename === "StringPlotValue"
-                    ? "stringPlotValue"
-                    : value.__typename === "MapValue"
-                      ? "mapValue"
-                      : "booleanValue"]: {
+              : value.__typename === "PlotValue"
+                ? "plotValue"
+                : value.__typename === "StringPlotValue"
+                  ? "stringPlotValue"
+                  : value.__typename === "MapValue"
+                    ? "mapValue"
+                    : "booleanValue"]: {
             __typename: value.__typename,
             id: value.id,
             visibility: visible ? "VISIBLE" : "HIDDEN",
@@ -261,14 +246,16 @@ class Tile extends Component {
           className={value.tileSize.toLowerCase()}
           zDepth={2}
           style={
-            typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
               ? { background: "#2f333d" }
               : { background: "white" }
           }
         >
           <div
             style={
-              typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
                 ? {
                     background: "#21252b",
                     display: "flex",
@@ -287,7 +274,8 @@ class Tile extends Component {
               variant="title"
               className="notSelectable"
               style={
-                typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
                   ? {
                       cursor: "default",
                       color: "white",
@@ -312,12 +300,22 @@ class Tile extends Component {
             </Typography>
             <div
               className="notSelectable"
-              style={{
-                padding: "0",
-                marginLeft: "auto",
-                marginRight: "8px",
-                float: "right",
-              }}
+              style={
+                value.__typename === "PlotValue"
+                  ? {
+                      padding: "0",
+                      marginLeft: "auto",
+                      marginRight: "8px",
+                      float: "right",
+                      minWidth: "96px",
+                    }
+                  : {
+                      padding: "0",
+                      marginLeft: "auto",
+                      marginRight: "8px",
+                      float: "right",
+                    }
+              }
             >
               {value.__typename === "PlotValue" ? (
                 <Tooltip
@@ -330,7 +328,8 @@ class Tile extends Component {
                       this.setState({ isTileFullScreen: true })
                     }}
                     style={
-                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
                         ? {
                             padding: "0",
                             color: "white",
@@ -348,7 +347,8 @@ class Tile extends Component {
               <Tooltip id="tooltip-more" title="More" placement="bottom">
                 <IconButton
                   style={
-                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
                       ? {
                           padding: "0",
                           color: "white",
@@ -400,7 +400,8 @@ class Tile extends Component {
                   }}
                   leftIcon={<Icon>info</Icon>}
                   style={
-                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -408,7 +409,8 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -419,7 +421,12 @@ class Tile extends Component {
                   <ListItemText inset primary="Information" />
                 </MenuItem>
                 <Divider
-                  style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { background: "#21252b" } : {}}
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { background: "#21252b" }
+                      : {}
+                  }
                 />
                 <MenuItem
                   primaryText={value.visibility === "VISIBLE" ? "Hide" : "Show"}
@@ -431,7 +438,8 @@ class Tile extends Component {
                     this.handleMenuClose()
                   }}
                   style={
-                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -439,7 +447,8 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -462,7 +471,8 @@ class Tile extends Component {
                   className="notSelectable"
                   leftIcon={<Icon>aspect_ratio</Icon>}
                   style={
-                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -474,7 +484,8 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -491,7 +502,8 @@ class Tile extends Component {
                   animation={PopoverAnimationVertical}
                   leftIcon={<Icon>aspect_ratio</Icon>}
                   style={
-                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -503,7 +515,8 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -514,13 +527,19 @@ class Tile extends Component {
                   <ListItemText inset primary="Data settings" />
                 </MenuItem>
                 <Divider
-                  style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { background: "#21252b" } : {}}
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { background: "#21252b" }
+                      : {}
+                  }
                 />
                 {this.props.userData.user.devices.length > 1 && (
                   <MenuItem
                     className="notSelectable"
                     style={
-                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
                         ? { color: "white" }
                         : { color: "black" }
                     }
@@ -532,7 +551,8 @@ class Tile extends Component {
                     <ListItemIcon>
                       <Icon
                         style={
-                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
                             ? { color: "white" }
                             : { color: "black" }
                         }
@@ -552,7 +572,8 @@ class Tile extends Component {
                     this.handleMenuClose()
                   }}
                   style={
-                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -560,7 +581,8 @@ class Tile extends Component {
                   <ListItemIcon>
                     <Icon
                       style={
-                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -573,7 +595,8 @@ class Tile extends Component {
                 <MenuItem
                   className="notSelectable"
                   style={
-                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -704,7 +727,7 @@ export default graphql(
             $size: TileSize
             $visibility: ValueVisibility
           ) {
-            colourValue(tileSize: $size, id: $id, visibility: $visibility) {
+            plotValue(tileSize: $size, id: $id, visibility: $visibility) {
               id
               visibility
               tileSize
@@ -712,7 +735,7 @@ export default graphql(
           }
         `,
         {
-          name: "ChangeColourSize",
+          name: "ChangePlotSize",
         }
       )(
         graphql(
@@ -722,7 +745,7 @@ export default graphql(
               $size: TileSize
               $visibility: ValueVisibility
             ) {
-              plotValue(tileSize: $size, id: $id, visibility: $visibility) {
+              mapValue(tileSize: $size, id: $id, visibility: $visibility) {
                 id
                 visibility
                 tileSize
@@ -730,7 +753,7 @@ export default graphql(
             }
           `,
           {
-            name: "ChangePlotSize",
+            name: "ChangeMapSize",
           }
         )(
           graphql(
@@ -740,7 +763,11 @@ export default graphql(
                 $size: TileSize
                 $visibility: ValueVisibility
               ) {
-                mapValue(tileSize: $size, id: $id, visibility: $visibility) {
+                stringPlotValue(
+                  tileSize: $size
+                  id: $id
+                  visibility: $visibility
+                ) {
                   id
                   visibility
                   tileSize
@@ -748,32 +775,9 @@ export default graphql(
               }
             `,
             {
-              name: "ChangeMapSize",
+              name: "ChangeStringPlotSize",
             }
-          )(
-            graphql(
-              gql`
-                mutation ChangeSize(
-                  $id: ID!
-                  $size: TileSize
-                  $visibility: ValueVisibility
-                ) {
-                  stringPlotValue(
-                    tileSize: $size
-                    id: $id
-                    visibility: $visibility
-                  ) {
-                    id
-                    visibility
-                    tileSize
-                  }
-                }
-              `,
-              {
-                name: "ChangeStringPlotSize",
-              }
-            )(Tile)
-          )
+          )(Tile)
         )
       )
     )
