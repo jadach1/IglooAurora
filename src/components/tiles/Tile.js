@@ -331,11 +331,9 @@ class Tile extends Component {
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
                         ? {
-                            padding: "0",
                             color: "white",
                           }
                         : {
-                            padding: "0",
                             color: "black",
                           }
                     }
@@ -350,11 +348,9 @@ class Tile extends Component {
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
                       ? {
-                          padding: "0",
                           color: "white",
                         }
                       : {
-                          padding: "0",
                           color: "black",
                         }
                   }

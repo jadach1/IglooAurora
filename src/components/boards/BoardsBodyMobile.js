@@ -443,8 +443,8 @@ class BoardsBodyMobile extends Component {
               </div>
             ))}
           {user &&
-            !yourBoardsList[0] &&
-            !boardsList[0] && (
+            !user.boards.filter(board => board.myRole === "OWNER")[0] &&
+            !user.boards.filter(board => board.myRole !== "OWNER")[0] && (
               <div
                 style={{
                   overflowY: "auto",
