@@ -281,7 +281,7 @@ class NotificationsDrawer extends React.Component {
 
       readNotifications = (
         <List style={{ padding: "0" }}>
-          {["Today","Yesterday"].map(sectionId => (
+          {["Today", "Yesterday"].map(sectionId => (
             <li>
               <ListSubheader>{sectionId}</ListSubheader>
               {user.notifications &&
@@ -446,7 +446,6 @@ class NotificationsDrawer extends React.Component {
         <Tooltip title="Notifications" placement="bottom">
           <IconButton
             style={{
-              padding: "0",
               color: "white",
             }}
             onClick={
@@ -509,7 +508,6 @@ class NotificationsDrawer extends React.Component {
                       clearAllNotifications()
                     }}
                     style={{
-                      padding: "0",
                       color: "white",
                       marginTop: "auto",
                       marginBottom: "auto",
@@ -526,7 +524,6 @@ class NotificationsDrawer extends React.Component {
                   </IconButton>
                   <IconButton
                     style={{
-                      padding: "0",
                       color: "white",
                       marginTop: "auto",
                       marginBottom: "auto",
