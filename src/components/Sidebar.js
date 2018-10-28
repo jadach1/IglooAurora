@@ -170,7 +170,7 @@ class Sidebar extends Component {
           </MuiThemeProvider>
           <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
             <IconButton
-              style={{ marginTop: "-16px" }}
+              style={{ marginTop: "8px" }}
               buttonRef={node => {
                 this.anchorEl = node
               }}

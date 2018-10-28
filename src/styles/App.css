@@ -63,10 +63,6 @@ body {
   grid-column: span 2;
 }
 
-.mainBody .itemsList div.tall {
-  grid-row: span 2;
-}
-
 .mainBody .itemsList div.large {
   grid-row: span 2;
   grid-column: span 2;

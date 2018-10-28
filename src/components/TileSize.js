@@ -115,21 +115,6 @@ class TileSize extends Component {
             uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
           <RadioButton
-            value="TALL"
-            label="Tall"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-              paddingLeft: 24,
-              width: "calc(100% - 24px)",
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-            }
-            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-          />
-          <RadioButton
             value="LARGE"
             label="Large"
             style={{

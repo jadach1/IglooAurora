@@ -272,37 +272,25 @@ class AuthDialog extends React.Component {
             <FormControl style={{ width: "100%" }}>
               <Input
                 id="adornment-password-login"
-                type={this.state.showPassword ? "text" : "password"}
-                value={this.state.password}
-                placeholder="Password"
+                value={this.state.tokenName}
+                placeholder="Token"
                 onChange={event =>
                   this.setState({
-                    password: event.target.value,
-                    passwordError: "",
-                    isPasswordEmpty: event.target.value === "",
+                    tokenName: event.target.value,
                   })
-                }
-                error={
-                  this.state.passwordError || this.state.isPasswordEmpty
-                    ? true
-                    : false
                 }
                 onKeyPress={event => {
                   if (event.key === "Enter") this.getPermanentToken()
                 }}
                 endAdornment={
-                  this.state.password ? (
+                  this.state.tokenName ? (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={this.handleClickShowPassword}
+                        onClick={() => this.setState({ tokenName: "" })}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
                       >
-                        {this.state.showPassword ? (
-                          <Icon>visibility_off</Icon>
-                        ) : (
-                          <Icon>visibility</Icon>
-                        )}
+                        <Icon>close</Icon>
                       </IconButton>
                     </InputAdornment>
                   ) : null
@@ -324,6 +312,7 @@ class AuthDialog extends React.Component {
               <Button
                 variant="raised"
                 color="primary"
+                disabled={!this.state.tokenName}
                 onClick={() => {
                   this.getPermanentToken()
                   this.setState({ nameOpen: false, authDialogOpen: true })

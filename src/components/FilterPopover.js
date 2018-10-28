@@ -37,7 +37,7 @@ export default class FilterPopover extends Component {
     if (currentIndex === -1) {
       newChecked.push(value)
     } else {
-      if (this.props.currentDevice.deviceType === newChecked[currentIndex]) {
+      if (this.props.currentDevice && this.props.currentDevice.deviceType === newChecked[currentIndex]) {
         this.setState({ redirect: true })
       }
 
@@ -95,14 +95,20 @@ export default class FilterPopover extends Component {
           className="notSelectable"
         >
           <div
-            style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { backgroundColor: "#2f333d" } : null}
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? { backgroundColor: "#2f333d" }
+                : null
+            }
           >
             <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
               <Typography
                 variant="title"
                 className="defaultCursor"
                 style={
-                  typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
                     ? {
                         marginLeft: "-8px",
                         color: "white",
@@ -154,7 +160,8 @@ export default class FilterPopover extends Component {
                       primary={
                         <span
                           style={
-                            typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
                               ? { color: "white" }
                               : { color: "black" }
                           }
