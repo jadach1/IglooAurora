@@ -30,6 +30,7 @@ import ListItemText from "@material-ui/core/ListItemText"
 import TileSize from "../TileSize"
 import DataSettings from "./DataSettings"
 import ChangeDevice from "./ChangeDevice"
+import ToggleIcon from "material-ui-toggle-icon"
 //import ShareValue from "./ShareValue"
 
 class Tile extends Component {
@@ -197,7 +198,9 @@ class Tile extends Component {
         />
       )
     } else if (value.__typename === "PlotValue") {
-      specificTile = <PlotTile value={value.plotValue} />
+      specificTile = (
+        <PlotTile value={value.plotValue} threshold={value.threshold} />
+      )
     } else {
       specificTile = ""
     }
@@ -449,11 +452,11 @@ class Tile extends Component {
                           : { color: "black" }
                       }
                     >
-                      {value.visibility === "VISIBLE" ? (
-                        <Icon>visibility_off</Icon>
-                      ) : (
-                        <Icon>visibility</Icon>
-                      )}
+                      <ToggleIcon
+                        on={this.state.showPassword || false}
+                        onIcon={<Icon>visibility_off</Icon>}
+                        offIcon={<Icon>visibility</Icon>}
+                      />
                     </Icon>
                   </ListItemIcon>
                   <ListItemText

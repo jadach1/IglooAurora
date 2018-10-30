@@ -17,6 +17,7 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 import { Redirect } from "react-router-dom"
+import ToggleIcon from "material-ui-toggle-icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -273,11 +274,11 @@ class Login extends Component {
                               onMouseDown={this.handleMouseDownPassword}
                               tabIndex="-1"
                             >
-                              {this.state.showPassword ? (
-                                <Icon>visibility_off</Icon>
-                              ) : (
-                                <Icon>visibility</Icon>
-                              )}
+                              <ToggleIcon
+                                on={this.state.showPassword || false}
+                                onIcon={<Icon>visibility_off</Icon>}
+                                offIcon={<Icon>visibility</Icon>}
+                              />
                             </IconButton>
                           </InputAdornment>
                         ) : null

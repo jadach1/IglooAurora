@@ -6027,6 +6027,26 @@ marky@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/marky/-/marky-1.2.0.tgz#9617ed647bbbea8f45d19526da33dec70606df42"
 
+material-auto-rotating-carousel@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/material-auto-rotating-carousel/-/material-auto-rotating-carousel-2.1.0.tgz#81aafb953ea30a6ef3e572cca364f2f4eadff9a0"
+  dependencies:
+    classnames "^2.2.5"
+    material-ui-dots "^2.0.0"
+    prop-types "^15.5.8"
+
+material-ui-dots@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/material-ui-dots/-/material-ui-dots-2.0.0.tgz#abba82dec58bc8e779ebea25591329c8bbb80a81"
+  dependencies:
+    prop-types "^15.5.10"
+
+material-ui-toggle-icon@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/material-ui-toggle-icon/-/material-ui-toggle-icon-1.0.2.tgz#278d466095be3e999a897b7b03681a91c501ee61"
+  dependencies:
+    prop-types "^15.5.10"
+
 material-ui@^0.20.0:
   version "0.20.1"
   resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-0.20.1.tgz#a0f0f9f801be76a13cf3da9b319a1b97b28925c7"

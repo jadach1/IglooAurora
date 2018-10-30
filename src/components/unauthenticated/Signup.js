@@ -15,6 +15,7 @@ import Grid from "@material-ui/core/Grid"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import { Redirect } from "react-router-dom"
+import ToggleIcon from "material-ui-toggle-icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -391,11 +392,11 @@ class Signup extends Component {
                             onClick={this.handleClickShowPassword}
                             onMouseDown={this.handleMouseDownPassword}
                           >
-                            {this.state.showPassword ? (
-                              <Icon>visibility_off</Icon>
-                            ) : (
-                              <Icon>visibility</Icon>
-                            )}
+                            <ToggleIcon
+                              on={this.state.showPassword || false}
+                              onIcon={<Icon>visibility_off</Icon>}
+                              offIcon={<Icon>visibility</Icon>}
+                            />
                           </IconButton>
                         </InputAdornment>
                       ) : null
