@@ -12,6 +12,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import FormControl from "@material-ui/core/FormControl"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
+import ToggleIcon from "material-ui-toggle-icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -140,15 +141,18 @@ class ChangeMailDialog extends React.Component {
                     this.state.password ? (
                       <InputAdornment position="end">
                         <IconButton
-                          onClick={this.handleClickShowPassword}
-                          onMouseDown={this.handleMouseDownPassword}
+                          onClick={() =>
+                            this.setState(oldState => ({
+                              showPassword: !oldState.showPassword,
+                            }))
+                          }
                           tabIndex="-1"
                         >
-                          {this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
-                          ) : (
-                            <Icon>visibility</Icon>
-                          )}
+                          <ToggleIcon
+                            on={this.state.showPassword || false}
+                            onIcon={<Icon>visibility_off</Icon>}
+                            offIcon={<Icon>visibility</Icon>}
+                          />
                         </IconButton>
                       </InputAdornment>
                     ) : null

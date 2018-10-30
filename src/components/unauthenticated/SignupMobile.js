@@ -1,7 +1,8 @@
 import React, { Component } from "react"
 import Button from "@material-ui/core/Button"
 import gql from "graphql-tag"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import FormControl from "@material-ui/core/FormControl"
@@ -15,6 +16,7 @@ import zxcvbn from "zxcvbn"
 import * as EmailValidator from "email-validator"
 import logo from "../../styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
+import ToggleIcon from "material-ui-toggle-icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -360,11 +362,11 @@ class SignupMobile extends Component {
                           onMouseDown={this.handleMouseDownPassword}
                           style={{ color: "white" }}
                         >
-                          {this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
-                          ) : (
-                            <Icon>visibility</Icon>
-                          )}
+                          <ToggleIcon
+                            on={this.state.showPassword || false}
+                            onIcon={<Icon>visibility_off</Icon>}
+                            offIcon={<Icon>visibility</Icon>}
+                          />
                         </IconButton>
                       </InputAdornment>
                     ) : null

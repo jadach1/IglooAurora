@@ -68,6 +68,7 @@ class MainBody extends Component {
                 value
                 timestamp
               }
+              threshold
             }
           }
         }
@@ -157,6 +158,7 @@ class MainBody extends Component {
                 value
                 timestamp
               }
+              threshold
             }
           }
         }
@@ -347,6 +349,9 @@ export default graphql(
       device(id: $id) {
         id
         myRole
+        batteryStatus
+        batteryCharging
+        signalStatus
         owner {
           id
           email
@@ -409,6 +414,7 @@ export default graphql(
               value
               timestamp
             }
+            threshold
           }
         }
       }
