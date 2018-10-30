@@ -20,6 +20,7 @@ import Slide from "@material-ui/core/Slide"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
+import ToggleIcon from "material-ui-toggle-icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -194,11 +195,11 @@ class AuthDialog extends React.Component {
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
                       >
-                        {this.state.showPassword ? (
-                          <Icon>visibility_off</Icon>
-                        ) : (
-                          <Icon>visibility</Icon>
-                        )}
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<Icon>visibility_off</Icon>}
+                          offIcon={<Icon>visibility</Icon>}
+                        />
                       </IconButton>
                     </InputAdornment>
                   ) : null

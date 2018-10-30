@@ -14,6 +14,7 @@ import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
+import ToggleIcon from "material-ui-toggle-icon"
 
 const theme = createMuiTheme({
   palette: {
@@ -134,11 +135,11 @@ class DeleteAccountDialog extends React.Component {
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
                       >
-                        {this.state.showPassword ? (
-                          <Icon>visibility_off</Icon>
-                        ) : (
-                          <Icon>visibility</Icon>
-                        )}
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<Icon>visibility_off</Icon>}
+                          offIcon={<Icon>visibility</Icon>}
+                        />
                       </IconButton>
                     </InputAdornment>
                   ) : null
