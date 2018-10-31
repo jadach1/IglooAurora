@@ -38,7 +38,7 @@ class Sidebar extends Component {
     dialOpen: false,
     visibleDeviceTypes: [],
     hidden: false,
-    addDeviceOpen:false
+    addDeviceOpen: false,
   }
 
   handleMouseDownSearch = event => {
@@ -538,13 +538,16 @@ class Sidebar extends Component {
                         "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
                     }
               }
-              onClick={()=>this.setState({addDeviceOpen:true})}
+              onClick={() => this.setState({ addDeviceOpen: true })}
             >
               <Icon>add</Icon>
             </Button>
           </Zoom>
         </MuiThemeProvider>
-        <AddDevice open={this.state.addDeviceOpen} close={()=>this.setState({addDeviceOpen:false})}/>
+        <AddDevice
+          open={this.state.addDeviceOpen}
+          close={() => this.setState({ addDeviceOpen: false })}
+        />
       </React.Fragment>
     )
   }

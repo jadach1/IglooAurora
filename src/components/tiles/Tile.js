@@ -452,11 +452,21 @@ class Tile extends Component {
                           : { color: "black" }
                       }
                     >
-                      <ToggleIcon
-                        on={this.state.showPassword || false}
-                        onIcon={<Icon>visibility_off</Icon>}
-                        offIcon={<Icon>visibility</Icon>}
-                      />
+                      {/* fix for ToggleIcon glitch on Edge */}
+                              {document.documentMode ||
+                              /Edge/.test(navigator.userAgent) ? (
+                                this.state.showPassword ? (
+                                  <Icon>visibility_off</Icon>
+                                ) : (
+                                  <Icon>visibility</Icon>
+                                )
+                              ) : (
+                                <ToggleIcon
+                                  on={this.state.showPassword || false}
+                                  onIcon={<Icon>visibility_off</Icon>}
+                                  offIcon={<Icon>visibility</Icon>}
+                                />
+                              )}
                     </Icon>
                   </ListItemIcon>
                   <ListItemText

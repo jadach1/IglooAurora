@@ -102,6 +102,7 @@ class MainBodyHeader extends Component {
           className="mobileMainBodyHeader notSelectable"
           style={{
             color: "white",
+            backgroundColor: "#0057cb",
             height: "64px",
           }}
         >

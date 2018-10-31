@@ -385,18 +385,28 @@ class Signup extends Component {
                       }
                     }}
                     endAdornment={
-                      this.state.password ? (
+                      this.props.password ? (
                         <InputAdornment position="end">
                           <IconButton
                             tabIndex="-1"
                             onClick={this.handleClickShowPassword}
                             onMouseDown={this.handleMouseDownPassword}
                           >
-                            <ToggleIcon
-                              on={this.state.showPassword || false}
-                              onIcon={<Icon>visibility_off</Icon>}
-                              offIcon={<Icon>visibility</Icon>}
-                            />
+                            {/* fix for ToggleIcon glitch on Edge */}
+                              {document.documentMode ||
+                              /Edge/.test(navigator.userAgent) ? (
+                                this.state.showPassword ? (
+                                  <Icon>visibility_off</Icon>
+                                ) : (
+                                  <Icon>visibility</Icon>
+                                )
+                              ) : (
+                                <ToggleIcon
+                                  on={this.state.showPassword || false}
+                                  onIcon={<Icon>visibility_off</Icon>}
+                                  offIcon={<Icon>visibility</Icon>}
+                                />
+                              )}
                           </IconButton>
                         </InputAdornment>
                       ) : null
