@@ -29,10 +29,9 @@
 
 .mobileMainBodyHeader {
   grid-area: header;
-  background: #0083ff;
+  background: #0057cb;
   color: white;
   box-sizing: border-box;
-  line-height: 64px;
   vertical-align: middle;
   z-index: 1000;
   display: grid;

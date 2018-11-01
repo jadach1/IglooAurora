@@ -16,6 +16,8 @@ import Menu from "@material-ui/core/Menu"
 import DeleteDevice from "./devices/DeleteDevice"
 import RenameDevice from "./devices/RenameDevice"
 import ChangeBoard from "./devices/ChangeBoard"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 class MainBodyHeader extends Component {
   state = {
@@ -43,7 +45,7 @@ class MainBodyHeader extends Component {
   }
 
   render() {
-    const { loading, error, device } = this.props.data
+    const { device } = this.props.data
 
     let toggleQuietMode = quietMode => {
       this.props["ToggleQuietMode"]({
@@ -62,14 +64,6 @@ class MainBodyHeader extends Component {
       })
     }
 
-    if (loading || this.props.userData.loading) {
-      return <div className="mainBodyHeader" />
-    }
-
-    if (error || this.props.userData.error) {
-      return <div className="mainBodyHeader" />
-    }
-
     return (
       <React.Fragment>
         <div
@@ -79,10 +73,18 @@ class MainBodyHeader extends Component {
             height: "64px",
           }}
         >
-          {device.icon ? (
+          {this.props.userData.user &&
+          this.props.userData.user.devices.filter(
+            device => device.id === this.props.deviceId
+          )[0].icon ? (
             <img
               className="deviceIconBig"
-              src={device.icon}
+              src={
+                this.props.userData.user &&
+                this.props.userData.user.devices.filter(
+                  device => device.id === this.props.deviceId
+                )[0].icon
+              }
               alt="device logo"
             />
           ) : (
@@ -105,18 +107,21 @@ class MainBodyHeader extends Component {
               lineHeight: "64px",
             }}
           >
-            {device.customName}
+            {this.props.userData.user &&
+              this.props.userData.user.devices.filter(
+                device => device.id === this.props.deviceId
+              )[0].customName}
           </Typography>
-          {device && (
-            <div
-              style={{
-                padding: "0",
-                marginLeft: "auto",
-                marginRight: "8px",
-                float: "right",
-                gridArea: "buttons",
-              }}
-            >
+          <div
+            style={{
+              padding: "0",
+              marginLeft: "auto",
+              marginRight: "8px",
+              float: "right",
+              gridArea: "buttons",
+            }}
+          >
+            {device && (
               <Menu
                 id="simple-menu"
                 anchorEl={this.state.anchorEl}
@@ -297,35 +302,37 @@ class MainBodyHeader extends Component {
                   </MenuItem>
                 )}
                 <Divider />
-                {this.props.userData.user.boards.length > 1 && (
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                    onClick={() => {
-                      this.setState({ changeBoardOpen: true })
-                      this.handleMenuClose()
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Icon
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        swap_horiz
-                      </Icon>
-                    </ListItemIcon>
-                    <ListItemText inset primary="Change board" />
-                  </MenuItem>
-                )}
+                {this.props.userData.user &&
+                  this.props.userData.user.boards.length > 1 && (
+                    <MenuItem
+                      className="notSelectable"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                      onClick={() => {
+                        this.setState({ changeBoardOpen: true })
+                        this.handleMenuClose()
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          swap_horiz
+                        </Icon>
+                      </ListItemIcon>
+                      <ListItemText inset primary="Change board" />
+                    </MenuItem>
+                  )}
+                {/*
                 {device.values.length > 1 && (
                   <MenuItem
                     className="notSelectable"
@@ -354,7 +361,7 @@ class MainBodyHeader extends Component {
                     </ListItemIcon>
                     <ListItemText inset primary="Rearrange cards" />
                   </MenuItem>
-                )}
+                      )} */}
                 <MenuItem
                   className="notSelectable"
                   style={
@@ -403,53 +410,78 @@ class MainBodyHeader extends Component {
                   </ListItemText>
                 </MenuItem>
               </Menu>
-              <NotificationsDrawer
-                device={device}
-                drawer={this.props.drawer}
-                changeDrawerState={this.props.changeDrawerState}
-                hiddenNotifications={this.props.hiddenNotifications}
-                showHiddenNotifications={this.props.showHiddenNotifications}
-                nightMode={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                }
-              />
-              <Tooltip id="tooltip-more" title="More" placement="bottom">
+            )}
+            <NotificationsDrawer
+              device={
+                this.props.userData.user &&
+                this.props.userData.user.devices.filter(
+                  device => device.id === this.props.deviceId
+                )[0]
+              }
+              drawer={this.props.drawer}
+              changeDrawerState={this.props.changeDrawerState}
+              hiddenNotifications={this.props.hiddenNotifications}
+              showHiddenNotifications={this.props.showHiddenNotifications}
+              nightMode={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+              }
+            />
+            <Tooltip id="tooltip-more" title="More" placement="bottom">
+              <MuiThemeProvider
+                theme={createMuiTheme({
+                  palette: {
+                    primary: { main: "#ffffff" },
+                  },
+                })}
+              >
                 <IconButton
-                  style={{ color: "white" }}
                   onClick={this.handleMenuOpen}
+                  disabled={
+                    !(
+                      this.props.userData.user &&
+                      this.props.userData.user.devices.filter(
+                        device => device.id === this.props.deviceId
+                      )[0]
+                    )
+                  }
+                  color="primary"
                 >
                   <Icon>more_vert</Icon>
                 </IconButton>
-              </Tooltip>
-            </div>
-          )}
+              </MuiThemeProvider>
+            </Tooltip>
+          </div>
         </div>
-        <DeviceInfo
-          infoOpen={this.state.infoOpen}
-          close={() => this.setState({ infoOpen: false })}
-          id={device.id}
-          firmware={device.firmware}
-          updatedAt={device.updatedAt}
-          createdAt={device.createdAt}
-          devMode={this.props.devMode}
-        />
-        <ChangeBoard
-          open={this.state.changeBoardOpen}
-          close={() => this.setState({ changeBoardOpen: false })}
-          userData={this.props.userData}
-          device={device}
-        />
-        <RenameDevice
-          open={this.state.renameOpen}
-          close={() => this.setState({ renameOpen: false })}
-          device={device}
-        />
-        <DeleteDevice
-          open={this.state.deleteOpen}
-          close={() => this.setState({ deleteOpen: false })}
-          device={device}
-        />
+        {device && (
+          <React.Fragment>
+            <DeviceInfo
+              infoOpen={this.state.infoOpen}
+              close={() => this.setState({ infoOpen: false })}
+              id={device.id}
+              firmware={device.firmware}
+              updatedAt={device.updatedAt}
+              createdAt={device.createdAt}
+              devMode={this.props.devMode}
+            />
+            <ChangeBoard
+              open={this.state.changeBoardOpen}
+              close={() => this.setState({ changeBoardOpen: false })}
+              userData={this.props.userData}
+              device={device}
+            />
+            <RenameDevice
+              open={this.state.renameOpen}
+              close={() => this.setState({ renameOpen: false })}
+              device={device}
+            />
+            <DeleteDevice
+              open={this.state.deleteOpen}
+              close={() => this.setState({ deleteOpen: false })}
+              device={device}
+            />
+          </React.Fragment>
+        )}
       </React.Fragment>
     )
   }
