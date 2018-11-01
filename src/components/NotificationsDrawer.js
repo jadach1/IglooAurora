@@ -22,10 +22,12 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { hotkeys } from "react-keyboard-shortcuts"
 import moment from "moment"
+import Moment from "react-moment"
 
 const theme = createMuiTheme({
   palette: {
     primary: { main: "#ff4081" },
+    secondary: { main: "#ffffff" },
   },
 })
 
@@ -238,9 +240,9 @@ class NotificationsDrawer extends React.Component {
 
     if (error) notifications = "Unexpected error"
 
-    if (loading) notifications = <CenteredSpinner />
+    if (loading || !this.props.device) notifications = <CenteredSpinner />
 
-    if (user) {
+    if (user && this.props.device) {
       notifications = (
         <List style={{ padding: "0" }}>
           {user.notifications &&
@@ -259,12 +261,14 @@ class NotificationsDrawer extends React.Component {
                 >
                   <ListItemText
                     primary={notification.content}
-                    secondary={moment
-                      .utc(
-                        notification.date.split(".")[0],
-                        "YYYY-MM-DDTh:mm:ss"
-                      )
-                      .fromNow()}
+                    secondary={
+                      <Moment fromNow>
+                        {moment.utc(
+                          notification.date.split(".")[0],
+                          "YYYY-MM-DDTh:mm:ss"
+                        )}
+                      </Moment>
+                    }
                   />
                   <ListItemSecondaryAction>
                     <IconButton
@@ -299,12 +303,14 @@ class NotificationsDrawer extends React.Component {
                     >
                       <ListItemText
                         primary={notification.content}
-                        secondary={moment
-                          .utc(
-                            notification.date.split(".")[0],
-                            "YYYY-MM-DDTh:mm:ss"
-                          )
-                          .fromNow()}
+                        secondary={
+                          <Moment fromNow>
+                            {moment.utc(
+                              notification.date.split(".")[0],
+                              "YYYY-MM-DDTh:mm:ss"
+                            )}
+                          </Moment>
+                        }
                       />
                       <ListItemSecondaryAction>
                         <Tooltip title="More" placement="bottom">
@@ -444,22 +450,22 @@ class NotificationsDrawer extends React.Component {
           </MenuItem>
         </Menu>
         <Tooltip title="Notifications" placement="bottom">
-          <IconButton
-            style={{
-              color: "white",
-            }}
-            onClick={
-              this.props.hiddenNotifications
-                ? () => {
-                    this.props.changeDrawerState()
-                    this.props.showHiddenNotifications()
-                  }
-                : () => {
-                    this.props.changeDrawerState()
-                  }
-            }
-          >
-            <MuiThemeProvider theme={theme}>
+          <MuiThemeProvider theme={theme}>
+            <IconButton
+              color="secondary"
+              style={this.props.isMobile ? { marginTop: "8px" } : {}}
+              onClick={
+                this.props.hiddenNotifications
+                  ? () => {
+                      this.props.changeDrawerState()
+                      this.props.showHiddenNotifications()
+                    }
+                  : () => {
+                      this.props.changeDrawerState()
+                    }
+              }
+              disabled={!this.props.device}
+            >
               {notificationCount ? (
                 <Badge badgeContent={notificationCount} color="primary">
                   <Icon>notifications</Icon>
@@ -467,8 +473,8 @@ class NotificationsDrawer extends React.Component {
               ) : (
                 <Icon>notifications_none</Icon>
               )}
-            </MuiThemeProvider>
-          </IconButton>
+            </IconButton>
+          </MuiThemeProvider>
         </Tooltip>
         <SwipeableDrawer
           variant="temporary"
@@ -502,58 +508,62 @@ class NotificationsDrawer extends React.Component {
                     alignItems: "center",
                   }}
                 >
-                  <IconButton
-                    onClick={() => {
-                      this.props.changeDrawerState()
-                      clearAllNotifications()
-                    }}
-                    style={{
-                      color: "white",
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      marginLeft: "8px",
-                    }}
+                  <Tooltip
+                    id="tooltip-bottom"
+                    title="Close drawer"
+                    placement="bottom"
                   >
-                    <Tooltip
-                      id="tooltip-bottom"
-                      title="Close drawer"
-                      placement="bottom"
+                    <IconButton
+                      onClick={() => {
+                        this.props.changeDrawerState()
+                        clearAllNotifications()
+                      }}
+                      style={{
+                        color: "white",
+                        marginTop: "auto",
+                        marginBottom: "auto",
+                        marginLeft: "8px",
+                      }}
                     >
                       <Icon>chevron_right</Icon>
-                    </Tooltip>
-                  </IconButton>
-                  <IconButton
-                    style={{
-                      color: "white",
-                      marginTop: "auto",
-                      marginBottom: "auto",
-                      marginRight: "8px",
-                      marginLeft: "auto",
-                      float: "right",
-                    }}
-                    onClick={() =>
-                      toggleQuietMode(
-                        this.props.device.id,
-                        !this.props.device.quietMode
-                      )
-                    }
-                  >
-                    <Tooltip
-                      id="tooltip-bottom"
-                      title={
-                        this.props.device.quietMode
-                          ? "Unmute device"
-                          : "Mute device"
-                      }
-                      placement="bottom"
-                    >
-                      <Icon>
-                        {this.props.device.quietMode
-                          ? "notifications"
-                          : "notifications_off"}
-                      </Icon>
-                    </Tooltip>
-                  </IconButton>
+                    </IconButton>
+                  </Tooltip>
+                  {this.props.device && (
+                    <MuiThemeProvider theme={theme}>
+                      <Tooltip
+                        id="tooltip-bottom"
+                        title={
+                          this.props.device && this.props.device.quietMode
+                            ? "Unmute device"
+                            : "Mute device"
+                        }
+                        placement="bottom"
+                      >
+                        <IconButton
+                          style={{
+                            marginTop: "auto",
+                            marginBottom: "auto",
+                            marginRight: "8px",
+                            marginLeft: "auto",
+                            float: "right",
+                          }}
+                          color="secondary"
+                          onClick={() =>
+                            toggleQuietMode(
+                              this.props.device.id,
+                              !this.props.device.quietMode
+                            )
+                          }
+                        >
+                          <Icon>
+                            {this.props.device && this.props.device.quietMode
+                              ? "notifications"
+                              : "notifications_off"}
+                          </Icon>
+                        </IconButton>
+                      </Tooltip>
+                    </MuiThemeProvider>
+                  )}
                 </div>
               </AppBar>
               <div

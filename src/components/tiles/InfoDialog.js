@@ -8,6 +8,7 @@ import Slide from "@material-ui/core/Slide"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import moment from "moment"
+import Moment from "react-moment"
 
 const theme = createMuiTheme({
   palette: {
@@ -46,15 +47,21 @@ class InfoDialog extends React.Component {
           style={{ paddingRight: "24px", marginLeft: "24px", height: "100%" }}
         >
           <b>Created: </b>
-          {moment
-            .utc(this.props.createdAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-            .fromNow()}
+          <Moment fromNow>
+            {moment.utc(
+              this.props.createdAt.split(".")[0],
+              "YYYY-MM-DDTh:mm:ss"
+            )}
+          </Moment>
           <br />
           <br />
           <b>Last updated: </b>
-          {moment
-            .utc(this.props.updatedAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-            .fromNow()}
+          <Moment fromNow>
+            {moment.utc(
+              this.props.updatedAt.split(".")[0],
+              "YYYY-MM-DDTh:mm:ss"
+            )}
+          </Moment>
           {this.props.devMode ? (
             <React.Fragment>
               <br />

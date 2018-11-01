@@ -3,7 +3,11 @@ import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
 import Button from "@material-ui/core/Button"
-import { List, ListItem } from "material-ui/List"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import IconButton from "@material-ui/core/IconButton"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
@@ -12,6 +16,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
 import moment from "moment"
+import Moment from "react-moment"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
@@ -119,31 +124,43 @@ class AuthDialog extends React.Component {
       tokenList = (
         <List style={{ padding: "0" }}>
           {this.props.userData.user.permanentTokens.map(token => (
-            <ListItem
-              primaryText={token.customName}
-              secondaryText={
-                token.lastUsed
-                  ? "Last used: " +
-                    moment
-                      .utc(token.lastUsed.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-                      .fromNow()
-                  : "Never used"
-              }
-              leftIcon={<Icon>vpn_key</Icon>}
-              rightIconButton={
-                <IconButton onClick={() => this.deletePermanentToken(token.id)}>
+            <ListItem button
+            >
+            <ListItemIcon>
+            <Icon>vpn_key</Icon>
+              </ListItemIcon>
+            <ListItemText primary={token.customName}
+              secondary={
+                token.lastUsed ? (
+                  <React.Fragment>
+                    Last used{" "}
+                    <Moment fromNow>
+                      {moment.utc(
+                        token.lastUsed.split(".")[0],
+                        "YYYY-MM-DDTh:mm:ss"
+                      )}
+                    </Moment>
+                  </React.Fragment>
+                ) : (
+                  "Never used"
+                )
+              }/>
+              <ListItemSecondaryAction><IconButton onClick={() => this.deletePermanentToken(token.id)}>
                   <Icon>delete</Icon>
                 </IconButton>
-              }
-            />
+                </ListItemSecondaryAction>
+            </ListItem>
           ))}
           <ListItem
-            primaryText="Get a new permanent token"
-            leftIcon={<Icon>add</Icon>}
+button
             onClick={() =>
               this.setState({ nameOpen: true, authDialogOpen: false })
             }
-          />
+          ><ListItemIcon>
+            <Icon>add</Icon>
+            </ListItemIcon>
+            <ListItemText primary="Get a new permanent token"/>
+          </ListItem>
         </List>
       )
 
@@ -197,19 +214,19 @@ class AuthDialog extends React.Component {
                       >
                         {/* fix for ToggleIcon glitch on Edge */}
                         {document.documentMode ||
-                              /Edge/.test(navigator.userAgent) ? (
-                                this.state.showPassword ? (
-                                  <Icon>visibility_off</Icon>
-                                ) : (
-                                  <Icon>visibility</Icon>
-                                )
-                              ) : (
-                                <ToggleIcon
-                                  on={this.state.showPassword || false}
-                                  onIcon={<Icon>visibility_off</Icon>}
-                                  offIcon={<Icon>visibility</Icon>}
-                                />
-                              )}
+                        /Edge/.test(navigator.userAgent) ? (
+                          this.state.showPassword ? (
+                            <Icon>visibility_off</Icon>
+                          ) : (
+                            <Icon>visibility</Icon>
+                          )
+                        ) : (
+                          <ToggleIcon
+                            on={this.state.showPassword || false}
+                            onIcon={<Icon>visibility_off</Icon>}
+                            offIcon={<Icon>visibility</Icon>}
+                          />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ) : null
