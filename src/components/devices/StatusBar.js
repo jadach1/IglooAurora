@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import gql from "graphql-tag"
 import moment from "moment"
+import Moment from "react-moment"
 import SvgIcon from "@material-ui/core/SvgIcon"
 
 export default class StatusBar extends Component {
@@ -92,16 +93,20 @@ export default class StatusBar extends Component {
     ) {
       deviceStatus = user.devices.filter(
         device => device.id === this.props.deviceId
-      )[0].online
-        ? "Online"
-        : "Last seen " +
-          moment
-            .utc(
+      )[0].online ? (
+        "Online"
+      ) : (
+        <React.Fragment>
+          Last seen{" "}
+          <Moment fromNow>
+            {moment.utc(
               user.devices.filter(
                 device => device.id === this.props.deviceId
               )[0].updatedAt
-            )
-            .fromNow()
+            )}
+          </Moment>
+        </React.Fragment>
+      )
 
       signalStatus = user.devices.filter(
         device => device.id === this.props.deviceId

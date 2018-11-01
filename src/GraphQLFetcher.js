@@ -875,6 +875,7 @@ export default graphql(
           myRole
           devices {
             id
+            quietMode
           }
           owner {
             id

@@ -8,6 +8,7 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import moment from "moment"
+import Moment from "react-moment"
 
 const theme = createMuiTheme({
   palette: {
@@ -72,15 +73,21 @@ class BoardInfo extends React.Component {
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
           <b>Created: </b>
-          {moment
-            .utc(this.props.board.createdAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-            .fromNow()}
+          <Moment fromNow>
+            {moment.utc(
+              this.props.board.createdAt.split(".")[0],
+              "YYYY-MM-DDTh:mm:ss"
+            )}
+          </Moment>
           <br />
           <br />
           <b>Last updated: </b>
-          {moment
-            .utc(this.props.board.updatedAt.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-            .fromNow()}
+          <Moment fromNow>
+            {moment.utc(
+              this.props.board.updatedAt.split(".")[0],
+              "YYYY-MM-DDTh:mm:ss"
+            )}
+          </Moment>
           {this.props.devMode ? (
             <React.Fragment>
               <br />
