@@ -427,14 +427,14 @@ class MainBodyHeader extends Component {
                 localStorage.getItem("nightMode") === "true"
               }
             />
-            <Tooltip id="tooltip-more" title="More" placement="bottom">
-              <MuiThemeProvider
-                theme={createMuiTheme({
-                  palette: {
-                    primary: { main: "#ffffff" },
-                  },
-                })}
-              >
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#ffffff" },
+                },
+              })}
+            >
+              <Tooltip id="tooltip-more" title="More" placement="bottom">
                 <IconButton
                   onClick={this.handleMenuOpen}
                   disabled={
@@ -449,8 +449,8 @@ class MainBodyHeader extends Component {
                 >
                   <Icon>more_vert</Icon>
                 </IconButton>
-              </MuiThemeProvider>
-            </Tooltip>
+              </Tooltip>
+            </MuiThemeProvider>
           </div>
         </div>
         {device && (

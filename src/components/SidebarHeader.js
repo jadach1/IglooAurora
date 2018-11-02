@@ -41,18 +41,26 @@ class SidebarHeader extends Component {
           height: "64px",
         }}
       >
-        <Tooltip id="tooltip-bottom" title="Boards" placement="bottom">
-          <IconButton
-            style={{
-              color: "white",
-              marginLeft: "8px",
-            }}
-            className="sidebarHeaderButton"
-            onClick={() => this.setState({ goToBoards: true })}
-          >
-            <Icon>chevron_left</Icon>
-          </IconButton>
-        </Tooltip>
+        <MuiThemeProvider
+          theme={createMuiTheme({
+            palette: {
+              primary: { main: "#ffffff" },
+            },
+          })}
+        >
+          <Tooltip id="tooltip-bottom" title="Boards" placement="bottom">
+            <IconButton
+              style={{
+                marginLeft: "8px",
+              }}
+              color="primary"
+              className="sidebarHeaderButton"
+              onClick={() => this.setState({ goToBoards: true })}
+            >
+              <Icon>chevron_left</Icon>
+            </IconButton>
+          </Tooltip>
+        </MuiThemeProvider>
         <Typography
           variant="headline"
           style={{
@@ -100,26 +108,40 @@ class SidebarHeader extends Component {
                 </IconButton>
               </Tooltip>
             </a> */}
-            {this.props.user && (
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#ffffff" },
+                },
+              })}
+            >
               <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
                 <IconButton
                   onClick={this.props.openSettingsDialog}
                   className="sidebarHeaderButton"
-                  style={{ color: "white" }}
+                  color="primary"
                 >
                   <Icon color="primary">settings</Icon>
                 </IconButton>
               </Tooltip>
-            )}
-            <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
-              <IconButton
-                onClick={this.props.logOut}
-                className="sidebarHeaderButton"
-                style={{ color: "white" }}
-              >
-                <Icon color="primary">exit_to_app</Icon>
-              </IconButton>
-            </Tooltip>
+            </MuiThemeProvider>
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#ffffff" },
+                },
+              })}
+            >
+              <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
+                <IconButton
+                  onClick={this.props.logOut}
+                  className="sidebarHeaderButton"
+                  color="primary"
+                >
+                  <Icon color="primary">exit_to_app</Icon>
+                </IconButton>
+              </Tooltip>
+            </MuiThemeProvider>
           </MuiThemeProvider>
         </div>
         {this.state.goToBoards && <Redirect push to="/dashboard" />}
