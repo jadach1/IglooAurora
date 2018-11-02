@@ -667,9 +667,16 @@ rightToggle={
                 >
                   <Translate>Settings</Translate>
                 </Typography>
+                <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#ffffff" },
+                },
+              })}
+            >
                 <Tooltip id="tooltip-bottom" title="Close" placement="bottom">
                   <IconButton
-                    color="inherit"
+                    color="primary"
                     onClick={this.props.closeSettingsDialog}
                     style={{
                       marginRight: "-16px",
@@ -679,6 +686,7 @@ rightToggle={
                     <Icon>close</Icon>
                   </IconButton>
                 </Tooltip>
+                </MuiThemeProvider>
               </Toolbar>
             </AppBar>
           </MuiThemeProvider>

@@ -243,58 +243,179 @@ class NotificationsDrawer extends React.Component {
     if (loading || !this.props.device) notifications = <CenteredSpinner />
 
     if (user && this.props.device) {
-      notifications = (
-        <List style={{ padding: "0" }}>
-          {user.notifications &&
-            user.notifications
-              .filter(
-                notification => notification.device.id === this.props.device.id
-              )
-              .filter(notification => notification.visualized === false)
-              .map(notification => (
-                <ListItem
-                  className="notSelectable"
-                  key={notification.id}
-                  id={notification.id}
-                  onClick={() => clearNotification(notification.id)}
-                  button
-                >
-                  <ListItemText
-                    primary={notification.content}
-                    secondary={
-                      <Moment fromNow>
-                        {moment.utc(
+      let determineDiff = notification =>
+        moment()
+          .endOf("day")
+          .diff(
+            moment
+              .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+              .endOf("day"),
+            "days"
+          ) <= 0
+          ? "Today"
+          : moment()
+              .endOf("week")
+              .diff(
+                moment
+                  .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+                  .endOf("week"),
+                "weeks"
+              ) <= 1
+            ? "This week"
+            : moment()
+                .endOf("month")
+                .diff(
+                  moment
+                    .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+                    .endOf("month"),
+                  "months"
+                ) <= 0
+              ? moment()
+                  .endOf("week")
+                  .add(1, "weeks")
+                  .diff(
+                    moment
+                      .utc(
+                        notification.date.split(".")[0],
+                        "YYYY-MM-DDTh:mm:ss"
+                      )
+                      .endOf("week"),
+                    "weeks"
+                  ) + " weeks ago"
+              : moment()
+                  .endOf("year")
+                  .diff(
+                    moment
+                      .utc(
+                        notification.date.split(".")[0],
+                        "YYYY-MM-DDTh:mm:ss"
+                      )
+                      .endOf("year"),
+                    "years"
+                  ) <= 0
+                ? moment()
+                    .endOf("month")
+                    .add(1, "months")
+                    .diff(
+                      moment
+                        .utc(
                           notification.date.split(".")[0],
                           "YYYY-MM-DDTh:mm:ss"
-                        )}
-                      </Moment>
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
-                      onClick={() => deleteNotification(notification.id)}
-                    >
-                      <i class="material-icons">delete</i>
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))
-              .reverse()}
-        </List>
-      )
+                        )
+                        .endOf("month"),
+                      "months"
+                    ) + " months ago"
+                : moment()
+                    .endOf("year")
+                    .add(1, "years")
+                    .diff(
+                      moment
+                        .utc(
+                          notification.date.split(".")[0],
+                          "YYYY-MM-DDTh:mm:ss"
+                        )
+                        .endOf("year"),
+                      "years"
+                    ) + " years ago"
 
-      readNotifications = (
+      let removeDuplicates = inputArray => {
+        var obj = {}
+        var returnArray = []
+        for (var i = 0; i < inputArray.length; i++) {
+          obj[inputArray[i]] = true
+        }
+        for (var key in obj) {
+          returnArray.push(key)
+        }
+        return returnArray
+      }
+
+      let notificationsSections = user.notifications
+        .filter(notification => notification.device.id === this.props.device.id)
+        .filter(notification => !notification.visualized)
+        .map(notification => determineDiff(notification))
+        .reverse()
+
+      let cleanedNotificationsSections = removeDuplicates(notificationsSections)
+
+      notifications = (
         <List style={{ padding: "0" }}>
-          {["Today", "Yesterday"].map(sectionId => (
+          {cleanedNotificationsSections.map(section => (
             <li>
-              <ListSubheader>{sectionId}</ListSubheader>
+              <ListSubheader style={{ backgroundColor: "white" }}>
+                {section}
+              </ListSubheader>
               {user.notifications &&
                 user.notifications
                   .filter(
                     notification =>
                       notification.device.id === this.props.device.id
                   )
-                  .filter(notification => notification.visualized === true)
+                  .filter(
+                    notification => determineDiff(notification) === section
+                  )
+                  .filter(notification => !notification.visualized)
+                  .map(notification => (
+                    <ListItem
+                      className="notSelectable"
+                      key={notification.id}
+                      id={notification.id}
+                      onClick={() => clearNotification(notification.id)}
+                      button
+                    >
+                      <ListItemText
+                        primary={notification.content}
+                        secondary={
+                          <Moment fromNow>
+                            {moment.utc(
+                              notification.date.split(".")[0],
+                              "YYYY-MM-DDTh:mm:ss"
+                            )}
+                          </Moment>
+                        }
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={() => deleteNotification(notification.id)}
+                        >
+                          <i class="material-icons">delete</i>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))
+                  .reverse()}
+            </li>
+          ))}
+        </List>
+      )
+
+      let readNotificationsSections = user.notifications
+        .filter(notification => notification.device.id === this.props.device.id)
+        .filter(notification => notification.visualized)
+        .map(notification => determineDiff(notification))
+        .reverse()
+
+      let cleanedReadNotificationsSections = removeDuplicates(
+        readNotificationsSections
+      )
+
+      readNotifications = (
+        <List style={{ padding: "0" }}>
+          {cleanedReadNotificationsSections.map(section => (
+            <li>
+              <ListSubheader style={{ backgroundColor: "white" }}>
+                {section}
+              </ListSubheader>
+              {user.notifications &&
+                user.notifications
+                  .filter(
+                    notification =>
+                      notification.device.id === this.props.device.id
+                  )
+                  .filter(
+                    notification => determineDiff(notification) === section
+                  )
+                  .filter(notification => notification.visualized)
                   .map(notification => (
                     <ListItem
                       key={notification.id}
@@ -449,8 +570,8 @@ class NotificationsDrawer extends React.Component {
             </ListItemText>
           </MenuItem>
         </Menu>
-        <Tooltip title="Notifications" placement="bottom">
-          <MuiThemeProvider theme={theme}>
+        <MuiThemeProvider theme={theme}>
+          <Tooltip title="Notifications" placement="bottom">
             <IconButton
               color="secondary"
               style={this.props.isMobile ? { marginTop: "8px" } : {}}
@@ -474,8 +595,8 @@ class NotificationsDrawer extends React.Component {
                 <Icon>notifications_none</Icon>
               )}
             </IconButton>
-          </MuiThemeProvider>
-        </Tooltip>
+          </Tooltip>
+        </MuiThemeProvider>
         <SwipeableDrawer
           variant="temporary"
           anchor="right"
@@ -493,8 +614,8 @@ class NotificationsDrawer extends React.Component {
             style={
               typeof Storage !== "undefined" &&
               localStorage.getItem("nightMode") === "true"
-                ? { background: "#2f333d", height: "100%" }
-                : { background: "white", height: "100%" }
+                ? { background: "#2f333d", height: "100%", overflowY: "hidden" }
+                : { background: "white", height: "100%", overflowY: "hidden" }
             }
           >
             <div>
@@ -568,7 +689,13 @@ class NotificationsDrawer extends React.Component {
               </AppBar>
               <div
                 className="notSelectable"
-                style={{ overflowY: "auto", height: "100%", width: "320px" }}
+                style={window.innerWidth>360?{
+                  overflowY: "auto",
+                  height: "calc(100vh - 64px)",
+                  width: "324px",
+                }:{overflowY: "auto",
+                height: "calc(100vh - 64px)",
+                width: "90vw",}}
               >
                 {noNotificationsUI}
                 {notifications}
