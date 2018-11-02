@@ -84,6 +84,13 @@ class MainBodyHeader extends Component {
           }}
         >
           <div className="mobileBackIcon">
+          <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#ffffff" },
+                },
+              })}
+            >
             <Tooltip
               id="tooltip-bottom"
               title="Devices list"
@@ -94,11 +101,12 @@ class MainBodyHeader extends Component {
                   color: "white",
                   marginTop: "8px",
                 }}
+                color="primary"
                 onClick={() => this.setState({ goToDevices: true })}
               >
                 <Icon>chevron_left</Icon>
               </IconButton>
-            </Tooltip>
+            </Tooltip></MuiThemeProvider>
           </div>
           {this.props.userData.user &&
           this.props.userData.user.devices.filter(
@@ -456,14 +464,14 @@ class MainBodyHeader extends Component {
               }
               isMobile={this.props.isMobile}
             />
-            <Tooltip id="tooltip-more" title="More" placement="bottom">
-              <MuiThemeProvider
-                theme={createMuiTheme({
-                  palette: {
-                    primary: { main: "#ffffff" },
-                  },
-                })}
-              >
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#ffffff" },
+                },
+              })}
+            >
+              <Tooltip id="tooltip-more" title="More" placement="bottom">
                 <IconButton
                   style={{ marginTop: "8px" }}
                   onClick={this.handleMenuOpen}
@@ -471,8 +479,8 @@ class MainBodyHeader extends Component {
                 >
                   <Icon>more_vert</Icon>
                 </IconButton>
-              </MuiThemeProvider>
-            </Tooltip>
+              </Tooltip>
+            </MuiThemeProvider>
           </div>
         </div>
         {device && (

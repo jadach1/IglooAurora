@@ -80,7 +80,7 @@ export default class BoardsHeader extends Component {
                   <IconButton
                     onClick={this.props.openSettings}
                     className="sidebarHeaderButton"
-                    style={{ color: "white" }}
+                    color="primary"
                   >
                     <Icon color="primary" style={{ color: "white" }}>
                       settings
@@ -92,7 +92,7 @@ export default class BoardsHeader extends Component {
                 <IconButton
                   onClick={this.props.logOut}
                   className="sidebarHeaderButton"
-                  style={{ color: "white" }}
+                  color="primary"
                 >
                   <Icon color="primary" style={{ color: "white" }}>
                     exit_to_app
