@@ -407,7 +407,7 @@ class Main extends Component {
                         : { background: "white" }
                     }
                   >
-                    <div style={{ height: "calc(100vh - 96px)" }}>
+                    <div style={{ height: "calc(100vh - 112px)" }}>
                       <MainBody
                         deviceId={this.props.selectedDevice}
                         showHidden={this.state.showMainHidden}
@@ -422,6 +422,7 @@ class Main extends Component {
                       userData={this.props.userData}
                       deviceId={this.props.selectedDevice}
                       nightMode={nightMode}
+                      isMobile={true}
                     />
                   </div>
                 </React.Fragment>

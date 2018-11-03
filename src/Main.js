@@ -416,6 +416,7 @@ class Main extends Component {
                       userData={this.props.userData}
                       deviceId={this.props.selectedDevice}
                       nightMode={nightMode}
+                      isMobile={false}
                     />
                   </React.Fragment>
                 ) : (
