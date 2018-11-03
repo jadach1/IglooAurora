@@ -3,6 +3,7 @@ import gql from "graphql-tag"
 import moment from "moment"
 import Moment from "react-moment"
 import SvgIcon from "@material-ui/core/SvgIcon"
+import AppBar from "@material-ui/core/AppBar"
 
 export default class StatusBar extends Component {
   componentDidMount() {
@@ -121,17 +122,25 @@ export default class StatusBar extends Component {
       )[0].batteryStatus
     }
 
-    return (
+    let statusBarContent = (
       <div
         style={
           typeof Storage !== "undefined" &&
           localStorage.getItem("nightMode") === "true"
-            ? { background: "#2f333d", color: "white", height: "32px" }
-            : { background: "white", color: "black", height: "32px" }
+            ? { background: "#2f333d", color: "white" }
+            : { background: "white", color: "black" }
         }
         className="notSelectable statusBar defaultCursor"
       >
-        <div style={{ marginLeft: "16px", lineHeight: "26px" }}>
+        {" "}
+        <div
+          style={{
+            paddingLeft: "16px",
+            lineHeight: "24px",
+            paddingTop: "12px",
+            paddingBottom: "12px",
+          }}
+        >
           {deviceStatus}
           <div
             style={{
@@ -292,5 +301,14 @@ export default class StatusBar extends Component {
         </div>
       </div>
     )
+
+    if (this.props.isMobile)
+      return (
+        <AppBar position="static" color="default">
+          {statusBarContent}
+        </AppBar>
+      )
+
+    return statusBarContent
   }
 }

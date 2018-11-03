@@ -1,4 +1,4 @@
-// CONGRATULATIONS! YOU'VE DISCOVERED AURORA'S BEST KEPT SECRET!
+// CONGRATULATIONS, YOU'VE DISCOVERED AURORA'S BEST KEPT SECRET!
 
 import React, { Component } from "react"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
