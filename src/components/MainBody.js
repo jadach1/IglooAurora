@@ -319,8 +319,8 @@ class MainBody extends Component {
         style={
           typeof Storage !== "undefined" &&
           localStorage.getItem("nightMode") === "true"
-            ? { background: "#2f333d", height: "calc(100vh - 96px)" }
-            : { background: "white", height: "calc(100vh - 96px)" }
+            ? { background: "#2f333d", height: "calc(100vh - 112px)" }
+            : { background: "white", height: "calc(100vh - 112px)" }
         }
       >
         <div
