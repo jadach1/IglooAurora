@@ -10,9 +10,9 @@ This service is still in development, some features may be missing. If your Iglo
 
 If you plan to use a custom version of Igloo Aurora, you will need to host the web app yourself. However, if you do not have this need, we suggest to use the public website of Igloo Aurora.
 
-### Public website
+### Public web app
 
-Visit the [Igloo Aurora website](https://igloocloud.github.io/IglooAurora/).
+Visit the [Igloo Aurora web app](igloo.ooo).
 
 ### Self hosting
 

@@ -143,6 +143,10 @@ class App extends Component {
   componentDidMount() {
     this.updateDimensions()
     window.addEventListener("resize", this.updateDimensions.bind(this))
+
+    console.log(
+      "Hello! If you're reading this, you've probably got some experience with web development, so why don't you contribute to our open source repository?\nhttps://github.com/IglooCloud/IglooAurora"
+    )
   }
 
   componentWillUnmount() {
@@ -213,7 +217,10 @@ class App extends Component {
               )
             } else {
               if (!this.state.loggedOut) {
-                this.setState({ from: props.location.pathname })
+                this.setState({
+                  from:
+                    "/dashboard" + window.location.href.split("dashboard")[1],
+                })
               }
 
               return typeof Storage !== "undefined" &&

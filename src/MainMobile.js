@@ -367,6 +367,15 @@ class Main extends Component {
             ) : user ? (
               idList.includes(this.props.selectedDevice) ? (
                 <React.Fragment>
+                  <SettingsDialogMobile
+                    isOpen={this.props.areSettingsOpen}
+                    closeSettingsDialog={this.props.closeSettings}
+                    handleChange={this.handleSettingsTabChanged}
+                    slideIndex={this.state.slideIndex}
+                    handleChangeBTIndex={this.handleChangeBTIndex}
+                    nightMode={nightMode}
+                    userData={this.props.userData}
+                  />
                   <AppBar>
                     <MainBodyHeaderMobile
                       deviceId={this.props.selectedDevice}

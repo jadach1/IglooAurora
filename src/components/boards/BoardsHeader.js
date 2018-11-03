@@ -57,7 +57,7 @@ export default class BoardsHeader extends Component {
             }}
           >
             <MuiThemeProvider theme={theme}>
-              {/* <a href="https://igloocloud.github.io/IglooMagellan">
+              {/* <a href="drekar.igloo.ooo">
               <Tooltip
                 id="tooltip-bottom"
                 title="Go to Magellan"
