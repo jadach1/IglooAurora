@@ -61,6 +61,16 @@ class ChangeNameDialog extends React.Component {
     if (nextProps.fullName !== this.state.fullName) {
       this.setState({ fullName: nextProps.fullName })
     }
+
+    if (
+      nextProps.confirmationDialogOpen !== this.state.confirmationDialogOpen
+    ) {
+      this.setState({
+        confirmationDialogOpen: this.props.confirmationDialogOpen,
+      })
+
+      oldName = this.props.fullName
+    }
   }
 
   componentDidMount() {
@@ -180,6 +190,7 @@ class ChangeNameDialog extends React.Component {
                 }
                 onClick={() => {
                   changeName(this.state.fullName)
+                  this.props.handleNameDialogClose()
                 }}
               >
                 Change
