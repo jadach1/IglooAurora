@@ -447,7 +447,6 @@ class Sidebar extends Component {
                           </span>
                         }
                         style={{
-                          cursor: "default",
                           whiteSpace: "nowrap",
                           overflow: "hidden",
                           textOverflow: "ellipsis",
