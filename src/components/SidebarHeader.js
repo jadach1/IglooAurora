@@ -73,7 +73,11 @@ class SidebarHeader extends Component {
             marginLeft: "8px",
           }}
         >
-          {this.props.boardName}
+          {
+            this.props.boards && this.props.boards.filter(
+              board => board.id === this.props.selectedBoard
+            )[0].customName
+          }
         </Typography>
         <div
           style={

@@ -652,31 +652,6 @@ class GraphQLFetcher extends Component {
       }
     }
 
-    if (user) {
-      let i
-
-      for (i = 0; i < user.devices.length; i++) {
-        if (
-          user.devices[i].id ===
-            queryString.parse("?" + window.location.href.split("?")[1])
-              .device &&
-          user.devices[i].board.id !==
-            queryString.parse("?" + window.location.href.split("?")[1]).board
-        ) {
-          return (
-            <Redirect
-              to={
-                "/dashboard?board=" +
-                user.devices[i].board.id +
-                "&device=" +
-                user.devices[i].id
-              }
-            />
-          )
-        }
-      }
-    }
-
     const MainSelected = () => {
       if (
         queryString.parse("?" + window.location.href.split("?")[1]).board ||
@@ -697,9 +672,15 @@ class GraphQLFetcher extends Component {
               openSettings={() => this.setState({ areSettingsOpen: true })}
               areSettingsOpen={this.state.areSettingsOpen}
               selectBoard={id => this.setState({ selectedBoard: id })}
-              selectedBoard={
+              boardId={
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
+              }
+              devMode={
+                this.props.userData.user && this.props.userData.user.devMode
+              }
+              boards={
+                this.props.userData.user && this.props.userData.user.boards
               }
               closeSettings={() => this.setState({ areSettingsOpen: false })}
               searchDevices={text => {
@@ -718,9 +699,15 @@ class GraphQLFetcher extends Component {
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
               selectBoard={id => this.setState({ selectedBoard: id })}
-              selectedBoard={
+              boardId={
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
+              }
+              devMode={
+                this.props.userData.user && this.props.userData.user.devMode
+              }
+              boards={
+                this.props.userData.user && this.props.userData.user.boards
               }
               closeSettings={() => this.setState({ areSettingsOpen: false })}
               searchDevices={text => {
@@ -768,8 +755,11 @@ class GraphQLFetcher extends Component {
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .device
               }
+              boards={
+                this.props.userData.user && this.props.userData.user.boards
+              }
               selectBoard={id => this.setState({ selectedBoard: id })}
-              selectedBoard={
+              boardId={
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
               }
@@ -790,9 +780,12 @@ class GraphQLFetcher extends Component {
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
               selectBoard={id => this.setState({ selectedBoard: id })}
-              selectedBoard={
+              boardId={
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .board
+              }
+              boards={
+                this.props.userData.user && this.props.userData.user.boards
               }
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
@@ -878,6 +871,8 @@ export default graphql(
           devices {
             id
             quietMode
+            customName
+            icon
           }
           owner {
             id
@@ -902,28 +897,6 @@ export default graphql(
             email
             fullName
             profileIconColor
-          }
-        }
-        devices {
-          id
-          index
-          customName
-          icon
-          online
-          batteryStatus
-          batteryCharging
-          signalStatus
-          deviceType
-          createdAt
-          updatedAt
-          board {
-            id
-          }
-          notifications {
-            id
-            content
-            date
-            visualized
           }
         }
       }

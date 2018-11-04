@@ -51,7 +51,7 @@ class Sidebar extends Component {
 
   render() {
     const {
-      userData: { loading, error, user },
+      boardData: { loading, error, board },
     } = this.props
 
     if (loading) {
@@ -93,15 +93,12 @@ class Sidebar extends Component {
                     : { color: "black" }
                 }
                 disabled={
-                  !user.devices
+                  !board.devices
                     .filter(
                       device =>
                         this.state.visibleDeviceTypes.indexOf(
                           device.deviceType
                         ) !== -1
-                    )
-                    .filter(
-                      device => device.board.id === this.props.selectedBoard
                     )[0]
                 }
                 value={this.props.searchText}
@@ -115,29 +112,21 @@ class Sidebar extends Component {
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
-                          ? !user.devices
+                          ? !board.devices
                               .filter(
                                 device =>
                                   this.state.visibleDeviceTypes.indexOf(
                                     device.deviceType
                                   ) !== -1
-                              )
-                              .filter(
-                                device =>
-                                  device.board.id === this.props.selectedBoard
                               )[0]
                             ? { color: "white", opacity: "0.5" }
                             : { color: "white" }
-                          : !user.devices
+                          : !board.devices
                               .filter(
                                 device =>
                                   this.state.visibleDeviceTypes.indexOf(
                                     device.deviceType
                                   ) !== -1
-                              )
-                              .filter(
-                                device =>
-                                  device.board.id === this.props.selectedBoard
                               )[0]
                             ? { color: "black", opacity: "0.5" }
                             : { color: "black" }
@@ -178,10 +167,7 @@ class Sidebar extends Component {
                 this.setState({ popoverOpen: true })
               }}
               disabled={
-                !user.devices
-                  .filter(
-                    device => device.board.id === this.props.selectedBoard
-                  )
+                !board.devices
                   .filter(
                     device =>
                       this.props.searchText
@@ -196,10 +182,7 @@ class Sidebar extends Component {
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                    ? !user.devices
-                        .filter(
-                          device => device.board.id === this.props.selectedBoard
-                        )
+                    ? !board.devices
                         .filter(
                           device =>
                             this.props.searchText
@@ -210,10 +193,7 @@ class Sidebar extends Component {
                         )[0]
                       ? { color: "white", opacity: "0.5" }
                       : { color: "white" }
-                    : !user.devices
-                        .filter(
-                          device => device.board.id === this.props.selectedBoard
-                        )
+                    : !board.devices
                         .filter(
                           device =>
                             this.props.searchText
@@ -235,13 +215,13 @@ class Sidebar extends Component {
           open={this.state.popoverOpen}
           boardId={this.props.selectedBoard}
           currentDevice={
-            user.devices.filter(
+            board.devices.filter(
               device => device.id === this.props.selectedDevice
             )[0]
           }
           close={() => this.setState({ popoverOpen: false })}
           anchorEl={this.anchorEl}
-          devices={user.devices}
+          devices={board.devices}
           setVisibleTypes={visibleTypes => {
             this.setState({ visibleDeviceTypes: visibleTypes })
           }}
@@ -258,7 +238,7 @@ class Sidebar extends Component {
           }}
         >
           {this.props.searchText
-            ? user.devices
+            ? board.devices
                 .filter(device =>
                   device.customName
                     .toLowerCase()
@@ -269,7 +249,6 @@ class Sidebar extends Component {
                     this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
                     -1
                 )
-                .filter(device => device.board.id === this.props.selectedBoard)
                 .map(device => (
                   <Link
                     to={
@@ -362,10 +341,7 @@ class Sidebar extends Component {
                           <MuiThemeProvider theme={theme}>
                             <Badge
                               badgeContent={
-                                device.notifications.filter(
-                                  notification =>
-                                    notification.visualized === false
-                                ).length
+                                device.notificationsCount
                               }
                               color="primary"
                               className="notSelectable sidebarBadge"
@@ -380,14 +356,13 @@ class Sidebar extends Component {
                     </ListItem>
                   </Link>
                 ))
-            : user.devices
+            : board.devices
                 .filter(device => device.customName.toLowerCase())
                 .filter(
                   device =>
                     this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
                     -1
                 )
-                .filter(device => device.board.id === this.props.selectedBoard)
                 .map(device => (
                   <Link
                     to={
@@ -496,10 +471,7 @@ class Sidebar extends Component {
                           <MuiThemeProvider theme={theme}>
                             <Badge
                               badgeContent={
-                                device.notifications.filter(
-                                  notification =>
-                                    notification.visualized === false
-                                ).length
+                                device.notificationsCount
                               }
                               color="primary"
                               className="notSelectable sidebarBadge"
@@ -516,7 +488,7 @@ class Sidebar extends Component {
                 ))}
         </List>
         <MuiThemeProvider theme={theme}>
-          <Zoom in={user}>
+          <Zoom in={board}>
             <Button
               variant="fab"
               color="primary"

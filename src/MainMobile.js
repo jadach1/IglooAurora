@@ -14,8 +14,10 @@ import StatusBar from "./components/devices/StatusBar"
 import { Redirect } from "react-router-dom"
 import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
-class Main extends Component {
+class MainMobile extends Component {
   state = {
     drawer: false,
     showMainHidden: false,
@@ -288,20 +290,21 @@ class Main extends Component {
 
   render() {
     const {
-      userData: { user },
+      boardData: { board },
     } = this.props
 
     let nightMode = ""
     let devMode = ""
     let idList = []
 
-    if (user) {
-      nightMode =
-        typeof Storage !== "undefined" &&
-        localStorage.getItem("nightMode") === "true"
-      devMode = user.devMode
+    nightMode =
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("nightMode") === "true"
 
-      idList = user.devices.map(device => device.id)
+    if (board) {
+      devMode = board.devMode
+
+      idList = board.devices.map(device => device.id)
     }
 
     return (
@@ -334,7 +337,7 @@ class Main extends Component {
                     boardName={
                       this.props.userData.user &&
                       this.props.userData.user.boards.filter(
-                        board => board.id === this.props.selectedBoard
+                        board => board.id === this.props.boardId
                       )[0].customName
                     }
                   />
@@ -356,15 +359,15 @@ class Main extends Component {
                     selectedDevice={this.props.selectedDevice}
                     changeDrawerState={this.changeDrawerState}
                     isMobile={true}
-                    userData={this.props.userData}
+                    boardData={this.props.boardData}
                     nightMode={nightMode}
-                    selectedBoard={this.props.selectedBoard}
+                    selectedBoard={this.props.boardId}
                     searchDevices={this.props.searchDevices}
                     searchText={this.props.devicesSearchText}
                   />
                 </div>
               </React.Fragment>
-            ) : user ? (
+            ) : board ? (
               idList.includes(this.props.selectedDevice) ? (
                 <React.Fragment>
                   <SettingsDialogMobile
@@ -394,8 +397,8 @@ class Main extends Component {
                       openSnackBar={() =>
                         this.setState({ copyMessageOpen: true })
                       }
-                      selectedBoard={this.props.selectedBoard}
-                      userData={this.props.userData}
+                      selectedBoard={this.props.boardId}
+                      boardData={this.props.boardData}
                     />
                   </AppBar>
                   <div
@@ -415,11 +418,11 @@ class Main extends Component {
                         isMobile={true}
                         nightMode={nightMode}
                         devMode={devMode}
-                        userData={this.props.userData}
+                        boardData={this.props.boardData}
                       />
                     </div>
                     <StatusBar
-                      userData={this.props.userData}
+                      boardData={this.props.boardData}
                       deviceId={this.props.selectedDevice}
                       nightMode={nightMode}
                       isMobile={true}
@@ -430,8 +433,8 @@ class Main extends Component {
                 <Redirect
                   exact
                   to={
-                    this.props.selectedBoard
-                      ? "/dashboard?board=" + this.props.selectedBoard
+                    this.props.boardId
+                      ? "/dashboard?board=" + this.props.boardId
                       : "/dashboard"
                   }
                 />
@@ -490,4 +493,35 @@ class Main extends Component {
   }
 }
 
-export default hotkeys(Main)
+export default graphql(
+  gql`
+    query($id: ID!) {
+      board(id: $id) {
+        id
+        devices {
+          id
+          index
+          customName
+          icon
+          online
+          batteryStatus
+          batteryCharging
+          signalStatus
+          deviceType
+          createdAt
+          updatedAt
+          notificationsCount
+          notifications {
+            id
+            content
+            visualized
+          }
+        }
+      }
+    }
+  `,
+  {
+    name: "boardData",
+    options: ({ boardId }) => ({ variables: { id: boardId } }),
+  }
+)(hotkeys(MainMobile))

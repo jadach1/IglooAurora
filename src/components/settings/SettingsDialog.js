@@ -36,6 +36,8 @@ import ChangeServer from "./ChangeServer"
 import VerifyEmailDialog from "../VerifyEmailDialog"
 // var moment = require("moment-timezone")
 
+let allDevices=[]
+
 function Transition(props) {
   return <Grow {...props} />
 }
@@ -282,9 +284,13 @@ class SettingsDialog extends React.Component {
     if (loading) deviceList = <CenteredSpinner />
 
     if (user) {
+      for (let i=0;i<user.boards.lenght;i++) {
+        allDevices.push(user.boards[i].devices)
+      }
+
       deviceList = (
         <List style={{ padding: "0" }}>
-          {user.devices.map(device => (
+          {allDevices.map(device => (
             <ListItem
               className="notSelectable"
               primaryText={device.customName}
@@ -836,6 +842,7 @@ rightToggle={
           open={this.props.isOpen && this.state.createValueOpen}
           close={() => this.setState({ createValueOpen: false })}
           userData={this.props.userData}
+          allDevices={allDevices}
         />
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
@@ -846,6 +853,7 @@ rightToggle={
           open={this.props.isOpen && this.state.createNotificationOpen}
           close={() => this.setState({ createNotificationOpen: false })}
           userData={this.props.userData}
+          allDevices={allDevices}
         />
         <CreatePlotNode
           open={this.props.isOpen && this.state.createNodeOpen}

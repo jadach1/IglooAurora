@@ -144,6 +144,22 @@ body {
   background-position: calc(50% + 175px) 50%;
 }
 
+.mobileMainBodyBG {
+  background-image: url("./assets/logoBG.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: 50% 50%;
+}
+
+.mobileDarkMainBodyBG {
+  background-image: url("./assets/darkLogoBG.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: 50% 50%;
+}
+
 .deviceIcon {
   width: 24px;
   height: 24px;
