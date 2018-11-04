@@ -50,10 +50,6 @@ class ChangeBoard extends React.Component {
   }
 
   render() {
-    const {
-      userData: { user },
-    } = this.props
-
     return (
       <Dialog
         open={this.props.open}
@@ -74,8 +70,8 @@ class ChangeBoard extends React.Component {
           valueSelected={this.state.newBoard || this.props.device.board.id}
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          {user &&
-            user.boards.map(board => (
+          {this.props.boards &&
+            this.props.boards.map(board => (
               <RadioButton
                 value={board.id}
                 label={board.customName}

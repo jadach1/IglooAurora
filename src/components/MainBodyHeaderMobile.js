@@ -20,7 +20,7 @@ import RenameDevice from "./devices/RenameDevice"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
-class MainBodyHeader extends Component {
+class MainBodyHeaderMobile extends Component {
   state = {
     open: false,
     infoOpen: false,
@@ -49,29 +49,22 @@ class MainBodyHeader extends Component {
   render() {
     const { device } = this.props.data
 
-    const toggleQuietMode = quietMode =>
-      this.props.ToggleQuietMode({
+    const toggleQuietMode = quietMode => {
+      this.props["ToggleQuietMode"]({
         variables: {
-          id:
-            this.props.userData.user &&
-            this.props.userData.user.devices.filter(
-              device => device.id === this.props.deviceId
-            )[0].id,
-          quietMode,
+          id: device.id,
+          quietMode: quietMode,
         },
         optimisticResponse: {
           __typename: "Mutation",
           device: {
-            id:
-              this.props.userData.user &&
-              this.props.userData.user.devices.filter(
-                device => device.id === this.props.deviceId
-              )[0].id,
-            quietMode,
+            id: device.id,
+            quietMode: quietMode,
             __typename: "Device",
           },
         },
       })
+    }
 
     return (
       <React.Fragment>
@@ -84,39 +77,40 @@ class MainBodyHeader extends Component {
           }}
         >
           <div className="mobileBackIcon">
-          <MuiThemeProvider
+            <MuiThemeProvider
               theme={createMuiTheme({
                 palette: {
                   primary: { main: "#ffffff" },
                 },
               })}
             >
-            <Tooltip
-              id="tooltip-bottom"
-              title="Devices list"
-              placement="bottom"
-            >
-              <IconButton
-                style={{
-                  color: "white",
-                  marginTop: "8px",
-                }}
-                color="primary"
-                onClick={() => this.setState({ goToDevices: true })}
+              <Tooltip
+                id="tooltip-bottom"
+                title="Devices list"
+                placement="bottom"
               >
-                <Icon>chevron_left</Icon>
-              </IconButton>
-            </Tooltip></MuiThemeProvider>
+                <IconButton
+                  style={{
+                    color: "white",
+                    marginTop: "8px",
+                  }}
+                  color="primary"
+                  onClick={() => this.setState({ goToDevices: true })}
+                >
+                  <Icon>chevron_left</Icon>
+                </IconButton>
+              </Tooltip>
+            </MuiThemeProvider>
           </div>
-          {this.props.userData.user &&
-          this.props.userData.user.devices.filter(
+          {this.props.boardData.board &&
+          this.props.boardData.board.devices.filter(
             device => device.id === this.props.deviceId
           )[0].icon ? (
             <img
               className="deviceIconBig"
               src={
-                this.props.userData.user &&
-                this.props.userData.user.devices.filter(
+                this.props.boardData.board &&
+                this.props.boardData.board.devices.filter(
                   device => device.id === this.props.deviceId
                 )[0].icon
               }
@@ -142,8 +136,8 @@ class MainBodyHeader extends Component {
               lineHeight: "64px",
             }}
           >
-            {this.props.userData.user &&
-              this.props.userData.user.devices.filter(
+            {this.props.boardData.board &&
+              this.props.boardData.board.devices.filter(
                 device => device.id === this.props.deviceId
               )[0].customName}
           </Typography>
@@ -278,10 +272,7 @@ class MainBodyHeader extends Component {
                   </CopyToClipboard>
                         )} */}
               <Divider />
-              {this.props.userData.user &&
-              this.props.userData.user.devices.filter(
-                device => device.id === this.props.deviceId
-              )[0].quietMode ? (
+              {device && device.quietMode ? (
                 <MenuItem
                   className="notSelectable"
                   style={
@@ -339,35 +330,36 @@ class MainBodyHeader extends Component {
                 </MenuItem>
               )}
               <Divider />
-              {this.props.userData.user.boards.length > 1 && (
-                <MenuItem
-                  className="notSelectable"
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.setState({ changeBoardOpen: true })
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      swap_horiz
-                    </Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Change board" />
-                </MenuItem>
-              )}
+              {this.props.boards &&
+                this.props.boards.length > 1 && (
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      this.setState({ changeBoardOpen: true })
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        swap_horiz
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Change board" />
+                  </MenuItem>
+                )}
               {/*
                 {device.values.length > 1 && (
                   <MenuItem
@@ -448,12 +440,13 @@ class MainBodyHeader extends Component {
               </MenuItem>
             </Menu>
             <NotificationsDrawer
-              device={
-                this.props.userData.user &&
-                this.props.userData.user.devices.filter(
+              completeDevice={
+                this.props.boardData.board &&
+                this.props.boardData.board.devices.filter(
                   device => device.id === this.props.deviceId
                 )[0]
               }
+              deviceId={this.props.deviceId}
               drawer={this.props.drawer}
               changeDrawerState={this.props.changeDrawerState}
               hiddenNotifications={this.props.hiddenNotifications}
@@ -488,30 +481,10 @@ class MainBodyHeader extends Component {
             <DeviceInfo
               infoOpen={this.state.infoOpen}
               close={() => this.setState({ infoOpen: false })}
-              id={
-                this.props.userData.user &&
-                this.props.userData.user.devices.filter(
-                  device => device.id === this.props.deviceId
-                )[0].id
-              }
-              firmware={
-                this.props.userData.user &&
-                this.props.userData.user.devices.filter(
-                  device => device.id === this.props.deviceId
-                )[0].firmware
-              }
-              updatedAt={
-                this.props.userData.user &&
-                this.props.userData.user.devices.filter(
-                  device => device.id === this.props.deviceId
-                )[0].updatedAt
-              }
-              createdAt={
-                this.props.userData.user &&
-                this.props.userData.user.devices.filter(
-                  device => device.id === this.props.deviceId
-                )[0].createdAt
-              }
+              id={device.id}
+              firmware={device.firmware}
+              updatedAt={device.updatedAt}
+              createdAt={device.createdAt}
               devMode={this.props.devMode}
             />
             <ChangeBoard
@@ -610,5 +583,5 @@ export default graphql(
         },
       }),
     }
-  )(MainBodyHeader)
+  )(MainBodyHeaderMobile)
 )

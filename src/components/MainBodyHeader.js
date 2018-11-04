@@ -47,7 +47,7 @@ class MainBodyHeader extends Component {
   render() {
     const { device } = this.props.data
 
-    let toggleQuietMode = quietMode => {
+    const toggleQuietMode = quietMode => {
       this.props["ToggleQuietMode"]({
         variables: {
           id: device.id,
@@ -73,15 +73,15 @@ class MainBodyHeader extends Component {
             height: "64px",
           }}
         >
-          {this.props.userData.user &&
-          this.props.userData.user.devices.filter(
+          {this.props.boardData.board &&
+          this.props.boardData.board.devices.filter(
             device => device.id === this.props.deviceId
           )[0].icon ? (
             <img
               className="deviceIconBig"
               src={
-                this.props.userData.user &&
-                this.props.userData.user.devices.filter(
+                this.props.boardData.board &&
+                this.props.boardData.board.devices.filter(
                   device => device.id === this.props.deviceId
                 )[0].icon
               }
@@ -107,8 +107,8 @@ class MainBodyHeader extends Component {
               lineHeight: "64px",
             }}
           >
-            {this.props.userData.user &&
-              this.props.userData.user.devices.filter(
+            {this.props.boardData.board &&
+              this.props.boardData.board.devices.filter(
                 device => device.id === this.props.deviceId
               )[0].customName}
           </Typography>
@@ -302,8 +302,8 @@ class MainBodyHeader extends Component {
                   </MenuItem>
                 )}
                 <Divider />
-                {this.props.userData.user &&
-                  this.props.userData.user.boards.length > 1 && (
+                {this.props.boards &&
+                  this.props.boards.length > 1 && (
                     <MenuItem
                       className="notSelectable"
                       style={
@@ -412,12 +412,13 @@ class MainBodyHeader extends Component {
               </Menu>
             )}
             <NotificationsDrawer
-              device={
-                this.props.userData.user &&
-                this.props.userData.user.devices.filter(
+              completeDevice={
+                this.props.boardData.board &&
+                this.props.boardData.board.devices.filter(
                   device => device.id === this.props.deviceId
                 )[0]
               }
+              deviceId={this.props.deviceId}
               drawer={this.props.drawer}
               changeDrawerState={this.props.changeDrawerState}
               hiddenNotifications={this.props.hiddenNotifications}
@@ -439,8 +440,8 @@ class MainBodyHeader extends Component {
                   onClick={this.handleMenuOpen}
                   disabled={
                     !(
-                      this.props.userData.user &&
-                      this.props.userData.user.devices.filter(
+                      this.props.boardData.board &&
+                      this.props.boardData.board.devices.filter(
                         device => device.id === this.props.deviceId
                       )[0]
                     )
@@ -469,6 +470,7 @@ class MainBodyHeader extends Component {
               close={() => this.setState({ changeBoardOpen: false })}
               userData={this.props.userData}
               device={device}
+              boards={this.props.boards}
             />
             <RenameDevice
               open={this.state.renameOpen}

@@ -68,7 +68,6 @@ export default class FilterPopover extends Component {
 
   render() {
     let deviceTypeList = this.props.devices
-      .filter(device => device.board.id === this.props.boardId)
       .map(device => device.deviceType)
 
     let uniqueDeviceTypeList = removeDuplicates(deviceTypeList)

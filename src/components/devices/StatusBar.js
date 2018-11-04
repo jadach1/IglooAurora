@@ -58,19 +58,19 @@ export default class StatusBar extends Component {
       }
     `
 
-    this.props.userData.subscribeToMore({
+    this.props.boardData.subscribeToMore({
       document: subscriptionQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
         const newDevices = [
-          ...prev.user.devices,
+          ...prev.board.devices,
           subscriptionData.data.deviceCreated,
         ]
         return {
-          user: {
-            ...prev.user,
+          board: {
+            ...prev.board,
             devices: newDevices,
           },
         }
@@ -80,7 +80,7 @@ export default class StatusBar extends Component {
 
   render() {
     const {
-      userData: { user },
+      boardData: { board },
     } = this.props
 
     let deviceStatus = ""
@@ -89,10 +89,10 @@ export default class StatusBar extends Component {
     let batteryCharging = ""
 
     if (
-      user &&
-      user.devices.filter(device => device.id === this.props.deviceId)[0]
+      board &&
+      board.devices.filter(device => device.id === this.props.deviceId)[0]
     ) {
-      deviceStatus = user.devices.filter(
+      deviceStatus = board.devices.filter(
         device => device.id === this.props.deviceId
       )[0].online ? (
         "Online"
@@ -101,7 +101,7 @@ export default class StatusBar extends Component {
           Last seen{" "}
           <Moment fromNow>
             {moment.utc(
-              user.devices.filter(
+              board.devices.filter(
                 device => device.id === this.props.deviceId
               )[0].updatedAt
             )}
@@ -109,15 +109,15 @@ export default class StatusBar extends Component {
         </React.Fragment>
       )
 
-      signalStatus = user.devices.filter(
+      signalStatus = board.devices.filter(
         device => device.id === this.props.deviceId
       )[0].signalStatus
 
-      batteryCharging = user.devices.filter(
+      batteryCharging = board.devices.filter(
         device => device.id === this.props.deviceId
       )[0].batteryCharging
 
-      batteryStatus = user.devices.filter(
+      batteryStatus = board.devices.filter(
         device => device.id === this.props.deviceId
       )[0].batteryStatus
     }

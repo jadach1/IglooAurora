@@ -72,7 +72,7 @@ class CreateNotification extends React.Component {
               }}
               name="device"
             >
-              {user.devices.map(device => (
+              {this.props.allDevices.map(device => (
                 <MenuItem value={device.index}>{device.customName}</MenuItem>
               ))}
             </Select>

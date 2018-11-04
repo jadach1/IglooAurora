@@ -13,6 +13,8 @@ import { Redirect } from "react-router-dom"
 import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
 import queryString from "query-string"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 class Main extends Component {
   state = {
@@ -47,19 +49,19 @@ class Main extends Component {
       priority: 1,
       handler: event => {
         const {
-          userData: { user },
+          boardData: { board },
         } = this.props
 
-        if (user) {
+        if (board) {
           if (
-            this.props.userData.user.devices[0] &&
+            this.props.boardData.board.devices[0] &&
             !this.state.areSettingsOpen
           ) {
             if (this.props.devicesSearchText === "") {
-              this.props.selectDevice(this.props.userData.user.devices[0].id)
+              this.props.selectDevice(this.props.boardData.board.devices[0].id)
             } else {
               this.props.selectDevice(
-                this.props.userData.user.devices.filter(device =>
+                this.props.boardData.board.devices.filter(device =>
                   device.customName
                     .toLowerCase()
                     .includes(this.props.devicesSearchText.toLowerCase())
@@ -77,21 +79,21 @@ class Main extends Component {
     "alt+2": {
       priority: 1,
       handler: event => {
-        if (this.props.userData.user) {
+        if (this.props.boardData.board) {
           if (
-            this.props.userData.user.devices[1] &&
+            this.props.boardData.board.devices[1] &&
             !this.state.areSettingsOpen
           ) {
             if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
-                this.props.userData.user.devices.filter(device =>
+                this.props.boardData.board.devices.filter(device =>
                   device.customName
                     .toLowerCase()
                     .includes(this.props.devicesSearchText.toLowerCase())
                 )[1].id
               )
             } else {
-              this.props.selectDevice(this.props.userData.user.devices[1].id)
+              this.props.selectDevice(this.props.boardData.board.devices[1].id)
             }
             this.setState({ drawer: false })
           }
@@ -104,21 +106,21 @@ class Main extends Component {
     "alt+3": {
       priority: 1,
       handler: event => {
-        if (this.props.userData.user) {
+        if (this.props.boardData.board) {
           if (
-            this.props.userData.user.devices[2] &&
+            this.props.boardData.board.devices[2] &&
             !this.state.areSettingsOpen
           ) {
             if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
-                this.props.userData.user.devices.filter(device =>
+                this.props.boardData.board.devices.filter(device =>
                   device.customName
                     .toLowerCase()
                     .includes(this.props.devicesSearchText.toLowerCase())
                 )[2].id
               )
             } else {
-              this.props.selectDevice(this.props.userData.user.devices[2].id)
+              this.props.selectDevice(this.props.boardData.board.devices[2].id)
             }
             this.setState({ drawer: false })
           }
@@ -131,21 +133,21 @@ class Main extends Component {
     "alt+4": {
       priority: 1,
       handler: event => {
-        if (this.props.userData.user) {
+        if (this.props.boardData.board) {
           if (
-            this.props.userData.user.devices[3] &&
+            this.props.boardData.board.devices[3] &&
             !this.state.areSettingsOpen
           ) {
             if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
-                this.props.userData.user.devices.filter(device =>
+                this.props.boardData.board.devices.filter(device =>
                   device.customName
                     .toLowerCase()
                     .includes(this.props.devicesSearchText.toLowerCase())
                 )[3].id
               )
             } else {
-              this.props.selectDevice(this.props.userData.user.devices[3].id)
+              this.props.selectDevice(this.props.boardData.board.devices[3].id)
             }
             this.setState({ drawer: false })
           }
@@ -155,21 +157,21 @@ class Main extends Component {
     "alt+5": {
       priority: 1,
       handler: event => {
-        if (this.props.userData.user) {
+        if (this.props.boardData.board) {
           if (
-            this.props.userData.user.devices[4] &&
+            this.props.boardData.board.devices[4] &&
             !this.state.areSettingsOpen
           ) {
             if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
-                this.props.userData.user.devices.filter(device =>
+                this.props.boardData.board.devices.filter(device =>
                   device.customName
                     .toLowerCase()
                     .includes(this.props.devicesSearchText.toLowerCase())
                 )[4].id
               )
             } else {
-              this.props.selectDevice(this.props.userData.user.devices[4].id)
+              this.props.selectDevice(this.props.boardData.board.devices[4].id)
             }
             this.setState({ drawer: false })
           }
@@ -179,21 +181,21 @@ class Main extends Component {
     "alt+6": {
       priority: 1,
       handler: event => {
-        if (this.props.userData.user) {
+        if (this.props.boardData.board) {
           if (
-            this.props.userData.user.devices[5] &&
+            this.props.boardData.board.devices[5] &&
             !this.state.areSettingsOpen
           ) {
             if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
-                this.props.userData.user.devices.filter(device =>
+                this.props.boardData.board.devices.filter(device =>
                   device.customName
                     .toLowerCase()
                     .includes(this.props.devicesSearchText.toLowerCase())
                 )[5].id
               )
             } else {
-              this.props.selectDevice(this.props.userData.user.devices[5].id)
+              this.props.selectDevice(this.props.boardData.board.devices[5].id)
             }
             this.setState({ drawer: false })
           }
@@ -203,21 +205,21 @@ class Main extends Component {
     "alt+7": {
       priority: 1,
       handler: event => {
-        if (this.props.userData.user) {
+        if (this.props.boardData.board) {
           if (
-            this.props.userData.user.devices[6] &&
+            this.props.boardData.board.devices[6] &&
             !this.state.areSettingsOpen
           ) {
             if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
-                this.props.userData.user.devices.filter(device =>
+                this.props.boardData.board.devices.filter(device =>
                   device.customName
                     .toLowerCase()
                     .includes(this.props.devicesSearchText.toLowerCase())
                 )[6].id
               )
             } else {
-              this.props.selectDevice(this.props.userData.user.devices[6].id)
+              this.props.selectDevice(this.props.boardData.board.devices[6].id)
             }
             this.setState({ drawer: false })
           }
@@ -227,21 +229,21 @@ class Main extends Component {
     "alt+8": {
       priority: 1,
       handler: event => {
-        if (this.props.userData.user) {
+        if (this.props.boardData.board) {
           if (
-            this.props.userData.user.devices[7] &&
+            this.props.boardData.board.devices[7] &&
             !this.state.areSettingsOpen
           ) {
             if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
-                this.props.userData.user.devices.filter(device =>
+                this.props.boardData.board.devices.filter(device =>
                   device.customName
                     .toLowerCase()
                     .includes(this.props.devicesSearchText.toLowerCase())
                 )[7].id
               )
             } else {
-              this.props.selectDevice(this.props.userData.user.devices[7].id)
+              this.props.selectDevice(this.props.boardData.board.devices[7].id)
             }
             this.setState({ drawer: false })
           }
@@ -251,21 +253,21 @@ class Main extends Component {
     "alt+9": {
       priority: 1,
       handler: event => {
-        if (this.props.userData.user) {
+        if (this.props.boardData.board) {
           if (
-            this.props.userData.user.devices[8] &&
+            this.props.boardData.board.devices[8] &&
             !this.state.areSettingsOpen
           ) {
             if (this.props.devicesSearchText !== "") {
               this.props.selectDevice(
-                this.props.userData.user.devices.filter(device =>
+                this.props.boardData.board.devices.filter(device =>
                   device.customName
                     .toLowerCase()
                     .includes(this.props.devicesSearchText.toLowerCase())
                 )[8].id
               )
             } else {
-              this.props.selectDevice(this.props.userData.user.devices[8].id)
+              this.props.selectDevice(this.props.boardData.board.devices[8].id)
             }
             this.setState({ drawer: false })
           }
@@ -298,26 +300,58 @@ class Main extends Component {
 
   render() {
     const {
-      userData: { user },
+      boardData: { board },
     } = this.props
 
     let nightMode = false
     let devMode = false
     let deviceIdList = []
 
-    if (user) {
-      nightMode =
-        typeof Storage !== "undefined" &&
-        localStorage.getItem("nightMode") === "true"
-      devMode = user.devMode
+    if (this.props.devMode) {
+      devMode = this.props.devMode
+    }
 
-      deviceIdList = user.devices.map(device => device.id)
+    nightMode =
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("nightMode") === "true"
 
-      let boardIdList = user.boards.map(board => board.id)
+    if (board && this.props.boards) {
+      let j
+
+      for (j = 0; j < this.props.boards.length; j++) {
+        deviceIdList = deviceIdList.concat(
+          this.props.boards[j].devices.map(device => device.id)
+        )
+      }
+
+      let boardIdList = this.props.boards.map(board => board.id)
 
       if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
-        if (!boardIdList.includes(this.props.selectedBoard))
+        if (!boardIdList.includes(this.props.boardId))
           return <Redirect exact to="/dashboard" />
+      }
+
+      let i
+
+      for (i = 0; i < board.devices.length; i++) {
+        if (
+          board.devices[i].id ===
+            queryString.parse("?" + window.location.href.split("?")[1])
+              .device &&
+          board.id !==
+            queryString.parse("?" + window.location.href.split("?")[1]).board
+        ) {
+          return (
+            <Redirect
+              to={
+                "/dashboard?board=" +
+                board.devices[i].board.id +
+                "&device=" +
+                board.devices[i].id
+              }
+            />
+          )
+        }
       }
     }
 
@@ -343,7 +377,7 @@ class Main extends Component {
             <SidebarHeader
               logOut={this.props.logOut}
               key="sidebarHeader"
-              selectedBoard={this.props.selectedBoard}
+              selectedBoard={this.props.boardId}
               openSettingsDialog={this.props.openSettings}
               changeSettingsState={() =>
                 this.setState(oldState => ({
@@ -351,13 +385,7 @@ class Main extends Component {
                   drawer: false,
                 }))
               }
-              user={this.props.userData.user}
-              boardName={
-                this.props.userData.user &&
-                this.props.userData.user.boards.filter(
-                  board => board.id === this.props.selectedBoard
-                )[0].customName
-              }
+              boards={this.props.boards}
             />
             <div
               className="sidebar"
@@ -375,9 +403,9 @@ class Main extends Component {
                 }}
                 selectedDevice={this.props.selectedDevice}
                 changeDrawerState={this.changeDrawerState}
-                userData={this.props.userData}
+                boardData={this.props.boardData}
                 nightMode={nightMode}
-                selectedBoard={this.props.selectedBoard}
+                selectedBoard={this.props.boardId}
                 searchDevices={this.props.searchDevices}
                 searchText={this.props.devicesSearchText}
               />
@@ -395,13 +423,14 @@ class Main extends Component {
                 openSnackBar={() => {
                   this.setState({ copyMessageOpen: true })
                 }}
-                userData={this.props.userData}
+                boardData={this.props.boardData}
+                boards={this.props.boards}
               />
             ) : (
               <div className="mainBodyHeader" key="mainBodyHeader" />
             )}
             {this.props.selectedDevice !== null ? (
-              user ? (
+              board ? (
                 deviceIdList.includes(this.props.selectedDevice) ? (
                   <React.Fragment>
                     <MainBody
@@ -410,10 +439,12 @@ class Main extends Component {
                       changeShowHiddenState={this.changeShowHiddenState}
                       nightMode={nightMode}
                       devMode={devMode}
-                      userData={this.props.userData}
+                      boardData={this.props.boardData}
+                      isMobile={false}
+                      boards={this.props.boards}
                     />
                     <StatusBar
-                      userData={this.props.userData}
+                      boardData={this.props.boardData}
                       deviceId={this.props.selectedDevice}
                       nightMode={nightMode}
                       isMobile={false}
@@ -423,8 +454,8 @@ class Main extends Component {
                   <Redirect
                     exact
                     to={
-                      this.props.selectedBoard
-                        ? "/dashboard?board=" + this.props.selectedBoard
+                      this.props.boardId
+                        ? "/dashboard?board=" + this.props.boardId
                         : "/dashboard"
                     }
                   />
@@ -519,4 +550,35 @@ class Main extends Component {
   }
 }
 
-export default hotkeys(Main)
+export default graphql(
+  gql`
+    query($id: ID!) {
+      board(id: $id) {
+        id
+        devices {
+          id
+          index
+          customName
+          icon
+          online
+          batteryStatus
+          batteryCharging
+          signalStatus
+          deviceType
+          createdAt
+          updatedAt
+          notificationsCount
+          notifications {
+            id
+            content
+            visualized
+          }
+        }
+      }
+    }
+  `,
+  {
+    name: "boardData",
+    options: ({ boardId }) => ({ variables: { id: boardId } }),
+  }
+)(hotkeys(Main))

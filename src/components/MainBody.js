@@ -253,7 +253,8 @@ class MainBody extends Component {
           localStorage.getItem("nightMode") === "true"
         }
         devMode={this.props.devMode}
-        userData={this.props.userData}
+        boardData={this.props.boardData}
+        boards={this.props.boards}
       />
     )
 
@@ -327,8 +328,12 @@ class MainBody extends Component {
           className={
             typeof Storage !== "undefined" &&
             localStorage.getItem("nightMode") === "true"
-              ? "mainBody darkMainBodyBG"
-              : "mainBody mainBodyBG"
+              ? this.props.isMobile
+                ? "mainBody darkMobileMainBodyBG"
+                : "mainBody darkMainBodyBG"
+              : this.props.isMobile
+                ? "mainBody mobileMainBodyBG"
+                : "mainBody mainBodyBG"
           }
           style={{ width: "100%", height: "100%" }}
         >
