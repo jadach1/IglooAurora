@@ -73,7 +73,8 @@ class ChangeDevice extends React.Component {
 
   render() {
     const {
-      userData: { user },
+      // eslint-disable-next-line
+      boardData: { board },
     } = this.props
 
     return (
@@ -88,8 +89,8 @@ class ChangeDevice extends React.Component {
         <div
           style={{ paddingRight: "24px", paddingLeft: "24px", height: "100%" }}
         >
-          {user &&
-            user.boards.filter(board => board.devices[0]).map(board => (
+          {this.props.boards &&
+            this.props.boards.filter(board => board.devices[0]).map(board => (
               <React.Fragment>
                 {board.customName}
                 <RadioButtonGroup
@@ -101,9 +102,8 @@ class ChangeDevice extends React.Component {
                     this.state.newDevice || this.props.value.device.id
                   }
                 >
-                  {user &&
-                    user.devices
-                      .filter(device => device.board.id === board.id)
+                  {board &&
+                    board.devices
                       .map(device => (
                         <RadioButton
                           value={device.id}

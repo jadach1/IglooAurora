@@ -71,12 +71,12 @@ class NotificationsDrawer extends React.Component {
           return prev
         }
         const newNotifications = [
-          ...prev.user.notifications,
+          ...prev.device.notifications,
           subscriptionData.data.notificationCreated,
         ]
         return {
-          user: {
-            ...prev.user,
+          device: {
+            ...prev.device,
             notifications: newNotifications,
           },
         }
@@ -105,15 +105,15 @@ class NotificationsDrawer extends React.Component {
         }
         const newNotification = subscriptionData.data.notificationUpdated
 
-        const newNotifications = prev.user.notifications.map(
+        const newNotifications = prev.device.notifications.map(
           notification =>
             notification.id === newNotification.id
               ? newNotification
               : notification
         )
         return {
-          user: {
-            ...prev.user,
+          device: {
+            ...prev.device,
             notifications: newNotifications,
           },
         }
@@ -133,14 +133,14 @@ class NotificationsDrawer extends React.Component {
           return prev
         }
 
-        const newNotifications = prev.user.notifications.filter(
+        const newNotifications = prev.device.notifications.filter(
           notification =>
             notification.id !== subscriptionData.data.notificationDeleted
         )
 
         return {
-          user: {
-            ...prev.user,
+          device: {
+            ...prev.device,
             notifications: newNotifications,
           },
         }
@@ -150,7 +150,7 @@ class NotificationsDrawer extends React.Component {
 
   render() {
     const {
-      notifications: { loading, error, user },
+      notifications: { loading, error, device },
     } = this.props
 
     let clearNotification = id => {
@@ -218,9 +218,8 @@ class NotificationsDrawer extends React.Component {
     }
 
     let clearAllNotifications = () => {
-      const notificationsToFlush = user.notifications.filter(
+      const notificationsToFlush = device.notifications.filter(
         notification =>
-          notification.device.id === this.props.device.id &&
           notification.visualized === false &&
           unreadNotifications.indexOf(notification.id) === -1
       )
@@ -240,9 +239,9 @@ class NotificationsDrawer extends React.Component {
 
     if (error) notifications = "Unexpected error"
 
-    if (loading || !this.props.device) notifications = <CenteredSpinner />
+    if (loading || !this.props.completeDevice) notifications = <CenteredSpinner />
 
-    if (user && this.props.device) {
+    if (device && this.props.completeDevice) {
       let determineDiff = notification =>
         moment()
           .endOf("day")
@@ -330,8 +329,7 @@ class NotificationsDrawer extends React.Component {
         return returnArray
       }
 
-      let notificationsSections = user.notifications
-        .filter(notification => notification.device.id === this.props.device.id)
+      let notificationsSections = device.notifications
         .filter(notification => !notification.visualized)
         .map(notification => determineDiff(notification))
         .reverse()
@@ -345,12 +343,8 @@ class NotificationsDrawer extends React.Component {
               <ListSubheader style={{ backgroundColor: "white" }}>
                 {section}
               </ListSubheader>
-              {user.notifications &&
-                user.notifications
-                  .filter(
-                    notification =>
-                      notification.device.id === this.props.device.id
-                  )
+              {device.notifications &&
+                device.notifications
                   .filter(
                     notification => determineDiff(notification) === section
                   )
@@ -389,8 +383,7 @@ class NotificationsDrawer extends React.Component {
         </List>
       )
 
-      let readNotificationsSections = user.notifications
-        .filter(notification => notification.device.id === this.props.device.id)
+      let readNotificationsSections = device.notifications
         .filter(notification => notification.visualized)
         .map(notification => determineDiff(notification))
         .reverse()
@@ -406,12 +399,8 @@ class NotificationsDrawer extends React.Component {
               <ListSubheader style={{ backgroundColor: "white" }}>
                 {section}
               </ListSubheader>
-              {user.notifications &&
-                user.notifications
-                  .filter(
-                    notification =>
-                      notification.device.id === this.props.device.id
-                  )
+              {device.notifications &&
+                device.notifications
                   .filter(
                     notification => determineDiff(notification) === section
                   )
@@ -456,20 +445,16 @@ class NotificationsDrawer extends React.Component {
       )
 
       notificationCount =
-        user.notifications &&
-        user.notifications
-          .filter(
-            notification => notification.device.id === this.props.device.id
-          )
-          .filter(notification => notification.visualized === false).length
+        device.notifications &&
+        device.notifications.filter(
+          notification => notification.visualized === false
+        ).length
 
       const readNotificationCount =
-        user.notifications &&
-        user.notifications
-          .filter(
-            notification => notification.device.id === this.props.device.id
-          )
-          .filter(notification => notification.visualized === true).length
+        device.notifications &&
+        device.notifications.filter(
+          notification => notification.visualized === true
+        ).length
 
       if (!notificationCount) {
         noNotificationsUI = (
@@ -585,7 +570,7 @@ class NotificationsDrawer extends React.Component {
                       this.props.changeDrawerState()
                     }
               }
-              disabled={!this.props.device}
+              disabled={!this.props.completeDevice}
             >
               {notificationCount ? (
                 <Badge badgeContent={notificationCount} color="primary">
@@ -649,12 +634,12 @@ class NotificationsDrawer extends React.Component {
                       <Icon>chevron_right</Icon>
                     </IconButton>
                   </Tooltip>
-                  {this.props.device && (
+                  {this.props.completeDevice && (
                     <MuiThemeProvider theme={theme}>
                       <Tooltip
                         id="tooltip-bottom"
                         title={
-                          this.props.device && this.props.device.quietMode
+                          this.props.completeDevice && this.props.completeDevice.quietMode
                             ? "Unmute device"
                             : "Mute device"
                         }
@@ -671,13 +656,13 @@ class NotificationsDrawer extends React.Component {
                           color="secondary"
                           onClick={() =>
                             toggleQuietMode(
-                              this.props.device.id,
-                              !this.props.device.quietMode
+                              this.props.completeDevice.id,
+                              !this.props.completeDevice.quietMode
                             )
                           }
                         >
                           <Icon>
-                            {this.props.device && this.props.device.quietMode
+                            {this.props.completeDevice && this.props.completeDevice.quietMode
                               ? "notifications"
                               : "notifications_off"}
                           </Icon>
@@ -689,13 +674,19 @@ class NotificationsDrawer extends React.Component {
               </AppBar>
               <div
                 className="notSelectable"
-                style={window.innerWidth>360?{
-                  overflowY: "auto",
-                  height: "calc(100vh - 64px)",
-                  width: "324px",
-                }:{overflowY: "auto",
-                height: "calc(100vh - 64px)",
-                width: "90vw",}}
+                style={
+                  window.innerWidth > 360
+                    ? {
+                        overflowY: "auto",
+                        height: "calc(100vh - 64px)",
+                        width: "324px",
+                      }
+                    : {
+                        overflowY: "auto",
+                        height: "calc(100vh - 64px)",
+                        width: "90vw",
+                      }
+                }
               >
                 {noNotificationsUI}
                 {notifications}
@@ -716,8 +707,8 @@ class NotificationsDrawer extends React.Component {
 
 export default graphql(
   gql`
-    query {
-      user {
+    query($id: ID!) {
+      device(id: $id) {
         id
         notifications {
           id
@@ -731,7 +722,10 @@ export default graphql(
       }
     }
   `,
-  { name: "notifications" }
+  {
+    name: "notifications",
+    options: ({ deviceId }) => ({ variables: { id: deviceId } }),
+  }
 )(
   graphql(
     gql`

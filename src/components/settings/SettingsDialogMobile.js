@@ -40,6 +40,8 @@ import ChangeEmail from "./ChangeEmail"
 import ChangeServer from "./ChangeServer"
 import VerifyEmailDialog from "../VerifyEmailDialog"
 
+let allDevices = []
+
 function Transition(props) {
   return <Slide direction="up" {...props} />
 }
@@ -294,9 +296,13 @@ class SettingsDialogMobile extends React.Component {
     if (loading) deviceList = <CenteredSpinner />
 
     if (user) {
+      for (let i = 0; i < user.boards.lenght; i++) {
+        allDevices.push(user.boards[i].devices)
+      }
+
       deviceList = (
         <List style={{ padding: "0" }}>
-          {user.devices.map(device => (
+          {allDevices.map(device => (
             <ListItem
               className="notSelectable"
               primaryText={device.customName}
@@ -906,7 +912,8 @@ rightToggle={
           open={this.props.isOpen && this.state.createValueOpen}
           close={() => this.setState({ createValueOpen: false })}
           userData={this.props.userData}
-        />
+          allDevices={allDevices}
+          />
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
           close={() => this.setState({ createDeviceOpen: false })}
@@ -921,7 +928,8 @@ rightToggle={
           open={this.props.isOpen && this.state.createNotificationOpen}
           close={() => this.setState({ createNotificationOpen: false })}
           userData={this.props.userData}
-        />
+          allDevices={allDevices}
+          />
         <GDPRDataDownload
           open={this.props.isOpen && this.state.gdprOpen}
           close={() => this.setState({ gdprOpen: false })}
