@@ -16,6 +16,7 @@ import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
 import SwipeableViews from "react-swipeable-views"
+import Helmet from "react-helmet"
 
 const theme = createMuiTheme({
   palette: {
@@ -107,6 +108,9 @@ class BoardsBodyMobile extends Component {
 
     return (
       <React.Fragment>
+        <Helmet>
+          <title>Igloo Aurora</title>
+        </Helmet>
         <div
           style={
             nightMode

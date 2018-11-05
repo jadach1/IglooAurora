@@ -7,7 +7,6 @@ import Divider from "material-ui/Divider"
 import SwipeableViews from "react-swipeable-views"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import CenteredSpinner from "../CenteredSpinner"
 import ChangeNameDialog from "./ChangeName"
 import TwoFactorDialog from "./Enable2FA"
 import DeleteAccountDialog from "./DeleteAccount"
@@ -218,7 +217,7 @@ class SettingsDialogMobile extends React.Component {
 
   render() {
     const {
-      userData: { loading, error, user },
+      userData: { user },
     } = this.props
 
     let toggleNightMode = () => {
@@ -283,56 +282,16 @@ class SettingsDialogMobile extends React.Component {
 
     let toggleQuietMode = () => {}
 
-    let deviceList = "No devices"
-
     // let languageText = "English"
 
     let fullName = ""
 
     let profileIconColor = ""
 
-    if (error) deviceList = "Unexpected error bear"
-
-    if (loading) deviceList = <CenteredSpinner />
-
     if (user) {
       for (let i = 0; i < user.boards.lenght; i++) {
         allDevices.push(user.boards[i].devices)
       }
-
-      deviceList = (
-        <List style={{ padding: "0" }}>
-          {allDevices.map(device => (
-            <ListItem
-              className="notSelectable"
-              primaryText={device.customName}
-              key={device.id}
-              style={{
-                backgroundColor: "transparent",
-              }}
-              leftIcon={
-                device.icon ? (
-                  <img
-                    className="deviceIcon"
-                    src={device.icon}
-                    alt="device logo"
-                  />
-                ) : (
-                  <Icon>lightbulb_outline</Icon>
-                )
-              }
-              rightToggle={
-                <Toggle
-                  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  defaultToggled={true}
-                />
-              }
-            />
-          ))}
-        </List>
-      )
 
       devModeSetting = (
         <ListItem
@@ -376,10 +335,10 @@ class SettingsDialogMobile extends React.Component {
           style={
             typeof Storage !== "undefined" &&
             localStorage.getItem("nightMode") === "true"
-              ? this.props.slideIndex === 3
+              ? this.props.slideIndex === 2
                 ? { color: "#fff" }
                 : { color: "#fff", opacity: 0.5 }
-              : this.props.slideIndex === 3
+              : this.props.slideIndex === 2
                 ? { color: "#0083ff" }
                 : { color: "#757575" }
           }
@@ -469,6 +428,9 @@ class SettingsDialogMobile extends React.Component {
             <Subheader style={{ cursor: "default" }}>Appearance</Subheader>
             {nightModeSetting}
             <Divider />
+            <Subheader style={{ cursor: "default" }}>Notifications</Subheader>
+            {quietModeSetting}
+            <Divider />
             <Subheader style={{ cursor: "default" }}>Localization</Subheader>
             {/*
   <ListItem
@@ -504,36 +466,9 @@ class SettingsDialogMobile extends React.Component {
               primaryText="Keyboard shortcuts"
               onClick={this.handleShortcutDialogOpen}
             />
-          </List>
-        </div>
-      </div>
-    )
-
-    let notificationsSettings = (
-      <div
-        style={
-          typeof Storage !== "undefined" &&
-          localStorage.getItem("nightMode") === "true"
-            ? {
-                overflowY: "auto",
-                height: "calc(100vh - 128px)",
-                overflowX: "hidden",
-                background: "rgb(33, 37, 43)",
-              }
-            : {
-                overflowY: "auto",
-                height: "calc(100vh - 128px)",
-                overflowX: "hidden",
-              }
-        }
-      >
-        <div style={listStyles.root}>
-          <List style={{ width: "100%", padding: "0" }}>
-            <Subheader style={{ cursor: "default" }}>Lorem Ipsum</Subheader>
-            {quietModeSetting}
             <Divider />
-            <Subheader style={{ cursor: "default" }}>Lorem Ipsum</Subheader>
-            {deviceList}
+            <Subheader style={{ cursor: "default" }}>For developers</Subheader>
+            {devModeSetting}
           </List>
         </div>
       </div>
@@ -609,9 +544,6 @@ rightToggle={
 />
 }
 /> */}
-          <Divider />
-          <Subheader style={{ cursor: "default" }}>For developers</Subheader>
-          {devModeSetting}
           <Divider />
           <Subheader style={{ cursor: "default" }}>
             Account management
@@ -702,7 +634,6 @@ rightToggle={
               onChangeIndex={this.props.handleChange}
             >
               {uiSettings}
-              {notificationsSettings}
               {accountSettings}
               <div
                 style={
@@ -750,6 +681,7 @@ rightToggle={
                       this.setState({ createNotificationOpen: true })
                     }
                   />
+                  <Divider />
                   <Subheader style={{ cursor: "default" }}>Testing</Subheader>
                   <ListItem
                     primaryText="Change connected server"
@@ -764,7 +696,6 @@ rightToggle={
               onChangeIndex={this.props.handleChange}
             >
               {uiSettings}
-              {notificationsSettings}
               {accountSettings}
             </SwipeableViews>
           )}
@@ -791,8 +722,8 @@ rightToggle={
               }
             >
               <BottomNavigationAction
-                icon={<Icon>dashboard</Icon>}
-                label="Interface"
+                icon={<Icon>language</Icon>}
+                label="General"
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
@@ -805,8 +736,8 @@ rightToggle={
                 }
               />
               <BottomNavigationAction
-                icon={<Icon>notifications</Icon>}
-                label="Notifications"
+                icon={<Icon>account_box</Icon>}
+                label="Account"
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
@@ -814,20 +745,6 @@ rightToggle={
                       ? { color: "#fff" }
                       : { color: "#fff", opacity: 0.5 }
                     : this.props.slideIndex === 1
-                      ? { color: "#0083ff" }
-                      : { color: "#757575" }
-                }
-              />
-              <BottomNavigationAction
-                icon={<Icon>account_box</Icon>}
-                label="Account"
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? this.props.slideIndex === 2
-                      ? { color: "#fff" }
-                      : { color: "#fff", opacity: 0.5 }
-                    : this.props.slideIndex === 2
                       ? { color: "#0083ff" }
                       : { color: "#757575" }
                 }
@@ -913,7 +830,7 @@ rightToggle={
           close={() => this.setState({ createValueOpen: false })}
           userData={this.props.userData}
           allDevices={allDevices}
-          />
+        />
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
           close={() => this.setState({ createDeviceOpen: false })}
@@ -929,7 +846,7 @@ rightToggle={
           close={() => this.setState({ createNotificationOpen: false })}
           userData={this.props.userData}
           allDevices={allDevices}
-          />
+        />
         <GDPRDataDownload
           open={this.props.isOpen && this.state.gdprOpen}
           close={() => this.setState({ gdprOpen: false })}

@@ -12,6 +12,7 @@ import polarBear from "./styles/assets/polarBear.svg"
 import logo from "./styles/assets/logo.svg"
 import iglooTitle from "./styles/assets/iglooTitle.svg"
 import { Redirect } from "react-router-dom"
+import Helmet from "react-helmet"
 
 class UnAuthenticatedApp extends Component {
   state = { redirect: false }
@@ -32,9 +33,9 @@ class UnAuthenticatedApp extends Component {
 
     const link = new HttpLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-      ? localStorage.getItem("server") + "/graphql"
-      : `http://iglooql.herokuapp.com/graphql`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://iglooql.herokuapp.com/graphql`,
     })
 
     this.client = new ApolloClient({
@@ -56,6 +57,9 @@ class UnAuthenticatedApp extends Component {
   render() {
     return (
       <MuiThemeProvider>
+        <Helmet>
+          <title>Igloo Aurora - Log in</title>
+        </Helmet>
         <Online>
           <div className="loginBackground">
             <Paper className="loginForm">
@@ -87,10 +91,14 @@ class UnAuthenticatedApp extends Component {
                 isDialog={false}
                 signIn={this.props.signIn}
                 setBoards={this.props.setBoards}
-                password={this.props.password} changePassword={this.props.changePassword}
-                passwordError={this.props.passwordError} changePasswordError={this.props.changePasswordError}
-                email={this.props.email} changeEmail={this.props.changeEmail}
-                emailError={this.props.emailError} changeEmailError={this.props.changeEmailError}
+                password={this.props.password}
+                changePassword={this.props.changePassword}
+                passwordError={this.props.passwordError}
+                changePasswordError={this.props.changePasswordError}
+                email={this.props.email}
+                changeEmail={this.props.changeEmail}
+                emailError={this.props.emailError}
+                changeEmailError={this.props.changeEmailError}
                 changeSignupEmail={this.props.changeSignupEmail}
               />
             </Paper>

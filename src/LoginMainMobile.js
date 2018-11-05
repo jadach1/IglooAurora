@@ -8,6 +8,7 @@ import { hotkeys } from "react-keyboard-shortcuts"
 import { Offline, Online } from "react-detect-offline"
 import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
+import Helmet from "react-helmet"
 
 class UnAuthenticatedApp extends Component {
   state = { logiIn: false, signIn: false }
@@ -28,9 +29,9 @@ class UnAuthenticatedApp extends Component {
 
     const link = new HttpLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-      ? localStorage.getItem("server") + "/graphql"
-      : `http://iglooql.herokuapp.com/graphql`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://iglooql.herokuapp.com/graphql`,
     })
 
     this.client = new ApolloClient({
@@ -60,6 +61,9 @@ class UnAuthenticatedApp extends Component {
   render() {
     return (
       <MuiThemeProvider>
+        <Helmet>
+          <title>Igloo Aurora - Log in</title>
+        </Helmet>
         <Online>
           <div
             style={{
@@ -74,10 +78,14 @@ class UnAuthenticatedApp extends Component {
                 client={this.client}
                 signIn={this.props.signIn}
                 goToSignup={() => this.setState({ slideIndex: 0 })}
-                password={this.props.password} changePassword={this.props.changePassword}
-                passwordError={this.props.passwordError} changePasswordError={this.props.changePasswordError}
-                email={this.props.email} changeEmail={this.props.changeEmail}
-                emailError={this.props.emailError} changeEmailError={this.props.changeEmailError}
+                password={this.props.password}
+                changePassword={this.props.changePassword}
+                passwordError={this.props.passwordError}
+                changePasswordError={this.props.changePasswordError}
+                email={this.props.email}
+                changeEmail={this.props.changeEmail}
+                emailError={this.props.emailError}
+                changeEmailError={this.props.changeEmailError}
                 changeSignupEmail={this.props.changeSignupEmail}
               />
             </div>

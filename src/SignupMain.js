@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
 import logo from "./styles/assets/logo.svg"
 import iglooTitle from "./styles/assets/iglooTitle.svg"
+import Helmet from "react-helmet"
 
 class UnAuthenticatedApp extends Component {
   state = { slideIndex: 0 }
@@ -63,6 +64,9 @@ class UnAuthenticatedApp extends Component {
   render() {
     return (
       <MuiThemeProvider>
+        <Helmet>
+          <title>Igloo Aurora - Sign up</title>
+        </Helmet>
         <Online>
           <div className="loginBackground">
             <Paper className="loginForm">

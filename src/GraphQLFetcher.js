@@ -6,7 +6,7 @@ import gql from "graphql-tag"
 import { reactTranslateChangeLanguage } from "translate-components"
 import { Switch, Route, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
-import MobileError404 from "./MobileError404"
+import MobileError404 from "./Error404Mobile"
 import Boards from "./Boards"
 import queryString from "query-string"
 import BoardsMobile from "./BoardsMobile"
@@ -18,228 +18,6 @@ let systemLang = navigator.language || navigator.userLanguage
 
 class GraphQLFetcher extends Component {
   componentDidMount() {
-    const deviceSubscriptionQuery = gql`
-      subscription {
-        deviceCreated {
-          id
-          board {
-            id
-          }
-          values {
-            id
-          }
-          customName
-          icon
-          updatedAt
-          createdAt
-          myRole
-          quietMode
-          firmware
-          owner {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          notifications {
-            id
-            content
-            date
-            visualized
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: deviceSubscriptionQuery,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-        const newDevices = [
-          ...prev.user.devices,
-          subscriptionData.data.deviceCreated,
-        ]
-
-        return {
-          user: {
-            ...prev.user,
-            devices: newDevices,
-          },
-        }
-      },
-    })
-
-    const deviceSharedSubscriptionQuery = gql`
-      subscription {
-        deviceShared {
-          id
-          board {
-            id
-          }
-          values {
-            id
-          }
-          customName
-          icon
-          updatedAt
-          createdAt
-          myRole
-          quietMode
-          firmware
-          owner {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          notifications {
-            id
-            content
-            date
-            visualized
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: deviceSharedSubscriptionQuery,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-        const newDevices = [
-          ...prev.user.devices,
-          subscriptionData.data.deviceCreated,
-        ]
-        return {
-          user: {
-            ...prev.user,
-            devices: newDevices,
-          },
-        }
-      },
-    })
-
-    const subscribeToDevicesUpdates = gql`
-      subscription {
-        deviceUpdated {
-          id
-          board {
-            id
-          }
-          values {
-            id
-          }
-          customName
-          icon
-          updatedAt
-          createdAt
-          myRole
-          quietMode
-          firmware
-          owner {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          notifications {
-            id
-            content
-            date
-            visualized
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToDevicesUpdates,
-    })
-
-    const subscribeToDevicesDeletes = gql`
-      subscription {
-        deviceDeleted
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToDevicesDeletes,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newDevices = prev.user.devices.filter(
-          device => device.id !== subscriptionData.data.deviceDeleted
-        )
-
-        return {
-          user: {
-            ...prev.user,
-            devices: newDevices,
-          },
-        }
-      },
-    })
-
     const boardSubscriptionQuery = gql`
       subscription {
         boardCreated {
@@ -767,6 +545,9 @@ class GraphQLFetcher extends Component {
                 this.setState({ devicesSearchText: text })
               }}
               devicesSearchText={this.state.devicesSearchText}
+              devMode={
+                this.props.userData.user && this.props.userData.user.devMode
+              }
             />
           )
         } else {
@@ -786,6 +567,9 @@ class GraphQLFetcher extends Component {
               }
               boards={
                 this.props.userData.user && this.props.userData.user.boards
+              }
+              devMode={
+                this.props.userData.user && this.props.userData.user.devMode
               }
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })

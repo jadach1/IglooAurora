@@ -15,6 +15,7 @@ import polarBear from "./styles/assets/polarBear.svg"
 import queryString from "query-string"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import Helmet from "react-helmet"
 
 class Main extends Component {
   state = {
@@ -298,6 +299,118 @@ class Main extends Component {
       hiddenNotifications: !oldState.hiddenNotifications,
     }))
 
+  componentDidMount() {
+    const deviceSubscriptionQuery = gql`
+      subscription {
+        deviceCreated {
+          id
+          index
+          customName
+          icon
+          online
+          batteryStatus
+          batteryCharging
+          signalStatus
+          deviceType
+          createdAt
+          updatedAt
+          notificationsCount
+          notifications {
+            id
+            content
+            visualized
+          }
+        }
+      }
+    `
+
+    this.props.boardData.subscribeToMore({
+      document: deviceSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newDevices = [
+          ...prev.board.devices,
+          subscriptionData.data.deviceCreated,
+        ]
+
+        return {
+          board: {
+            ...prev.board,
+            devices: newDevices,
+          },
+        }
+      },
+    })
+
+    const subscribeToDevicesUpdates = gql`
+      subscription {
+        deviceUpdated {
+          id
+          myRole
+          batteryStatus
+          batteryCharging
+          signalStatus
+          owner {
+            id
+            email
+            fullName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            fullName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            fullName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            fullName
+            profileIconColor
+          }
+        }
+      }
+    `
+
+    this.props.boardData.subscribeToMore({
+      document: subscribeToDevicesUpdates,
+    })
+
+    const subscribeToDevicesDeletes = gql`
+      subscription {
+        deviceDeleted
+      }
+    `
+
+    this.props.boardData.subscribeToMore({
+      document: subscribeToDevicesDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newDevices = prev.board.devices.filter(
+          device => device.id !== subscriptionData.data.deviceDeleted
+        )
+
+        return {
+          board: {
+            ...prev.board,
+            devices: newDevices,
+          },
+        }
+      },
+    })
+  }
+
   render() {
     const {
       boardData: { board },
@@ -364,6 +477,21 @@ class Main extends Component {
     return (
       <React.Fragment>
         <Online>
+          <Helmet>
+            <title>
+              {board &&
+              queryString.parse("?" + window.location.href.split("?")[1]).device
+                ? "Igloo Aurora - " +
+                  board.devices.filter(
+                    device =>
+                      device.id ===
+                      queryString.parse(
+                        "?" + window.location.href.split("?")[1]
+                      ).device
+                  )[0].customName
+                : "Igloo Aurora"}
+            </title>
+          </Helmet>
           <div className="main">
             <SettingsDialog
               isOpen={this.props.areSettingsOpen}
