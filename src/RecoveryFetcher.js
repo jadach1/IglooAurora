@@ -13,6 +13,7 @@ import { ApolloProvider } from "react-apollo"
 import queryString from "query-string"
 import { Redirect } from "react-router-dom"
 import RecoveryMain from "./RecoveryMain"
+import Helmet from "react-helmet"
 
 export default class RecoveryFetcher extends Component {
   constructor(props) {
@@ -79,6 +80,9 @@ export default class RecoveryFetcher extends Component {
   render() {
     return (
       <React.Fragment>
+        <Helmet>
+          <title>Igloo Aurora - Recovery</title>
+        </Helmet>
         {queryString.parse("?" + window.location.href.split("?")[1]).token ? (
           <ApolloProvider client={this.client}>
             <RecoveryMain mobile={this.props.mobile} token={this.state.token} />

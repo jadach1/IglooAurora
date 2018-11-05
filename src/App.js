@@ -7,7 +7,7 @@ import SignupMainMobile from "./SignupMainMobile"
 import jwt from "jsonwebtoken"
 import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
-import MobileError404 from "./MobileError404"
+import MobileError404 from "./Error404Mobile"
 import RecoveryFetcher from "./RecoveryFetcher"
 
 function setupWebPush(token) {

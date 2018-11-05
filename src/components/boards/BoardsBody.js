@@ -13,6 +13,7 @@ import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
 import LargeCenteredSpinner from "../LargeCenteredSpinner"
+import Helmet from "react-helmet"
 
 const theme = createMuiTheme({
   palette: {
@@ -36,9 +37,9 @@ export default class BoardsBody extends Component {
     let boardsList = ""
     let yourBoardsList = ""
 
-    let   nightMode =
-    typeof Storage !== "undefined" &&
-    localStorage.getItem("nightMode") === "true"
+    let nightMode =
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("nightMode") === "true"
     let devMode = false
 
     if (loading) {
@@ -95,6 +96,9 @@ export default class BoardsBody extends Component {
 
     return (
       <React.Fragment>
+        <Helmet>
+          <title>Igloo Aurora</title>
+        </Helmet>
         <div
           style={
             nightMode
@@ -156,7 +160,9 @@ export default class BoardsBody extends Component {
                         onMouseDown={this.handleMouseDownSearch}
                         style={
                           typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true" ? { color: "white" } : { color: "black" }
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
                         }
                       >
                         <Icon>clear</Icon>

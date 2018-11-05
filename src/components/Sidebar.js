@@ -331,12 +331,7 @@ class Sidebar extends Component {
                               : "No notifications"
                         }
                       />
-                      {device.notifications
-                        .filter(
-                          notification => notification.visualized === false
-                        )
-                        .map(notification => notification.content)
-                        .reverse()[0] ? (
+                      {device.notificationsCount ? (
                         <ListItemSecondaryAction>
                           <MuiThemeProvider theme={theme}>
                             <Badge

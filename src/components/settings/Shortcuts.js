@@ -52,7 +52,7 @@ export default class ChangeShortcutDialog extends React.Component {
                 <TableHead>
                   <TableRow>
                     <TableCell>Shortcut</TableCell>
-                    <TableCell>Lorem Ipsum</TableCell>
+                    <TableCell>Function</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>

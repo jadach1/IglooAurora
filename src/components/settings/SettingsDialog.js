@@ -14,7 +14,6 @@ import Divider from "material-ui/Divider"
 import SwipeableViews from "react-swipeable-views"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import CenteredSpinner from "../CenteredSpinner"
 import ChangeNameDialog from "./ChangeName"
 import TwoFactorDialog from "./Enable2FA"
 import DeleteAccountDialog from "./DeleteAccount"
@@ -36,7 +35,7 @@ import ChangeServer from "./ChangeServer"
 import VerifyEmailDialog from "../VerifyEmailDialog"
 // var moment = require("moment-timezone")
 
-let allDevices=[]
+let allDevices = []
 
 function Transition(props) {
   return <Grow {...props} />
@@ -206,7 +205,7 @@ class SettingsDialog extends React.Component {
 
   render() {
     const {
-      userData: { loading, error, user },
+      userData: { user },
     } = this.props
 
     let devModeSetting = (
@@ -252,8 +251,6 @@ class SettingsDialog extends React.Component {
 
     let devModeTab = ""
 
-    let deviceList = "No devices"
-
     let quietModeSetting = (
       <ListItem
         primaryText="Quiet mode"
@@ -278,49 +275,10 @@ class SettingsDialog extends React.Component {
     let fullName = ""
 
     let profileIconColor = ""
-
-    if (error) deviceList = "Unexpected error bear"
-
-    if (loading) deviceList = <CenteredSpinner />
-
     if (user) {
-      for (let i=0;i<user.boards.lenght;i++) {
+      for (let i = 0; i < user.boards.lenght; i++) {
         allDevices.push(user.boards[i].devices)
       }
-
-      deviceList = (
-        <List style={{ padding: "0" }}>
-          {allDevices.map(device => (
-            <ListItem
-              className="notSelectable"
-              primaryText={device.customName}
-              key={device.id}
-              style={{
-                backgroundColor: "transparent",
-              }}
-              leftIcon={
-                device.icon ? (
-                  <img
-                    className="deviceIcon"
-                    src={device.icon}
-                    alt="device logo"
-                  />
-                ) : (
-                  <Icon>lightbulb_outline</Icon>
-                )
-              }
-              rightToggle={
-                <Toggle
-                  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-                  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-                  rippleStyle={{ color: "#0083ff" }}
-                  defaultToggled={true}
-                />
-              }
-            />
-          ))}
-        </List>
-      )
 
       devModeSetting = (
         <ListItem
@@ -362,7 +320,7 @@ class SettingsDialog extends React.Component {
           icon={<Icon>code</Icon>}
           label="Development"
           buttonStyle={{ backgroundColor: "#0057cb" }}
-          value={3}
+          value={2}
         />
       ) : (
         ""
@@ -449,6 +407,9 @@ class SettingsDialog extends React.Component {
             <Subheader style={{ cursor: "default" }}>Appearance</Subheader>
             {nightModeSetting}
             <Divider />
+            <Subheader style={{ cursor: "default" }}>Notifications</Subheader>
+            {quietModeSetting}
+            <Divider />
             <Subheader style={{ cursor: "default" }}>Localization</Subheader>
             {/*
   <ListItem
@@ -484,38 +445,9 @@ class SettingsDialog extends React.Component {
               primaryText="Keyboard shortcuts"
               onClick={this.handleShortcutDialogOpen}
             />
-          </List>
-        </div>
-      </div>
-    )
-
-    let notificationsSettings = (
-      <div
-        style={
-          typeof Storage !== "undefined" &&
-          localStorage.getItem("nightMode") === "true"
-            ? {
-                overflowY: "auto",
-                overflowX: "hidden",
-                height: "calc(100vh - 220px)",
-                maxHeight: "550px",
-                background: "#2f333d",
-              }
-            : {
-                overflowY: "auto",
-                overflowX: "hidden",
-                height: "calc(100vh - 220px)",
-                maxHeight: "550px",
-              }
-        }
-      >
-        <div style={listStyles.root}>
-          <List style={{ width: "100%", padding: "0" }}>
-            <Subheader style={{ cursor: "default" }}>Lorem Ipsum</Subheader>
-            {quietModeSetting}
             <Divider />
-            <Subheader style={{ cursor: "default" }}>Lorem Ipsum</Subheader>
-            {deviceList}
+            <Subheader style={{ cursor: "default" }}>For developers</Subheader>
+            {devModeSetting}
           </List>
         </div>
       </div>
@@ -593,9 +525,6 @@ rightToggle={
 }
 /> */}
           <Divider />
-          <Subheader style={{ cursor: "default" }}>For developers</Subheader>
-          {devModeSetting}
-          <Divider />
           <Subheader style={{ cursor: "default" }}>
             Account management
           </Subheader>
@@ -645,22 +574,16 @@ rightToggle={
                 value={this.props.slideIndex}
               >
                 <Tab
-                  icon={<Icon>dashboard</Icon>}
-                  label="Interface"
+                  icon={<Icon>language</Icon>}
+                  label="General"
                   buttonStyle={{ backgroundColor: "#0057cb" }}
                   value={0}
-                />
-                <Tab
-                  icon={<Icon>notifications</Icon>}
-                  label="Notifications"
-                  buttonStyle={{ backgroundColor: "#0057cb" }}
-                  value={1}
                 />
                 <Tab
                   icon={<Icon>account_box</Icon>}
                   label="Account"
                   buttonStyle={{ backgroundColor: "#0057cb" }}
-                  value={2}
+                  value={1}
                 />
                 {devModeTab}
               </Tabs>
@@ -672,7 +595,6 @@ rightToggle={
               onChangeIndex={this.props.handleChange}
             >
               {uiSettings}
-              {notificationsSettings}
               {accountSettings}
               <div
                 style={
@@ -720,6 +642,7 @@ rightToggle={
                       this.setState({ createNotificationOpen: true })
                     }
                   />
+                  <Divider />
                   <Subheader style={{ cursor: "default" }}>Testing</Subheader>
                   <ListItem
                     primaryText="Change connected server"
@@ -734,7 +657,6 @@ rightToggle={
               onChangeIndex={this.props.handleChange}
             >
               {uiSettings}
-              {notificationsSettings}
               {accountSettings}
             </SwipeableViews>
           )}
