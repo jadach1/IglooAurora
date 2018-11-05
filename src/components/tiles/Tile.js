@@ -29,7 +29,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import TileSize from "../TileSize"
 import DataSettings from "./DataSettings"
-import ChangeDevice from "./ChangeDevice"
 import ToggleIcon from "material-ui-toggle-icon"
 //import ShareValue from "./ShareValue"
 
@@ -543,35 +542,6 @@ class Tile extends Component {
                       : {}
                   }
                 />
-                {this.props.boardData.board.devices.length > 1 && (
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                    onClick={() => {
-                      this.setState({ changeDeviceOpen: true })
-                      this.handleMenuClose()
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Icon
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        swap_horiz
-                      </Icon>
-                    </ListItemIcon>
-                    <ListItemText inset primary="Change device" />
-                  </MenuItem>
-                )}
                 <MenuItem
                   primaryText="Rename"
                   className="notSelectable"
@@ -663,13 +633,6 @@ class Tile extends Component {
         <DataSettings
           open={this.state.dataSettingsOpen}
           close={() => this.setState({ dataSettingsOpen: false })}
-        />
-        <ChangeDevice
-          open={this.state.changeDeviceOpen}
-          close={() => this.setState({ changeDeviceOpen: false })}
-          value={value}
-          boardData={this.props.boardData}
-          boards={this.props.boards}
         />
       </React.Fragment>
     )

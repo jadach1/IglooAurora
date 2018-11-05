@@ -38,7 +38,17 @@ function Transition(props) {
 }
 
 class CreateBoard extends React.Component {
-  state = { customName: "", favorite: false, slideIndex: 0 }
+  state = {
+    customName: "",
+    favorite: false,
+    slideIndex: 0,
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.open === true) {
+      this.setState({ slideIndex: Math.floor(Math.random() * 5) })
+    }
+  }
 
   selectImage = index => {
     switch (index) {

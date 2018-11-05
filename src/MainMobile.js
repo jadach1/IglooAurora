@@ -16,6 +16,8 @@ import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import Helmet from "react-helmet"
+import queryString from "query-string"
 
 class MainMobile extends Component {
   state = {
@@ -288,6 +290,118 @@ class MainMobile extends Component {
     this.setState({ slideIndex: value })
   }
 
+  componentDidMount() {
+    const deviceSubscriptionQuery = gql`
+      subscription {
+        deviceCreated {
+          id
+          index
+          customName
+          icon
+          online
+          batteryStatus
+          batteryCharging
+          signalStatus
+          deviceType
+          createdAt
+          updatedAt
+          notificationsCount
+          notifications {
+            id
+            content
+            visualized
+          }
+        }
+      }
+    `
+
+    this.props.boardData.subscribeToMore({
+      document: deviceSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newDevices = [
+          ...prev.board.devices,
+          subscriptionData.data.deviceCreated,
+        ]
+
+        return {
+          board: {
+            ...prev.board,
+            devices: newDevices,
+          },
+        }
+      },
+    })
+
+    const subscribeToDevicesUpdates = gql`
+      subscription {
+        deviceUpdated {
+          id
+          myRole
+          batteryStatus
+          batteryCharging
+          signalStatus
+          owner {
+            id
+            email
+            fullName
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            fullName
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            fullName
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            fullName
+            profileIconColor
+          }
+        }
+      }
+    `
+
+    this.props.boardData.subscribeToMore({
+      document: subscribeToDevicesUpdates,
+    })
+
+    const subscribeToDevicesDeletes = gql`
+      subscription {
+        deviceDeleted
+      }
+    `
+
+    this.props.boardData.subscribeToMore({
+      document: subscribeToDevicesDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newDevices = prev.board.devices.filter(
+          device => device.id !== subscriptionData.data.deviceDeleted
+        )
+
+        return {
+          board: {
+            ...prev.board,
+            devices: newDevices,
+          },
+        }
+      },
+    })
+  }
+
   render() {
     const {
       boardData: { board },
@@ -301,15 +415,32 @@ class MainMobile extends Component {
       typeof Storage !== "undefined" &&
       localStorage.getItem("nightMode") === "true"
 
-    if (board) {
-      devMode = board.devMode
+    if (this.props.devMode) {
+      devMode = this.props.devMode
+    }
 
+    if (board) {
       idList = board.devices.map(device => device.id)
     }
 
     return (
       <React.Fragment>
         <Online>
+          <Helmet>
+            <title>
+              {board &&
+              queryString.parse("?" + window.location.href.split("?")[1]).device
+                ? "Igloo Aurora - " +
+                  board.devices.filter(
+                    device =>
+                      device.id ===
+                      queryString.parse(
+                        "?" + window.location.href.split("?")[1]
+                      ).device
+                  )[0].customName
+                : "Igloo Aurora"}
+            </title>
+          </Helmet>
           <div className="mobileMain">
             {this.props.selectedDevice == null ? (
               <React.Fragment>
@@ -325,8 +456,8 @@ class MainMobile extends Component {
                 <AppBar position="sticky">
                   <SidebarHeader
                     logOut={this.props.logOut}
-                    user={this.props.userData.user}
-                    key="mobileSidebarHeader"
+                    key="sidebarHeader"
+                    selectedBoard={this.props.boardId}
                     openSettingsDialog={this.props.openSettings}
                     changeSettingsState={() =>
                       this.setState(oldState => ({
@@ -334,12 +465,7 @@ class MainMobile extends Component {
                         drawer: false,
                       }))
                     }
-                    boardName={
-                      this.props.userData.user &&
-                      this.props.userData.user.boards.filter(
-                        board => board.id === this.props.boardId
-                      )[0].customName
-                    }
+                    boards={this.props.boards}
                   />
                 </AppBar>
                 <div

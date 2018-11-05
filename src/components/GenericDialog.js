@@ -1,4 +1,5 @@
 // CONGRATULATIONS, YOU'VE DISCOVERED AURORA'S BEST KEPT SECRET!
+// P.S.: PLEASE DON'T TELL ANYONE ABOUT THIS
 
 import React, { Component } from "react"
 import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles"
@@ -40,6 +41,7 @@ export default class GenericDialog extends Component {
         <Konami
           action={() => {
             this.setState({ open: true })
+            console.clear()
             console.log(
               "In case you're wondering, this loading screen won't actually unlock any superpower!\nIf you know how to give our users the power to fly, please contribute to our open source repository!\nhttps://github.com/IglooCloud/IglooAurora"
             )

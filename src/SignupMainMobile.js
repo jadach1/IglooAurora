@@ -8,6 +8,7 @@ import { hotkeys } from "react-keyboard-shortcuts"
 import { Offline, Online } from "react-detect-offline"
 import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
+import Helmet from "react-helmet"
 
 class UnAuthenticatedApp extends Component {
   state = { logiIn: false, signIn: false }
@@ -28,9 +29,9 @@ class UnAuthenticatedApp extends Component {
 
     const link = new HttpLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-    ? localStorage.getItem("server") + "/graphql"
-    : `http://iglooql.herokuapp.com/graphql`
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://iglooql.herokuapp.com/graphql`,
     })
 
     this.client = new ApolloClient({
@@ -60,24 +61,30 @@ class UnAuthenticatedApp extends Component {
   render() {
     return (
       <MuiThemeProvider>
+        <Helmet>
+          <title>Igloo Aurora - Sign up</title>
+        </Helmet>
         <Online>
           <div
             style={
               window.innerHeight >= 690
                 ? {
-                  width: "100vw",
-                  height: "100vh",
-                  backgroundColor: "#0057cb",
-                }
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "#0057cb",
+                  }
                 : {
-                  width: "100vw",
-                  height: "100vh",
-                  backgroundColor: "#0057cb",
-                }
+                    width: "100vw",
+                    height: "100vh",
+                    backgroundColor: "#0057cb",
+                  }
             }
           >
             <div style={{ marginRight: "32px", marginLeft: "32px" }}>
-              <SignupMobile client={this.client} signup={this.props.signup} signIn={this.props.signIn}
+              <SignupMobile
+                client={this.client}
+                signup={this.props.signup}
+                signIn={this.props.signIn}
                 email={this.props.email}
                 password={this.props.password}
                 fullName={this.props.fullName}
@@ -85,8 +92,9 @@ class UnAuthenticatedApp extends Component {
                 changeEmail={this.props.changeEmail}
                 changePassword={this.props.changePassword}
                 changeFullName={this.props.changeFullName}
-                changeEmailError={this.props.changeEmailError}                 changeLoginEmail={this.props.changeLoginEmail}
-                />
+                changeEmailError={this.props.changeEmailError}
+                changeLoginEmail={this.props.changeLoginEmail}
+              />
             </div>
           </div>
         </Online>

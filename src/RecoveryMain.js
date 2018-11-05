@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import PasswordRecovery from "./PasswordRecovery"
-import MobilePasswordRecovery from "./MobilePasswordRecovery"
+import MobilePasswordRecovery from "./PasswordRecoveryMobile"
 import gql from "graphql-tag"
 import { graphql } from "react-apollo"
 import jwtDecode from "jwt-decode"
