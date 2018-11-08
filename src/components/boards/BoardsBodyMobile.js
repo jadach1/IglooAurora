@@ -49,7 +49,9 @@ class BoardsBodyMobile extends Component {
 
     let nightMode = false
 
-    let devMode = false
+    let devMode =
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("devMode") === "true"
 
     if (loading) {
       yourBoardsList = <CenteredSpinner />
@@ -63,7 +65,6 @@ class BoardsBodyMobile extends Component {
       nightMode =
         typeof Storage !== "undefined" &&
         localStorage.getItem("nightMode") === "true"
-      devMode = user.devMode
 
       yourBoardsList = user.boards
         .filter(board => board.myRole === "OWNER")

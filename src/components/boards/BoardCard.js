@@ -8,9 +8,6 @@ import MenuItem from "@material-ui/core/MenuItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import Divider from "@material-ui/core/Divider"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import Badge from "@material-ui/core/Badge"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
@@ -111,93 +108,84 @@ class BoardCard extends Component {
                       color: "white",
                       textDecoration: "none",
                       height: "64px",
-                      paddingLeft: "24px",
+                      borderTopLeftRadius: "4px",
+                      borderTopRightRadius: "4px",
                     }
                   : {
                       color: "black",
                       textDecoration: "none",
                       height: "64px",
-                      paddingLeft: "24px",
+                      borderTopLeftRadius: "4px",
+                      borderTopRightRadius: "4px",
                     }
               }
             >
-              <Typography
-                variant="title"
-                className="notSelectable"
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? {
-                        color: "white",
-                        marginLeft: "-8px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                        width: "136px",
-                        marginRight: "23px",
-                        lineHeight: "64px",
-                      }
-                    : {
-                        color: "black",
-                        marginLeft: "-8px",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        textOverflow: "ellipsis",
-                        width: "136px",
-                        marginRight: "23px",
-                        lineHeight: "64px",
-                      }
-                }
-              >
-                {isShared ? (
-                  <Icon style={{ marginRight: "8px", marginBottom: "-5px" }}>
-                    group
-                  </Icon>
-                ) : (
-                  ""
-                )}
-                {this.props.board.customName}
-              </Typography>
-            </Link>
-            <MuiThemeProvider
-              theme={createMuiTheme({
-                palette: {
-                  primary: { main: "#ff4081" },
-                },
-              })}
-            >
-              {this.props.board.notificationsCount ? (
-                <Badge
-                  badgeContent={this.props.board.notificationsCount}
-                  color="primary"
-                />
-              ) : (
-                ""
-              )}
-            </MuiThemeProvider>
-            <Tooltip id="tooltip-bottom" title="More" placement="bottom">
-              <IconButton
-                onClick={this.handleMenuOpen}
+              <div
                 style={{
-                  marginLeft: "23px",
+                  borderTopLeftRadius: "4px",
+                  borderTopRightRadius: "4px",
+                  paddingLeft: "16px",
+                  width: "240px",
                 }}
               >
-                <Icon
+                <Typography
+                  variant="title"
+                  className="notSelectable"
                   style={
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
                       ? {
                           color: "white",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                          textOverflow: "ellipsis",
+                          lineHeight: "64px",
+                          width: "184px",
                         }
                       : {
                           color: "black",
+                          overflow: "hidden",
+                          whiteSpace: "nowrap",
+                          textOverflow: "ellipsis",
+                          lineHeight: "64px",
+                          width: "184px",
                         }
                   }
                 >
-                  more_vert
-                </Icon>
-              </IconButton>
-            </Tooltip>
+                  {isShared && (
+                    <Icon style={{ marginRight: "8px", marginBottom: "-5px" }}>
+                      group
+                    </Icon>
+                  )}
+                  {this.props.board.customName}
+                </Typography>
+              </div>
+            </Link>
+            <div
+              style={{
+                marginLeft: "-56px",
+                borderRadius: "50%",
+              }}
+            >
+              <Tooltip id="tooltip-bottom" title="More" placement="bottom">
+                <IconButton onClick={this.handleMenuOpen}>
+                  <Icon
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? {
+                            color: "white",
+                          }
+                        : {
+                            color: "black",
+                          }
+                    }
+                  >
+                    more_vert
+                  </Icon>
+                </IconButton>
+              </Tooltip>
+            </div>
           </Toolbar>
           <Link
             to={"/dashboard?board=" + this.props.board.id}

@@ -5,7 +5,6 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import Paper from "material-ui/Paper"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import Signup from "./components/unauthenticated/Signup"
-import { hotkeys } from "react-keyboard-shortcuts"
 import { Offline, Online } from "react-detect-offline"
 import Typography from "@material-ui/core/Typography"
 import polarBear from "./styles/assets/polarBear.svg"
@@ -15,17 +14,6 @@ import Helmet from "react-helmet"
 
 class UnAuthenticatedApp extends Component {
   state = { slideIndex: 0 }
-
-  hot_keys = {
-    "alt+1": {
-      priority: 1,
-      handler: event => this.setState({ slideIndex: 0 }),
-    },
-    "alt+2": {
-      priority: 1,
-      handler: event => this.setState({ slideIndex: 1 }),
-    },
-  }
 
   constructor() {
     super()
@@ -164,4 +152,4 @@ class UnAuthenticatedApp extends Component {
   }
 }
 
-export default hotkeys(UnAuthenticatedApp)
+export default UnAuthenticatedApp

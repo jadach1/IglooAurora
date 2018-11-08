@@ -33,9 +33,26 @@ import GDPRDataDownload from "./GDPRDataDownload"
 import ChangeEmail from "./ChangeEmail"
 import ChangeServer from "./ChangeServer"
 import VerifyEmailDialog from "../VerifyEmailDialog"
+import BottomNavigation from "@material-ui/core/BottomNavigation"
+import BottomNavigationAction from "@material-ui/core/BottomNavigationAction"
+import IconButton from "@material-ui/core/IconButton"
+import Tooltip from "@material-ui/core/Tooltip"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import Typography from "@material-ui/core/Typography"
+import Toolbar from "@material-ui/core/Toolbar"
+import Translate from "translate-components"
 // var moment = require("moment-timezone")
 
+const theme = createMuiTheme({
+  palette: {
+    primary: { main: "#0057cb" },
+  },
+})
+
 let allDevices = []
+
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return <Grow {...props} />
@@ -203,24 +220,27 @@ class SettingsDialog extends React.Component {
     this.setState(allDialogsClosed)
   }
 
+  updateDimensions() {
+    if (window.innerWidth > MOBILE_WIDTH) {
+      this.setState({ isDesktop: true })
+    } else {
+      this.setState({ isDesktop: false })
+    }
+  }
+
+  componentDidMount() {
+    this.updateDimensions()
+    window.addEventListener("resize", this.updateDimensions.bind(this))
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this))
+  }
+
   render() {
     const {
       userData: { user },
     } = this.props
-
-    let devModeSetting = (
-      <ListItem
-        primaryText="Developer mode"
-        rightToggle={
-          <Toggle
-            thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-            trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-            rippleStyle={{ color: "#0083ff" }}
-            disabled
-          />
-        }
-      />
-    )
 
     let toggleNightMode = () => {
       if (typeof Storage !== "undefined") {
@@ -249,8 +269,6 @@ class SettingsDialog extends React.Component {
       />
     )
 
-    let devModeTab = ""
-
     let quietModeSetting = (
       <ListItem
         primaryText="Quiet mode"
@@ -266,7 +284,17 @@ class SettingsDialog extends React.Component {
       />
     )
 
-    let toggleDevMode = () => {}
+    let toggleDevMode = () => {
+      if (typeof Storage !== "undefined") {
+        !localStorage.getItem("devMode") &&
+          localStorage.setItem("devMode", "false")
+
+        localStorage.setItem(
+          "devMode",
+          !(localStorage.getItem("devMode") === "true")
+        )
+      }
+    }
 
     let toggleQuietMode = () => {}
 
@@ -276,26 +304,11 @@ class SettingsDialog extends React.Component {
 
     let profileIconColor = ""
     if (user) {
-      for (let i = 0; i < user.boards.lenght; i++) {
-        allDevices.push(user.boards[i].devices)
+      if (user.boards) {
+        for (let i = 0; i < user.boards.lenght; i++) {
+          allDevices.push(user.boards[i].devices)
+        }
       }
-
-      devModeSetting = (
-        <ListItem
-          primaryText="Developer mode"
-          rightToggle={
-            <Toggle
-              thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-              trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-              rippleStyle={{ color: "#0083ff" }}
-              defaultToggled={user.devMode}
-              onToggle={() => {
-                user.devMode ? toggleDevMode(false) : toggleDevMode(true)
-              }}
-            />
-          }
-        />
-      )
 
       quietModeSetting = (
         <ListItem
@@ -314,33 +327,6 @@ class SettingsDialog extends React.Component {
           }
         />
       )
-
-      devModeTab = user.devMode ? (
-        <Tab
-          icon={<Icon>code</Icon>}
-          label="Development"
-          buttonStyle={{ backgroundColor: "#0057cb" }}
-          value={2}
-        />
-      ) : (
-        ""
-      )
-
-      toggleDevMode = devMode => {
-        this.props["ToggleDevMode"]({
-          variables: {
-            devMode: devMode,
-          },
-          optimisticResponse: {
-            __typename: "Mutation",
-            user: {
-              id: user.id,
-              devMode: devMode,
-              __typename: "User",
-            },
-          },
-        })
-      }
 
       toggleQuietMode = quietMode => {
         this.props["ToggleQuietMode"]({
@@ -389,16 +375,27 @@ class SettingsDialog extends React.Component {
         style={
           typeof Storage !== "undefined" &&
           localStorage.getItem("nightMode") === "true"
+            ? this.state.isDesktop
+              ? {
+                  overflowY: "auto",
+                  height: "calc(100vh - 220px)",
+                  maxHeight: "550px",
+                  background: "#2f333d",
+                }
+              : {
+                  overflowY: "auto",
+                  height: "calc(100vh - 128px)",
+                  background: "#2f333d",
+                }
+            : this.state.isDesktop
             ? {
                 overflowY: "auto",
                 height: "calc(100vh - 220px)",
                 maxHeight: "550px",
-                background: "#2f333d",
               }
             : {
                 overflowY: "auto",
-                height: "calc(100vh - 220px)",
-                maxHeight: "550px",
+                height: "calc(100vh - 128px)",
               }
         }
       >
@@ -440,14 +437,32 @@ class SettingsDialog extends React.Component {
               onClick={this.handleTimeFormatDialogOpen}
             />
             <Divider />
-            <Subheader style={{ cursor: "default" }}>Accessibility</Subheader>
+            <Subheader style={{ cursor: "default" }}>Miscellaneous</Subheader>
+            <ListItem primaryText="Add to home screen" />
             <ListItem
               primaryText="Keyboard shortcuts"
               onClick={this.handleShortcutDialogOpen}
             />
-            <Divider />
-            <Subheader style={{ cursor: "default" }}>For developers</Subheader>
-            {devModeSetting}
+            <ListItem
+              primaryText="Developer mode"
+              rightToggle={
+                <Toggle
+                  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                  rippleStyle={{ color: "#0083ff" }}
+                  defaultToggled={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("devMode") === "true"
+                  }
+                  onToggle={() => {
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("devMode") === "true"
+                      ? toggleDevMode(false)
+                      : toggleDevMode(true)
+                  }}
+                />
+              }
+            />
           </List>
         </div>
       </div>
@@ -528,13 +543,12 @@ rightToggle={
           <Subheader style={{ cursor: "default" }}>
             Account management
           </Subheader>
-          {user &&
-            !user.emailIsVerified && (
-              <ListItem
-                primaryText="Resend verifcation email"
-                onClick={() => this.setState({ verifyOpen: true })}
-              />
-            )}
+          {user && !user.emailIsVerified && (
+            <ListItem
+              primaryText="Resend verifcation email"
+              onClick={() => this.setState({ verifyOpen: true })}
+            />
+          )}
           <ListItem
             primaryText="Manage your profile"
             secondaryText="Change your profile photo and name"
@@ -554,141 +568,279 @@ rightToggle={
       </div>
     )
 
-    return (
-      <React.Fragment>
-        <Dialog
-          open={this.props.isOpen}
-          onClose={this.props.closeSettingsDialog}
-          TransitionComponent={Transition}
-          className="notSelectable defaultCursor"
+    let settingsContent =
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("devMode") === "true" ? (
+        <SwipeableViews
+          index={this.props.slideIndex}
+          onChangeIndex={this.props.handleChange}
+          style={{ overflowY: "hidden" }}
         >
-          <DialogTitle style={{ padding: "0" }}>
-            <AppBar position="sticky">
-              <Tabs
-                inkBarStyle={{
-                  background: "#ff4081",
-                  height: "3px",
-                  marginTop: "-3px",
-                }}
-                onChange={this.props.handleChange}
-                value={this.props.slideIndex}
-              >
-                <Tab
-                  icon={<Icon>language</Icon>}
-                  label="General"
-                  buttonStyle={{ backgroundColor: "#0057cb" }}
-                  value={0}
-                />
-                <Tab
-                  icon={<Icon>account_box</Icon>}
-                  label="Account"
-                  buttonStyle={{ backgroundColor: "#0057cb" }}
-                  value={1}
-                />
-                {devModeTab}
-              </Tabs>
-            </AppBar>
-          </DialogTitle>
-          {user && user.devMode ? (
-            <SwipeableViews
-              index={this.props.slideIndex}
-              onChangeIndex={this.props.handleChange}
-            >
-              {uiSettings}
-              {accountSettings}
-              <div
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? {
-                        overflowY: "auto",
-                        height: "calc(100vh - 220px)",
-                        maxHeight: "550px",
-                        background: "#2f333d",
-                      }
-                    : {
-                        overflowY: "auto",
-                        height: "calc(100vh - 220px)",
-                        maxHeight: "550px",
-                      }
-                }
-              >
-                <List style={{ padding: "0" }}>
-                  <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
-                  <ListItem
-                    primaryText="Manage authorizations"
-                    secondaryText="Generate, view and delete your account's access tokens"
-                    onClick={this.handleAuthDialogOpen}
-                  />
-                  <Divider />
-                  <Subheader style={{ cursor: "default" }}>
-                    Devices and values
-                  </Subheader>
-                  <ListItem
-                    primaryText="Create a new device"
-                    onClick={() => this.setState({ createDeviceOpen: true })}
-                  />
-                  <ListItem
-                    primaryText="Create a new value"
-                    onClick={() => this.setState({ createValueOpen: true })}
-                  />
-                  <ListItem
-                    primaryText="Create a new plot node"
-                    onClick={() => this.setState({ createNodeOpen: true })}
-                  />
-                  <ListItem
-                    primaryText="Create a new notification"
-                    onClick={() =>
-                      this.setState({ createNotificationOpen: true })
-                    }
-                  />
-                  <Divider />
-                  <Subheader style={{ cursor: "default" }}>Testing</Subheader>
-                  <ListItem
-                    primaryText="Change connected server"
-                    onClick={() => this.setState({ serverOpen: true })}
-                  />
-                </List>
-              </div>
-            </SwipeableViews>
-          ) : (
-            <SwipeableViews
-              index={this.props.slideIndex}
-              onChangeIndex={this.props.handleChange}
-            >
-              {uiSettings}
-              {accountSettings}
-            </SwipeableViews>
-          )}
-          <DialogActions
-            className="notSelectable defaultCursor"
+          {uiSettings}
+          {accountSettings}
+          <div
             style={
               typeof Storage !== "undefined" &&
               localStorage.getItem("nightMode") === "true"
                 ? {
-                    padding: "8px",
-                    margin: "0",
+                    overflowY: "auto",
+                    height: "calc(100vh - 220px)",
+                    maxHeight: "550px",
                     background: "#2f333d",
                   }
                 : {
-                    padding: "8px",
-                    margin: "0",
+                    overflowY: "auto",
+                    height: "calc(100vh - 220px)",
+                    maxHeight: "550px",
                   }
             }
           >
-            <Button
+            <List style={{ padding: "0" }}>
+              <Subheader style={{ cursor: "default" }}>Tokens</Subheader>
+              <ListItem
+                primaryText="Manage authorizations"
+                secondaryText="Generate, view and delete your account's access tokens"
+                onClick={this.handleAuthDialogOpen}
+              />
+              <Divider />
+              <Subheader style={{ cursor: "default" }}>
+                Devices and values
+              </Subheader>
+              <ListItem
+                primaryText="Create a new device"
+                onClick={() => this.setState({ createDeviceOpen: true })}
+              />
+              <ListItem
+                primaryText="Create a new value"
+                onClick={() => this.setState({ createValueOpen: true })}
+              />
+              <ListItem
+                primaryText="Create a new plot node"
+                onClick={() => this.setState({ createNodeOpen: true })}
+              />
+              <ListItem
+                primaryText="Create a new notification"
+                onClick={() => this.setState({ createNotificationOpen: true })}
+              />
+              <Divider />
+              <Subheader style={{ cursor: "default" }}>Testing</Subheader>
+              <ListItem
+                primaryText="Change connected server"
+                onClick={() => this.setState({ serverOpen: true })}
+              />
+            </List>
+          </div>
+        </SwipeableViews>
+      ) : (
+        <SwipeableViews
+          index={this.props.slideIndex}
+          onChangeIndex={this.props.handleChange}
+        >
+          {uiSettings}
+          {accountSettings}
+        </SwipeableViews>
+      )
+
+    return (
+      <React.Fragment>
+        {this.state.isDesktop ? (
+          <Dialog
+            open={this.props.isOpen}
+            onClose={this.props.closeSettingsDialog}
+            TransitionComponent={Transition}
+            className="notSelectable defaultCursor"
+          >
+            <DialogTitle style={{ padding: "0" }}>
+              <AppBar position="sticky">
+                <Tabs
+                  inkBarStyle={{
+                    background: "#ff4081",
+                    height: "3px",
+                    marginTop: "-3px",
+                  }}
+                  onChange={this.props.handleChange}
+                  value={this.props.slideIndex}
+                >
+                  <Tab
+                    icon={<Icon>language</Icon>}
+                    label="General"
+                    buttonStyle={{ backgroundColor: "#0057cb" }}
+                    value={0}
+                  />
+                  <Tab
+                    icon={<Icon>account_box</Icon>}
+                    label="Account"
+                    buttonStyle={{ backgroundColor: "#0057cb" }}
+                    value={1}
+                  />
+                  {typeof Storage !== "undefined" &&
+                    localStorage.getItem("devMode") === "true" && (
+                      <Tab
+                        icon={<Icon>code</Icon>}
+                        label="Development"
+                        buttonStyle={{ backgroundColor: "#0057cb" }}
+                        value={2}
+                      />
+                    )}
+                </Tabs>
+              </AppBar>
+            </DialogTitle>
+            {settingsContent}
+            <DialogActions
+              className="notSelectable defaultCursor"
               style={
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
-                  ? { float: "right", color: "white" }
-                  : { float: "right", color: "black" }
+                  ? {
+                      padding: "8px",
+                      margin: "0",
+                      background: "#2f333d",
+                    }
+                  : {
+                      padding: "8px",
+                      margin: "0",
+                    }
               }
-              onClick={this.props.closeSettingsDialog}
             >
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+              <Button
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { float: "right", color: "white" }
+                    : { float: "right", color: "black" }
+                }
+                onClick={this.props.closeSettingsDialog}
+              >
+                Close
+              </Button>
+            </DialogActions>
+          </Dialog>
+        ) : (
+          <Dialog
+            open={this.props.isOpen}
+            onClose={this.props.closeSettingsDialog}
+            className="notSelectable"
+            fullScreen
+            TransitionComponent={Transition}
+          >
+            <MuiThemeProvider theme={theme}>
+              <AppBar position="sticky" style={{ height: "64px" }}>
+                <Toolbar
+                  style={{
+                    height: "64px",
+                    paddingLeft: "24px",
+                    paddingRight: "24px",
+                  }}
+                >
+                  <Typography
+                    variant="title"
+                    color="inherit"
+                    className="defaultCursor"
+                    style={{
+                      marginLeft: "-8px",
+                    }}
+                  >
+                    <Translate>Settings</Translate>
+                  </Typography>
+                  <MuiThemeProvider
+                    theme={createMuiTheme({
+                      palette: {
+                        primary: { main: "#ffffff" },
+                      },
+                    })}
+                  >
+                    <Tooltip
+                      id="tooltip-bottom"
+                      title="Close"
+                      placement="bottom"
+                    >
+                      <IconButton
+                        color="primary"
+                        onClick={this.props.closeSettingsDialog}
+                        style={{
+                          marginRight: "-16px",
+                          marginLeft: "auto",
+                        }}
+                      >
+                        <Icon>close</Icon>
+                      </IconButton>
+                    </Tooltip>
+                  </MuiThemeProvider>
+                </Toolbar>
+              </AppBar>
+            </MuiThemeProvider>
+            {settingsContent}
+            <AppBar
+              color="default"
+              position="static"
+              style={{ marginBottom: "0px", marginTop: "auto", height: "64px" }}
+            >
+              <BottomNavigation
+                onChange={this.props.handleChangeBTIndex}
+                value={this.props.slideIndex}
+                showLabels
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? {
+                        height: "64px",
+                        backgroundColor: "#2f333d",
+                      }
+                    : {
+                        height: "64px",
+                        backgroundColor: "#fff",
+                      }
+                }
+              >
+                <BottomNavigationAction
+                  icon={<Icon>language</Icon>}
+                  label="General"
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? this.props.slideIndex === 0
+                        ? { color: "#fff" }
+                        : { color: "#fff", opacity: 0.5 }
+                      : this.props.slideIndex === 0
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
+                  }
+                />
+                <BottomNavigationAction
+                  icon={<Icon>account_box</Icon>}
+                  label="Account"
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? this.props.slideIndex === 1
+                        ? { color: "#fff" }
+                        : { color: "#fff", opacity: 0.5 }
+                      : this.props.slideIndex === 1
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
+                  }
+                />
+                {typeof Storage !== "undefined" &&
+                  localStorage.getItem("devMode") === "true" && (
+                    <BottomNavigationAction
+                      icon={<Icon>code</Icon>}
+                      label="Development"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? this.props.slideIndex === 2
+                            ? { color: "#fff" }
+                            : { color: "#fff", opacity: 0.5 }
+                          : this.props.slideIndex === 2
+                          ? { color: "#0083ff" }
+                          : { color: "#757575" }
+                      }
+                    />
+                  )}
+              </BottomNavigation>
+            </AppBar>
+          </Dialog>
+        )}
         <TwoFactorDialog
           isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}
           handleTwoFactorDialogOpen={this.handleTwoFactorDialogOpen}
@@ -766,11 +918,13 @@ rightToggle={
           userData={this.props.userData}
           allDevices={allDevices}
         />
-        <CreateDevice
-          open={this.props.isOpen && this.state.createDeviceOpen}
-          close={() => this.setState({ createDeviceOpen: false })}
-          userData={this.props.userData}
-        />
+        {this.props.userData.user && this.props.userData.user.boards && (
+          <CreateDevice
+            open={this.props.isOpen && this.state.createDeviceOpen}
+            close={() => this.setState({ createDeviceOpen: false })}
+            userData={this.props.userData}
+          />
+        )}
         <CreateNotification
           open={this.props.isOpen && this.state.createNotificationOpen}
           close={() => this.setState({ createNotificationOpen: false })}
@@ -810,28 +964,14 @@ rightToggle={
 
 export default graphql(
   gql`
-    mutation ToggleDevMode($devMode: Boolean!) {
-      user(devMode: $devMode) {
+    mutation ToggleQuietMode($quietMode: Boolean!) {
+      user(quietMode: $quietMode) {
         id
-        devMode
+        quietMode
       }
     }
   `,
   {
-    name: "ToggleDevMode",
+    name: "ToggleQuietMode",
   }
-)(
-  graphql(
-    gql`
-      mutation ToggleQuietMode($quietMode: Boolean!) {
-        user(quietMode: $quietMode) {
-          id
-          quietMode
-        }
-      }
-    `,
-    {
-      name: "ToggleQuietMode",
-    }
-  )(SettingsDialog)
-)
+)(SettingsDialog)

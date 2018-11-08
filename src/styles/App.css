@@ -15,7 +15,7 @@ body {
   width: 100%;
   height: 100vh;
   display: grid;
-  grid-template-columns: [start] 384px [mid] auto [end];
+  grid-template-columns: [start] 360px [mid] auto [end];
   grid-template-rows: [start] 64px [mid] auto [mid2] 48px [end];
   grid-template-areas: "sidebarHeader mainBodyHeader" "sidebar mainBody" "sidebar statusBar";
 }
@@ -262,18 +262,6 @@ body {
   color: #ffffff;
 }
 
-.deviceEditFab {
-  position: absolute;
-  left: 312px;
-  bottom: 16px;
-}
-
-.mobileDeviceEditFab {
-  position: absolute;
-  bottom: 16px;
-  right: 16px;
-}
-
 .loginForgotPassoword {
   cursor: pointer;
   color: #0083ff;
@@ -294,12 +282,9 @@ div[menutype="notifications"] {
   display: block !important;
 }
 
-@media screen and (max-width: 1050px) {
+@media screen and (max-width: 1080px) {
   .main {
     grid-template-columns: [start] 33% [mid] 67% [end];
-  }
-  .deviceEditFab {
-    left: calc(33vw - 75px);
   }
 }
 .notification-enter {

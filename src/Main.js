@@ -17,6 +17,8 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Helmet from "react-helmet"
 
+let deviceIdList = []
+
 class Main extends Component {
   state = {
     drawer: false,
@@ -31,6 +33,50 @@ class Main extends Component {
       this.setState(oldState => ({
         drawer: !oldState.drawer,
       }))
+  }
+
+  keyboardShortcutHandler = index => {
+    const {
+      boardData: { board },
+    } = this.props
+
+    if (this.props.areSettingsOpen) {
+      if (
+        index < 2 ||
+        (typeof Storage !== "undefined" &&
+          (localStorage.getItem("devMode") === "true"
+            ? index === 2
+            : index !== 2))
+      ) {
+        this.setState({ slideIndex: index })
+      }
+    } else {
+      if (board) {
+        if (this.props.boardData.board.devices[index]) {
+          if (this.props.devicesSearchText === "") {
+            if (
+              this.props.boardData.board.devices[index].id ===
+              queryString.parse("?" + window.location.href.split("?")[1]).device
+            ) {
+              this.setState({ deselectDevice: true })
+            } else {
+              this.setState({
+                redirectTo: this.props.boardData.board.devices[index].id,
+              })
+            }
+          } else {
+            this.setState({
+              redirectTo: this.props.boardData.board.devices.filter(device =>
+                device.customName
+                  .toLowerCase()
+                  .includes(this.props.devicesSearchText.toLowerCase())
+              )[index].id,
+            })
+          }
+          this.setState({ drawer: false })
+        }
+      }
+    }
   }
 
   hot_keys = {
@@ -48,231 +94,38 @@ class Main extends Component {
     },
     "alt+1": {
       priority: 1,
-      handler: event => {
-        const {
-          boardData: { board },
-        } = this.props
-
-        if (board) {
-          if (
-            this.props.boardData.board.devices[0] &&
-            !this.state.areSettingsOpen
-          ) {
-            if (this.props.devicesSearchText === "") {
-              this.props.selectDevice(this.props.boardData.board.devices[0].id)
-            } else {
-              this.props.selectDevice(
-                this.props.boardData.board.devices.filter(device =>
-                  device.customName
-                    .toLowerCase()
-                    .includes(this.props.devicesSearchText.toLowerCase())
-                )[0].id
-              )
-            }
-            this.setState({ drawer: false })
-          }
-          if (this.state.areSettingsOpen) {
-            this.setState({ slideIndex: 0 })
-          }
-        }
-      },
+      handler: () => this.keyboardShortcutHandler(0),
     },
     "alt+2": {
       priority: 1,
-      handler: event => {
-        if (this.props.boardData.board) {
-          if (
-            this.props.boardData.board.devices[1] &&
-            !this.state.areSettingsOpen
-          ) {
-            if (this.props.devicesSearchText !== "") {
-              this.props.selectDevice(
-                this.props.boardData.board.devices.filter(device =>
-                  device.customName
-                    .toLowerCase()
-                    .includes(this.props.devicesSearchText.toLowerCase())
-                )[1].id
-              )
-            } else {
-              this.props.selectDevice(this.props.boardData.board.devices[1].id)
-            }
-            this.setState({ drawer: false })
-          }
-          if (this.state.areSettingsOpen) {
-            this.setState({ slideIndex: 1 })
-          }
-        }
-      },
+      handler: () => this.keyboardShortcutHandler(1),
     },
     "alt+3": {
       priority: 1,
-      handler: event => {
-        if (this.props.boardData.board) {
-          if (
-            this.props.boardData.board.devices[2] &&
-            !this.state.areSettingsOpen
-          ) {
-            if (this.props.devicesSearchText !== "") {
-              this.props.selectDevice(
-                this.props.boardData.board.devices.filter(device =>
-                  device.customName
-                    .toLowerCase()
-                    .includes(this.props.devicesSearchText.toLowerCase())
-                )[2].id
-              )
-            } else {
-              this.props.selectDevice(this.props.boardData.board.devices[2].id)
-            }
-            this.setState({ drawer: false })
-          }
-          if (this.state.areSettingsOpen) {
-            this.setState({ slideIndex: 2 })
-          }
-        }
-      },
+      handler: () => this.keyboardShortcutHandler(2),
     },
     "alt+4": {
       priority: 1,
-      handler: event => {
-        if (this.props.boardData.board) {
-          if (
-            this.props.boardData.board.devices[3] &&
-            !this.state.areSettingsOpen
-          ) {
-            if (this.props.devicesSearchText !== "") {
-              this.props.selectDevice(
-                this.props.boardData.board.devices.filter(device =>
-                  device.customName
-                    .toLowerCase()
-                    .includes(this.props.devicesSearchText.toLowerCase())
-                )[3].id
-              )
-            } else {
-              this.props.selectDevice(this.props.boardData.board.devices[3].id)
-            }
-            this.setState({ drawer: false })
-          }
-        }
+      handler: () => this.keyboardShortcutHandler(3),
+      "alt+5": {
+        priority: 1,
+        handler: () => this.keyboardShortcutHandler(4),
       },
-    },
-    "alt+5": {
-      priority: 1,
-      handler: event => {
-        if (this.props.boardData.board) {
-          if (
-            this.props.boardData.board.devices[4] &&
-            !this.state.areSettingsOpen
-          ) {
-            if (this.props.devicesSearchText !== "") {
-              this.props.selectDevice(
-                this.props.boardData.board.devices.filter(device =>
-                  device.customName
-                    .toLowerCase()
-                    .includes(this.props.devicesSearchText.toLowerCase())
-                )[4].id
-              )
-            } else {
-              this.props.selectDevice(this.props.boardData.board.devices[4].id)
-            }
-            this.setState({ drawer: false })
-          }
-        }
+      "alt+6": {
+        priority: 1,
+        handler: () => this.keyboardShortcutHandler(5),
       },
-    },
-    "alt+6": {
-      priority: 1,
-      handler: event => {
-        if (this.props.boardData.board) {
-          if (
-            this.props.boardData.board.devices[5] &&
-            !this.state.areSettingsOpen
-          ) {
-            if (this.props.devicesSearchText !== "") {
-              this.props.selectDevice(
-                this.props.boardData.board.devices.filter(device =>
-                  device.customName
-                    .toLowerCase()
-                    .includes(this.props.devicesSearchText.toLowerCase())
-                )[5].id
-              )
-            } else {
-              this.props.selectDevice(this.props.boardData.board.devices[5].id)
-            }
-            this.setState({ drawer: false })
-          }
-        }
+      "alt+7": {
+        priority: 1,
+        handler: () => this.keyboardShortcutHandler(6),
       },
-    },
-    "alt+7": {
-      priority: 1,
-      handler: event => {
-        if (this.props.boardData.board) {
-          if (
-            this.props.boardData.board.devices[6] &&
-            !this.state.areSettingsOpen
-          ) {
-            if (this.props.devicesSearchText !== "") {
-              this.props.selectDevice(
-                this.props.boardData.board.devices.filter(device =>
-                  device.customName
-                    .toLowerCase()
-                    .includes(this.props.devicesSearchText.toLowerCase())
-                )[6].id
-              )
-            } else {
-              this.props.selectDevice(this.props.boardData.board.devices[6].id)
-            }
-            this.setState({ drawer: false })
-          }
-        }
+      "alt+8": {
+        priority: 1,
+        handler: () => this.keyboardShortcutHandler(7),
       },
-    },
-    "alt+8": {
-      priority: 1,
-      handler: event => {
-        if (this.props.boardData.board) {
-          if (
-            this.props.boardData.board.devices[7] &&
-            !this.state.areSettingsOpen
-          ) {
-            if (this.props.devicesSearchText !== "") {
-              this.props.selectDevice(
-                this.props.boardData.board.devices.filter(device =>
-                  device.customName
-                    .toLowerCase()
-                    .includes(this.props.devicesSearchText.toLowerCase())
-                )[7].id
-              )
-            } else {
-              this.props.selectDevice(this.props.boardData.board.devices[7].id)
-            }
-            this.setState({ drawer: false })
-          }
-        }
-      },
-    },
-    "alt+9": {
-      priority: 1,
-      handler: event => {
-        if (this.props.boardData.board) {
-          if (
-            this.props.boardData.board.devices[8] &&
-            !this.state.areSettingsOpen
-          ) {
-            if (this.props.devicesSearchText !== "") {
-              this.props.selectDevice(
-                this.props.boardData.board.devices.filter(device =>
-                  device.customName
-                    .toLowerCase()
-                    .includes(this.props.devicesSearchText.toLowerCase())
-                )[8].id
-              )
-            } else {
-              this.props.selectDevice(this.props.boardData.board.devices[8].id)
-            }
-            this.setState({ drawer: false })
-          }
-        }
+      "alt+9": {
+        priority: 1,
+        handler: () => this.keyboardShortcutHandler(8),
       },
     },
   }
@@ -282,10 +135,10 @@ class Main extends Component {
 
     this.state = {
       showHidden: false,
-      areSettingsOpen: false,
       isTileFullScreen: false,
       drawer: false,
       copyMessageOpen: false,
+      deselectDevice: false,
     }
   }
 
@@ -418,10 +271,17 @@ class Main extends Component {
 
     let nightMode = false
     let devMode = false
-    let deviceIdList = []
 
     if (this.props.devMode) {
       devMode = this.props.devMode
+    }
+
+    if (this.state.redirectTo) {
+      this.setState({ redirectTo: "" })
+    }
+
+    if (this.state.deselectDevice) {
+      this.setState({ deselectDevice: false })
     }
 
     nightMode =
@@ -479,16 +339,18 @@ class Main extends Component {
         <Online>
           <Helmet>
             <title>
-              {board &&
-              queryString.parse("?" + window.location.href.split("?")[1]).device
-                ? "Igloo Aurora - " +
-                  board.devices.filter(
-                    device =>
-                      device.id ===
-                      queryString.parse(
-                        "?" + window.location.href.split("?")[1]
-                      ).device
-                  )[0].customName
+              {board
+                ? queryString.parse("?" + window.location.href.split("?")[1])
+                    .device
+                  ? "Igloo Aurora - " +
+                    board.devices.filter(
+                      device =>
+                        device.id ===
+                        queryString.parse(
+                          "?" + window.location.href.split("?")[1]
+                        ).device
+                    )[0].customName
+                  : "Igloo Aurora - " + board.customName
                 : "Igloo Aurora"}
             </title>
           </Helmet>
@@ -506,7 +368,9 @@ class Main extends Component {
               logOut={this.props.logOut}
               key="sidebarHeader"
               selectedBoard={this.props.boardId}
+              areSettingsOpen={this.props.areSettingsOpen}
               openSettingsDialog={this.props.openSettings}
+              closeSettings={this.props.closeSettings}
               changeSettingsState={() =>
                 this.setState(oldState => ({
                   areSettingsOpen: !oldState.areSettingsOpen,
@@ -673,6 +537,20 @@ class Main extends Component {
             </div>
           </div>
         </Offline>
+        {this.state.redirectTo &&
+          board && (
+            <Redirect
+              push
+              to={
+                "/dashboard?board=" +
+                board.id +
+                "&device=" +
+                this.state.redirectTo
+              }
+            />
+          )}
+        {this.state.deselectDevice &&
+          board && <Redirect push to={"/dashboard?board=" + board.id} />}
       </React.Fragment>
     )
   }
@@ -683,6 +561,7 @@ export default graphql(
     query($id: ID!) {
       board(id: $id) {
         id
+        customName
         devices {
           id
           index

@@ -1,83 +1,10 @@
 import React, { Component } from "react"
-import gql from "graphql-tag"
 import moment from "moment"
 import Moment from "react-moment"
 import SvgIcon from "@material-ui/core/SvgIcon"
 import AppBar from "@material-ui/core/AppBar"
 
 export default class StatusBar extends Component {
-  componentDidMount() {
-    const subscriptionQuery = gql`
-      subscription {
-        deviceUpdated {
-          id
-          board {
-            id
-          }
-          values {
-            id
-          }
-          customName
-          icon
-          updatedAt
-          createdAt
-          myRole
-          quietMode
-          firmware
-          owner {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          notifications {
-            id
-            content
-            date
-            visualized
-          }
-        }
-      }
-    `
-
-    this.props.boardData.subscribeToMore({
-      document: subscriptionQuery,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-        const newDevices = [
-          ...prev.board.devices,
-          subscriptionData.data.deviceCreated,
-        ]
-        return {
-          board: {
-            ...prev.board,
-            devices: newDevices,
-          },
-        }
-      },
-    })
-  }
-
   render() {
     const {
       boardData: { board },
