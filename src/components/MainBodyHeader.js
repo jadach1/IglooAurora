@@ -302,36 +302,35 @@ class MainBodyHeader extends Component {
                   </MenuItem>
                 )}
                 <Divider />
-                {this.props.boards &&
-                  this.props.boards.length > 1 && (
-                    <MenuItem
-                      className="notSelectable"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                      onClick={() => {
-                        this.setState({ changeBoardOpen: true })
-                        this.handleMenuClose()
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Icon
-                          style={
-                            typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                              ? { color: "white" }
-                              : { color: "black" }
-                          }
-                        >
-                          swap_horiz
-                        </Icon>
-                      </ListItemIcon>
-                      <ListItemText inset primary="Change board" />
-                    </MenuItem>
-                  )}
+                {this.props.boards && this.props.boards.length > 1 && (
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      this.setState({ changeBoardOpen: true })
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        swap_horiz
+                      </Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Change board" />
+                  </MenuItem>
+                )}
                 {/*
                 {device.values.length > 1 && (
                   <MenuItem
@@ -440,10 +439,11 @@ class MainBodyHeader extends Component {
                   onClick={this.handleMenuOpen}
                   disabled={
                     !(
-                      this.props.boardData.board &&
-                      this.props.boardData.board.devices.filter(
-                        device => device.id === this.props.deviceId
-                      )[0]
+                      device &&
+                      device.id &&
+                      device.createdAt &&
+                      device.board.id &&
+                      device.updatedAt
                     )
                   }
                   color="primary"
@@ -454,36 +454,40 @@ class MainBodyHeader extends Component {
             </MuiThemeProvider>
           </div>
         </div>
-        {device && (
-          <React.Fragment>
-            <DeviceInfo
-              infoOpen={this.state.infoOpen}
-              close={() => this.setState({ infoOpen: false })}
-              id={device.id}
-              firmware={device.firmware}
-              updatedAt={device.updatedAt}
-              createdAt={device.createdAt}
-              devMode={this.props.devMode}
-            />
-            <ChangeBoard
-              open={this.state.changeBoardOpen}
-              close={() => this.setState({ changeBoardOpen: false })}
-              userData={this.props.userData}
-              device={device}
-              boards={this.props.boards}
-            />
-            <RenameDevice
-              open={this.state.renameOpen}
-              close={() => this.setState({ renameOpen: false })}
-              device={device}
-            />
-            <DeleteDevice
-              open={this.state.deleteOpen}
-              close={() => this.setState({ deleteOpen: false })}
-              device={device}
-            />
-          </React.Fragment>
-        )}
+        {device &&
+          device.id &&
+          device.createdAt &&
+          device.updatedAt &&
+          device.board.id && (
+            <React.Fragment>
+              <DeviceInfo
+                infoOpen={this.state.infoOpen}
+                close={() => this.setState({ infoOpen: false })}
+                id={device.id}
+                firmware={device.firmware}
+                updatedAt={device.updatedAt}
+                createdAt={device.createdAt}
+                devMode={this.props.devMode}
+              />
+              <ChangeBoard
+                open={this.state.changeBoardOpen}
+                close={() => this.setState({ changeBoardOpen: false })}
+                userData={this.props.userData}
+                device={device}
+                boards={this.props.boards}
+              />
+              <RenameDevice
+                open={this.state.renameOpen}
+                close={() => this.setState({ renameOpen: false })}
+                device={device}
+              />
+              <DeleteDevice
+                open={this.state.deleteOpen}
+                close={() => this.setState({ deleteOpen: false })}
+                device={device}
+              />
+            </React.Fragment>
+          )}
       </React.Fragment>
     )
   }

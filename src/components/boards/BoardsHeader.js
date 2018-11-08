@@ -5,6 +5,7 @@ import Tooltip from "@material-ui/core/Tooltip"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import AppBar from "@material-ui/core/AppBar"
+import { hotkeys } from "react-keyboard-shortcuts"
 import logo from "../../styles/assets/logo.svg"
 
 const theme = createMuiTheme({
@@ -13,11 +14,21 @@ const theme = createMuiTheme({
   },
 })
 
-export default class BoardsHeader extends Component {
+class BoardsHeader extends Component {
   hot_keys = {
     "alt+,": {
       priority: 1,
-      handler: event => this.props.changeSettingsState(),
+      handler: event =>
+        this.props.areSettingsOpen
+          ? this.props.closeSettings()
+          : this.props.openSettings(),
+    },
+    "alt+.": {
+      priority: 1,
+      handler: event =>
+      this.props.areSettingsOpen
+          ? this.props.closeSettings()
+          : this.props.openSettings(),
     },
     "alt+q": {
       priority: 1,
@@ -106,3 +117,5 @@ export default class BoardsHeader extends Component {
     )
   }
 }
+
+export default hotkeys(BoardsHeader)

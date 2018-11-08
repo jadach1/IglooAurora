@@ -1,6 +1,6 @@
 import React, { Component } from "react"
 import BoardsHeader from "./components/boards/BoardsHeader"
-import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
+import SettingsDialog from "./components/settings/SettingsDialog"
 import { hotkeys } from "react-keyboard-shortcuts"
 import BoardsBodyMobile from "./components/boards/BoardsBodyMobile"
 
@@ -14,20 +14,24 @@ class BoardsMobile extends Component {
     "alt+1": {
       priority: 1,
       handler: event => {
-        this.setState({ slideIndex: 0 })
+        if (this.props.settingsOpen) this.setState({ slideIndex: 0 })
       },
     },
-
     "alt+2": {
       priority: 1,
       handler: event => {
-        this.setState({ slideIndex: 1 })
+        if (this.props.settingsOpen) this.setState({ slideIndex: 1 })
       },
     },
     "alt+3": {
       priority: 1,
       handler: event => {
-        this.setState({ slideIndex: 2 })
+        if (
+          this.props.settingsOpen &&
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("devMode") === "true"
+        )
+          this.setState({ slideIndex: 2 })
       },
     },
   }
@@ -48,6 +52,8 @@ class BoardsMobile extends Component {
         <BoardsHeader
           logOut={this.props.logOut}
           openSettings={this.props.openSettings}
+          closeSettings={this.props.closeSettings}
+          areSettingsOpen={this.props.areSettingsOpen}
           user={this.props.userData.user}
         />
         <BoardsBodyMobile
@@ -56,8 +62,8 @@ class BoardsMobile extends Component {
           searchBoards={this.props.searchBoards}
           searchText={this.props.boardsSearchText}
         />
-        <SettingsDialogMobile
-                     isOpen={this.props.settingsOpen}
+        <SettingsDialog
+          isOpen={this.props.settingsOpen}
           closeSettingsDialog={this.props.closeSettings}
           handleChange={this.handleSettingsTabChanged}
           slideIndex={this.state.slideIndex}

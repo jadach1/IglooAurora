@@ -18,11 +18,25 @@ class SidebarHeader extends Component {
   hot_keys = {
     "alt+,": {
       priority: 1,
-      handler: event => this.props.changeSettingsState(),
+      handler: event =>
+        this.props.areSettingsOpen
+          ? this.props.closeSettings()
+          : this.props.openSettingsDialog(),
+    },
+    "alt+.": {
+      priority: 1,
+      handler: event =>
+        this.props.areSettingsOpen
+          ? this.props.closeSettings()
+          : this.props.openSettingsDialog(),
     },
     "alt+q": {
       priority: 1,
       handler: event => this.props.logOut(),
+    },
+    "alt+backspace": {
+      priority: 1,
+      handler: event => this.setState({ goToBoards: true }),
     },
   }
 
@@ -73,11 +87,10 @@ class SidebarHeader extends Component {
             marginLeft: "8px",
           }}
         >
-          {
-            this.props.boards && this.props.boards.filter(
+          {this.props.boards &&
+            this.props.boards.filter(
               board => board.id === this.props.selectedBoard
-            )[0].customName
-          }
+            )[0].customName}
         </Typography>
         <div
           style={
