@@ -116,50 +116,53 @@ class AuthDialog extends React.Component {
   render() {
     let tokenList = ""
 
-    if (this.props.userData.error) tokenList = "Unexpected error"
+    if (this.props.tokenData.error) tokenList = "Unexpected error"
 
-    if (this.props.userData.loading) tokenList = <CenteredSpinner />
+    if (this.props.tokenData.loading) tokenList = <CenteredSpinner />
 
-    if (this.props.userData.user)
+    if (this.props.tokenData.user)
       tokenList = (
         <List style={{ padding: "0" }}>
-          {this.props.userData.user.permanentTokens.map(token => (
-            <ListItem button
-            >
-            <ListItemIcon>
-            <Icon>vpn_key</Icon>
+          {this.props.tokenData.user.permanentTokens.map(token => (
+            <ListItem button>
+              <ListItemIcon>
+                <Icon>vpn_key</Icon>
               </ListItemIcon>
-            <ListItemText primary={token.customName}
-              secondary={
-                token.lastUsed ? (
-                  <React.Fragment>
-                    Last used{" "}
-                    <Moment fromNow>
-                      {moment.utc(
-                        token.lastUsed.split(".")[0],
-                        "YYYY-MM-DDTh:mm:ss"
-                      )}
-                    </Moment>
-                  </React.Fragment>
-                ) : (
-                  "Never used"
-                )
-              }/>
-              <ListItemSecondaryAction><IconButton onClick={() => this.deletePermanentToken(token.id)}>
+              <ListItemText
+                primary={token.customName}
+                secondary={
+                  token.lastUsed ? (
+                    <React.Fragment>
+                      Last used{" "}
+                      <Moment fromNow>
+                        {moment.utc(
+                          token.lastUsed.split(".")[0],
+                          "YYYY-MM-DDTh:mm:ss"
+                        )}
+                      </Moment>
+                    </React.Fragment>
+                  ) : (
+                    "Never used"
+                  )
+                }
+              />
+              <ListItemSecondaryAction>
+                <IconButton onClick={() => this.deletePermanentToken(token.id)}>
                   <Icon>delete</Icon>
                 </IconButton>
-                </ListItemSecondaryAction>
+              </ListItemSecondaryAction>
             </ListItem>
           ))}
           <ListItem
-button
+            button
             onClick={() =>
               this.setState({ nameOpen: true, authDialogOpen: false })
             }
-          ><ListItemIcon>
-            <Icon>add</Icon>
+          >
+            <ListItemIcon>
+              <Icon>add</Icon>
             </ListItemIcon>
-            <ListItemText primary="Get a new permanent token"/>
+            <ListItemText primary="Get a new permanent token" />
           </ListItem>
         </List>
       )
@@ -358,11 +361,27 @@ button
 
 export default graphql(
   gql`
-    mutation DeletePermanentAccesToken($id: ID!) {
-      DeletePermanentAccesToken(id: $id)
+    query {
+      user {
+        id
+        permanentTokens {
+          id
+          customName
+          lastUsed
+        }
+      }
     }
   `,
-  {
-    name: "DeletePermanentAccesToken",
-  }
-)(AuthDialog)
+  { name: "tokenData" }
+)(
+  graphql(
+    gql`
+      mutation DeletePermanentAccesToken($id: ID!) {
+        DeletePermanentAccesToken(id: $id)
+      }
+    `,
+    {
+      name: "DeletePermanentAccesToken",
+    }
+  )(AuthDialog)
+)

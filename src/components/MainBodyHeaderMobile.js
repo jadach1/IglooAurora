@@ -19,8 +19,34 @@ import ChangeBoard from "./devices/ChangeBoard"
 import RenameDevice from "./devices/RenameDevice"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 class MainBodyHeaderMobile extends Component {
+  hot_keys = {
+    "alt+,": {
+      priority: 1,
+      handler: event =>
+        this.props.areSettingsOpen
+          ? this.props.closeSettings()
+          : this.props.openSettingsDialog(),
+    },
+    "alt+.": {
+      priority: 1,
+      handler: event =>
+        this.props.areSettingsOpen
+          ? this.props.closeSettings()
+          : this.props.openSettingsDialog(),
+    },
+    "alt+q": {
+      priority: 1,
+      handler: event => this.props.logOut(),
+    },
+    "alt+backspace": {
+      priority: 1,
+      handler: event => this.setState({ goToDevices: true }),
+    },
+  }
+
   state = {
     open: false,
     infoOpen: false,
@@ -583,5 +609,5 @@ export default graphql(
         },
       }),
     }
-  )(MainBodyHeaderMobile)
+  )(hotkeys(MainBodyHeaderMobile))
 )

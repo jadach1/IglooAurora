@@ -105,11 +105,10 @@ class NotificationsDrawer extends React.Component {
         }
         const newNotification = subscriptionData.data.notificationUpdated
 
-        const newNotifications = prev.device.notifications.map(
-          notification =>
-            notification.id === newNotification.id
-              ? newNotification
-              : notification
+        const newNotifications = prev.device.notifications.map(notification =>
+          notification.id === newNotification.id
+            ? newNotification
+            : notification
         )
         return {
           device: {
@@ -200,23 +199,6 @@ class NotificationsDrawer extends React.Component {
       })
     }
 
-    let toggleQuietMode = (id, quietMode) => {
-      this.props["ToggleQuietMode"]({
-        variables: {
-          id: id,
-          quietMode: quietMode,
-        },
-        optimisticResponse: {
-          __typename: "Mutation",
-          device: {
-            id: id,
-            quietMode: quietMode,
-            __typename: "Device",
-          },
-        },
-      })
-    }
-
     let clearAllNotifications = () => {
       const notificationsToFlush = device.notifications.filter(
         notification =>
@@ -239,7 +221,8 @@ class NotificationsDrawer extends React.Component {
 
     if (error) notifications = "Unexpected error"
 
-    if (loading || !this.props.completeDevice) notifications = <CenteredSpinner />
+    if (loading || !this.props.completeDevice)
+      notifications = <CenteredSpinner />
 
     if (device && this.props.completeDevice) {
       let determineDiff = notification =>
@@ -260,62 +243,50 @@ class NotificationsDrawer extends React.Component {
                   .endOf("week"),
                 "weeks"
               ) <= 1
-            ? "This week"
-            : moment()
-                .endOf("month")
-                .diff(
-                  moment
-                    .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-                    .endOf("month"),
-                  "months"
-                ) <= 0
-              ? moment()
-                  .endOf("week")
-                  .add(1, "weeks")
-                  .diff(
-                    moment
-                      .utc(
-                        notification.date.split(".")[0],
-                        "YYYY-MM-DDTh:mm:ss"
-                      )
-                      .endOf("week"),
-                    "weeks"
-                  ) + " weeks ago"
-              : moment()
-                  .endOf("year")
-                  .diff(
-                    moment
-                      .utc(
-                        notification.date.split(".")[0],
-                        "YYYY-MM-DDTh:mm:ss"
-                      )
-                      .endOf("year"),
-                    "years"
-                  ) <= 0
-                ? moment()
-                    .endOf("month")
-                    .add(1, "months")
-                    .diff(
-                      moment
-                        .utc(
-                          notification.date.split(".")[0],
-                          "YYYY-MM-DDTh:mm:ss"
-                        )
-                        .endOf("month"),
-                      "months"
-                    ) + " months ago"
-                : moment()
-                    .endOf("year")
-                    .add(1, "years")
-                    .diff(
-                      moment
-                        .utc(
-                          notification.date.split(".")[0],
-                          "YYYY-MM-DDTh:mm:ss"
-                        )
-                        .endOf("year"),
-                      "years"
-                    ) + " years ago"
+          ? "This week"
+          : moment()
+              .endOf("month")
+              .diff(
+                moment
+                  .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+                  .endOf("month"),
+                "months"
+              ) <= 0
+          ? moment()
+              .endOf("week")
+              .add(1, "weeks")
+              .diff(
+                moment
+                  .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+                  .endOf("week"),
+                "weeks"
+              ) + " weeks ago"
+          : moment()
+              .endOf("year")
+              .diff(
+                moment
+                  .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+                  .endOf("year"),
+                "years"
+              ) <= 0
+          ? moment()
+              .endOf("month")
+              .add(1, "months")
+              .diff(
+                moment
+                  .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+                  .endOf("month"),
+                "months"
+              ) + " months ago"
+          : moment()
+              .endOf("year")
+              .add(1, "years")
+              .diff(
+                moment
+                  .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
+                  .endOf("year"),
+                "years"
+              ) + " years ago"
 
       let removeDuplicates = inputArray => {
         var obj = {}
@@ -634,42 +605,6 @@ class NotificationsDrawer extends React.Component {
                       <Icon>chevron_right</Icon>
                     </IconButton>
                   </Tooltip>
-                  {this.props.completeDevice && (
-                    <MuiThemeProvider theme={theme}>
-                      <Tooltip
-                        id="tooltip-bottom"
-                        title={
-                          this.props.completeDevice && this.props.completeDevice.quietMode
-                            ? "Unmute device"
-                            : "Mute device"
-                        }
-                        placement="bottom"
-                      >
-                        <IconButton
-                          style={{
-                            marginTop: "auto",
-                            marginBottom: "auto",
-                            marginRight: "8px",
-                            marginLeft: "auto",
-                            float: "right",
-                          }}
-                          color="secondary"
-                          onClick={() =>
-                            toggleQuietMode(
-                              this.props.completeDevice.id,
-                              !this.props.completeDevice.quietMode
-                            )
-                          }
-                        >
-                          <Icon>
-                            {this.props.completeDevice && this.props.completeDevice.quietMode
-                              ? "notifications"
-                              : "notifications_off"}
-                          </Icon>
-                        </IconButton>
-                      </Tooltip>
-                    </MuiThemeProvider>
-                  )}
                 </div>
               </AppBar>
               <div

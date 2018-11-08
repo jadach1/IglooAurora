@@ -213,8 +213,12 @@ class MainBody extends Component {
             className={
               typeof Storage !== "undefined" &&
               localStorage.getItem("nightMode") === "true"
-                ? "mainBody darkMainBodyBG"
-                : "mainBody mainBodyBG"
+                ? this.props.isMobile
+                  ? "mainBody darkMobileMainBodyBG"
+                  : "mainBody darkMainBodyBG"
+                : this.props.isMobile
+                  ? "mainBody mobileMainBodyBG"
+                  : "mainBody mainBodyBG"
             }
             style={{ width: "100%", height: "100%" }}
           >
@@ -230,8 +234,12 @@ class MainBody extends Component {
           className={
             typeof Storage !== "undefined" &&
             localStorage.getItem("nightMode") === "true"
-              ? "mainBody darkMainBodyBG"
-              : "mainBody mainBodyBG"
+              ? this.props.isMobile
+                ? "mainBody darkMobileMainBodyBG"
+                : "mainBody darkMainBodyBG"
+              : this.props.isMobile
+                ? "mainBody mobileMainBodyBG"
+                : "mainBody mainBodyBG"
           }
         >
           An unexpected error occurred

@@ -285,6 +285,11 @@ class GraphQLFetcher extends Component {
           emailIsVerified
           fullName
           profileIconColor
+          permanentTokens {
+            id
+            customName
+            lastUsed
+          }
         }
       }
     `
@@ -448,6 +453,7 @@ class GraphQLFetcher extends Component {
                   .device
               }
               openSettings={() => this.setState({ areSettingsOpen: true })}
+              closeSettings={() => this.setState({ areSettingsOpen: false })}
               areSettingsOpen={this.state.areSettingsOpen}
               selectBoard={id => this.setState({ selectedBoard: id })}
               boardId={
@@ -455,12 +461,12 @@ class GraphQLFetcher extends Component {
                   .board
               }
               devMode={
-                this.props.userData.user && this.props.userData.user.devMode
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("devMode") === "true"
               }
               boards={
                 this.props.userData.user && this.props.userData.user.boards
               }
-              closeSettings={() => this.setState({ areSettingsOpen: false })}
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
               }}
@@ -470,10 +476,11 @@ class GraphQLFetcher extends Component {
         } else {
           return (
             <Main
-              areSettingsOpen={this.state.areSettingsOpen}
               logOut={this.props.logOut}
               userData={this.props.userData}
               openSettings={() => this.setState({ areSettingsOpen: true })}
+              closeSettings={() => this.setState({ areSettingsOpen: false })}
+              areSettingsOpen={this.state.areSettingsOpen}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
               selectBoard={id => this.setState({ selectedBoard: id })}
@@ -482,12 +489,12 @@ class GraphQLFetcher extends Component {
                   .board
               }
               devMode={
-                this.props.userData.user && this.props.userData.user.devMode
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("devMode") === "true"
               }
               boards={
                 this.props.userData.user && this.props.userData.user.boards
               }
-              closeSettings={() => this.setState({ areSettingsOpen: false })}
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
               }}
@@ -507,6 +514,7 @@ class GraphQLFetcher extends Component {
             settingsOpen={this.state.areSettingsOpen}
             openSettings={() => this.setState({ areSettingsOpen: true })}
             closeSettings={() => this.setState({ areSettingsOpen: false })}
+            areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
           />
         )
@@ -523,11 +531,11 @@ class GraphQLFetcher extends Component {
         ) {
           return (
             <MainMobile
-              areSettingsOpen={this.state.areSettingsOpen}
               logOut={this.props.logOut}
               userData={this.props.userData}
-              closeSettings={() => this.setState({ areSettingsOpen: false })}
               openSettings={() => this.setState({ areSettingsOpen: true })}
+              closeSettings={() => this.setState({ areSettingsOpen: false })}
+              areSettingsOpen={this.state.areSettingsOpen}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={
                 queryString.parse("?" + window.location.href.split("?")[1])
@@ -546,17 +554,18 @@ class GraphQLFetcher extends Component {
               }}
               devicesSearchText={this.state.devicesSearchText}
               devMode={
-                this.props.userData.user && this.props.userData.user.devMode
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("devMode") === "true"
               }
             />
           )
         } else {
           return (
             <MainMobile
-              areSettingsOpen={this.state.areSettingsOpen}
               logOut={this.props.logOut}
               openSettings={() => this.setState({ areSettingsOpen: true })}
               closeSettings={() => this.setState({ areSettingsOpen: false })}
+              areSettingsOpen={this.state.areSettingsOpen}
               userData={this.props.userData}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
@@ -569,7 +578,8 @@ class GraphQLFetcher extends Component {
                 this.props.userData.user && this.props.userData.user.boards
               }
               devMode={
-                this.props.userData.user && this.props.userData.user.devMode
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("devMode") === "true"
               }
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
@@ -590,6 +600,7 @@ class GraphQLFetcher extends Component {
             settingsOpen={this.state.areSettingsOpen}
             openSettings={() => this.setState({ areSettingsOpen: true })}
             closeSettings={() => this.setState({ areSettingsOpen: false })}
+            areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
           />
         )
@@ -636,11 +647,6 @@ export default graphql(
         fullName
         profileIconColor
         email
-        permanentTokens {
-          id
-          customName
-          lastUsed
-        }
         boards {
           id
           index
@@ -648,7 +654,6 @@ export default graphql(
           favorite
           createdAt
           updatedAt
-          notificationsCount
           quietMode
           avatar
           myRole

@@ -19,6 +19,7 @@ import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
 import Zoom from "@material-ui/core/Zoom"
 import AddDevice from "./AddDevice"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 const theme = createMuiTheme({
   palette: {
@@ -39,6 +40,16 @@ class Sidebar extends Component {
     visibleDeviceTypes: [],
     hidden: false,
     addDeviceOpen: false,
+    lessThan1080: false,
+  }
+
+  hot_keys = {
+    "alt+a": {
+      priority: 1,
+      handler: event => {
+        this.setState(oldState => ({ addDeviceOpen: !oldState.addDeviceOpen }))
+      },
+    },
   }
 
   handleMouseDownSearch = event => {
@@ -47,6 +58,23 @@ class Sidebar extends Component {
 
   handleClickCancelSearch = () => {
     this.props.searchDevices("")
+  }
+
+  updateDimensions() {
+    if (window.innerWidth < 1080) {
+      this.setState({ lessThan1080: true })
+    } else {
+      this.setState({ lessThan1080: false })
+    }
+  }
+
+  componentDidMount() {
+    this.updateDimensions()
+    window.addEventListener("resize", this.updateDimensions.bind(this))
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this))
   }
 
   render() {
@@ -93,13 +121,12 @@ class Sidebar extends Component {
                     : { color: "black" }
                 }
                 disabled={
-                  !board.devices
-                    .filter(
-                      device =>
-                        this.state.visibleDeviceTypes.indexOf(
-                          device.deviceType
-                        ) !== -1
-                    )[0]
+                  !board.devices.filter(
+                    device =>
+                      this.state.visibleDeviceTypes.indexOf(
+                        device.deviceType
+                      ) !== -1
+                  )[0]
                 }
                 value={this.props.searchText}
                 onChange={event => this.props.searchDevices(event.target.value)}
@@ -112,24 +139,22 @@ class Sidebar extends Component {
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
-                          ? !board.devices
-                              .filter(
-                                device =>
-                                  this.state.visibleDeviceTypes.indexOf(
-                                    device.deviceType
-                                  ) !== -1
-                              )[0]
+                          ? !board.devices.filter(
+                              device =>
+                                this.state.visibleDeviceTypes.indexOf(
+                                  device.deviceType
+                                ) !== -1
+                            )[0]
                             ? { color: "white", opacity: "0.5" }
                             : { color: "white" }
-                          : !board.devices
-                              .filter(
-                                device =>
-                                  this.state.visibleDeviceTypes.indexOf(
-                                    device.deviceType
-                                  ) !== -1
-                              )[0]
-                            ? { color: "black", opacity: "0.5" }
-                            : { color: "black" }
+                          : !board.devices.filter(
+                              device =>
+                                this.state.visibleDeviceTypes.indexOf(
+                                  device.deviceType
+                                ) !== -1
+                            )[0]
+                          ? { color: "black", opacity: "0.5" }
+                          : { color: "black" }
                       }
                     >
                       search
@@ -167,43 +192,37 @@ class Sidebar extends Component {
                 this.setState({ popoverOpen: true })
               }}
               disabled={
-                !board.devices
-                  .filter(
-                    device =>
-                      this.props.searchText
-                        ? device.customName
-                            .toLowerCase()
-                            .includes(this.props.searchText.toLowerCase())
-                        : true
-                  )[0]
+                !board.devices.filter(device =>
+                  this.props.searchText
+                    ? device.customName
+                        .toLowerCase()
+                        .includes(this.props.searchText.toLowerCase())
+                    : true
+                )[0]
               }
             >
               <Icon
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                    ? !board.devices
-                        .filter(
-                          device =>
-                            this.props.searchText
-                              ? device.customName
-                                  .toLowerCase()
-                                  .includes(this.props.searchText.toLowerCase())
-                              : true
-                        )[0]
+                    ? !board.devices.filter(device =>
+                        this.props.searchText
+                          ? device.customName
+                              .toLowerCase()
+                              .includes(this.props.searchText.toLowerCase())
+                          : true
+                      )[0]
                       ? { color: "white", opacity: "0.5" }
                       : { color: "white" }
-                    : !board.devices
-                        .filter(
-                          device =>
-                            this.props.searchText
-                              ? device.customName
-                                  .toLowerCase()
-                                  .includes(this.props.searchText.toLowerCase())
-                              : true
-                        )[0]
-                      ? { color: "black", opacity: "0.5" }
-                      : { color: "black" }
+                    : !board.devices.filter(device =>
+                        this.props.searchText
+                          ? device.customName
+                              .toLowerCase()
+                              .includes(this.props.searchText.toLowerCase())
+                          : true
+                      )[0]
+                    ? { color: "black", opacity: "0.5" }
+                    : { color: "black" }
                 }
               >
                 filter_list
@@ -327,17 +346,15 @@ class Sidebar extends Component {
                                 )
                                 .map(notification => notification.content)
                                 .reverse()[0]
-                              ? "No unread notifications"
-                              : "No notifications"
+                            ? "No unread notifications"
+                            : "No notifications"
                         }
                       />
                       {device.notificationsCount ? (
                         <ListItemSecondaryAction>
                           <MuiThemeProvider theme={theme}>
                             <Badge
-                              badgeContent={
-                                device.notificationsCount
-                              }
+                              badgeContent={device.notificationsCount}
                               color="primary"
                               className="notSelectable sidebarBadge"
                               style={{ marginRight: "24px" }}
@@ -451,8 +468,8 @@ class Sidebar extends Component {
                                   )
                                   .map(notification => notification.content)
                                   .reverse()[0]
-                                ? "No unread notifications"
-                                : "No notifications"}
+                              ? "No unread notifications"
+                              : "No notifications"}
                           </span>
                         }
                       />
@@ -465,9 +482,7 @@ class Sidebar extends Component {
                         <ListItemSecondaryAction>
                           <MuiThemeProvider theme={theme}>
                             <Badge
-                              badgeContent={
-                                device.notificationsCount
-                              }
+                              badgeContent={device.notificationsCount}
                               color="primary"
                               className="notSelectable sidebarBadge"
                               style={{ marginRight: "24px" }}
@@ -496,9 +511,17 @@ class Sidebar extends Component {
                       transition:
                         "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
                     }
+                  : this.state.lessThan1080
+                  ? {
+                      position: "absolute",
+                      left: "calc(33vw - 76px)",
+                      bottom: "20px",
+                      transition:
+                        "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                    }
                   : {
                       position: "absolute",
-                      left: "308px",
+                      left: "284px",
                       bottom: "20px",
                       transition:
                         "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
@@ -519,4 +542,4 @@ class Sidebar extends Component {
   }
 }
 
-export default Sidebar
+export default hotkeys(Sidebar)

@@ -14,20 +14,24 @@ class Boards extends Component {
     "alt+1": {
       priority: 1,
       handler: event => {
-        this.setState({ slideIndex: 0 })
+        if (this.props.settingsOpen) this.setState({ slideIndex: 0 })
       },
     },
-
     "alt+2": {
       priority: 1,
       handler: event => {
-        this.setState({ slideIndex: 1 })
+        if (this.props.settingsOpen) this.setState({ slideIndex: 1 })
       },
     },
     "alt+3": {
       priority: 1,
       handler: event => {
-        this.setState({ slideIndex: 2 })
+        if (
+          this.props.settingsOpen &&
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("devMode") === "true"
+        )
+          this.setState({ slideIndex: 2 })
       },
     },
   }
@@ -44,6 +48,8 @@ class Boards extends Component {
         <BoardsHeader
           logOut={this.props.logOut}
           openSettings={this.props.openSettings}
+          closeSettings={this.props.closeSettings}
+          areSettingsOpen={this.props.areSettingsOpen}
           user={this.props.userData.user}
         />
         <BoardsBody

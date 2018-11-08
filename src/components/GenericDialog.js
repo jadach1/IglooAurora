@@ -43,7 +43,7 @@ export default class GenericDialog extends Component {
             this.setState({ open: true })
             console.clear()
             console.log(
-              "In case you're wondering, this loading screen won't actually unlock any superpower!\nIf you know how to give our users the power to fly, please contribute to our open source repository!\nhttps://github.com/IglooCloud/IglooAurora"
+              "In case you're wondering, this loading screen won't actually unlock any superpower. However, if you know how to give our users the power to fly, please contribute to our open source repository!\nhttps://github.com/IglooCloud/IglooAurora"
             )
           }}
         />

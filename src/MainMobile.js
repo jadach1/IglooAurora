@@ -8,7 +8,7 @@ import "./styles/Tiles.css"
 import "./styles/MobileApp.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import AppBar from "@material-ui/core/AppBar"
-import SettingsDialogMobile from "./components/settings/SettingsDialogMobile"
+import SettingsDialog from "./components/settings/SettingsDialog"
 import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
 import StatusBar from "./components/devices/StatusBar"
 import { Redirect } from "react-router-dom"
@@ -428,23 +428,25 @@ class MainMobile extends Component {
         <Online>
           <Helmet>
             <title>
-              {board &&
-              queryString.parse("?" + window.location.href.split("?")[1]).device
-                ? "Igloo Aurora - " +
-                  board.devices.filter(
-                    device =>
-                      device.id ===
-                      queryString.parse(
-                        "?" + window.location.href.split("?")[1]
-                      ).device
-                  )[0].customName
+              {board
+                ? queryString.parse("?" + window.location.href.split("?")[1])
+                    .device
+                  ? "Igloo Aurora - " +
+                    board.devices.filter(
+                      device =>
+                        device.id ===
+                        queryString.parse(
+                          "?" + window.location.href.split("?")[1]
+                        ).device
+                    )[0].customName
+                  : "Igloo Aurora - " + board.customName
                 : "Igloo Aurora"}
             </title>
           </Helmet>
           <div className="mobileMain">
             {this.props.selectedDevice == null ? (
               <React.Fragment>
-                <SettingsDialogMobile
+                <SettingsDialog
                   isOpen={this.props.areSettingsOpen}
                   closeSettingsDialog={this.props.closeSettings}
                   handleChange={this.handleSettingsTabChanged}
@@ -458,7 +460,9 @@ class MainMobile extends Component {
                     logOut={this.props.logOut}
                     key="sidebarHeader"
                     selectedBoard={this.props.boardId}
+                    areSettingsOpen={this.props.areSettingsOpen}
                     openSettingsDialog={this.props.openSettings}
+                    closeSettings={this.props.closeSettings}
                     changeSettingsState={() =>
                       this.setState(oldState => ({
                         areSettingsOpen: !oldState.areSettingsOpen,
@@ -496,7 +500,7 @@ class MainMobile extends Component {
             ) : board ? (
               idList.includes(this.props.selectedDevice) ? (
                 <React.Fragment>
-                  <SettingsDialogMobile
+                  <SettingsDialog
                     isOpen={this.props.areSettingsOpen}
                     closeSettingsDialog={this.props.closeSettings}
                     handleChange={this.handleSettingsTabChanged}
@@ -507,6 +511,7 @@ class MainMobile extends Component {
                   />
                   <AppBar>
                     <MainBodyHeaderMobile
+                      logOut={this.props.logOut}
                       deviceId={this.props.selectedDevice}
                       key="mobileMainBodyHeader"
                       drawer={this.state.drawer}
@@ -525,6 +530,9 @@ class MainMobile extends Component {
                       }
                       selectedBoard={this.props.boardId}
                       boardData={this.props.boardData}
+                      areSettingsOpen={this.props.areSettingsOpen}
+                      openSettingsDialog={this.props.openSettings}
+                      closeSettings={this.props.closeSettings}
                     />
                   </AppBar>
                   <div
@@ -624,6 +632,7 @@ export default graphql(
     query($id: ID!) {
       board(id: $id) {
         id
+        customName
         devices {
           id
           index

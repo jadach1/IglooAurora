@@ -40,7 +40,10 @@ export default class BoardsBody extends Component {
     let nightMode =
       typeof Storage !== "undefined" &&
       localStorage.getItem("nightMode") === "true"
-    let devMode = false
+
+    let devMode =
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("devMode") === "true"
 
     if (loading) {
       yourBoardsList = <CenteredSpinner />
@@ -51,8 +54,6 @@ export default class BoardsBody extends Component {
     }
 
     if (user) {
-      devMode = user.devMode
-
       yourBoardsList = user.boards
         .filter(board => board.myRole === "OWNER")
         .filter(board =>
