@@ -251,6 +251,8 @@ class SettingsDialog extends React.Component {
           "nightMode",
           !(localStorage.getItem("nightMode") === "true")
         )
+
+        this.props.forceUpdate()
       }
     }
 
@@ -293,6 +295,7 @@ class SettingsDialog extends React.Component {
           "devMode",
           !(localStorage.getItem("devMode") === "true")
         )
+        this.props.forceUpdate()
       }
     }
 
@@ -952,6 +955,7 @@ rightToggle={
         <ChangeServer
           open={this.props.isOpen && this.state.serverOpen}
           close={() => this.setState({ serverOpen: false })}
+          forceUpdate={() => this.props.forceUpdate()}
         />
         <VerifyEmailDialog
           open={this.props.isOpen && this.state.verifyOpen}

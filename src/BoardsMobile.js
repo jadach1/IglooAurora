@@ -69,6 +69,7 @@ class BoardsMobile extends Component {
           slideIndex={this.state.slideIndex}
           handleChangeBTIndex={this.handleChangeBTIndex}
           userData={this.props.userData}
+          forceUpdate={this.props.forceUpdate}
         />
       </React.Fragment>
     )

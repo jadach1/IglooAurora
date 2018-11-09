@@ -26,7 +26,7 @@ class BoardsHeader extends Component {
     "alt+.": {
       priority: 1,
       handler: event =>
-      this.props.areSettingsOpen
+        this.props.areSettingsOpen
           ? this.props.closeSettings()
           : this.props.openSettings(),
     },
@@ -82,23 +82,17 @@ class BoardsHeader extends Component {
                 </IconButton>
               </Tooltip>
             </a> */}
-              {this.props.user && (
-                <Tooltip
-                  id="tooltip-bottom"
-                  title="Settings"
-                  placement="bottom"
+              <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
+                <IconButton
+                  onClick={this.props.openSettings}
+                  className="sidebarHeaderButton"
+                  color="primary"
                 >
-                  <IconButton
-                    onClick={this.props.openSettings}
-                    className="sidebarHeaderButton"
-                    color="primary"
-                  >
-                    <Icon color="primary" style={{ color: "white" }}>
-                      settings
-                    </Icon>
-                  </IconButton>
-                </Tooltip>
-              )}
+                  <Icon color="primary" style={{ color: "white" }}>
+                    settings
+                  </Icon>
+                </IconButton>
+              </Tooltip>
               <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
                 <IconButton
                   onClick={this.props.logOut}

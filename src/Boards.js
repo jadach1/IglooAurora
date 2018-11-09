@@ -65,6 +65,7 @@ class Boards extends Component {
           handleChange={this.handleSettingsTabChanged}
           slideIndex={this.state.slideIndex}
           userData={this.props.userData}
+          forceUpdate={this.props.forceUpdate}
         />
       </React.Fragment>
     )
