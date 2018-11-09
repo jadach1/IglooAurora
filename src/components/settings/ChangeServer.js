@@ -56,7 +56,8 @@ export default class ChangePasswordDialog extends React.Component {
 
       oldUrl = this.state.url
 
-      window.location.reload()
+      this.props.forceUpdate()
+      this.props.close()
     }
 
     if (oldUrl === "") {

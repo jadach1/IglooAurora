@@ -4,14 +4,11 @@ import SidebarHeader from "./components/SidebarHeader"
 import MainBody from "./components/MainBody"
 import MainBodyHeader from "./components/MainBodyHeader"
 import SettingsDialog from "./components/settings/SettingsDialog"
-import { Offline, Online } from "react-detect-offline"
 import "./styles/App.css"
 import "./styles/Tiles.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import StatusBar from "./components/devices/StatusBar"
 import { Redirect } from "react-router-dom"
-import Typography from "@material-ui/core/Typography"
-import polarBear from "./styles/assets/polarBear.svg"
 import queryString from "query-string"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
@@ -336,221 +333,167 @@ class Main extends Component {
 
     return (
       <React.Fragment>
-        <Online>
-          <Helmet>
-            <title>
-              {board
-                ? queryString.parse("?" + window.location.href.split("?")[1])
-                    .device
-                  ? "Igloo Aurora - " +
-                    board.devices.filter(
-                      device =>
-                        device.id ===
-                        queryString.parse(
-                          "?" + window.location.href.split("?")[1]
-                        ).device
-                    )[0].customName
-                  : "Igloo Aurora - " + board.customName
-                : "Igloo Aurora"}
-            </title>
-          </Helmet>
-          <div className="main">
-            <SettingsDialog
-              isOpen={this.props.areSettingsOpen}
-              closeSettingsDialog={this.props.closeSettings}
-              handleChange={handleSettingsTabChanged}
-              slideIndex={this.state.slideIndex}
+        <Helmet>
+          <title>
+            {board
+              ? queryString.parse("?" + window.location.href.split("?")[1])
+                  .device
+                ? "Igloo Aurora - " +
+                  board.devices.filter(
+                    device =>
+                      device.id ===
+                      queryString.parse(
+                        "?" + window.location.href.split("?")[1]
+                      ).device
+                  )[0].customName
+                : "Igloo Aurora - " + board.customName
+              : "Igloo Aurora"}
+          </title>
+        </Helmet>
+        <div className="main">
+          <SettingsDialog
+            isOpen={this.props.areSettingsOpen}
+            closeSettingsDialog={this.props.closeSettings}
+            handleChange={handleSettingsTabChanged}
+            slideIndex={this.state.slideIndex}
+            nightMode={nightMode}
+            userData={this.props.userData}
+            forceUpdate={this.props.forceUpdate}
+          />
+          <div className="invisibleHeader" key="invisibleHeader" />
+          <SidebarHeader
+            logOut={this.props.logOut}
+            key="sidebarHeader"
+            selectedBoard={this.props.boardId}
+            areSettingsOpen={this.props.areSettingsOpen}
+            openSettingsDialog={this.props.openSettings}
+            closeSettings={this.props.closeSettings}
+            changeSettingsState={() =>
+              this.setState(oldState => ({
+                areSettingsOpen: !oldState.areSettingsOpen,
+                drawer: false,
+              }))
+            }
+            boards={this.props.boards}
+          />
+          <div
+            className="sidebar"
+            key="sidebar"
+            style={
+              nightMode ? { background: "#21252b" } : { background: "#f2f2f2" }
+            }
+          >
+            <Sidebar
+              selectDevice={id => {
+                this.props.selectDevice(id)
+                this.setState({ drawer: false })
+              }}
+              selectedDevice={this.props.selectedDevice}
+              changeDrawerState={this.changeDrawerState}
+              boardData={this.props.boardData}
               nightMode={nightMode}
-              userData={this.props.userData}
-            />
-            <div className="invisibleHeader" key="invisibleHeader" />
-            <SidebarHeader
-              logOut={this.props.logOut}
-              key="sidebarHeader"
               selectedBoard={this.props.boardId}
-              areSettingsOpen={this.props.areSettingsOpen}
-              openSettingsDialog={this.props.openSettings}
-              closeSettings={this.props.closeSettings}
-              changeSettingsState={() =>
-                this.setState(oldState => ({
-                  areSettingsOpen: !oldState.areSettingsOpen,
-                  drawer: false,
-                }))
-              }
+              searchDevices={this.props.searchDevices}
+              searchText={this.props.devicesSearchText}
+            />
+          </div>
+          {this.props.selectedDevice !== null ? (
+            <MainBodyHeader
+              deviceId={this.props.selectedDevice}
+              key="mainBodyHeader"
+              drawer={this.state.drawer}
+              changeDrawerState={this.changeDrawerState}
+              hiddenNotifications={this.state.hiddenNotifications}
+              showHiddenNotifications={this.showHiddenNotifications}
+              nightMode={nightMode}
+              devMode={devMode}
+              openSnackBar={() => {
+                this.setState({ copyMessageOpen: true })
+              }}
+              boardData={this.props.boardData}
               boards={this.props.boards}
             />
-            <div
-              className="sidebar"
-              key="sidebar"
-              style={
-                nightMode
-                  ? { background: "#21252b" }
-                  : { background: "#f2f2f2" }
-              }
-            >
-              <Sidebar
-                selectDevice={id => {
-                  this.props.selectDevice(id)
-                  this.setState({ drawer: false })
-                }}
-                selectedDevice={this.props.selectedDevice}
-                changeDrawerState={this.changeDrawerState}
-                boardData={this.props.boardData}
-                nightMode={nightMode}
-                selectedBoard={this.props.boardId}
-                searchDevices={this.props.searchDevices}
-                searchText={this.props.devicesSearchText}
-              />
-            </div>
-            {this.props.selectedDevice !== null ? (
-              <MainBodyHeader
+          ) : (
+            <div className="mainBodyHeader" key="mainBodyHeader" />
+          )}
+          {this.props.selectedDevice !== null ? (
+            <React.Fragment>
+              <MainBody
                 deviceId={this.props.selectedDevice}
-                key="mainBodyHeader"
-                drawer={this.state.drawer}
-                changeDrawerState={this.changeDrawerState}
-                hiddenNotifications={this.state.hiddenNotifications}
-                showHiddenNotifications={this.showHiddenNotifications}
+                showHidden={this.state.showMainHidden}
+                changeShowHiddenState={this.changeShowHiddenState}
                 nightMode={nightMode}
                 devMode={devMode}
-                openSnackBar={() => {
-                  this.setState({ copyMessageOpen: true })
-                }}
                 boardData={this.props.boardData}
+                isMobile={false}
                 boards={this.props.boards}
               />
-            ) : (
-              <div className="mainBodyHeader" key="mainBodyHeader" />
-            )}
-            {this.props.selectedDevice !== null ? (
-              board ? (
-                deviceIdList.includes(this.props.selectedDevice) ? (
-                  <React.Fragment>
-                    <MainBody
-                      deviceId={this.props.selectedDevice}
-                      showHidden={this.state.showMainHidden}
-                      changeShowHiddenState={this.changeShowHiddenState}
-                      nightMode={nightMode}
-                      devMode={devMode}
-                      boardData={this.props.boardData}
-                      isMobile={false}
-                      boards={this.props.boards}
-                    />
-                    <StatusBar
-                      boardData={this.props.boardData}
-                      deviceId={this.props.selectedDevice}
-                      nightMode={nightMode}
-                      isMobile={false}
-                    />
-                  </React.Fragment>
-                ) : (
-                  <Redirect
-                    exact
-                    to={
-                      this.props.boardId
-                        ? "/dashboard?board=" + this.props.boardId
-                        : "/dashboard"
-                    }
-                  />
-                )
-              ) : (
-                ""
-              )
-            ) : (
-              <React.Fragment>
-                <div
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { background: "#2f333d" }
-                      : { background: "white" }
-                  }
-                  className="mainBody"
-                >
-                  <div
-                    className={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? "darkMainBodyBG"
-                        : "mainBodyBG"
-                    }
-                    style={{ width: "100%", height: "100%" }}
-                  />
-                </div>
-                <div
-                  className="statusBar"
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { background: "#2f333d" }
-                      : { background: "white" }
-                  }
-                />
-              </React.Fragment>
-            )}
-          </div>
-        </Online>
-        <Offline key="offlineMainBody">
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              backgroundColor: "#0057cb",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                margin: "auto",
-                textAlign: "center",
-                width: "400px",
-              }}
-            >
-              <Typography variant="display1" style={{ color: "white" }}>
-                You are not connected,
-                <br />
-                try again in a while
-              </Typography>
-              <br />
-              <br />
-              <br />
-              <br />
-              <img
-                alt="Sleeping Polar Bear"
-                src={polarBear}
-                className="notSelectable"
+              <StatusBar
+                boardData={this.props.boardData}
+                deviceId={this.props.selectedDevice}
+                nightMode={nightMode}
+                isMobile={false}
               />
-              <br />
-              <br />
-              <br />
-              <br />
-              <Typography
-                variant="headline"
-                gutterBottom
-                style={{ color: "white" }}
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <div
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { background: "#2f333d" }
+                    : { background: "white" }
+                }
+                className="mainBody"
               >
-                In the meantime,
-                <br />
-                why don't you have a nap?
-              </Typography>
-            </div>
-          </div>
-        </Offline>
-        {this.state.redirectTo &&
-          board && (
+                <div
+                  className={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? "darkMainBodyBG"
+                      : "mainBodyBG"
+                  }
+                  style={{ width: "100%", height: "100%" }}
+                />
+              </div>
+              <div
+                className="statusBar"
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { background: "#2f333d" }
+                    : { background: "white" }
+                }
+              />
+            </React.Fragment>
+          )}
+        </div>
+        {this.state.redirectTo && board && (
+          <Redirect
+            push
+            to={
+              "/dashboard?board=" +
+              board.id +
+              "&device=" +
+              this.state.redirectTo
+            }
+          />
+        )}
+        {this.state.deselectDevice && board && (
+          <Redirect push to={"/dashboard?board=" + board.id} />
+        )}
+        {board &&
+          this.props.boards &&
+          !deviceIdList.includes(this.props.selectedDevice) && (
             <Redirect
-              push
+              exact
               to={
-                "/dashboard?board=" +
-                board.id +
-                "&device=" +
-                this.state.redirectTo
+                this.props.boardId
+                  ? "/dashboard?board=" + this.props.boardId
+                  : "/dashboard"
               }
             />
           )}
-        {this.state.deselectDevice &&
-          board && <Redirect push to={"/dashboard?board=" + board.id} />}
       </React.Fragment>
     )
   }

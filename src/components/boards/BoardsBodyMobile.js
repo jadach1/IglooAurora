@@ -61,11 +61,11 @@ class BoardsBodyMobile extends Component {
       yourBoardsList = "Unexpected error"
     }
 
-    if (user) {
-      nightMode =
-        typeof Storage !== "undefined" &&
-        localStorage.getItem("nightMode") === "true"
+    nightMode =
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("nightMode") === "true"
 
+    if (user) {
       yourBoardsList = user.boards
         .filter(board => board.myRole === "OWNER")
         .filter(board =>
@@ -127,16 +127,16 @@ class BoardsBodyMobile extends Component {
                     backgroundColor: "#21252b",
                   }
               : boardsList[0] && yourBoardsList[0]
-                ? {
-                    width: "100vw",
-                    height: "calc(100vh - 128px)",
-                    backgroundColor: "#f2f2f2",
-                  }
-                : {
-                    width: "100vw",
-                    height: "calc(100vh - 64px)",
-                    backgroundColor: "#f2f2f2",
-                  }
+              ? {
+                  width: "100vw",
+                  height: "calc(100vh - 128px)",
+                  backgroundColor: "#f2f2f2",
+                }
+              : {
+                  width: "100vw",
+                  height: "calc(100vh - 64px)",
+                  backgroundColor: "#f2f2f2",
+                }
           }
         >
           <div
@@ -179,8 +179,8 @@ class BoardsBodyMobile extends Component {
                               ? { color: "white" }
                               : { color: "white", opacity: "0.5" }
                             : user && user.boards[0]
-                              ? { color: "black" }
-                              : { color: "black", opacity: "0.5" }
+                            ? { color: "black" }
+                            : { color: "black", opacity: "0.5" }
                         }
                       >
                         search
@@ -206,6 +206,7 @@ class BoardsBodyMobile extends Component {
               </FormControl>
             </MuiThemeProvider>
           </div>
+          {error && "Unexpected error"}
           {loading && (
             <div
               style={{
@@ -223,10 +224,19 @@ class BoardsBodyMobile extends Component {
                 onChangeIndex={this.handleSettingsTabChanged}
               >
                 <div
-                  style={{
-                    overflowY: "auto",
-                    height: "calc(100vh - 192px)",
-                  }}
+                  style={
+                    nightMode
+                      ? {
+                          overflowY: "auto",
+                          height: "calc(100vh - 192px)",
+                          background: "#21252b",
+                        }
+                      : {
+                          overflowY: "auto",
+                          height: "calc(100vh - 192px)",
+                          background: "#f2f2f2",
+                        }
+                  }
                 >
                   <Typography
                     variant="display1"
@@ -459,63 +469,61 @@ class BoardsBodyMobile extends Component {
                 No boards UI
               </div>
             )}
-          {user &&
-            yourBoardsList[0] &&
-            boardsList[0] && (
-              <AppBar
-                position="static"
-                style={{
-                  marginBottom: "0px",
-                  marginTop: "auto",
-                  height: "64px",
-                }}
+          {user && boardsList[0] && (
+            <AppBar
+              position="static"
+              style={{
+                marginBottom: "0px",
+                marginTop: "auto",
+                height: "64px",
+              }}
+            >
+              <BottomNavigation
+                color="primary"
+                onChange={this.handleSettingsTabChanged}
+                value={this.state.slideIndex}
+                showLabels
+                style={
+                  nightMode
+                    ? {
+                        height: "64px",
+                        backgroundColor: "#2f333d",
+                      }
+                    : {
+                        height: "64px",
+                        backgroundColor: "#fff",
+                      }
+                }
               >
-                <BottomNavigation
-                  color="primary"
-                  onChange={this.handleSettingsTabChanged}
-                  value={this.state.slideIndex}
-                  showLabels
+                <BottomNavigationAction
+                  icon={<Icon>person</Icon>}
+                  label="Your boards"
                   style={
                     nightMode
-                      ? {
-                          height: "64px",
-                          backgroundColor: "#2f333d",
-                        }
-                      : {
-                          height: "64px",
-                          backgroundColor: "#fff",
-                        }
+                      ? this.state.slideIndex === 0
+                        ? { color: "#fff" }
+                        : { color: "#fff", opacity: 0.5 }
+                      : this.state.slideIndex === 0
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
                   }
-                >
-                  <BottomNavigationAction
-                    icon={<Icon>person</Icon>}
-                    label="Your boards"
-                    style={
-                      nightMode
-                        ? this.state.slideIndex === 0
-                          ? { color: "#fff" }
-                          : { color: "#fff", opacity: 0.5 }
-                        : this.state.slideIndex === 0
-                          ? { color: "#0083ff" }
-                          : { color: "#757575" }
-                    }
-                  />
-                  <BottomNavigationAction
-                    icon={<Icon>group</Icon>}
-                    label="Shared with you"
-                    style={
-                      nightMode
-                        ? this.state.slideIndex === 1
-                          ? { color: "#fff" }
-                          : { color: "#fff", opacity: 0.5 }
-                        : this.state.slideIndex === 1
-                          ? { color: "#0083ff" }
-                          : { color: "#757575" }
-                    }
-                  />
-                </BottomNavigation>
-              </AppBar>
-            )}
+                />
+                <BottomNavigationAction
+                  icon={<Icon>group</Icon>}
+                  label="Shared with you"
+                  style={
+                    nightMode
+                      ? this.state.slideIndex === 1
+                        ? { color: "#fff" }
+                        : { color: "#fff", opacity: 0.5 }
+                      : this.state.slideIndex === 1
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
+                  }
+                />
+              </BottomNavigation>
+            </AppBar>
+          )}
         </div>
         <CreateBoard
           open={this.state.createOpen}

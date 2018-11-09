@@ -13,6 +13,8 @@ import BoardsMobile from "./BoardsMobile"
 import EmailNotVerified from "./components/EmailNotVerified"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import GenericDialog from "./components/GenericDialog"
+import { Online, Offline } from "react-detect-offline"
+import OfflineScreen from "./OfflineScreen"
 
 let systemLang = navigator.language || navigator.userLanguage
 
@@ -471,6 +473,7 @@ class GraphQLFetcher extends Component {
                 this.setState({ devicesSearchText: text })
               }}
               devicesSearchText={this.state.devicesSearchText}
+              forceUpdate={() => this.forceUpdate()}
             />
           )
         } else {
@@ -499,6 +502,7 @@ class GraphQLFetcher extends Component {
                 this.setState({ devicesSearchText: text })
               }}
               devicesSearchText={this.state.devicesSearchText}
+              forceUpdate={() => this.forceUpdate()}
             />
           )
         }
@@ -516,6 +520,7 @@ class GraphQLFetcher extends Component {
             closeSettings={() => this.setState({ areSettingsOpen: false })}
             areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
+            forceUpdate={() => this.forceUpdate()}
           />
         )
       }
@@ -557,6 +562,7 @@ class GraphQLFetcher extends Component {
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("devMode") === "true"
               }
+              forceUpdate={() => this.forceUpdate()}
             />
           )
         } else {
@@ -585,6 +591,7 @@ class GraphQLFetcher extends Component {
                 this.setState({ devicesSearchText: text })
               }}
               devicesSearchText={this.state.devicesSearchText}
+              forceUpdate={() => this.forceUpdate()}
             />
           )
         }
@@ -602,6 +609,7 @@ class GraphQLFetcher extends Component {
             closeSettings={() => this.setState({ areSettingsOpen: false })}
             areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
+            forceUpdate={() => this.forceUpdate()}
           />
         )
       }
@@ -609,26 +617,33 @@ class GraphQLFetcher extends Component {
 
     return (
       <MuiThemeProvider>
-        <Switch>
-          <Route
-            exact
-            strict
-            path="/dashboard"
-            render={this.props.isMobile ? MainMobileSelected : MainSelected}
-          />
-          <Route
-            exact
-            path="/dashboard/"
-            render={() => <Redirect to="/dashboard" />}
-          />
-          <Route
-            render={() =>
-              this.props.isMobile ? <MobileError404 /> : <Error404 />
-            }
-          />
-        </Switch>
-        {!emailIsVerified && <EmailNotVerified mobile={this.props.isMobile} />}
-        <GenericDialog />
+        <Online onChange={() => this.forceUpdate()}>
+          <Switch>
+            <Route
+              exact
+              strict
+              path="/dashboard"
+              render={this.props.isMobile ? MainMobileSelected : MainSelected}
+            />
+            <Route
+              exact
+              path="/dashboard/"
+              render={() => <Redirect to="/dashboard" />}
+            />
+            <Route
+              render={() =>
+                this.props.isMobile ? <MobileError404 /> : <Error404 />
+              }
+            />
+          </Switch>
+          {user && !emailIsVerified && (
+            <EmailNotVerified mobile={this.props.isMobile} />
+          )}
+          <GenericDialog />
+        </Online>
+        <Offline>
+          <OfflineScreen />
+        </Offline>
       </MuiThemeProvider>
     )
   }

@@ -438,13 +438,11 @@ class MainBodyHeader extends Component {
                 <IconButton
                   onClick={this.handleMenuOpen}
                   disabled={
-                    !(
-                      device &&
-                      device.id &&
-                      device.createdAt &&
-                      device.board.id &&
-                      device.updatedAt
-                    )
+                    device &&
+                    !device.id &&
+                    !device.createdAt &&
+                    !device.board.id &&
+                    !device.updatedAt
                   }
                   color="primary"
                 >

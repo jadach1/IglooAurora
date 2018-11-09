@@ -93,22 +93,13 @@ class SidebarHeader extends Component {
             )[0].customName}
         </Typography>
         <div
-          style={
-            this.props.user
-              ? {
-                  padding: "0",
-                  marginLeft: "auto",
-                  marginRight: "8px",
-                  float: "right",
-                  minWidth: "96px",
-                }
-              : {
-                  padding: "0",
-                  marginLeft: "auto",
-                  marginRight: "8px",
-                  float: "right",
-                }
-          }
+          style={{
+            padding: "0",
+            marginLeft: "auto",
+            marginRight: "8px",
+            float: "right",
+            minWidth: "96px",
+          }}
         >
           <MuiThemeProvider theme={theme}>
             {/* <a href="drekar.igloo.ooo">

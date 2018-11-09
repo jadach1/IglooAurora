@@ -4,9 +4,6 @@ import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import SignupMobile from "./components/unauthenticated/SignupMobile"
-import { Offline, Online } from "react-detect-offline"
-import Typography from "@material-ui/core/Typography"
-import polarBear from "./styles/assets/polarBear.svg"
 import Helmet from "react-helmet"
 
 class UnAuthenticatedApp extends Component {
@@ -52,84 +49,38 @@ class UnAuthenticatedApp extends Component {
         <Helmet>
           <title>Igloo Aurora - Sign up</title>
         </Helmet>
-        <Online>
-          <div
-            style={
-              window.innerHeight >= 690
-                ? {
-                    width: "100vw",
-                    height: "100vh",
-                    backgroundColor: "#0057cb",
-                  }
-                : {
-                    width: "100vw",
-                    height: "100vh",
-                    backgroundColor: "#0057cb",
-                  }
-            }
-          >
-            <div style={{ marginRight: "32px", marginLeft: "32px" }}>
-              <SignupMobile
-                client={this.client}
-                signup={this.props.signup}
-                signIn={this.props.signIn}
-                email={this.props.email}
-                password={this.props.password}
-                fullName={this.props.fullName}
-                emailError={this.props.emailError}
-                changeEmail={this.props.changeEmail}
-                changePassword={this.props.changePassword}
-                changeFullName={this.props.changeFullName}
-                changeEmailError={this.props.changeEmailError}
-                changeLoginEmail={this.props.changeLoginEmail}
-              />
-            </div>
+        <div
+          style={
+            window.innerHeight >= 690
+              ? {
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "#0057cb",
+                }
+              : {
+                  width: "100vw",
+                  height: "100vh",
+                  backgroundColor: "#0057cb",
+                }
+          }
+        >
+          <div style={{ marginRight: "32px", marginLeft: "32px" }}>
+            <SignupMobile
+              client={this.client}
+              signup={this.props.signup}
+              signIn={this.props.signIn}
+              email={this.props.email}
+              password={this.props.password}
+              fullName={this.props.fullName}
+              emailError={this.props.emailError}
+              changeEmail={this.props.changeEmail}
+              changePassword={this.props.changePassword}
+              changeFullName={this.props.changeFullName}
+              changeEmailError={this.props.changeEmailError}
+              changeLoginEmail={this.props.changeLoginEmail}
+            />
           </div>
-        </Online>
-        <Offline>
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              backgroundColor: "#0057cb",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <div
-              style={{
-                margin: "auto",
-                textAlign: "center",
-                width: "80vw",
-              }}
-            >
-              <Typography variant="headline" style={{ color: "white" }}>
-                You are not connected, try again in a while
-              </Typography>
-              <br />
-              <br />
-              <br />
-              <br />
-              <img
-                alt="Sleeping Polar Bear"
-                src={polarBear}
-                className="notSelectable"
-              />
-              <br />
-              <br />
-              <br />
-              <br />
-              <Typography
-                variant="title"
-                gutterBottom
-                style={{ color: "white" }}
-              >
-                In the meantime, why don't you have a nap?
-              </Typography>
-            </div>
-          </div>
-        </Offline>
+        </div>
       </MuiThemeProvider>
     )
   }
