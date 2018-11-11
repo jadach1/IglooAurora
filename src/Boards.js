@@ -66,6 +66,7 @@ class Boards extends Component {
           slideIndex={this.state.slideIndex}
           userData={this.props.userData}
           forceUpdate={this.props.forceUpdate}
+          logOut={this.props.logOut}
         />
       </React.Fragment>
     )

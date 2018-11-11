@@ -256,21 +256,6 @@ class SettingsDialog extends React.Component {
       }
     }
 
-    let nightModeSetting = typeof Storage !== "undefined" && (
-      <ListItem
-        primaryText="Night mode"
-        rightToggle={
-          <Toggle
-            thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-            trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-            rippleStyle={{ color: "#0083ff" }}
-            defaultToggled={localStorage.getItem("nightMode") === "true"}
-            onToggle={toggleNightMode}
-          />
-        }
-      />
-    )
-
     let quietModeSetting = (
       <ListItem
         primaryText="Quiet mode"
@@ -405,7 +390,19 @@ class SettingsDialog extends React.Component {
         <div style={listStyles.root}>
           <List style={{ width: "100%", padding: "0" }}>
             <Subheader style={{ cursor: "default" }}>Appearance</Subheader>
-            {nightModeSetting}
+            <ListItem
+              primaryText="Night mode"
+              disabled={typeof Storage === "undefined"}
+              rightToggle={
+                <Toggle
+                  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
+                  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
+                  rippleStyle={{ color: "#0083ff" }}
+                  defaultToggled={localStorage.getItem("nightMode") === "true"}
+                  onToggle={toggleNightMode}
+                />
+              }
+            />
             <Divider />
             <Subheader style={{ cursor: "default" }}>Notifications</Subheader>
             {quietModeSetting}
@@ -448,6 +445,7 @@ class SettingsDialog extends React.Component {
             />
             <ListItem
               primaryText="Developer mode"
+              disabled={typeof Storage === "undefined"}
               rightToggle={
                 <Toggle
                   thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
@@ -955,6 +953,7 @@ rightToggle={
         <ChangeServer
           open={this.props.isOpen && this.state.serverOpen}
           close={() => this.setState({ serverOpen: false })}
+          logOut={this.props.logOut}
           forceUpdate={() => this.props.forceUpdate()}
         />
         <VerifyEmailDialog

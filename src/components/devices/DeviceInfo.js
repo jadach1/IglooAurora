@@ -41,7 +41,7 @@ class DeviceInfo extends React.Component {
           <b>Created: </b>
           <Moment fromNow>
             {moment.utc(
-              this.props.createdAt.split(".")[0],
+              this.props.device.createdAt.split(".")[0],
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
@@ -50,7 +50,7 @@ class DeviceInfo extends React.Component {
           <b>Last updated: </b>
           <Moment fromNow>
             {moment.utc(
-              this.props.updatedAt.split(".")[0],
+              this.props.device.updatedAt.split(".")[0],
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
@@ -58,13 +58,13 @@ class DeviceInfo extends React.Component {
             <React.Fragment>
               <br />
               <br />
-              <b>ID: </b> {this.props.id}
-              {this.props.firmware && (
+              <b>ID: </b> {this.props.device.id}
+              {this.props.device.firmware && (
                 <React.Fragment>
                   <br />
                   <br />
                   <b>Firmware: </b>
-                  {this.props.firmware}
+                  {this.props.device.firmware}
                 </React.Fragment>
               )}
             </React.Fragment>
