@@ -311,8 +311,24 @@ class NotificationsDrawer extends React.Component {
         <List style={{ padding: "0" }}>
           {cleanedNotificationsSections.map(section => (
             <li>
-              <ListSubheader style={{ backgroundColor: "white" }}>
-                {section}
+              <ListSubheader
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { backgroundColor: "#2f333d" }
+                    : { backgroundColor: "white" }
+                }
+              >
+                <span
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "#c1c2c5" }
+                      : { color: "#7a7a7a" }
+                  }
+                >
+                  {section}
+                </span>
               </ListSubheader>
               {device.notifications &&
                 device.notifications
@@ -329,22 +345,53 @@ class NotificationsDrawer extends React.Component {
                       button
                     >
                       <ListItemText
-                        primary={notification.content}
+                        primary={
+                          <span
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
+                          >
+                            notification.content
+                          </span>
+                        }
                         secondary={
-                          <Moment fromNow>
-                            {moment.utc(
-                              notification.date.split(".")[0],
-                              "YYYY-MM-DDTh:mm:ss"
-                            )}
-                          </Moment>
+                          <span
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "#c1c2c5" }
+                                : { color: "#7a7a7a" }
+                            }
+                          >
+                            <Moment fromNow>
+                              {moment.utc(
+                                notification.date.split(".")[0],
+                                "YYYY-MM-DDTh:mm:ss"
+                              )}
+                            </Moment>
+                          </span>
                         }
                       />
                       <ListItemSecondaryAction>
-                        <IconButton
-                          onClick={() => deleteNotification(notification.id)}
-                        >
-                          <i class="material-icons">delete</i>
-                        </IconButton>
+                        <Tooltip title="Delete" placement="bottom">
+                          <IconButton
+                            onClick={() => deleteNotification(notification.id)}
+                          >
+                            <Icon
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
+                            >
+                              delete
+                            </Icon>{" "}
+                          </IconButton>
+                        </Tooltip>
                       </ListItemSecondaryAction>
                     </ListItem>
                   ))
@@ -367,8 +414,24 @@ class NotificationsDrawer extends React.Component {
         <List style={{ padding: "0" }}>
           {cleanedReadNotificationsSections.map(section => (
             <li>
-              <ListSubheader style={{ backgroundColor: "white" }}>
-                {section}
+              <ListSubheader
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { backgroundColor: "#2f333d" }
+                    : { backgroundColor: "white" }
+                }
+              >
+                <span
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "#c1c2c5" }
+                      : { color: "#7a7a7a" }
+                  }
+                >
+                  {section}
+                </span>
               </ListSubheader>
               {device.notifications &&
                 device.notifications
@@ -383,14 +446,34 @@ class NotificationsDrawer extends React.Component {
                       id={notification.id}
                     >
                       <ListItemText
-                        primary={notification.content}
+                        primary={
+                          <span
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
+                          >
+                            notification.content
+                          </span>
+                        }
                         secondary={
-                          <Moment fromNow>
-                            {moment.utc(
-                              notification.date.split(".")[0],
-                              "YYYY-MM-DDTh:mm:ss"
-                            )}
-                          </Moment>
+                          <span
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "#c1c2c5" }
+                                : { color: "#7a7a7a" }
+                            }
+                          >
+                            <Moment fromNow>
+                              {moment.utc(
+                                notification.date.split(".")[0],
+                                "YYYY-MM-DDTh:mm:ss"
+                              )}
+                            </Moment>
+                          </span>
                         }
                       />
                       <ListItemSecondaryAction>
@@ -403,7 +486,16 @@ class NotificationsDrawer extends React.Component {
                               })
                             }
                           >
-                            <i class="material-icons">more_vert</i>
+                            <Icon
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
+                            >
+                              more_vert
+                            </Icon>
                           </IconButton>
                         </Tooltip>
                       </ListItemSecondaryAction>
@@ -465,9 +557,12 @@ class NotificationsDrawer extends React.Component {
               this.props.hiddenNotifications
                 ? typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                  ? { backgroundColor: "#282c34" }
-                  : { backgroundColor: "#d4d4d4" }
-                : null
+                  ? { backgroundColor: "#282c34", color: "white" }
+                  : { backgroundColor: "#d4d4d4", color: "black" }
+                : typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                ? { backgroundColor: "transparent", color: "white" }
+                : { backgroundColor: "transparent", color: "black" }
             }
           />
         )
@@ -541,7 +636,6 @@ class NotificationsDrawer extends React.Component {
                       this.props.changeDrawerState()
                     }
               }
-              disabled={!this.props.completeDevice}
             >
               {notificationCount ? (
                 <Badge badgeContent={notificationCount} color="primary">

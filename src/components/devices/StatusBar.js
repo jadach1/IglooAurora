@@ -59,7 +59,6 @@ export default class StatusBar extends Component {
         }
         className="notSelectable statusBar defaultCursor"
       >
-        {" "}
         <div
           style={{
             paddingLeft: "16px",
@@ -230,11 +229,36 @@ export default class StatusBar extends Component {
     )
 
     if (this.props.isMobile)
-      return (
-        <AppBar position="static" color="default">
-          {statusBarContent}
-        </AppBar>
-      )
+      if (deviceStatus)
+        return (
+          <AppBar position="static" color="default">
+            {statusBarContent}
+          </AppBar>
+        )
+      else
+        return (
+          <AppBar position="static" color="default" style={{ height: "48px" }}>
+            <div
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? {
+                      background: "#2f333d",
+                      color: "white",
+                      height: "100%",
+                      width: "100vw",
+                    }
+                  : {
+                      background: "white",
+                      color: "black",
+                      height: "100%",
+                      width: "100vw",
+                    }
+              }
+              className="notSelectable statusBar defaultCursor"
+            />
+          </AppBar>
+        )
 
     return statusBarContent
   }
