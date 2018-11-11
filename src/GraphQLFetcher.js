@@ -300,6 +300,51 @@ class GraphQLFetcher extends Component {
       document: subscribeToUserUpdates,
     })
 
+    const deviceSubscriptionQuery = gql`
+      subscription {
+        deviceCreated {
+          id
+          index
+          customName
+          icon
+          online
+          batteryStatus
+          batteryCharging
+          signalStatus
+          deviceType
+          createdAt
+          updatedAt
+          notificationsCount
+          notifications {
+            id
+            content
+            visualized
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: deviceSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newDevices = [
+          ...prev.user.devices,
+          subscriptionData.data.deviceCreated,
+        ]
+
+        return {
+          user: {
+            ...prev.user,
+            devices: newDevices,
+          },
+        }
+      },
+    })
+
     const tokenSubscriptionQuery = gql`
       subscription {
         permanentTokenCreated {

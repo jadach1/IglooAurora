@@ -198,33 +198,21 @@ class Main extends Component {
       subscription {
         deviceUpdated {
           id
-          myRole
+          index
+          customName
+          icon
+          online
           batteryStatus
           batteryCharging
           signalStatus
-          owner {
+          deviceType
+          createdAt
+          updatedAt
+          notificationsCount
+          notifications {
             id
-            email
-            fullName
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            fullName
-            profileIconColor
+            content
+            visualized
           }
         }
       }
@@ -358,6 +346,7 @@ class Main extends Component {
             slideIndex={this.state.slideIndex}
             nightMode={nightMode}
             userData={this.props.userData}
+            logOut={this.props.logOut}
             forceUpdate={this.props.forceUpdate}
           />
           <div className="invisibleHeader" key="invisibleHeader" />

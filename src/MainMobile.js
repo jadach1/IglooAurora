@@ -483,6 +483,7 @@ class MainMobile extends Component {
                 handleChangeBTIndex={this.handleChangeBTIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
+            logOut={this.props.logOut}
                 forceUpdate={this.props.forceUpdate}
               />
               <AppBar position="sticky">
@@ -537,6 +538,7 @@ class MainMobile extends Component {
                 handleChangeBTIndex={this.handleChangeBTIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
+            logOut={this.props.logOut}
                 forceUpdate={this.props.forceUpdate}
               />
               <AppBar>
@@ -561,6 +563,7 @@ class MainMobile extends Component {
                   areSettingsOpen={this.props.areSettingsOpen}
                   openSettingsDialog={this.props.openSettings}
                   closeSettings={this.props.closeSettings}
+                  boards={this.props.boards}
                 />
               </AppBar>
               <div

@@ -56,7 +56,7 @@ export default class ChangePasswordDialog extends React.Component {
 
       oldUrl = this.state.url
 
-      this.props.forceUpdate()
+      this.props.logOut()
       this.props.close()
     }
 

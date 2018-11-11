@@ -73,17 +73,19 @@ class MainBodyHeader extends Component {
             height: "64px",
           }}
         >
-          {this.props.boardData.board &&
-          this.props.boardData.board.devices.filter(
-            device => device.id === this.props.deviceId
-          )[0].icon ? (
+          {(this.props.boardData.board &&
+            this.props.boardData.board.devices.filter(
+              device => device.id === this.props.deviceId
+            )[0].icon) ||
+          (device && device.icon) ? (
             <img
               className="deviceIconBig"
               src={
-                this.props.boardData.board &&
-                this.props.boardData.board.devices.filter(
-                  device => device.id === this.props.deviceId
-                )[0].icon
+                (this.props.boardData.board &&
+                  this.props.boardData.board.devices.filter(
+                    device => device.id === this.props.deviceId
+                  )[0].icon) ||
+                (device && device.icon)
               }
               alt="device logo"
             />
@@ -107,10 +109,11 @@ class MainBodyHeader extends Component {
               lineHeight: "64px",
             }}
           >
-            {this.props.boardData.board &&
+            {(this.props.boardData.board &&
               this.props.boardData.board.devices.filter(
                 device => device.id === this.props.deviceId
-              )[0].customName}
+              )[0].customName) ||
+              (device && device.customName)}
           </Typography>
           <div
             style={{
@@ -121,7 +124,11 @@ class MainBodyHeader extends Component {
               gridArea: "buttons",
             }}
           >
-            {device && (
+            {(device ||
+              (this.props.boardData.board &&
+                this.props.boardData.board.devices.filter(
+                  device => device.id === this.props.deviceId
+                )[0])) && (
               <Menu
                 id="simple-menu"
                 anchorEl={this.state.anchorEl}
@@ -244,7 +251,17 @@ class MainBodyHeader extends Component {
                     </MenuItem>
                   </CopyToClipboard>
                         )} */}
-                {device.quietMode ? (
+                {(device && device.quietMode) ||
+                ((device ||
+                  (this.props.boardData.board &&
+                    this.props.boardData.board.devices.filter(
+                      device => device.id === this.props.deviceId
+                    )[0])) &&
+                  (device ||
+                    (this.props.boardData.board &&
+                      this.props.boardData.board.devices.filter(
+                        device => device.id === this.props.deviceId
+                      )[0]))) ? (
                   <MenuItem
                     className="notSelectable"
                     style={
@@ -302,35 +319,36 @@ class MainBodyHeader extends Component {
                   </MenuItem>
                 )}
                 <Divider />
-                {this.props.boards && this.props.boards.length > 1 && (
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                    onClick={() => {
-                      this.setState({ changeBoardOpen: true })
-                      this.handleMenuClose()
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Icon
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        swap_horiz
-                      </Icon>
-                    </ListItemIcon>
-                    <ListItemText inset primary="Change board" />
-                  </MenuItem>
-                )}
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ changeBoardOpen: true })
+                    this.handleMenuClose()
+                  }}
+                  disabled={
+                    !(this.props.boards && this.props.boards.length > 1)
+                  }
+                >
+                  <ListItemIcon>
+                    <Icon
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      swap_horiz
+                    </Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Change board" />
+                </MenuItem>
                 {/*
                 {device.values.length > 1 && (
                   <MenuItem
@@ -412,10 +430,11 @@ class MainBodyHeader extends Component {
             )}
             <NotificationsDrawer
               completeDevice={
-                this.props.boardData.board &&
-                this.props.boardData.board.devices.filter(
-                  device => device.id === this.props.deviceId
-                )[0]
+                (this.props.boardData.board &&
+                  this.props.boardData.board.devices.filter(
+                    device => device.id === this.props.deviceId
+                  )[0]) ||
+                device
               }
               deviceId={this.props.deviceId}
               drawer={this.props.drawer}
@@ -438,11 +457,17 @@ class MainBodyHeader extends Component {
                 <IconButton
                   onClick={this.handleMenuOpen}
                   disabled={
-                    device &&
-                    !device.id &&
-                    !device.createdAt &&
-                    !device.board.id &&
-                    !device.updatedAt
+                    !(
+                      (this.props.boardData.board &&
+                        this.props.boardData.board.devices.filter(
+                          device => device.id === this.props.deviceId
+                        )[0] &&
+                        this.props.boardData.board &&
+                        this.props.boardData.board.devices.filter(
+                          device => device.id === this.props.deviceId
+                        )[0].id) ||
+                      (device && device.id)
+                    )
                   }
                   color="primary"
                 >
@@ -452,40 +477,85 @@ class MainBodyHeader extends Component {
             </MuiThemeProvider>
           </div>
         </div>
-        {device &&
-          device.id &&
-          device.createdAt &&
-          device.updatedAt &&
-          device.board.id && (
-            <React.Fragment>
-              <DeviceInfo
-                infoOpen={this.state.infoOpen}
-                close={() => this.setState({ infoOpen: false })}
-                id={device.id}
-                firmware={device.firmware}
-                updatedAt={device.updatedAt}
-                createdAt={device.createdAt}
-                devMode={this.props.devMode}
-              />
-              <ChangeBoard
-                open={this.state.changeBoardOpen}
-                close={() => this.setState({ changeBoardOpen: false })}
-                userData={this.props.userData}
-                device={device}
-                boards={this.props.boards}
-              />
-              <RenameDevice
-                open={this.state.renameOpen}
-                close={() => this.setState({ renameOpen: false })}
-                device={device}
-              />
-              <DeleteDevice
-                open={this.state.deleteOpen}
-                close={() => this.setState({ deleteOpen: false })}
-                device={device}
-              />
-            </React.Fragment>
-          )}
+        {((this.props.boardData.board &&
+          this.props.boardData.board.devices.filter(
+            device => device.id === this.props.deviceId
+          )[0] &&
+          this.props.boardData.board.devices.filter(
+            device => device.id === this.props.deviceId
+          )[0].id &&
+          this.props.boardData.board.devices.filter(
+            device => device.id === this.props.deviceId
+          )[0].createdAt &&
+          this.props.boardData.board.devices.filter(
+            device => device.id === this.props.deviceId
+          )[0].updatedAt) ||
+          (device && device.id && device.createdAt && device.updatedAt)) && (
+          <DeviceInfo
+            infoOpen={this.state.infoOpen}
+            close={() => this.setState({ infoOpen: false })}
+            device={
+              device ||
+              (this.props.boardData.board &&
+                this.props.boardData.board.devices.filter(
+                  device => device.id === this.props.deviceId
+                )[0])
+            }
+            devMode={this.props.devMode}
+          />
+        )}
+        {((this.props.boardData.board &&
+          this.props.boardData.board.devices.filter(
+            device => device.id === this.props.deviceId
+          )[0] &&
+          this.props.boardData.board.devices.filter(
+            device => device.id === this.props.deviceId
+          )[0].id &&
+          this.props.boardData.board.devices.filter(
+            device => device.id === this.props.deviceId
+          )[0].board &&
+          this.props.boardData.board.devices.filter(
+            device => device.id === this.props.deviceId
+          )[0].board.id) ||
+          (device && device.id && device.board && device.board.id)) && (
+          <ChangeBoard
+            open={this.state.changeBoardOpen}
+            close={() => this.setState({ changeBoardOpen: false })}
+            userData={this.props.userData}
+            device={
+              device ||
+              (this.props.boardData.board &&
+                this.props.boardData.board.devices.filter(
+                  device => device.id === this.props.deviceId
+                )[0])
+            }
+            boards={this.props.boards}
+          />
+        )}
+        {device && device.customName && (
+          <RenameDevice
+            open={this.state.renameOpen}
+            close={() => this.setState({ renameOpen: false })}
+            device={
+              device ||
+              (this.props.boardData.board &&
+                this.props.boardData.board.devices.filter(
+                  device => device.id === this.props.deviceId
+                )[0])
+            }
+          />
+        )}
+        <DeleteDevice
+          open={this.state.deleteOpen}
+          close={() => this.setState({ deleteOpen: false })}
+          device={
+            device ||
+            (this.props.boardData.board &&
+              this.props.boardData.board.devices.filter(
+                device => device.id === this.props.deviceId
+              )[0])
+          }
+        />
       </React.Fragment>
     )
   }
