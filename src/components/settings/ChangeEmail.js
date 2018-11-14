@@ -150,19 +150,19 @@ class ChangeMailDialog extends React.Component {
                         >
                           {/* fix for ToggleIcon glitch on Edge */}
                           {document.documentMode ||
-                              /Edge/.test(navigator.userAgent) ? (
-                                this.state.showPassword ? (
-                                  <Icon>visibility_off</Icon>
-                                ) : (
-                                  <Icon>visibility</Icon>
-                                )
-                              ) : (
-                                <ToggleIcon
-                                  on={this.state.showPassword || false}
-                                  onIcon={<Icon>visibility_off</Icon>}
-                                  offIcon={<Icon>visibility</Icon>}
-                                />
-                              )}
+                          /Edge/.test(navigator.userAgent) ? (
+                            this.state.showPassword ? (
+                              <Icon>visibility_off</Icon>
+                            ) : (
+                              <Icon>visibility</Icon>
+                            )
+                          ) : (
+                            <ToggleIcon
+                              on={this.state.showPassword || false}
+                              onIcon={<Icon>visibility_off</Icon>}
+                              offIcon={<Icon>visibility</Icon>}
+                            />
+                          )}
                         </IconButton>
                       </InputAdornment>
                     ) : null
@@ -226,7 +226,7 @@ class ChangeMailDialog extends React.Component {
                     })
                   }
                   onKeyPress={event => {
-                    if (event.key === "Enter") this.signIn()
+                    if (event.key === "Enter") changeEmail(this.state.email)
                   }}
                   error={
                     this.state.emailError || this.state.isMailEmpty

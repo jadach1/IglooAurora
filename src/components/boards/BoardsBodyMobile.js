@@ -457,18 +457,6 @@ class BoardsBodyMobile extends Component {
                 </div>
               </div>
             ))}
-          {user &&
-            !user.boards.filter(board => board.myRole === "OWNER")[0] &&
-            !user.boards.filter(board => board.myRole !== "OWNER")[0] && (
-              <div
-                style={{
-                  overflowY: "auto",
-                  height: "calc(100vh - 192px)",
-                }}
-              >
-                No boards UI
-              </div>
-            )}
           {user && boardsList[0] && (
             <AppBar
               position="static"

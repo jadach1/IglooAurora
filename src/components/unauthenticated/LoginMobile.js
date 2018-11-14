@@ -161,17 +161,17 @@ export default class LoginMobile extends Component {
             style={
               this.state.height >= 690
                 ? {
-                    width: "200px",
-                    paddingTop: "75px",
-                    marginBottom: "75px",
+                    width: "192px",
+                    paddingTop: "72px",
+                    marginBottom: "72px",
                     display: "block",
                     marginLeft: "auto",
                     marginRight: "auto",
                   }
                 : {
-                    width: "150px",
-                    paddingTop: "50px",
-                    marginBottom: "50px",
+                    width: "144px",
+                    paddingTop: "48px",
+                    marginBottom: "48px",
                     display: "block",
                     marginLeft: "auto",
                     marginRight: "auto",
