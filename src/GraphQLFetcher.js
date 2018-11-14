@@ -412,6 +412,18 @@ class GraphQLFetcher extends Component {
 
   selectDevice = id => this.setState({ selectedDevice: id })
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.props.userData.user &&
+      nextProps.user &&
+      typeof Storage !== "undefined"
+    ) {
+      if (this.props.userData.user.email !== nextProps) {
+        localStorage.setItem("email", this.props.userData.user.email)
+      }
+    }
+  }
+
   render() {
     const {
       userData: { user },
