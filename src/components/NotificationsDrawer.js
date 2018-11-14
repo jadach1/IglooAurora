@@ -31,12 +31,15 @@ const theme = createMuiTheme({
   },
 })
 
-const sleep = time =>
-  new Promise((resolve, reject) => {
-    setTimeout(() => resolve(), time)
-  })
+let device
+
+let loading
+
+let error
 
 let unreadNotifications = []
+
+let notificationsToFlush = []
 
 class NotificationsDrawer extends React.Component {
   state = { showVisualized: false }
@@ -105,11 +108,16 @@ class NotificationsDrawer extends React.Component {
         }
         const newNotification = subscriptionData.data.notificationUpdated
 
+        if (notificationsToFlush.includes(newNotification.id)) {
+          newNotification.visualized = false
+        }
+
         const newNotifications = prev.device.notifications.map(notification =>
           notification.id === newNotification.id
             ? newNotification
             : notification
         )
+
         return {
           device: {
             ...prev.device,
@@ -147,27 +155,65 @@ class NotificationsDrawer extends React.Component {
     })
   }
 
-  render() {
-    const {
-      notifications: { loading, error, device },
-    } = this.props
-
-    let clearNotification = id => {
-      this.props["ClearNotification"]({
-        variables: {
+  clearNotification = id => {
+    this.props["ClearNotification"]({
+      variables: {
+        id: id,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        notification: {
           id: id,
+          visualized: true,
+          __typename: "Notification",
         },
-        optimisticResponse: {
-          __typename: "Mutation",
-          notification: {
-            id: id,
-            visualized: true,
-            __typename: "Notification",
-          },
-        },
+      },
+    })
+  }
+
+  clearAllNotifications = () => {
+    notificationsToFlush = device.notifications
+      .filter(
+        notification =>
+          notification.visualized === false &&
+          unreadNotifications.indexOf(notification.id) === -1
+      )
+      .map(notification => notification.id)
+
+    for (let i = 0; i < notificationsToFlush.length; i++) {
+      this.clearNotification(notificationsToFlush[i])
+    }
+  }
+
+  updateVisualizedNotifications = () => {
+    device.notifications.forEach(notification =>
+      Object.defineProperty(notification, "visualized", {
+        value: true,
+        writable: true,
+        configurable: true,
       })
+    )
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.drawer !== nextProps.drawer && nextProps.drawer) {
+      this.clearAllNotifications()
     }
 
+    if (this.props.notifications.error !== nextProps.notifications.error) {
+      error = nextProps.notifications.error
+    }
+
+    if (this.props.notifications.loading !== nextProps.notifications.loading) {
+      loading = nextProps.notifications.loading
+    }
+
+    if (this.props.notifications.device !== nextProps.notifications.device) {
+      device = nextProps.notifications.device
+    }
+  }
+
+  render() {
     let markAsUnread = id => {
       this.props["MarkAsUnread"]({
         variables: {
@@ -197,18 +243,6 @@ class NotificationsDrawer extends React.Component {
           },
         },
       })
-    }
-
-    let clearAllNotifications = () => {
-      const notificationsToFlush = device.notifications.filter(
-        notification =>
-          notification.visualized === false &&
-          unreadNotifications.indexOf(notification.id) === -1
-      )
-
-      for (let i = 0; i < notificationsToFlush.length; i++) {
-        clearNotification(notificationsToFlush[i].id)
-      }
     }
 
     let notifications = ""
@@ -341,8 +375,6 @@ class NotificationsDrawer extends React.Component {
                       className="notSelectable"
                       key={notification.id}
                       id={notification.id}
-                      onClick={() => clearNotification(notification.id)}
-                      button
                     >
                       <ListItemText
                         primary={
@@ -354,7 +386,7 @@ class NotificationsDrawer extends React.Component {
                                 : { color: "black" }
                             }
                           >
-                            notification.content
+                            {notification.content}
                           </span>
                         }
                         secondary={
@@ -455,7 +487,7 @@ class NotificationsDrawer extends React.Component {
                                 : { color: "black" }
                             }
                           >
-                            notification.content
+                            {notification.content}
                           </span>
                         }
                         secondary={
@@ -651,10 +683,10 @@ class NotificationsDrawer extends React.Component {
           variant="temporary"
           anchor="right"
           open={this.props.drawer}
-          onClose={async time => {
+          onClose={() => {
+            this.updateVisualizedNotifications()
+            notificationsToFlush = []
             this.props.changeDrawerState()
-            await sleep(200)
-            clearAllNotifications()
           }}
           swipeAreaWidth={0}
           disableBackdropTransition={false}
@@ -687,7 +719,6 @@ class NotificationsDrawer extends React.Component {
                     <IconButton
                       onClick={() => {
                         this.props.changeDrawerState()
-                        clearAllNotifications()
                       }}
                       style={{
                         color: "white",
