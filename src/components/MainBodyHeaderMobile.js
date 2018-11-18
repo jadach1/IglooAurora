@@ -628,34 +628,9 @@ export default graphql(
           icon
           updatedAt
           createdAt
-          myRole
           quietMode
           firmware
-          owner {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          notifications {
+                          notifications {
             id
             content
             date

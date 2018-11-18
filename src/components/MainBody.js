@@ -12,31 +12,6 @@ class MainBody extends Component {
       subscription {
         valueCreated {
           id
-          myRole
-          owner {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            fullName
-            profileIconColor
-          }
           values {
             id
             permission
@@ -102,31 +77,6 @@ class MainBody extends Component {
       subscription {
         valueUpdated {
           id
-          myRole
-          owner {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            fullName
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            fullName
-            profileIconColor
-          }
           values {
             id
             permission
@@ -217,8 +167,8 @@ class MainBody extends Component {
                   ? "mainBody darkMobileMainBodyBG"
                   : "mainBody darkMainBodyBG"
                 : this.props.isMobile
-                  ? "mainBody mobileMainBodyBG"
-                  : "mainBody mainBodyBG"
+                ? "mainBody mobileMainBodyBG"
+                : "mainBody mainBodyBG"
             }
             style={{ width: "100%", height: "100%" }}
           >
@@ -238,8 +188,8 @@ class MainBody extends Component {
                 ? "mainBody darkMobileMainBodyBG"
                 : "mainBody darkMainBodyBG"
               : this.props.isMobile
-                ? "mainBody mobileMainBodyBG"
-                : "mainBody mainBodyBG"
+              ? "mainBody mobileMainBodyBG"
+              : "mainBody mainBodyBG"
           }
         >
           An unexpected error occurred
@@ -296,8 +246,8 @@ class MainBody extends Component {
                 : { backgroundColor: "#d4d4d4", color: "black" }
               : typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
-                ? { backgroundColor: "transparent", color: "white" }
-                : { backgroundColor: "transparent", color: "black" }
+              ? { backgroundColor: "transparent", color: "white" }
+              : { backgroundColor: "transparent", color: "black" }
           }
         />,
         <div className="itemsList hiddenItems" key="hiddenTilesContainer">
@@ -340,8 +290,8 @@ class MainBody extends Component {
                 ? "mainBody darkMobileMainBodyBG"
                 : "mainBody darkMainBodyBG"
               : this.props.isMobile
-                ? "mainBody mobileMainBodyBG"
-                : "mainBody mainBodyBG"
+              ? "mainBody mobileMainBodyBG"
+              : "mainBody mainBodyBG"
           }
           style={{ width: "100%", height: "100%" }}
         >
@@ -361,34 +311,9 @@ export default graphql(
     query($id: ID!) {
       device(id: $id) {
         id
-        myRole
         batteryStatus
         batteryCharging
         signalStatus
-        owner {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        admins {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        editors {
-          id
-          email
-          fullName
-          profileIconColor
-        }
-        spectators {
-          id
-          email
-          fullName
-          profileIconColor
-        }
         values {
           id
           permission
@@ -400,13 +325,10 @@ export default graphql(
           createdAt
           device {
             id
-          }
-          myRole
-          owner {
-            id
-            email
-            fullName
-            profileIconColor
+            board {
+              id
+              myRole
+            }
           }
           ... on FloatValue {
             floatValue: value
