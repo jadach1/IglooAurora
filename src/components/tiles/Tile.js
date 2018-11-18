@@ -2,14 +2,13 @@ import React, { Component } from "react"
 import Paper from "material-ui/Paper"
 import ReadOnlyBooleanTile from "./Booleans/ReadOnlyBooleanTile"
 import ReadWriteBooleanTile from "./Booleans/ReadWriteBooleanTile"
-import ReadWriteBoundedFloatTile from "./Floats/ReadWriteBoundedFloatTile"
-import ReadOnlyBoundedFloatTile from "./Floats/ReadOnlyBoundedFloatTile"
 import ReadOnlyFloatTile from "./Floats/ReadOnlyFloatTile"
 import ReadOnlyStringTile from "./Strings/ReadOnlyStringTile"
 import ReadWriteAllowedStringTile from "./Strings/ReadWriteAllowedStringTile"
 import ReadWriteStringTile from "./Strings/ReadWriteStringTile"
 import ReadWriteBoundedStringTile from "./Strings/ReadWriteBoundedStringTile"
-import PlotTile from "./PlotTile.js"
+import ReadWriteBoundedFloatTile from "./Floats/ReadWriteBoundedFloatTile"
+import PlotTile from "./PlotTile"
 import FullScreenTile from "./FullScreenTile"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
@@ -92,100 +91,79 @@ class Tile extends Component {
 
     let specificTile
 
-    if (
-      value.__typename === "BooleanValue" &&
-      value.permission === "READ_ONLY"
-    ) {
-      specificTile = <ReadOnlyBooleanTile value={value.boolValue} />
-    } else if (
-      value.__typename === "BooleanValue" &&
-      value.permission === "READ_WRITE"
-    ) {
-      specificTile = (
-        <ReadWriteBooleanTile value={value.boolValue} id={value.id} />
-      )
-    } else if (
-      value.__typename === "FloatValue" &&
-      value.boundaries &&
-      value.permission === "READ_WRITE"
-    ) {
-      specificTile = (
-        <ReadWriteBoundedFloatTile
-          id={value.id}
-          min={value.boundaries[0]}
-          max={value.boundaries[1]}
-          defaultValue={value.floatValue}
-          step={value.precision || undefined} // avoid passing null, pass undefined instead
-          disabled={value.permission === "READ_ONLY"}
-        />
-      )
-    } else if (
-      value.__typename === "FloatValue" &&
-      value.boundaries &&
-      value.permission === "READ_ONLY"
-    ) {
-      specificTile = (
-        <ReadOnlyBoundedFloatTile
-          id={value.id}
-          min={value.boundaries[0]}
-          max={value.boundaries[1]}
-          defaultValue={value.floatValue}
-          step={value.precision || undefined} // avoid passing null, pass undefined instead
-        />
-      )
-    } else if (
-      value.__typename === "FloatValue" &&
-      !value.boundaries &&
-      value.permission === "READ_ONLY"
-    ) {
-      specificTile = (
-        <ReadOnlyFloatTile
-          value={value.floatValue}
-          valueDetails={value.valueDetails}
-          nightMode={
-            typeof Storage !== "undefined" &&
-            localStorage.getItem("nightMode") === "true"
-          }
-        />
-      )
-    } else if (
-      value.__typename === "StringValue" &&
-      value.permission === "READ_ONLY"
-    ) {
-      specificTile = (
-        <ReadOnlyStringTile value={value.stringValue} id={value.id} />
-      )
+    console.log(value.device.board.myRole)
+
+    if (value.__typename === "BooleanValue") {
+      if (
+        value.permission === "READ_ONLY" ||
+        value.device.board.myRole === "SPECTATOR"
+      ) {
+        specificTile = <ReadOnlyBooleanTile value={value.boolValue} />
+      } else {
+        specificTile = (
+          <ReadWriteBooleanTile value={value.boolValue} id={value.id} />
+        )
+      }
+    } else if (value.__typename === "FloatValue") {
+      if (
+        value.permission === "READ_ONLY" ||
+        value.device.board.myRole === "SPECTATOR"
+      ) {
+        specificTile = (
+          <ReadOnlyFloatTile
+            value={value.floatValue}
+            valueDetails={value.valueDetails}
+            nightMode={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+            }
+          />
+        )
+      } else {
+        if (value.boundaries) {
+          specificTile = (
+            <ReadWriteBoundedFloatTile
+              id={value.id}
+              min={value.boundaries[0]}
+              max={value.boundaries[1]}
+              defaultValue={value.floatValue}
+              step={value.precision || undefined} // avoid passing null, pass undefined instead
+              disabled={value.permission === "READ_ONLY"}
+            />
+          )
+        } else {
+          specificTile = "I'm a read/write unbounded float"
+        }
+      }
+    } else if (value.__typename === "StringValue") {
+      if (
+        value.permission === "READ_ONLY" ||
+        value.device.board.myRole === "SPECTATOR"
+      ) {
+        specificTile = (
+          <ReadOnlyStringTile value={value.stringValue} id={value.id} />
+        )
+      } else {
+        if (!value.allowedValues && !value.maxChars) {
+          specificTile = (
+            <ReadWriteStringTile value={value.stringValue} id={value.id} />
+          )
+        } else if (!!value.allowedValue) {
+          specificTile = (
+            <ReadWriteAllowedStringTile
+              customName={value.customName}
+              values={value.allowedValues}
+              id={value.id}
+              stringValue={value.stringValue}
+            />
+          )
+        } else if (value.maxChars) {
+        }
+      }
     } else if (
       value.__typename === "StringValue" &&
       value.permission === "READ_WRITE" &&
       !!value.allowedValues
-    ) {
-      specificTile = (
-        <ReadWriteAllowedStringTile
-          customName={value.customName}
-          values={value.allowedValues}
-          id={value.id}
-          stringValue={value.stringValue}
-        />
-      )
-    } else if (
-      value.__typename === "StringValue" &&
-      value.permission === "READ_WRITE" &&
-      !value.allowedValues &&
-      !value.maxChars
-    ) {
-      specificTile = (
-        <ReadWriteStringTile
-          customName={value.customName}
-          values={value.allowedValues}
-          id={value.id}
-          stringValue={value.stringValue}
-        />
-      )
-    } else if (
-      value.__typename === "StringValue" &&
-      value.permission === "READ_WRITE" &&
-      value.maxChars
     ) {
       specificTile = (
         <ReadWriteBoundedStringTile
@@ -209,14 +187,14 @@ class Tile extends Component {
         value.__typename === "FloatValue"
           ? "ChangeFloatSize"
           : value.__typename === "StringValue"
-            ? "ChangeStringSize"
-            : value.__typename === "PlotValue"
-              ? "ChangePlotSize"
-              : value.__typename === "StringPlotValue"
-                ? "ChangeStringPlotSize"
-                : value.__typename === "MapValue"
-                  ? "ChangeMapSize"
-                  : "ChangeBooleanSize"
+          ? "ChangeStringSize"
+          : value.__typename === "PlotValue"
+          ? "ChangePlotSize"
+          : value.__typename === "StringPlotValue"
+          ? "ChangeStringPlotSize"
+          : value.__typename === "MapValue"
+          ? "ChangeMapSize"
+          : "ChangeBooleanSize"
       ]({
         variables: {
           id: value.id,
@@ -227,14 +205,14 @@ class Tile extends Component {
           [value.__typename === "FloatValue"
             ? "floatValue"
             : value.__typename === "StringValue"
-              ? "stringValue"
-              : value.__typename === "PlotValue"
-                ? "plotValue"
-                : value.__typename === "StringPlotValue"
-                  ? "stringPlotValue"
-                  : value.__typename === "MapValue"
-                    ? "mapValue"
-                    : "booleanValue"]: {
+            ? "stringValue"
+            : value.__typename === "PlotValue"
+            ? "plotValue"
+            : value.__typename === "StringPlotValue"
+            ? "stringPlotValue"
+            : value.__typename === "MapValue"
+            ? "mapValue"
+            : "booleanValue"]: {
             __typename: value.__typename,
             id: value.id,
             visibility: visible ? "VISIBLE" : "HIDDEN",
