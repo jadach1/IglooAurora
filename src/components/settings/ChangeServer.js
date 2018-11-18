@@ -172,8 +172,6 @@ export default class ChangePasswordDialog extends React.Component {
             <Button
               variant="raised"
               color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
               onClick={confirm}
               disabled={
                 oldMode === this.state.mode ||

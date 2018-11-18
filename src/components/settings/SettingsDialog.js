@@ -260,6 +260,7 @@ class SettingsDialog extends React.Component {
       <ListItem
         primaryText="Quiet mode"
         secondaryText="Mute all notifications"
+        disabled
         rightToggle={
           <Toggle
             thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
@@ -417,6 +418,7 @@ class SettingsDialog extends React.Component {
             <ListItem
               primaryText="Change units of measurement"
               secondaryText="SI, Celsius"
+              disabled={!user}
               onClick={this.handleUnitDialogOpen}
             />
             {/*     <Divider />
@@ -434,6 +436,7 @@ class SettingsDialog extends React.Component {
             <ListItem
               primaryText="Change date and time format"
               secondaryText="DD/MM/YYYY, 24-hour clock"
+              disabled={!user}
               onClick={this.handleTimeFormatDialogOpen}
             />
             <Divider />
@@ -498,10 +501,12 @@ onClick={this.handleEmailDialogOpen}
           <ListItem
             primaryText="Change email"
             onClick={() => this.setState({ emailDialogOpen: true })}
+            disabled={!user}
           />
           <ListItem
             primaryText="Change password"
             onClick={this.handlePasswordDialogOpen}
+            disabled={!user}
           />
           <ListItem
             primaryText="Log out at the end of every session"
@@ -548,22 +553,26 @@ rightToggle={
             <ListItem
               primaryText="Resend verifcation email"
               onClick={() => this.setState({ verifyOpen: true })}
+              disabled={!user}
             />
           )}
           <ListItem
             primaryText="Manage your profile"
             secondaryText="Change your profile photo and name"
             onClick={this.handleNameDialogOpen}
+            disabled={!user}
           />
           <ListItem
             primaryText="Download your data"
             secondaryText="Transfer your data to another service"
             onClick={() => this.setState({ gdprOpen: true })}
+            disabled={!user}
           />
           <ListItem
             primaryText="Delete your account"
             onClick={this.handleDeleteDialogOpen}
             style={{ color: "#F44336" }}
+            disabled={!user}
           />
         </List>
       </div>
@@ -602,6 +611,7 @@ rightToggle={
                 primaryText="Manage authorizations"
                 secondaryText="Generate, view and delete your account's access tokens"
                 onClick={this.handleAuthDialogOpen}
+                disabled={!user}
               />
               <Divider />
               <Subheader style={{ cursor: "default" }}>
@@ -610,18 +620,22 @@ rightToggle={
               <ListItem
                 primaryText="Create a new device"
                 onClick={() => this.setState({ createDeviceOpen: true })}
+                disabled={!user}
               />
               <ListItem
                 primaryText="Create a new value"
                 onClick={() => this.setState({ createValueOpen: true })}
+                disabled={!user}
               />
               <ListItem
                 primaryText="Create a new plot node"
                 onClick={() => this.setState({ createNodeOpen: true })}
+                disabled={!user}
               />
               <ListItem
                 primaryText="Create a new notification"
                 onClick={() => this.setState({ createNotificationOpen: true })}
+                disabled={!user}
               />
               <Divider />
               <Subheader style={{ cursor: "default" }}>Testing</Subheader>

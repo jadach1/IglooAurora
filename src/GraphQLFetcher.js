@@ -712,8 +712,6 @@ export default graphql(
       user {
         id
         language
-        nightMode
-        devMode
         quietMode
         emailIsVerified
         fullName
@@ -723,7 +721,6 @@ export default graphql(
           id
           index
           customName
-          favorite
           createdAt
           updatedAt
           quietMode

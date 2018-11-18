@@ -118,9 +118,9 @@ class AuthDialog extends React.Component {
 
     if (this.props.tokenData.error) tokenList = "Unexpected error"
 
-    if (this.props.tokenData.loading) tokenList = <CenteredSpinner />
+    if (this.props.tokenData.loading || (this.props.tokenData.user && !this.props.tokenData.user.permanentTokens)) tokenList = <CenteredSpinner />
 
-    if (this.props.tokenData.user)
+    if (this.props.tokenData.user && this.props.tokenData.user.permanentTokens)
       tokenList = (
         <List style={{ padding: "0" }}>
           {this.props.tokenData.user.permanentTokens.map(token => (
