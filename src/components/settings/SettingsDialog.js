@@ -3,6 +3,7 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
+import Slide from "@material-ui/core/Slide"
 import Grow from "@material-ui/core/Grow"
 import Icon from "@material-ui/core/Icon"
 import AppBar from "@material-ui/core/AppBar"
@@ -19,7 +20,7 @@ import TwoFactorDialog from "./Enable2FA"
 import DeleteAccountDialog from "./DeleteAccount"
 // import ManageEmailDialog from "./ManageEmail"
 import ChangePasswordDialog from "./ChangePassword"
-import ChangeLanguageDialog from "./ChangeLanguage"
+//import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
 // import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
@@ -54,8 +55,13 @@ let allDevices = []
 
 const MOBILE_WIDTH = 600
 
+
 function Transition(props) {
-  return <Grow {...props} />
+    return window.innerWidth > MOBILE_WIDTH ? (
+        <Grow {...props} />
+    ) : (
+            <Slide direction="up" {...props} />
+        )
 }
 
 const listStyles = {
@@ -889,13 +895,12 @@ rightToggle={
           handleAuthDialogClose={this.handleAuthDialogClose}
           userData={this.props.userData}
         />
-        <ChangeLanguageDialog
+        {/*<ChangeLanguageDialog
           handleLanguageDialogClose={this.handleLanguageDialogClose}
           languageDialogOpen={
             this.props.isOpen && this.state.languageDialogOpen
           }
         />
-        {/*
         <TimeZoneDialog
           handleTimeDialogClose={this.handleTimeDialogClose}
           timeZoneDialogOpen={

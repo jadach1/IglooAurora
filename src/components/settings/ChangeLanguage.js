@@ -158,7 +158,9 @@ export default graphql(
     query {
       user {
         id
-        language
+        settings {
+          language
+        }
       }
     }
   `,
@@ -167,8 +169,7 @@ export default graphql(
   graphql(
     gql`
       mutation ChangeLanguage($language: String) {
-        user(language: $language) {
-          id
+        settings(language: $language) {
           language
         }
       }

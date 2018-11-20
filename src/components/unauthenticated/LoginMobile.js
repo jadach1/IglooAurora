@@ -347,7 +347,10 @@ export default class LoginMobile extends Component {
                 variant="subheading"
                 style={{
                   cursor: "pointer",
-                  color: "white",
+                    color: "white",
+                    width: "128px",
+                    marginRight: "0px",
+                    marginLeft: "auto"
                 }}
                 onClick={() => {
                   this.setState({ forgotPasswordOpen: true })

@@ -76,7 +76,11 @@ class MainBodyHeader extends Component {
           {(this.props.boardData.board &&
             this.props.boardData.board.devices.filter(
               device => device.id === this.props.deviceId
-            )[0].icon) ||
+            )[0] &&
+            (this.props.boardData.board &&
+              this.props.boardData.board.devices.filter(
+                device => device.id === this.props.deviceId
+              )[0].icon)) ||
           (device && device.icon) ? (
             <img
               className="deviceIconBig"
@@ -110,6 +114,10 @@ class MainBodyHeader extends Component {
             }}
           >
             {(this.props.boardData.board &&
+              this.props.boardData.board.devices.filter(
+                device => device.id === this.props.deviceId
+              )[0] &&
+              this.props.boardData.board &&
               this.props.boardData.board.devices.filter(
                 device => device.id === this.props.deviceId
               )[0].customName) ||
@@ -588,7 +596,7 @@ export default graphql(
           icon
           updatedAt
           createdAt
-                    quietMode
+          quietMode
           firmware
           notifications {
             id

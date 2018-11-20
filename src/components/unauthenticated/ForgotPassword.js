@@ -31,8 +31,12 @@ function Transition(props) {
 }
 
 export default class ForgotPassword extends React.Component {
-  state = {
-    email: this.props.email,
+state={email:""}
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.email!==this.state.email){
+      this.setState({email:nextProps.email})
+    }
   }
 
   render() {
@@ -76,14 +80,17 @@ export default class ForgotPassword extends React.Component {
                   value={this.state.email}
                   onChange={event =>
                     this.setState({
-                      customName: event.target.value,
+                      email: event.target.value,
                     })
                   }
                   onKeyPress={event => {
-                    if (event.key === "Enter") this.rename()
+                    if (event.key === "Enter") {
+                      this.props.recover(this.state.email)
+                      this.props.close()
+                    }
                   }}
                   endAdornment={
-                    this.state.customName ? (
+                    this.state.email ? (
                       <InputAdornment position="end">
                         <IconButton
                           onClick={() => this.setState({ email: "" })}

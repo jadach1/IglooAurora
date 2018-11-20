@@ -6,27 +6,41 @@ export default class OfflineScreen extends React.Component {
   render() {
     document.body.style.backgroundColor = "#0057cb"
 
-    return (
-      <div
-        style={{
-          width: "400px",
-          height: "100vh",
-          margin: "auto",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <div
-          style={{
-            margin: "auto",
-            textAlign: "center",
-            width: "400px",
-            paddingTop: "32px",
-            paddingBottom: "32px",
-          }}
-          className="notSelectable defaultCursor"
-        >
+      return (
+          <div
+              style={this.props.isMobile ? {
+                  width: "100vw",
+                  height: "100vh",
+                  margin: "auto",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+              } : {
+                      width: "400px",
+                      height: "100vh",
+                      margin: "auto",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                  }}
+          >
+              <div
+                  style={this.props.isMobile ? {
+                      margin: "auto",
+                      textAlign: "center",
+                      width: "88vw",
+                      maxWidth: "400px",
+                      paddingTop: "32px",
+                      paddingBottom: "32px",
+                  } : {
+                          margin: "auto",
+                          textAlign: "center",
+                          width: "400px",
+                          paddingTop: "32px",
+                          paddingBottom: "32px",
+                      }}
+                  className="notSelectable defaultCursor"
+              >
           <Typography variant="display1" style={{ color: "white" }}>
             You are not connected, try again in a while
           </Typography>

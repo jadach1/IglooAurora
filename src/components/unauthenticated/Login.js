@@ -349,7 +349,10 @@ class Login extends Component {
                 style={{
                   color: "#0083ff",
                   cursor: "pointer",
-                  marginBottom: "8px",
+                    marginBottom: "8px",
+                    width: "128px",
+                  marginRight: "0px",
+                  marginLeft:"auto"
                 }}
                 onClick={() => {
                   this.setState({ forgotPasswordOpen: true })

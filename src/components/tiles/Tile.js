@@ -91,8 +91,6 @@ class Tile extends Component {
 
     let specificTile
 
-    console.log(value.device.board.myRole)
-
     if (value.__typename === "BooleanValue") {
       if (
         value.permission === "READ_ONLY" ||
