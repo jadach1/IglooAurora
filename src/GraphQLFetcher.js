@@ -6,15 +6,12 @@ import gql from "graphql-tag"
 import { reactTranslateChangeLanguage } from "translate-components"
 import { Switch, Route, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
-import MobileError404 from "./Error404Mobile"
 import Boards from "./Boards"
 import queryString from "query-string"
 import BoardsMobile from "./BoardsMobile"
 import EmailNotVerified from "./components/EmailNotVerified"
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import GenericDialog from "./components/GenericDialog"
-import { Online, Offline } from "react-detect-offline"
-import OfflineScreen from "./OfflineScreen"
 
 let systemLang = navigator.language || navigator.userLanguage
 
@@ -674,7 +671,6 @@ class GraphQLFetcher extends Component {
 
     return (
       <MuiThemeProvider>
-        <Online onChange={() => this.forceUpdate()}>
           <Switch>
             <Route
               exact
@@ -689,7 +685,7 @@ class GraphQLFetcher extends Component {
             />
             <Route
               render={() =>
-                this.props.isMobile ? <MobileError404 /> : <Error404 />
+                         <Error404 isMobile={this.props.isMobile}/>
               }
             />
           </Switch>
@@ -697,10 +693,6 @@ class GraphQLFetcher extends Component {
             <EmailNotVerified mobile={this.props.isMobile} />
           )}
           <GenericDialog />
-        </Online>
-        <Offline>
-          <OfflineScreen />
-        </Offline>
       </MuiThemeProvider>
     )
   }
@@ -711,7 +703,6 @@ export default graphql(
     query {
       user {
         id
-        language
         quietMode
         emailIsVerified
         fullName
@@ -765,8 +756,7 @@ export default graphql(
   graphql(
     gql`
       mutation ChangeLanguage($language: String) {
-        user(language: $language) {
-          id
+        settings(language: $language) {
           language
         }
       }

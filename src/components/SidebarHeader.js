@@ -90,6 +90,9 @@ class SidebarHeader extends Component {
           {this.props.boards &&
             this.props.boards.filter(
               board => board.id === this.props.selectedBoard
+            )[0] &&
+            this.props.boards.filter(
+              board => board.id === this.props.selectedBoard
             )[0].customName}
         </Typography>
         <div
