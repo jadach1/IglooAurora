@@ -86,3 +86,19 @@
   height: 527px;
   margin: auto auto auto auto;
 }
+
+.mobileMainBodyBG {
+  background-image: url("./assets/logoBG.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: 50% calc(50% - 32px);
+}
+
+.mobileDarkMainBodyBG {
+  background-image: url("./assets/darkLogoBG.svg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: contain;
+  background-position: 50% calc(50% - 32px);
+}

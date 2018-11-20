@@ -27,7 +27,14 @@ export default class Error404 extends Component {
 
     return (
       <div
-        style={{
+            style={this.props.isMobile ? {
+                width: "100vw",
+                height: "100vh",
+                margin: "auto",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }:{
           width: "400px",
           height: "100vh",
           margin: "auto",
@@ -37,7 +44,14 @@ export default class Error404 extends Component {
         }}
       >
         <div
-          style={{
+                style={this.props.isMobile ? {
+                    margin: "auto",
+                    textAlign: "center",
+                    width: "88vw",
+                    maxWidth: "400px",
+                    paddingTop: "32px",
+                    paddingBottom: "32px",
+                }:{
             margin: "auto",
             textAlign: "center",
             width: "400px",

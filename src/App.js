@@ -7,8 +7,9 @@ import SignupMainMobile from "./SignupMainMobile"
 import jwt from "jsonwebtoken"
 import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
-import MobileError404 from "./Error404Mobile"
 import RecoveryFetcher from "./RecoveryFetcher"
+import { Online, Offline } from "react-detect-offline"
+import OfflineScreen from "./OfflineScreen"
 
 function setupWebPush(token) {
   const applicationServerPublicKey =
@@ -203,6 +204,8 @@ class App extends Component {
       localStorage.setItem("server", "")
 
     return (
+        <React.Fragment>
+            {/*<Online onChange={() => this.forceUpdate()}>*/}
       <Switch>
         <Route
           path="/dashboard/"
@@ -344,10 +347,15 @@ class App extends Component {
         />
         <Route
           render={() =>
-            this.state.isMobile ? <MobileError404 /> : <Error404 />
+                        <Error404 isMobile={this.state.isMobile}/>
           }
         />
-      </Switch>
+        </Switch>
+            {/*</Online >
+          <Offline>
+                <OfflineScreen isMobile={this.state.isMobile}/>
+        </Offline>*/}
+        </React.Fragment>
     )
   }
 }

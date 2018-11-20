@@ -119,7 +119,7 @@ class CustomizedSnackbars extends React.Component {
             this.props.mobile
               ? null
               : {
-                  bottom: "48px",
+                  bottom: "64px",
                   right: "16px",
                   width: "351px",
                   left: "auto",

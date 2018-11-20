@@ -133,7 +133,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: contain;
-  background-position: calc(50% + 175px) 50%;
+  background-position: calc(50% + 180px) calc(50% + 32px);
 }
 
 .darkMainBodyBG {
@@ -141,23 +141,7 @@ body {
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: contain;
-  background-position: calc(50% + 175px) 50%;
-}
-
-.mobileMainBodyBG {
-  background-image: url("./assets/logoBG.svg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: contain;
-  background-position: 50% 50%;
-}
-
-.mobileDarkMainBodyBG {
-  background-image: url("./assets/darkLogoBG.svg");
-  background-repeat: no-repeat;
-  background-attachment: fixed;
-  background-size: contain;
-  background-position: 50% 50%;
+  background-position: calc(50% + 180px) calc(50% + 32px);
 }
 
 .deviceIcon {

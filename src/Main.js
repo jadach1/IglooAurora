@@ -273,7 +273,20 @@ class Main extends Component {
       typeof Storage !== "undefined" &&
       localStorage.getItem("nightMode") === "true"
 
-    if (board && this.props.boards) {
+    if (this.props.boards) {
+      let boardIdList = this.props.boards.map(board => board.id)
+
+      console.log(
+        boardIdList,
+        this.props.boardId,
+        boardIdList.includes(this.props.boardId)
+      )
+
+      if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
+        if (!boardIdList.includes(this.props.boardId))
+          return <Redirect exact to="/dashboard" />
+      }
+
       let j
 
       for (j = 0; j < this.props.boards.length; j++) {
@@ -281,14 +294,9 @@ class Main extends Component {
           this.props.boards[j].devices.map(device => device.id)
         )
       }
+    }
 
-      let boardIdList = this.props.boards.map(board => board.id)
-
-      if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
-        if (!boardIdList.includes(this.props.boardId))
-          return <Redirect exact to="/dashboard" />
-      }
-
+    if (board) {
       let i
 
       for (i = 0; i < board.devices.length; i++) {
@@ -323,7 +331,13 @@ class Main extends Component {
       <React.Fragment>
         <Helmet>
           <title>
-            {board
+            {board &&
+            board.devices.filter(
+              device =>
+                device.id ===
+                queryString.parse("?" + window.location.href.split("?")[1])
+                  .device
+            )[0]
               ? queryString.parse("?" + window.location.href.split("?")[1])
                   .device
                 ? "Igloo Aurora - " +
