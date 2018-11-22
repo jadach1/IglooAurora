@@ -276,12 +276,6 @@ class Main extends Component {
     if (this.props.boards) {
       let boardIdList = this.props.boards.map(board => board.id)
 
-      console.log(
-        boardIdList,
-        this.props.boardId,
-        boardIdList.includes(this.props.boardId)
-      )
-
       if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
         if (!boardIdList.includes(this.props.boardId))
           return <Redirect exact to="/dashboard" />

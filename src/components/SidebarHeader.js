@@ -62,7 +62,11 @@ class SidebarHeader extends Component {
             },
           })}
         >
-          <Tooltip id="tooltip-bottom" title="Boards" placement="bottom">
+          <Tooltip
+            id="tooltip-bottom"
+            title={<font className="notSelectable defaultCursor">Boards</font>}
+            placement="bottom"
+          >
             <IconButton
               style={{
                 marginLeft: "8px",
@@ -126,7 +130,9 @@ class SidebarHeader extends Component {
                 },
               })}
             >
-              <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
+              <Tooltip id="tooltip-bottom"
+                      title={<font
+                        className="notSelectable defaultCursor">Settings</font>} placement="bottom">
                 <IconButton
                   onClick={this.props.openSettingsDialog}
                   className="sidebarHeaderButton"

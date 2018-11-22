@@ -204,158 +204,154 @@ class App extends Component {
       localStorage.setItem("server", "")
 
     return (
-        <React.Fragment>
-            {/*<Online onChange={() => this.forceUpdate()}>*/}
-      <Switch>
-        <Route
-          path="/dashboard/"
-          render={props => {
-            if (this.state.bearer) {
-              return (
-                <AuthenticatedApp
-                  bearer={this.state.bearer}
-                  logOut={logOut}
-                  isMobile={this.state.isMobile}
-                />
-              )
-            } else {
-              if (!this.state.loggedOut) {
-                this.setState({
-                  from:
-                    "/dashboard" + window.location.href.split("dashboard")[1],
-                })
-              }
+      <React.Fragment>
+            <Online onChange={() => this.forceUpdate()}>
+        <Switch>
+          <Route
+            path="/dashboard/"
+            render={props => {
+              if (this.state.bearer) {
+                return (
+                  <AuthenticatedApp
+                    bearer={this.state.bearer}
+                    logOut={logOut}
+                    isMobile={this.state.isMobile}
+                  />
+                )
+              } else {
+                if (!this.state.loggedOut) {
+                  this.setState({
+                    from:
+                      "/dashboard" + window.location.href.split("dashboard")[1],
+                  })
+                }
 
-              return typeof Storage !== "undefined" &&
-                localStorage.getItem("email") ? (
-                <Redirect
-                  to={{
-                    pathname: "/login",
-                  }}
+                return typeof Storage !== "undefined" &&
+                  localStorage.getItem("email") ? (
+                  <Redirect
+                    to={{
+                      pathname: "/login",
+                    }}
+                  />
+                ) : (
+                  <Redirect to={{ pathname: "/signup" }} />
+                )
+              }
+            }}
+          />
+          <Route
+            path="/login"
+            render={() =>
+              this.state.bearer ? (
+                <Redirect to="/dashboard" />
+              ) : this.state.isMobile ? (
+                <LoginMainMobile
+                  signIn={signIn}
+                  password={this.state.loginPassword}
+                  changePassword={loginPassword =>
+                    this.setState({ loginPassword })
+                  }
+                  passwordError={this.state.loginPasswordError}
+                  changePasswordError={loginPasswordError =>
+                    this.setState({ loginPasswordError })
+                  }
+                  email={this.state.loginEmail}
+                  changeEmail={loginEmail => this.setState({ loginEmail })}
+                  emailError={this.state.loginEmailError}
+                  changeEmailError={loginEmailError =>
+                    this.setState({ loginEmailError })
+                  }
+                  changeSignupEmail={signupEmail =>
+                    this.setState({ signupEmail })
+                  }
                 />
               ) : (
-                <Redirect to={{ pathname: "/signup" }} />
+                <LoginMain
+                  signIn={signIn}
+                  setBoards={(count, id) =>
+                    this.setState({ boardsCount: count, boardId: id })
+                  }
+                  password={this.state.loginPassword}
+                  changePassword={loginPassword =>
+                    this.setState({ loginPassword: loginPassword })
+                  }
+                  passwordError={this.state.loginPasswordError}
+                  changePasswordError={loginPasswordError =>
+                    this.setState({ loginPasswordError })
+                  }
+                  email={this.state.loginEmail}
+                  changeEmail={loginEmail => this.setState({ loginEmail })}
+                  emailError={this.state.loginEmailError}
+                  changeEmailError={loginEmailError =>
+                    this.setState({ loginEmailError })
+                  }
+                  changeSignupEmail={signupEmail =>
+                    this.setState({ signupEmail })
+                  }
+                />
               )
             }
-          }}
-        />
-        <Route
-          path="/login"
-          render={() =>
-            this.state.bearer ? (
-              <Redirect to="/dashboard" />
-            ) : this.state.isMobile ? (
-              <LoginMainMobile
-                signIn={signIn}
-                password={this.state.loginPassword}
-                changePassword={loginPassword =>
-                  this.setState({ loginPassword })
-                }
-                passwordError={this.state.loginPasswordError}
-                changePasswordError={loginPasswordError =>
-                  this.setState({ loginPasswordError })
-                }
-                email={this.state.loginEmail}
-                changeEmail={loginEmail => this.setState({ loginEmail })}
-                emailError={this.state.loginEmailError}
-                changeEmailError={loginEmailError =>
-                  this.setState({ loginEmailError })
-                }
-                changeSignupEmail={signupEmail =>
-                  this.setState({ signupEmail })
-                }
-              />
-            ) : (
-              <LoginMain
-                signIn={signIn}
-                setBoards={(count, id) =>
-                  this.setState({ boardsCount: count, boardId: id })
-                }
-                password={this.state.loginPassword}
-                changePassword={loginPassword =>
-                  this.setState({ loginPassword: loginPassword })
-                }
-                passwordError={this.state.loginPasswordError}
-                changePasswordError={loginPasswordError =>
-                  this.setState({ loginPasswordError })
-                }
-                email={this.state.loginEmail}
-                changeEmail={loginEmail => this.setState({ loginEmail })}
-                emailError={this.state.loginEmailError}
-                changeEmailError={loginEmailError =>
-                  this.setState({ loginEmailError })
-                }
-                changeSignupEmail={signupEmail =>
-                  this.setState({ signupEmail })
-                }
-              />
-            )
-          }
-        />
-        <Route
-          path="/signup"
-          render={() =>
-            this.state.bearer ? (
-              <Redirect to="/dashboard" />
-            ) : this.state.isMobile ? (
-              <SignupMainMobile
-                signIn={signIn}
-                fullName={this.state.fullName}
-                changeFullName={fullName => this.setState({ fullName })}
-                password={this.state.signupPassword}
-                changePassword={signupPassword =>
-                  this.setState({ signupPassword })
-                }
-                email={this.state.signupEmail}
-                changeEmail={signupEmail => this.setState({ signupEmail })}
-                emailError={this.state.signupEmailError}
-                changeEmailError={signupEmailError =>
-                  this.setState({ signupEmailError })
-                }
-                changeLoginEmail={loginEmail => this.setState({ loginEmail })}
-              />
-            ) : (
-              <SignupMain
-                signIn={signIn}
-                fullName={this.state.fullName}
-                changeFullName={fullName => this.setState({ fullName })}
-                password={this.state.signupPassword}
-                changePassword={signupPassword =>
-                  this.setState({ signupPassword })
-                }
-                email={this.state.signupEmail}
-                changeEmail={signupEmail => this.setState({ signupEmail })}
-                emailError={this.state.signupEmailError}
-                changeEmailError={signupEmailError =>
-                  this.setState({ signupEmailError })
-                }
-                changeLoginEmail={loginEmail => this.setState({ loginEmail })}
-              />
-            )
-          }
-        />
-        <Route
-          path="/recovery"
-          render={() => <RecoveryFetcher mobile={this.state.isMobile} />}
-        />
-        <Route
-          exact
-          path="/"
-          render={() => {
-            return <Redirect to="/dashboard" />
-          }}
-        />
-        <Route
-          render={() =>
-                        <Error404 isMobile={this.state.isMobile}/>
-          }
-        />
+          />
+          <Route
+            path="/signup"
+            render={() =>
+              this.state.bearer ? (
+                <Redirect to="/dashboard" />
+              ) : this.state.isMobile ? (
+                <SignupMainMobile
+                  signIn={signIn}
+                  fullName={this.state.fullName}
+                  changeFullName={fullName => this.setState({ fullName })}
+                  password={this.state.signupPassword}
+                  changePassword={signupPassword =>
+                    this.setState({ signupPassword })
+                  }
+                  email={this.state.signupEmail}
+                  changeEmail={signupEmail => this.setState({ signupEmail })}
+                  emailError={this.state.signupEmailError}
+                  changeEmailError={signupEmailError =>
+                    this.setState({ signupEmailError })
+                  }
+                  changeLoginEmail={loginEmail => this.setState({ loginEmail })}
+                />
+              ) : (
+                <SignupMain
+                  signIn={signIn}
+                  fullName={this.state.fullName}
+                  changeFullName={fullName => this.setState({ fullName })}
+                  password={this.state.signupPassword}
+                  changePassword={signupPassword =>
+                    this.setState({ signupPassword })
+                  }
+                  email={this.state.signupEmail}
+                  changeEmail={signupEmail => this.setState({ signupEmail })}
+                  emailError={this.state.signupEmailError}
+                  changeEmailError={signupEmailError =>
+                    this.setState({ signupEmailError })
+                  }
+                  changeLoginEmail={loginEmail => this.setState({ loginEmail })}
+                />
+              )
+            }
+          />
+          <Route
+            path="/recovery"
+            render={() => <RecoveryFetcher mobile={this.state.isMobile} />}
+          />
+          <Route
+            exact
+            path="/"
+            render={() => {
+              return <Redirect to="/dashboard" />
+            }}
+          />
+          <Route render={() => <Error404 isMobile={this.state.isMobile} />} />
         </Switch>
-            {/*</Online >
-          <Offline>
-                <OfflineScreen isMobile={this.state.isMobile}/>
-        </Offline>*/}
-        </React.Fragment>
+        </Online>
+        <Offline>
+          <OfflineScreen isMobile={this.state.isMobile} />
+        </Offline>
+      </React.Fragment>
     )
   }
 }

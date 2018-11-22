@@ -16,7 +16,6 @@ import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right"
 import { PopoverAnimationVertical } from "material-ui/Popover"
 import Divider from "material-ui/Divider"
 import RenameTileDialog from "./RenameTile"
-import DeleteTileDialog from "./DeleteTile"
 import InfoDialog from "./InfoDialog.js"
 import Typography from "@material-ui/core/Typography"
 import Icon from "@material-ui/core/Icon"
@@ -185,14 +184,14 @@ class Tile extends Component {
         value.__typename === "FloatValue"
           ? "ChangeFloatSize"
           : value.__typename === "StringValue"
-          ? "ChangeStringSize"
-          : value.__typename === "PlotValue"
-          ? "ChangePlotSize"
-          : value.__typename === "StringPlotValue"
-          ? "ChangeStringPlotSize"
-          : value.__typename === "MapValue"
-          ? "ChangeMapSize"
-          : "ChangeBooleanSize"
+            ? "ChangeStringSize"
+            : value.__typename === "PlotValue"
+              ? "ChangePlotSize"
+              : value.__typename === "StringPlotValue"
+                ? "ChangeStringPlotSize"
+                : value.__typename === "MapValue"
+                  ? "ChangeMapSize"
+                  : "ChangeBooleanSize"
       ]({
         variables: {
           id: value.id,
@@ -203,14 +202,14 @@ class Tile extends Component {
           [value.__typename === "FloatValue"
             ? "floatValue"
             : value.__typename === "StringValue"
-            ? "stringValue"
-            : value.__typename === "PlotValue"
-            ? "plotValue"
-            : value.__typename === "StringPlotValue"
-            ? "stringPlotValue"
-            : value.__typename === "MapValue"
-            ? "mapValue"
-            : "booleanValue"]: {
+              ? "stringValue"
+              : value.__typename === "PlotValue"
+                ? "plotValue"
+                : value.__typename === "StringPlotValue"
+                  ? "stringPlotValue"
+                  : value.__typename === "MapValue"
+                    ? "mapValue"
+                    : "booleanValue"]: {
             __typename: value.__typename,
             id: value.id,
             visibility: visible ? "VISIBLE" : "HIDDEN",
@@ -547,26 +546,6 @@ class Tile extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Rename" />
                 </MenuItem>
-                <MenuItem
-                  className="notSelectable"
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                  onClick={() => {
-                    this.deleteClick()
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon style={{ color: "#f44336" }}>delete</Icon>
-                  </ListItemIcon>
-                  <ListItemText inset>
-                    <span style={{ color: "#f44336" }}>Delete</span>
-                  </ListItemText>
-                </MenuItem>
               </Menu>
             </div>
           </div>
@@ -584,13 +563,6 @@ class Tile extends Component {
           renameTileOpen={this.state.renameTileOpen}
           handleRenameTileDialogClose={this.handleRenameTileDialogClose}
           tileName={valueTitle}
-          value={value}
-        />
-        <DeleteTileDialog
-          deleteTileOpen={this.state.deleteTileOpen}
-          handleDeleteTileDialogClose={this.handleDeleteTileDialogClose}
-          tileName={valueTitle}
-          deleteTile={this.deleteTile}
           value={value}
         />
         <InfoDialog

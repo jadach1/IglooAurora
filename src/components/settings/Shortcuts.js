@@ -12,7 +12,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
@@ -35,59 +35,248 @@ export default class ChangeShortcutDialog extends React.Component {
           fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
           <DialogTitle
-            className="notSelectable defaultCursor"
-            style={window.innerWidth > MOBILE_WIDTH ? { width: "350px" } : null}
+            style={
+              window.innerWidth < MOBILE_WIDTH
+                ? typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
+                  : { width: "calc(100% - 48px)", background: "#fff" }
+                : typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                ? {  background: "#2f333d" }
+                : {  background: "#fff" }
+            }
           >
-            Keyboard shortcuts
+            <font
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "#fff" }
+                  : {}
+              }
+            >
+              Keyboard shortcuts
+            </font>
           </DialogTitle>
           <div
-            style={{
-              paddingLeft: "24px",
-              paddingRight: "24px",
-              height: "100%",
-            }}
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    height: "100%",
+                    paddingRight: "24px",
+                    paddingLeft: "24px",
+                    background: "#2f333d",
+                  }
+                : {
+                    height: "100%",
+                    paddingRight: "24px",
+                    paddingLeft: "24px",
+                  }
+            }
           >
-            <Paper>
+            <Paper
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? {
+                      background: "#2f333d",
+                    }
+                  : {}
+              }
+            >
               <Table>
                 <TableHead>
                   <TableRow>
-                    <TableCell>Shortcut</TableCell>
-                    <TableCell>Function</TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "#c1c2c5",
+                            }
+                          : {}
+                      }
+                    >
+                      Shortcut
+                    </TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "#c1c2c5",
+                            }
+                          : {}
+                      }
+                    >
+                      Function
+                    </TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   <TableRow>
-                    <TableCell>Alt/Option + Number</TableCell>
-                    <TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
+                      Alt/Option + Number
+                    </TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
                       Select a device/Scroll through settings
                     </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Alt/Option + ,</TableCell>
-                    <TableCell>Settings</TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
+                      Alt/Option + ,
+                    </TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
+                      Settings
+                    </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Alt/Option + N</TableCell>
-                    <TableCell>Notifications</TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
+                      Alt/Option + N
+                    </TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
+                      Notifications
+                    </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Alt/Option + S</TableCell>
-                    <TableCell>Show hidden cards/notifications</TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
+                      Alt/Option + S
+                    </TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
+                      Show hidden cards/notifications
+                    </TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell>Alt/Option + Q</TableCell>
-                    <TableCell>Log out</TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
+                      Alt/Option + Q
+                    </TableCell>
+                    <TableCell
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {}
+                      }
+                    >
+                      Log out
+                    </TableCell>
                   </TableRow>
                 </TableBody>
               </Table>
             </Paper>
           </div>
-          <DialogActions style={{ marginRight: "8px" }}>
+          <DialogActions
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    padding: "8px",
+                    margin: "0",
+                    background: "#2f333d",
+                  }
+                : {
+                    padding: "8px",
+                    margin: "0",
+                  }
+            }
+          >
             <Button
-              style={{ marginRight: "8px" }}
               onClick={this.props.handleShortcutDialogClose}
             >
-              Close
+              <font
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : {}
+                }
+              >
+                Close
+              </font>
             </Button>
           </DialogActions>
         </Dialog>
