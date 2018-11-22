@@ -34,7 +34,7 @@ const theme = createMuiTheme({
   },
 })
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (

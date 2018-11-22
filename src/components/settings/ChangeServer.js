@@ -21,7 +21,7 @@ const theme = createMuiTheme({
   },
 })
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 let oldUrl = ""
 
@@ -80,15 +80,46 @@ export default class ChangePasswordDialog extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle style={{ width: "350px" }}>
-          Change connected server
+        <DialogTitle
+          style={
+            window.innerWidth < MOBILE_WIDTH
+              ? typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                ? { width: "calc(100% - 48px)", background: "#2f333d" }
+                : { width: "calc(100% - 48px)", background: "#fff" }
+              : typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+              ? { width: "350px", background: "#2f333d" }
+              : { width: "350px", background: "#fff" }
+          }
+        >
+          <font
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? { color: "#fff" }
+                : {}
+            }
+          >
+            Change connected server
+          </font>
         </DialogTitle>
         <div
-          style={{
-            paddingLeft: "24px",
-            paddingRight: "24px",
-            height: "100%",
-          }}
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? {
+                  height: "100%",
+                  paddingRight: "24px",
+                  paddingLeft: "24px",
+                  background: "#2f333d",
+                }
+              : {
+                  height: "100%",
+                  paddingRight: "24px",
+                  paddingLeft: "24px",
+                }
+          }
         >
           <RadioButtonGroup
             name="time"
@@ -139,6 +170,17 @@ export default class ChangePasswordDialog extends React.Component {
                     url: event.target.value,
                   })
                 }}
+                style={
+                  this.state.mode === "manual"
+                    ? typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                    : typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                    ? { color: "#c1c2c5" }
+                    : { color: "#7a7a7a" }
+                }
                 disabled={this.state.mode === "auto"}
                 endAdornment={
                   this.state.url ? (
@@ -152,6 +194,17 @@ export default class ChangePasswordDialog extends React.Component {
                         }}
                         tabIndex="-1"
                         disabled={this.state.mode === "auto"}
+                        style={
+                          this.state.mode === "manual"
+                            ? typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                            : typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                            ? { color: "#c1c2c5" }
+                            : { color: "#7a7a7a" }
+                        }
                       >
                         <Icon>clear</Icon>
                       </IconButton>
@@ -164,9 +217,31 @@ export default class ChangePasswordDialog extends React.Component {
           <br />
           <br />
         </div>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? {
+                  padding: "8px",
+                  margin: "0",
+                  background: "#2f333d",
+                }
+              : {
+                  padding: "8px",
+                  margin: "0",
+                }
+          }
+        >
           <MuiThemeProvider theme={theme}>
-            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+            <Button
+              onClick={this.props.close}
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white", marginRight: "4px" }
+                  : { marginRight: "4px" }
+              }
+            >
               Never mind
             </Button>
             <Button

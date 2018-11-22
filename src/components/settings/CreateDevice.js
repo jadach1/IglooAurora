@@ -25,7 +25,7 @@ const theme = createMuiTheme({
   },
 })
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
@@ -134,94 +134,91 @@ class CreateDevice extends React.Component {
             }
           >
             <MuiThemeProvider theme={theme}>
-              {user &&
-              user.boards.filter(
-                board => board.myRole === "ADMIN" || board.myRole === "OWNER"
-              )[0] ? (
-                <React.Fragment>
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Custom name"
-                      value={this.state.customName}
-                      onChange={event =>
-                        this.setState({ customName: event.target.value })
-                      }
-                      onKeyPress={event => {
-                        if (event.key === "Enter") createDeviceMutation()
-                      }}
-                      endAdornment={
-                        this.state.customName && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ customName: "" })}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
-                    />
-                  </FormControl>
-                  <br /> <br />
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Device type"
-                      value={this.state.deviceType}
-                      onChange={event =>
-                        this.setState({ deviceType: event.target.value })
-                      }
-                      onKeyPress={event => {
-                        if (event.key === "Enter") createDeviceMutation()
-                      }}
-                      endAdornment={
-                        this.state.deviceType && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ deviceType: "" })}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
-                    />
-                  </FormControl>
-                  <br /> <br />
-                  {boards}
-                  <br /> <br />
-                  <FormControl style={{ width: "100%" }}>
-                    <Input
-                      id="adornment-name-login"
-                      placeholder="Firmware"
-                      value={this.state.firmware}
-                      onChange={event =>
-                        this.setState({ firmware: event.target.value })
-                      }
-                      onKeyPress={event => {
-                        if (event.key === "Enter") createDeviceMutation()
-                      }}
-                      endAdornment={
-                        this.state.firmware && (
-                          <InputAdornment position="end">
-                            <IconButton
-                              onClick={() => this.setState({ firmware: "" })}
-                              tabIndex="-1"
-                            >
-                              <Icon>clear</Icon>
-                            </IconButton>
-                          </InputAdornment>
-                        )
-                      }
-                    />
-                  </FormControl>
-                </React.Fragment>
-              ) : (
-                "None of your boards allows you to create new devices"
-              )}
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-name-login"
+                  placeholder="Custom name"
+                  value={this.state.customName}
+                  onChange={event =>
+                    this.setState({ customName: event.target.value })
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") createDeviceMutation()
+                  }}
+                  endAdornment={
+                    this.state.customName && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ customName: "" })}
+                          tabIndex="-1"
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                />
+              </FormControl>
+              <br /> <br />
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-name-login"
+                  placeholder="Device type"
+                  value={this.state.deviceType}
+                  onChange={event =>
+                    this.setState({ deviceType: event.target.value })
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") createDeviceMutation()
+                  }}
+                  endAdornment={
+                    this.state.deviceType && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ deviceType: "" })}
+                          tabIndex="-1"
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                />
+              </FormControl>
+              <br /> <br />
+              {boards}
+              <br /> <br />
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-name-login"
+                  placeholder="Firmware"
+                  value={this.state.firmware}
+                  onChange={event =>
+                    this.setState({ firmware: event.target.value })
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") createDeviceMutation()
+                  }}
+                  endAdornment={
+                    this.state.firmware && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ firmware: "" })}
+                          tabIndex="-1"
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                />
+              </FormControl>
             </MuiThemeProvider>
             <br />
           </div>
@@ -246,17 +243,17 @@ class CreateDevice extends React.Component {
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                    ? { color: "white",marginRight:"4px" }
-                    : { marginRight: "4px"}
-                } >
-                  Never mind
+                    ? { color: "white", marginRight: "4px" }
+                    : { marginRight: "4px" }
+                }
+              >
+                Never mind
               </Button>
               <Button
                 variant="raised"
                 color="primary"
                 label="Change"
                 primary={true}
-                buttonStyle={{ backgroundColor: "#0083ff" }}
                 onClick={createDeviceMutation}
                 disabled={!this.state.deviceType || !this.state.customName}
               >

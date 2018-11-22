@@ -164,7 +164,7 @@ class MainBody extends Component {
               typeof Storage !== "undefined" &&
               localStorage.getItem("nightMode") === "true"
                 ? this.props.isMobile
-                  ? "mainBody darkMobileMainBodyBG"
+                  ? "mainBody mobileDarkMainBodyBG"
                   : "mainBody darkMainBodyBG"
                 : this.props.isMobile
                 ? "mainBody mobileMainBodyBG"
@@ -287,7 +287,7 @@ class MainBody extends Component {
             typeof Storage !== "undefined" &&
             localStorage.getItem("nightMode") === "true"
               ? this.props.isMobile
-                ? "mainBody darkMobileMainBodyBG"
+                ? "mainBody mobileDarkMainBodyBG"
                 : "mainBody darkMainBodyBG"
               : this.props.isMobile
               ? "mainBody mobileMainBodyBG"

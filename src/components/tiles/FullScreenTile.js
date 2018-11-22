@@ -6,7 +6,7 @@ import Button from "@material-ui/core/Button"
 import Slide from "@material-ui/core/Slide"
 import Grow from "@material-ui/core/Grow"
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (

@@ -14,7 +14,7 @@ import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 const theme = createMuiTheme({
   palette: {

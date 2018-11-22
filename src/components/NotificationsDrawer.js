@@ -670,7 +670,12 @@ class NotificationsDrawer extends React.Component {
               }
             >
               {notificationCount ? (
-                <Badge badgeContent={notificationCount} color="primary">
+                <Badge
+                  badgeContent={
+                    notificationCount > 99 ? "99+" : notificationCount
+                  }
+                  color="primary"
+                >
                   <Icon>notifications</Icon>
                 </Badge>
               ) : (

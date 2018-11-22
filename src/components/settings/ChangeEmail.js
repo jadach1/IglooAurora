@@ -23,7 +23,7 @@ const theme = createMuiTheme({
   },
 })
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
@@ -95,8 +95,29 @@ class ChangeMailDialog extends React.Component {
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <DialogTitle style={{ width: "350px" }}>
-            Type your password
+          <DialogTitle
+            style={
+              window.innerWidth < MOBILE_WIDTH
+                ? typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
+                  : { width: "calc(100% - 48px)", background: "#fff" }
+                : typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                ? { width: "350px", background: "#2f333d" }
+                : { width: "350px", background: "#fff" }
+            }
+          >
+            <font
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "#fff" }
+                  : {}
+              }
+            >
+              Type your password
+            </font>
           </DialogTitle>
           <MuiThemeProvider
             theme={createMuiTheme({
@@ -106,11 +127,21 @@ class ChangeMailDialog extends React.Component {
             })}
           >
             <div
-              style={{
-                paddingLeft: "24px",
-                paddingRight: "24px",
-                height: "100%",
-              }}
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? {
+                      height: "100%",
+                      paddingRight: "24px",
+                      paddingLeft: "24px",
+                      background: "#2f333d",
+                    }
+                  : {
+                      height: "100%",
+                      paddingRight: "24px",
+                      paddingLeft: "24px",
+                    }
+              }
             >
               <FormControl
                 style={{
@@ -172,13 +203,36 @@ class ChangeMailDialog extends React.Component {
             </div>
             <br />
           </MuiThemeProvider>
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    padding: "8px",
+                    margin: "0",
+                    background: "#2f333d",
+                  }
+                : {
+                    padding: "8px",
+                    margin: "0",
+                  }
+            }
+          >
             <MuiThemeProvider theme={theme}>
               <Button
                 onClick={this.props.handleEmailDialogClose}
                 style={{ marginRight: "4px" }}
               >
-                Never Mind
+                <font
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : {}
+                  }
+                >
+                  Never Mind
+                </font>
               </Button>
               <Button
                 variant="raised"

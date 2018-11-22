@@ -27,7 +27,7 @@ const theme = createMuiTheme({
   },
 })
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
@@ -75,14 +75,12 @@ class CreateBoard extends React.Component {
     this.props.CreateBoard({
       variables: {
         customName: this.state.customName,
-        favorite: this.state.favorite,
         avatar: this.selectImage(this.state.slideIndex),
       },
       optimisticResponse: {
         __typename: "Mutation",
         CreateBoard: {
           customName: this.state.customName,
-          favorite: this.state.favorite,
           avatar: this.selectImage(this.state.slideIndex),
           __typename: "Board",
         },
@@ -264,19 +262,10 @@ class CreateBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation CreateBoard(
-      $customName: String!
-      $favorite: Boolean
-      $avatar: BoardPicture
-    ) {
-      CreateBoard(
-        customName: $customName
-        favorite: $favorite
-        avatar: $avatar
-      ) {
+    mutation CreateBoard($customName: String!, $avatar: BoardPicture) {
+      CreateBoard(customName: $customName, avatar: $avatar) {
         id
         customName
-        favorite
         avatar
       }
     }

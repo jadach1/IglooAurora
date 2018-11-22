@@ -8,7 +8,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
