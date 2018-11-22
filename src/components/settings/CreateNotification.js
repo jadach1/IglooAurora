@@ -24,7 +24,7 @@ const theme = createMuiTheme({
   },
 })
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
@@ -98,8 +98,8 @@ class CreateNotification extends React.Component {
                   : { width: "calc(100% - 48px)", background: "#fff" }
                 : typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                  ? { width: "350px", background: "#2f333d" }
-                  : { width: "350px", background: "#fff" }
+                ? { width: "350px", background: "#2f333d" }
+                : { width: "350px", background: "#fff" }
             }
           >
             <font
@@ -139,6 +139,12 @@ class CreateNotification extends React.Component {
                   id="adornment-name-login"
                   placeholder="Notification content"
                   value={this.state.content}
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
                   onChange={event =>
                     this.setState({ content: event.target.value })
                   }
@@ -151,6 +157,12 @@ class CreateNotification extends React.Component {
                         <IconButton
                           onClick={() => this.setState({ content: "" })}
                           tabIndex="-1"
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
                         >
                           <Icon>clear</Icon>
                         </IconButton>

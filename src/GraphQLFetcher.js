@@ -722,6 +722,9 @@ export default graphql(
             quietMode
             customName
             icon
+            board {
+              myRole
+            }
           }
           owner {
             id

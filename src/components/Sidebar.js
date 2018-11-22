@@ -382,7 +382,7 @@ class Sidebar extends Component {
                     <ListItemSecondaryAction>
                       <MuiThemeProvider theme={theme}>
                         <Badge
-                          badgeContent={device.notificationsCount}
+                          badgeContent={device.notificationsCount>99?"99+":device.notificationsCount}
                           color="primary"
                           className="notSelectable sidebarBadge"
                           style={{ marginRight: "24px" }}

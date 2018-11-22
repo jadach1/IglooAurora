@@ -8,7 +8,7 @@ import Slide from "@material-ui/core/Slide"
 import moment from "moment"
 import Moment from "react-moment"
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (

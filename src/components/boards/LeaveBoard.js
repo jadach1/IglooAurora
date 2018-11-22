@@ -24,7 +24,7 @@ function Transition(props) {
   )
 }
 
-const MOBILE_WIDTH = 500
+const MOBILE_WIDTH = 600
 
 class LeaveBoard extends React.Component {
   deleteBoardMutation = () => {
