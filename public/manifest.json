@@ -1,8 +1,8 @@
 {
   "name": "Igloo Aurora",
   "short_name": "Igloo Aurora",
-  "theme_color": "#0083ff",
-  "background_color": "#0083ff",
+  "theme_color": "#0057cb",
+  "background_color": "#0057cb",
   "display": "standalone",
   "Scope": "/",
   "start_url": "https://igloo.ooo/",

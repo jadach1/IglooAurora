@@ -136,6 +136,12 @@ class Signup extends Component {
         "aurora",
       ]).score,
     })
+
+    if (this.props.email)
+    this.setState({
+      isEmailValid: EmailValidator.validate(this.props.email),
+      isMailEmpty: this.props.email === "",
+    })
   }
 
   render() {
@@ -393,20 +399,20 @@ class Signup extends Component {
                             onMouseDown={this.handleMouseDownPassword}
                           >
                             {/* fix for ToggleIcon glitch on Edge */}
-                              {document.documentMode ||
-                              /Edge/.test(navigator.userAgent) ? (
-                                this.state.showPassword ? (
-                                  <Icon>visibility_off</Icon>
-                                ) : (
-                                  <Icon>visibility</Icon>
-                                )
+                            {document.documentMode ||
+                            /Edge/.test(navigator.userAgent) ? (
+                              this.state.showPassword ? (
+                                <Icon>visibility_off</Icon>
                               ) : (
-                                <ToggleIcon
-                                  on={this.state.showPassword || false}
-                                  onIcon={<Icon>visibility_off</Icon>}
-                                  offIcon={<Icon>visibility</Icon>}
-                                />
-                              )}
+                                <Icon>visibility</Icon>
+                              )
+                            ) : (
+                              <ToggleIcon
+                                on={this.state.showPassword || false}
+                                onIcon={<Icon>visibility_off</Icon>}
+                                offIcon={<Icon>visibility</Icon>}
+                              />
+                            )}
                           </IconButton>
                         </InputAdornment>
                       ) : null

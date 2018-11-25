@@ -23,10 +23,9 @@ class GraphQLFetcher extends Component {
           id
           index
           customName
-          favorite
           createdAt
           updatedAt
-          notificationsCount
+          notificationCount
           quietMode
           avatar
           myRole
@@ -105,10 +104,9 @@ class GraphQLFetcher extends Component {
           id
           index
           customName
-          favorite
           createdAt
           updatedAt
-          notificationsCount
+          notificationCount
           quietMode
           avatar
           myRole
@@ -187,10 +185,9 @@ class GraphQLFetcher extends Component {
           id
           index
           customName
-          favorite
           createdAt
           updatedAt
-          notificationsCount
+          notificationCount
           quietMode
           avatar
           myRole
@@ -278,9 +275,9 @@ class GraphQLFetcher extends Component {
       subscription {
         userUpdated {
           id
-          language
-          nightMode
-          devMode
+          settings {
+            language
+          }
           emailIsVerified
           fullName
           profileIconColor
@@ -311,7 +308,7 @@ class GraphQLFetcher extends Component {
           deviceType
           createdAt
           updatedAt
-          notificationsCount
+          notificationCount
           notifications {
             id
             content
@@ -394,6 +391,24 @@ class GraphQLFetcher extends Component {
             permanentTokens: newTokens,
           },
         }
+      },
+    })
+
+    const subscribeToUserDeletes = gql`
+      subscription {
+        userDeleted
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToUserDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        localStorage.setItem("bearer", "")
+        sessionStorage.setItem("bearer", "")
       },
     })
   }
@@ -671,28 +686,24 @@ class GraphQLFetcher extends Component {
 
     return (
       <MuiThemeProvider>
-          <Switch>
-            <Route
-              exact
-              strict
-              path="/dashboard"
-              render={this.props.isMobile ? MainMobileSelected : MainSelected}
-            />
-            <Route
-              exact
-              path="/dashboard/"
-              render={() => <Redirect to="/dashboard" />}
-            />
-            <Route
-              render={() =>
-                         <Error404 isMobile={this.props.isMobile}/>
-              }
-            />
-          </Switch>
-          {user && !emailIsVerified && (
-            <EmailNotVerified mobile={this.props.isMobile} />
-          )}
-          <GenericDialog />
+        <Switch>
+          <Route
+            exact
+            strict
+            path="/dashboard"
+            render={this.props.isMobile ? MainMobileSelected : MainSelected}
+          />
+          <Route
+            exact
+            path="/dashboard/"
+            render={() => <Redirect to="/dashboard" />}
+          />
+          <Route render={() => <Error404 isMobile={this.props.isMobile} />} />
+        </Switch>
+        {user && !emailIsVerified && (
+          <EmailNotVerified mobile={this.props.isMobile} />
+        )}
+        <GenericDialog />
       </MuiThemeProvider>
     )
   }
