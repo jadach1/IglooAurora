@@ -20,13 +20,11 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import FormControl from "@material-ui/core/FormControl"
-import Input from "@material-ui/core/Input"
-import InputAdornment from "@material-ui/core/InputAdornment"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { RadioButtonGroup, RadioButton } from "material-ui"
+import ChangeRole from "./ChangeRole"
 import ChangeOwner from "./ChangeOwner"
+import InviteUser from "./InviteUser"
 
 const theme = createMuiTheme({
   palette: {
@@ -47,13 +45,13 @@ function Transition(props) {
 class ShareBoard extends React.Component {
   state = {
     menuOpen: false,
-    addAdminOpen: false,
+    inviteUserOpen: false,
     changeRoleOpen: false,
     stopSharingOpen: false,
     menuTarget: null,
     email: "",
     selectedUserType: "",
-    selectedUserForCHangeRoleDialog: "",
+    selectedUserForChangeRoleDialog: "",
     changeOwnerOpen: false,
   }
 
@@ -69,18 +67,18 @@ class ShareBoard extends React.Component {
     }
   }
 
-  inviteUser = role => {
+  inviteUser = (role, email) => {
     this.props.InviteUser({
       variables: {
         role: role,
         boardId: this.props.board.id,
-        email: this.state.email,
+        email: email,
       },
       optimisticResponse: {
         __typename: "Mutation",
         shareBoard: {
           id: this.props.board.id,
-          email: this.state.email,
+          email: email,
           role: role,
           __typename: "Board",
         },
@@ -130,7 +128,7 @@ class ShareBoard extends React.Component {
         <Dialog
           open={
             this.props.open &&
-            !this.state.addAdminOpen &&
+            !this.state.inviteUserOpen &&
             !this.state.changeRoleOpen &&
             !this.state.stopSharingOpen &&
             !this.state.changeOwnerOpen
@@ -147,7 +145,7 @@ class ShareBoard extends React.Component {
             Share board
           </DialogTitle>
           <Typography
-            variant="Title"
+            variant="h6"
             style={{ paddingLeft: "24px" }}
             className="notSelectable defaultCursor"
           >
@@ -248,7 +246,7 @@ class ShareBoard extends React.Component {
                               this.setState({
                                 anchorEl: event.currentTarget,
                                 menuTarget: item,
-                                selectedUserForCHangeRoleDialog: "admin",
+                                selectedUserForChangeRoleDialog: "admin",
                               })
                             }
                           >
@@ -264,7 +262,7 @@ class ShareBoard extends React.Component {
                       button
                       onClick={() =>
                         this.setState({
-                          addAdminOpen: true,
+                          inviteUserOpen: true,
                           selectedUserType: "admin",
                         })
                       }
@@ -324,7 +322,7 @@ class ShareBoard extends React.Component {
                               this.setState({
                                 anchorEl: event.currentTarget,
                                 menuTarget: item,
-                                selectedUserForCHangeRoleDialog: "editor",
+                                selectedUserForChangeRoleDialog: "editor",
                               })
                             }
                           >
@@ -340,7 +338,7 @@ class ShareBoard extends React.Component {
                       button
                       onClick={() =>
                         this.setState({
-                          addAdminOpen: true,
+                          inviteUserOpen: true,
                           selectedUserType: "editor",
                         })
                       }
@@ -400,7 +398,7 @@ class ShareBoard extends React.Component {
                               this.setState({
                                 anchorEl: event.currentTarget,
                                 menuTarget: item,
-                                selectedUserForCHangeRoleDialog: "spectator",
+                                selectedUserForChangeRoleDialog: "spectator",
                               })
                             }
                           >
@@ -416,7 +414,7 @@ class ShareBoard extends React.Component {
                       button
                       onClick={() =>
                         this.setState({
-                          addAdminOpen: true,
+                          inviteUserOpen: true,
                           selectedUserType: "spectator",
                         })
                       }
@@ -493,178 +491,6 @@ class ShareBoard extends React.Component {
           </DialogActions>
         </Dialog>
         <Dialog
-          open={this.state.addAdminOpen}
-          onClose={() => this.setState({ addAdminOpen: false })}
-          className="notSelectable defaultCursor"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
-        >
-          <DialogTitle
-            className="notSelectable defaultCursor"
-            style={{ width: "350px" }}
-          >
-            Invite an {this.state.selectedUserType}
-          </DialogTitle>
-          <MuiThemeProvider theme={theme}>
-            <FormControl
-              style={{
-                width: "calc(100% - 48px)",
-                paddingLeft: "24px",
-                paddingRight: "24px",
-              }}
-            >
-              <Input
-                id="adornment-email-login"
-                placeholder="Email"
-                value={this.state.email}
-                onChange={event =>
-                  this.setState({
-                    email: event.target.value,
-                  })
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") {
-                    this.setState({ addAdminOpen: false })
-                    this.inviteUser(this.state.selectedUserType.toUpperCase())
-                  }
-                }}
-                endAdornment={
-                  this.state.email ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => this.setState({ email: "" })}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
-          <div style={{ height: "100%" }} />
-          <br />
-          <DialogActions
-            className="notSelectable defaultCursor"
-            style={{ marginLeft: "8px", marginRight: "8px" }}
-          >
-            <MuiThemeProvider theme={theme}>
-              <Button
-                onClick={() => this.setState({ addAdminOpen: false })}
-                style={{ marginRight: "4px" }}
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                onClick={() => {
-                  this.setState({ addAdminOpen: false })
-                  this.inviteUser(this.state.selectedUserType.toUpperCase())
-                }}
-              >
-                Invite
-              </Button>
-            </MuiThemeProvider>
-          </DialogActions>
-        </Dialog>
-        <Dialog
-          open={this.state.changeRoleOpen}
-          onClose={() => this.setState({ changeRoleOpen: false })}
-          className="notSelectable defaultCursor"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
-        >
-          <DialogTitle
-            className="notSelectable defaultCursor"
-            style={{ width: "300px" }}
-          >
-            Change role
-          </DialogTitle>
-          <div style={{ paddingLeft: "24px" }}>Role</div>
-          <RadioButtonGroup
-            name="role"
-            onChange={(event, value) =>
-              this.setState({ selectedUserForCHangeRoleDialog: value })
-            }
-            valueSelected={this.state.selectedUserForCHangeRoleDialog}
-            style={{
-              height: "100%",
-            }}
-          >
-            <RadioButton
-              value="admin"
-              label="Admin"
-              style={{
-                marginTop: 12,
-                marginBottom: 16,
-                paddingLeft: 24,
-                width: "calc(100% - 24px)",
-              }}
-              rippleStyle={{ color: "#0083ff" }}
-              checkedIcon={
-                <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-              }
-              uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-            />
-            <RadioButton
-              value="editor"
-              label="Editor"
-              style={{
-                marginTop: 12,
-                marginBottom: 16,
-                paddingLeft: 24,
-                width: "calc(100% - 24px)",
-              }}
-              rippleStyle={{ color: "#0083ff" }}
-              checkedIcon={
-                <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-              }
-              uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-            />
-            <RadioButton
-              value="spectator"
-              label="Spectator"
-              style={{
-                marginTop: 12,
-                marginBottom: 16,
-                paddingLeft: 24,
-                width: "calc(100% - 24px)",
-              }}
-              rippleStyle={{ color: "#0083ff" }}
-              checkedIcon={
-                <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-              }
-              uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
-            />
-          </RadioButtonGroup>
-          <DialogActions
-            className="notSelectable defaultCursor"
-            style={{ marginLeft: "8px", marginRight: "8px" }}
-          >
-            <MuiThemeProvider theme={theme}>
-              <Button
-                onClick={() => this.setState({ changeRoleOpen: false })}
-                style={{ marginRight: "4px" }}
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                onClick={() => {
-                  this.setState({ changeRoleOpen: false })
-                  this.changeRole(this.state.selectedUserForCHangeRoleDialog)
-                }}
-              >
-                Change role
-              </Button>
-            </MuiThemeProvider>
-          </DialogActions>
-        </Dialog>
-        <Dialog
           open={this.state.stopSharingOpen}
           onClose={() => this.setState({ stopSharingOpen: false })}
           className="notSelectable defaultCursor"
@@ -717,6 +543,17 @@ class ShareBoard extends React.Component {
         <ChangeOwner
           open={this.state.changeOwnerOpen}
           close={() => this.setState({ changeOwnerOpen: false })}
+        />
+        <ChangeRole
+          open={this.state.changeRoleOpen}
+          close={() => this.setState({ changeRoleOpen: false })}
+          changeRole={this.changeRole}
+        />
+        <InviteUser
+          open={this.state.inviteUserOpen}
+          close={() => this.setState({ inviteUserOpen: false })}
+          selectedUserType={this.state.selectedUserType}
+          inviteUser={this.inviteUser}
         />
       </React.Fragment>
     )

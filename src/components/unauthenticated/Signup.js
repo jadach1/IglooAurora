@@ -201,7 +201,7 @@ class Signup extends Component {
       <div className="rightSide notSelectable" style={{ overflowY: "hidden" }}>
         <div>
           <Typography
-            variant="display2"
+            variant="h6"
             gutterBottom
             className="defaultCursor"
             style={{ color: "#0083ff", textAlign: "center" }}
@@ -478,7 +478,7 @@ class Signup extends Component {
               )}
             </Button>
           </MuiThemeProvider>
-          <Typography variant="subheading" style={{ marginTop: "8px" }}>
+          <Typography variant="subtitle1" style={{ marginTop: "8px" }}>
             Already have an account?{" "}
             <font
               style={{ marginTop: "8px", color: "#0083ff", cursor: "pointer" }}

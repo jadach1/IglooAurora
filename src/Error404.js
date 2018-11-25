@@ -60,7 +60,7 @@ export default class Error404 extends Component {
           }}
           className="notSelectable defaultCursor"
         >
-          <Typography variant="display1" style={{ color: "white" }}>
+          <Typography variant="h6" style={{ color: "white" }}>
             You seem to be lost
           </Typography>
           <br />
@@ -78,7 +78,7 @@ export default class Error404 extends Component {
           <br />
           <br />
           <Typography
-            variant="headline"
+            variant="h5"
             gutterBottom
             style={{ color: "white" }}
           >

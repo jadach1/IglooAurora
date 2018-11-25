@@ -145,8 +145,8 @@ export default class BoardsBody extends Component {
                             ? { color: "white" }
                             : { color: "white", opacity: "0.5" }
                           : user && user.boards[0]
-                            ? { color: "black" }
-                            : { color: "black", opacity: "0.5" }
+                          ? { color: "black" }
+                          : { color: "black", opacity: "0.5" }
                       }
                     >
                       search
@@ -197,7 +197,7 @@ export default class BoardsBody extends Component {
           {user && (
             <React.Fragment>
               <Typography
-                variant="display1"
+                variant="h6"
                 className="notSelectable defaultCursor"
                 style={
                   nightMode
@@ -256,7 +256,7 @@ export default class BoardsBody extends Component {
                       <Icon style={{ fontSize: "64px" }}>add</Icon>
                       <br />
                       <Typography
-                        variant="title"
+                        variant="h6"
                         style={
                           typeof Storage !== "undefined" &&
                           localStorage.getItem("nightMode") === "true"
@@ -273,7 +273,7 @@ export default class BoardsBody extends Component {
               {boardsList[0] && (
                 <React.Fragment>
                   <Typography
-                    variant="display1"
+                    variant="h6"
                     className="notSelectable defaultCursor"
                     style={
                       nightMode

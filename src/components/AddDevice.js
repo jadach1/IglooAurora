@@ -42,8 +42,8 @@ export default class AddDevice extends Component {
                   : { width: "calc(100% - 48px)", background: "#fff" }
                 : typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                  ? { width: "350px", background: "#2f333d" }
-                  : { width: "350px", background: "#fff" }
+                ? { width: "350px", background: "#2f333d" }
+                : { width: "350px", background: "#fff" }
             }
           >
             <font
@@ -91,27 +91,19 @@ export default class AddDevice extends Component {
                   }
             }
           >
-            <MuiThemeProvider
-              theme={createMuiTheme({
-                palette: {
-                  primary: { main: "#0083ff" },
-                },
-              })}
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              onClick={() => {
+                this.props.close()
+                this.setState({ authDialogOpen: true })
+              }}
+              color="primary"
             >
-              <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                onClick={() => {
-                  this.props.close()
-                  this.setState({ authDialogOpen: true })
-                }}
-                color="primary"
-              >
-                Proceed
-              </Button>
-            </MuiThemeProvider>
+              Proceed
+            </Button>
           </DialogActions>
         </Dialog>
         <Dialog
@@ -130,8 +122,8 @@ export default class AddDevice extends Component {
                   : { width: "calc(100% - 48px)", background: "#fff" }
                 : typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                  ? { width: "350px", background: "#2f333d" }
-                  : { width: "350px", background: "#fff" }
+                ? { width: "350px", background: "#2f333d" }
+                : { width: "350px", background: "#fff" }
             }
           >
             <font

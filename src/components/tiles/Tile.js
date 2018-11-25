@@ -184,14 +184,14 @@ class Tile extends Component {
         value.__typename === "FloatValue"
           ? "ChangeFloatSize"
           : value.__typename === "StringValue"
-            ? "ChangeStringSize"
-            : value.__typename === "PlotValue"
-              ? "ChangePlotSize"
-              : value.__typename === "StringPlotValue"
-                ? "ChangeStringPlotSize"
-                : value.__typename === "MapValue"
-                  ? "ChangeMapSize"
-                  : "ChangeBooleanSize"
+          ? "ChangeStringSize"
+          : value.__typename === "PlotValue"
+          ? "ChangePlotSize"
+          : value.__typename === "StringPlotValue"
+          ? "ChangeStringPlotSize"
+          : value.__typename === "MapValue"
+          ? "ChangeMapSize"
+          : "ChangeBooleanSize"
       ]({
         variables: {
           id: value.id,
@@ -202,14 +202,14 @@ class Tile extends Component {
           [value.__typename === "FloatValue"
             ? "floatValue"
             : value.__typename === "StringValue"
-              ? "stringValue"
-              : value.__typename === "PlotValue"
-                ? "plotValue"
-                : value.__typename === "StringPlotValue"
-                  ? "stringPlotValue"
-                  : value.__typename === "MapValue"
-                    ? "mapValue"
-                    : "booleanValue"]: {
+            ? "stringValue"
+            : value.__typename === "PlotValue"
+            ? "plotValue"
+            : value.__typename === "StringPlotValue"
+            ? "stringPlotValue"
+            : value.__typename === "MapValue"
+            ? "mapValue"
+            : "booleanValue"]: {
             __typename: value.__typename,
             id: value.id,
             visibility: visible ? "VISIBLE" : "HIDDEN",
@@ -248,7 +248,7 @@ class Tile extends Component {
             }
           >
             <Typography
-              variant="title"
+              variant="h6"
               className="notSelectable"
               style={
                 typeof Storage !== "undefined" &&

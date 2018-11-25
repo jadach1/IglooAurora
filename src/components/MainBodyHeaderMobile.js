@@ -153,7 +153,7 @@ class MainBodyHeaderMobile extends Component {
             </i>
           )}
           <Typography
-            variant="headline"
+            variant="h5"
             className="title"
             style={{
               cursor: "default",

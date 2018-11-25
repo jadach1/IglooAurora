@@ -142,7 +142,7 @@ class MobilePasswordRecovery extends Component {
             }
           />
           <Typography
-            variant="display1"
+            variant="h6"
             style={{ color: "white", fontSize: "1.95rem" }}
           >
             Recover your account

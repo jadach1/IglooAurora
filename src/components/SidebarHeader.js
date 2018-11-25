@@ -80,7 +80,7 @@ class SidebarHeader extends Component {
           </Tooltip>
         </MuiThemeProvider>
         <Typography
-          variant="headline"
+          variant="h5"
           style={{
             cursor: "default",
             whiteSpace: "nowrap",
@@ -130,9 +130,13 @@ class SidebarHeader extends Component {
                 },
               })}
             >
-              <Tooltip id="tooltip-bottom"
-                      title={<font
-                        className="notSelectable defaultCursor">Settings</font>} placement="bottom">
+              <Tooltip
+                id="tooltip-bottom"
+                title={
+                  <font className="notSelectable defaultCursor">Settings</font>
+                }
+                placement="bottom"
+              >
                 <IconButton
                   onClick={this.props.openSettingsDialog}
                   className="sidebarHeaderButton"
