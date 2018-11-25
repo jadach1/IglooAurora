@@ -117,7 +117,7 @@ class CustomizedSnackbars extends React.Component {
           open={this.state.open}
           style={
             this.props.mobile
-              ? null
+              ? { zIndex: "1" }
               : {
                   bottom: "64px",
                   right: "16px",

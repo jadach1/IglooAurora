@@ -17,6 +17,8 @@ import Icon from "@material-ui/core/Icon"
 
 const MOBILE_WIDTH = 600
 
+let oldName = ""
+
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
@@ -32,46 +34,53 @@ const theme = createMuiTheme({
 })
 
 class RenameTileDialog extends React.Component {
-  state = { customName: null }
+  state = { tileName: null }
 
   rename = () => {
     this.props[
       this.props.value.__typename === "FloatValue"
         ? "RenameFloatValue"
         : this.props.value.__typename === "StringValue"
-          ? "RenameStringValue"
-          : this.props.value.__typename === "PlotValue"
-            ? "RenamePlotValue"
-            : this.props.value.__typename === "StringPlotValue"
-              ? "RenameStringPlotValue"
-              : this.props.value.__typename === "MapValue"
-                ? "RenameMapValue"
-                : "RenameBooleanValue"
+        ? "RenameStringValue"
+        : this.props.value.__typename === "PlotValue"
+        ? "RenamePlotValue"
+        : this.props.value.__typename === "StringPlotValue"
+        ? "RenameStringPlotValue"
+        : this.props.value.__typename === "MapValue"
+        ? "RenameMapValue"
+        : "RenameBooleanValue"
     ]({
       variables: {
         id: this.props.value.id,
-        customName: this.state.customName,
+        customName: this.state.tileName,
       },
       optimisticResponse: {
         __typename: "Mutation",
         [this.props.value.__typename === "FloatValue"
           ? "floatValue"
           : this.props.value.__typename === "StringValue"
-            ? "stringValue"
-            : this.props.value.__typename === "PlotValue"
-              ? "plotValue"
-              : this.props.value.__typename === "StringPlotValue"
-                ? "stringPlotValue"
-                : this.props.value.__typename === "MapValue"
-                  ? "mapValue"
-                  : "booleanValue"]: {
+          ? "stringValue"
+          : this.props.value.__typename === "PlotValue"
+          ? "plotValue"
+          : this.props.value.__typename === "StringPlotValue"
+          ? "stringPlotValue"
+          : this.props.value.__typename === "MapValue"
+          ? "mapValue"
+          : "booleanValue"]: {
           __typename: this.props.value.__typename,
           id: this.props.value.id,
-          customName: this.state.customName,
+          customName: this.state.tileName,
         },
       },
     })
     this.props.handleRenameTileDialogClose()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.renameTileOpen && !this.props.renameTileOpen) {
+      oldName = this.props.tileName
+      this.setState({ tileName: this.props.tileName })
+    }
   }
 
   render() {
@@ -138,10 +147,8 @@ class RenameTileDialog extends React.Component {
             <Button
               variant="raised"
               color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
               onClick={this.rename}
-              disabled={!this.state.customName}
+              disabled={!this.state.tileName || oldName === this.state.tileName}
             >
               Rename
             </Button>
@@ -168,7 +175,7 @@ export default graphql(
   graphql(
     gql`
       mutation Rename($id: ID!, $customName: String) {
-        floatValue(id: $id, customName: $customName) {
+        stringValue(id: $id, customName: $customName) {
           id
           customName
         }
