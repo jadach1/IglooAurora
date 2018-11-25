@@ -21,6 +21,8 @@ const theme = createMuiTheme({
   },
 })
 
+let oldName = ""
+
 const MOBILE_WIDTH = 600
 
 function Transition(props) {
@@ -32,7 +34,7 @@ function Transition(props) {
 }
 
 class RenameDevice extends React.Component {
-  state = { customName: this.props.device.customName }
+  state = { customName: "" }
 
   rename = () => {
     this.props["Rename"]({
@@ -50,6 +52,13 @@ class RenameDevice extends React.Component {
       },
     })
     this.props.close()
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.open && !this.props.open) {
+      oldName = this.props.device.customName
+      this.setState({ customName: this.props.device.customName })
+    }
   }
 
   render() {
@@ -114,10 +123,10 @@ class RenameDevice extends React.Component {
             <Button
               variant="raised"
               color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
               onClick={this.rename}
-              disabled={!this.state.customName}
+              disabled={
+                !this.state.customName || oldName === this.state.customName
+              }
             >
               Rename
             </Button>

@@ -304,7 +304,7 @@ class MainMobile extends Component {
           deviceType
           createdAt
           updatedAt
-          notificationsCount
+          notificationCount
           notifications {
             id
             content
@@ -631,7 +631,7 @@ export default graphql(
           deviceType
           createdAt
           updatedAt
-          notificationsCount
+          notificationCount
           notifications {
             id
             content

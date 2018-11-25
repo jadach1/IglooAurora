@@ -26,6 +26,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { RadioButtonGroup, RadioButton } from "material-ui"
+import ChangeOwner from "./ChangeOwner"
 
 const theme = createMuiTheme({
   palette: {
@@ -53,6 +54,7 @@ class ShareBoard extends React.Component {
     email: "",
     selectedUserType: "",
     selectedUserForCHangeRoleDialog: "",
+    changeOwnerOpen: false,
   }
 
   getInitials = string => {
@@ -130,7 +132,8 @@ class ShareBoard extends React.Component {
             this.props.open &&
             !this.state.addAdminOpen &&
             !this.state.changeRoleOpen &&
-            !this.state.stopSharingOpen
+            !this.state.stopSharingOpen &&
+            !this.state.changeOwnerOpen
           }
           onClose={this.props.close}
           TransitionComponent={Transition}
@@ -194,7 +197,9 @@ class ShareBoard extends React.Component {
                   {this.props.userData.user.email ===
                     this.props.board.owner.email && (
                     <ListItemSecondaryAction>
-                      <IconButton>
+                      <IconButton
+                        onClick={() => this.setState({ changeOwnerOpen: true })}
+                      >
                         <Icon>swap_horiz</Icon>
                       </IconButton>
                     </ListItemSecondaryAction>
@@ -454,7 +459,8 @@ class ShareBoard extends React.Component {
               <ListItemIcon>
                 <Icon
                   style={
-                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }
                       : { color: "black" }
                   }
@@ -708,6 +714,10 @@ class ShareBoard extends React.Component {
             </MuiThemeProvider>
           </DialogActions>
         </Dialog>
+        <ChangeOwner
+          open={this.state.changeOwnerOpen}
+          close={() => this.setState({ changeOwnerOpen: false })}
+        />
       </React.Fragment>
     )
   }

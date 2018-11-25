@@ -170,6 +170,20 @@ export default class ChangePasswordDialog extends React.Component {
                     url: event.target.value,
                   })
                 }}
+                onKeyPress={event => {
+                  if (
+                    event.key === "Enter" &&
+                    !(
+                      oldMode === this.state.mode ||
+                      (this.state.mode === "manual" &&
+                        (!this.state.url ||
+                          typeof Storage === "undefined" ||
+                          oldUrl === this.state.url))
+                    )
+                  ) {
+                    confirm()
+                  }
+                }}
                 style={
                   this.state.mode === "manual"
                     ? typeof Storage !== "undefined" &&

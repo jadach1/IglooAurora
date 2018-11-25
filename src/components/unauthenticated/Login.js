@@ -57,7 +57,7 @@ class Login extends Component {
               id
               token
               user {
-                boardsCount
+                boardCount
                 boards {
                   id
                 }
@@ -76,8 +76,8 @@ class Login extends Component {
       }
 
       this.props.setBoards(
-        loginMutation.data.AuthenticateUser.user.boardsCount,
-        loginMutation.data.AuthenticateUser.user.boardsCount === 1
+        loginMutation.data.AuthenticateUser.user.boardCount,
+        loginMutation.data.AuthenticateUser.user.boardCount === 1
           ? loginMutation.data.AuthenticateUser.user.boards[0].id
           : ""
       )
