@@ -37,7 +37,10 @@ export default class FilterPopover extends Component {
     if (currentIndex === -1) {
       newChecked.push(value)
     } else {
-      if (this.props.currentDevice && this.props.currentDevice.deviceType === newChecked[currentIndex]) {
+      if (
+        this.props.currentDevice &&
+        this.props.currentDevice.deviceType === newChecked[currentIndex]
+      ) {
         this.setState({ redirect: true })
       }
 
@@ -67,8 +70,7 @@ export default class FilterPopover extends Component {
   }
 
   render() {
-    let deviceTypeList = this.props.devices
-      .map(device => device.deviceType)
+    let deviceTypeList = this.props.devices.map(device => device.deviceType)
 
     let uniqueDeviceTypeList = removeDuplicates(deviceTypeList)
 
@@ -103,7 +105,7 @@ export default class FilterPopover extends Component {
           >
             <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
               <Typography
-                variant="title"
+                variant="h6"
                 className="defaultCursor"
                 style={
                   typeof Storage !== "undefined" &&

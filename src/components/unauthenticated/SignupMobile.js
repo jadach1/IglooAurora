@@ -195,7 +195,7 @@ class SignupMobile extends Component {
           }
         />
         <Typography
-          variant="display2"
+          variant="h6"
           gutterBottom
           className="defaultCursor"
           style={{ color: "white", textAlign: "center" }}
@@ -442,7 +442,7 @@ class SignupMobile extends Component {
             )}
           </Button>
           <Typography
-            variant="subheading"
+            variant="subtitle1"
             style={{
               marginTop: "16px",
               marginBottom: "16px",

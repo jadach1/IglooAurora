@@ -265,40 +265,6 @@ class SettingsDialog extends React.Component {
       }
     }
 
-    let quietModeSetting = (
-      <ListItem disabled>
-        <ListItemText
-          primary={
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white" }
-                  : { color: "black" }
-              }
-            >
-              Quiet mode
-            </font>
-          }
-          secondary={
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#c1c2c5" }
-                  : { color: "#7a7a7a" }
-              }
-            >
-              Mute all notifications
-            </font>
-          }
-        />
-        <ListItemSecondaryAction>
-          <Switch disabled />
-        </ListItemSecondaryAction>
-      </ListItem>
-    )
-
     let toggleDevMode = () => {
       if (typeof Storage !== "undefined") {
         !localStorage.getItem("devMode") &&
@@ -330,49 +296,6 @@ class SettingsDialog extends React.Component {
           }
         }
       }
-
-      quietModeSetting = (
-        <ListItem button disableRipple onClick={toggleNightMode}>
-          <ListItemText
-            primary={
-              <font
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
-              >
-                Quiet mode
-              </font>
-            }
-            secondary={
-              <font
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "#c1c2c5" }
-                    : { color: "#7a7a7a" }
-                }
-              >
-                Mute all notifications
-              </font>
-            }
-          />
-          <ListItemSecondaryAction>
-            <MuiThemeProvider theme={theme}>
-              <Switch
-                checked={user.quietMode}
-                onToggle={() => {
-                  user.quietMode
-                    ? toggleQuietMode(false)
-                    : toggleQuietMode(true)
-                }}
-              />
-            </MuiThemeProvider>
-          </ListItemSecondaryAction>
-        </ListItem>
-      )
 
       toggleQuietMode = quietMode => {
         this.props["ToggleQuietMode"]({
@@ -434,15 +357,15 @@ class SettingsDialog extends React.Component {
                   background: "#2f333d",
                 }
             : this.state.isDesktop
-              ? {
-                  overflowY: "auto",
-                  height: "calc(100vh - 220px)",
-                  maxHeight: "550px",
-                }
-              : {
-                  overflowY: "auto",
-                  height: "calc(100vh - 128px)",
-                }
+            ? {
+                overflowY: "auto",
+                height: "calc(100vh - 220px)",
+                maxHeight: "550px",
+              }
+            : {
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+              }
         }
       >
         <div style={listStyles.root}>
@@ -513,7 +436,56 @@ class SettingsDialog extends React.Component {
             >
               Notifications
             </ListSubheader>
-            {quietModeSetting}
+            <ListItem
+              disabled={!user}
+              button
+              disableRipple
+              onClick={() => {
+                user.quietMode
+                  ? toggleQuietMode(false)
+                  : toggleQuietMode(true)
+              }}
+            >
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  >
+                    Quiet mode
+                  </font>
+                }
+                secondary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "#c1c2c5" }
+                        : { color: "#7a7a7a" }
+                    }
+                  >
+                    Mute all notifications
+                  </font>
+                }
+              />
+              <ListItemSecondaryAction>
+                <MuiThemeProvider theme={theme}>
+                  <Switch
+                    disabled={!user}
+                    checked={user && user.quietMode}
+                    onChange={() => {
+                      user.quietMode
+                        ? toggleQuietMode(false)
+                        : toggleQuietMode(true)
+                    }}
+                  />
+                </MuiThemeProvider>
+              </ListItemSecondaryAction>
+            </ListItem>
             <Divider />
             <ListSubheader
               style={
@@ -731,15 +703,15 @@ class SettingsDialog extends React.Component {
                   background: "#2f333d",
                 }
             : this.state.isDesktop
-              ? {
-                  overflowY: "auto",
-                  height: "calc(100vh - 220px)",
-                  maxHeight: "550px",
-                }
-              : {
-                  overflowY: "auto",
-                  height: "calc(100vh - 128px)",
-                }
+            ? {
+                overflowY: "auto",
+                height: "calc(100vh - 220px)",
+                maxHeight: "550px",
+              }
+            : {
+                overflowY: "auto",
+                height: "calc(100vh - 128px)",
+              }
         }
       >
         <List style={{ padding: "0" }}>
@@ -913,29 +885,28 @@ rightToggle={
           >
             Account management
           </ListSubheader>
-          {user &&
-            !user.emailIsVerified && (
-              <ListItem
-                disabled={!user}
-                button
-                onClick={() => this.setState({ verifyOpen: true })}
-              >
-                <ListItemText
-                  primary={
-                    <font
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      Resend verifcation email
-                    </font>
-                  }
-                />
-              </ListItem>
-            )}
+          {user && !user.emailIsVerified && (
+            <ListItem
+              disabled={!user}
+              button
+              onClick={() => this.setState({ verifyOpen: true })}
+            >
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  >
+                    Resend verifcation email
+                  </font>
+                }
+              />
+            </ListItem>
+          )}
           <ListItem disabled={!user} button onClick={this.handleNameDialogOpen}>
             <ListItemText
               primary={
@@ -1038,15 +1009,15 @@ rightToggle={
                       background: "#2f333d",
                     }
                 : this.state.isDesktop
-                  ? {
-                      overflowY: "auto",
-                      height: "calc(100vh - 220px)",
-                      maxHeight: "550px",
-                    }
-                  : {
-                      overflowY: "auto",
-                      height: "calc(100vh - 128px)",
-                    }
+                ? {
+                    overflowY: "auto",
+                    height: "calc(100vh - 220px)",
+                    maxHeight: "550px",
+                  }
+                : {
+                    overflowY: "auto",
+                    height: "calc(100vh - 128px)",
+                  }
             }
           >
             <List style={{ padding: "0" }}>
@@ -1355,7 +1326,7 @@ rightToggle={
                   }}
                 >
                   <Typography
-                    variant="title"
+                    variant="h6"
                     color="inherit"
                     className="defaultCursor"
                     style={{
@@ -1424,8 +1395,8 @@ rightToggle={
                         ? { color: "#fff" }
                         : { color: "#fff", opacity: 0.5 }
                       : this.props.slideIndex === 0
-                        ? { color: "#0083ff" }
-                        : { color: "#757575" }
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
                   }
                 />
                 <BottomNavigationAction
@@ -1438,8 +1409,8 @@ rightToggle={
                         ? { color: "#fff" }
                         : { color: "#fff", opacity: 0.5 }
                       : this.props.slideIndex === 1
-                        ? { color: "#0083ff" }
-                        : { color: "#757575" }
+                      ? { color: "#0083ff" }
+                      : { color: "#757575" }
                   }
                 />
                 {typeof Storage !== "undefined" &&
@@ -1454,8 +1425,8 @@ rightToggle={
                             ? { color: "#fff" }
                             : { color: "#fff", opacity: 0.5 }
                           : this.props.slideIndex === 2
-                            ? { color: "#0083ff" }
-                            : { color: "#757575" }
+                          ? { color: "#0083ff" }
+                          : { color: "#757575" }
                       }
                     />
                   )}
@@ -1539,14 +1510,13 @@ rightToggle={
           userData={this.props.userData}
           allDevices={allDevices}
         />
-        {this.props.userData.user &&
-          this.props.userData.user.boards && (
-            <CreateDevice
-              open={this.props.isOpen && this.state.createDeviceOpen}
-              close={() => this.setState({ createDeviceOpen: false })}
-              userData={this.props.userData}
-            />
-          )}
+        {this.props.userData.user && this.props.userData.user.boards && (
+          <CreateDevice
+            open={this.props.isOpen && this.state.createDeviceOpen}
+            close={() => this.setState({ createDeviceOpen: false })}
+            userData={this.props.userData}
+          />
+        )}
         <CreateNotification
           open={this.props.isOpen && this.state.createNotificationOpen}
           close={() => this.setState({ createNotificationOpen: false })}
