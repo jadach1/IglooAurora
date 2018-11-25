@@ -137,7 +137,7 @@ class PasswordRecovery extends Component {
                     }
               }
             />
-            <Typography variant="display1" style={{ color: "white" }}>
+            <Typography variant="h6" style={{ color: "white" }}>
               Invalid token
             </Typography>
             <br />
@@ -197,7 +197,7 @@ class PasswordRecovery extends Component {
                   }
             }
           />
-          <Typography variant="display1" style={{ color: "white" }}>
+          <Typography variant="h6" style={{ color: "white" }}>
             Recover your account
           </Typography>
           <br />

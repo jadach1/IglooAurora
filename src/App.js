@@ -10,6 +10,8 @@ import Error404 from "./Error404"
 import RecoveryFetcher from "./RecoveryFetcher"
 import { Online, Offline } from "react-detect-offline"
 import OfflineScreen from "./OfflineScreen"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 function setupWebPush(token) {
   const applicationServerPublicKey =
@@ -204,7 +206,17 @@ class App extends Component {
       localStorage.setItem("server", "")
 
     return (
-      <React.Fragment>
+      <MuiThemeProvider
+        theme={createMuiTheme({
+          palette: {
+            primary: { main: "#0083ff" },
+            secondary: { main: "#ff4081" },
+            error: { main: "#f44336" },
+            contrastThreshold: 3,
+            tonalOffset: 0.2,
+          },
+        })}
+      >
         <Online onChange={() => this.forceUpdate()}>
           <Switch>
             <Route
@@ -356,7 +368,7 @@ class App extends Component {
         <Offline>
           <OfflineScreen isMobile={this.state.isMobile} />
         </Offline>
-      </React.Fragment>
+      </MuiThemeProvider>
     )
   }
 }

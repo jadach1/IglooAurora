@@ -151,7 +151,7 @@ class Login extends Component {
         >
           <div>
             <Typography
-              variant="display2"
+              variant="h6"
               gutterBottom
               className="defaultCursor"
               style={{ color: "#0083ff", textAlign: "center" }}
@@ -333,7 +333,7 @@ class Login extends Component {
                 }
                 label={
                   <Typography
-                    variant="subheading"
+                    variant="subtitle1"
                     style={{ paddingLeft: "4px" }}
                   >
                     Keep me logged in
@@ -345,7 +345,7 @@ class Login extends Component {
           <div style={{ marginTop: "179px" }}>
             <div style={{ textAlign: "right" }}>
               <Typography
-                variant="subheading"
+                variant="subtitle1"
                 style={{
                   color: "#0083ff",
                   cursor: "pointer",
@@ -401,7 +401,7 @@ class Login extends Component {
                 )}
               </Button>
             </MuiThemeProvider>
-            <Typography variant="subheading" style={{ marginTop: "8px" }}>
+            <Typography variant="subtitle1" style={{ marginTop: "8px" }}>
               No account yet?{" "}
               <font
                 style={{

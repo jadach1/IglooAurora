@@ -554,7 +554,7 @@ class NotificationsDrawer extends React.Component {
       if (!notificationCount) {
         noNotificationsUI = (
           <Typography
-            variant="headline"
+            variant="h5"
             style={{
               textAlign: "center",
               marginTop: "32px",

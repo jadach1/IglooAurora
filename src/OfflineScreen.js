@@ -41,7 +41,7 @@ export default class OfflineScreen extends React.Component {
                       }}
                   className="notSelectable defaultCursor"
               >
-          <Typography variant="display1" style={{ color: "white" }}>
+          <Typography variant="h6" style={{ color: "white" }}>
             You are not connected, try again in a while
           </Typography>
           <br />
@@ -58,7 +58,7 @@ export default class OfflineScreen extends React.Component {
           <br />
           <br />
           <Typography
-            variant="headline"
+            variant="h5"
             gutterBottom
             style={{ color: "white" }}
           >

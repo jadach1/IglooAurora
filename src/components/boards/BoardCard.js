@@ -129,7 +129,7 @@ class BoardCard extends Component {
                 }}
               >
                 <Typography
-                  variant="title"
+                  variant="h6"
                   className="notSelectable"
                   style={
                     typeof Storage !== "undefined" &&

@@ -179,7 +179,7 @@ export default class LoginMobile extends Component {
             }
           />
           <Typography
-            variant="display2"
+            variant="h6"
             gutterBottom
             className="defaultCursor"
             style={{ color: "white", textAlign: "center" }}
@@ -334,7 +334,7 @@ export default class LoginMobile extends Component {
               }
               label={
                 <Typography
-                  variant="subheading"
+                  variant="subtitle1"
                   style={{ paddingLeft: "4px", color: "white" }}
                 >
                   Keep me logged in
@@ -344,7 +344,7 @@ export default class LoginMobile extends Component {
             <br />
             <div style={{ textAlign: "right", marginBottom: "16px" }}>
               <Typography
-                variant="subheading"
+                variant="subtitle1"
                 style={{
                   cursor: "pointer",
                     color: "white",
@@ -398,7 +398,7 @@ export default class LoginMobile extends Component {
               )}
             </Button>
             <Typography
-              variant="subheading"
+              variant="subtitle1"
               style={{
                 marginTop: "16px",
                 marginBottom: "16px",
