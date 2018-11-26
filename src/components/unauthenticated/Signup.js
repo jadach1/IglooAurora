@@ -201,7 +201,7 @@ class Signup extends Component {
       <div className="rightSide notSelectable" style={{ overflowY: "hidden" }}>
         <div>
           <Typography
-            variant="h6"
+            variant="h3"
             gutterBottom
             className="defaultCursor"
             style={{ color: "#0083ff", textAlign: "center" }}

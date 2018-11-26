@@ -195,7 +195,7 @@ class SignupMobile extends Component {
           }
         />
         <Typography
-          variant="h6"
+          variant="h3"
           gutterBottom
           className="defaultCursor"
           style={{ color: "white", textAlign: "center" }}

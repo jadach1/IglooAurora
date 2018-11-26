@@ -34,7 +34,7 @@ export default class RecoveryFetcher extends Component {
                 .replace("https://", "")
                 .replace("http://", "") +
               "/subscriptions"
-            : `wss://iglooql.herokuapp.com/subscriptions`,
+            : `wss://igloo-production.herokuapp.com/subscriptions`,
         options: {
           reconnect: true,
           connectionParams: {
@@ -48,7 +48,7 @@ export default class RecoveryFetcher extends Component {
           typeof Storage !== "undefined" &&
           localStorage.getItem("server") !== ""
             ? localStorage.getItem("server") + "/graphql"
-            : `https://iglooql.herokuapp.com/graphql`,
+            : `https://igloo-production.herokuapp.com/graphql`,
         headers: {
           Authorization: "Bearer " + this.state.token,
         },

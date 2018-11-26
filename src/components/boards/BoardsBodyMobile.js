@@ -239,7 +239,7 @@ class BoardsBodyMobile extends Component {
                   }
                 >
                   <Typography
-                    variant="h6"
+                    variant="h4"
                     className="notSelectable defaultCursor"
                     style={
                       nightMode
@@ -306,7 +306,7 @@ class BoardsBodyMobile extends Component {
                             <Icon style={{ fontSize: "64px" }}>add</Icon>
                             <br />
                             <Typography
-                              variant="h6"
+                              variant="h5"
                               style={
                                 typeof Storage !== "undefined" &&
                                 localStorage.getItem("nightMode") === "true"
@@ -329,7 +329,7 @@ class BoardsBodyMobile extends Component {
                   }}
                 >
                   <Typography
-                    variant="h6"
+                    variant="h4"
                     className="notSelectable defaultCursor"
                     style={
                       nightMode
@@ -376,7 +376,7 @@ class BoardsBodyMobile extends Component {
                 }}
               >
                 <Typography
-                  variant="h6"
+                  variant="h4"
                   className="notSelectable defaultCursor"
                   style={
                     nightMode
@@ -440,7 +440,7 @@ class BoardsBodyMobile extends Component {
                           <Icon style={{ fontSize: "64px" }}>add</Icon>
                           <br />
                           <Typography
-                            variant="h6"
+                            variant="h5"
                             style={
                               typeof Storage !== "undefined" &&
                               localStorage.getItem("nightMode") === "true"

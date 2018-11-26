@@ -66,7 +66,7 @@ function setupWebPush(token) {
     const serverUrl =
       typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
         ? localStorage.getItem("server") + "/webPushSubscribe"
-        : `http://iglooql.herokuapp.com/webPushSubscribe`
+        : `http://igloo-production.herokuapp.com/webPushSubscribe`
 
     fetch(serverUrl, {
       body: JSON.stringify(subscription), // must match 'Content-Type' header

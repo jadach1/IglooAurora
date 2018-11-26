@@ -98,9 +98,9 @@ class GraphQLFetcher extends Component {
       },
     })
 
-    const boardSharedSubscriptionQuery = gql`
+    const boardSharedWithYouSubscriptionQuery = gql`
       subscription {
-        boardShared {
+        boardSharedWithYou {
           id
           index
           customName
@@ -161,14 +161,14 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: boardSharedSubscriptionQuery,
+      document: boardSharedWithYouSubscriptionQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
         const newBoards = [
           ...prev.user.boards,
-          subscriptionData.data.boardShared,
+          subscriptionData.data.boardSharedWithYou,
         ]
         return {
           user: {

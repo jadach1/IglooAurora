@@ -197,7 +197,7 @@ export default class BoardsBody extends Component {
           {user && (
             <React.Fragment>
               <Typography
-                variant="h6"
+                variant="h4"
                 className="notSelectable defaultCursor"
                 style={
                   nightMode
@@ -256,7 +256,7 @@ export default class BoardsBody extends Component {
                       <Icon style={{ fontSize: "64px" }}>add</Icon>
                       <br />
                       <Typography
-                        variant="h6"
+                        variant="h5"
                         style={
                           typeof Storage !== "undefined" &&
                           localStorage.getItem("nightMode") === "true"
@@ -273,7 +273,7 @@ export default class BoardsBody extends Component {
               {boardsList[0] && (
                 <React.Fragment>
                   <Typography
-                    variant="h6"
+                    variant="h4"
                     className="notSelectable defaultCursor"
                     style={
                       nightMode
