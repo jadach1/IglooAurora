@@ -1,7 +1,9 @@
 import React from "react"
 import Dialog from "material-ui/Dialog"
 import Button from "@material-ui/core/Button"
-import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
+import Radio from "@material-ui/core/Radio"
+import RadioGroup from "@material-ui/core/RadioGroup"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
 import DropDownMenu from "material-ui/DropDownMenu"
 import MenuItem from "material-ui/MenuItem"
 import Icon from "@material-ui/core/Icon"
@@ -82,6 +84,22 @@ class TimeZoneDialog extends React.Component {
         }}
         titleClassName="notSelectable defaultCursor"
       >
+        <RadioGroup
+          onChange={event => this.setState({ value: event.target.value })}
+          value={this.state.timezoneMode}
+          style={{ paddingLeft: "24px", paddingRight: "24px" }}
+        >
+          <FormControlLabel
+            value="si"
+            control={<Radio color="primary" />}
+            label="SI units"
+          />
+          <FormControlLabel
+            value="imperial"
+            control={<Radio color="primary" />}
+            label="Imperial units"
+          />
+        </RadioGroup>
         <RadioButtonGroup name="Time Zone" value={this.state.timezoneMode}>
           <RadioButton
             value="auto"
@@ -1331,142 +1349,142 @@ class TimeZoneDialog extends React.Component {
             primaryText="(UTC+02:00) Rome"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) San Marino"
             primaryText="(UTC+02:00) San Marino"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Sarajevo"
             primaryText="(UTC+02:00) Sarajevo"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Skopje"
             primaryText="(UTC+02:00) Skopje"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Stockholm"
             primaryText="(UTC+02:00) Stockholm"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Tirane"
             primaryText="(UTC+02:00) Tirane"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Tripoli"
             primaryText="(UTC+02:00) Tripoli"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Vaduz"
             primaryText="(UTC+02:00) Vaduz"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Vatican"
             primaryText="(UTC+02:00) Vatican"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Vienna"
             primaryText="(UTC+02:00) Vienna"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Warsaw"
             primaryText="(UTC+02:00) Warsaw"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Windhoek"
             primaryText="(UTC+02:00) Windhoek"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Zagreb"
             primaryText="(UTC+02:00) Zagreb"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+02:00) Zurich"
             primaryText="(UTC+02:00) Zurich"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Addis Ababa"
             primaryText="(UTC+03:00) Addis Ababa"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Aden"
             primaryText="(UTC+03:00) Aden"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Amman"
             primaryText="(UTC+03:00) Amman"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Antananarivo"
             primaryText="(UTC+03:00) Antananarivo"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Asmara"
             primaryText="(UTC+03:00) Asmara"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Athens"
             primaryText="(UTC+03:00) Athens"
             className="notSelectable"
           />
-               <MenuItem
+          <MenuItem
             value="(UTC+03:00) Baghdad"
             primaryText="(UTC+03:00) Baghdad"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Bahrain"
             primaryText="(UTC+03:00) Bahrain"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Beirut"
             primaryText="(UTC+03:00) Beirut"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Bucharest"
             primaryText="(UTC+03:00) Bucharest"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Chisinau"
             primaryText="(UTC+03:00) Chisinau"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Comoro"
             primaryText="(UTC+03:00) Comoro"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Damascus"
             primaryText="(UTC+03:00) Damascus"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+03:00) Dar es Salaam"
             primaryText="(UTC+03:00) Dar es Salaam"
             className="notSelectable"
           />
-              <MenuItem
+          <MenuItem
             value="(UTC+03:00) Djibouti"
             primaryText="(UTC+03:00) Djibouti"
             className="notSelectable"
@@ -1696,62 +1714,62 @@ class TimeZoneDialog extends React.Component {
             primaryText="(UTC+04:30) Tehran"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Aqtobe"
             primaryText="(UTC+05:00) Aqtobe"
             className="notSelectable"
           />
-            <MenuItem
+          <MenuItem
             value="(UTC+05:00) Ashgabat"
             primaryText="(UTC+05:00) Ashgabat"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Atyrau"
             primaryText="(UTC+05:00) Atyrau"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Dushanbe"
             primaryText="(UTC+05:00) Dushanbe"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Karachi"
             primaryText="(UTC+05:00) Karachi"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Kerguelen"
             primaryText="(UTC+05:00) Kerguelen"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Maldives"
             primaryText="(UTC+05:00) Maldives"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Mawson"
             primaryText="(UTC+05:00) Mawson"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Oral"
             primaryText="(UTC+05:00) Oral"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Samarkand"
             primaryText="(UTC+05:00) Samarkand"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Tashkent"
             primaryText="(UTC+05:00) Tashkent"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+05:00) Yekaterinburg"
             primaryText="(UTC+05:00) Yekaterinburg"
             className="notSelectable"
@@ -2011,47 +2029,47 @@ class TimeZoneDialog extends React.Component {
             primaryText="(UTC+09:00) Chita"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+09:00) Dili"
             primaryText="(UTC+09:00) Dili"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+09:00) Jayapura"
             primaryText="(UTC+09:00) Jayapura"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+09:00) Khandyga"
             primaryText="(UTC+09:00) Khandyga"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+09:00) Palau"
             primaryText="(UTC+09:00) Palau"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+09:00) Pyongyang"
             primaryText="(UTC+09:00) Pyongyang"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+09:00) Seoul"
             primaryText="(UTC+09:00) Seoul"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+09:00) Tokyo"
             primaryText="(UTC+09:00) Tokyo"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+09:00) Yakutsk"
             primaryText="(UTC+09:00) Yakutsk"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+09:30) Adelaide"
             primaryText="(UTC+09:30) Adelaide"
             className="notSelectable"
@@ -2091,7 +2109,7 @@ class TimeZoneDialog extends React.Component {
             primaryText="(UTC+10:00) Currie"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+10:00) Guam"
             primaryText="(UTC+10:00) Guam"
             className="notSelectable"
@@ -2131,7 +2149,7 @@ class TimeZoneDialog extends React.Component {
             primaryText="(UTC+10:00) Yap"
             className="notSelectable"
           />
-           <MenuItem
+          <MenuItem
             value="(UTC+10:30) Lord Howe"
             primaryText="(UTC+10:30) Lord Howe"
             className="notSelectable"

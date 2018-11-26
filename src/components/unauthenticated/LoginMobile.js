@@ -12,19 +12,10 @@ import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 import logo from "../../styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#fff" },
-    secondary: { main: "#0083ff" },
-  },
-})
 
 export default class LoginMobile extends Component {
   constructor() {
@@ -179,7 +170,7 @@ export default class LoginMobile extends Component {
             }
           />
           <Typography
-            variant="h6"
+            variant="h3"
             gutterBottom
             className="defaultCursor"
             style={{ color: "white", textAlign: "center" }}
@@ -187,230 +178,210 @@ export default class LoginMobile extends Component {
             Log in
           </Typography>
           <br />
-          <MuiThemeProvider theme={theme}>
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon style={{ color: "white", marginBottom: "20px" }}>
-                  email
-                </Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-email-login"
-                    placeholder="Email"
-                    style={{ color: "white" }}
-                    value={this.props.email}
-                    onChange={event => {
-                      this.props.changeEmail(event.target.value)
-                      this.setState({
-                        isMailEmpty: event.target.value === "",
-                      })
-                    }}
-                    onKeyPress={event => {
-                      if (event.key === "Enter") {
-                        this.setState({ showLoading: true })
-                        if (
-                          EmailValidator.validate(this.props.email) &&
-                          this.props.password
-                        )
-                          this.signIn()
-                      }
-                    }}
-                    endAdornment={
-                      this.props.email ? (
-                        <InputAdornment position="end">
-                          <IconButton tabIndex="-1" style={{ color: "white" }}>
-                            <Icon>clear</Icon>
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                  <FormHelperText
-                    id="name-error-text-login"
-                    style={{ color: "white" }}
-                  >
-                    {this.state.isMailEmpty
-                      ? "This field is required"
-                      : this.props.emailError}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
+
+          <Grid
+            container
+            spacing={0}
+            alignItems="flex-end"
+            style={{ width: "100%" }}
+          >
+            <Grid item style={{ marginRight: "16px" }}>
+              <Icon style={{ color: "white", marginBottom: "20px" }}>
+                email
+              </Icon>
             </Grid>
-            <br />
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon style={{ color: "white", marginBottom: "20px" }}>
-                  vpn_key
-                </Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-password-login"
-                    type={this.state.showPassword ? "text" : "password"}
-                    value={this.props.password}
-                    placeholder="Password"
-                    style={{ color: "white" }}
-                    onChange={event => {
-                      this.props.changePassword(event.target.value)
-                      this.props.changePasswordError("")
-                      this.setState({
-                        isPasswordEmpty: event.target.value === "",
-                      })
-                    }}
-                    onKeyPress={event => {
-                      if (event.key === "Enter") {
-                        this.setState({ showLoading: true })
-                        if (
-                          EmailValidator.validate(this.props.email) &&
-                          this.props.password
-                        )
-                          this.signIn()
-                      }
-                    }}
-                    endAdornment={
-                      this.props.password ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={this.handleClickShowPassword}
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                            style={{ color: "white" }}
-                          >
-                            {this.state.showPassword ? (
-                              <Icon style={{ color: "white" }}>
-                                visibility_off
-                              </Icon>
-                            ) : (
-                              <Icon style={{ color: "white" }}>visibility</Icon>
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
+            <Grid item style={{ width: "calc(100% - 40px)" }}>
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-email-login"
+                  placeholder="Email"
+                  style={{ color: "white" }}
+                  value={this.props.email}
+                  onChange={event => {
+                    this.props.changeEmail(event.target.value)
+                    this.setState({
+                      isMailEmpty: event.target.value === "",
+                    })
+                  }}
+                  onKeyPress={event => {
+                    if (event.key === "Enter") {
+                      this.setState({ showLoading: true })
+                      if (
+                        EmailValidator.validate(this.props.email) &&
+                        this.props.password
+                      )
+                        this.signIn()
                     }
-                  />
-                  <FormHelperText
-                    id="passowrd-error-text-login"
-                    style={{ color: "white" }}
-                  >
-                    {this.props.passwordError}
-                    {this.state.isPasswordEmpty ? "This field is required" : ""}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
+                  }}
+                  endAdornment={
+                    this.props.email ? (
+                      <InputAdornment position="end">
+                        <IconButton tabIndex="-1" style={{ color: "white" }}>
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null
+                  }
+                />
+                <FormHelperText
+                  id="name-error-text-login"
+                  style={{ color: "white" }}
+                >
+                  {this.state.isMailEmpty
+                    ? "This field is required"
+                    : this.props.emailError}
+                </FormHelperText>
+              </FormControl>
             </Grid>
-            <FormControlLabel
-              style={{ marginLeft: "-12px" }}
-              control={
-                <MuiThemeProvider
-                  theme={createMuiTheme({
-                    palette: {
-                      primary: { main: "#fff" },
-                      secondary: { main: "#fff" },
-                      default: { main: "#fff" },
-                    },
-                  })}
-                >
-                  <Checkbox
-                    onChange={event =>
-                      this.setState({ keepLoggedIn: event.target.checked })
+          </Grid>
+          <br />
+          <Grid
+            container
+            spacing={0}
+            alignItems="flex-end"
+            style={{ width: "100%" }}
+          >
+            <Grid item style={{ marginRight: "16px" }}>
+              <Icon style={{ color: "white", marginBottom: "20px" }}>
+                vpn_key
+              </Icon>
+            </Grid>
+            <Grid item style={{ width: "calc(100% - 40px)" }}>
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="adornment-password-login"
+                  type={this.state.showPassword ? "text" : "password"}
+                  value={this.props.password}
+                  placeholder="Password"
+                  style={{ color: "white" }}
+                  onChange={event => {
+                    this.props.changePassword(event.target.value)
+                    this.props.changePasswordError("")
+                    this.setState({
+                      isPasswordEmpty: event.target.value === "",
+                    })
+                  }}
+                  onKeyPress={event => {
+                    if (event.key === "Enter") {
+                      this.setState({ showLoading: true })
+                      if (
+                        EmailValidator.validate(this.props.email) &&
+                        this.props.password
+                      )
+                        this.signIn()
                     }
-                    checked={this.state.keepLoggedIn}
-                    style={{ color: "white" }}
-                  />
-                </MuiThemeProvider>
-              }
-              label={
-                <Typography
-                  variant="subtitle1"
-                  style={{ paddingLeft: "4px", color: "white" }}
+                  }}
+                  endAdornment={
+                    this.props.password ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={this.handleClickShowPassword}
+                          onMouseDown={this.handleMouseDownPassword}
+                          tabIndex="-1"
+                          style={{ color: "white" }}
+                        >
+                          {this.state.showPassword ? (
+                            <Icon style={{ color: "white" }}>
+                              visibility_off
+                            </Icon>
+                          ) : (
+                            <Icon style={{ color: "white" }}>visibility</Icon>
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null
+                  }
+                />
+                <FormHelperText
+                  id="passowrd-error-text-login"
+                  style={{ color: "white" }}
                 >
-                  Keep me logged in
-                </Typography>
-              }
-            />
-            <br />
-            <div style={{ textAlign: "right", marginBottom: "16px" }}>
+                  {this.props.passwordError}
+                  {this.state.isPasswordEmpty ? "This field is required" : ""}
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <FormControlLabel
+            style={{ marginLeft: "-12px" }}
+            control={
+              <Checkbox
+                onChange={event =>
+                  this.setState({ keepLoggedIn: event.target.checked })
+                }
+                checked={this.state.keepLoggedIn}
+                style={{ color: "white" }}
+              />
+            }
+            label={
               <Typography
                 variant="subtitle1"
-                style={{
-                  cursor: "pointer",
-                    color: "white",
-                    width: "128px",
-                    marginRight: "0px",
-                    marginLeft: "auto"
-                }}
-                onClick={() => {
-                  this.setState({ forgotPasswordOpen: true })
-                }}
+                style={{ paddingLeft: "4px", color: "white" }}
               >
-                Forgot password?
+                Keep me logged in
               </Typography>
-            </div>
-            <Button
-              variant="raised"
-              primary={true}
-              fullWidth={true}
-              onClick={() => {
-                this.setState({ showLoading: true })
-                this.signIn()
-              }}
-              color="secondary"
-              disabled={
-                !(
-                  EmailValidator.validate(this.props.email) &&
-                  this.props.password
-                ) || this.state.showLoading
-              }
-            >
-              Log in
-              {this.state.showLoading && (
-                <MuiThemeProvider
-                  theme={createMuiTheme({
-                    palette: {
-                      primary: { main: "#fff" },
-                    },
-                  })}
-                >
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: -12,
-                      marginLeft: -12,
-                    }}
-                  />
-                </MuiThemeProvider>
-              )}
-            </Button>
+            }
+          />
+          <br />
+          <div style={{ textAlign: "right", marginBottom: "16px" }}>
             <Typography
               variant="subtitle1"
               style={{
-                marginTop: "16px",
-                marginBottom: "16px",
-                color: "white",
                 cursor: "pointer",
-                textAlign: "center",
+                color: "white",
+                width: "128px",
+                marginRight: "0px",
+                marginLeft: "auto",
               }}
-              onClick={() => this.setState({ redirect: true })}
+              onClick={() => {
+                this.setState({ forgotPasswordOpen: true })
+              }}
             >
-              No account yet? Sign up!
+              Forgot password?
             </Typography>
-          </MuiThemeProvider>
+          </div>
+          <Button
+            variant="raised"
+            primary={true}
+            fullWidth={true}
+            onClick={() => {
+              this.setState({ showLoading: true })
+              this.signIn()
+            }}
+            color="secondary"
+            disabled={
+              !(
+                EmailValidator.validate(this.props.email) && this.props.password
+              ) || this.state.showLoading
+            }
+          >
+            Log in
+            {this.state.showLoading && (
+              <CircularProgress
+                size={24}
+                style={{
+                  position: "absolute",
+                  top: "50%",
+                  left: "50%",
+                  marginTop: -12,
+                  marginLeft: -12,
+                }}
+              />
+            )}
+          </Button>
+          <Typography
+            variant="subtitle1"
+            style={{
+              marginTop: "16px",
+              marginBottom: "16px",
+              color: "white",
+              cursor: "pointer",
+              textAlign: "center",
+            }}
+            onClick={() => this.setState({ redirect: true })}
+          >
+            No account yet? Sign up!
+          </Typography>
         </div>
         <ForgotPassword
           recover={email => this.recover(email)}

@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import Typography from "@material-ui/core/Typography"
 import Icon from "@material-ui/core/Icon"
 import Grid from "@material-ui/core/Grid"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import IconButton from "@material-ui/core/IconButton"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
@@ -14,12 +12,6 @@ import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
 import LargeCenteredSpinner from "../LargeCenteredSpinner"
 import Helmet from "react-helmet"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 export default class BoardsBody extends Component {
   state = {
@@ -121,59 +113,54 @@ export default class BoardsBody extends Component {
                 }
           }
         >
-          <MuiThemeProvider theme={theme}>
-            <FormControl style={{ width: "400px" }}>
-              <Input
-                id="adornment-name-login"
-                placeholder="Search boards"
-                color="primary"
-                className="notSelectable"
-                value={this.props.searchText}
-                style={nightMode ? { color: "white" } : { color: "black" }}
-                onChange={event => this.props.searchBoards(event.target.value)}
-                disabled={loading || error || (user && !user.boards[0])}
-                startAdornment={
-                  <InputAdornment
-                    position="start"
-                    style={{ cursor: "default" }}
+          <FormControl style={{ width: "400px" }}>
+            <Input
+              id="adornment-name-login"
+              placeholder="Search boards"
+              color="primary"
+              className="notSelectable"
+              value={this.props.searchText}
+              style={nightMode ? { color: "white" } : { color: "black" }}
+              onChange={event => this.props.searchBoards(event.target.value)}
+              disabled={loading || error || (user && !user.boards[0])}
+              startAdornment={
+                <InputAdornment position="start" style={{ cursor: "default" }}>
+                  <Icon
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? user && user.boards[0]
+                          ? { color: "white" }
+                          : { color: "white", opacity: "0.5" }
+                        : user && user.boards[0]
+                        ? { color: "black" }
+                        : { color: "black", opacity: "0.5" }
+                    }
                   >
-                    <Icon
+                    search
+                  </Icon>
+                </InputAdornment>
+              }
+              endAdornment={
+                this.props.searchText ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => this.props.searchBoards("")}
+                      onMouseDown={this.handleMouseDownSearch}
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
-                          ? user && user.boards[0]
-                            ? { color: "white" }
-                            : { color: "white", opacity: "0.5" }
-                          : user && user.boards[0]
-                          ? { color: "black" }
-                          : { color: "black", opacity: "0.5" }
+                          ? { color: "white" }
+                          : { color: "black" }
                       }
                     >
-                      search
-                    </Icon>
+                      <Icon>clear</Icon>
+                    </IconButton>
                   </InputAdornment>
-                }
-                endAdornment={
-                  this.props.searchText ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => this.props.searchBoards("")}
-                        onMouseDown={this.handleMouseDownSearch}
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
+                ) : null
+              }
+            />
+          </FormControl>
         </div>
         <div
           style={
@@ -197,7 +184,7 @@ export default class BoardsBody extends Component {
           {user && (
             <React.Fragment>
               <Typography
-                variant="h6"
+                variant="h4"
                 className="notSelectable defaultCursor"
                 style={
                   nightMode
@@ -256,7 +243,7 @@ export default class BoardsBody extends Component {
                       <Icon style={{ fontSize: "64px" }}>add</Icon>
                       <br />
                       <Typography
-                        variant="h6"
+                        variant="h5"
                         style={
                           typeof Storage !== "undefined" &&
                           localStorage.getItem("nightMode") === "true"
@@ -273,7 +260,7 @@ export default class BoardsBody extends Component {
               {boardsList[0] && (
                 <React.Fragment>
                   <Typography
-                    variant="h6"
+                    variant="h4"
                     className="notSelectable defaultCursor"
                     style={
                       nightMode

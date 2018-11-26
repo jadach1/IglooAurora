@@ -1,6 +1,4 @@
 import React from "react"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
@@ -9,12 +7,6 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#f44336" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -62,20 +54,18 @@ class DeleteDevice extends React.Component {
           notifications.
         </font>
         <DialogActions style={{ marginRight: "8px" }}>
-          <MuiThemeProvider theme={theme}>
-            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-              Never mind
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#f44336" }}
-              onClick={this.deleteDeviceMutation}
-            >
-              Delete
-            </Button>
-          </MuiThemeProvider>
+          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+            Never mind
+          </Button>
+          <Button
+            variant="raised"
+            color="primary"
+            primary={true}
+            buttonStyle={{ backgroundColor: "#f44336" }}
+            onClick={this.deleteDeviceMutation}
+          >
+            Delete
+          </Button>
         </DialogActions>
       </Dialog>
     )

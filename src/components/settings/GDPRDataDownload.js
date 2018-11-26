@@ -5,17 +5,8 @@ import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -56,23 +47,20 @@ class GDPRDataDownload extends React.Component {
             <br /> <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-            <MuiThemeProvider theme={theme}>
-              <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-                Never mind
-              </Button>
-              <MuiThemeProvider theme={theme}>
-                <Button
-                  variant="raised"
-                  color="primary"
-                  label="Download"
-                  primary={true}
-                  buttonStyle={{ backgroundColor: "#0083ff" }}
-                  disabled={!user}
-                >
-                  Download
-                </Button>
-              </MuiThemeProvider>
-            </MuiThemeProvider>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+
+            <Button
+              variant="raised"
+              color="primary"
+              label="Download"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              disabled={!user}
+            >
+              Download
+            </Button>
           </DialogActions>
         </Dialog>
       </React.Fragment>

@@ -2,20 +2,11 @@ import React from "react"
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Button from "@material-ui/core/Button"
 import Slide from "@material-ui/core/Slide"
 import Grow from "@material-ui/core/Grow"
 
 const MOBILE_WIDTH = 600
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
-  },
-})
 
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
@@ -56,7 +47,7 @@ export default class extends React.Component {
           <br />
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-          <MuiThemeProvider theme={theme}>
+           
             <Button
               style={{ marginRight: "4px" }}
               onClick={() => this.props.close()}
@@ -74,7 +65,7 @@ export default class extends React.Component {
             >
               Send again
             </Button>
-          </MuiThemeProvider>
+           
         </DialogActions>
       </Dialog>
     )

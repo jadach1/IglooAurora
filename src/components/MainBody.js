@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Tile from "./tiles/Tile"
 import LargeCenteredSpinner from "./LargeCenteredSpinner"
-import FlatButton from "material-ui/FlatButton"
+import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Icon from "@material-ui/core/Icon"
@@ -223,7 +223,7 @@ class MainBody extends Component {
 
     if (hiddenTiles.length !== 0) {
       hiddenTilesUI = [
-        <FlatButton
+        <Button
           onClick={() => {
             this.props.changeShowHiddenState()
           }}

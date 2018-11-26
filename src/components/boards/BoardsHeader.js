@@ -2,17 +2,9 @@ import React, { Component } from "react"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
 import Tooltip from "@material-ui/core/Tooltip"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import AppBar from "@material-ui/core/AppBar"
 import { hotkeys } from "react-keyboard-shortcuts"
 import logo from "../../styles/assets/logo.svg"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#fff" },
-  },
-})
 
 class BoardsHeader extends Component {
   hot_keys = {
@@ -67,8 +59,7 @@ class BoardsHeader extends Component {
               float: "right",
             }}
           >
-            <MuiThemeProvider theme={theme}>
-              {/* <a href="drekar.igloo.ooo">
+            {/* <a href="drekar.igloo.ooo">
               <Tooltip
                 id="tooltip-bottom"
                 title="Go to Magellan"
@@ -82,29 +73,28 @@ class BoardsHeader extends Component {
                 </IconButton>
               </Tooltip>
             </a> */}
-              <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
-                <IconButton
-                  onClick={this.props.openSettings}
-                  className="sidebarHeaderButton"
-                  color="primary"
-                >
-                  <Icon color="primary" style={{ color: "white" }}>
-                    settings
-                  </Icon>
-                </IconButton>
-              </Tooltip>
-              <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
-                <IconButton
-                  onClick={this.props.logOut}
-                  className="sidebarHeaderButton"
-                  color="primary"
-                >
-                  <Icon color="primary" style={{ color: "white" }}>
-                    exit_to_app
-                  </Icon>
-                </IconButton>
-              </Tooltip>
-            </MuiThemeProvider>
+            <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
+              <IconButton
+                onClick={this.props.openSettings}
+                className="sidebarHeaderButton"
+                color="primary"
+              >
+                <Icon color="primary" style={{ color: "white" }}>
+                  settings
+                </Icon>
+              </IconButton>
+            </Tooltip>
+            <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
+              <IconButton
+                onClick={this.props.logOut}
+                className="sidebarHeaderButton"
+                color="primary"
+              >
+                <Icon color="primary" style={{ color: "white" }}>
+                  exit_to_app
+                </Icon>
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
       </AppBar>

@@ -5,16 +5,8 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import moment from "moment"
 import Moment from "react-moment"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -73,9 +65,7 @@ class InfoDialog extends React.Component {
           )}
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-          <MuiThemeProvider theme={theme}>
-            <Button onClick={this.props.handleInfoClose}>Close</Button>
-          </MuiThemeProvider>
+          <Button onClick={this.props.handleInfoClose}>Close</Button>
         </DialogActions>
       </Dialog>
     )

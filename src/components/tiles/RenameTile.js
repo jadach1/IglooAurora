@@ -2,8 +2,6 @@ import React from "react"
 import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
@@ -26,12 +24,6 @@ function Transition(props) {
     <Slide direction="up" {...props} />
   )
 }
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 class RenameTileDialog extends React.Component {
   state = { tileName: null }
@@ -101,58 +93,54 @@ class RenameTileDialog extends React.Component {
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          <MuiThemeProvider theme={theme}>
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-email-login"
-                placeholder="Card name"
-                value={this.state.tileName}
-                onChange={event => {
-                  this.setState({
-                    tileName: event.target.value,
-                  })
-                }}
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.rename()
-                }}
-                endAdornment={
-                  this.state.tileName ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => {
-                          this.setState({ tileName: "" })
-                        }}
-                        onMouseDown={event => {
-                          event.preventDefault()
-                        }}
-                        tabIndex="-1"
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
+          <FormControl style={{ width: "100%" }}>
+            <Input
+              id="adornment-email-login"
+              placeholder="Card name"
+              value={this.state.tileName}
+              onChange={event => {
+                this.setState({
+                  tileName: event.target.value,
+                })
+              }}
+              onKeyPress={event => {
+                if (event.key === "Enter") this.rename()
+              }}
+              endAdornment={
+                this.state.tileName ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        this.setState({ tileName: "" })
+                      }}
+                      onMouseDown={event => {
+                        event.preventDefault()
+                      }}
+                      tabIndex="-1"
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+          </FormControl>
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-          <MuiThemeProvider theme={theme}>
-            <Button
-              onClick={this.props.handleRenameTileDialogClose}
-              style={{ marginRight: "4px" }}
-            >
-              Never mind
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              onClick={this.rename}
-              disabled={!this.state.tileName || oldName === this.state.tileName}
-            >
-              Rename
-            </Button>
-          </MuiThemeProvider>
+          <Button
+            onClick={this.props.handleRenameTileDialogClose}
+            style={{ marginRight: "4px" }}
+          >
+            Never mind
+          </Button>
+          <Button
+            variant="raised"
+            color="primary"
+            onClick={this.rename}
+            disabled={!this.state.tileName || oldName === this.state.tileName}
+          >
+            Rename
+          </Button>
         </DialogActions>
       </Dialog>
     )

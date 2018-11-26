@@ -3,17 +3,9 @@ import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 //import CenteredSpinner from "../CenteredSpinner"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -70,8 +62,8 @@ export default class CreatePlotNode extends React.Component {
                   : { width: "calc(100% - 48px)", background: "#fff" }
                 : typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                  ? { width: "350px", background: "#2f333d" }
-                  : { width: "350px", background: "#fff" }
+                ? { width: "350px", background: "#2f333d" }
+                : { width: "350px", background: "#fff" }
             }
           >
             <font
@@ -95,21 +87,19 @@ export default class CreatePlotNode extends React.Component {
             a
           </div>
           <DialogActions style={{ marginRight: "8px", marginLeft: "8px" }}>
-            <MuiThemeProvider theme={theme}>
-              <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                label="Change"
-                primary={true}
-                buttonStyle={{ backgroundColor: "#0083ff" }}
-                disabled={!this.state.content}
-              >
-                Create
-              </Button>
-            </MuiThemeProvider>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              color="primary"
+              label="Change"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#0083ff" }}
+              disabled={!this.state.content}
+            >
+              Create
+            </Button>
           </DialogActions>
         </Dialog>
       </React.Fragment>
