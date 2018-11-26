@@ -138,10 +138,10 @@ class Signup extends Component {
     })
 
     if (this.props.email)
-    this.setState({
-      isEmailValid: EmailValidator.validate(this.props.email),
-      isMailEmpty: this.props.email === "",
-    })
+      this.setState({
+        isEmailValid: EmailValidator.validate(this.props.email),
+        isMailEmpty: this.props.email === "",
+      })
   }
 
   render() {
@@ -198,18 +198,22 @@ class Signup extends Component {
     ]
 
     return (
-      <div className="rightSide notSelectable" style={{ overflowY: "hidden" }}>
-        <div>
-          <Typography
-            variant="h6"
-            gutterBottom
-            className="defaultCursor"
-            style={{ color: "#0083ff", textAlign: "center" }}
-          >
-            Sign up
-          </Typography>
-          <br />
-          <MuiThemeProvider theme={theme}>
+      <React.Fragment>
+        <div
+          className="rightSide notSelectable"
+          style={{ overflowY: "hidden" }}
+        >
+          <div>
+            <Typography
+              variant="h3"
+              gutterBottom
+              className="defaultCursor"
+              style={{ color: "#0083ff", textAlign: "center" }}
+            >
+              Sign up
+            </Typography>
+            <br />
+
             <Grid
               container
               spacing={0}
@@ -348,95 +352,93 @@ class Signup extends Component {
                 </FormControl>
               </Grid>
             </Grid>
-          </MuiThemeProvider>
-          <br />
-          <MuiThemeProvider theme={passwordTheme}>
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon style={{ marginBottom: "20px" }}>vpn_key</Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-password-signup"
-                    placeholder="Password"
-                    color="secondary"
-                    type={this.state.showPassword ? "text" : "password"}
-                    value={this.props.password}
-                    error={this.state.isPasswordEmpty ? true : false}
-                    onChange={event => {
-                      this.props.changePassword(event.target.value)
-                      this.setState({
-                        passwordScore: zxcvbn(
-                          event.target.value,
-                          customDictionary
-                        ).score,
-                        isPasswordEmpty: event.target.value === "",
-                      })
-                    }}
-                    onKeyPress={event => {
-                      if (
-                        event.key === "Enter" &&
-                        this.props.fullName &&
-                        this.state.isEmailValid &&
-                        this.state.passwordScore >= 2
-                      ) {
-                        this.setState({ showLoading: true })
-                        this.signUp()
-                      }
-                    }}
-                    endAdornment={
-                      this.props.password ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            tabIndex="-1"
-                            onClick={this.handleClickShowPassword}
-                            onMouseDown={this.handleMouseDownPassword}
-                          >
-                            {/* fix for ToggleIcon glitch on Edge */}
-                            {document.documentMode ||
-                            /Edge/.test(navigator.userAgent) ? (
-                              this.state.showPassword ? (
-                                <Icon>visibility_off</Icon>
+            <br />
+            <MuiThemeProvider theme={passwordTheme}>
+              <Grid
+                container
+                spacing={0}
+                alignItems="flex-end"
+                style={{ width: "100%" }}
+              >
+                <Grid item style={{ marginRight: "16px" }}>
+                  <Icon style={{ marginBottom: "20px" }}>vpn_key</Icon>
+                </Grid>
+                <Grid item style={{ width: "calc(100% - 40px)" }}>
+                  <FormControl style={{ width: "100%" }}>
+                    <Input
+                      id="adornment-password-signup"
+                      placeholder="Password"
+                      color="secondary"
+                      type={this.state.showPassword ? "text" : "password"}
+                      value={this.props.password}
+                      error={this.state.isPasswordEmpty ? true : false}
+                      onChange={event => {
+                        this.props.changePassword(event.target.value)
+                        this.setState({
+                          passwordScore: zxcvbn(
+                            event.target.value,
+                            customDictionary
+                          ).score,
+                          isPasswordEmpty: event.target.value === "",
+                        })
+                      }}
+                      onKeyPress={event => {
+                        if (
+                          event.key === "Enter" &&
+                          this.props.fullName &&
+                          this.state.isEmailValid &&
+                          this.state.passwordScore >= 2
+                        ) {
+                          this.setState({ showLoading: true })
+                          this.signUp()
+                        }
+                      }}
+                      endAdornment={
+                        this.props.password ? (
+                          <InputAdornment position="end">
+                            <IconButton
+                              tabIndex="-1"
+                              onClick={this.handleClickShowPassword}
+                              onMouseDown={this.handleMouseDownPassword}
+                            >
+                              {/* fix for ToggleIcon glitch on Edge */}
+                              {document.documentMode ||
+                              /Edge/.test(navigator.userAgent) ? (
+                                this.state.showPassword ? (
+                                  <Icon>visibility_off</Icon>
+                                ) : (
+                                  <Icon>visibility</Icon>
+                                )
                               ) : (
-                                <Icon>visibility</Icon>
-                              )
-                            ) : (
-                              <ToggleIcon
-                                on={this.state.showPassword || false}
-                                onIcon={<Icon>visibility_off</Icon>}
-                                offIcon={<Icon>visibility</Icon>}
-                              />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                  <FormHelperText
-                    id="password-error-text-signup"
-                    style={
-                      this.state.isPasswordEmpty
-                        ? { color: "#f44336" }
-                        : { color: passwordColor }
-                    }
-                  >
-                    {this.state.isPasswordEmpty
-                      ? "This field is required"
-                      : scoreText}
-                  </FormHelperText>
-                </FormControl>
+                                <ToggleIcon
+                                  on={this.state.showPassword || false}
+                                  onIcon={<Icon>visibility_off</Icon>}
+                                  offIcon={<Icon>visibility</Icon>}
+                                />
+                              )}
+                            </IconButton>
+                          </InputAdornment>
+                        ) : null
+                      }
+                    />
+                    <FormHelperText
+                      id="password-error-text-signup"
+                      style={
+                        this.state.isPasswordEmpty
+                          ? { color: "#f44336" }
+                          : { color: passwordColor }
+                      }
+                    >
+                      {this.state.isPasswordEmpty
+                        ? "This field is required"
+                        : scoreText}
+                    </FormHelperText>
+                  </FormControl>
+                </Grid>
               </Grid>
-            </Grid>
-          </MuiThemeProvider>
-        </div>
-        <div style={{ marginTop: "189px" }}>
-          <MuiThemeProvider theme={theme}>
+            </MuiThemeProvider>
+          </div>
+          <div style={{ marginTop: "189px" }}>
             <Button
               variant="raised"
               color="primary"
@@ -457,39 +459,36 @@ class Signup extends Component {
             >
               Sign up
               {this.state.showLoading && (
-                <MuiThemeProvider
-                  theme={createMuiTheme({
-                    palette: {
-                      primary: { main: "#0083ff" },
-                    },
-                  })}
-                >
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: -12,
-                      marginLeft: -12,
-                    }}
-                  />
-                </MuiThemeProvider>
+                <CircularProgress
+                  size={24}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: -12,
+                    marginLeft: -12,
+                  }}
+                />
               )}
             </Button>
-          </MuiThemeProvider>
-          <Typography variant="subtitle1" style={{ marginTop: "8px" }}>
-            Already have an account?{" "}
-            <font
-              style={{ marginTop: "8px", color: "#0083ff", cursor: "pointer" }}
-              onClick={() => this.setState({ redirect: true })}
-            >
-              Log in!
-            </font>
-          </Typography>
+
+            <Typography variant="subtitle1" style={{ marginTop: "8px" }}>
+              Already have an account?{" "}
+              <font
+                style={{
+                  marginTop: "8px",
+                  color: "#0083ff",
+                  cursor: "pointer",
+                }}
+                onClick={() => this.setState({ redirect: true })}
+              >
+                Log in!
+              </font>
+            </Typography>
+          </div>
+          {this.state.redirect && <Redirect push to="/login" />}
         </div>
-        {this.state.redirect && <Redirect push to="/login" />}
-      </div>
+      </React.Fragment>
     )
   }
 }

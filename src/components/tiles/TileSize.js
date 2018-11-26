@@ -5,12 +5,11 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
-import Icon from "@material-ui/core/Icon"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import { RadioButton, RadioButtonGroup } from "material-ui"
+import RadioGroup from "@material-ui/core/RadioGroup"
+import Radio from "@material-ui/core/Radio"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
 
 const MOBILE_WIDTH = 600
 
@@ -33,14 +32,14 @@ class TileSize extends Component {
         this.props.value.__typename === "FloatValue"
           ? "ChangeFloatSize"
           : this.props.value.__typename === "StringValue"
-            ? "ChangeStringSize"
-            : this.props.value.__typename === "PlotValue"
-              ? "ChangePlotSize"
-              : this.props.value.__typename === "StringValue"
-                ? "ChangeStringPlotSize"
-                : this.props.value.__typename === "MapValue"
-                  ? "ChangeMapSize"
-                  : "ChangeBooleanSize"
+          ? "ChangeStringSize"
+          : this.props.value.__typename === "PlotValue"
+          ? "ChangePlotSize"
+          : this.props.value.__typename === "StringValue"
+          ? "ChangeStringPlotSize"
+          : this.props.value.__typename === "MapValue"
+          ? "ChangeMapSize"
+          : "ChangeBooleanSize"
       ]({
         variables: {
           id: this.props.value.id,
@@ -51,14 +50,14 @@ class TileSize extends Component {
           [this.props.value.__typename === "floatValue"
             ? "floatValue"
             : this.props.value.__typename === "stringValue"
-              ? "stringValue"
-              : this.props.value.__typename === "plotValue"
-                ? "plotValue"
-                : this.props.value.__typename === "stringPlotValue"
-                  ? "stringValue"
-                  : this.props.value.__typename === "mapValue"
-                    ? "mapValue"
-                    : "booleanValue"]: {
+            ? "stringValue"
+            : this.props.value.__typename === "plotValue"
+            ? "plotValue"
+            : this.props.value.__typename === "stringPlotValue"
+            ? "stringValue"
+            : this.props.value.__typename === "mapValue"
+            ? "mapValue"
+            : "booleanValue"]: {
             __typename: this.props.value.__typename,
             id: this.props.value.id,
             tileSize: size,
@@ -76,83 +75,42 @@ class TileSize extends Component {
       >
         <DialogTitle style={{ width: "300px" }}>Change card size</DialogTitle>
         <div style={{ paddingLeft: "24px" }}>Role</div>
-        <RadioButtonGroup
-          name="role"
+        <RadioGroup
           onChange={(event, value) => this.setState({ radioValue: value })}
-          valueSelected={this.state.radioValue}
-          style={{
-            height: "100%",
-          }}
+          value={this.state.radioValue}
+          style={{ paddingLeft: "24px", paddingRight: "24px" }}
         >
-          <RadioButton
+          <FormControlLabel
             value="NORMAL"
+            control={<Radio color="primary" />}
             label="Normal"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-              paddingLeft: 24,
-              width: "calc(100% - 24px)",
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-            }
-            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
-          <RadioButton
+          <FormControlLabel
             value="WIDE"
+            control={<Radio color="primary" />}
             label="Wide"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-              paddingLeft: 24,
-              width: "calc(100% - 24px)",
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-            }
-            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
-          <RadioButton
+          <FormControlLabel
             value="LARGE"
+            control={<Radio color="primary" />}
             label="Large"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-              paddingLeft: 24,
-              width: "calc(100% - 24px)",
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-            }
-            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
-        </RadioButtonGroup>
+        </RadioGroup>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-          <MuiThemeProvider
-            theme={createMuiTheme({
-              palette: {
-                primary: { main: "#0083ff" },
-              },
-            })}
+          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+            Never mind
+          </Button>
+          <Button
+            variant="raised"
+            color="primary"
+            primary={true}
+            onClick={() => {
+              updateTileMutation(this.state.radioValue)
+              this.props.close()
+            }}
           >
-            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-              Never mind
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              primary={true}
-              onClick={() => {
-                updateTileMutation(this.state.radioValue)
-                this.props.close()
-              }}
-            >
-              Change size
-            </Button>
-          </MuiThemeProvider>
+            Change size
+          </Button>
         </DialogActions>
       </Dialog>
     )

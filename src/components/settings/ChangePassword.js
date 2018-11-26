@@ -3,8 +3,6 @@ import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -13,13 +11,6 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import IconButton from "@material-ui/core/IconButton"
 import ToggleIcon from "material-ui-toggle-icon"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -56,7 +47,7 @@ export default class ChangePasswordDialog extends React.Component {
             height: "100%",
           }}
         >
-          <MuiThemeProvider theme={theme}>
+           
             <FormControl style={{ width: "100%" }}>
               <Input
                 id="adornment-password-login"
@@ -161,10 +152,10 @@ export default class ChangePasswordDialog extends React.Component {
             </FormControl>
             <br />
             <br />
-          </MuiThemeProvider>
+           
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-          <MuiThemeProvider theme={theme}>
+           
             <Button
               onClick={this.props.handlePasswordDialogClose}
               style={{ marginRight: "4px" }}
@@ -180,7 +171,7 @@ export default class ChangePasswordDialog extends React.Component {
             >
               Change
             </Button>
-          </MuiThemeProvider>
+           
         </DialogActions>
       </Dialog>
     )

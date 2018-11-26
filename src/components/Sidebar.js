@@ -13,25 +13,11 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import ListItemText from "@material-ui/core/ListItemText"
 import List from "@material-ui/core/List"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
 import Zoom from "@material-ui/core/Zoom"
 import AddDevice from "./AddDevice"
 import { hotkeys } from "react-keyboard-shortcuts"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#ff4081" },
-  },
-})
-
-const theme2 = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 class Sidebar extends Component {
   state = {
@@ -122,86 +108,81 @@ class Sidebar extends Component {
     return (
       <React.Fragment>
         <div style={{ width: "100%", height: "64px" }}>
-          <MuiThemeProvider theme={theme2}>
-            <FormControl
-              style={{
-                margin: "16px 8px 0 16px",
-                width: "calc(100% - 80px)",
-              }}
-            >
-              <Input
-                id="adornment-devices"
-                placeholder="Search devices"
-                color="primary"
-                className="notSelectable"
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
-                disabled={
-                  !board.devices.filter(
-                    device =>
-                      this.state.visibleDeviceTypes.indexOf(
-                        device.deviceType
-                      ) !== -1
-                  )[0]
-                }
-                value={this.props.searchText}
-                onChange={event => this.props.searchDevices(event.target.value)}
-                startAdornment={
-                  <InputAdornment
-                    position="start"
-                    style={{ cursor: "default" }}
+          <FormControl
+            style={{
+              margin: "16px 8px 0 16px",
+              width: "calc(100% - 80px)",
+            }}
+          >
+            <Input
+              id="adornment-devices"
+              placeholder="Search devices"
+              color="primary"
+              className="notSelectable"
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white" }
+                  : { color: "black" }
+              }
+              disabled={
+                !board.devices.filter(
+                  device =>
+                    this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
+                    -1
+                )[0]
+              }
+              value={this.props.searchText}
+              onChange={event => this.props.searchDevices(event.target.value)}
+              startAdornment={
+                <InputAdornment position="start" style={{ cursor: "default" }}>
+                  <Icon
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? !board.devices.filter(
+                            device =>
+                              this.state.visibleDeviceTypes.indexOf(
+                                device.deviceType
+                              ) !== -1
+                          )[0]
+                          ? { color: "white", opacity: "0.5" }
+                          : { color: "white" }
+                        : !board.devices.filter(
+                            device =>
+                              this.state.visibleDeviceTypes.indexOf(
+                                device.deviceType
+                              ) !== -1
+                          )[0]
+                        ? { color: "black", opacity: "0.5" }
+                        : { color: "black" }
+                    }
                   >
-                    <Icon
+                    search
+                  </Icon>
+                </InputAdornment>
+              }
+              endAdornment={
+                this.props.searchText ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={this.handleClickCancelSearch}
+                      onMouseDown={this.handleMouseDownSearch}
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
-                          ? !board.devices.filter(
-                              device =>
-                                this.state.visibleDeviceTypes.indexOf(
-                                  device.deviceType
-                                ) !== -1
-                            )[0]
-                            ? { color: "white", opacity: "0.5" }
-                            : { color: "white" }
-                          : !board.devices.filter(
-                              device =>
-                                this.state.visibleDeviceTypes.indexOf(
-                                  device.deviceType
-                                ) !== -1
-                            )[0]
-                          ? { color: "black", opacity: "0.5" }
+                          ? { color: "white" }
                           : { color: "black" }
                       }
                     >
-                      search
-                    </Icon>
+                      <Icon>clear</Icon>
+                    </IconButton>
                   </InputAdornment>
-                }
-                endAdornment={
-                  this.props.searchText ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={this.handleClickCancelSearch}
-                        onMouseDown={this.handleMouseDownSearch}
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
+                ) : null
+              }
+            />
+          </FormControl>
+
           <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
             <IconButton
               style={{ marginTop: "8px" }}
@@ -380,63 +361,61 @@ class Sidebar extends Component {
                   />
                   {device.notificationCount ? (
                     <ListItemSecondaryAction>
-                      <MuiThemeProvider theme={theme}>
-                        <Badge
-                          badgeContent={
-                            device.notificationCount > 99
-                              ? "99+"
-                              : device.notificationCount
-                          }
-                          color="primary"
-                          className="notSelectable sidebarBadge"
-                          style={{ marginRight: "24px" }}
-                          onClick={() => {
-                            this.props.changeDrawerState()
-                          }}
-                        />
-                      </MuiThemeProvider>
+                      <Badge
+                        badgeContent={
+                          device.notificationCount > 99
+                            ? "99+"
+                            : device.notificationCount
+                        }
+                        color="primary"
+                        className="notSelectable sidebarBadge"
+                        style={{ marginRight: "24px" }}
+                        onClick={() => {
+                          this.props.changeDrawerState()
+                        }}
+                      />
                     </ListItemSecondaryAction>
                   ) : null}
                 </ListItem>
               </Link>
             ))}
         </List>
-        <MuiThemeProvider theme={theme}>
-          <Zoom in={board}>
-            <Button
-              variant="fab"
-              color="primary"
-              style={
-                this.props.isMobile
-                  ? {
-                      position: "absolute",
-                      right: "20px",
-                      bottom: "20px",
-                      transition:
-                        "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
-                    }
-                  : this.state.lessThan1080
-                  ? {
-                      position: "absolute",
-                      left: "calc(33vw - 76px)",
-                      bottom: "20px",
-                      transition:
-                        "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
-                    }
-                  : {
-                      position: "absolute",
-                      left: "284px",
-                      bottom: "20px",
-                      transition:
-                        "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
-                    }
-              }
-              onClick={() => this.setState({ addDeviceOpen: true })}
-            >
-              <Icon>add</Icon>
-            </Button>
-          </Zoom>
-        </MuiThemeProvider>
+
+        <Zoom in={board}>
+          <Button
+            variant="fab"
+            color="secondary"
+            style={
+              this.props.isMobile
+                ? {
+                    position: "absolute",
+                    right: "20px",
+                    bottom: "20px",
+                    transition:
+                      "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                  }
+                : this.state.lessThan1080
+                ? {
+                    position: "absolute",
+                    left: "calc(33vw - 76px)",
+                    bottom: "20px",
+                    transition:
+                      "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                  }
+                : {
+                    position: "absolute",
+                    left: "284px",
+                    bottom: "20px",
+                    transition:
+                      "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                  }
+            }
+            onClick={() => this.setState({ addDeviceOpen: true })}
+          >
+            <Icon>add</Icon>
+          </Button>
+        </Zoom>
+
         <AddDevice
           open={this.state.addDeviceOpen}
           close={() => this.setState({ addDeviceOpen: false })}

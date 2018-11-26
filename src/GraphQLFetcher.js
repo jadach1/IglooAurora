@@ -10,7 +10,6 @@ import Boards from "./Boards"
 import queryString from "query-string"
 import BoardsMobile from "./BoardsMobile"
 import EmailNotVerified from "./components/EmailNotVerified"
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import GenericDialog from "./components/GenericDialog"
 
 let systemLang = navigator.language || navigator.userLanguage
@@ -685,7 +684,7 @@ class GraphQLFetcher extends Component {
     }
 
     return (
-      <MuiThemeProvider>
+      <React.Fragment>
         <Switch>
           <Route
             exact
@@ -704,7 +703,7 @@ class GraphQLFetcher extends Component {
           <EmailNotVerified mobile={this.props.isMobile} />
         )}
         <GenericDialog />
-      </MuiThemeProvider>
+      </React.Fragment>
     )
   }
 }

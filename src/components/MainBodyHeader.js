@@ -16,8 +16,6 @@ import Menu from "@material-ui/core/Menu"
 import DeleteDevice from "./devices/DeleteDevice"
 import RenameDevice from "./devices/RenameDevice"
 import ChangeBoard from "./devices/ChangeBoard"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 class MainBodyHeader extends Component {
   state = {
@@ -454,35 +452,27 @@ class MainBodyHeader extends Component {
                 localStorage.getItem("nightMode") === "true"
               }
             />
-            <MuiThemeProvider
-              theme={createMuiTheme({
-                palette: {
-                  primary: { main: "#ffffff" },
-                },
-              })}
-            >
-              <Tooltip id="tooltip-more" title="More" placement="bottom">
-                <IconButton
-                  onClick={this.handleMenuOpen}
-                  disabled={
-                    !(
-                      (this.props.boardData.board &&
-                        this.props.boardData.board.devices.filter(
-                          device => device.id === this.props.deviceId
-                        )[0] &&
-                        this.props.boardData.board &&
-                        this.props.boardData.board.devices.filter(
-                          device => device.id === this.props.deviceId
-                        )[0].id) ||
-                      (device && device.id)
-                    )
-                  }
-                  color="primary"
-                >
-                  <Icon>more_vert</Icon>
-                </IconButton>
-              </Tooltip>
-            </MuiThemeProvider>
+            <Tooltip id="tooltip-more" title="More" placement="bottom">
+              <IconButton
+                onClick={this.handleMenuOpen}
+                disabled={
+                  !(
+                    (this.props.boardData.board &&
+                      this.props.boardData.board.devices.filter(
+                        device => device.id === this.props.deviceId
+                      )[0] &&
+                      this.props.boardData.board &&
+                      this.props.boardData.board.devices.filter(
+                        device => device.id === this.props.deviceId
+                      )[0].id) ||
+                    (device && device.id)
+                  )
+                }
+                color="primary"
+              >
+                <Icon>more_vert</Icon>
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
         {((this.props.boardData.board &&

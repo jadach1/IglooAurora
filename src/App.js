@@ -209,7 +209,7 @@ class App extends Component {
       <MuiThemeProvider
         theme={createMuiTheme({
           palette: {
-            primary: { main: "#0083ff" },
+            primary: { light: "#0083ff", main: "#0057cb" },
             secondary: { main: "#ff4081" },
             error: { main: "#f44336" },
             contrastThreshold: 3,
