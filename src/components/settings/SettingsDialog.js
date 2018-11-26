@@ -969,7 +969,7 @@ rightToggle={
       localStorage.getItem("devMode") === "true" ? (
         <SwipeableViews
           index={this.props.slideIndex}
-          onChangeIndex={this.props.handleChange}
+          onChangeIndex={this.props.handleSwipe}
           style={{ overflowY: "hidden" }}
         >
           {uiSettings}
@@ -1235,17 +1235,13 @@ rightToggle={
                   }}
                   onChange={this.props.handleChange}
                   value={this.props.slideIndex}
+                  centered
+                  fullWidth
                 >
-                  <Tab
-                    icon={<Icon>language</Icon>}
-                    label="General"
-                    buttonStyle={{ backgroundColor: "#0057cb" }}
-                    value={0}
-                  />
+                  <Tab icon={<Icon>language</Icon>} label="General" value={0} />
                   <Tab
                     icon={<Icon>account_box</Icon>}
                     label="Account"
-                    buttonStyle={{ backgroundColor: "#0057cb" }}
                     value={1}
                   />
                   {typeof Storage !== "undefined" &&
@@ -1253,7 +1249,6 @@ rightToggle={
                       <Tab
                         icon={<Icon>code</Icon>}
                         label="Development"
-                        buttonStyle={{ backgroundColor: "#0057cb" }}
                         value={2}
                       />
                     )}
@@ -1330,7 +1325,6 @@ rightToggle={
                 </Tooltip>
               </Toolbar>
             </AppBar>
-
             {settingsContent}
             <AppBar
               color="default"

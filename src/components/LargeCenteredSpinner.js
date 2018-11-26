@@ -12,11 +12,6 @@ export default props => (
   >
     <br />
     <br />
-    <CircularProgress
-      color="#0083ff"
-      style={{ margin: "20px 0 0 0" }}
-      size={80}
-      thickness={6}
-    />
+    <CircularProgress style={{ margin: "20px 0 0 0" }} size={80} />
   </div>
 )

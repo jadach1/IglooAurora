@@ -136,6 +136,7 @@ class Main extends Component {
       drawer: false,
       copyMessageOpen: false,
       deselectDevice: false,
+      slideIndex:0
     }
   }
 
@@ -315,7 +316,7 @@ class Main extends Component {
       }
     }
 
-    let handleSettingsTabChanged = value => {
+    let handleSettingsTabChanged = (event, value) => {
       this.setState({
         slideIndex: value,
       })
@@ -356,6 +357,9 @@ class Main extends Component {
             userData={this.props.userData}
             logOut={this.props.logOut}
             forceUpdate={this.props.forceUpdate}
+            handleSwipe={index => {
+              this.setState({ slideIndex: index })
+            }}
           />
           <div className="invisibleHeader" key="invisibleHeader" />
           <SidebarHeader
