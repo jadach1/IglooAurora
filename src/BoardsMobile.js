@@ -36,7 +36,7 @@ class BoardsMobile extends Component {
     },
   }
 
-  handleSettingsTabChanged = value => {
+  handleSettingsTabChanged = (event, value) => {
     this.setState({
       slideIndex: value,
     })
@@ -70,6 +70,9 @@ class BoardsMobile extends Component {
           handleChangeBTIndex={this.handleChangeBTIndex}
           userData={this.props.userData}
           logOut={this.props.logOut}
+          handleSwipe={index => {
+            this.setState({ slideIndex: index })
+          }}
           forceUpdate={this.props.forceUpdate}
         />
       </React.Fragment>

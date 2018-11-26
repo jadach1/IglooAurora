@@ -99,6 +99,7 @@ export default class AddDevice extends Component {
                 this.setState({ authDialogOpen: true })
               }}
               color="primary"
+              style={{margin:0}}
             >
               Proceed
             </Button>
