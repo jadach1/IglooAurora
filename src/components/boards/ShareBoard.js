@@ -6,7 +6,6 @@ import List from "@material-ui/core/List"
 import ListSubheader from "@material-ui/core/ListSubheader"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
-import Typography from "@material-ui/core/Typography"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
@@ -144,13 +143,12 @@ class ShareBoard extends React.Component {
           >
             Share board
           </DialogTitle>
-          <Typography
-            variant="h6"
+          <font
             style={{ paddingLeft: "24px" }}
             className="notSelectable defaultCursor"
           >
             This board is shared with:
-          </Typography>
+          </font>
           <List
             subheader={<li />}
             style={

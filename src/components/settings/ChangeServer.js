@@ -40,7 +40,7 @@ export default class ChangePasswordDialog extends React.Component {
     url:
       (typeof Storage !== "undefined" && localStorage.getItem("server")) ||
       localStorage.getItem("manualServer") ||
-      "http://iglooql.herokuapp.com",
+      "http://igloo-production.herokuapp.com",
     mode:
       typeof Storage !== "undefined" && localStorage.getItem("server")
         ? "manual"

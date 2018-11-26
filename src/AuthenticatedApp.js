@@ -26,7 +26,7 @@ class AuthenticatedApp extends Component {
               .replace("https://", "")
               .replace("http://", "") +
             "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://igloo-production.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -39,7 +39,7 @@ class AuthenticatedApp extends Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? localStorage.getItem("server") + "/graphql"
-          : `http://iglooql.herokuapp.com/graphql`,
+          : `http://igloo-production.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + bearer,
       },
