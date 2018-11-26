@@ -54,21 +54,22 @@ class DeviceInfo extends React.Component {
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
-          {this.props.devMode && (
-            <React.Fragment>
-              <br />
-              <br />
-              <b>ID: </b> {this.props.device.id}
-              {this.props.device.firmware && (
-                <React.Fragment>
-                  <br />
-                  <br />
-                  <b>Firmware: </b>
-                  {this.props.device.firmware}
-                </React.Fragment>
-              )}
-            </React.Fragment>
-          )}
+          {typeof Storage !== "undefined" &&
+            localStorage.getItem("devMode") === "true" && (
+              <React.Fragment>
+                <br />
+                <br />
+                <b>ID: </b> {this.props.device.id}
+                {this.props.device.firmware && (
+                  <React.Fragment>
+                    <br />
+                    <br />
+                    <b>Firmware: </b>
+                    {this.props.device.firmware}
+                  </React.Fragment>
+                )}
+              </React.Fragment>
+            )}
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <Button onClick={this.props.close}>Close</Button>

@@ -277,7 +277,6 @@ class Sidebar extends Component {
           }}
         >
           {devicesArray
-            .filter(device => device.customName.toLowerCase())
             .filter(
               device =>
                 this.state.visibleDeviceTypes.indexOf(device.deviceType) !== -1
