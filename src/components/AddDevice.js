@@ -3,8 +3,6 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import List from "@material-ui/core/List"
@@ -178,32 +176,24 @@ export default class AddDevice extends Component {
                   }
             }
           >
-            <MuiThemeProvider
-              theme={createMuiTheme({
-                palette: {
-                  primary: { main: "#0083ff" },
-                },
-              })}
+            <Button
+              onClick={this.props.close}
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white", marginRight: "4px" }
+                  : { marginRight: "4px" }
+              }
             >
-              <Button
-                onClick={this.props.close}
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white", marginRight: "4px" }
-                    : { marginRight: "4px" }
-                }
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                onClick={() => this.props.close()}
-                color="primary"
-              >
-                Authorize
-              </Button>
-            </MuiThemeProvider>
+              Never mind
+            </Button>
+            <Button
+              variant="raised"
+              onClick={() => this.props.close()}
+              color="primary"
+            >
+              Authorize
+            </Button>
           </DialogActions>
         </Dialog>
       </React.Fragment>

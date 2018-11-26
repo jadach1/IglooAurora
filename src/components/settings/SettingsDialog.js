@@ -7,7 +7,8 @@ import Slide from "@material-ui/core/Slide"
 import Grow from "@material-ui/core/Grow"
 import Icon from "@material-ui/core/Icon"
 import AppBar from "@material-ui/core/AppBar"
-import { Tabs, Tab } from "material-ui/Tabs"
+import Tabs from "@material-ui/core/Tabs"
+import Tab from "@material-ui/core/Tab"
 import Switch from "@material-ui/core/Switch"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
@@ -19,7 +20,7 @@ import SwipeableViews from "react-swipeable-views"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import ChangeNameDialog from "./ChangeName"
-import TwoFactorDialog from "./Enable2FA"
+// import TwoFactorDialog from "./Enable2FA"
 import DeleteAccountDialog from "./DeleteAccount"
 // import ManageEmailDialog from "./ManageEmail"
 import ChangePasswordDialog from "./ChangePassword"
@@ -41,19 +42,10 @@ import BottomNavigation from "@material-ui/core/BottomNavigation"
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction"
 import IconButton from "@material-ui/core/IconButton"
 import Tooltip from "@material-ui/core/Tooltip"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
 import Translate from "translate-components"
 // var moment = require("moment-timezone")
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0057cb" },
-    secondary: { main: "#0083ff" },
-  },
-})
 
 let allDevices = []
 
@@ -409,12 +401,10 @@ class SettingsDialog extends React.Component {
                 }
               />
               <ListItemSecondaryAction>
-                <MuiThemeProvider theme={theme}>
-                  <Switch
-                    checked={localStorage.getItem("nightMode") === "true"}
-                    onChange={toggleNightMode}
-                  />
-                </MuiThemeProvider>
+                <Switch
+                  checked={localStorage.getItem("nightMode") === "true"}
+                  onChange={toggleNightMode}
+                />
               </ListItemSecondaryAction>
             </ListItem>
             <Divider />
@@ -441,9 +431,7 @@ class SettingsDialog extends React.Component {
               button
               disableRipple
               onClick={() => {
-                user.quietMode
-                  ? toggleQuietMode(false)
-                  : toggleQuietMode(true)
+                user.quietMode ? toggleQuietMode(false) : toggleQuietMode(true)
               }}
             >
               <ListItemText
@@ -473,17 +461,15 @@ class SettingsDialog extends React.Component {
                 }
               />
               <ListItemSecondaryAction>
-                <MuiThemeProvider theme={theme}>
-                  <Switch
-                    disabled={!user}
-                    checked={user && user.quietMode}
-                    onChange={() => {
-                      user.quietMode
-                        ? toggleQuietMode(false)
-                        : toggleQuietMode(true)
-                    }}
-                  />
-                </MuiThemeProvider>
+                <Switch
+                  disabled={!user}
+                  checked={user && user.quietMode}
+                  onChange={() => {
+                    user.quietMode
+                      ? toggleQuietMode(false)
+                      : toggleQuietMode(true)
+                  }}
+                />
               </ListItemSecondaryAction>
             </ListItem>
             <Divider />
@@ -664,20 +650,18 @@ class SettingsDialog extends React.Component {
                 }
               />
               <ListItemSecondaryAction>
-                <MuiThemeProvider theme={theme}>
-                  <Switch
-                    checked={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("devMode") === "true"
-                    }
-                    onChange={() => {
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("devMode") === "true"
-                        ? toggleDevMode(false)
-                        : toggleDevMode(true)
-                    }}
-                  />
-                </MuiThemeProvider>
+                <Switch
+                  checked={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("devMode") === "true"
+                  }
+                  onChange={() => {
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("devMode") === "true"
+                      ? toggleDevMode(false)
+                      : toggleDevMode(true)
+                  }}
+                />
               </ListItemSecondaryAction>
             </ListItem>
           </List>
@@ -812,34 +796,32 @@ onClick={this.handleEmailDialogOpen}
               }
             />
             <ListItemSecondaryAction>
-              <MuiThemeProvider theme={theme}>
-                <Switch
-                  checked={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("keepLoggedIn") === "true"
-                  }
-                  onChange={() => {
+              <Switch
+                checked={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("keepLoggedIn") === "true"
+                }
+                onChange={() => {
+                  localStorage.setItem(
+                    "keepLoggedIn",
+                    localStorage.getItem("keepLoggedIn") !== "true"
+                  )
+                  this.forceUpdate()
+                  if (localStorage.getItem("keepLoggedIn") === "true") {
                     localStorage.setItem(
-                      "keepLoggedIn",
-                      localStorage.getItem("keepLoggedIn") !== "true"
+                      "bearer",
+                      sessionStorage.getItem("bearer")
                     )
-                    this.forceUpdate()
-                    if (localStorage.getItem("keepLoggedIn") === "true") {
-                      localStorage.setItem(
-                        "bearer",
-                        sessionStorage.getItem("bearer")
-                      )
-                      sessionStorage.setItem("bearer", "")
-                    } else {
-                      sessionStorage.setItem(
-                        "bearer",
-                        localStorage.getItem("bearer")
-                      )
-                      localStorage.setItem("bearer", "")
-                    }
-                  }}
-                />
-              </MuiThemeProvider>
+                    sessionStorage.setItem("bearer", "")
+                  } else {
+                    sessionStorage.setItem(
+                      "bearer",
+                      localStorage.getItem("bearer")
+                    )
+                    localStorage.setItem("bearer", "")
+                  }
+                }}
+              />
             </ListItemSecondaryAction>
           </ListItem>
           {/*       <ListItem
@@ -1316,52 +1298,39 @@ rightToggle={
             fullScreen
             TransitionComponent={Transition}
           >
-            <MuiThemeProvider theme={theme}>
-              <AppBar position="sticky" style={{ height: "64px" }}>
-                <Toolbar
+            <AppBar position="sticky" style={{ height: "64px" }}>
+              <Toolbar
+                style={{
+                  height: "64px",
+                  paddingLeft: "24px",
+                  paddingRight: "24px",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  color="inherit"
+                  className="defaultCursor"
                   style={{
-                    height: "64px",
-                    paddingLeft: "24px",
-                    paddingRight: "24px",
+                    marginLeft: "-8px",
                   }}
                 >
-                  <Typography
-                    variant="h6"
-                    color="inherit"
-                    className="defaultCursor"
+                  <Translate>Settings</Translate>
+                </Typography>
+                <Tooltip id="tooltip-bottom" title="Close" placement="bottom">
+                  <IconButton
+                    color="primary"
+                    onClick={this.props.closeSettingsDialog}
                     style={{
-                      marginLeft: "-8px",
+                      marginRight: "-16px",
+                      marginLeft: "auto",
                     }}
                   >
-                    <Translate>Settings</Translate>
-                  </Typography>
-                  <MuiThemeProvider
-                    theme={createMuiTheme({
-                      palette: {
-                        primary: { main: "#ffffff" },
-                      },
-                    })}
-                  >
-                    <Tooltip
-                      id="tooltip-bottom"
-                      title="Close"
-                      placement="bottom"
-                    >
-                      <IconButton
-                        color="primary"
-                        onClick={this.props.closeSettingsDialog}
-                        style={{
-                          marginRight: "-16px",
-                          marginLeft: "auto",
-                        }}
-                      >
-                        <Icon>close</Icon>
-                      </IconButton>
-                    </Tooltip>
-                  </MuiThemeProvider>
-                </Toolbar>
-              </AppBar>
-            </MuiThemeProvider>
+                    <Icon>close</Icon>
+                  </IconButton>
+                </Tooltip>
+              </Toolbar>
+            </AppBar>
+
             {settingsContent}
             <AppBar
               color="default"
@@ -1434,11 +1403,12 @@ rightToggle={
             </AppBar>
           </Dialog>
         )}
+        {/* 
         <TwoFactorDialog
           isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}
           handleTwoFactorDialogOpen={this.handleTwoFactorDialogOpen}
           handleTwoFactorDialogClose={this.handleTwoFactorDialogClose}
-        />
+        /> */}
         <DeleteAccountDialog
           deleteOpen={this.props.isOpen && this.state.deleteDialogOpen}
           deleteConfirmedOpen={this.state.deleteConfirmedDialogOpen}

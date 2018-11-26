@@ -2,8 +2,7 @@ import React, { Component } from "react"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
-import Paper from "material-ui/Paper"
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
+import Paper from "@material-ui/core/Paper"
 import Signup from "./components/unauthenticated/Signup"
 import logo from "./styles/assets/logo.svg"
 import iglooTitle from "./styles/assets/iglooTitle.svg"
@@ -48,7 +47,7 @@ class UnAuthenticatedApp extends Component {
 
   render() {
     return (
-      <MuiThemeProvider>
+      <React.Fragment>
         <Helmet>
           <title>Igloo Aurora - Sign up</title>
         </Helmet>
@@ -94,7 +93,7 @@ class UnAuthenticatedApp extends Component {
             />
           </Paper>
         </div>
-      </MuiThemeProvider>
+      </React.Fragment>
     )
   }
 }

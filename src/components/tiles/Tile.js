@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Paper from "material-ui/Paper"
+import Paper from "@material-ui/core/Paper"
 import ReadOnlyBooleanTile from "./Booleans/ReadOnlyBooleanTile"
 import ReadWriteBooleanTile from "./Booleans/ReadWriteBooleanTile"
 import ReadOnlyFloatTile from "./Floats/ReadOnlyFloatTile"
@@ -12,9 +12,7 @@ import PlotTile from "./PlotTile"
 import FullScreenTile from "./FullScreenTile"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import ArrowDropRight from "material-ui/svg-icons/navigation-arrow-drop-right"
-import { PopoverAnimationVertical } from "material-ui/Popover"
-import Divider from "material-ui/Divider"
+import Divider from "@material-ui/core/Divider"
 import RenameTileDialog from "./RenameTile"
 import InfoDialog from "./InfoDialog.js"
 import Typography from "@material-ui/core/Typography"
@@ -25,7 +23,7 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
-import TileSize from "../TileSize"
+import TileSize from "./TileSize"
 import DataSettings from "./DataSettings"
 import ToggleIcon from "material-ui-toggle-icon"
 //import ShareValue from "./ShareValue"
@@ -450,7 +448,6 @@ class Tile extends Component {
                 </MenuItem>
                 <MenuItem
                   primaryText="Resize"
-                  rightIcon={<ArrowDropRight />}
                   className="notSelectable"
                   leftIcon={<Icon>aspect_ratio</Icon>}
                   style={
@@ -480,9 +477,7 @@ class Tile extends Component {
                 </MenuItem>
                 <MenuItem
                   primaryText="Data settings"
-                  rightIcon={<ArrowDropRight />}
                   className="notSelectable"
-                  animation={PopoverAnimationVertical}
                   leftIcon={<Icon>aspect_ratio</Icon>}
                   style={
                     typeof Storage !== "undefined" &&

@@ -17,8 +17,6 @@ import Typography from "@material-ui/core/Typography"
 import DeleteDevice from "./devices/DeleteDevice"
 import ChangeBoard from "./devices/ChangeBoard"
 import RenameDevice from "./devices/RenameDevice"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { hotkeys } from "react-keyboard-shortcuts"
 
 class MainBodyHeaderMobile extends Component {
@@ -103,30 +101,22 @@ class MainBodyHeaderMobile extends Component {
           }}
         >
           <div className="mobileBackIcon">
-            <MuiThemeProvider
-              theme={createMuiTheme({
-                palette: {
-                  primary: { main: "#ffffff" },
-                },
-              })}
+            <Tooltip
+              id="tooltip-bottom"
+              title="Devices list"
+              placement="bottom"
             >
-              <Tooltip
-                id="tooltip-bottom"
-                title="Devices list"
-                placement="bottom"
+              <IconButton
+                style={{
+                  color: "white",
+                  marginTop: "8px",
+                }}
+                color="primary"
+                onClick={() => this.setState({ goToDevices: true })}
               >
-                <IconButton
-                  style={{
-                    color: "white",
-                    marginTop: "8px",
-                  }}
-                  color="primary"
-                  onClick={() => this.setState({ goToDevices: true })}
-                >
-                  <Icon>chevron_left</Icon>
-                </IconButton>
-              </Tooltip>
-            </MuiThemeProvider>
+                <Icon>chevron_left</Icon>
+              </IconButton>
+            </Tooltip>
           </div>
           {(this.props.boardData.board &&
             this.props.boardData.board.devices.filter(
@@ -495,23 +485,15 @@ class MainBodyHeaderMobile extends Component {
               }
               isMobile={this.props.isMobile}
             />
-            <MuiThemeProvider
-              theme={createMuiTheme({
-                palette: {
-                  primary: { main: "#ffffff" },
-                },
-              })}
-            >
-              <Tooltip id="tooltip-more" title="More" placement="bottom">
-                <IconButton
-                  style={{ marginTop: "8px" }}
-                  onClick={this.handleMenuOpen}
-                  color="primary"
-                >
-                  <Icon>more_vert</Icon>
-                </IconButton>
-              </Tooltip>
-            </MuiThemeProvider>
+            <Tooltip id="tooltip-more" title="More" placement="bottom">
+              <IconButton
+                style={{ marginTop: "8px" }}
+                onClick={this.handleMenuOpen}
+                color="primary"
+              >
+                <Icon>more_vert</Icon>
+              </IconButton>
+            </Tooltip>
           </div>
         </div>
         {((this.props.boardData.board &&
@@ -630,7 +612,7 @@ export default graphql(
           createdAt
           quietMode
           firmware
-                          notifications {
+          notifications {
             id
             content
             date

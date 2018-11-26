@@ -49,7 +49,7 @@ export default class ChangeMailDialog extends React.Component {
 
   render() {
     const confirmationDialogActions = [
-      <MuiThemeProvider theme={theme}>
+       
         <Button
           onClick={this.props.handleEmailDialogClose}
           style={{ marginRight: "4px" }}
@@ -59,12 +59,12 @@ export default class ChangeMailDialog extends React.Component {
         <Button variant="raised" color="primary" onClick={this.openMailDialog}>
           Proceed
         </Button>
-      </MuiThemeProvider>,
+       ,
     ]
     const mailDialogActions = [
-      <MuiThemeProvider theme={theme}>
+       
         <Button onClick={this.closeMailDialog}>Close</Button>
-      </MuiThemeProvider>,
+       ,
     ]
 
     return (
@@ -125,11 +125,11 @@ export default class ChangeMailDialog extends React.Component {
           autoHideDuration={4000}
           onRequestClose={this.handleMailSnackClose}
           action={[
-            <MuiThemeProvider theme={theme}>
+             
               <Button key="close" color="secondary" size="small">
                 CLOSE
               </Button>
-            </MuiThemeProvider>,
+             ,
           ]}
         />
       </React.Fragment>

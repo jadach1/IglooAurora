@@ -17,19 +17,10 @@ import ListSubheader from "@material-ui/core/ListSubheader"
 import Menu from "@material-ui/core/Menu"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import FlatButton from "material-ui/FlatButton"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import Button from "@material-ui/core/Button"
 import { hotkeys } from "react-keyboard-shortcuts"
 import moment from "moment"
 import Moment from "react-moment"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#ff4081" },
-    secondary: { main: "#ffffff" },
-  },
-})
 
 let device
 
@@ -568,7 +559,7 @@ class NotificationsDrawer extends React.Component {
 
       if (readNotificationCount) {
         readNotificationsUI = (
-          <FlatButton
+          <Button
             onClick={() => this.props.showHiddenNotifications()}
             label={
               this.props.hiddenNotifications
@@ -653,37 +644,37 @@ class NotificationsDrawer extends React.Component {
             </ListItemText>
           </MenuItem>
         </Menu>
-        <MuiThemeProvider theme={theme}>
-          <Tooltip title="Notifications" placement="bottom">
-            <IconButton
-              color="secondary"
-              style={this.props.isMobile ? { marginTop: "8px" } : {}}
-              onClick={
-                this.props.hiddenNotifications
-                  ? () => {
-                      this.props.changeDrawerState()
-                      this.props.showHiddenNotifications()
-                    }
-                  : () => {
-                      this.props.changeDrawerState()
-                    }
-              }
-            >
-              {notificationCount ? (
-                <Badge
-                  badgeContent={
-                    notificationCount > 99 ? "99+" : notificationCount
+
+        <Tooltip title="Notifications" placement="bottom">
+          <IconButton
+            color="secondary"
+            style={this.props.isMobile ? { marginTop: "8px" } : {}}
+            onClick={
+              this.props.hiddenNotifications
+                ? () => {
+                    this.props.changeDrawerState()
+                    this.props.showHiddenNotifications()
                   }
-                  color="primary"
-                >
-                  <Icon>notifications</Icon>
-                </Badge>
-              ) : (
-                <Icon>notifications_none</Icon>
-              )}
-            </IconButton>
-          </Tooltip>
-        </MuiThemeProvider>
+                : () => {
+                    this.props.changeDrawerState()
+                  }
+            }
+          >
+            {notificationCount ? (
+              <Badge
+                badgeContent={
+                  notificationCount > 99 ? "99+" : notificationCount
+                }
+                color="primary"
+              >
+                <Icon>notifications</Icon>
+              </Badge>
+            ) : (
+              <Icon>notifications_none</Icon>
+            )}
+          </IconButton>
+        </Tooltip>
+
         <SwipeableDrawer
           variant="temporary"
           anchor="right"
