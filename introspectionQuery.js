@@ -4,7 +4,7 @@ const fs = require("fs")
 const serverUrl =
 typeof Storage !== "undefined" && localStorage.getItem("server")!==""
     ? localStorage.getItem("server") + "/graphql"
-    : `http://iglooql.herokuapp.com/graphql`
+    : `http://igloo-production.herokuapp.com/graphql`
 
 fetch(serverUrl, {
   method: "POST",

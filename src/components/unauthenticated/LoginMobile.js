@@ -179,7 +179,7 @@ export default class LoginMobile extends Component {
             }
           />
           <Typography
-            variant="h6"
+            variant="h3"
             gutterBottom
             className="defaultCursor"
             style={{ color: "white", textAlign: "center" }}
@@ -347,10 +347,10 @@ export default class LoginMobile extends Component {
                 variant="subtitle1"
                 style={{
                   cursor: "pointer",
-                    color: "white",
-                    width: "128px",
-                    marginRight: "0px",
-                    marginLeft: "auto"
+                  color: "white",
+                  width: "130px",
+                  marginRight: "0px",
+                  marginLeft: "auto",
                 }}
                 onClick={() => {
                   this.setState({ forgotPasswordOpen: true })

@@ -20,7 +20,7 @@ class UnAuthenticatedApp extends Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? localStorage.getItem("server") + "/graphql"
-          : `http://iglooql.herokuapp.com/graphql`,
+          : `http://igloo-production.herokuapp.com/graphql`,
     })
 
     this.client = new ApolloClient({

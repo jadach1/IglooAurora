@@ -151,7 +151,7 @@ class Login extends Component {
         >
           <div>
             <Typography
-              variant="h6"
+              variant="h3"
               gutterBottom
               className="defaultCursor"
               style={{ color: "#0083ff", textAlign: "center" }}
@@ -349,10 +349,10 @@ class Login extends Component {
                 style={{
                   color: "#0083ff",
                   cursor: "pointer",
-                    marginBottom: "8px",
-                    width: "128px",
+                  marginBottom: "8px",
+                  width: "130px",
                   marginRight: "0px",
-                  marginLeft:"auto"
+                  marginLeft: "auto",
                 }}
                 onClick={() => {
                   this.setState({ forgotPasswordOpen: true })

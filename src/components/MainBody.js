@@ -12,39 +12,36 @@ class MainBody extends Component {
       subscription {
         valueCreated {
           id
-          values {
+          permission
+          visibility
+          valueDetails
+          tileSize
+          customName
+          updatedAt
+          createdAt
+          device {
             id
-            permission
-            visibility
-            valueDetails
-            tileSize
-            customName
-            updatedAt
-            createdAt
-            device {
+          }
+          ... on FloatValue {
+            floatValue: value
+            precision
+            boundaries
+          }
+          ... on StringValue {
+            stringValue: value
+            maxChars
+            allowedValues
+          }
+          ... on BooleanValue {
+            boolValue: value
+          }
+          ... on PlotValue {
+            plotValue: value {
               id
+              value
+              timestamp
             }
-            ... on FloatValue {
-              floatValue: value
-              precision
-              boundaries
-            }
-            ... on StringValue {
-              stringValue: value
-              maxChars
-              allowedValues
-            }
-            ... on BooleanValue {
-              boolValue: value
-            }
-            ... on PlotValue {
-              plotValue: value {
-                id
-                value
-                timestamp
-              }
-              threshold
-            }
+            threshold
           }
         }
       }
@@ -53,6 +50,8 @@ class MainBody extends Component {
     this.props.deviceData.subscribeToMore({
       document: subscribeToNewValues,
       updateQuery: (prev, { subscriptionData }) => {
+        console.log("called", subscriptionData)
+
         if (!subscriptionData.data) {
           return prev
         }
@@ -77,39 +76,36 @@ class MainBody extends Component {
       subscription {
         valueUpdated {
           id
-          values {
+          permission
+          visibility
+          valueDetails
+          tileSize
+          customName
+          updatedAt
+          createdAt
+          device {
             id
-            permission
-            visibility
-            valueDetails
-            tileSize
-            customName
-            updatedAt
-            createdAt
-            device {
+          }
+          ... on FloatValue {
+            floatValue: value
+            precision
+            boundaries
+          }
+          ... on StringValue {
+            stringValue: value
+            maxChars
+            allowedValues
+          }
+          ... on BooleanValue {
+            boolValue: value
+          }
+          ... on PlotValue {
+            plotValue: value {
               id
+              value
+              timestamp
             }
-            ... on FloatValue {
-              floatValue: value
-              precision
-              boundaries
-            }
-            ... on StringValue {
-              stringValue: value
-              maxChars
-              allowedValues
-            }
-            ... on BooleanValue {
-              boolValue: value
-            }
-            ... on PlotValue {
-              plotValue: value {
-                id
-                value
-                timestamp
-              }
-              threshold
-            }
+            threshold
           }
         }
       }
