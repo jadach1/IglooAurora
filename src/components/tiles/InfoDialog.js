@@ -62,7 +62,8 @@ class InfoDialog extends React.Component {
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
-          {this.props.devMode ? (
+          {typeof Storage !== "undefined" &&
+          localStorage.getItem("devMode") === "true" ? (
             <React.Fragment>
               <br />
               <br />
