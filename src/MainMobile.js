@@ -279,7 +279,7 @@ class MainMobile extends Component {
       hiddenNotifications: !oldState.hiddenNotifications,
     }))
 
-  handleSettingsTabChanged = value => {
+  handleSettingsTabChanged = (event, value) => {
     this.setState({
       slideIndex: value,
     })
@@ -483,7 +483,7 @@ class MainMobile extends Component {
                 handleChangeBTIndex={this.handleChangeBTIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
-            logOut={this.props.logOut}
+                logOut={this.props.logOut}
                 forceUpdate={this.props.forceUpdate}
               />
               <AppBar position="sticky">
@@ -538,8 +538,11 @@ class MainMobile extends Component {
                 handleChangeBTIndex={this.handleChangeBTIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
-            logOut={this.props.logOut}
+                logOut={this.props.logOut}
                 forceUpdate={this.props.forceUpdate}
+                handleSwipe={index => {
+                  this.setState({ slideIndex: index });
+                }}
               />
               <AppBar>
                 <MainBodyHeaderMobile
