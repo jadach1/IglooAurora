@@ -6,12 +6,14 @@ export default props => (
     {...props}
     style={
       props.style
-        ? { ...props.style, width: "100%", textAlign: "center", height: "100%" }
-        : { width: "100%", textAlign: "center", height: "100%" }
+        ? {
+            ...props.style,
+            width: "100%",
+            textAlign: "center",
+          }
+        : { width: "100%", textAlign: "center" }
     }
   >
-    <br />
-    <br />
-    <CircularProgress />
+    <CircularProgress size={props.large ? 96 : 48} />
   </div>
 )

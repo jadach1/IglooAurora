@@ -56,7 +56,7 @@ export default class ChangeMailDialog extends React.Component {
         >
           Never Mind
         </Button>
-        <Button variant="raised" color="primary" onClick={this.openMailDialog}>
+        <Button variant="contained" color="primary" onClick={this.openMailDialog}>
           Proceed
         </Button>
        ,
@@ -108,7 +108,13 @@ export default class ChangeMailDialog extends React.Component {
               primaryText="showcase@igloo.io"
               leftIcon={<Icon>mail_outline</Icon>}
               rightIconButton={
-                <IconButton>
+                <IconButton 
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }>
                   <Icon>delete</Icon>
                 </IconButton>
               }

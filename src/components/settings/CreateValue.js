@@ -139,6 +139,12 @@ class CreateValue extends React.Component {
                   this.state.customName && (
                     <InputAdornment position="end">
                       <IconButton
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                         onClick={() => this.setState({ customName: "" })}
                         tabIndex="-1"
                       >
@@ -205,7 +211,7 @@ class CreateValue extends React.Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               label="Change"
               buttonStyle={{ backgroundColor: "#0083ff" }}

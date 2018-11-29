@@ -251,14 +251,10 @@ class NotificationsDrawer extends React.Component {
 
     if (device && this.props.completeDevice) {
       let determineDiff = notification =>
-        moment()
-          .endOf("day")
-          .diff(
-            moment
-              .utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss")
-              .endOf("day"),
-            "days"
-          ) <= 0
+        moment().isSame(
+          moment.utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss"),
+          "day"
+        )
           ? "Today"
           : moment()
               .endOf("week")
@@ -402,17 +398,14 @@ class NotificationsDrawer extends React.Component {
                         <Tooltip title="Delete" placement="bottom">
                           <IconButton
                             onClick={() => deleteNotification(notification.id)}
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
                           >
-                            <Icon
-                              style={
-                                typeof Storage !== "undefined" &&
-                                localStorage.getItem("nightMode") === "true"
-                                  ? { color: "white" }
-                                  : { color: "black" }
-                              }
-                            >
-                              delete
-                            </Icon>{" "}
+                            <Icon>delete</Icon>
                           </IconButton>
                         </Tooltip>
                       </ListItemSecondaryAction>
@@ -508,17 +501,14 @@ class NotificationsDrawer extends React.Component {
                                 targetNotification: notification,
                               })
                             }
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
                           >
-                            <Icon
-                              style={
-                                typeof Storage !== "undefined" &&
-                                localStorage.getItem("nightMode") === "true"
-                                  ? { color: "white" }
-                                  : { color: "black" }
-                              }
-                            >
-                              more_vert
-                            </Icon>
+                            <Icon>more_vert</Icon>
                           </IconButton>
                         </Tooltip>
                       </ListItemSecondaryAction>
@@ -644,11 +634,13 @@ class NotificationsDrawer extends React.Component {
             </ListItemText>
           </MenuItem>
         </Menu>
-
         <Tooltip title="Notifications" placement="bottom">
           <IconButton
-            color="secondary"
-            style={this.props.isMobile ? { marginTop: "8px" } : {}}
+            style={
+              this.props.isMobile
+                ? { color: "white", marginTop: "8px" }
+                : { color: "white" }
+            }
             onClick={
               this.props.hiddenNotifications
                 ? () => {
@@ -674,7 +666,6 @@ class NotificationsDrawer extends React.Component {
             )}
           </IconButton>
         </Tooltip>
-
         <SwipeableDrawer
           variant="temporary"
           anchor="right"
@@ -821,10 +812,10 @@ export default graphql(
       )(
         graphql(
           gql`
-            mutation ToggleQuietMode($id: ID!, $quietMode: Boolean!) {
-              device(id: $id, quietMode: $quietMode) {
+            mutation ToggleQuietMode($id: ID!, $muted: Boolean!) {
+              device(id: $id, muted: $muted) {
                 id
-                quietMode
+                muted
               }
             }
           `,

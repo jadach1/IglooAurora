@@ -10,7 +10,6 @@ import Paper from "@material-ui/core/Paper"
 import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
-import LargeCenteredSpinner from "../LargeCenteredSpinner"
 import Helmet from "react-helmet"
 
 export default class BoardsBody extends Component {
@@ -180,7 +179,7 @@ export default class BoardsBody extends Component {
           }
         >
           {error && "Unexpected error"}
-          {loading && <LargeCenteredSpinner />}
+          {loading && <CenteredSpinner large />}
           {user && (
             <React.Fragment>
               <Typography

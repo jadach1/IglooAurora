@@ -74,7 +74,6 @@ class TileSize extends Component {
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
         <DialogTitle style={{ width: "300px" }}>Change card size</DialogTitle>
-        <div style={{ paddingLeft: "24px" }}>Role</div>
         <RadioGroup
           onChange={(event, value) => this.setState({ radioValue: value })}
           value={this.state.radioValue}
@@ -101,7 +100,7 @@ class TileSize extends Component {
             Never mind
           </Button>
           <Button
-            variant="raised"
+            variant="contained"
             color="primary"
             primary={true}
             onClick={() => {

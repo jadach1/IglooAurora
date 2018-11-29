@@ -71,6 +71,12 @@ export default class InviteUser extends Component {
                     onClick={() => this.setState({ email: "" })}
                     onMouseDown={this.handleMouseDownPassword}
                     tabIndex="-1"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
                   >
                     <Icon>clear</Icon>
                   </IconButton>
@@ -90,7 +96,7 @@ export default class InviteUser extends Component {
             Never mind
           </Button>
           <Button
-            variant="raised"
+            variant="contained"
             color="primary"
             onClick={() => {
               this.props.close()

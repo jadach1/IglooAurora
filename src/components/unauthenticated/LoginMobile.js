@@ -278,14 +278,12 @@ export default class LoginMobile extends Component {
                           onClick={this.handleClickShowPassword}
                           onMouseDown={this.handleMouseDownPassword}
                           tabIndex="-1"
-                          style={{ color: "white" }}
+                          style={{ color: "black" }}
                         >
                           {this.state.showPassword ? (
-                            <Icon style={{ color: "white" }}>
-                              visibility_off
-                            </Icon>
+                            <Icon>visibility_off</Icon>
                           ) : (
-                            <Icon style={{ color: "white" }}>visibility</Icon>
+                            <Icon>visibility</Icon>
                           )}
                         </IconButton>
                       </InputAdornment>
@@ -341,7 +339,7 @@ export default class LoginMobile extends Component {
             </Typography>
           </div>
           <Button
-            variant="raised"
+            variant="contained"
             primary={true}
             fullWidth={true}
             onClick={() => {

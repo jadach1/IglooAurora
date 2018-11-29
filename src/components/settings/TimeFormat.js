@@ -58,11 +58,6 @@ export default class TimeFormatDialog extends React.Component {
               label="MM/DD/YYYY"
             />
             <FormControlLabel
-              value="mdy"
-              control={<Radio color="primary" />}
-              label="MM/DD/YYYY"
-            />
-            <FormControlLabel
               value="ymd"
               control={<Radio color="primary" />}
               label="YYYY/MM/DD"

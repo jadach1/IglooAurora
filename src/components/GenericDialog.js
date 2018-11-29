@@ -234,7 +234,7 @@ export default class GenericDialog extends Component {
                 )
               }}
               style={{ marginRight: "4px" }}
-              variant="raised"
+              variant="contained"
               color="secondary"
             >
               Give up

@@ -142,7 +142,15 @@ class AuthDialog extends React.Component {
                 }
               />
               <ListItemSecondaryAction>
-                <IconButton onClick={() => this.deletePermanentToken(token.id)}>
+                <IconButton
+                  onClick={() => this.deletePermanentToken(token.id)}
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
                   <Icon>delete</Icon>
                 </IconButton>
               </ListItemSecondaryAction>
@@ -209,6 +217,12 @@ class AuthDialog extends React.Component {
                         onClick={this.handleClickShowPassword}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                       >
                         {/* fix for ToggleIcon glitch on Edge */}
                         {document.documentMode ||
@@ -242,7 +256,7 @@ class AuthDialog extends React.Component {
               Never Mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               onClick={this.openAuthDialog}
             >
@@ -311,6 +325,12 @@ class AuthDialog extends React.Component {
                         onClick={() => this.setState({ tokenName: "" })}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                       >
                         <Icon>close</Icon>
                       </IconButton>
@@ -331,7 +351,7 @@ class AuthDialog extends React.Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               disabled={!this.state.tokenName}
               onClick={() => {

@@ -91,7 +91,7 @@ export default class CreatePlotNode extends React.Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               label="Change"
               primary={true}

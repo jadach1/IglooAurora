@@ -67,32 +67,26 @@ class BoardsHeader extends Component {
               >
                 <IconButton
                   className="sidebarHeaderButton"
-                  style={{ color: "white" }}
-                >
-                  <Icon color="primary">map</Icon>
+color="default"                >
+                  <Icon style={{ color: "white" }}>map</Icon>
                 </IconButton>
               </Tooltip>
             </a> */}
             <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
               <IconButton
                 onClick={this.props.openSettings}
-                className="sidebarHeaderButton"
-                color="primary"
+                style={{ color: "white" }}
               >
-                <Icon color="primary" style={{ color: "white" }}>
-                  settings
-                </Icon>
+                <Icon>settings</Icon>
               </IconButton>
             </Tooltip>
             <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
               <IconButton
                 onClick={this.props.logOut}
                 className="sidebarHeaderButton"
-                color="primary"
+                style={{ color: "white" }}
               >
-                <Icon color="primary" style={{ color: "white" }}>
-                  exit_to_app
-                </Icon>
+                <Icon>exit_to_app</Icon>
               </IconButton>
             </Tooltip>
           </div>

@@ -189,6 +189,12 @@ class ShareBoard extends React.Component {
                     <ListItemSecondaryAction>
                       <IconButton
                         onClick={() => this.setState({ changeOwnerOpen: true })}
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                       >
                         <Icon>swap_horiz</Icon>
                       </IconButton>
@@ -240,6 +246,12 @@ class ShareBoard extends React.Component {
                                 menuTarget: item,
                                 selectedUserForChangeRoleDialog: "admin",
                               })
+                            }
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
                             }
                           >
                             <Icon>more_vert</Icon>
@@ -317,6 +329,12 @@ class ShareBoard extends React.Component {
                                 selectedUserForChangeRoleDialog: "editor",
                               })
                             }
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
                           >
                             <Icon>more_vert</Icon>
                           </IconButton>
@@ -392,6 +410,12 @@ class ShareBoard extends React.Component {
                                 menuTarget: item,
                                 selectedUserForChangeRoleDialog: "spectator",
                               })
+                            }
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
                             }
                           >
                             <Icon>more_vert</Icon>
@@ -510,7 +534,7 @@ class ShareBoard extends React.Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               primary={true}
               onClick={() => {

@@ -81,7 +81,7 @@ class PasswordRecovery extends Component {
           }}
           className="notSelectable defaultCursor"
         >
-          <CircularProgress size={100} />
+          <CircularProgress size={100} color="secondary" />
         </div>
       )
     }
@@ -135,7 +135,7 @@ class PasswordRecovery extends Component {
               to="/dashboard"
               style={{ textDecoration: "none", color: "black" }}
             >
-              <Button variant="raised" color="secondary">
+              <Button variant="contained" color="secondary">
                 Take me away!
               </Button>
             </Link>
@@ -244,11 +244,9 @@ class PasswordRecovery extends Component {
                           style={{ color: "white" }}
                         >
                           {this.state.showPassword ? (
-                            <Icon style={{ color: "white" }}>
-                              visibility_off
-                            </Icon>
+                            <Icon>visibility_off</Icon>
                           ) : (
-                            <Icon style={{ color: "white" }}>visibility</Icon>
+                            <Icon>visibility</Icon>
                           )}
                         </IconButton>
                       </InputAdornment>
@@ -279,7 +277,7 @@ class PasswordRecovery extends Component {
             style={{ textDecoration: "none", color: "black" }}
           >
             <Button
-              variant="raised"
+              variant="contained"
               color="secondary"
               disabled={!user || !(this.state.passwordScore >= 2)}
               onClick={() => changePassword(this.props.password)}

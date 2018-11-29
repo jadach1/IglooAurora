@@ -150,6 +150,12 @@ class ChangeNameDialog extends React.Component {
                         onMouseDown={event => {
                           event.preventDefault()
                         }}
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                         tabIndex="-1"
                       >
                         <Icon>clear</Icon>
@@ -171,7 +177,7 @@ class ChangeNameDialog extends React.Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               label="Change"
               primary={true}
