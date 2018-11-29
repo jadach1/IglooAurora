@@ -2,20 +2,12 @@ import React, { Component } from "react"
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import Radio from "@material-ui/core/Radio"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -45,48 +37,44 @@ export default class ChangeRole extends Component {
         >
           Change role
         </DialogTitle>
-        <MuiThemeProvider theme={theme}>
-          <RadioGroup
-            onChange={event => this.setState({ value: event.target.value })}
-            value={this.state.value}
-            style={{ paddingLeft: "24px", paddingRight: "24px" }}
-          >
-            <FormControlLabel
-              value="admin"
-              control={<Radio color="primary" />}
-              label="Admin"
-            />
-            <FormControlLabel
-              value="editor"
-              control={<Radio color="primary" />}
-              label="Editor"
-            />
-            <FormControlLabel
-              value="spectator"
-              control={<Radio color="primary" />}
-              label="Spectator"
-            />
-          </RadioGroup>
-        </MuiThemeProvider>
+        <RadioGroup
+          onChange={event => this.setState({ value: event.target.value })}
+          value={this.state.value}
+          style={{ paddingLeft: "24px", paddingRight: "24px" }}
+        >
+          <FormControlLabel
+            value="admin"
+            control={<Radio color="primary" />}
+            label="Admin"
+          />
+          <FormControlLabel
+            value="editor"
+            control={<Radio color="primary" />}
+            label="Editor"
+          />
+          <FormControlLabel
+            value="spectator"
+            control={<Radio color="primary" />}
+            label="Spectator"
+          />
+        </RadioGroup>
         <DialogActions
           className="notSelectable defaultCursor"
           style={{ marginLeft: "8px", marginRight: "8px" }}
         >
-          <MuiThemeProvider theme={theme}>
-            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-              Never mind
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              onClick={() => {
-                this.props.close()
-                this.props.changeRole(this.state.value)
-              }}
-            >
-              Change role
-            </Button>
-          </MuiThemeProvider>
+          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+            Never mind
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              this.props.close()
+              this.props.changeRole(this.state.value)
+            }}
+          >
+            Change role
+          </Button>
         </DialogActions>
       </Dialog>
     )

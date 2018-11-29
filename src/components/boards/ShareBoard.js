@@ -1,6 +1,4 @@
 import React from "react"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Button from "@material-ui/core/Button"
 import List from "@material-ui/core/List"
 import ListSubheader from "@material-ui/core/ListSubheader"
@@ -24,12 +22,6 @@ import gql from "graphql-tag"
 import ChangeRole from "./ChangeRole"
 import ChangeOwner from "./ChangeOwner"
 import InviteUser from "./InviteUser"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -195,6 +187,12 @@ class ShareBoard extends React.Component {
                     <ListItemSecondaryAction>
                       <IconButton
                         onClick={() => this.setState({ changeOwnerOpen: true })}
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                       >
                         <Icon>swap_horiz</Icon>
                       </IconButton>
@@ -246,6 +244,12 @@ class ShareBoard extends React.Component {
                                 menuTarget: item,
                                 selectedUserForChangeRoleDialog: "admin",
                               })
+                            }
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
                             }
                           >
                             <Icon>more_vert</Icon>
@@ -323,6 +327,12 @@ class ShareBoard extends React.Component {
                                 selectedUserForChangeRoleDialog: "editor",
                               })
                             }
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
                           >
                             <Icon>more_vert</Icon>
                           </IconButton>
@@ -398,6 +408,12 @@ class ShareBoard extends React.Component {
                                 menuTarget: item,
                                 selectedUserForChangeRoleDialog: "spectator",
                               })
+                            }
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
                             }
                           >
                             <Icon>more_vert</Icon>
@@ -483,9 +499,7 @@ class ShareBoard extends React.Component {
             className="notSelectable defaultCursor"
             style={{ marginLeft: "8px", marginRight: "8px" }}
           >
-            <MuiThemeProvider theme={theme}>
-              <Button onClick={this.props.close}>Close</Button>
-            </MuiThemeProvider>
+            <Button onClick={this.props.close}>Close</Button>
           </DialogActions>
         </Dialog>
         <Dialog
@@ -511,31 +525,23 @@ class ShareBoard extends React.Component {
             className="notSelectable defaultCursor"
             style={{ marginLeft: "8px", marginRight: "8px" }}
           >
-            <MuiThemeProvider
-              theme={createMuiTheme({
-                palette: {
-                  primary: { main: "#f44336" },
-                },
-              })}
+            <Button
+              onClick={() => this.setState({ stopSharingOpen: false })}
+              style={{ marginRight: "4px" }}
             >
-              <Button
-                onClick={() => this.setState({ stopSharingOpen: false })}
-                style={{ marginRight: "4px" }}
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                primary={true}
-                onClick={() => {
-                  this.stopSharing()
-                  this.setState({ stopSharingOpen: false })
-                }}
-              >
-                Stop sharing
-              </Button>
-            </MuiThemeProvider>
+              Never mind
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              primary={true}
+              onClick={() => {
+                this.stopSharing()
+                this.setState({ stopSharingOpen: false })
+              }}
+            >
+              Stop sharing
+            </Button>
           </DialogActions>
         </Dialog>
         <ChangeOwner

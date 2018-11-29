@@ -3,8 +3,6 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -20,12 +18,6 @@ import denali from "../../styles/assets/denali.jpg"
 import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
 import SwipeableViews from "react-swipeable-views"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -105,42 +97,47 @@ class CreateBoard extends React.Component {
           Create board
         </DialogTitle>
         <div style={{ height: "100%" }}>
-          <MuiThemeProvider theme={theme}>
-            <FormControl
-              style={{
-                width: "calc(100% - 48px)",
-                paddingLeft: "24px",
-                paddingRight: "24px",
+          <FormControl
+            style={{
+              width: "calc(100% - 48px)",
+              paddingLeft: "24px",
+              paddingRight: "24px",
+            }}
+          >
+            <Input
+              id="adornment-name-login"
+              placeholder="Board Name"
+              value={this.state.customName}
+              onChange={event =>
+                this.setState({
+                  customName: event.target.value,
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter") this.createBoardMutation()
               }}
-            >
-              <Input
-                id="adornment-name-login"
-                placeholder="Board Name"
-                value={this.state.customName}
-                onChange={event =>
-                  this.setState({
-                    customName: event.target.value,
-                  })
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.createBoardMutation()
-                }}
-                endAdornment={
-                  this.state.customName ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => this.setState({ customName: "" })}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
+              endAdornment={
+                this.state.customName ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => this.setState({ customName: "" })}
+                      onMouseDown={this.handleMouseDownPassword}
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+          </FormControl>
+
           <br />
           <br />
           <SwipeableViews
@@ -239,21 +236,19 @@ class CreateBoard extends React.Component {
           className="notSelectable defaultCursor"
           style={{ marginLeft: "8px", marginRight: "8px" }}
         >
-          <MuiThemeProvider theme={theme}>
-            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-              Never mind
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
-              onClick={this.createBoardMutation}
-              disabled={!this.state.customName}
-            >
-              Create board
-            </Button>
-          </MuiThemeProvider>
+          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+            Never mind
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            primary={true}
+            buttonStyle={{ backgroundColor: "#0083ff" }}
+            onClick={this.createBoardMutation}
+            disabled={!this.state.customName}
+          >
+            Create board
+          </Button>
         </DialogActions>
       </Dialog>
     )

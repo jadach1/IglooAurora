@@ -8,7 +8,7 @@ import "./styles/MobileApp.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import AppBar from "@material-ui/core/AppBar"
 import SettingsDialog from "./components/settings/SettingsDialog"
-import MainBodyHeaderMobile from "./components/MainBodyHeaderMobile"
+import MainBodyHeader from "./components/MainBodyHeader"
 import StatusBar from "./components/devices/StatusBar"
 import { Redirect } from "react-router-dom"
 import { graphql } from "react-apollo"
@@ -279,7 +279,7 @@ class MainMobile extends Component {
       hiddenNotifications: !oldState.hiddenNotifications,
     }))
 
-  handleSettingsTabChanged = value => {
+  handleSettingsTabChanged = (event, value) => {
     this.setState({
       slideIndex: value,
     })
@@ -483,7 +483,7 @@ class MainMobile extends Component {
                 handleChangeBTIndex={this.handleChangeBTIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
-            logOut={this.props.logOut}
+                logOut={this.props.logOut}
                 forceUpdate={this.props.forceUpdate}
               />
               <AppBar position="sticky">
@@ -538,32 +538,28 @@ class MainMobile extends Component {
                 handleChangeBTIndex={this.handleChangeBTIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
-            logOut={this.props.logOut}
+                logOut={this.props.logOut}
                 forceUpdate={this.props.forceUpdate}
+                handleSwipe={index => {
+                  this.setState({ slideIndex: index })
+                }}
               />
               <AppBar>
-                <MainBodyHeaderMobile
-                  logOut={this.props.logOut}
+                <MainBodyHeader
                   deviceId={this.props.selectedDevice}
-                  key="mobileMainBodyHeader"
+                  key="mainBodyHeader"
                   drawer={this.state.drawer}
                   changeDrawerState={this.changeDrawerState}
                   hiddenNotifications={this.state.hiddenNotifications}
                   showHiddenNotifications={this.showHiddenNotifications}
-                  selectDevice={id => {
-                    this.props.selectDevice(id)
-                    this.setState({ drawer: false })
-                  }}
                   nightMode={nightMode}
-                  isMobile={true}
                   devMode={devMode}
-                  openSnackBar={() => this.setState({ copyMessageOpen: true })}
-                  selectedBoard={this.props.boardId}
+                  openSnackBar={() => {
+                    this.setState({ copyMessageOpen: true })
+                  }}
                   boardData={this.props.boardData}
-                  areSettingsOpen={this.props.areSettingsOpen}
-                  openSettingsDialog={this.props.openSettings}
-                  closeSettings={this.props.closeSettings}
                   boards={this.props.boards}
+                  isMobile={true}
                 />
               </AppBar>
               <div
@@ -623,7 +619,6 @@ export default graphql(
           id
           index
           customName
-          icon
           online
           batteryStatus
           batteryCharging

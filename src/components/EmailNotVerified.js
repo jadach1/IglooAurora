@@ -60,6 +60,7 @@ function MySnackbarContent(props) {
             openDialog()
             closeSnackbar()
           }}
+          color="primary"
         >
           <Icon>notes</Icon>
         </IconButton>,
@@ -68,6 +69,7 @@ function MySnackbarContent(props) {
           onClick={() => {
             closeSnackbar()
           }}
+          color="primary"
         >
           {mobile ? (
             <Icon>keyboard_arrow_down</Icon>
