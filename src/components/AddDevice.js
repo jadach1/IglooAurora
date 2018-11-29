@@ -93,7 +93,7 @@ export default class AddDevice extends Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               onClick={() => {
                 this.props.close()
                 this.setState({ authDialogOpen: true })
@@ -189,7 +189,7 @@ export default class AddDevice extends Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               onClick={() => this.props.close()}
               color="primary"
             >

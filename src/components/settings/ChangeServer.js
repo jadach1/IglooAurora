@@ -235,7 +235,7 @@ export default class ChangePasswordDialog extends React.Component {
             Never mind
           </Button>
           <Button
-            variant="raised"
+            variant="contained"
             color="primary"
             onClick={confirm}
             disabled={

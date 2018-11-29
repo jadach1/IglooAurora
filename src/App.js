@@ -209,11 +209,53 @@ class App extends Component {
       <MuiThemeProvider
         theme={createMuiTheme({
           palette: {
+            default: { main: "#fff" },
             primary: { light: "#0083ff", main: "#0057cb" },
             secondary: { main: "#ff4081" },
             error: { main: "#f44336" },
-            contrastThreshold: 3,
-            tonalOffset: 0.2,
+          },
+          overrides: {
+            MuiButton: {
+              containedPrimary: {
+                backgroundColor: "#0083ff",
+              },
+            },
+            MuiSwitch: {
+              colorSecondary: {
+                "&$checked": {
+                  color: "#0083ff",
+                  "& + $bar": {
+                    backgroundColor: "#0083ff",
+                  },
+                },
+              },
+            },
+            MuiIconButton: {
+              colorPrimary: {
+                color: "white",
+              },
+              colorSecondary: {
+                color: "white",
+              },
+            },
+            MuiBadge: {
+              colorPrimary: {
+                backgroundColor: "#ff4081",
+              },
+            },
+            MuiCheckbox: {
+              colorPrimary: {
+                "&$checked": { color: "#0083ff" },
+              },
+            },
+            MuiCircularProgress: {
+              colorPrimary: {
+                color: "#0083ff",
+              },
+              colorSecondary: {
+                color: "#fff",
+              },
+            },
           },
         })}
       >

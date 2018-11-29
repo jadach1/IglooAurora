@@ -116,6 +116,12 @@ class RenameTileDialog extends React.Component {
                       onMouseDown={event => {
                         event.preventDefault()
                       }}
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
                       tabIndex="-1"
                     >
                       <Icon>clear</Icon>
@@ -134,7 +140,7 @@ class RenameTileDialog extends React.Component {
             Never mind
           </Button>
           <Button
-            variant="raised"
+            variant="contained"
             color="primary"
             onClick={this.rename}
             disabled={!this.state.tileName || oldName === this.state.tileName}

@@ -47,131 +47,139 @@ export default class ChangePasswordDialog extends React.Component {
             height: "100%",
           }}
         >
-           
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-password-login"
-                type={this.state.showPassword ? "text" : "password"}
-                value={this.state.password}
-                placeholder="Old password"
-                onChange={event =>
-                  this.setState({
-                    password: event.target.value,
-                    passwordError: "",
-                    isPasswordEmpty: event.target.value === "",
-                  })
-                }
-                error={
-                  this.state.passwordError || this.state.isPasswordEmpty
-                    ? true
-                    : false
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.openMailDialog()
-                }}
-                endAdornment={
-                  this.state.password ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={this.handleClickShowPassword}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                      >
-                        {/* fix for ToggleIcon glitch on Edge */}
-                        {document.documentMode ||
-                        /Edge/.test(navigator.userAgent) ? (
-                          this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
-                          ) : (
-                            <Icon>visibility</Icon>
-                          )
+          <FormControl style={{ width: "100%" }}>
+            <Input
+              id="adornment-password-login"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password}
+              placeholder="Old password"
+              onChange={event =>
+                this.setState({
+                  password: event.target.value,
+                  passwordError: "",
+                  isPasswordEmpty: event.target.value === "",
+                })
+              }
+              error={
+                this.state.passwordError || this.state.isPasswordEmpty
+                  ? true
+                  : false
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter") this.openMailDialog()
+              }}
+              endAdornment={
+                this.state.password ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={this.handleClickShowPassword}
+                      onMouseDown={this.handleMouseDownPassword}
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      {/* fix for ToggleIcon glitch on Edge */}
+                      {document.documentMode ||
+                      /Edge/.test(navigator.userAgent) ? (
+                        this.state.showPassword ? (
+                          <Icon>visibility_off</Icon>
                         ) : (
-                          <ToggleIcon
-                            on={this.state.showPassword || false}
-                            onIcon={<Icon>visibility_off</Icon>}
-                            offIcon={<Icon>visibility</Icon>}
-                          />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-            <br />
-            <br />
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-password-login"
-                type={this.state.showPassword ? "text" : "password"}
-                value={this.state.password}
-                placeholder="New password"
-                onChange={event =>
-                  this.setState({
-                    password: event.target.value,
-                    passwordError: "",
-                    isPasswordEmpty: event.target.value === "",
-                  })
-                }
-                error={
-                  this.state.passwordError || this.state.isPasswordEmpty
-                    ? true
-                    : false
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.openMailDialog()
-                }}
-                endAdornment={
-                  this.state.password ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={this.handleClickShowPassword}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                      >
-                        {/* fix for ToggleIcon glitch on Edge */}
-                        {document.documentMode ||
-                        /Edge/.test(navigator.userAgent) ? (
-                          this.state.showNewPassword ? (
-                            <Icon>visibility_off</Icon>
-                          ) : (
-                            <Icon>visibility</Icon>
-                          )
+                          <Icon>visibility</Icon>
+                        )
+                      ) : (
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<Icon>visibility_off</Icon>}
+                          offIcon={<Icon>visibility</Icon>}
+                        />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+          </FormControl>
+          <br />
+          <br />
+          <FormControl style={{ width: "100%" }}>
+            <Input
+              id="adornment-password-login"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password}
+              placeholder="New password"
+              onChange={event =>
+                this.setState({
+                  password: event.target.value,
+                  passwordError: "",
+                  isPasswordEmpty: event.target.value === "",
+                })
+              }
+              error={
+                this.state.passwordError || this.state.isPasswordEmpty
+                  ? true
+                  : false
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter") this.openMailDialog()
+              }}
+              endAdornment={
+                this.state.password ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={this.handleClickShowPassword}
+                      onMouseDown={this.handleMouseDownPassword}
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      {/* fix for ToggleIcon glitch on Edge */}
+                      {document.documentMode ||
+                      /Edge/.test(navigator.userAgent) ? (
+                        this.state.showNewPassword ? (
+                          <Icon>visibility_off</Icon>
                         ) : (
-                          <ToggleIcon
-                            on={this.state.showNewPassword || false}
-                            onIcon={<Icon>visibility_off</Icon>}
-                            offIcon={<Icon>visibility</Icon>}
-                          />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-            <br />
-            <br />
-           
+                          <Icon>visibility</Icon>
+                        )
+                      ) : (
+                        <ToggleIcon
+                          on={this.state.showNewPassword || false}
+                          onIcon={<Icon>visibility_off</Icon>}
+                          offIcon={<Icon>visibility</Icon>}
+                        />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+          </FormControl>
+          <br />
+          <br />
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-           
-            <Button
-              onClick={this.props.handlePasswordDialogClose}
-              style={{ marginRight: "4px" }}
-            >
-              Never mind
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
-              onClick={this.handlePwdSnackOpen}
-            >
-              Change
-            </Button>
-           
+          <Button
+            onClick={this.props.handlePasswordDialogClose}
+            style={{ marginRight: "4px" }}
+          >
+            Never mind
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            primary={true}
+            buttonStyle={{ backgroundColor: "#0083ff" }}
+            onClick={this.handlePwdSnackOpen}
+          >
+            Change
+          </Button>
         </DialogActions>
       </Dialog>
     )

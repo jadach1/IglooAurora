@@ -68,6 +68,12 @@ export default class ChangeOwner extends Component {
                     onClick={() => this.setState({ email: "" })}
                     onMouseDown={this.handleMouseDownPassword}
                     tabIndex="-1"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
                   >
                     <Icon>clear</Icon>
                   </IconButton>
@@ -86,7 +92,11 @@ export default class ChangeOwner extends Component {
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
           </Button>
-          <Button variant="raised" color="primary" onClick={this.props.close}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.props.close}
+          >
             Change owner
           </Button>
         </DialogActions>

@@ -59,7 +59,7 @@ class DeleteAccountDialog extends React.Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               primary={true}
               buttonStyle={{ backgroundColor: "#F44336" }}
@@ -115,6 +115,12 @@ class DeleteAccountDialog extends React.Component {
                   this.state.password ? (
                     <InputAdornment position="end">
                       <IconButton
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                         onClick={this.handleClickShowPassword}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
@@ -152,7 +158,7 @@ class DeleteAccountDialog extends React.Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               primary={true}
               buttonStyle={{ backgroundColor: "#F44336" }}

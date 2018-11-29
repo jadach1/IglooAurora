@@ -20,7 +20,7 @@ const StepActions = ({ step, handleNext, handlePrev }) => (
    
     <div style={{ margin: "12px 0" }}>
       <Button
-        variant="raised"
+        variant="contained"
         color="primary"
         buttonStyle={{ backgroundColor: "#0083ff" }}
         disableTouchRipple={true}

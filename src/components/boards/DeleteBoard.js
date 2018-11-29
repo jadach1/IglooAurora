@@ -59,7 +59,7 @@ class DeleteBoard extends React.Component {
             Never mind
           </Button>
           <Button
-            variant="raised"
+            variant="contained"
             color="primary"
             primary={true}
             buttonStyle={{ backgroundColor: "#f44336" }}

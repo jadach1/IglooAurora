@@ -52,7 +52,7 @@ class GDPRDataDownload extends React.Component {
             </Button>
 
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               label="Download"
               primary={true}

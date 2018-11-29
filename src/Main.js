@@ -136,7 +136,7 @@ class Main extends Component {
       drawer: false,
       copyMessageOpen: false,
       deselectDevice: false,
-      slideIndex:0
+      slideIndex: 0,
     }
   }
 
@@ -415,7 +415,13 @@ class Main extends Component {
               boards={this.props.boards}
             />
           ) : (
-            <div className="mainBodyHeader" key="mainBodyHeader" />
+            <div
+              style={{
+                gridArea: "mainBodyHeader",
+                backgroundColor: "#0083ff",
+              }}
+              key="mainBodyHeader"
+            />
           )}
           {this.props.selectedDevice !== null ? (
             <React.Fragment>
@@ -510,7 +516,6 @@ export default graphql(
           id
           index
           customName
-          icon
           online
           batteryStatus
           batteryCharging

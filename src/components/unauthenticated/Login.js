@@ -195,6 +195,7 @@ class Login extends Component {
                             onClick={this.handleClickCancelEmail}
                             onMouseDown={this.handleMouseDownPassword}
                             tabIndex="-1"
+                            style={{ color: "black" }}
                           >
                             <Icon>clear</Icon>
                           </IconButton>
@@ -264,6 +265,7 @@ class Login extends Component {
                             onClick={this.handleClickShowPassword}
                             onMouseDown={this.handleMouseDownPassword}
                             tabIndex="-1"
+                            style={{ color: "black" }}
                           >
                             {/* fix for ToggleIcon glitch on Edge */}
                             {document.documentMode ||
@@ -312,7 +314,7 @@ class Login extends Component {
                     this.setState({ keepLoggedIn: event.target.checked })
                   }
                   checked={this.state.keepLoggedIn}
-                  color="primary.light"
+                  color="primary"
                 />
               }
               label={
@@ -342,7 +344,7 @@ class Login extends Component {
               </Typography>
             </div>
             <Button
-              variant="raised"
+              variant="contained"
               primary={true}
               fullWidth={true}
               onClick={() => {

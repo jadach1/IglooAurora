@@ -45,6 +45,9 @@ class SidebarHeader extends Component {
           display: "flex",
           alignItems: "center",
           height: "64px",
+          gridArea: "sidebarHeader",
+          background: "#0057cb",
+          zIndex: 1000,
         }}
       >
         <Tooltip
@@ -55,15 +58,13 @@ class SidebarHeader extends Component {
           <IconButton
             style={{
               marginLeft: "8px",
+              color: "white",
             }}
-            color="primary"
-            className="sidebarHeaderButton"
             onClick={() => this.setState({ goToBoards: true })}
           >
             <Icon>chevron_left</Icon>
           </IconButton>
         </Tooltip>
-
         <Typography
           variant="h5"
           style={{
@@ -116,19 +117,14 @@ class SidebarHeader extends Component {
           >
             <IconButton
               onClick={this.props.openSettingsDialog}
-              className="sidebarHeaderButton"
-              color="primary"
+              style={{ color: "white" }}
             >
-              <Icon color="primary">settings</Icon>
+              <Icon>settings</Icon>
             </IconButton>
           </Tooltip>
           <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
-            <IconButton
-              onClick={this.props.logOut}
-              className="sidebarHeaderButton"
-              color="primary"
-            >
-              <Icon color="primary">exit_to_app</Icon>
+            <IconButton onClick={this.props.logOut} style={{ color: "white" }}>
+              <Icon>exit_to_app</Icon>
             </IconButton>
           </Tooltip>
         </div>

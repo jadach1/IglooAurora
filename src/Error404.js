@@ -60,7 +60,7 @@ export default class Error404 extends Component {
           }
           className="notSelectable defaultCursor"
         >
-          <Typography variant="h6" style={{ color: "white" }}>
+          <Typography variant="h4" style={{ color: "white" }}>
             You seem to be lost
           </Typography>
           <br />
@@ -86,7 +86,7 @@ export default class Error404 extends Component {
           <br />
 
           <Button
-            variant="raised"
+            variant="contained"
             primary={true}
             onClick={() => this.setState({ wannaGoAway: true })}
             color="primary"

@@ -76,7 +76,7 @@ class ChangeBoard extends React.Component {
             Never mind
           </Button>
           <Button
-            variant="raised"
+            variant="contained"
             color="primary"
             primary={true}
             style={{ marginRight: "8px" }}
