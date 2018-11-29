@@ -3,10 +3,11 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
-import Icon from "@material-ui/core/Icon"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import { RadioButton, RadioButtonGroup } from "material-ui"
+import Radio from "@material-ui/core/Radio"
+import RadioGroup from "@material-ui/core/RadioGroup"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
 
 const MOBILE_WIDTH = 600
 
@@ -34,103 +35,47 @@ class DataSettings extends Component {
       >
         <DialogTitle style={{ width: "300px" }}>Data settings</DialogTitle>
         <div style={{ paddingLeft: "24px" }}>Unit of measurement</div>
-        <RadioButtonGroup
-          name="unit"
+        <RadioGroup
           onChange={(event, value) => this.setState({ unitValue: value })}
-          valueSelected={this.state.unitValue}
-          style={{
-            height: "100%",
-          }}
+          value={this.state.unitValue}
+          style={{ paddingLeft: "24px", paddingRight: "24px" }}
         >
-          <RadioButton
+          <FormControlLabel
             value="celsius"
+            control={<Radio color="primary" />}
             label="Celsius (°C)"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-              paddingLeft: 24,
-              width: "calc(100% - 24px)",
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-            }
-            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
-          <RadioButton
+          <FormControlLabel
             value="fahrenheit"
+            control={<Radio color="primary" />}
             label="Fahrenheit (°F)"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-              paddingLeft: 24,
-              width: "calc(100% - 24px)",
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-            }
-            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
-          <RadioButton
+          <FormControlLabel
             value="kelvin"
+            control={<Radio color="primary" />}
             label="Kelvin (K)"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-              paddingLeft: 24,
-              width: "calc(100% - 24px)",
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-            }
-            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
-        </RadioButtonGroup>
+        </RadioGroup>
         <br />
         <div style={{ paddingLeft: "24px" }}>Visualization</div>
-        <RadioButtonGroup
-          name="visualization"
+        <RadioGroup
           onChange={(event, value) =>
             this.setState({ visualizationValue: value })
           }
-          valueSelected={this.state.visualizationValue}
-          style={{
-            height: "100%",
-          }}
+          value={this.state.visualizationValue}
+          style={{ paddingLeft: "24px", paddingRight: "24px" }}
         >
-          <RadioButton
+          <FormControlLabel
             value="number"
+            control={<Radio color="primary" />}
             label="Number"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-              paddingLeft: 24,
-              width: "calc(100% - 24px)",
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-            }
-            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
-          <RadioButton
+          <FormControlLabel
             value="plot"
+            control={<Radio color="primary" />}
             label="Plot"
-            style={{
-              marginTop: 12,
-              marginBottom: 16,
-              paddingLeft: 24,
-              width: "calc(100% - 24px)",
-            }}
-            rippleStyle={{ color: "#0083ff" }}
-            checkedIcon={
-              <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-            }
-            uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
           />
-        </RadioButtonGroup>
+        </RadioGroup>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>

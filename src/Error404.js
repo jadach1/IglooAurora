@@ -1,16 +1,8 @@
 import React, { Component } from "react"
 import { Redirect } from "react-router-dom"
 import Button from "@material-ui/core/Button"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import polarBearWithBucket from "./styles/assets/polarBearWithBucket.svg"
 import Typography from "@material-ui/core/Typography"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 export default class Error404 extends Component {
   state = { wannaGoAway: false }
@@ -27,40 +19,48 @@ export default class Error404 extends Component {
 
     return (
       <div
-            style={this.props.isMobile ? {
+        style={
+          this.props.isMobile
+            ? {
                 width: "100vw",
                 height: "100vh",
                 margin: "auto",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-            }:{
-          width: "400px",
-          height: "100vh",
-          margin: "auto",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+              }
+            : {
+                width: "400px",
+                height: "100vh",
+                margin: "auto",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              }
+        }
       >
         <div
-                style={this.props.isMobile ? {
-                    margin: "auto",
-                    textAlign: "center",
-                    width: "88vw",
-                    maxWidth: "400px",
-                    paddingTop: "32px",
-                    paddingBottom: "32px",
-                }:{
-            margin: "auto",
-            textAlign: "center",
-            width: "400px",
-            paddingTop: "32px",
-            paddingBottom: "32px",
-          }}
+          style={
+            this.props.isMobile
+              ? {
+                  margin: "auto",
+                  textAlign: "center",
+                  width: "88vw",
+                  maxWidth: "400px",
+                  paddingTop: "32px",
+                  paddingBottom: "32px",
+                }
+              : {
+                  margin: "auto",
+                  textAlign: "center",
+                  width: "400px",
+                  paddingTop: "32px",
+                  paddingBottom: "32px",
+                }
+          }
           className="notSelectable defaultCursor"
         >
-          <Typography variant="h6" style={{ color: "white" }}>
+          <Typography variant="h4" style={{ color: "white" }}>
             You seem to be lost
           </Typography>
           <br />
@@ -77,27 +77,22 @@ export default class Error404 extends Component {
           <br />
           <br />
           <br />
-          <Typography
-            variant="h5"
-            gutterBottom
-            style={{ color: "white" }}
-          >
+          <Typography variant="h5" gutterBottom style={{ color: "white" }}>
             Click on the button below and we'll take you to a safe place
           </Typography>
           <br />
           <br />
           <br />
           <br />
-          <MuiThemeProvider theme={theme}>
-            <Button
-              variant="raised"
-              primary={true}
-              onClick={() => this.setState({ wannaGoAway: true })}
-              color="primary"
-            >
-              Take me away!
-            </Button>
-          </MuiThemeProvider>
+
+          <Button
+            variant="contained"
+            primary={true}
+            onClick={() => this.setState({ wannaGoAway: true })}
+            color="primary"
+          >
+            Take me away!
+          </Button>
         </div>
       </div>
     )

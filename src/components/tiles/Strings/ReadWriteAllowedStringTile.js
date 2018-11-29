@@ -1,8 +1,9 @@
 import React, { Component } from "react"
-import { MenuItem } from "material-ui/Menu"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import DropDownMenu from "material-ui/DropDownMenu"
+import FormControl from "@material-ui/core/FormControl"
+import Select from "@material-ui/core/Select"
+import MenuItem from "@material-ui/core/MenuItem"
 
 class ReadWriteAllowedStringTile extends Component {
   state = { selectedValue: "" }
@@ -38,31 +39,22 @@ class ReadWriteAllowedStringTile extends Component {
 
     return (
       <div className="readWriteBooleanTile notSelectable">
-        <DropDownMenu
-          value={this.props.stringValue}
-          onChange={this.handleChange}
-          disabled={this.state.menuDisabled}
-          maxHeight={250}
-          style={{ width: "300px" }}
-          anchorOrigin={{ horizontal: "middle", vertical: "top" }}
-          targetOrigin={{ horizontal: "middle", vertical: "top" }}
-          className="notSelectable"
-        >
-          {noneAllowed && (
-            <MenuItem value="" className="notSelectable">
-              <em>None</em>
-            </MenuItem>
-          )}
-          {menuItems.map(value => (
-            <MenuItem
-              value={value}
-              style={{ width: "300px" }}
-              className="notSelectable"
-            >
-              {value}
-            </MenuItem>
-          ))}
-        </DropDownMenu>
+        <FormControl style={{ width: "100%" }}>
+          <Select
+            value={this.state.stringValue}
+            onChange={this.handleChange}
+            name="board"
+          >
+            {noneAllowed && (
+              <MenuItem value="" className="notSelectable">
+                <em>None</em>
+              </MenuItem>
+            )}
+            {menuItems.map(value => (
+              <MenuItem value={value}>{value}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
       </div>
     )
   }

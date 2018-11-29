@@ -17,10 +17,10 @@ const twoFactorDialogContentStyle = {
 }
 
 const StepActions = ({ step, handleNext, handlePrev }) => (
-  <MuiThemeProvider theme={theme}>
+   
     <div style={{ margin: "12px 0" }}>
       <Button
-        variant="raised"
+        variant="contained"
         color="primary"
         buttonStyle={{ backgroundColor: "#0083ff" }}
         disableTouchRipple={true}
@@ -41,7 +41,7 @@ const StepActions = ({ step, handleNext, handlePrev }) => (
         </Button>
       )}
     </div>
-  </MuiThemeProvider>
+   
 )
 
 export default class TwoFactorDialog extends React.Component {

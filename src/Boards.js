@@ -36,7 +36,7 @@ class Boards extends Component {
     },
   }
 
-  handleSettingsTabChanged = value => {
+  handleSettingsTabChanged = (event, value) => {
     this.setState({
       slideIndex: value,
     })
@@ -63,6 +63,9 @@ class Boards extends Component {
           isOpen={this.props.settingsOpen}
           closeSettingsDialog={this.props.closeSettings}
           handleChange={this.handleSettingsTabChanged}
+          handleSwipe={index => {
+            this.setState({ slideIndex: index })
+          }}
           slideIndex={this.state.slideIndex}
           userData={this.props.userData}
           forceUpdate={this.props.forceUpdate}

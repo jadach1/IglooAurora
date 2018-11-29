@@ -3,8 +3,6 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Grow from "@material-ui/core/Grow"
@@ -15,18 +13,6 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
 import ToggleIcon from "material-ui-toggle-icon"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#f44336" },
-  },
-})
-
-const theme2 = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -65,28 +51,26 @@ class DeleteAccountDialog extends React.Component {
             <br /> <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-            <MuiThemeProvider theme={theme}>
-              <Button
-                keyboardFocused={true}
-                onClick={this.props.closeDeleteConfirmed}
-                style={{ marginRight: "4px" }}
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                primary={true}
-                buttonStyle={{ backgroundColor: "#F44336" }}
-                disabled={this.props.isDeleteDisabled}
-                style={{ width: "120px" }}
-                disabledLabelColor="#751f19"
-              >
-                {this.props.isDeleteDisabled
-                  ? "Delete (" + this.props.timer + ")"
-                  : "Delete"}
-              </Button>
-            </MuiThemeProvider>
+            <Button
+              keyboardFocused={true}
+              onClick={this.props.closeDeleteConfirmed}
+              style={{ marginRight: "4px" }}
+            >
+              Never mind
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#F44336" }}
+              disabled={this.props.isDeleteDisabled}
+              style={{ width: "120px" }}
+              disabledLabelColor="#751f19"
+            >
+              {this.props.isDeleteDisabled
+                ? "Delete (" + this.props.timer + ")"
+                : "Delete"}
+            </Button>
           </DialogActions>
         </Dialog>
         <Dialog
@@ -131,25 +115,31 @@ class DeleteAccountDialog extends React.Component {
                   this.state.password ? (
                     <InputAdornment position="end">
                       <IconButton
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                         onClick={this.handleClickShowPassword}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
                       >
                         {/* fix for ToggleIcon glitch on Edge */}
-                              {document.documentMode ||
-                              /Edge/.test(navigator.userAgent) ? (
-                                this.state.showPassword ? (
-                                  <Icon>visibility_off</Icon>
-                                ) : (
-                                  <Icon>visibility</Icon>
-                                )
-                              ) : (
-                                <ToggleIcon
-                                  on={this.state.showPassword || false}
-                                  onIcon={<Icon>visibility_off</Icon>}
-                                  offIcon={<Icon>visibility</Icon>}
-                                />
-                              )}
+                        {document.documentMode ||
+                        /Edge/.test(navigator.userAgent) ? (
+                          this.state.showPassword ? (
+                            <Icon>visibility_off</Icon>
+                          ) : (
+                            <Icon>visibility</Icon>
+                          )
+                        ) : (
+                          <ToggleIcon
+                            on={this.state.showPassword || false}
+                            onIcon={<Icon>visibility_off</Icon>}
+                            offIcon={<Icon>visibility</Icon>}
+                          />
+                        )}
                       </IconButton>
                     </InputAdornment>
                   ) : null
@@ -160,24 +150,22 @@ class DeleteAccountDialog extends React.Component {
             <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-            <MuiThemeProvider theme={theme2}>
-              <Button
-                keyboardFocused={true}
-                onClick={this.props.closeDelete}
-                style={{ marginRight: "4px" }}
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                primary={true}
-                buttonStyle={{ backgroundColor: "#F44336" }}
-                onClick={this.props.deleteConfirmed}
-              >
-                Proceed
-              </Button>
-            </MuiThemeProvider>
+            <Button
+              keyboardFocused={true}
+              onClick={this.props.closeDelete}
+              style={{ marginRight: "4px" }}
+            >
+              Never mind
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              primary={true}
+              buttonStyle={{ backgroundColor: "#F44336" }}
+              onClick={this.props.deleteConfirmed}
+            >
+              Proceed
+            </Button>
           </DialogActions>
         </Dialog>
       </React.Fragment>

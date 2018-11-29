@@ -9,8 +9,6 @@ import ListItemText from "@material-ui/core/ListItemText"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import IconButton from "@material-ui/core/IconButton"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
@@ -26,13 +24,6 @@ import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import ToggleIcon from "material-ui-toggle-icon"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -118,7 +109,11 @@ class AuthDialog extends React.Component {
 
     if (this.props.tokenData.error) tokenList = "Unexpected error"
 
-    if (this.props.tokenData.loading || (this.props.tokenData.user && !this.props.tokenData.user.permanentTokens)) tokenList = <CenteredSpinner />
+    if (
+      this.props.tokenData.loading ||
+      (this.props.tokenData.user && !this.props.tokenData.user.permanentTokens)
+    )
+      tokenList = <CenteredSpinner />
 
     if (this.props.tokenData.user && this.props.tokenData.user.permanentTokens)
       tokenList = (
@@ -147,7 +142,15 @@ class AuthDialog extends React.Component {
                 }
               />
               <ListItemSecondaryAction>
-                <IconButton onClick={() => this.deletePermanentToken(token.id)}>
+                <IconButton
+                  onClick={() => this.deletePermanentToken(token.id)}
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
                   <Icon>delete</Icon>
                 </IconButton>
               </ListItemSecondaryAction>
@@ -214,6 +217,12 @@ class AuthDialog extends React.Component {
                         onClick={this.handleClickShowPassword}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                       >
                         {/* fix for ToggleIcon glitch on Edge */}
                         {document.documentMode ||
@@ -240,21 +249,19 @@ class AuthDialog extends React.Component {
             <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-            <MuiThemeProvider theme={theme}>
-              <Button
-                onClick={this.props.handleAuthDialogClose}
-                style={{ marginRight: "4px" }}
-              >
-                Never Mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                onClick={this.openAuthDialog}
-              >
-                Proceed
-              </Button>
-            </MuiThemeProvider>
+            <Button
+              onClick={this.props.handleAuthDialogClose}
+              style={{ marginRight: "4px" }}
+            >
+              Never Mind
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.openAuthDialog}
+            >
+              Proceed
+            </Button>
           </DialogActions>
         </Dialog>
         <Dialog
@@ -278,9 +285,7 @@ class AuthDialog extends React.Component {
             {tokenList}
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-            <MuiThemeProvider theme={theme}>
-              <Button onClick={this.closeAuthDialog}>Close</Button>
-            </MuiThemeProvider>
+            <Button onClick={this.closeAuthDialog}>Close</Button>
           </DialogActions>
         </Dialog>
         <Dialog
@@ -320,6 +325,12 @@ class AuthDialog extends React.Component {
                         onClick={() => this.setState({ tokenName: "" })}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                       >
                         <Icon>close</Icon>
                       </IconButton>
@@ -332,26 +343,24 @@ class AuthDialog extends React.Component {
             <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-            <MuiThemeProvider theme={theme}>
-              <Button
-                onClick={() =>
-                  this.setState({ nameOpen: false, authDialogOpen: true })
-                }
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                disabled={!this.state.tokenName}
-                onClick={() => {
-                  this.getPermanentToken()
-                  this.setState({ nameOpen: false, authDialogOpen: true })
-                }}
-              >
-                Get token
-              </Button>
-            </MuiThemeProvider>
+            <Button
+              onClick={() =>
+                this.setState({ nameOpen: false, authDialogOpen: true })
+              }
+            >
+              Never mind
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={!this.state.tokenName}
+              onClick={() => {
+                this.getPermanentToken()
+                this.setState({ nameOpen: false, authDialogOpen: true })
+              }}
+            >
+              Get token
+            </Button>
           </DialogActions>
         </Dialog>
       </React.Fragment>

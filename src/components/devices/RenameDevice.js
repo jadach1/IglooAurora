@@ -10,16 +10,8 @@ import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 let oldName = ""
 
@@ -77,60 +69,62 @@ class RenameDevice extends React.Component {
           Rename device
         </DialogTitle>
         <div style={{ height: "100%" }}>
-          <MuiThemeProvider theme={theme}>
-            <FormControl
-              style={{
-                width: "calc(100% - 48px)",
-                paddingLeft: "24px",
-                paddingRight: "24px",
+          <FormControl
+            style={{
+              width: "calc(100% - 48px)",
+              paddingLeft: "24px",
+              paddingRight: "24px",
+            }}
+          >
+            <Input
+              id="adornment-name-login"
+              placeholder="Board Name"
+              value={this.state.customName}
+              onChange={event =>
+                this.setState({
+                  customName: event.target.value,
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter") this.rename()
               }}
-            >
-              <Input
-                id="adornment-name-login"
-                placeholder="Board Name"
-                value={this.state.customName}
-                onChange={event =>
-                  this.setState({
-                    customName: event.target.value,
-                  })
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.rename()
-                }}
-                endAdornment={
-                  this.state.customName ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => this.setState({ customName: "" })}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
+              endAdornment={
+                this.state.customName ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => this.setState({ customName: "" })}
+                      onMouseDown={this.handleMouseDownPassword}
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+          </FormControl>
         </div>
         <br />
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-          <MuiThemeProvider theme={theme}>
-            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-              Never mind
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              onClick={this.rename}
-              disabled={
-                !this.state.customName || oldName === this.state.customName
-              }
-            >
-              Rename
-            </Button>
-          </MuiThemeProvider>
+          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+            Never mind
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={this.rename}
+            disabled={
+              !this.state.customName || oldName === this.state.customName
+            }
+          >
+            Rename
+          </Button>
         </DialogActions>
       </Dialog>
     )

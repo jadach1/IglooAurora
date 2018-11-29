@@ -3,8 +3,6 @@ import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -12,14 +10,9 @@ import FormControl from "@material-ui/core/FormControl"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import IconButton from "@material-ui/core/IconButton"
-import { RadioButton, RadioButtonGroup } from "material-ui/RadioButton"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
-  },
-})
+import RadioGroup from "@material-ui/core/RadioGroup"
+import FormControlLabel from "@material-ui/core/FormControlLabel"
+import Radio from "@material-ui/core/Radio"
 
 const MOBILE_WIDTH = 600
 
@@ -121,9 +114,7 @@ export default class ChangePasswordDialog extends React.Component {
                 }
           }
         >
-          <RadioButtonGroup
-            name="time"
-            defaultSelected={this.state.mode || "auto"}
+          <RadioGroup
             onChange={(event, value) => {
               this.setState({ mode: value })
               if (typeof Storage !== "undefined") {
@@ -132,102 +123,88 @@ export default class ChangePasswordDialog extends React.Component {
                 }
               }
             }}
+            value={this.state.mode || "auto"}
+            style={{ paddingLeft: "24px", paddingRight: "24px" }}
           >
-            <RadioButton
+            <FormControlLabel
               value="auto"
+              control={<Radio color="primary" />}
               label="Auto"
-              style={{
-                marginTop: 12,
-                marginBottom: 16,
-              }}
-              rippleStyle={{ color: "#0083ff" }}
-              checkedIcon={
-                <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-              }
-              uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
             />
-            <RadioButton
+            <FormControlLabel
               value="manual"
+              control={<Radio color="primary" />}
               label="Manual"
-              style={{
-                marginBottom: 16,
-              }}
-              rippleStyle={{ color: "#0083ff" }}
-              checkedIcon={
-                <Icon style={{ color: "#0083ff" }}>radio_button_checked</Icon>
-              }
-              uncheckedIcon={<Icon>radio_button_unchecked</Icon>}
             />
-          </RadioButtonGroup>
-          <MuiThemeProvider theme={theme}>
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-email-login"
-                placeholder="Server address"
-                value={this.state.url}
-                onChange={event => {
-                  this.setState({
-                    url: event.target.value,
-                  })
-                }}
-                onKeyPress={event => {
-                  if (
-                    event.key === "Enter" &&
-                    !(
-                      oldMode === this.state.mode ||
-                      (this.state.mode === "manual" &&
-                        (!this.state.url ||
-                          typeof Storage === "undefined" ||
-                          oldUrl === this.state.url))
-                    )
-                  ) {
-                    confirm()
-                  }
-                }}
-                style={
-                  this.state.mode === "manual"
-                    ? typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                    : typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                    ? { color: "#c1c2c5" }
-                    : { color: "#7a7a7a" }
+          </RadioGroup>
+          <FormControl style={{ width: "100%" }}>
+            <Input
+              id="adornment-email-login"
+              placeholder="Server address"
+              value={this.state.url}
+              onChange={event => {
+                this.setState({
+                  url: event.target.value,
+                })
+              }}
+              onKeyPress={event => {
+                if (
+                  event.key === "Enter" &&
+                  !(
+                    oldMode === this.state.mode ||
+                    (this.state.mode === "manual" &&
+                      (!this.state.url ||
+                        typeof Storage === "undefined" ||
+                        oldUrl === this.state.url))
+                  )
+                ) {
+                  confirm()
                 }
-                disabled={this.state.mode === "auto"}
-                endAdornment={
-                  this.state.url ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => {
-                          this.setState({ url: "" })
-                        }}
-                        onMouseDown={event => {
-                          event.preventDefault()
-                        }}
-                        tabIndex="-1"
-                        disabled={this.state.mode === "auto"}
-                        style={
-                          this.state.mode === "manual"
-                            ? typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                              ? { color: "white" }
-                              : { color: "black" }
-                            : typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                            ? { color: "#c1c2c5" }
-                            : { color: "#7a7a7a" }
-                        }
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
+              }}
+              style={
+                this.state.mode === "manual"
+                  ? typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
+                  : typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                  ? { color: "#c1c2c5" }
+                  : { color: "#7a7a7a" }
+              }
+              disabled={this.state.mode === "auto"}
+              endAdornment={
+                this.state.url ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        this.setState({ url: "" })
+                      }}
+                      onMouseDown={event => {
+                        event.preventDefault()
+                      }}
+                      tabIndex="-1"
+                      disabled={this.state.mode === "auto"}
+                      style={
+                        this.state.mode === "manual"
+                          ? typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                          : typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                          ? { color: "#c1c2c5" }
+                          : { color: "#7a7a7a" }
+                      }
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+          </FormControl>
+
           <br />
           <br />
         </div>
@@ -246,33 +223,31 @@ export default class ChangePasswordDialog extends React.Component {
                 }
           }
         >
-          <MuiThemeProvider theme={theme}>
-            <Button
-              onClick={this.props.close}
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white", marginRight: "4px" }
-                  : { marginRight: "4px" }
-              }
-            >
-              Never mind
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              onClick={confirm}
-              disabled={
-                oldMode === this.state.mode ||
-                (this.state.mode === "manual" &&
-                  (!this.state.url ||
-                    typeof Storage === "undefined" ||
-                    oldUrl === this.state.url))
-              }
-            >
-              Change
-            </Button>
-          </MuiThemeProvider>
+          <Button
+            onClick={this.props.close}
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? { color: "white", marginRight: "4px" }
+                : { marginRight: "4px" }
+            }
+          >
+            Never mind
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={confirm}
+            disabled={
+              oldMode === this.state.mode ||
+              (this.state.mode === "manual" &&
+                (!this.state.url ||
+                  typeof Storage === "undefined" ||
+                  oldUrl === this.state.url))
+            }
+          >
+            Change
+          </Button>
         </DialogActions>
       </Dialog>
     )

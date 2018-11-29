@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Tile from "./tiles/Tile"
-import LargeCenteredSpinner from "./LargeCenteredSpinner"
-import FlatButton from "material-ui/FlatButton"
+import CenteredSpinner from "./CenteredSpinner"
+import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Icon from "@material-ui/core/Icon"
@@ -166,9 +166,13 @@ class MainBody extends Component {
                 ? "mainBody mobileMainBodyBG"
                 : "mainBody mainBodyBG"
             }
-            style={{ width: "100%", height: "100%" }}
+            style={{
+              width: "100%",
+              height: "100%",
+              paddingTop: "96px",
+            }}
           >
-            <LargeCenteredSpinner />
+            <CenteredSpinner large />
           </div>
         </div>
       )
@@ -219,7 +223,7 @@ class MainBody extends Component {
 
     if (hiddenTiles.length !== 0) {
       hiddenTilesUI = [
-        <FlatButton
+        <Button
           onClick={() => {
             this.props.changeShowHiddenState()
           }}

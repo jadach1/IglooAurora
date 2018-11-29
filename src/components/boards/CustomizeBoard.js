@@ -1,8 +1,6 @@
 import React from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Button from "@material-ui/core/Button"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
@@ -20,12 +18,6 @@ import northernLights from "../../styles/assets/northernLights.jpg"
 import denali from "../../styles/assets/denali.jpg"
 import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -120,42 +112,47 @@ class CustomizeBoard extends React.Component {
       >
         <DialogTitle style={{ width: "350px" }}>Customize board</DialogTitle>
         <div style={{ height: "100%" }}>
-          <MuiThemeProvider theme={theme}>
-            <FormControl
-              style={{
-                width: "calc(100% - 48px)",
-                paddingLeft: "24px",
-                paddingRight: "24px",
+          <FormControl
+            style={{
+              width: "calc(100% - 48px)",
+              paddingLeft: "24px",
+              paddingRight: "24px",
+            }}
+          >
+            <Input
+              id="adornment-name-login"
+              placeholder="Board Name"
+              value={this.state.customName}
+              onChange={event =>
+                this.setState({
+                  customName: event.target.value,
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter") this.rename()
               }}
-            >
-              <Input
-                id="adornment-name-login"
-                placeholder="Board Name"
-                value={this.state.customName}
-                onChange={event =>
-                  this.setState({
-                    customName: event.target.value,
-                  })
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.rename()
-                }}
-                endAdornment={
-                  this.state.customName ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => this.setState({ customName: "" })}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
+              endAdornment={
+                this.state.customName ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => this.setState({ customName: "" })}
+                      onMouseDown={this.handleMouseDownPassword}
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+          </FormControl>
+
           <br />
           <br />
           <SwipeableViews
@@ -251,26 +248,24 @@ class CustomizeBoard extends React.Component {
           </div>
         </div>
         <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-          <MuiThemeProvider theme={theme}>
-            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-              Never mind
-            </Button>
-            <Button
-              variant="raised"
-              color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
-              onClick={this.rename}
-              disabled={
-                !this.state.customName ||
-                (this.state.initialSlideIndex === this.state.slideIndex &&
-                  this.props.board.customName === this.state.customName)
-              }
-              style={{ marginRight: "4px" }}
-            >
-              Customize
-            </Button>
-          </MuiThemeProvider>
+          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+            Never mind
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            primary={true}
+            buttonStyle={{ backgroundColor: "#0083ff" }}
+            onClick={this.rename}
+            disabled={
+              !this.state.customName ||
+              (this.state.initialSlideIndex === this.state.slideIndex &&
+                this.props.board.customName === this.state.customName)
+            }
+            style={{ marginRight: "4px" }}
+          >
+            Customize
+          </Button>
         </DialogActions>
       </Dialog>
     )
