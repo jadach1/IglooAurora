@@ -4,8 +4,6 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -15,13 +13,6 @@ import Slide from "@material-ui/core/Slide"
 import ToggleIcon from "material-ui-toggle-icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
-  },
-})
 
 const MOBILE_WIDTH = 600
 
@@ -119,90 +110,88 @@ class ChangeMailDialog extends React.Component {
               Type your password
             </font>
           </DialogTitle>
-          <MuiThemeProvider
-            theme={createMuiTheme({
-              palette: {
-                primary: { main: "#0083ff" },
-              },
-            })}
+          <div
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    height: "100%",
+                    paddingRight: "24px",
+                    paddingLeft: "24px",
+                    background: "#2f333d",
+                  }
+                : {
+                    height: "100%",
+                    paddingRight: "24px",
+                    paddingLeft: "24px",
+                  }
+            }
           >
-            <div
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? {
-                      height: "100%",
-                      paddingRight: "24px",
-                      paddingLeft: "24px",
-                      background: "#2f333d",
-                    }
-                  : {
-                      height: "100%",
-                      paddingRight: "24px",
-                      paddingLeft: "24px",
-                    }
-              }
+            <FormControl
+              style={{
+                width: "100%",
+              }}
             >
-              <FormControl
-                style={{
-                  width: "100%",
+              <Input
+                id="adornment-password-login"
+                type={this.state.showPassword ? "text" : "password"}
+                value={this.state.password}
+                placeholder="Password"
+                onChange={event =>
+                  this.setState({
+                    password: event.target.value,
+                    passwordError: "",
+                    isPasswordEmpty: event.target.value === "",
+                  })
+                }
+                error={
+                  this.state.passwordError || this.state.isPasswordEmpty
+                    ? true
+                    : false
+                }
+                onKeyPress={event => {
+                  if (event.key === "Enter") this.openMailDialog()
                 }}
-              >
-                <Input
-                  id="adornment-password-login"
-                  type={this.state.showPassword ? "text" : "password"}
-                  value={this.state.password}
-                  placeholder="Password"
-                  onChange={event =>
-                    this.setState({
-                      password: event.target.value,
-                      passwordError: "",
-                      isPasswordEmpty: event.target.value === "",
-                    })
-                  }
-                  error={
-                    this.state.passwordError || this.state.isPasswordEmpty
-                      ? true
-                      : false
-                  }
-                  onKeyPress={event => {
-                    if (event.key === "Enter") this.openMailDialog()
-                  }}
-                  endAdornment={
-                    this.state.password ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() =>
-                            this.setState(oldState => ({
-                              showPassword: !oldState.showPassword,
-                            }))
-                          }
-                          tabIndex="-1"
-                        >
-                          {/* fix for ToggleIcon glitch on Edge */}
-                          {document.documentMode ||
-                          /Edge/.test(navigator.userAgent) ? (
-                            this.state.showPassword ? (
-                              <Icon>visibility_off</Icon>
-                            ) : (
-                              <Icon>visibility</Icon>
-                            )
+                endAdornment={
+                  this.state.password ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() =>
+                          this.setState(oldState => ({
+                            showPassword: !oldState.showPassword,
+                          }))
+                        }
+                        tabIndex="-1"
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        {/* fix for ToggleIcon glitch on Edge */}
+                        {document.documentMode ||
+                        /Edge/.test(navigator.userAgent) ? (
+                          this.state.showPassword ? (
+                            <Icon>visibility_off</Icon>
                           ) : (
-                            <ToggleIcon
-                              on={this.state.showPassword || false}
-                              onIcon={<Icon>visibility_off</Icon>}
-                              offIcon={<Icon>visibility</Icon>}
-                            />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-              </FormControl>
-            </div>
+                            <Icon>visibility</Icon>
+                          )
+                        ) : (
+                          <ToggleIcon
+                            on={this.state.showPassword || false}
+                            onIcon={<Icon>visibility_off</Icon>}
+                            offIcon={<Icon>visibility</Icon>}
+                          />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
             <br />
-          </MuiThemeProvider>
+          </div>
           <DialogActions
             style={
               typeof Storage !== "undefined" &&
@@ -218,30 +207,28 @@ class ChangeMailDialog extends React.Component {
                   }
             }
           >
-            <MuiThemeProvider theme={theme}>
-              <Button
-                onClick={this.props.handleEmailDialogClose}
-                style={{ marginRight: "4px" }}
+            <Button
+              onClick={this.props.handleEmailDialogClose}
+              style={{ marginRight: "4px" }}
+            >
+              <font
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : {}
+                }
               >
-                <font
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : {}
-                  }
-                >
-                  Never Mind
-                </font>
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                onClick={this.openMailDialog}
-              >
-                Proceed
-              </Button>
-            </MuiThemeProvider>
+                Never Mind
+              </font>
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.openMailDialog}
+            >
+              Proceed
+            </Button>
           </DialogActions>
         </Dialog>
         <Dialog
@@ -254,75 +241,70 @@ class ChangeMailDialog extends React.Component {
           <DialogTitle style={{ width: "350px" }}>
             Manage your emails
           </DialogTitle>
-          <MuiThemeProvider
-            theme={createMuiTheme({
-              palette: {
-                primary: { main: "#0083ff" },
-              },
-            })}
+          <div
+            style={{
+              paddingLeft: "24px",
+              paddingRight: "24px",
+              height: "100%",
+            }}
           >
-            <div
-              style={{
-                paddingLeft: "24px",
-                paddingRight: "24px",
-                height: "100%",
-              }}
-            >
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  id="adornment-email-login"
-                  placeholder="Email"
-                  value={this.state.email}
-                  onChange={event =>
-                    this.setState({
-                      email: event.target.value,
-                      isMailEmpty: event.target.value === "",
-                    })
-                  }
-                  onKeyPress={event => {
-                    if (event.key === "Enter") changeEmail(this.state.email)
-                  }}
-                  error={
-                    this.state.emailError || this.state.isMailEmpty
-                      ? true
-                      : false
-                  }
-                  endAdornment={
-                    this.state.email ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={this.handleClickCancelEmail}
-                          onMouseDown={this.handleMouseDownPassword}
-                          tabIndex="-1"
-                        >
-                          <Icon>clear</Icon>
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-              </FormControl>
-              <br />
-              <br />
-            </div>
-          </MuiThemeProvider>
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="adornment-email-login"
+                placeholder="Email"
+                value={this.state.email}
+                onChange={event =>
+                  this.setState({
+                    email: event.target.value,
+                    isMailEmpty: event.target.value === "",
+                  })
+                }
+                onKeyPress={event => {
+                  if (event.key === "Enter") changeEmail(this.state.email)
+                }}
+                error={
+                  this.state.emailError || this.state.isMailEmpty ? true : false
+                }
+                endAdornment={
+                  this.state.email ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={this.handleClickCancelEmail}
+                        onMouseDown={this.handleMouseDownPassword}
+                        tabIndex="-1"
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
+            <br />
+            <br />
+          </div>
+
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-            <MuiThemeProvider theme={theme}>
-              <Button
-                onClick={this.closeMailDialog}
-                style={{ marginRight: "4px" }}
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                onClick={() => changeEmail(this.state.email)}
-                disabled={!user}
-              >
-                Change
-              </Button>
-            </MuiThemeProvider>
+            <Button
+              onClick={this.closeMailDialog}
+              style={{ marginRight: "4px" }}
+            >
+              Never mind
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => changeEmail(this.state.email)}
+              disabled={!user}
+            >
+              Change
+            </Button>
           </DialogActions>
         </Dialog>
       </React.Fragment>

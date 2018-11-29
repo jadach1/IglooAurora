@@ -4,14 +4,7 @@ import gql from "graphql-tag"
 import Input from "@material-ui/core/Input"
 import InputLabel from "@material-ui/core/InputLabel"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
 import FormControl from "@material-ui/core/FormControl"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 class ReadWriteBoundedStringTile extends Component {
   state = { text: this.props.stringValue }
@@ -48,20 +41,18 @@ class ReadWriteBoundedStringTile extends Component {
 
     return (
       <div className="readOnlyFloatTile notSelectable">
-        <MuiThemeProvider theme={theme}>
-          <FormControl>
-            <InputLabel>{this.props.customName}</InputLabel>
-            <Input
-              value={this.state.text}
-              onChange={this.handleChange}
-              endAdornment={
-                <InputAdornment style={{ cursor: "default" }}>
-                  {charCount.length}/{this.props.maxChars}
-                </InputAdornment>
-              }
-            />
-          </FormControl>
-        </MuiThemeProvider>
+        <FormControl>
+          <InputLabel>{this.props.customName}</InputLabel>
+          <Input
+            value={this.state.text}
+            onChange={this.handleChange}
+            endAdornment={
+              <InputAdornment style={{ cursor: "default" }}>
+                {charCount.length}/{this.props.maxChars}
+              </InputAdornment>
+            }
+          />
+        </FormControl>
       </div>
     )
   }

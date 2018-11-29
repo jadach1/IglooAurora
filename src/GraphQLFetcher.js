@@ -3,17 +3,13 @@ import Main from "./Main"
 import MainMobile from "./MainMobile"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { reactTranslateChangeLanguage } from "translate-components"
 import { Switch, Route, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
 import Boards from "./Boards"
 import queryString from "query-string"
 import BoardsMobile from "./BoardsMobile"
 import EmailNotVerified from "./components/EmailNotVerified"
-import MuiThemeProvider from "material-ui/styles/MuiThemeProvider"
 import GenericDialog from "./components/GenericDialog"
-
-let systemLang = navigator.language || navigator.userLanguage
 
 class GraphQLFetcher extends Component {
   componentDidMount() {
@@ -26,7 +22,7 @@ class GraphQLFetcher extends Component {
           createdAt
           updatedAt
           notificationCount
-          quietMode
+          muted
           avatar
           myRole
           devices {
@@ -107,7 +103,7 @@ class GraphQLFetcher extends Component {
           createdAt
           updatedAt
           notificationCount
-          quietMode
+          muted
           avatar
           myRole
           devices {
@@ -188,7 +184,7 @@ class GraphQLFetcher extends Component {
           createdAt
           updatedAt
           notificationCount
-          quietMode
+          muted
           avatar
           myRole
           devices {
@@ -275,9 +271,6 @@ class GraphQLFetcher extends Component {
       subscription {
         userUpdated {
           id
-          settings {
-            language
-          }
           emailIsVerified
           fullName
           profileIconColor
@@ -445,65 +438,6 @@ class GraphQLFetcher extends Component {
 
     if (user) {
       emailIsVerified = user.emailIsVerified
-    }
-
-    let changeLanguage = () => {}
-
-    if (user) {
-      changeLanguage = language =>
-        this.props.ChangeLanguage({
-          variables: {
-            language,
-          },
-          optimisticResponse: {
-            __typename: "Mutation",
-            user: {
-              id: user.id,
-              language,
-              __typename: "User",
-            },
-          },
-        })
-
-      switch (user.language) {
-        case "en":
-          reactTranslateChangeLanguage.bind(this, "en")
-          break
-        case "de":
-          reactTranslateChangeLanguage.bind(this, "de")
-          break
-        case "es":
-          reactTranslateChangeLanguage.bind(this, "es")
-          break
-        case "it":
-          reactTranslateChangeLanguage.bind(this, "it")
-          break
-        case "zh-Hans":
-          reactTranslateChangeLanguage.bind(this, "zh-Hans")
-          break
-        default:
-          switch (systemLang) {
-            case "en":
-              changeLanguage("en")
-              break
-            case "de":
-              changeLanguage("de")
-              break
-            case "es":
-              changeLanguage("es")
-              break
-            case "it":
-              changeLanguage("it")
-              break
-            case "zh-Hans":
-              changeLanguage("zh-Hans")
-              break
-            default:
-              changeLanguage("en")
-              break
-          }
-          break
-      }
     }
 
     const MainSelected = () => {
@@ -685,7 +619,7 @@ class GraphQLFetcher extends Component {
     }
 
     return (
-      <MuiThemeProvider>
+      <React.Fragment>
         <Switch>
           <Route
             exact
@@ -704,7 +638,7 @@ class GraphQLFetcher extends Component {
           <EmailNotVerified mobile={this.props.isMobile} />
         )}
         <GenericDialog />
-      </MuiThemeProvider>
+      </React.Fragment>
     )
   }
 }
@@ -714,7 +648,7 @@ export default graphql(
     query {
       user {
         id
-        quietMode
+        muted
         emailIsVerified
         fullName
         profileIconColor
@@ -725,14 +659,13 @@ export default graphql(
           customName
           createdAt
           updatedAt
-          quietMode
+          muted
           avatar
           myRole
           devices {
             id
-            quietMode
+            muted
             customName
-            icon
             board {
               myRole
             }
@@ -766,17 +699,4 @@ export default graphql(
     }
   `,
   { name: "userData" }
-)(
-  graphql(
-    gql`
-      mutation ChangeLanguage($language: String) {
-        settings(language: $language) {
-          language
-        }
-      }
-    `,
-    {
-      name: "ChangeLanguage",
-    }
-  )(GraphQLFetcher)
-)
+)(GraphQLFetcher)

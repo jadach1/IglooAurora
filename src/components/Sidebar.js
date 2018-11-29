@@ -8,30 +8,15 @@ import IconButton from "@material-ui/core/IconButton"
 import Badge from "@material-ui/core/Badge"
 import Tooltip from "@material-ui/core/Tooltip"
 import ListItem from "@material-ui/core/ListItem"
-import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import ListItemText from "@material-ui/core/ListItemText"
 import List from "@material-ui/core/List"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
 import Zoom from "@material-ui/core/Zoom"
 import AddDevice from "./AddDevice"
 import { hotkeys } from "react-keyboard-shortcuts"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#ff4081" },
-  },
-})
-
-const theme2 = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-  },
-})
 
 class Sidebar extends Component {
   state = {
@@ -82,21 +67,27 @@ class Sidebar extends Component {
       boardData: { loading, error, board },
     } = this.props
 
+    let sidebarContent = ""
+
     if (loading) {
-      return (
+      sidebarContent = (
         <CenteredSpinner
           style={
             typeof Storage !== "undefined" &&
             localStorage.getItem("nightMode") === "true"
-              ? { background: "#282c34" }
-              : {}
+              ? {
+                  background: "rgb(33, 37, 43)",
+                  height: "calc(100% - 96px)",
+                  paddingTop: "32px",
+                }
+              : { height: "calc(100% - 96px)", paddingTop: "32px" }
           }
         />
       )
     }
 
     if (error) {
-      return "Unexpected error"
+      sidebarContent = "Unexpected error"
     }
 
     let devicesArray = []
@@ -117,269 +108,121 @@ class Sidebar extends Component {
             device =>
               this.state.visibleDeviceTypes.indexOf(device.deviceType) !== -1
           )
-    }
 
-    return (
-      <React.Fragment>
-        <div style={{ width: "100%", height: "64px" }}>
-          <MuiThemeProvider theme={theme2}>
-            <FormControl
-              style={{
-                margin: "16px 8px 0 16px",
-                width: "calc(100% - 80px)",
-              }}
-            >
-              <Input
-                id="adornment-devices"
-                placeholder="Search devices"
-                color="primary"
-                className="notSelectable"
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
-                disabled={
-                  !board.devices.filter(
-                    device =>
-                      this.state.visibleDeviceTypes.indexOf(
-                        device.deviceType
-                      ) !== -1
-                  )[0]
-                }
-                value={this.props.searchText}
-                onChange={event => this.props.searchDevices(event.target.value)}
-                startAdornment={
-                  <InputAdornment
-                    position="start"
-                    style={{ cursor: "default" }}
-                  >
-                    <Icon
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? !board.devices.filter(
-                              device =>
-                                this.state.visibleDeviceTypes.indexOf(
-                                  device.deviceType
-                                ) !== -1
-                            )[0]
-                            ? { color: "white", opacity: "0.5" }
-                            : { color: "white" }
-                          : !board.devices.filter(
-                              device =>
-                                this.state.visibleDeviceTypes.indexOf(
-                                  device.deviceType
-                                ) !== -1
-                            )[0]
-                          ? { color: "black", opacity: "0.5" }
-                          : { color: "black" }
-                      }
-                    >
-                      search
-                    </Icon>
-                  </InputAdornment>
-                }
-                endAdornment={
-                  this.props.searchText ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={this.handleClickCancelSearch}
-                        onMouseDown={this.handleMouseDownSearch}
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
-          </MuiThemeProvider>
-          <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
-            <IconButton
-              style={{ marginTop: "8px" }}
-              buttonRef={node => {
-                this.anchorEl = node
-              }}
-              onClick={() => {
-                this.setState({ popoverOpen: true })
-              }}
-              disabled={
-                !board.devices.filter(device =>
-                  this.props.searchText
-                    ? device.customName
-                        .toLowerCase()
-                        .includes(this.props.searchText.toLowerCase())
-                    : true
-                )[0]
-              }
-            >
-              <Icon
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? !board.devices.filter(device =>
-                        this.props.searchText
-                          ? device.customName
-                              .toLowerCase()
-                              .includes(this.props.searchText.toLowerCase())
-                          : true
-                      )[0]
-                      ? { color: "white", opacity: "0.5" }
-                      : { color: "white" }
-                    : !board.devices.filter(device =>
-                        this.props.searchText
-                          ? device.customName
-                              .toLowerCase()
-                              .includes(this.props.searchText.toLowerCase())
-                          : true
-                      )[0]
-                    ? { color: "black", opacity: "0.5" }
-                    : { color: "black" }
-                }
-              >
-                filter_list
-              </Icon>
-            </IconButton>
-          </Tooltip>
-        </div>
-        <FilterPopover
-          open={this.state.popoverOpen}
-          boardId={this.props.selectedBoard}
-          currentDevice={
-            board.devices.filter(
-              device => device.id === this.props.selectedDevice
-            )[0]
-          }
-          close={() => this.setState({ popoverOpen: false })}
-          anchorEl={this.anchorEl}
-          devices={board.devices}
-          setVisibleTypes={visibleTypes => {
-            this.setState({ visibleDeviceTypes: visibleTypes })
-          }}
-          nightMode={
-            typeof Storage !== "undefined" &&
-            localStorage.getItem("nightMode") === "true"
-          }
-        />
-        <List
-          style={{
-            padding: "0",
-            height: "calc(100vh - 128px)",
-            overflow: "auto",
-          }}
-        >
-          {devicesArray
-            .filter(
-              device =>
-                this.state.visibleDeviceTypes.indexOf(device.deviceType) !== -1
-            )
-            .map(device => (
-              <Link
-                to={
-                  this.props.selectedDevice !== device.id
-                    ? "/dashboard?board=" +
-                      this.props.selectedBoard +
-                      "&device=" +
-                      device.id
-                    : "/dashboard?board=" + this.props.selectedBoard
-                }
-                style={{ textDecoration: "none", color: "black" }}
-              >
-                <ListItem
-                  button
-                  className="notSelectable"
-                  style={
-                    this.props.selectedDevice === device.id
-                      ? typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                        ? { backgroundColor: "#282c34" }
-                        : { backgroundColor: "#d4d4d4" }
-                      : null
+      sidebarContent = (
+        <React.Fragment>
+          <FilterPopover
+            open={this.state.popoverOpen}
+            boardId={this.props.selectedBoard}
+            currentDevice={
+              board.devices.filter(
+                device => device.id === this.props.selectedDevice
+              )[0]
+            }
+            close={() => this.setState({ popoverOpen: false })}
+            anchorEl={this.anchorEl}
+            devices={board.devices}
+            setVisibleTypes={visibleTypes => {
+              this.setState({ visibleDeviceTypes: visibleTypes })
+            }}
+            nightMode={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+            }
+          />
+          <List
+            style={{
+              padding: "0",
+              height: "calc(100vh - 128px)",
+              overflow: "auto",
+            }}
+          >
+            {devicesArray
+              .filter(device => device.customName.toLowerCase())
+              .filter(
+                device =>
+                  this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
+                  -1
+              )
+              .map(device => (
+                <Link
+                  to={
+                    this.props.selectedDevice !== device.id
+                      ? "/dashboard?board=" +
+                        this.props.selectedBoard +
+                        "&device=" +
+                        device.id
+                      : "/dashboard?board=" + this.props.selectedBoard
                   }
-                  key={device.id}
+                  style={{ textDecoration: "none", color: "black" }}
                 >
-                  <ListItemIcon>
-                    {device.icon ? (
-                      <img
-                        className="deviceIcon"
-                        src={device.icon}
-                        alt="device logo"
-                      />
-                    ) : (
-                      <Icon
-                        style={
-                          typeof Storage !== "undefined" &&
+                  <ListItem
+                    button
+                    className="notSelectable"
+                    style={
+                      this.props.selectedDevice === device.id
+                        ? typeof Storage !== "undefined" &&
                           localStorage.getItem("nightMode") === "true"
-                            ? { color: "#c1c2c5" }
-                            : { color: "#7a7a7a" }
-                        }
-                      >
-                        lightbulb_outline
-                      </Icon>
-                    )}
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={
-                      <span
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        {device.customName}
-                      </span>
+                          ? { backgroundColor: "#282c34" }
+                          : { backgroundColor: "#d4d4d4" }
+                        : null
                     }
-                    style={{
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                    secondary={
-                      <span
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "#c1c2c5" }
-                            : { color: "#7a7a7a" }
-                        }
-                      >
-                        {device.notifications
-                          .filter(
-                            notification => notification.visualized === false
-                          )
-                          .map(notification => notification.content)
-                          .reverse()[0]
-                          ? device.notifications
-                              .filter(
-                                notification =>
-                                  notification.visualized === false
-                              )
-                              .map(notification => notification.content)
-                              .reverse()[0]
-                          : device.notifications
-                              .filter(
-                                notification => notification.visualized === true
-                              )
-                              .map(notification => notification.content)
-                              .reverse()[0]
-                          ? "No unread notifications"
-                          : "No notifications"}
-                      </span>
-                    }
-                  />
-                  {device.notificationCount ? (
-                    <ListItemSecondaryAction>
-                      <MuiThemeProvider theme={theme}>
+                    key={device.id}
+                  >
+                    <ListItemText
+                      primary={
+                        <span
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          {device.customName}
+                        </span>
+                      }
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                      secondary={
+                        <span
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "#c1c2c5" }
+                              : { color: "#7a7a7a" }
+                          }
+                        >
+                          {device.notifications
+                            .filter(
+                              notification => notification.visualized === false
+                            )
+                            .map(notification => notification.content)
+                            .reverse()[0]
+                            ? device.notifications
+                                .filter(
+                                  notification =>
+                                    notification.visualized === false
+                                )
+                                .map(notification => notification.content)
+                                .reverse()[0]
+                            : device.notifications
+                                .filter(
+                                  notification =>
+                                    notification.visualized === true
+                                )
+                                .map(notification => notification.content)
+                                .reverse()[0]
+                            ? "No unread notifications"
+                            : "No notifications"}
+                        </span>
+                      }
+                    />
+                    {device.notificationCount ? (
+                      <ListItemSecondaryAction>
                         <Badge
                           badgeContent={
                             device.notificationCount > 99
@@ -393,18 +236,16 @@ class Sidebar extends Component {
                             this.props.changeDrawerState()
                           }}
                         />
-                      </MuiThemeProvider>
-                    </ListItemSecondaryAction>
-                  ) : null}
-                </ListItem>
-              </Link>
-            ))}
-        </List>
-        <MuiThemeProvider theme={theme}>
+                      </ListItemSecondaryAction>
+                    ) : null}
+                  </ListItem>
+                </Link>
+              ))}
+          </List>
           <Zoom in={board}>
             <Button
               variant="fab"
-              color="primary"
+              color="secondary"
               style={
                 this.props.isMobile
                   ? {
@@ -435,11 +276,162 @@ class Sidebar extends Component {
               <Icon>add</Icon>
             </Button>
           </Zoom>
-        </MuiThemeProvider>
-        <AddDevice
-          open={this.state.addDeviceOpen}
-          close={() => this.setState({ addDeviceOpen: false })}
-        />
+          <AddDevice
+            open={this.state.addDeviceOpen}
+            close={() => this.setState({ addDeviceOpen: false })}
+          />
+        </React.Fragment>
+      )
+    }
+
+    return (
+      <React.Fragment>
+        <div style={{ width: "100%", height: "64px" }}>
+          <FormControl
+            style={{
+              margin: "16px 8px 0 16px",
+              width: "calc(100% - 80px)",
+            }}
+          >
+            <Input
+              id="adornment-devices"
+              placeholder="Search devices"
+              color="primary"
+              className="notSelectable"
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white" }
+                  : { color: "black" }
+              }
+              disabled={
+                !(
+                  board &&
+                  board.devices.filter(
+                    device =>
+                      this.state.visibleDeviceTypes.indexOf(
+                        device.deviceType
+                      ) !== -1
+                  )[0]
+                )
+              }
+              value={this.props.searchText}
+              onChange={event => this.props.searchDevices(event.target.value)}
+              startAdornment={
+                <InputAdornment position="start" style={{ cursor: "default" }}>
+                  <Icon
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? !(
+                            board &&
+                            board.devices.filter(
+                              device =>
+                                this.state.visibleDeviceTypes.indexOf(
+                                  device.deviceType
+                                ) !== -1
+                            )[0]
+                          )
+                          ? { color: "white", opacity: "0.5" }
+                          : { color: "white" }
+                        : !(
+                            board &&
+                            board.devices.filter(
+                              device =>
+                                this.state.visibleDeviceTypes.indexOf(
+                                  device.deviceType
+                                ) !== -1
+                            )[0]
+                          )
+                        ? { color: "black", opacity: "0.5" }
+                        : { color: "black" }
+                    }
+                  >
+                    search
+                  </Icon>
+                </InputAdornment>
+              }
+              endAdornment={
+                this.props.searchText ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={this.handleClickCancelSearch}
+                      onMouseDown={this.handleMouseDownSearch}
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+          </FormControl>
+          <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
+            <IconButton
+              buttonRef={node => {
+                this.anchorEl = node
+              }}
+              onClick={() => {
+                this.setState({ popoverOpen: true })
+              }}
+              disabled={
+                !(
+                  board &&
+                  board.devices.filter(device =>
+                    this.props.searchText
+                      ? device.customName
+                          .toLowerCase()
+                          .includes(this.props.searchText.toLowerCase())
+                      : true
+                  )[0]
+                )
+              }
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white", marginTop: "8px" }
+                  : { color: "black", marginTop: "8px" }
+              }
+            >
+              <Icon
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? board &&
+                      board.devices &&
+                      board.devices.filter(device =>
+                        this.props.searchText
+                          ? device.customName
+                              .toLowerCase()
+                              .includes(this.props.searchText.toLowerCase())
+                          : true
+                      )[0]
+                      ? { color: "white" }
+                      : { color: "white", opacity: "0.5" }
+                    : board &&
+                      board.devices &&
+                      board.devices.filter(device =>
+                        this.props.searchText
+                          ? true
+                          : device.customName
+                              .toLowerCase()
+                              .includes(this.props.searchText.toLowerCase())
+                      )[0]
+                    ? { color: "black" }
+                    : { color: "black", opacity: "0.5" }
+                }
+              >
+                filter_list
+              </Icon>
+            </IconButton>
+          </Tooltip>
+        </div>
+        {sidebarContent}
       </React.Fragment>
     )
   }

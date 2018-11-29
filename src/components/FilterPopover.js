@@ -6,8 +6,6 @@ import ListItemText from "@material-ui/core/ListItemText"
 import Checkbox from "@material-ui/core/Checkbox"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import { Redirect } from "react-router-dom"
 
 let removeDuplicates = inputArray => {
@@ -143,20 +141,13 @@ export default class FilterPopover extends Component {
                     button
                     onClick={this.handleToggle(deviceType)}
                   >
-                    <MuiThemeProvider
-                      theme={createMuiTheme({
-                        palette: {
-                          secondary: { main: "#ff4081" },
-                        },
-                      })}
-                    >
-                      <Checkbox
-                        checked={this.state.checked.indexOf(deviceType) !== -1}
-                        tabIndex={-1}
-                        disableRipple
-                        onChange={this.handleToggle(deviceType)}
-                      />
-                    </MuiThemeProvider>
+                    <Checkbox
+                      checked={this.state.checked.indexOf(deviceType) !== -1}
+                      tabIndex={-1}
+                      disableRipple
+                      onChange={this.handleToggle(deviceType)}
+                    />
+
                     <ListItemText
                       primary={
                         <span

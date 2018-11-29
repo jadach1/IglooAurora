@@ -1,6 +1,4 @@
 import React, { Component } from "react"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
@@ -83,16 +81,7 @@ class MobilePasswordRecovery extends Component {
           }}
           className="notSelectable defaultCursor"
         >
-          <MuiThemeProvider
-            theme={createMuiTheme({
-              palette: {
-                primary: { main: "#fff" },
-                secondary: { main: "#0083ff" },
-              },
-            })}
-          >
-            <CircularProgress size={100} />
-          </MuiThemeProvider>
+          <CircularProgress size={100} color="secondary" />
         </div>
       )
     }
@@ -149,147 +138,136 @@ class MobilePasswordRecovery extends Component {
           </Typography>
           <br />
           <br />
-          <MuiThemeProvider
-            theme={createMuiTheme({
-              palette: {
-                primary: { main: "#fff" },
-                secondary: { main: "#0083ff" },
-              },
-            })}
+          <Grid
+            container
+            spacing={0}
+            alignItems="flex-end"
+            style={{ width: "100%" }}
           >
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Icon style={{ color: "white", marginBottom: "20px" }}>
-                  vpn_key
-                </Icon>
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="password"
-                    placeholder="New password"
-                    style={{
-                      color: "white",
-                    }}
-                    value={this.props.password}
-                    type={this.state.showPassword ? "text" : "password"}
-                    onChange={event => {
-                      this.setState({
-                        passwordScore: zxcvbn(event.target.value, [
-                          user.email,
-                          user.email.split("@")[0],
-                          user.fullName,
-                          "igloo",
-                          "igloo aurora",
-                          "aurora",
-                        ]).score,
-                        isPasswordEmpty: event.target.value === "",
-                      })
-                      this.props.updatePassword(event.target.value)
-                    }}
-                    onKeyPress={event => {
-                      if (event.key === "Enter") {
-                        changePassword(this.props.password)
-                        this.setState({ redirect: true })
-                      }
-                    }}
-                    endAdornment={
-                      this.props.password ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() =>
-                              this.setState(oldState => ({
-                                showPassword: !oldState.showPassword,
-                              }))
-                            }
-                            onMouseDown={event => event.preventDefault()}
-                            tabIndex="-1"
-                            style={{ color: "white" }}
-                          >
-                            {this.state.showPassword ? (
-                              <Icon style={{ color: "white" }}>
-                                visibility_off
-                              </Icon>
-                            ) : (
-                              <Icon style={{ color: "white" }}>visibility</Icon>
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                  <FormHelperText
-                    id="password-error-text-signup"
-                    style={{ color: "white" }}
-                  >
-                    {scoreText}
-                    {this.state.isPasswordEmpty ? "This field is required" : ""}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
+            <Grid item style={{ marginRight: "16px" }}>
+              <Icon style={{ color: "white", marginBottom: "20px" }}>
+                vpn_key
+              </Icon>
             </Grid>
-            <br />
-            {window.innerWidth >= 354 ? (
-              <React.Fragment>
-                <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-                  <Button
-                    color="primary"
-                    style={{
-                      marginRight: "4px",
-                    }}
-                  >
-                    Never mind
-                  </Button>
-                </Link>
-                <Link to="/" style={{ textDecoration: "none", color: "white" }}>
-                  <Button
-                    variant="raised"
-                    color="secondary"
-                    disabled={!(this.state.passwordScore >= 2)}
-                    onClick={() => changePassword(this.props.password)}
-                  >
-                    Change password
-                  </Button>
-                </Link>
-              </React.Fragment>
-            ) : (
-              <React.Fragment>
-                <Link
-                  to="/dashboard"
-                  style={{ textDecoration: "none", color: "white" }}
+            <Grid item style={{ width: "calc(100% - 40px)" }}>
+              <FormControl style={{ width: "100%" }}>
+                <Input
+                  id="password"
+                  placeholder="New password"
+                  style={{
+                    color: "white",
+                  }}
+                  value={this.props.password}
+                  type={this.state.showPassword ? "text" : "password"}
+                  onChange={event => {
+                    this.setState({
+                      passwordScore: zxcvbn(event.target.value, [
+                        user.email,
+                        user.email.split("@")[0],
+                        user.fullName,
+                        "igloo",
+                        "igloo aurora",
+                        "aurora",
+                      ]).score,
+                      isPasswordEmpty: event.target.value === "",
+                    })
+                    this.props.updatePassword(event.target.value)
+                  }}
+                  onKeyPress={event => {
+                    if (event.key === "Enter") {
+                      changePassword(this.props.password)
+                      this.setState({ redirect: true })
+                    }
+                  }}
+                  endAdornment={
+                    this.props.password ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() =>
+                            this.setState(oldState => ({
+                              showPassword: !oldState.showPassword,
+                            }))
+                          }
+                          onMouseDown={event => event.preventDefault()}
+                          tabIndex="-1"
+                          style={{ color: "white" }}
+                        >
+                          {this.state.showPassword ? (
+                            <Icon>visibility_off</Icon>
+                          ) : (
+                            <Icon>visibility</Icon>
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null
+                  }
+                />
+                <FormHelperText
+                  id="password-error-text-signup"
+                  style={{ color: "white" }}
                 >
-                  <Button
-                    variant="raised"
-                    color="secondary"
-                    disabled={!(this.state.passwordScore >= 2)}
-                    onClick={() => changePassword(this.props.password)}
-                    style={{ width: "100%" }}
-                  >
-                    Change password
-                  </Button>
-                </Link>
-                <Link
-                  to="/dashboard"
-                  style={{ textDecoration: "none", color: "white" }}
+                  {scoreText}
+                  {this.state.isPasswordEmpty ? "This field is required" : ""}
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+          </Grid>
+          <br />
+          {window.innerWidth >= 354 ? (
+            <React.Fragment>
+              <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+                <Button
+                  color="primary"
+                  style={{
+                    marginRight: "4px",
+                  }}
                 >
-                  <Button
-                    color="primary"
-                    style={{
-                      marginTop: "4px",
-                      width: "100%",
-                    }}
-                  >
-                    Never mind
-                  </Button>
-                </Link>
-              </React.Fragment>
-            )}
-          </MuiThemeProvider>
+                  Never mind
+                </Button>
+              </Link>
+              <Link to="/" style={{ textDecoration: "none", color: "white" }}>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  disabled={!(this.state.passwordScore >= 2)}
+                  onClick={() => changePassword(this.props.password)}
+                >
+                  Change password
+                </Button>
+              </Link>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <Link
+                to="/dashboard"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  disabled={!(this.state.passwordScore >= 2)}
+                  onClick={() => changePassword(this.props.password)}
+                  style={{ width: "100%" }}
+                >
+                  Change password
+                </Button>
+              </Link>
+              <Link
+                to="/dashboard"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <Button
+                  color="primary"
+                  style={{
+                    marginTop: "4px",
+                    width: "100%",
+                  }}
+                >
+                  Never mind
+                </Button>
+              </Link>
+            </React.Fragment>
+          )}
         </div>
         {this.state.redirect ? <Redirect push to="/dashboard" /> : ""}
       </div>

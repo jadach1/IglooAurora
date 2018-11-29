@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Toggle from "material-ui/Toggle"
+import Switch from "@material-ui/core/Switch"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -7,7 +7,7 @@ class ReadWriteBooleanTile extends Component {
   render() {
     return (
       <div className="readWriteBooleanTile">
-        <Toggle
+        <Switch
           className="switch"
           thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
           trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}

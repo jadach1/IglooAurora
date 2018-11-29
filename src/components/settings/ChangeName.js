@@ -2,8 +2,6 @@ import React from "react"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Button from "@material-ui/core/Button"
 import Avatar from "@material-ui/core/Avatar"
 import Icon from "@material-ui/core/Icon"
@@ -15,13 +13,6 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: "#0083ff" },
-    secondary: { main: "#ff4081" },
-  },
-})
 
 let oldName = ""
 
@@ -135,67 +126,69 @@ class ChangeNameDialog extends React.Component {
               {this.getInitials(this.state.fullName)}
             </Avatar>
             <br />
-            <MuiThemeProvider theme={theme}>
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  id="adornment-email-login"
-                  placeholder="Email"
-                  value={this.state.fullName}
-                  onChange={event => {
-                    this.setState({
-                      fullName: event.target.value,
-                    })
-                  }}
-                  onKeyPress={event => {
-                    if (event.key === "Enter") changeName(this.state.fullName)
-                  }}
-                  endAdornment={
-                    this.state.fullName ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => {
-                            this.setState({ fullName: "" })
-                          }}
-                          onMouseDown={event => {
-                            event.preventDefault()
-                          }}
-                          tabIndex="-1"
-                        >
-                          <Icon>clear</Icon>
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-              </FormControl>
-            </MuiThemeProvider>
+
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="adornment-email-login"
+                placeholder="Email"
+                value={this.state.fullName}
+                onChange={event => {
+                  this.setState({
+                    fullName: event.target.value,
+                  })
+                }}
+                onKeyPress={event => {
+                  if (event.key === "Enter") changeName(this.state.fullName)
+                }}
+                endAdornment={
+                  this.state.fullName ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => {
+                          this.setState({ fullName: "" })
+                        }}
+                        onMouseDown={event => {
+                          event.preventDefault()
+                        }}
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                        tabIndex="-1"
+                      >
+                        <Icon>clear</Icon>
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+            </FormControl>
+
             <br />
             <br />
           </div>
           <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-            <MuiThemeProvider theme={theme}>
-              <Button
-                onClick={this.props.handleNameDialogClose}
-                style={{ marginRight: "4px" }}
-              >
-                Never mind
-              </Button>
-              <Button
-                variant="raised"
-                color="primary"
-                label="Change"
-                primary={true}
-                disabled={
-                  !this.state.fullName || oldName === this.state.fullName
-                }
-                onClick={() => {
-                  changeName(this.state.fullName)
-                  this.props.handleNameDialogClose()
-                }}
-              >
-                Change
-              </Button>
-            </MuiThemeProvider>
+            <Button
+              onClick={this.props.handleNameDialogClose}
+              style={{ marginRight: "4px" }}
+            >
+              Never mind
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              label="Change"
+              primary={true}
+              disabled={!this.state.fullName || oldName === this.state.fullName}
+              onClick={() => {
+                changeName(this.state.fullName)
+                this.props.handleNameDialogClose()
+              }}
+            >
+              Change
+            </Button>
           </DialogActions>
         </Dialog>
       </React.Fragment>

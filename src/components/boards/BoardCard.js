@@ -51,17 +51,17 @@ class BoardCard extends Component {
       },
     })
 
-  toggleQuietMode = quietMode =>
+  toggleQuietMode = muted =>
     this.props.ToggleQuietMode({
       variables: {
         id: this.props.board.id,
-        quietMode,
+        muted,
       },
       optimisticResponse: {
         __typename: "Mutation",
         board: {
           id: this.props.board.id,
-          quietMode,
+          muted,
           __typename: "Board",
         },
       },
@@ -373,7 +373,7 @@ class BoardCard extends Component {
                 : { color: "black" }
             }
             onClick={() => {
-              this.toggleQuietMode(this.props.board.quietMode ? false : true)
+              this.toggleQuietMode(this.props.board.muted ? false : true)
               this.handleMenuClose()
             }}
           >
@@ -386,14 +386,12 @@ class BoardCard extends Component {
                     : { color: "black" }
                 }
               >
-                {this.props.board.quietMode
-                  ? "notifications"
-                  : "notifications_off"}
+                {this.props.board.muted ? "notifications" : "notifications_off"}
               </Icon>
             </ListItemIcon>
             <ListItemText
               inset
-              primary={this.props.board.quietMode ? "Unmute" : "Mute"}
+              primary={this.props.board.muted ? "Unmute" : "Mute"}
             />
           </MenuItem>
           {this.props.board.myRole !== "SPECTATOR" && (
@@ -509,10 +507,10 @@ export default graphql(
 )(
   graphql(
     gql`
-      mutation ToggleQuietMode($id: ID!, $quietMode: Boolean) {
-        board(id: $id, quietMode: $quietMode) {
+      mutation ToggleQuietMode($id: ID!, $muted: Boolean) {
+        board(id: $id, muted: $muted) {
           id
-          quietMode
+          muted
         }
       }
     `,
