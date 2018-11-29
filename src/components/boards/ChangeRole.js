@@ -66,7 +66,7 @@ export default class ChangeRole extends Component {
             Never mind
           </Button>
           <Button
-            variant="raised"
+            variant="contained"
             color="primary"
             onClick={() => {
               this.props.close()

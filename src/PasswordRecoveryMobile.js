@@ -81,7 +81,7 @@ class MobilePasswordRecovery extends Component {
           }}
           className="notSelectable defaultCursor"
         >
-          <CircularProgress size={100} />
+          <CircularProgress size={100} color="secondary" />
         </div>
       )
     }
@@ -193,11 +193,9 @@ class MobilePasswordRecovery extends Component {
                           style={{ color: "white" }}
                         >
                           {this.state.showPassword ? (
-                            <Icon style={{ color: "white" }}>
-                              visibility_off
-                            </Icon>
+                            <Icon>visibility_off</Icon>
                           ) : (
-                            <Icon style={{ color: "white" }}>visibility</Icon>
+                            <Icon>visibility</Icon>
                           )}
                         </IconButton>
                       </InputAdornment>
@@ -229,7 +227,7 @@ class MobilePasswordRecovery extends Component {
               </Link>
               <Link to="/" style={{ textDecoration: "none", color: "white" }}>
                 <Button
-                  variant="raised"
+                  variant="contained"
                   color="secondary"
                   disabled={!(this.state.passwordScore >= 2)}
                   onClick={() => changePassword(this.props.password)}
@@ -245,7 +243,7 @@ class MobilePasswordRecovery extends Component {
                 style={{ textDecoration: "none", color: "white" }}
               >
                 <Button
-                  variant="raised"
+                  variant="contained"
                   color="secondary"
                   disabled={!(this.state.passwordScore >= 2)}
                   onClick={() => changePassword(this.props.password)}

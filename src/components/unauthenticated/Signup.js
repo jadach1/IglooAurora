@@ -258,6 +258,7 @@ class Signup extends Component {
                                 isNameValid: false,
                               })
                             }}
+                            style={{ color: "black" }}
                             onMouseDown={this.handleMouseDownPassword}
                           >
                             <Icon>clear</Icon>
@@ -326,6 +327,7 @@ class Signup extends Component {
                             tabIndex="-1"
                             onClick={this.handleClickCancelEmail}
                             onMouseDown={this.handleMouseDownPassword}
+                            style={{ color: "black" }}
                           >
                             <Icon>clear</Icon>
                           </IconButton>
@@ -400,6 +402,7 @@ class Signup extends Component {
                               tabIndex="-1"
                               onClick={this.handleClickShowPassword}
                               onMouseDown={this.handleMouseDownPassword}
+                              style={{ color: "black" }}
                             >
                               {/* fix for ToggleIcon glitch on Edge */}
                               {document.documentMode ||
@@ -440,7 +443,7 @@ class Signup extends Component {
           </div>
           <div style={{ marginTop: "189px" }}>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               fullWidth={true}
               primary={true}

@@ -389,7 +389,7 @@ class SignupMobile extends Component {
         <br />
         <br />
         <Button
-          variant="raised"
+          variant="contained"
           color="secondary"
           fullWidth={true}
           primary={true}

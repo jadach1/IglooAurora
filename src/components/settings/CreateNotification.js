@@ -193,7 +193,7 @@ class CreateNotification extends React.Component {
               </font>
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               label="Change"
               primary={true}

@@ -55,7 +55,7 @@ export default class extends React.Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               primary={true}
               onClick={() => {

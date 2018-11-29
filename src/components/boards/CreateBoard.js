@@ -123,6 +123,12 @@ class CreateBoard extends React.Component {
                       onClick={() => this.setState({ customName: "" })}
                       onMouseDown={this.handleMouseDownPassword}
                       tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
                     >
                       <Icon>clear</Icon>
                     </IconButton>
@@ -234,7 +240,7 @@ class CreateBoard extends React.Component {
             Never mind
           </Button>
           <Button
-            variant="raised"
+            variant="contained"
             color="primary"
             primary={true}
             buttonStyle={{ backgroundColor: "#0083ff" }}

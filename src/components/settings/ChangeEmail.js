@@ -162,6 +162,12 @@ class ChangeMailDialog extends React.Component {
                           }))
                         }
                         tabIndex="-1"
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                       >
                         {/* fix for ToggleIcon glitch on Edge */}
                         {document.documentMode ||
@@ -184,9 +190,8 @@ class ChangeMailDialog extends React.Component {
                 }
               />
             </FormControl>
+            <br />
           </div>
-          <br />
-
           <DialogActions
             style={
               typeof Storage !== "undefined" &&
@@ -218,7 +223,7 @@ class ChangeMailDialog extends React.Component {
               </font>
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               onClick={this.openMailDialog}
             >
@@ -267,6 +272,12 @@ class ChangeMailDialog extends React.Component {
                         onClick={this.handleClickCancelEmail}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
                       >
                         <Icon>clear</Icon>
                       </IconButton>
@@ -287,7 +298,7 @@ class ChangeMailDialog extends React.Component {
               Never mind
             </Button>
             <Button
-              variant="raised"
+              variant="contained"
               color="primary"
               onClick={() => changeEmail(this.state.email)}
               disabled={!user}
