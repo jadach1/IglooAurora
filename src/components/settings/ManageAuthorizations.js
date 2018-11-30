@@ -89,7 +89,7 @@ class AuthDialog extends React.Component {
     const tokenMutation = await this.client.mutate({
       mutation: gql`
         mutation GeneratePermanentAccessToken($customName: String!) {
-          GeneratePermanentAccessToken(customName: $customName) {
+          generatePermanentAccessToken(customName: $customName) {
             token
           }
         }
@@ -100,7 +100,7 @@ class AuthDialog extends React.Component {
     })
 
     this.setState({
-      token: tokenMutation.data.GeneratePermanentAccessToken.token,
+      token: tokenMutation.data.generatePermanentAccessToken.token,
     })
   }
 
@@ -117,7 +117,7 @@ class AuthDialog extends React.Component {
 
     if (this.props.tokenData.user && this.props.tokenData.user.permanentTokens)
       tokenList = (
-        <List style={{ padding: "0" }}>
+        <List >
           {this.props.tokenData.user.permanentTokens.map(token => (
             <ListItem button>
               <ListItemIcon>
@@ -386,7 +386,7 @@ export default graphql(
   graphql(
     gql`
       mutation DeletePermanentAccesToken($id: ID!) {
-        DeletePermanentAccesToken(id: $id)
+        deletePermanentAccesToken(id: $id)
       }
     `,
     {

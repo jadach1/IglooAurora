@@ -22,18 +22,14 @@ class BoardInfo extends React.Component {
   state = { showHidden: false }
 
   render() {
-    const infoActions = [<Button onClick={this.props.close}>Close</Button>]
-
     return (
       <Dialog
-        actions={infoActions}
         open={this.props.open}
         onClose={this.props.close}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         TransitionComponent={Transition}
       >
         <DialogTitle
-          className="notSelectable defaultCursor"
           style={
             window.innerWidth < MOBILE_WIDTH
               ? typeof Storage !== "undefined" &&

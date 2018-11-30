@@ -274,6 +274,17 @@ class GraphQLFetcher extends Component {
           emailIsVerified
           fullName
           profileIconColor
+          pendingBoardShares {
+            id
+            sender {
+              id
+              fullName
+            }
+            board {
+              id
+              customName
+            }
+          }
           permanentTokens {
             id
             customName
@@ -653,6 +664,17 @@ export default graphql(
         fullName
         profileIconColor
         email
+        pendingBoardShares {
+          id
+          sender {
+            id
+            fullName
+          }
+          board {
+            id
+            customName
+          }
+        }
         boards {
           id
           index
@@ -662,6 +684,16 @@ export default graphql(
           muted
           avatar
           myRole
+          pendingBoardShares {
+            id
+            role
+            receiver {
+              id
+              profileIconColor
+              fullName
+              email
+            }
+          }
           devices {
             id
             muted

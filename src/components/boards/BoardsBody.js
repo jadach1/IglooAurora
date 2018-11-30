@@ -7,15 +7,19 @@ import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import Paper from "@material-ui/core/Paper"
+import List from "@material-ui/core/List"
+import ListSubheader from "@material-ui/core/ListSubheader"
 import CenteredSpinner from "../CenteredSpinner"
 import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
 import Helmet from "react-helmet"
+import PendingShares from "./PendingShares"
 
 export default class BoardsBody extends Component {
   state = {
     anchorEl: null,
     createOpen: false,
+    pendingSharesOpen: false,
     copyMessageOpen: false,
     searchText: "",
   }
@@ -179,106 +183,42 @@ export default class BoardsBody extends Component {
           }
         >
           {error && "Unexpected error"}
-          {loading && <CenteredSpinner large />}
+          {loading && <CenteredSpinner large style={{ paddingTop: "32px" }} />}
           {user && (
-            <React.Fragment>
-              <Typography
-                variant="h4"
-                className="notSelectable defaultCursor"
-                style={
-                  nightMode
-                    ? {
-                        textAlign: "center",
-                        paddingTop: "32px",
-                        marginBottom: "32px",
-                        color: "white",
-                      }
-                    : {
-                        textAlign: "center",
-                        paddingTop: "32px",
-                        marginBottom: "32px",
-                        color: "black",
-                      }
-                }
-              >
-                Your boards
-              </Typography>
-              <Grid
-                container
-                justify="center"
-                spacing={16}
-                className="notSelectable defaultCursor"
-                style={{
-                  width: "calc(100vw - 64px)",
-                  marginLeft: "32px",
-                  marginRight: "32px",
-                }}
-              >
-                {yourBoardsList}
-                <Grid key="create" item>
-                  <Paper
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? {
-                            backgroundColor: "#2f333d",
-                            width: "256px",
-                            height: "192px",
-                            cursor: "pointer",
-                            textAlign: "center",
-                            color: "white",
-                          }
-                        : {
-                            backgroundColor: "#fff",
-                            width: "256px",
-                            height: "192px",
-                            cursor: "pointer",
-                            textAlign: "center",
-                          }
-                    }
-                    onClick={() => this.setState({ createOpen: true })}
-                  >
-                    <div style={{ paddingTop: "50px", paddingBottom: "50px" }}>
-                      <Icon style={{ fontSize: "64px" }}>add</Icon>
-                      <br />
-                      <Typography
-                        variant="h5"
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : {}
-                        }
-                      >
-                        Create new board
-                      </Typography>
-                    </div>
-                  </Paper>
-                </Grid>
-              </Grid>
-              {boardsList[0] && (
-                <React.Fragment>
-                  <Typography
-                    variant="h4"
-                    className="notSelectable defaultCursor"
+            <List subheader={<li />}>
+              <li key="yourBoards">
+                <ul style={{ padding: "0" }}>
+                  <ListSubheader
                     style={
                       nightMode
-                        ? {
-                            textAlign: "center",
-                            marginTop: "32px",
-                            marginBottom: "32px",
-                            color: "white",
-                          }
-                        : {
-                            textAlign: "center",
-                            marginTop: "32px",
-                            marginBottom: "32px",
-                            color: "black",
-                          }
+                        ? { backgroundColor: "#21252b" }
+                        : { backgroundColor: "#f2f2f2" }
                     }
                   >
-                    Shared with you
-                  </Typography>
+                    <Typography
+                      variant="h4"
+                      className="notSelectable defaultCursor"
+                      style={
+                        nightMode
+                          ? {
+                              textAlign: "center",
+                              paddingTop: "8px",
+                              paddingBottom: "8px",
+                              marginBottom: "8px",
+                              color: "white",
+                            }
+                          : {
+                              textAlign: "center",
+                              paddingTop: "8px",
+                              paddingBottom: "8px",
+                              marginBottom: "8px",
+                              color: "black",
+                            }
+                      }
+                    >
+                      Your boards
+                    </Typography>
+                  </ListSubheader>
                   <Grid
                     container
                     justify="center"
@@ -290,17 +230,180 @@ export default class BoardsBody extends Component {
                       marginRight: "32px",
                     }}
                   >
-                    {boardsList}
+                    {yourBoardsList}
+                    <Grid key="create" item>
+                      <Paper
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? {
+                                backgroundColor: "#2f333d",
+                                width: "256px",
+                                height: "192px",
+                                cursor: "pointer",
+                                textAlign: "center",
+                                color: "white",
+                              }
+                            : {
+                                backgroundColor: "#fff",
+                                width: "256px",
+                                height: "192px",
+                                cursor: "pointer",
+                                textAlign: "center",
+                              }
+                        }
+                        onClick={() => this.setState({ createOpen: true })}
+                      >
+                        <div
+                          style={{ paddingTop: "50px", paddingBottom: "50px" }}
+                        >
+                          <Icon style={{ fontSize: "64px" }}>add</Icon>
+                          <br />
+                          <Typography
+                            variant="h5"
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : {}
+                            }
+                          >
+                            Create new board
+                          </Typography>
+                        </div>
+                      </Paper>
+                    </Grid>
                   </Grid>
-                </React.Fragment>
+                </ul>
+              </li>
+              {(boardsList[0] || user.pendingBoardShares[0]) && (
+                <li key="yourBoards">
+                  <ul style={{ padding: "0" }}>
+                    <ListSubheader
+                      style={
+                        nightMode
+                          ? { backgroundColor: "#21252b" }
+                          : { backgroundColor: "#f2f2f2" }
+                      }
+                    >
+                      <Typography
+                        variant="h4"
+                        className="notSelectable defaultCursor"
+                        style={
+                          nightMode
+                            ? {
+                                textAlign: "center",
+                                marginTop: "8px",
+                                paddingTop: "8px",
+                                paddingBottom: "8px",
+                                marginBottom: "8px",
+                                color: "white",
+                              }
+                            : {
+                                textAlign: "center",
+                                marginTop: "8px",
+                                paddingTop: "8px",
+                                paddingBottom: "8px",
+                                marginBottom: "8px",
+                                color: "black",
+                              }
+                        }
+                      >
+                        Shared with you
+                      </Typography>
+                    </ListSubheader>
+                    <Grid
+                      container
+                      justify="center"
+                      spacing={16}
+                      className="notSelectable defaultCursor"
+                      style={{
+                        width: "calc(100vw - 64px)",
+                        marginLeft: "32px",
+                        marginRight: "32px",
+                      }}
+                    >
+                      {boardsList}
+                      {user.pendingBoardShares[0] && (
+                        <Grid key="boardShares" item>
+                          <Paper
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    backgroundColor: "#2f333d",
+                                    width: "256px",
+                                    height: "192px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                    color: "white",
+                                  }
+                                : {
+                                    backgroundColor: "#fff",
+                                    width: "256px",
+                                    height: "192px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                  }
+                            }
+                            onClick={() =>
+                              this.setState({ pendingSharesOpen: true })
+                            }
+                          >
+                            <div
+                              style={{
+                                paddingTop: "50px",
+                                paddingBottom: "50px",
+                              }}
+                            >
+                              <Icon
+                                style={{
+                                  fontSize: "48px",
+                                  marginBottom: "8px",
+                                  marginTop: "8px",
+                                }}
+                              >
+                                share
+                              </Icon>
+                              <br />
+                              <Typography
+                                variant="h5"
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? { color: "white" }
+                                    : {}
+                                }
+                              >
+                                {user.pendingBoardShares.length > 99
+                                  ? "99+ pending requests"
+                                  : user.pendingBoardShares.length +
+                                    (user.pendingBoardShares.length === 1
+                                      ? " pending request"
+                                      : " pending requests")}
+                              </Typography>
+                            </div>
+                          </Paper>
+                        </Grid>
+                      )}
+                    </Grid>
+                  </ul>
+                </li>
               )}
-            </React.Fragment>
+            </List>
           )}
         </div>
         <CreateBoard
           open={this.state.createOpen}
           close={() => this.setState({ createOpen: false })}
         />
+        {user && user.pendingBoardShares && (
+          <PendingShares
+            open={this.state.pendingSharesOpen}
+            close={() => this.setState({ pendingSharesOpen: false })}
+            pendingBoardShares={user.pendingBoardShares}
+          />
+        )}
       </React.Fragment>
     )
   }

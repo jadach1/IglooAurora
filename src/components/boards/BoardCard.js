@@ -494,28 +494,14 @@ class BoardCard extends Component {
 
 export default graphql(
   gql`
-    mutation ToggleFavorite($id: ID!, $favorite: Boolean) {
-      board(id: $id, favorite: $favorite) {
+    mutation ToggleQuietMode($id: ID!, $muted: Boolean) {
+      board(id: $id, muted: $muted) {
         id
-        favorite
+        muted
       }
     }
   `,
   {
-    name: "ToggleFavorite",
+    name: "ToggleQuietMode",
   }
-)(
-  graphql(
-    gql`
-      mutation ToggleQuietMode($id: ID!, $muted: Boolean) {
-        board(id: $id, muted: $muted) {
-          id
-          muted
-        }
-      }
-    `,
-    {
-      name: "ToggleQuietMode",
-    }
-  )(BoardCard)
-)
+)(BoardCard)

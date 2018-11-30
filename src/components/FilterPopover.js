@@ -133,7 +133,7 @@ export default class FilterPopover extends Component {
                   : { overflowX: "hidden" }
               }
             >
-              <List style={{ width: "256px", padding: "0" }}>
+              <List style={{ width: "256px" }}>
                 {uniqueDeviceTypeList.map(deviceType => (
                   <ListItem
                     key={deviceType}
