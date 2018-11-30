@@ -258,7 +258,7 @@ class CreateBoard extends React.Component {
 export default graphql(
   gql`
     mutation CreateBoard($customName: String!, $avatar: BoardPicture) {
-      CreateBoard(customName: $customName, avatar: $avatar) {
+      createBoard(customName: $customName, avatar: $avatar) {
         id
         customName
         avatar

@@ -58,7 +58,7 @@ export default class LoginMobile extends Component {
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!) {
-            AuthenticateUser(email: $email, password: $password) {
+            authenticateUser(email: $email, password: $password) {
               id
               token
             }
@@ -75,7 +75,7 @@ export default class LoginMobile extends Component {
       }
 
       this.props.signIn(
-        loginMutation.data.AuthenticateUser.token,
+        loginMutation.data.authenticateUser.token,
         this.state.keepLoggedIn
       )
     } catch (e) {
@@ -101,7 +101,7 @@ export default class LoginMobile extends Component {
       await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!) {
-            SendPasswordRecoveryEmail(email: $email)
+            sendPasswordRecoveryEmail(email: $email)
           }
         `,
         variables: {
@@ -278,7 +278,7 @@ export default class LoginMobile extends Component {
                           onClick={this.handleClickShowPassword}
                           onMouseDown={this.handleMouseDownPassword}
                           tabIndex="-1"
-                          style={{ color: "black" }}
+                          style={{ color: "white" }}
                         >
                           {this.state.showPassword ? (
                             <Icon>visibility_off</Icon>
@@ -317,12 +317,9 @@ export default class LoginMobile extends Component {
                 style={{
                   cursor: "pointer",
                   color: "white",
-                  width: "130px",
+                  width: "134px",
                   marginRight: "0px",
                   marginLeft: "auto",
-                }}
-                onClick={() => {
-                  this.setState({ forgotPasswordOpen: true })
                 }}
               >
                 Keep me logged in
@@ -336,7 +333,7 @@ export default class LoginMobile extends Component {
               style={{
                 cursor: "pointer",
                 color: "white",
-                width: "128px",
+                width: "130px",
                 marginRight: "0px",
                 marginLeft: "auto",
               }}
@@ -349,13 +346,12 @@ export default class LoginMobile extends Component {
           </div>
           <Button
             variant="contained"
-            primary={true}
             fullWidth={true}
             onClick={() => {
               this.setState({ showLoading: true })
               this.signIn()
             }}
-            color="secondary"
+            color="primary"
             disabled={
               !(
                 EmailValidator.validate(this.props.email) && this.props.password
@@ -366,6 +362,7 @@ export default class LoginMobile extends Component {
             {this.state.showLoading && (
               <CircularProgress
                 size={24}
+                color="secondary"
                 style={{
                   position: "absolute",
                   top: "50%",

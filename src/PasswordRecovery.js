@@ -295,7 +295,7 @@ class PasswordRecovery extends Component {
 export default graphql(
   gql`
     mutation ChangePassword($newPassword: String!) {
-      ChangePassword(newPassword: $newPassword) {
+      changePassword(newPassword: $newPassword) {
         id
       }
     }

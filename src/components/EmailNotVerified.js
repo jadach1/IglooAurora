@@ -153,7 +153,7 @@ class CustomizedSnackbars extends React.Component {
 export default graphql(
   gql`
     mutation ResendVerificationEmail {
-      ResendVerificationEmail
+      resendVerificationEmail
     }
   `,
   {

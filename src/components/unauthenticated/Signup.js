@@ -77,7 +77,7 @@ class Signup extends Component {
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!, $fullName: String!) {
-            SignupUser(
+            signupUser(
               email: $email
               password: $password
               fullName: $fullName
