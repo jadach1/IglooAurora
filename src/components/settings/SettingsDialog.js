@@ -360,7 +360,7 @@ class SettingsDialog extends React.Component {
         }
       >
         <div style={listStyles.root}>
-          <List style={{ width: "100%", padding: "0" }} subheader={<li />}>
+          <List style={{ width: "100%",  }} subheader={<li />}>
             <li key="appearance">
               <ul style={{ padding: "0" }}>
                 <ListSubheader
@@ -713,7 +713,7 @@ class SettingsDialog extends React.Component {
               }
         }
       >
-        <List style={{ padding: "0" }} subheader={<li />}>
+        <List  subheader={<li />}>
           <li key="authentication">
             <ul style={{ padding: "0" }}>
               <ListSubheader
@@ -1037,7 +1037,7 @@ rightToggle={
                   }
             }
           >
-            <List style={{ padding: "0" }} subheader={<li />}>
+            <List subheader={<li />}>
               <li key="tokens">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader

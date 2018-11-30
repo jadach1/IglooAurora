@@ -135,12 +135,6 @@ class ShareBoard extends React.Component {
           >
             Share board
           </DialogTitle>
-          <font
-            style={{ paddingLeft: "24px" }}
-            className="notSelectable defaultCursor"
-          >
-            This board is shared with:
-          </font>
           <List
             subheader={<li />}
             style={
@@ -201,11 +195,12 @@ class ShareBoard extends React.Component {
                 </ListItem>
               </ul>
             </li>
-            {!(
-              (this.props.board.myRole === "EDITOR" ||
-                this.props.board.myRole === "SPECTATOR") &&
-              !this.props.board.admins[0]
-            ) && (
+            {(this.props.board.myRole === "ADMIN" ||
+              this.props.board.myRole === "OWNER" ||
+              this.props.board.admins[0] ||
+              this.props.board.pendingBoardShares.filter(
+                boardShare => boardShare.role === "ADMIN"
+              )) && (
               <li key="Admins">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader
@@ -259,6 +254,46 @@ class ShareBoard extends React.Component {
                     </ListItem>
                   ))}
                   {(this.props.board.myRole === "ADMIN" ||
+                    this.props.board.myRole === "OWNER") &&
+                    this.props.board.pendingBoardShares
+                      .filter(boardShare => boardShare.role === "ADMIN")
+                      .map(item => (
+                        <ListItem key={item.id}>
+                          <ListItemAvatar
+                            style={{
+                              backgroundColor: item.receiver.profileIconColor,
+                            }}
+                          >
+                            <Avatar>
+                              {this.getInitials(item.receiver.fullName)}
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={item.receiver.fullName + " (pending)"}
+                            secondary={item.receiver.email}
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              onClick={event =>
+                                this.setState({
+                                  anchorEl2: event.currentTarget,
+                                  menuTarget: item,
+                                  selectedUserForChangeRoleDialog: "admin",
+                                })
+                              }
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
+                            >
+                              <Icon>more_vert</Icon>
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      ))}
+                  {(this.props.board.myRole === "ADMIN" ||
                     this.props.board.myRole === "OWNER") && (
                     <ListItem
                       button
@@ -285,10 +320,12 @@ class ShareBoard extends React.Component {
                 </ul>
               </li>
             )}
-            {!(
-              this.props.board.myRole === "SPECTATOR" &&
-              !this.props.board.admins[0]
-            ) && (
+            {(this.props.board.myRole === "ADMIN" ||
+              this.props.board.myRole === "OWNER" ||
+              this.props.board.editors[0] ||
+              this.props.board.pendingBoardShares.filter(
+                boardShare => boardShare.role === "EDITOR"
+              )) && (
               <li key="Editors">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader style={{ backgroundColor: "white" }}>
@@ -341,6 +378,46 @@ class ShareBoard extends React.Component {
                     </ListItem>
                   ))}
                   {(this.props.board.myRole === "ADMIN" ||
+                    this.props.board.myRole === "OWNER") &&
+                    this.props.board.pendingBoardShares
+                      .filter(boardShare => boardShare.role === "EDITOR")
+                      .map(item => (
+                        <ListItem key={item.id}>
+                          <ListItemAvatar
+                            style={{
+                              backgroundColor: item.receiver.profileIconColor,
+                            }}
+                          >
+                            <Avatar>
+                              {this.getInitials(item.receiver.fullName)}
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={item.receiver.fullName + " (pending)"}
+                            secondary={item.receiver.email}
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              onClick={event =>
+                                this.setState({
+                                  anchorEl2: event.currentTarget,
+                                  menuTarget: item,
+                                  selectedUserForChangeRoleDialog: "editor",
+                                })
+                              }
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
+                            >
+                              <Icon>more_vert</Icon>
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      ))}
+                  {(this.props.board.myRole === "ADMIN" ||
                     this.props.board.myRole === "OWNER") && (
                     <ListItem
                       button
@@ -367,10 +444,12 @@ class ShareBoard extends React.Component {
                 </ul>
               </li>
             )}
-            {!(
-              this.props.board.myRole === "EDITOR" &&
-              !this.props.board.admins[0]
-            ) && (
+            {(this.props.board.myRole === "ADMIN" ||
+              this.props.board.myRole === "OWNER" ||
+              this.props.board.spectators[0] ||
+              this.props.board.pendingBoardShares.filter(
+                boardShare => boardShare.role === "SPECTATOR"
+              )) && (
               <li key="Spectators">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader style={{ backgroundColor: "white" }}>
@@ -492,6 +571,43 @@ class ShareBoard extends React.Component {
               </ListItemIcon>
               <ListItemText inset>
                 <span style={{ color: "#f44336" }}>Stop sharing</span>
+              </ListItemText>
+            </MenuItem>
+          </Menu>
+          <Menu
+            anchorEl={this.state.anchorEl2}
+            open={this.state.anchorEl2}
+            onClose={() => this.setState({ anchorEl2: null })}
+            anchorOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+            transformOrigin={{
+              vertical: "top",
+              horizontal: "right",
+            }}
+          >
+            <MenuItem onClick={() => this.setState({ anchorEl2: null })}>
+              <ListItemIcon>
+                <Icon
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
+                  edit
+                </Icon>
+              </ListItemIcon>
+              <ListItemText inset primary="Change role" />
+            </MenuItem>
+            <MenuItem onClick={() => this.setState({ anchorEl2: null })}>
+              <ListItemIcon>
+                <Icon style={{ color: "#f44336" }}>remove_circle</Icon>
+              </ListItemIcon>
+              <ListItemText inset>
+                <span style={{ color: "#f44336" }}>Revoke invite</span>
               </ListItemText>
             </MenuItem>
           </Menu>

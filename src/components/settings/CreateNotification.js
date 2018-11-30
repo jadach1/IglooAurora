@@ -221,7 +221,7 @@ export default graphql(
       $boardId: ID!
       $firmware: String
     ) {
-      CreateDevice(
+      createDevice(
         deviceType: $deviceType
         customName: $customName
         boardId: $boardId

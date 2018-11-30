@@ -21,7 +21,7 @@ function Transition(props) {
   )
 }
 
-export default class ChangeOwner extends Component {
+class ChangeOwner extends Component {
   state = { email: "" }
 
   render() {
@@ -82,7 +82,6 @@ export default class ChangeOwner extends Component {
             }
           />
         </FormControl>
-
         <div style={{ height: "100%" }} />
         <br />
         <DialogActions
@@ -104,3 +103,5 @@ export default class ChangeOwner extends Component {
     )
   }
 }
+
+export default ChangeOwner

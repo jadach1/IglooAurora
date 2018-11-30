@@ -15,6 +15,7 @@ import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
 import SwipeableViews from "react-swipeable-views"
 import Helmet from "react-helmet"
+import PendingShares from "./PendingShares"
 
 class BoardsBodyMobile extends Component {
   state = {
@@ -107,7 +108,8 @@ class BoardsBodyMobile extends Component {
         <div
           style={
             nightMode
-              ? boardsList[0] && yourBoardsList[0]
+              ? (boardsList[0] || (user && user.pendingBoardShares[0])) &&
+                yourBoardsList[0]
                 ? {
                     width: "100vw",
                     height: "calc(100vh - 128px)",
@@ -118,7 +120,8 @@ class BoardsBodyMobile extends Component {
                     height: "calc(100vh - 64px)",
                     backgroundColor: "#21252b",
                   }
-              : boardsList[0] && yourBoardsList[0]
+              : (boardsList[0] || (user && user.pendingBoardShares[0])) &&
+                yourBoardsList[0]
               ? {
                   width: "100vw",
                   height: "calc(100vh - 128px)",
@@ -202,14 +205,14 @@ class BoardsBodyMobile extends Component {
                 height: "calc(100vh - 128px)",
               }}
             >
-              <CenteredSpinner />
+              <CenteredSpinner style={{ paddingTop: "32px" }} />
             </div>
           )}
           {user &&
-            (boardsList[0] ? (
+            (boardsList[0] || user.pendingBoardShares[0] ? (
               <SwipeableViews
                 index={this.state.slideIndex}
-                onChangeIndex={this.handleSettingsTabChanged}
+                onChangeIndex={slideIndex => this.setState({ slideIndex })}
               >
                 <div
                   style={
@@ -352,6 +355,68 @@ class BoardsBodyMobile extends Component {
                       }}
                     >
                       {boardsList}
+                      {user && user.pendingBoardShares[0] && (
+                        <Grid key="boardShares" item>
+                          <Paper
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    backgroundColor: "#2f333d",
+                                    width: "256px",
+                                    height: "192px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                    color: "white",
+                                  }
+                                : {
+                                    backgroundColor: "#fff",
+                                    width: "256px",
+                                    height: "192px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                  }
+                            }
+                            onClick={() =>
+                              this.setState({ pendingSharesOpen: true })
+                            }
+                          >
+                            <div
+                              style={{
+                                paddingTop: "50px",
+                                paddingBottom: "50px",
+                              }}
+                            >
+                              <Icon
+                                style={{
+                                  fontSize: "48px",
+                                  marginBottom: "8px",
+                                  marginTop: "8px",
+                                }}
+                              >
+                                share
+                              </Icon>
+                              <br />
+                              <Typography
+                                variant="h5"
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? { color: "white" }
+                                    : {}
+                                }
+                              >
+                                {user.pendingBoardShares.length > 99
+                                  ? "99+ pending requests"
+                                  : user.pendingBoardShares.length +
+                                    (user.pendingBoardShares.length === 1
+                                      ? " pending request"
+                                      : " pending requests")}
+                              </Typography>
+                            </div>
+                          </Paper>
+                        </Grid>
+                      )}
                     </Grid>
                   </div>
                 </div>
@@ -445,7 +510,7 @@ class BoardsBodyMobile extends Component {
                 </div>
               </div>
             ))}
-          {user && boardsList[0] && (
+          {user && (boardsList[0] || user.pendingBoardShares[0]) && (
             <AppBar
               position="static"
               style={{
@@ -505,6 +570,13 @@ class BoardsBodyMobile extends Component {
           open={this.state.createOpen}
           close={() => this.setState({ createOpen: false })}
         />
+        {user && user.pendingBoardShares && (
+          <PendingShares
+            open={this.state.pendingSharesOpen}
+            close={() => this.setState({ pendingSharesOpen: false })}
+            pendingBoardShares={user.pendingBoardShares}
+          />
+        )}
       </React.Fragment>
     )
   }

@@ -68,7 +68,7 @@ class SignupMobile extends Component {
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!, $fullName: String!) {
-            SignupUser(
+            signupUser(
               email: $email
               password: $password
               fullName: $fullName
@@ -390,14 +390,12 @@ class SignupMobile extends Component {
         <br />
         <Button
           variant="contained"
-          color="secondary"
+          color="primary"
           fullWidth={true}
-          primary={true}
           onClick={() => {
             this.setState({ showLoading: true })
             this.signUp()
           }}
-          buttonStyle={{ backgroundColor: "#0083ff" }}
           disabled={
             !(
               this.props.fullName &&

@@ -45,7 +45,7 @@ class Login extends Component {
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!) {
-            AuthenticateUser(email: $email, password: $password) {
+            authenticateUser(email: $email, password: $password) {
               id
               token
               user {
@@ -68,14 +68,14 @@ class Login extends Component {
       }
 
       this.props.setBoards(
-        loginMutation.data.AuthenticateUser.user.boardCount,
-        loginMutation.data.AuthenticateUser.user.boardCount === 1
-          ? loginMutation.data.AuthenticateUser.user.boards[0].id
+        loginMutation.data.authenticateUser.user.boardCount,
+        loginMutation.data.authenticateUser.user.boardCount === 1
+          ? loginMutation.data.authenticateUser.user.boards[0].id
           : ""
       )
 
       this.props.signIn(
-        loginMutation.data.AuthenticateUser.token,
+        loginMutation.data.authenticateUser.token,
         this.state.keepLoggedIn
       )
     } catch (e) {
@@ -101,7 +101,7 @@ class Login extends Component {
       await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!) {
-            SendPasswordRecoveryEmail(email: $email)
+            sendPasswordRecoveryEmail(email: $email)
           }
         `,
         variables: {

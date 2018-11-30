@@ -256,6 +256,50 @@ class App extends Component {
                 color: "#fff",
               },
             },
+            MuiTooltip: {
+              tooltip: {
+                cursor: "default",
+                webkitTouchCallout: "none",
+                webkitUserSelect: "none",
+                khtmlUserSelect: "none",
+                mozUserSelect: "none",
+                msUserSelect: "none",
+                userSelect: "none",
+              },
+            },
+            MuiDialogTitle: {
+              root: {
+                cursor: "default",
+                webkitTouchCallout: "none",
+                webkitUserSelect: "none",
+                khtmlUserSelect: "none",
+                mozUserSelect: "none",
+                msUserSelect: "none",
+                userSelect: "none",
+              },
+            },
+            MuiDialogActions: {
+              action: {
+                margin: 0,
+              },
+            },
+            MuiListItemText: {
+              root: {
+                cursor: "default",
+                webkitTouchCallout: "none",
+                webkitUserSelect: "none",
+                khtmlUserSelect: "none",
+                mozUserSelect: "none",
+                msUserSelect: "none",
+                userSelect: "none",
+              },
+            },
+            MuiList: {
+              padding: {
+                paddingTop: 0,
+                paddingBottom: 0,
+              },
+            },
           },
         })}
       >
