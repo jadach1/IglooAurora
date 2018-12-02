@@ -29,30 +29,7 @@ class BoardInfo extends React.Component {
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         TransitionComponent={Transition}
       >
-        <DialogTitle
-          style={
-            window.innerWidth < MOBILE_WIDTH
-              ? typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                : { width: "calc(100% - 48px)", background: "#fff" }
-              : typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-              ? { width: "350px", background: "#2f333d" }
-              : { width: "350px", background: "#fff" }
-          }
-        >
-          <font
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? { color: "#fff" }
-                : {}
-            }
-          >
-            Board information
-          </font>
-        </DialogTitle>
+        <DialogTitle>Board information</DialogTitle>
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
@@ -82,7 +59,7 @@ class BoardInfo extends React.Component {
             ""
           )}
         </div>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>

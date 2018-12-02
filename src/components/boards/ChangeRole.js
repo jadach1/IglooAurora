@@ -31,12 +31,7 @@ export default class ChangeRole extends Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle
-          className="notSelectable defaultCursor"
-          style={{ width: "300px" }}
-        >
-          Change role
-        </DialogTitle>
+        <DialogTitle>Change role</DialogTitle>
         <RadioGroup
           onChange={event => this.setState({ value: event.target.value })}
           value={this.state.value}
@@ -58,13 +53,8 @@ export default class ChangeRole extends Component {
             label="Spectator"
           />
         </RadioGroup>
-        <DialogActions
-          className="notSelectable defaultCursor"
-          style={{ marginLeft: "8px", marginRight: "8px" }}
-        >
-          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-            Never mind
-          </Button>
+        <DialogActions>
+          <Button onClick={this.props.close}>Never mind</Button>
           <Button
             variant="contained"
             color="primary"

@@ -13,6 +13,163 @@ import OfflineScreen from "./OfflineScreen"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
+const sharedStyles = {
+  MuiDialogActions: {
+    action: {
+      marginRight: "4px",
+    },
+  },
+  MuiListItemText: {
+    root: {
+      cursor: "default",
+      webkitTouchCallout: "none",
+      webkitUserSelect: "none",
+      khtmlUserSelect: "none",
+      mozUserSelect: "none",
+      msUserSelect: "none",
+      userSelect: "none",
+    },
+  },
+  MuiList: {
+    padding: {
+      paddingTop: 0,
+      paddingBottom: 0,
+    },
+  },
+  MuiBadge: {
+    colorPrimary: {
+      backgroundColor: "#ff4081",
+    },
+  },
+  MuiRadio: {
+    colorPrimary: {
+      "&$checked": {
+        color: "#0083ff",
+      },
+    },
+  },
+  MuiCheckbox: {
+    colorPrimary: {
+      "&$checked": { color: "#0083ff" },
+    },
+  },
+  MuiCircularProgress: {
+    colorPrimary: {
+      color: "#0083ff",
+    },
+    colorSecondary: {
+      color: "#fff",
+    },
+  },
+  MuiTooltip: {
+    tooltip: {
+      cursor: "default",
+      webkitTouchCallout: "none",
+      webkitUserSelect: "none",
+      khtmlUserSelect: "none",
+      mozUserSelect: "none",
+      msUserSelect: "none",
+      userSelect: "none",
+    },
+  },
+  MuiSwitch: {
+    colorSecondary: {
+      "&$checked": {
+        color: "#0083ff",
+        "& + $bar": {
+          backgroundColor: "#0083ff",
+        },
+      },
+    },
+  },
+}
+
+const lightTheme = createMuiTheme({
+  palette: {
+    default: { main: "#fff" },
+    primary: { light: "#0083ff", main: "#0057cb" },
+    secondary: { main: "#ff4081" },
+    error: { main: "#f44336" },
+  },
+  overrides: {
+    MuiDialogTitle: {
+      root: {
+        cursor: "default",
+        webkitTouchCallout: "none",
+        webkitUserSelect: "none",
+        khtmlUserSelect: "none",
+        mozUserSelect: "none",
+        msUserSelect: "none",
+        userSelect: "none",
+      },
+    },
+    MuiButton: {
+      containedPrimary: {
+        backgroundColor: "#0083ff",
+      },
+    },
+    ...sharedStyles,
+  },
+})
+
+const darkTheme = createMuiTheme({
+  palette: {
+    default: { main: "#fff" },
+    primary: { light: "#0083ff", main: "#0057cb" },
+    secondary: { main: "#ff4081" },
+    error: { main: "#f44336" },
+  },
+  overrides: {
+    MuiDialog: {
+      paper: {
+        backgroundColor: "#2f333d",
+        color: "white",
+      },
+    },
+    MuiDialogTitle: {
+      root: {
+        color: "white",
+        cursor: "default",
+        webkitTouchCallout: "none",
+        webkitUserSelect: "none",
+        khtmlUserSelect: "none",
+        mozUserSelect: "none",
+        msUserSelect: "none",
+        userSelect: "none",
+      },
+    },
+    MuiButton: {
+      containedPrimary: {
+        backgroundColor: "#0083ff",
+      },
+      text: {
+        color: "white",
+      },
+    },
+    MuiMenu: {
+      paper: {
+        backgroundColor: "#2f333d",
+      },
+    },
+    MuiMenuItem: {
+      root: {
+        color: "white",
+      },
+    },
+    MuiPopover: {
+      paper: {
+        backgroundColor: "#2f333d",
+      },
+    },
+    MuiListItemIcon: {
+      root: {
+        color: "white",
+      },
+    },
+    ...sharedStyles,
+  },
+})
+
 function setupWebPush(token) {
   const applicationServerPublicKey =
     "BOZG_RBpt8yVp6J1JN08zCEPSFbYC_aHQQKNY0isQDnozk9GXZAiSHMnnXowvfacQeh38j2TQAyp9yT0qpUXS6Y"
@@ -20,7 +177,7 @@ function setupWebPush(token) {
   function urlB64ToUint8Array(base64String) {
     const padding = "=".repeat((4 - (base64String.length % 4)) % 4)
     const base64 = (base64String + padding)
-      .replace(/-/g, "+") //Changed to prevent no-useless-escapes console error, was /\-/g
+      .replace(/-/g, "+")
       .replace(/_/g, "/")
 
     const rawData = window.atob(base64)
@@ -130,8 +287,8 @@ class App extends Component {
       signupEmailError: "",
       signupPassword: "",
       signupPasswordError: "",
-      fullName: "",
-      fullNameError: "",
+      name: "",
+      nameError: "",
     }
   }
 
@@ -207,101 +364,12 @@ class App extends Component {
 
     return (
       <MuiThemeProvider
-        theme={createMuiTheme({
-          palette: {
-            default: { main: "#fff" },
-            primary: { light: "#0083ff", main: "#0057cb" },
-            secondary: { main: "#ff4081" },
-            error: { main: "#f44336" },
-          },
-          overrides: {
-            MuiButton: {
-              containedPrimary: {
-                backgroundColor: "#0083ff",
-              },
-            },
-            MuiSwitch: {
-              colorSecondary: {
-                "&$checked": {
-                  color: "#0083ff",
-                  "& + $bar": {
-                    backgroundColor: "#0083ff",
-                  },
-                },
-              },
-            },
-            MuiIconButton: {
-              colorPrimary: {
-                color: "white",
-              },
-              colorSecondary: {
-                color: "white",
-              },
-            },
-            MuiBadge: {
-              colorPrimary: {
-                backgroundColor: "#ff4081",
-              },
-            },
-            MuiCheckbox: {
-              colorPrimary: {
-                "&$checked": { color: "#0083ff" },
-              },
-            },
-            MuiCircularProgress: {
-              colorPrimary: {
-                color: "#0083ff",
-              },
-              colorSecondary: {
-                color: "#fff",
-              },
-            },
-            MuiTooltip: {
-              tooltip: {
-                cursor: "default",
-                webkitTouchCallout: "none",
-                webkitUserSelect: "none",
-                khtmlUserSelect: "none",
-                mozUserSelect: "none",
-                msUserSelect: "none",
-                userSelect: "none",
-              },
-            },
-            MuiDialogTitle: {
-              root: {
-                cursor: "default",
-                webkitTouchCallout: "none",
-                webkitUserSelect: "none",
-                khtmlUserSelect: "none",
-                mozUserSelect: "none",
-                msUserSelect: "none",
-                userSelect: "none",
-              },
-            },
-            MuiDialogActions: {
-              action: {
-                margin: 0,
-              },
-            },
-            MuiListItemText: {
-              root: {
-                cursor: "default",
-                webkitTouchCallout: "none",
-                webkitUserSelect: "none",
-                khtmlUserSelect: "none",
-                mozUserSelect: "none",
-                msUserSelect: "none",
-                userSelect: "none",
-              },
-            },
-            MuiList: {
-              padding: {
-                paddingTop: 0,
-                paddingBottom: 0,
-              },
-            },
-          },
-        })}
+        theme={
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("nightMode") === "true"
+            ? darkTheme
+            : lightTheme
+        }
       >
         <Online onChange={() => this.forceUpdate()}>
           <Switch>
@@ -314,6 +382,7 @@ class App extends Component {
                       bearer={this.state.bearer}
                       logOut={logOut}
                       isMobile={this.state.isMobile}
+                      forceUpdate={() => this.forceUpdate()}
                     />
                   )
                 } else {
@@ -399,8 +468,8 @@ class App extends Component {
                 ) : this.state.isMobile ? (
                   <SignupMainMobile
                     signIn={signIn}
-                    fullName={this.state.fullName}
-                    changeFullName={fullName => this.setState({ fullName })}
+                    name={this.state.name}
+                    changeName={name => this.setState({ name })}
                     password={this.state.signupPassword}
                     changePassword={signupPassword =>
                       this.setState({ signupPassword })
@@ -418,8 +487,8 @@ class App extends Component {
                 ) : (
                   <SignupMain
                     signIn={signIn}
-                    fullName={this.state.fullName}
-                    changeFullName={fullName => this.setState({ fullName })}
+                    name={this.state.name}
+                    changeName={name => this.setState({ name })}
                     password={this.state.signupPassword}
                     changePassword={signupPassword =>
                       this.setState({ signupPassword })

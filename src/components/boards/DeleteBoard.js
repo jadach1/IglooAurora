@@ -54,10 +54,8 @@ class DeleteBoard extends React.Component {
           Note that by deleting a board, you will delete all of its devices.
           <br /> <br />
         </font>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-            Never mind
-          </Button>
+        <DialogActions>
+          <Button onClick={this.props.close}>Never mind</Button>
           <Button
             variant="contained"
             color="primary"

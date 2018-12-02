@@ -164,7 +164,7 @@ export default class ChangePasswordDialog extends React.Component {
           <br />
           <br />
         </div>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions>
           <Button
             onClick={this.props.handlePasswordDialogClose}
             style={{ marginRight: "4px" }}

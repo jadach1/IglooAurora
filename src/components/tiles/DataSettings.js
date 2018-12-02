@@ -76,7 +76,7 @@ class DataSettings extends Component {
             label="Plot"
           />
         </RadioGroup>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>

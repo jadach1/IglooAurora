@@ -33,12 +33,7 @@ class ChangeOwner extends Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle
-          className="notSelectable defaultCursor"
-          style={{ width: "350px" }}
-        >
-          Transfer ownership
-        </DialogTitle>
+        <DialogTitle>Transfer ownership</DialogTitle>
         <FormControl
           style={{
             width: "calc(100% - 48px)",
@@ -84,13 +79,8 @@ class ChangeOwner extends Component {
         </FormControl>
         <div style={{ height: "100%" }} />
         <br />
-        <DialogActions
-          className="notSelectable defaultCursor"
-          style={{ marginLeft: "8px", marginRight: "8px" }}
-        >
-          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-            Never mind
-          </Button>
+        <DialogActions>
+          <Button onClick={this.props.close}>Never mind</Button>
           <Button
             variant="contained"
             color="primary"

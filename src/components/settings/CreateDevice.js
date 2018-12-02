@@ -221,21 +221,7 @@ class CreateDevice extends React.Component {
             </FormControl>
             <br />
           </div>
-          <DialogActions
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    padding: "8px",
-                    margin: "0",
-                    background: "#2f333d",
-                  }
-                : {
-                    padding: "8px",
-                    margin: "0",
-                  }
-            }
-          >
+          <DialogActions>
             <Button
               onClick={this.props.close}
               style={

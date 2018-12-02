@@ -53,7 +53,7 @@ class DeleteDevice extends React.Component {
           Note that by deleting a device, you will delete all of its values and
           notifications.
         </font>
-        <DialogActions style={{ marginRight: "8px" }}>
+        <DialogActions>
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
           </Button>

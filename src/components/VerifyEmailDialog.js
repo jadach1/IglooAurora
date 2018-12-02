@@ -27,9 +27,7 @@ export default class extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle style={{ width: "350px" }}>
-          Your account isn't verified
-        </DialogTitle>
+        <DialogTitle>Your account isn't verified</DialogTitle>
         <div
           style={{
             height: "100%",
@@ -46,26 +44,24 @@ export default class extends React.Component {
           <br />
           <br />
         </div>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-           
-            <Button
-              style={{ marginRight: "4px" }}
-              onClick={() => this.props.close()}
-            >
-              Never mind
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              primary={true}
-              onClick={() => {
-                this.props.ResendVerificationEmail()
-                this.props.close()
-              }}
-            >
-              Send again
-            </Button>
-           
+        <DialogActions>
+          <Button
+            style={{ marginRight: "4px" }}
+            onClick={() => this.props.close()}
+          >
+            Never mind
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            primary={true}
+            onClick={() => {
+              this.props.ResendVerificationEmail()
+              this.props.close()
+            }}
+          >
+            Send again
+          </Button>
         </DialogActions>
       </Dialog>
     )

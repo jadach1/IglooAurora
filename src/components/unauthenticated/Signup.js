@@ -76,21 +76,21 @@ class Signup extends Component {
       this.props.changeEmailError("")
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
-          mutation($email: String!, $password: String!, $fullName: String!) {
-            signupUser(
-              email: $email
-              password: $password
-              fullName: $fullName
-            ) {
-              id
+          mutation($email: String!, $password: String!, $name: String!) {
+            signupUser(email: $email, password: $password, name: $name) {
               token
+              user {
+                boards {
+                  id
+                }
+              }
             }
           }
         `,
         variables: {
           email: this.props.email,
           password: this.props.password,
-          fullName: this.props.fullName,
+          name: this.props.name,
         },
       })
 
@@ -98,7 +98,7 @@ class Signup extends Component {
         localStorage.setItem("email", this.props.email)
       }
 
-      this.props.signIn(loginMutation.data.SignupUser.token)
+      this.props.signIn(loginMutation.data.signupUser.token)
     } catch (e) {
       this.setState({ showLoading: false })
       if (
@@ -130,7 +130,7 @@ class Signup extends Component {
       passwordScore: zxcvbn(this.props.password, [
         this.props.email,
         this.props.email.split("@")[0],
-        this.props.fullName,
+        this.props.name,
         "igloo",
         "igloo aurora",
         "aurora",
@@ -191,7 +191,7 @@ class Signup extends Component {
     let customDictionary = [
       this.props.email,
       this.props.email.split("@")[0],
-      this.props.fullName,
+      this.props.name,
       "igloo",
       "igloo aurora",
       "aurora",
@@ -228,9 +228,9 @@ class Signup extends Component {
                   <Input
                     id="adornment-email-signup"
                     placeholder="Full name"
-                    value={this.props.fullName}
+                    value={this.props.name}
                     onChange={event => {
-                      this.props.changeFullName(event.target.value)
+                      this.props.changeName(event.target.value)
                       this.setState({
                         isNameValid: event.target.value !== "",
                       })
@@ -238,7 +238,7 @@ class Signup extends Component {
                     onKeyPress={event => {
                       if (
                         event.key === "Enter" &&
-                        this.props.fullName &&
+                        this.props.name &&
                         this.state.isEmailValid &&
                         this.state.passwordScore >= 2
                       ) {
@@ -248,12 +248,12 @@ class Signup extends Component {
                     }}
                     error={!this.state.isNameValid}
                     endAdornment={
-                      this.props.fullName ? (
+                      this.props.name ? (
                         <InputAdornment position="end">
                           <IconButton
                             tabIndex="-1"
                             onClick={() => {
-                              this.props.changeFullName("")
+                              this.props.changeName("")
                               this.setState({
                                 isNameValid: false,
                               })
@@ -312,7 +312,7 @@ class Signup extends Component {
                     onKeyPress={event => {
                       if (
                         event.key === "Enter" &&
-                        this.props.fullName &&
+                        this.props.name &&
                         this.state.isEmailValid &&
                         this.state.passwordScore >= 2
                       ) {
@@ -387,7 +387,7 @@ class Signup extends Component {
                       onKeyPress={event => {
                         if (
                           event.key === "Enter" &&
-                          this.props.fullName &&
+                          this.props.name &&
                           this.state.isEmailValid &&
                           this.state.passwordScore >= 2
                         ) {
@@ -454,7 +454,7 @@ class Signup extends Component {
               buttonStyle={{ backgroundColor: "#0083ff" }}
               disabled={
                 !(
-                  this.props.fullName &&
+                  this.props.name &&
                   this.state.isEmailValid &&
                   this.state.passwordScore >= 2
                 ) || this.state.showLoading

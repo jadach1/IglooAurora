@@ -29,17 +29,10 @@ export default class UnitOfMeasumentDialog extends React.Component {
       <Dialog
         open={this.props.unitDialogOpen}
         onClose={this.props.handleUnitDialogClose}
-        className="notSelectable"
         TransitionComponent={Transition}
-        titleClassName="defaultCursor"
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle
-          className="notSelectable defaultCursor"
-          style={window.innerWidth > MOBILE_WIDTH ? { width: "350px" } : null}
-        >
-          Change units of measurement
-        </DialogTitle>
+        <DialogTitle>Change units of measurement</DialogTitle>
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
@@ -84,13 +77,8 @@ export default class UnitOfMeasumentDialog extends React.Component {
             />
           </RadioGroup>
         </div>
-        <DialogActions style={{ marginRight: "8px" }}>
-          <Button
-            onClick={this.props.handleUnitDialogClose}
-            style={{ marginRight: "0" }}
-          >
-            Close
-          </Button>
+        <DialogActions>
+          <Button onClick={this.props.handleUnitDialogClose}>Close</Button>
         </DialogActions>
       </Dialog>
     )

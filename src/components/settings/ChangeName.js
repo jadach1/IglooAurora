@@ -29,7 +29,7 @@ function Transition(props) {
 class ChangeNameDialog extends React.Component {
   state = {
     nameDialogOpen: false,
-    fullName: "",
+    name: "",
   }
 
   closeNameDialog = () => {
@@ -49,8 +49,8 @@ class ChangeNameDialog extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.fullName !== this.state.fullName) {
-      this.setState({ fullName: nextProps.fullName })
+    if (nextProps.name !== this.state.name) {
+      this.setState({ name: nextProps.name })
     }
 
     if (
@@ -60,12 +60,12 @@ class ChangeNameDialog extends React.Component {
         confirmationDialogOpen: this.props.confirmationDialogOpen,
       })
 
-      oldName = this.props.fullName
+      oldName = this.props.name
     }
   }
 
   componentDidMount() {
-    oldName = this.props.fullName
+    oldName = this.props.name
   }
 
   render() {
@@ -76,16 +76,16 @@ class ChangeNameDialog extends React.Component {
     let changeName = () => {}
 
     if (user) {
-      changeName = fullName => {
+      changeName = name => {
         this.props["ChangeName"]({
           variables: {
-            fullName: fullName,
+            name: name,
           },
           optimisticResponse: {
             __typename: "Mutation",
             user: {
               id: user.id,
-              fullName: fullName,
+              name: name,
               __typename: "User",
             },
           },
@@ -123,7 +123,7 @@ class ChangeNameDialog extends React.Component {
               }}
               className="defaultCursor"
             >
-              {this.getInitials(this.state.fullName)}
+              {this.getInitials(this.state.name)}
             </Avatar>
             <br />
 
@@ -131,21 +131,21 @@ class ChangeNameDialog extends React.Component {
               <Input
                 id="adornment-email-login"
                 placeholder="Email"
-                value={this.state.fullName}
+                value={this.state.name}
                 onChange={event => {
                   this.setState({
-                    fullName: event.target.value,
+                    name: event.target.value,
                   })
                 }}
                 onKeyPress={event => {
-                  if (event.key === "Enter") changeName(this.state.fullName)
+                  if (event.key === "Enter") changeName(this.state.name)
                 }}
                 endAdornment={
-                  this.state.fullName ? (
+                  this.state.name ? (
                     <InputAdornment position="end">
                       <IconButton
                         onClick={() => {
-                          this.setState({ fullName: "" })
+                          this.setState({ name: "" })
                         }}
                         onMouseDown={event => {
                           event.preventDefault()
@@ -165,11 +165,10 @@ class ChangeNameDialog extends React.Component {
                 }
               />
             </FormControl>
-
             <br />
             <br />
           </div>
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions>
             <Button
               onClick={this.props.handleNameDialogClose}
               style={{ marginRight: "4px" }}
@@ -181,9 +180,9 @@ class ChangeNameDialog extends React.Component {
               color="primary"
               label="Change"
               primary={true}
-              disabled={!this.state.fullName || oldName === this.state.fullName}
+              disabled={!this.state.name || oldName === this.state.name}
               onClick={() => {
-                changeName(this.state.fullName)
+                changeName(this.state.name)
                 this.props.handleNameDialogClose()
               }}
             >
@@ -198,10 +197,10 @@ class ChangeNameDialog extends React.Component {
 
 export default graphql(
   gql`
-    mutation ChangeName($fullName: String!) {
-      user(fullName: $fullName) {
+    mutation ChangeName($name: String!) {
+      user(name: $name) {
         id
-        fullName
+        name
       }
     }
   `,

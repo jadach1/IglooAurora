@@ -93,89 +93,79 @@ export default class FilterPopover extends Component {
           }}
           className="notSelectable"
         >
-          <div
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? { backgroundColor: "#2f333d" }
-                : null
-            }
-          >
-            <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
-              <Typography
-                variant="h6"
-                className="defaultCursor"
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? {
-                        marginLeft: "-8px",
-                        color: "white",
-                      }
-                    : {
-                        marginLeft: "-8px",
-                        color: "black",
-                      }
-                }
-              >
-                Filter by device type
-              </Typography>
-            </Toolbar>
-            <div
+          <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
+            <Typography
+              variant="h6"
+              className="defaultCursor"
               style={
-                96 + this.getLenght(uniqueDeviceTypeList) * 72 >
-                window.innerHeight
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
                   ? {
-                      height: "calc(100vh - 96px)",
-                      overflow: "auto",
-                      overflowX: "hidden",
+                      marginLeft: "-8px",
+                      color: "white",
                     }
-                  : { overflowX: "hidden" }
+                  : {
+                      marginLeft: "-8px",
+                      color: "black",
+                    }
               }
             >
-              <List style={{ width: "256px" }}>
-                {uniqueDeviceTypeList.map(deviceType => (
-                  <ListItem
-                    key={deviceType}
-                    role={undefined}
-                    button
-                    onClick={this.handleToggle(deviceType)}
-                  >
-                    <Checkbox
-                      checked={this.state.checked.indexOf(deviceType) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                      onChange={this.handleToggle(deviceType)}
-                    />
-
-                    <ListItemText
-                      primary={
-                        <span
-                          style={
-                            typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                              ? { color: "white" }
-                              : { color: "black" }
-                          }
-                        >
-                          {deviceType}
-                        </span>
-                      }
-                      style={{
-                        cursor: "default",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                      secondary={
-                        occurrences[deviceType] +
-                        (occurrences[deviceType] === 1 ? " device" : " devices")
-                      }
-                    />
-                  </ListItem>
-                ))}
-              </List>
-            </div>
+              Filter by device type
+            </Typography>
+          </Toolbar>
+          <div
+            style={
+              96 + this.getLenght(uniqueDeviceTypeList) * 72 >
+              window.innerHeight
+                ? {
+                    height: "calc(100vh - 96px)",
+                    overflow: "auto",
+                    overflowX: "hidden",
+                  }
+                : { overflowX: "hidden" }
+            }
+          >
+            <List style={{ width: "256px" }}>
+              {uniqueDeviceTypeList.map(deviceType => (
+                <ListItem
+                  key={deviceType}
+                  role={undefined}
+                  button
+                  onClick={this.handleToggle(deviceType)}
+                >
+                  <Checkbox
+                    checked={this.state.checked.indexOf(deviceType) !== -1}
+                    tabIndex={-1}
+                    disableRipple
+                    onChange={this.handleToggle(deviceType)}
+                  />
+                  <ListItemText
+                    primary={
+                      <span
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        {deviceType}
+                      </span>
+                    }
+                    style={{
+                      cursor: "default",
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                    }}
+                    secondary={
+                      occurrences[deviceType] +
+                      (occurrences[deviceType] === 1 ? " device" : " devices")
+                    }
+                  />
+                </ListItem>
+              ))}
+            </List>
           </div>
         </Popover>
         {this.state.redirect && (

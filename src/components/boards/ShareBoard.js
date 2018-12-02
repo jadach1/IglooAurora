@@ -129,12 +129,7 @@ class ShareBoard extends React.Component {
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           className="notSelectable defaultCursor"
         >
-          <DialogTitle
-            className="notSelectable defaultCursor"
-            style={{ width: "350px" }}
-          >
-            Share board
-          </DialogTitle>
+          <DialogTitle>Share board</DialogTitle>
           <List
             subheader={<li />}
             style={
@@ -159,7 +154,7 @@ class ShareBoard extends React.Component {
                           .profileIconColor,
                       }}
                     >
-                      {this.getInitials(this.props.board.owner.fullName)}
+                      {this.getInitials(this.props.board.owner.name)}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
@@ -167,7 +162,7 @@ class ShareBoard extends React.Component {
                       this.props.userData.user.email ===
                       this.props.board.owner.email
                         ? "You"
-                        : this.props.board.owner.fullName
+                        : this.props.board.owner.name
                     }
                     secondary={
                       this.props.userData.user.email ===
@@ -216,13 +211,13 @@ class ShareBoard extends React.Component {
                           backgroundColor: item.profileIconColor,
                         }}
                       >
-                        <Avatar>{this.getInitials(item.fullName)}</Avatar>
+                        <Avatar>{this.getInitials(item.name)}</Avatar>
                       </ListItemAvatar>
                       <ListItemText
                         primary={
                           this.props.userData.user.email === item.email
                             ? "You"
-                            : item.fullName
+                            : item.name
                         }
                         secondary={
                           this.props.userData.user.email === item.email
@@ -265,11 +260,11 @@ class ShareBoard extends React.Component {
                             }}
                           >
                             <Avatar>
-                              {this.getInitials(item.receiver.fullName)}
+                              {this.getInitials(item.receiver.name)}
                             </Avatar>
                           </ListItemAvatar>
                           <ListItemText
-                            primary={item.receiver.fullName + " (pending)"}
+                            primary={item.receiver.name + " (pending)"}
                             secondary={item.receiver.email}
                           />
                           <ListItemSecondaryAction>
@@ -339,14 +334,14 @@ class ShareBoard extends React.Component {
                             backgroundColor: item.profileIconColor,
                           }}
                         >
-                          {this.getInitials(item.fullName)}
+                          {this.getInitials(item.name)}
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
                         primary={
                           this.props.userData.user.email === item.email
                             ? "You"
-                            : item.fullName
+                            : item.name
                         }
                         secondary={
                           this.props.userData.user.email === item.email
@@ -389,11 +384,11 @@ class ShareBoard extends React.Component {
                             }}
                           >
                             <Avatar>
-                              {this.getInitials(item.receiver.fullName)}
+                              {this.getInitials(item.receiver.name)}
                             </Avatar>
                           </ListItemAvatar>
                           <ListItemText
-                            primary={item.receiver.fullName + " (pending)"}
+                            primary={item.receiver.name + " (pending)"}
                             secondary={item.receiver.email}
                           />
                           <ListItemSecondaryAction>
@@ -463,14 +458,14 @@ class ShareBoard extends React.Component {
                             backgroundColor: item.profileIconColor,
                           }}
                         >
-                          {this.getInitials(item.fullName)}
+                          {this.getInitials(item.name)}
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
                         primary={
                           this.props.userData.user.email === item.email
                             ? "You"
-                            : item.fullName
+                            : item.name
                         }
                         secondary={
                           this.props.userData.user.email === item.email
@@ -548,16 +543,7 @@ class ShareBoard extends React.Component {
               }
             >
               <ListItemIcon>
-                <Icon
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                >
-                  edit
-                </Icon>
+                <Icon>edit</Icon>
               </ListItemIcon>
               <ListItemText inset primary="Change role" />
             </MenuItem>
@@ -590,12 +576,6 @@ class ShareBoard extends React.Component {
             <MenuItem onClick={() => this.setState({ anchorEl2: null })}>
               <ListItemIcon>
                 <Icon
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
                 >
                   edit
                 </Icon>
@@ -611,10 +591,7 @@ class ShareBoard extends React.Component {
               </ListItemText>
             </MenuItem>
           </Menu>
-          <DialogActions
-            className="notSelectable defaultCursor"
-            style={{ marginLeft: "8px", marginRight: "8px" }}
-          >
+          <DialogActions>
             <Button onClick={this.props.close}>Close</Button>
           </DialogActions>
         </Dialog>
@@ -625,7 +602,7 @@ class ShareBoard extends React.Component {
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <DialogTitle style={{ width: "350px" }}>Stop sharing</DialogTitle>
+          <DialogTitle>Stop sharing</DialogTitle>
           <div
             style={{
               paddingLeft: "24px",
@@ -635,12 +612,9 @@ class ShareBoard extends React.Component {
             }}
           >
             Are you sure you want to stop sharing this board with{" "}
-            {this.state.menuTarget && this.state.menuTarget.fullName}?<br />
+            {this.state.menuTarget && this.state.menuTarget.name}?<br />
           </div>
-          <DialogActions
-            className="notSelectable defaultCursor"
-            style={{ marginLeft: "8px", marginRight: "8px" }}
-          >
+          <DialogActions>
             <Button
               onClick={() => this.setState({ stopSharingOpen: false })}
               style={{ marginRight: "4px" }}

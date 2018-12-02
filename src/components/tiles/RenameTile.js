@@ -132,7 +132,7 @@ class RenameTileDialog extends React.Component {
             />
           </FormControl>
         </div>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions>
           <Button
             onClick={this.props.handleRenameTileDialogClose}
             style={{ marginRight: "4px" }}

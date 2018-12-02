@@ -60,15 +60,13 @@ let PendingShares = props => {
       fullScreen={window.innerWidth < MOBILE_WIDTH}
       TransitionComponent={Transition}
     >
-      <DialogTitle style={{ width: "350px" }}>
-        Pending share requests
-      </DialogTitle>
+      <DialogTitle>Pending share requests</DialogTitle>
       <List style={{ width: "100%", height: "100%" }}>
         {props.pendingBoardShares.map(boardShare => (
           <ListItem style={{ paddingLeft: "24px" }}>
             <ListItemText
               primary={boardShare.board.customName}
-              secondary={"Shared by " + boardShare.sender.fullName}
+              secondary={"Shared by " + boardShare.sender.name}
               style={{
                 whiteSpace: "nowrap",
                 overflow: "hidden",
