@@ -50,25 +50,25 @@ class GraphQLFetcher extends Component {
           owner {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           admins {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           editors {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           spectators {
             id
             email
-            fullName
+            name
             profileIconColor
           }
         }
@@ -131,25 +131,25 @@ class GraphQLFetcher extends Component {
           owner {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           admins {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           editors {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           spectators {
             id
             email
-            fullName
+            name
             profileIconColor
           }
         }
@@ -212,25 +212,25 @@ class GraphQLFetcher extends Component {
           owner {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           admins {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           editors {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           spectators {
             id
             email
-            fullName
+            name
             profileIconColor
           }
         }
@@ -272,13 +272,13 @@ class GraphQLFetcher extends Component {
         userUpdated {
           id
           emailIsVerified
-          fullName
+          name
           profileIconColor
           pendingBoardShares {
             id
             sender {
               id
-              fullName
+              name
             }
             board {
               id
@@ -487,7 +487,7 @@ class GraphQLFetcher extends Component {
                 this.setState({ devicesSearchText: text })
               }}
               devicesSearchText={this.state.devicesSearchText}
-              forceUpdate={() => this.forceUpdate()}
+              forceUpdate={this.props.forceUpdate}
             />
           )
         } else {
@@ -516,7 +516,7 @@ class GraphQLFetcher extends Component {
                 this.setState({ devicesSearchText: text })
               }}
               devicesSearchText={this.state.devicesSearchText}
-              forceUpdate={() => this.forceUpdate()}
+              forceUpdate={this.props.forceUpdate}
             />
           )
         }
@@ -534,7 +534,7 @@ class GraphQLFetcher extends Component {
             closeSettings={() => this.setState({ areSettingsOpen: false })}
             areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
-            forceUpdate={() => this.forceUpdate()}
+            forceUpdate={this.props.forceUpdate}
           />
         )
       }
@@ -576,7 +576,7 @@ class GraphQLFetcher extends Component {
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("devMode") === "true"
               }
-              forceUpdate={() => this.forceUpdate()}
+              forceUpdate={this.props.forceUpdate}
             />
           )
         } else {
@@ -605,8 +605,8 @@ class GraphQLFetcher extends Component {
                 this.setState({ devicesSearchText: text })
               }}
               devicesSearchText={this.state.devicesSearchText}
-              forceUpdate={() => this.forceUpdate()}
-            />
+              forceUpdate={this.props.forceUpdate}
+              />
           )
         }
       } else {
@@ -623,8 +623,8 @@ class GraphQLFetcher extends Component {
             closeSettings={() => this.setState({ areSettingsOpen: false })}
             areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
-            forceUpdate={() => this.forceUpdate()}
-          />
+            forceUpdate={this.props.forceUpdate}
+            />
         )
       }
     }
@@ -661,14 +661,14 @@ export default graphql(
         id
         muted
         emailIsVerified
-        fullName
+        name
         profileIconColor
         email
         pendingBoardShares {
           id
           sender {
             id
-            fullName
+            name
           }
           board {
             id
@@ -690,7 +690,7 @@ export default graphql(
             receiver {
               id
               profileIconColor
-              fullName
+              name
               email
             }
           }
@@ -705,25 +705,25 @@ export default graphql(
           owner {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           admins {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           editors {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           spectators {
             id
             email
-            fullName
+            name
             profileIconColor
           }
         }

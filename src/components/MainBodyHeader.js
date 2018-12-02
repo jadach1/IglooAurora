@@ -291,31 +291,21 @@ class MainBodyHeader extends Component {
             }}
           >
             <MenuItem
-              className="notSelectable"
+              onClick={() => {
+                this.setState({ infoOpen: true })
+                this.handleMenuClose()
+              }}
               style={
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
                   ? { color: "white" }
                   : { color: "black" }
               }
-              onClick={() => {
-                this.setState({ infoOpen: true })
-                this.handleMenuClose()
-              }}
             >
               <ListItemIcon>
-                <Icon
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                >
-                  info
-                </Icon>
+                <Icon>info</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Device information" />
+              <ListItemText inset primary="Information" disableTypography />
             </MenuItem>
             <Divider />
             {/* <MenuItem
@@ -423,18 +413,9 @@ class MainBodyHeader extends Component {
                 }}
               >
                 <ListItemIcon>
-                  <Icon
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    notifications
-                  </Icon>
+                  <Icon>notifications</Icon>
                 </ListItemIcon>
-                <ListItemText inset primary="Unmute" />
+                <ListItemText inset primary="Unmute" disableTypography />
               </MenuItem>
             ) : (
               <MenuItem
@@ -451,18 +432,9 @@ class MainBodyHeader extends Component {
                 }}
               >
                 <ListItemIcon>
-                  <Icon
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    notifications_off
-                  </Icon>
+                  <Icon>notifications_off</Icon>
                 </ListItemIcon>
-                <ListItemText inset primary="Mute" />
+                <ListItemText inset primary="Mute" disableTypography />
               </MenuItem>
             )}
             <Divider />
@@ -481,18 +453,9 @@ class MainBodyHeader extends Component {
               disabled={!(this.props.boards && this.props.boards.length > 1)}
             >
               <ListItemIcon>
-                <Icon
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                >
-                  swap_horiz
-                </Icon>
+                <Icon>swap_horiz</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Change board" />
+              <ListItemText inset primary="Change board" disableTypography />
             </MenuItem>
             {/*
                 {device.values.length > 1 && (
@@ -538,18 +501,9 @@ class MainBodyHeader extends Component {
               }}
             >
               <ListItemIcon>
-                <Icon
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                >
-                  mode_edit
-                </Icon>
+                <Icon>mode_edit</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Rename" />
+              <ListItemText inset primary="Rename" disableTypography />
             </MenuItem>
             <MenuItem
               className="notSelectable"
@@ -608,7 +562,6 @@ export default graphql(
             id
           }
           customName
-          icon
           updatedAt
           createdAt
           muted

@@ -31,30 +31,7 @@ export default class AddDevice extends Component {
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           className="notSelectable defaultCursor"
         >
-          <DialogTitle
-            style={
-              window.innerWidth < MOBILE_WIDTH
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { width: "350px", background: "#2f333d" }
-                : { width: "350px", background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
-              Add device
-            </font>
-          </DialogTitle>
+          <DialogTitle>Add device</DialogTitle>
           <div
             style={
               typeof Storage !== "undefined" &&
@@ -74,24 +51,8 @@ export default class AddDevice extends Component {
           >
             a
           </div>
-          <DialogActions
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    padding: "8px",
-                    margin: "0",
-                    background: "#2f333d",
-                  }
-                : {
-                    padding: "8px",
-                    margin: "0",
-                  }
-            }
-          >
-            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-              Never mind
-            </Button>
+          <DialogActions>
+            <Button onClick={this.props.close}>Never mind</Button>
             <Button
               variant="contained"
               onClick={() => {
@@ -99,7 +60,6 @@ export default class AddDevice extends Component {
                 this.setState({ authDialogOpen: true })
               }}
               color="primary"
-              style={{margin:0}}
             >
               Proceed
             </Button>
@@ -112,30 +72,7 @@ export default class AddDevice extends Component {
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           className="notSelectable defaultCursor"
         >
-          <DialogTitle
-            style={
-              window.innerWidth < MOBILE_WIDTH
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { width: "350px", background: "#2f333d" }
-                : { width: "350px", background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
-              Add device
-            </font>
-          </DialogTitle>
+          <DialogTitle>Add device</DialogTitle>
           <div
             style={
               typeof Storage !== "undefined" &&
@@ -162,32 +99,8 @@ export default class AddDevice extends Component {
               ))}
             </List>
           </div>
-          <DialogActions
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    padding: "8px",
-                    margin: "0",
-                    background: "#2f333d",
-                  }
-                : {
-                    padding: "8px",
-                    margin: "0",
-                  }
-            }
-          >
-            <Button
-              onClick={this.props.close}
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white", marginRight: "4px" }
-                  : { marginRight: "4px" }
-              }
-            >
-              Never mind
-            </Button>
+          <DialogActions>
+            <Button onClick={this.props.close}>Never mind</Button>
             <Button
               variant="contained"
               onClick={() => this.props.close()}

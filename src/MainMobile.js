@@ -345,25 +345,25 @@ class MainMobile extends Component {
           owner {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           admins {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           editors {
             id
             email
-            fullName
+            name
             profileIconColor
           }
           spectators {
             id
             email
-            fullName
+            name
             profileIconColor
           }
         }

@@ -192,21 +192,7 @@ class ChangeMailDialog extends React.Component {
             </FormControl>
             <br />
           </div>
-          <DialogActions
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    padding: "8px",
-                    margin: "0",
-                    background: "#2f333d",
-                  }
-                : {
-                    padding: "8px",
-                    margin: "0",
-                  }
-            }
-          >
+          <DialogActions>
             <Button
               onClick={this.props.handleEmailDialogClose}
               style={{ marginRight: "4px" }}
@@ -289,8 +275,7 @@ class ChangeMailDialog extends React.Component {
             <br />
             <br />
           </div>
-
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions>
             <Button
               onClick={this.closeMailDialog}
               style={{ marginRight: "4px" }}

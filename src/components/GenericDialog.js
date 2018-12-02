@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import Konami from "react-konami-code"
-import CircularProgress from "@material-ui/core/CircularProgress"
+import CenteredSpinner from "./CenteredSpinner"
 
 const MOBILE_WIDTH = 600
 
@@ -46,100 +46,26 @@ export default class GenericDialog extends Component {
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <DialogTitle
-            style={
-              window.innerWidth < MOBILE_WIDTH
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? {
-                      width: "calc(100% - 48px)",
-                      background: "#2f333d",
-                      textAlign: "center",
-                    }
-                  : {
-                      width: "calc(100% - 48px)",
-                      background: "#fff",
-                      textAlign: "center",
-                    }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? {
-                    width: "350px",
-                    background: "#2f333d",
-                    textAlign: "center",
-                  }
-                : { width: "350px", background: "#fff", textAlign: "center" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
-              Unlocking superpowers!
-            </font>
-          </DialogTitle>
+          <DialogTitle>Unlocking superpowers!</DialogTitle>
+          <CenteredSpinner style={{ margin: "12px 0 32px 0" }} noDelay large />
           <div
             style={{
-              height: "100%",
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
+              paddingLeft: "24px",
+              paddingRight: "24px",
               textAlign: "center",
+              marginBottom: "8px",
             }}
           >
-            <CircularProgress
-              size={48}
-              style={{
-                marginTop: "16px",
-                marginBottom: "32px",
-              }}
-            />
-            <div
-              style={{
-                paddingLeft: "24px",
-                paddingRight: "24px",
-                textAlign: "center",
-                marginBottom: "8px",
-              }}
-            >
-              Please wait, this could take a few minutes
-            </div>
+            Please wait, this could take a few minutes
           </div>
-          <DialogActions
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    padding: "8px",
-                    margin: "0",
-                    background: "#2f333d",
-                  }
-                : {
-                    padding: "8px",
-                    margin: "0",
-                  }
-            }
-          >
+          <DialogActions>
             <Button
               onClick={() =>
                 this.setState({ open: false, confirmationOpen: true })
               }
               style={{ width: "100%" }}
             >
-              <font
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : {}
-                }
-              >
-                Close
-              </font>
+              Close
             </Button>
           </DialogActions>
         </Dialog>
@@ -150,39 +76,7 @@ export default class GenericDialog extends Component {
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
         >
-          <DialogTitle
-            style={
-              window.innerWidth < MOBILE_WIDTH
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? {
-                      width: "calc(100% - 48px)",
-                      background: "#2f333d",
-                    }
-                  : {
-                      width: "calc(100% - 48px)",
-                      background: "#fff",
-                    }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? {
-                    width: "350px",
-                    background: "#2f333d",
-                  }
-                : { width: "350px", background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
-              Are you sure?
-            </font>
-          </DialogTitle>
+          <DialogTitle>Are you sure?</DialogTitle>
           <div
             style={{
               marginLeft: "24px",
@@ -193,37 +87,14 @@ export default class GenericDialog extends Component {
           >
             Are you sure you want to give up your superpowers?
           </div>
-          <DialogActions
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    padding: "8px",
-                    margin: "0",
-                    background: "#2f333d",
-                  }
-                : {
-                    padding: "8px",
-                    margin: "0",
-                  }
-            }
-          >
+          <DialogActions>
             <Button
               onClick={() =>
                 this.setState({ open: true, confirmationOpen: false })
               }
               style={{ marginRight: "4px" }}
             >
-              <font
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : {}
-                }
-              >
-                Go back
-              </font>
+              Go back
             </Button>
             <Button
               onClick={() => {
@@ -235,7 +106,7 @@ export default class GenericDialog extends Component {
               }}
               style={{ marginRight: "4px" }}
               variant="contained"
-              color="secondary"
+              color="primary"
             >
               Give up
             </Button>

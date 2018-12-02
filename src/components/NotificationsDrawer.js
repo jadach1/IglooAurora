@@ -608,12 +608,6 @@ class NotificationsDrawer extends React.Component {
           >
             <ListItemIcon>
               <Icon
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
               >
                 markunread
               </Icon>

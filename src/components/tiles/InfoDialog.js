@@ -65,7 +65,7 @@ class InfoDialog extends React.Component {
             ""
           )}
         </div>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions>
           <Button onClick={this.props.handleInfoClose}>Close</Button>
         </DialogActions>
       </Dialog>

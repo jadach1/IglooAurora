@@ -51,12 +51,7 @@ class ChangeBoard extends React.Component {
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         className="notSelectable defaultCursor"
       >
-        <DialogTitle
-          className="notSelectable defaultCursor"
-          style={{ width: "300px" }}
-        >
-          Change board
-        </DialogTitle>
+        <DialogTitle>Change board</DialogTitle>
         <RadioGroup
           onChange={(event, value) => this.setState({ newBoard: value })}
           value={this.state.newBoard || this.props.device.board.id}
@@ -71,7 +66,7 @@ class ChangeBoard extends React.Component {
               />
             ))}
         </RadioGroup>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions>
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
           </Button>

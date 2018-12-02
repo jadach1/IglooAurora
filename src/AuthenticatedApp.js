@@ -73,6 +73,7 @@ class AuthenticatedApp extends Component {
         <GraphQLFetcher
           isMobile={this.props.isMobile}
           logOut={this.props.logOut}
+          forceUpdate={this.props.forceUpdate}
         />
       </ApolloProvider>
     )

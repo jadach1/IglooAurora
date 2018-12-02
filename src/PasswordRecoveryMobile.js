@@ -164,7 +164,7 @@ class MobilePasswordRecovery extends Component {
                       passwordScore: zxcvbn(event.target.value, [
                         user.email,
                         user.email.split("@")[0],
-                        user.fullName,
+                        user.name,
                         "igloo",
                         "igloo aurora",
                         "aurora",

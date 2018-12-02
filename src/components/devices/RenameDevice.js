@@ -62,12 +62,7 @@ class RenameDevice extends React.Component {
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         className="notSelectable defaultCursor"
       >
-        <DialogTitle
-          className="notSelectable defaultCursor"
-          style={{ width: "350px" }}
-        >
-          Rename device
-        </DialogTitle>
+        <DialogTitle>Rename device</DialogTitle>
         <div style={{ height: "100%" }}>
           <FormControl
             style={{
@@ -111,7 +106,7 @@ class RenameDevice extends React.Component {
           </FormControl>
         </div>
         <br />
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions>
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
           </Button>

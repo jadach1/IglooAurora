@@ -29,12 +29,7 @@ class DeviceInfo extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle
-          style={{ width: "350px" }}
-          className="notSelectable defaultCursor"
-        >
-          Device information
-        </DialogTitle>
+        <DialogTitle>Device information</DialogTitle>
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
@@ -71,7 +66,7 @@ class DeviceInfo extends React.Component {
               </React.Fragment>
             )}
         </div>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>

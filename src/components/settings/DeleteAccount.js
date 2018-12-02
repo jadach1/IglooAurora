@@ -50,7 +50,7 @@ class DeleteAccountDialog extends React.Component {
             Be careful, your data will be erased permanently.
             <br /> <br />
           </div>
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions>
             <Button
               keyboardFocused={true}
               onClick={this.props.closeDeleteConfirmed}
@@ -149,7 +149,7 @@ class DeleteAccountDialog extends React.Component {
             <br />
             <br />
           </div>
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions>
             <Button
               keyboardFocused={true}
               onClick={this.props.closeDelete}
