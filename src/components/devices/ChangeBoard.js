@@ -50,8 +50,10 @@ class ChangeBoard extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         className="notSelectable defaultCursor"
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Change board</DialogTitle>
+        <DialogTitle disableTypography>Change board</DialogTitle>
         <RadioGroup
           onChange={(event, value) => this.setState({ newBoard: value })}
           value={this.state.newBoard || this.props.device.board.id}

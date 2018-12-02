@@ -32,6 +32,8 @@ class GDPRDataDownload extends React.Component {
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle style={{ width: "350px" }}>
             Download your data

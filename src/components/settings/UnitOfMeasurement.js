@@ -31,8 +31,10 @@ export default class UnitOfMeasumentDialog extends React.Component {
         onClose={this.props.handleUnitDialogClose}
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Change units of measurement</DialogTitle>
+        <DialogTitle disableTypography>Change units of measurement</DialogTitle>
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >

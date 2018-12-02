@@ -89,8 +89,10 @@ class CreateBoard extends React.Component {
         className="notSelectable"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Create board</DialogTitle>
+        <DialogTitle disableTypography>Create board</DialogTitle>
         <div style={{ height: "100%" }}>
           <FormControl
             style={{

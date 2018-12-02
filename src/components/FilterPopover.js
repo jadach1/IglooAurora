@@ -152,16 +152,27 @@ export default class FilterPopover extends Component {
                         {deviceType}
                       </span>
                     }
+                    secondary={
+                      <span
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "#c1c2c5" }
+                            : { color: "#7a7a7a" }
+                        }
+                      >
+                        {occurrences[deviceType] +
+                          (occurrences[deviceType] === 1
+                            ? " device"
+                            : " devices")}
+                      </span>
+                    }
                     style={{
                       cursor: "default",
                       whiteSpace: "nowrap",
                       overflow: "hidden",
                       textOverflow: "ellipsis",
                     }}
-                    secondary={
-                      occurrences[deviceType] +
-                      (occurrences[deviceType] === 1 ? " device" : " devices")
-                    }
                   />
                 </ListItem>
               ))}

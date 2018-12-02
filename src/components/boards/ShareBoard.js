@@ -128,8 +128,10 @@ class ShareBoard extends React.Component {
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           className="notSelectable defaultCursor"
+          fullWidth
+          maxWidth="xs"
         >
-          <DialogTitle>Share board</DialogTitle>
+          <DialogTitle disableTypography>Share board</DialogTitle>
           <List
             subheader={<li />}
             style={
@@ -575,10 +577,7 @@ class ShareBoard extends React.Component {
           >
             <MenuItem onClick={() => this.setState({ anchorEl2: null })}>
               <ListItemIcon>
-                <Icon
-                >
-                  edit
-                </Icon>
+                <Icon>edit</Icon>
               </ListItemIcon>
               <ListItemText inset primary="Change role" />
             </MenuItem>
@@ -601,8 +600,10 @@ class ShareBoard extends React.Component {
           className="notSelectable defaultCursor"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
-          <DialogTitle>Stop sharing</DialogTitle>
+          <DialogTitle disableTypography>Stop sharing</DialogTitle>
           <div
             style={{
               paddingLeft: "24px",

@@ -60,8 +60,10 @@ class LeaveBoard extends React.Component {
         titleClassName="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Leave board</DialogTitle>
+        <DialogTitle disableTypography>Leave board</DialogTitle>
         <div style={{ paddingLeft: "24px", height: "100%" }}>
           Are you sure you want to leave {this.props.board.customName}?
         </div>

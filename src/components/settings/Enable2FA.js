@@ -3,7 +3,8 @@ import Dialog from "material-ui/Dialog"
 import Button from "@material-ui/core/Button"
 import { Step, Stepper, StepButton, StepContent } from "material-ui/Stepper"
 import TextField from "material-ui/TextField"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"; import createMuiTheme from "@material-ui/core/styles/createMuiTheme";
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Icon from "@material-ui/core/Icon"
 
 const theme = createMuiTheme({
@@ -17,31 +18,29 @@ const twoFactorDialogContentStyle = {
 }
 
 const StepActions = ({ step, handleNext, handlePrev }) => (
-   
-    <div style={{ margin: "12px 0" }}>
+  <div style={{ margin: "12px 0" }}>
+    <Button
+      variant="contained"
+      color="primary"
+      buttonStyle={{ backgroundColor: "#0083ff" }}
+      disableTouchRipple={true}
+      disableFocusRipple={true}
+      primary={true}
+      onClick={handleNext}
+      style={{ marginRight: "4px" }}
+    >
+      Next
+    </Button>
+    {step > 0 && (
       <Button
-        variant="contained"
-        color="primary"
-        buttonStyle={{ backgroundColor: "#0083ff" }}
         disableTouchRipple={true}
         disableFocusRipple={true}
-        primary={true}
-        onClick={handleNext}
-        style={{ marginRight: "4px" }}
+        onClick={handlePrev}
       >
-        Next
+        Back
       </Button>
-      {step > 0 && (
-        <Button
-          disableTouchRipple={true}
-          disableFocusRipple={true}
-          onClick={handlePrev}
-        >
-          Back
-        </Button>
-      )}
-    </div>
-   
+    )}
+  </div>
 )
 
 export default class TwoFactorDialog extends React.Component {
@@ -73,6 +72,8 @@ export default class TwoFactorDialog extends React.Component {
         className="notSelectable"
         bodyStyle={{ padding: "8px" }}
         titleClassName="notSelectable defaultCursor"
+        fullWidth
+        maxWidth="xs"
       >
         <div
           style={{

@@ -32,8 +32,10 @@ class ChangeOwner extends Component {
         className="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Transfer ownership</DialogTitle>
+        <DialogTitle disableTypography>Transfer ownership</DialogTitle>
         <FormControl
           style={{
             width: "calc(100% - 48px)",

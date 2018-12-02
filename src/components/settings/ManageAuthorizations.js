@@ -117,7 +117,7 @@ class AuthDialog extends React.Component {
 
     if (this.props.tokenData.user && this.props.tokenData.user.permanentTokens)
       tokenList = (
-        <List >
+        <List>
           {this.props.tokenData.user.permanentTokens.map(token => (
             <ListItem button>
               <ListItemIcon>
@@ -178,6 +178,8 @@ class AuthDialog extends React.Component {
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle style={{ width: "350px" }}>
             Type your password
@@ -270,6 +272,8 @@ class AuthDialog extends React.Component {
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle style={{ width: "350px" }}>
             Manage authorizations
@@ -294,6 +298,8 @@ class AuthDialog extends React.Component {
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle style={{ width: "350px" }}>
             Choose a token name

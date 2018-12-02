@@ -30,8 +30,10 @@ export default class ChangeRole extends Component {
         className="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Change role</DialogTitle>
+        <DialogTitle disableTypography>Change role</DialogTitle>
         <RadioGroup
           onChange={event => this.setState({ value: event.target.value })}
           value={this.state.value}

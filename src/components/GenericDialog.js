@@ -45,8 +45,10 @@ export default class GenericDialog extends Component {
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
-          <DialogTitle>Unlocking superpowers!</DialogTitle>
+          <DialogTitle disableTypography>Unlocking superpowers!</DialogTitle>
           <CenteredSpinner style={{ margin: "12px 0 32px 0" }} noDelay large />
           <div
             style={{
@@ -75,8 +77,10 @@ export default class GenericDialog extends Component {
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
-          <DialogTitle>Are you sure?</DialogTitle>
+          <DialogTitle disableTypography>Are you sure?</DialogTitle>
           <div
             style={{
               marginLeft: "24px",

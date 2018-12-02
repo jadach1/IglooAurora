@@ -80,6 +80,8 @@ class CreateDevice extends React.Component {
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           className="notSelectable defaultCursor"
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle
             style={
