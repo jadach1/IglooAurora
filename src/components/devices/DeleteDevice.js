@@ -42,8 +42,10 @@ class DeleteDevice extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         className="notSelectable defaultCursor"
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Delete device</DialogTitle>
+        <DialogTitle disableTypography>Delete device</DialogTitle>
         <font
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >

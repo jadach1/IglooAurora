@@ -85,6 +85,8 @@ class ChangeMailDialog extends React.Component {
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle
             style={
@@ -223,6 +225,8 @@ class ChangeMailDialog extends React.Component {
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle style={{ width: "350px" }}>
             Manage your emails

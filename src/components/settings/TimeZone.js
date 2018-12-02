@@ -83,6 +83,8 @@ class TimeZoneDialog extends React.Component {
           paddingBottom: "0px",
         }}
         titleClassName="notSelectable defaultCursor"
+        fullWidth
+        maxWidth="xs"
       >
         <RadioGroup
           onChange={event => this.setState({ value: event.target.value })}

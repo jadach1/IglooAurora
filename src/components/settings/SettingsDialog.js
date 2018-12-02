@@ -44,6 +44,7 @@ import IconButton from "@material-ui/core/IconButton"
 import Tooltip from "@material-ui/core/Tooltip"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 // var moment = require("moment-timezone")
 
 let allDevices = []
@@ -218,23 +219,6 @@ class SettingsDialog extends React.Component {
   // TODO: update react to next version and change this to getDerivedStateFromProps
   componentWillReceiveProps(nextProps) {
     this.setState(allDialogsClosed)
-  }
-
-  updateDimensions() {
-    if (window.innerWidth > MOBILE_WIDTH) {
-      this.setState({ isDesktop: true })
-    } else {
-      this.setState({ isDesktop: false })
-    }
-  }
-
-  componentDidMount() {
-    this.updateDimensions()
-    window.addEventListener("resize", this.updateDimensions.bind(this))
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener("resize", this.updateDimensions.bind(this))
   }
 
   render() {
@@ -1263,170 +1247,172 @@ rightToggle={
 
     return (
       <React.Fragment>
-        {this.state.isDesktop ? (
-          <Dialog
-            open={this.props.isOpen}
-            onClose={this.props.closeSettingsDialog}
-            TransitionComponent={Transition}
-            className="notSelectable defaultCursor"
-          >
-            <DialogTitle style={{ padding: "0" }}>
-              <AppBar position="sticky">
-                <Tabs
-                  inkBarStyle={{
-                    background: "#ff4081",
-                    height: "3px",
-                    marginTop: "-3px",
-                  }}
-                  onChange={this.props.handleChange}
-                  value={this.props.slideIndex}
-                  centered
-                  fullWidth
+        <Dialog
+          open={this.props.isOpen}
+          onClose={this.props.closeSettingsDialog}
+          TransitionComponent={Transition}
+          className="notSelectable defaultCursor"
+          fullWidth
+          maxWidth="sm"
+          fullScreen={this.props.fullScreen}
+        >
+          {!this.props.fullScreen ? (
+            <React.Fragment>
+              <DialogTitle style={{ padding: "0" }}>
+                <AppBar position="sticky">
+                  <Tabs
+                    onChange={this.props.handleChange}
+                    value={this.props.slideIndex}
+                    centered
+                    fullWidth
+                  >
+                    <Tab
+                      icon={<Icon>language</Icon>}
+                      label="General"
+                      value={0}
+                    />
+                    <Tab
+                      icon={<Icon>account_box</Icon>}
+                      label="Account"
+                      value={1}
+                    />
+                    {typeof Storage !== "undefined" &&
+                      localStorage.getItem("devMode") === "true" && (
+                        <Tab
+                          icon={<Icon>code</Icon>}
+                          label="Development"
+                          value={2}
+                        />
+                      )}
+                  </Tabs>
+                </AppBar>
+              </DialogTitle>
+              {settingsContent}
+              <DialogActions>
+                <Button
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { float: "right", color: "white" }
+                      : { float: "right", color: "black" }
+                  }
+                  onClick={this.props.closeSettingsDialog}
                 >
-                  <Tab icon={<Icon>language</Icon>} label="General" value={0} />
-                  <Tab
+                  Close
+                </Button>
+              </DialogActions>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>
+              <AppBar position="sticky" style={{ height: "64px" }}>
+                <Toolbar
+                  style={{
+                    height: "64px",
+                    paddingLeft: "24px",
+                    paddingRight: "24px",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    color="inherit"
+                    className="defaultCursor"
+                    style={{
+                      marginLeft: "-8px",
+                    }}
+                  >
+                    Settings{" "}
+                  </Typography>
+                  <Tooltip id="tooltip-bottom" title="Close" placement="bottom">
+                    <IconButton
+                      onClick={this.props.closeSettingsDialog}
+                      style={{
+                        marginRight: "-16px",
+                        marginLeft: "auto",
+                        color: "white",
+                      }}
+                    >
+                      <Icon>close</Icon>
+                    </IconButton>
+                  </Tooltip>
+                </Toolbar>
+              </AppBar>
+              {settingsContent}
+              <AppBar
+                color="default"
+                position="static"
+                style={{
+                  marginBottom: "0px",
+                  marginTop: "auto",
+                  height: "64px",
+                }}
+              >
+                <BottomNavigation
+                  onChange={this.props.handleChangeBTIndex}
+                  value={this.props.slideIndex}
+                  showLabels
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? {
+                          height: "64px",
+                          backgroundColor: "#2f333d",
+                        }
+                      : {
+                          height: "64px",
+                          backgroundColor: "#fff",
+                        }
+                  }
+                >
+                  <BottomNavigationAction
+                    icon={<Icon>language</Icon>}
+                    label="General"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? this.props.slideIndex === 0
+                          ? { color: "#fff" }
+                          : { color: "#fff", opacity: 0.5 }
+                        : this.props.slideIndex === 0
+                        ? { color: "#0083ff" }
+                        : { color: "#757575" }
+                    }
+                  />
+                  <BottomNavigationAction
                     icon={<Icon>account_box</Icon>}
                     label="Account"
-                    value={1}
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? this.props.slideIndex === 1
+                          ? { color: "#fff" }
+                          : { color: "#fff", opacity: 0.5 }
+                        : this.props.slideIndex === 1
+                        ? { color: "#0083ff" }
+                        : { color: "#757575" }
+                    }
                   />
                   {typeof Storage !== "undefined" &&
                     localStorage.getItem("devMode") === "true" && (
-                      <Tab
+                      <BottomNavigationAction
                         icon={<Icon>code</Icon>}
                         label="Development"
-                        value={2}
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? this.props.slideIndex === 2
+                              ? { color: "#fff" }
+                              : { color: "#fff", opacity: 0.5 }
+                            : this.props.slideIndex === 2
+                            ? { color: "#0083ff" }
+                            : { color: "#757575" }
+                        }
                       />
                     )}
-                </Tabs>
+                </BottomNavigation>
               </AppBar>
-            </DialogTitle>
-            {settingsContent}
-            <DialogActions>
-              <Button
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { float: "right", color: "white" }
-                    : { float: "right", color: "black" }
-                }
-                onClick={this.props.closeSettingsDialog}
-              >
-                Close
-              </Button>
-            </DialogActions>
-          </Dialog>
-        ) : (
-          <Dialog
-            open={this.props.isOpen}
-            onClose={this.props.closeSettingsDialog}
-            className="notSelectable"
-            fullScreen
-            TransitionComponent={Transition}
-          >
-            <AppBar position="sticky" style={{ height: "64px" }}>
-              <Toolbar
-                style={{
-                  height: "64px",
-                  paddingLeft: "24px",
-                  paddingRight: "24px",
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  color="inherit"
-                  className="defaultCursor"
-                  style={{
-                    marginLeft: "-8px",
-                  }}
-                >
-                  Settings{" "}
-                </Typography>
-                <Tooltip id="tooltip-bottom" title="Close" placement="bottom">
-                  <IconButton
-                    onClick={this.props.closeSettingsDialog}
-                    style={{
-                      marginRight: "-16px",
-                      marginLeft: "auto",
-                      color: "white",
-                    }}
-                  >
-                    <Icon>close</Icon>
-                  </IconButton>
-                </Tooltip>
-              </Toolbar>
-            </AppBar>
-            {settingsContent}
-            <AppBar
-              color="default"
-              position="static"
-              style={{ marginBottom: "0px", marginTop: "auto", height: "64px" }}
-            >
-              <BottomNavigation
-                onChange={this.props.handleChangeBTIndex}
-                value={this.props.slideIndex}
-                showLabels
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? {
-                        height: "64px",
-                        backgroundColor: "#2f333d",
-                      }
-                    : {
-                        height: "64px",
-                        backgroundColor: "#fff",
-                      }
-                }
-              >
-                <BottomNavigationAction
-                  icon={<Icon>language</Icon>}
-                  label="General"
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? this.props.slideIndex === 0
-                        ? { color: "#fff" }
-                        : { color: "#fff", opacity: 0.5 }
-                      : this.props.slideIndex === 0
-                      ? { color: "#0083ff" }
-                      : { color: "#757575" }
-                  }
-                />
-                <BottomNavigationAction
-                  icon={<Icon>account_box</Icon>}
-                  label="Account"
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? this.props.slideIndex === 1
-                        ? { color: "#fff" }
-                        : { color: "#fff", opacity: 0.5 }
-                      : this.props.slideIndex === 1
-                      ? { color: "#0083ff" }
-                      : { color: "#757575" }
-                  }
-                />
-                {typeof Storage !== "undefined" &&
-                  localStorage.getItem("devMode") === "true" && (
-                    <BottomNavigationAction
-                      icon={<Icon>code</Icon>}
-                      label="Development"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? this.props.slideIndex === 2
-                            ? { color: "#fff" }
-                            : { color: "#fff", opacity: 0.5 }
-                          : this.props.slideIndex === 2
-                          ? { color: "#0083ff" }
-                          : { color: "#757575" }
-                      }
-                    />
-                  )}
-              </BottomNavigation>
-            </AppBar>
-          </Dialog>
-        )}
+            </React.Fragment>
+          )}
+        </Dialog>
         {/* 
         <TwoFactorDialog
           isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}
@@ -1562,4 +1548,4 @@ export default graphql(
   {
     name: "ToggleQuietMode",
   }
-)(SettingsDialog)
+)(withMobileDialog({ breakpoint: "xs" })(SettingsDialog))

@@ -33,6 +33,8 @@ export default class ChangeShortcutDialog extends React.Component {
           TransitionComponent={Transition}
           titleClassName="defaultCursor"
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="sm"
         >
           <DialogTitle
             style={

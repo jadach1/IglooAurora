@@ -29,12 +29,7 @@ class InfoDialog extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle
-          style={{ width: "350px" }}
-          className="notSelectable defaultCursor"
-        >
-          Device information
-        </DialogTitle>
+        <DialogTitle disableTypography>Card information</DialogTitle>
         <div
           style={{ paddingRight: "24px", marginLeft: "24px", height: "100%" }}
         >

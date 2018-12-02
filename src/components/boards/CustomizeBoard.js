@@ -109,8 +109,10 @@ class CustomizeBoard extends React.Component {
         titleClassName="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Customize board</DialogTitle>
+        <DialogTitle disableTypography>Customize board</DialogTitle>
         <div style={{ height: "100%" }}>
           <FormControl
             style={{

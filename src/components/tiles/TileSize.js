@@ -72,6 +72,8 @@ class TileSize extends Component {
         onClose={this.props.close}
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
         <DialogTitle style={{ width: "300px" }}>Change card size</DialogTitle>
         <RadioGroup

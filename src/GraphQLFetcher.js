@@ -606,7 +606,7 @@ class GraphQLFetcher extends Component {
               }}
               devicesSearchText={this.state.devicesSearchText}
               forceUpdate={this.props.forceUpdate}
-              />
+            />
           )
         }
       } else {
@@ -624,7 +624,7 @@ class GraphQLFetcher extends Component {
             areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
             forceUpdate={this.props.forceUpdate}
-            />
+          />
         )
       }
     }

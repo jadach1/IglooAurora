@@ -554,9 +554,6 @@ class MainMobile extends Component {
                   showHiddenNotifications={this.showHiddenNotifications}
                   nightMode={nightMode}
                   devMode={devMode}
-                  openSnackBar={() => {
-                    this.setState({ copyMessageOpen: true })
-                  }}
                   boardData={this.props.boardData}
                   boards={this.props.boards}
                   isMobile={true}

@@ -31,6 +31,8 @@ export default class TimeFormatDialog extends React.Component {
         TransitionComponent={Transition}
         titleClassName="defaultCursor"
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
         <DialogTitle
           className="notSelectable defaultCursor"

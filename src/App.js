@@ -94,6 +94,9 @@ const lightTheme = createMuiTheme({
   overrides: {
     MuiDialogTitle: {
       root: {
+        fontSize: "1.3125rem",
+        lineHeight: "1.16667em",
+        fontWeight: 500,
         cursor: "default",
         webkitTouchCallout: "none",
         webkitUserSelect: "none",
@@ -106,6 +109,11 @@ const lightTheme = createMuiTheme({
     MuiButton: {
       containedPrimary: {
         backgroundColor: "#0083ff",
+      },
+    },
+    MuiListItemIcon: {
+      root: {
+        color: "black",
       },
     },
     ...sharedStyles,
@@ -129,6 +137,9 @@ const darkTheme = createMuiTheme({
     MuiDialogTitle: {
       root: {
         color: "white",
+        fontSize: "1.3125rem",
+        lineHeight: "1.16667em",
+        fontWeight: 500,
         cursor: "default",
         webkitTouchCallout: "none",
         webkitUserSelect: "none",

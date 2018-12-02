@@ -96,6 +96,8 @@ class CreateValue extends React.Component {
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle
             style={

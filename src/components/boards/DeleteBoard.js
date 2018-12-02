@@ -43,8 +43,10 @@ class DeleteBoard extends React.Component {
         titleClassName="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Delete board</DialogTitle>
+        <DialogTitle disableTypography>Delete board</DialogTitle>
         <font
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
