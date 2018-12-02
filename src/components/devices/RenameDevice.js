@@ -61,8 +61,10 @@ class RenameDevice extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         className="notSelectable defaultCursor"
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Rename device</DialogTitle>
+        <DialogTitle disableTypography>Rename device</DialogTitle>
         <div style={{ height: "100%" }}>
           <FormControl
             style={{

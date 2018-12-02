@@ -31,8 +31,10 @@ export default class InviteUser extends Component {
         className="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Invite an {this.props.selectedUserType}</DialogTitle>
+        <DialogTitle disableTypography>Invite an {this.props.selectedUserType}</DialogTitle>
 
         <FormControl
           style={{

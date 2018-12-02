@@ -36,6 +36,8 @@ class DeleteAccountDialog extends React.Component {
           className="notSelectable defaultCursor"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle style={{ width: "350px" }}>
             Are you sure you want to delete your account?
@@ -79,6 +81,8 @@ class DeleteAccountDialog extends React.Component {
           className="notSelectable defaultCursor"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle style={{ width: "350px" }}>
             Type your password

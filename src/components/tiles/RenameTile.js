@@ -78,16 +78,12 @@ class RenameTileDialog extends React.Component {
   render() {
     return (
       <Dialog
-        title="Rename card"
         open={this.props.renameTileOpen}
         onClose={this.props.handleRenameTileDialogClose}
-        className="notSelectable"
-        contentStyle={{
-          width: "350px",
-        }}
-        titleClassName="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
         <DialogTitle style={{ width: "350px" }}>Rename card</DialogTitle>
         <div

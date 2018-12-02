@@ -32,6 +32,8 @@ class DataSettings extends Component {
         onClose={this.props.close}
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
         <DialogTitle style={{ width: "300px" }}>Data settings</DialogTitle>
         <div style={{ paddingLeft: "24px" }}>Unit of measurement</div>

@@ -59,8 +59,10 @@ let PendingShares = props => {
       onClose={props.close}
       fullScreen={window.innerWidth < MOBILE_WIDTH}
       TransitionComponent={Transition}
+      fullWidth
+      maxWidth="xs"
     >
-      <DialogTitle>Pending share requests</DialogTitle>
+      <DialogTitle disableTypography>Pending share requests</DialogTitle>
       <List style={{ width: "100%", height: "100%" }}>
         {props.pendingBoardShares.map(boardShare => (
           <ListItem style={{ paddingLeft: "24px" }}>

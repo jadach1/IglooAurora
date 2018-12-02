@@ -25,12 +25,12 @@ export default class FullScreenTile extends React.Component {
       <Dialog
         open={this.props.fullScreen}
         onClose={this.props.handleClose}
-        className="notSelectable"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
-        title={valueTitle}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>{valueTitle}</DialogTitle>
+        <DialogTitle disableTypography>{valueTitle}</DialogTitle>
         <div style={{ height: "100%" }}>{this.props.specificTile}</div>
         <DialogActions>
           <Button onClick={this.props.handleClose}>Close</Button>

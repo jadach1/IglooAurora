@@ -26,8 +26,10 @@ export default class extends React.Component {
         className="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
-        <DialogTitle>Your account isn't verified</DialogTitle>
+        <DialogTitle disableTypography>Your account isn't verified</DialogTitle>
         <div
           style={{
             height: "100%",

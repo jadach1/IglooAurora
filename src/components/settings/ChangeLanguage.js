@@ -106,6 +106,8 @@ class ChangeLanguageDialog extends React.Component {
           onRequestClose={this.props.handleLanguageDialogClose}
           className="notSelectable"
           titleClassName="notSelectable defaultCursor"
+          fullWidth
+          maxWidth="xs"
         >
           <SelectableList
             style={{ paddingBottom: "0px", padding: "0" }}

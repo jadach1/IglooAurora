@@ -29,9 +29,11 @@ export default class AddDevice extends Component {
           onClose={this.props.close}
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
           className="notSelectable defaultCursor"
         >
-          <DialogTitle>Add device</DialogTitle>
+          <DialogTitle disableTypography>Add device</DialogTitle>
           <div
             style={
               typeof Storage !== "undefined" &&
@@ -71,8 +73,10 @@ export default class AddDevice extends Component {
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           className="notSelectable defaultCursor"
+          fullWidth
+          maxWidth="xs"
         >
-          <DialogTitle>Add device</DialogTitle>
+          <DialogTitle disableTypography>Add device</DialogTitle>
           <div
             style={
               typeof Storage !== "undefined" &&

@@ -72,6 +72,8 @@ export default class ChangePasswordDialog extends React.Component {
         titleClassName="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullWidth
+        maxWidth="xs"
       >
         <DialogTitle
           style={

@@ -29,7 +29,7 @@ class BoardInfo extends React.Component {
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         TransitionComponent={Transition}
       >
-        <DialogTitle>Board information</DialogTitle>
+        <DialogTitle disableTypography>Board information</DialogTitle>
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >

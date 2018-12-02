@@ -77,6 +77,8 @@ export default class ChangeMailDialog extends React.Component {
           onRequestClose={this.props.handleEmailDialogClose}
           className="notSelectable"
           titleClassName="notSelectable defaultCursor"
+          fullWidth
+          maxWidth="xs"
         >
           <TextField
             floatingLabelShrinkStyle={{ color: "#0083ff" }}
@@ -97,6 +99,8 @@ export default class ChangeMailDialog extends React.Component {
           onRequestClose={this.closeMailDialog}
           className="notSelectable"
           titleClassName="notSelectable defaultCursor"
+          fullWidth
+          maxWidth="xs"
           bodyStyle={{
             paddingLeft: "8px",
             paddingRight: "8px",

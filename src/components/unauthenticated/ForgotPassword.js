@@ -37,10 +37,10 @@ export default class ForgotPassword extends React.Component {
         <Dialog
           open={this.props.open}
           onClose={this.props.close}
-          className="notSelectable"
           TransitionComponent={Transition}
-          titleClassName="defaultCursor"
           fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
         >
           <DialogTitle
             className="notSelectable defaultCursor"

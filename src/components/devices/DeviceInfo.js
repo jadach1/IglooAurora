@@ -29,7 +29,7 @@ class DeviceInfo extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle>Device information</DialogTitle>
+        <DialogTitle disableTypography>Device information</DialogTitle>
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
