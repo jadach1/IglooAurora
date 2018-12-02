@@ -61,12 +61,12 @@ class LeaveBoard extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle style={{ width: "350px" }}>Leave board</DialogTitle>
+        <DialogTitle>Leave board</DialogTitle>
         <div style={{ paddingLeft: "24px", height: "100%" }}>
           Are you sure you want to leave {this.props.board.customName}?
         </div>
         <br />
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+        <DialogActions>
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
           </Button>

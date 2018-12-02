@@ -90,12 +90,7 @@ class CreateBoard extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle
-          className="notSelectable defaultCursor"
-          style={{ width: "350px" }}
-        >
-          Create board
-        </DialogTitle>
+        <DialogTitle>Create board</DialogTitle>
         <div style={{ height: "100%" }}>
           <FormControl
             style={{
@@ -232,18 +227,11 @@ class CreateBoard extends React.Component {
             </Button>
           </div>
         </div>
-        <DialogActions
-          className="notSelectable defaultCursor"
-          style={{ marginLeft: "8px", marginRight: "8px" }}
-        >
-          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-            Never mind
-          </Button>
+        <DialogActions>
+          <Button onClick={this.props.close}>Never mind</Button>
           <Button
             variant="contained"
             color="primary"
-            primary={true}
-            buttonStyle={{ backgroundColor: "#0083ff" }}
             onClick={this.createBoardMutation}
             disabled={!this.state.customName}
           >

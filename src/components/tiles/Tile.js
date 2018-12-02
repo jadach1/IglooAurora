@@ -364,32 +364,15 @@ class Tile extends Component {
                   style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { background: "#21252b" } : {}}
                 /> */}
                 <MenuItem
-                  className="notSelectable"
                   onClick={() => {
                     this.setState({ infoOpen: true })
                     this.handleMenuClose()
                   }}
-                  leftIcon={<Icon>info</Icon>}
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
                 >
                   <ListItemIcon>
-                    <Icon
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      info
-                    </Icon>
+                    <Icon>info</Icon>
                   </ListItemIcon>
-                  <ListItemText inset primary="Information" />
+                  <ListItemText inset primary="Information" disableTypography />
                 </MenuItem>
                 <Divider
                   style={
@@ -400,30 +383,15 @@ class Tile extends Component {
                   }
                 />
                 <MenuItem
-                  primaryText={value.visibility === "VISIBLE" ? "Hide" : "Show"}
-                  className="notSelectable"
                   onClick={() => {
                     value.visibility === "VISIBLE"
                       ? updateShown(false)
                       : updateShown(true)
                     this.handleMenuClose()
                   }}
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
                 >
                   <ListItemIcon>
-                    <Icon
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
+                    <Icon>
                       {/* fix for ToggleIcon glitch on Edge */}
                       {document.documentMode ||
                       /Edge/.test(navigator.userAgent) ? (
@@ -444,65 +412,36 @@ class Tile extends Component {
                   <ListItemText
                     inset
                     primary={value.visibility === "VISIBLE" ? "Hide" : "Show"}
+                    disableTypography
                   />
                 </MenuItem>
                 <MenuItem
                   primaryText="Resize"
-                  className="notSelectable"
-                  leftIcon={<Icon>aspect_ratio</Icon>}
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
                   onClick={() => {
                     this.setState({ tileSizeOpen: true })
                     this.handleMenuClose()
                   }}
                 >
                   <ListItemIcon>
-                    <Icon
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      aspect_ratio
-                    </Icon>
+                    <Icon>aspect_ratio</Icon>
                   </ListItemIcon>
-                  <ListItemText inset primary="Resize" />
+                  <ListItemText inset primary="Resize" disableTypography />
                 </MenuItem>
                 <MenuItem
                   primaryText="Data settings"
-                  className="notSelectable"
-                  leftIcon={<Icon>aspect_ratio</Icon>}
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
                   onClick={() => {
                     this.handleMenuClose()
                     this.setState({ dataSettingsOpen: true })
                   }}
                 >
                   <ListItemIcon>
-                    <Icon
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      settings
-                    </Icon>
+                    <Icon>settings</Icon>
                   </ListItemIcon>
-                  <ListItemText inset primary="Data settings" />
+                  <ListItemText
+                    inset
+                    primary="Data settings"
+                    disableTypography
+                  />
                 </MenuItem>
                 <Divider
                   style={
@@ -514,32 +453,15 @@ class Tile extends Component {
                 />
                 <MenuItem
                   primaryText="Rename"
-                  className="notSelectable"
-                  leftIcon={<Icon>create</Icon>}
                   onClick={() => {
                     this.setState({ renameTileOpen: true })
                     this.handleMenuClose()
                   }}
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
                 >
                   <ListItemIcon>
-                    <Icon
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      create
-                    </Icon>
+                    <Icon>create</Icon>
                   </ListItemIcon>
-                  <ListItemText inset primary="Rename" />
+                  <ListItemText inset primary="Rename" disableTypography />
                 </MenuItem>
               </Menu>
             </div>

@@ -46,7 +46,6 @@ class Login extends Component {
         mutation: gql`
           mutation($email: String!, $password: String!) {
             authenticateUser(email: $email, password: $password) {
-              id
               token
               user {
                 boardCount

@@ -43,8 +43,8 @@ export default class ChangeShortcutDialog extends React.Component {
                   : { width: "calc(100% - 48px)", background: "#fff" }
                 : typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                ? {  background: "#2f333d" }
-                : {  background: "#fff" }
+                ? { background: "#2f333d" }
+                : { background: "#fff" }
             }
           >
             <font
@@ -249,24 +249,8 @@ export default class ChangeShortcutDialog extends React.Component {
               </Table>
             </Paper>
           </div>
-          <DialogActions
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    padding: "8px",
-                    margin: "0",
-                    background: "#2f333d",
-                  }
-                : {
-                    padding: "8px",
-                    margin: "0",
-                  }
-            }
-          >
-            <Button
-              onClick={this.props.handleShortcutDialogClose}
-            >
+          <DialogActions>
+            <Button onClick={this.props.handleShortcutDialogClose}>
               <font
                 style={
                   typeof Storage !== "undefined" &&

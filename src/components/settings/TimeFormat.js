@@ -69,11 +69,8 @@ export default class TimeFormatDialog extends React.Component {
             />
           </RadioGroup>
         </div>
-        <DialogActions style={{ marginRight: "8px" }}>
-          <Button
-            onClick={this.props.handleTimeFormatDialogClose}
-            style={{ marginRight: "0" }}
-          >
+        <DialogActions>
+          <Button onClick={this.props.handleTimeFormatDialogClose}>
             Close
           </Button>
         </DialogActions>

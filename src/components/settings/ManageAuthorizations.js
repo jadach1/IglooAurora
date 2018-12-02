@@ -248,7 +248,7 @@ class AuthDialog extends React.Component {
             <br />
             <br />
           </div>
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions>
             <Button
               onClick={this.props.handleAuthDialogClose}
               style={{ marginRight: "4px" }}
@@ -284,7 +284,7 @@ class AuthDialog extends React.Component {
           >
             {tokenList}
           </div>
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions>
             <Button onClick={this.closeAuthDialog}>Close</Button>
           </DialogActions>
         </Dialog>
@@ -342,7 +342,7 @@ class AuthDialog extends React.Component {
             <br />
             <br />
           </div>
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions>
             <Button
               onClick={() =>
                 this.setState({ nameOpen: false, authDialogOpen: true })

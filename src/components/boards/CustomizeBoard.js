@@ -110,7 +110,7 @@ class CustomizeBoard extends React.Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle style={{ width: "350px" }}>Customize board</DialogTitle>
+        <DialogTitle>Customize board</DialogTitle>
         <div style={{ height: "100%" }}>
           <FormControl
             style={{
@@ -247,10 +247,8 @@ class CustomizeBoard extends React.Component {
             </Button>
           </div>
         </div>
-        <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
-          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-            Never mind
-          </Button>
+        <DialogActions>
+          <Button onClick={this.props.close}>Never mind</Button>
           <Button
             variant="contained"
             color="primary"
@@ -262,7 +260,6 @@ class CustomizeBoard extends React.Component {
               (this.state.initialSlideIndex === this.state.slideIndex &&
                 this.props.board.customName === this.state.customName)
             }
-            style={{ marginRight: "4px" }}
           >
             Customize
           </Button>

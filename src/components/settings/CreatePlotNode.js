@@ -86,7 +86,7 @@ export default class CreatePlotNode extends React.Component {
           >
             a
           </div>
-          <DialogActions style={{ marginRight: "8px", marginLeft: "8px" }}>
+          <DialogActions>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind
             </Button>

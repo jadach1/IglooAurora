@@ -32,12 +32,7 @@ export default class InviteUser extends Component {
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle
-          className="notSelectable defaultCursor"
-          style={{ width: "350px" }}
-        >
-          Invite an {this.props.selectedUserType}
-        </DialogTitle>
+        <DialogTitle>Invite an {this.props.selectedUserType}</DialogTitle>
 
         <FormControl
           style={{
@@ -88,13 +83,8 @@ export default class InviteUser extends Component {
 
         <div style={{ height: "100%" }} />
         <br />
-        <DialogActions
-          className="notSelectable defaultCursor"
-          style={{ marginLeft: "8px", marginRight: "8px" }}
-        >
-          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-            Never mind
-          </Button>
+        <DialogActions>
+          <Button onClick={this.props.close}>Never mind</Button>
           <Button
             variant="contained"
             color="primary"

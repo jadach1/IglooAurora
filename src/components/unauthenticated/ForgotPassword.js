@@ -106,7 +106,7 @@ export default class ForgotPassword extends React.Component {
           <br />
 
           <div style={{ height: "100%" }} />
-          <DialogActions style={{ marginLeft: "8px", marginRight: "8px" }}>
+          <DialogActions>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind
             </Button>

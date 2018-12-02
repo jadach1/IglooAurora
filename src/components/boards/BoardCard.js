@@ -278,165 +278,80 @@ class BoardCard extends Component {
           }}
         >
           <MenuItem
-            className="notSelectable"
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? { color: "white" }
-                : { color: "black" }
-            }
             onClick={() => {
               this.setState({ infoOpen: true })
               this.handleMenuClose()
             }}
           >
             <ListItemIcon>
-              <Icon
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
-              >
-                info
-              </Icon>
+              <Icon>info</Icon>
             </ListItemIcon>
-            <ListItemText inset primary="Information" />
+            <ListItemText inset primary="Information" disableTypography />
           </MenuItem>
           <Divider />
           <MenuItem
-            className="notSelectable"
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? { color: "white" }
-                : { color: "black" }
-            }
             onClick={() => {
               this.setState({ anchorEl: null })
               this.setState({ shareOpen: true })
             }}
           >
             <ListItemIcon>
-              <Icon
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
-              >
-                share
-              </Icon>
+              <Icon>share</Icon>
             </ListItemIcon>
-            <ListItemText inset primary="Share" />
+            <ListItemText inset primary="Share" disableTypography />
           </MenuItem>
           {!(
             this.props.userData.user.email === this.props.board.owner.email
           ) && (
             <MenuItem
-              className="notSelectable"
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white" }
-                  : { color: "black" }
-              }
               onClick={() => {
                 this.setState({ leaveOpen: true })
                 this.handleMenuClose()
               }}
             >
               <ListItemIcon>
-                <Icon
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                >
-                  remove_circle
-                </Icon>
+                <Icon>remove_circle</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Leave board" />
+              <ListItemText inset primary="Leave board" disableTypography />
             </MenuItem>
           )}
           <Divider />
           <MenuItem
-            className="notSelectable"
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? { color: "white" }
-                : { color: "black" }
-            }
             onClick={() => {
               this.toggleQuietMode(this.props.board.muted ? false : true)
               this.handleMenuClose()
             }}
           >
             <ListItemIcon>
-              <Icon
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
-              >
+              <Icon>
                 {this.props.board.muted ? "notifications" : "notifications_off"}
               </Icon>
             </ListItemIcon>
             <ListItemText
               inset
               primary={this.props.board.muted ? "Unmute" : "Mute"}
+              disableTypography
             />
           </MenuItem>
           {this.props.board.myRole !== "SPECTATOR" && (
             <React.Fragment>
-              {" "}
               <Divider />
               <MenuItem
-                className="notSelectable"
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
                 onClick={() => {
                   this.setState({ renameOpen: true })
                   this.handleMenuClose()
                 }}
               >
                 <ListItemIcon>
-                  <Icon
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    mode_edit
-                  </Icon>
+                  <Icon>mode_edit</Icon>
                 </ListItemIcon>
-                <ListItemText inset primary="Customize" />
+                <ListItemText inset primary="Customize" disableTypography />
               </MenuItem>
             </React.Fragment>
           )}
           {(this.props.board.myRole === "OWNER" ||
             this.props.board.myRole === "ADMIN") && (
             <MenuItem
-              className="notSelectable"
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white" }
-                  : { color: "black" }
-              }
               onClick={() => {
                 this.setState({ deleteOpen: true })
                 this.handleMenuClose()

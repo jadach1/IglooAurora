@@ -273,7 +273,7 @@ class SettingsDialog extends React.Component {
 
     // let languageText = "English"
 
-    let fullName = ""
+    let name = ""
 
     let profileIconColor = ""
 
@@ -325,7 +325,7 @@ class SettingsDialog extends React.Component {
           break
       } */
 
-      fullName = user.fullName
+      name = user.name
 
       profileIconColor = user.profileIconColor
     }
@@ -340,12 +340,10 @@ class SettingsDialog extends React.Component {
                   overflowY: "auto",
                   height: "calc(100vh - 220px)",
                   maxHeight: "550px",
-                  background: "#2f333d",
                 }
               : {
                   overflowY: "auto",
                   height: "calc(100vh - 128px)",
-                  background: "#2f333d",
                 }
             : this.state.isDesktop
             ? {
@@ -360,7 +358,7 @@ class SettingsDialog extends React.Component {
         }
       >
         <div style={listStyles.root}>
-          <List style={{ width: "100%",  }} subheader={<li />}>
+          <List style={{ width: "100%" }} subheader={<li />}>
             <li key="appearance">
               <ul style={{ padding: "0" }}>
                 <ListSubheader
@@ -694,12 +692,10 @@ class SettingsDialog extends React.Component {
                   overflowY: "auto",
                   height: "calc(100vh - 220px)",
                   maxHeight: "550px",
-                  background: "#2f333d",
                 }
               : {
                   overflowY: "auto",
                   height: "calc(100vh - 128px)",
-                  background: "#2f333d",
                 }
             : this.state.isDesktop
             ? {
@@ -713,7 +709,7 @@ class SettingsDialog extends React.Component {
               }
         }
       >
-        <List  subheader={<li />}>
+        <List subheader={<li />}>
           <li key="authentication">
             <ul style={{ padding: "0" }}>
               <ListSubheader
@@ -1018,12 +1014,10 @@ rightToggle={
                       overflowY: "auto",
                       height: "calc(100vh - 220px)",
                       maxHeight: "550px",
-                      background: "#2f333d",
                     }
                   : {
                       overflowY: "auto",
                       height: "calc(100vh - 128px)",
-                      background: "#2f333d",
                     }
                 : this.state.isDesktop
                 ? {
@@ -1307,22 +1301,7 @@ rightToggle={
               </AppBar>
             </DialogTitle>
             {settingsContent}
-            <DialogActions
-              className="notSelectable defaultCursor"
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? {
-                      padding: "8px",
-                      margin: "0",
-                      background: "#2f333d",
-                    }
-                  : {
-                      padding: "8px",
-                      margin: "0",
-                    }
-              }
-            >
+            <DialogActions>
               <Button
                 style={
                   typeof Storage !== "undefined" &&
@@ -1360,7 +1339,8 @@ rightToggle={
                     marginLeft: "-8px",
                   }}
                 >
-Settings                </Typography>
+                  Settings{" "}
+                </Typography>
                 <Tooltip id="tooltip-bottom" title="Close" placement="bottom">
                   <IconButton
                     onClick={this.props.closeSettingsDialog}
@@ -1509,7 +1489,7 @@ Settings                </Typography>
             this.props.isOpen && this.state.nameDialogOpen
           }
           userData={this.props.userData}
-          fullName={fullName}
+          name={name}
           profileIconColor={profileIconColor}
         />
         <Shortcuts
