@@ -228,9 +228,7 @@ class ChangeMailDialog extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle style={{ width: "350px" }}>
-            Manage your emails
-          </DialogTitle>
+          <DialogTitle disableTypography>Manage your emails</DialogTitle>
           <div
             style={{
               paddingLeft: "24px",

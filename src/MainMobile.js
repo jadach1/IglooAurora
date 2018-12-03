@@ -485,6 +485,7 @@ class MainMobile extends Component {
                 userData={this.props.userData}
                 logOut={this.props.logOut}
                 forceUpdate={this.props.forceUpdate}
+          client={this.props.client}
               />
               <AppBar position="sticky">
                 <SidebarHeader
@@ -543,6 +544,7 @@ class MainMobile extends Component {
                 handleSwipe={index => {
                   this.setState({ slideIndex: index })
                 }}
+          client={this.props.client}
               />
               <AppBar>
                 <MainBodyHeader

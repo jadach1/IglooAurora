@@ -360,6 +360,7 @@ class Main extends Component {
             handleSwipe={index => {
               this.setState({ slideIndex: index })
             }}
+          client={this.props.client}
           />
           <div className="invisibleHeader" key="invisibleHeader" />
           <SidebarHeader

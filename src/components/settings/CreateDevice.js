@@ -79,34 +79,10 @@ class CreateDevice extends React.Component {
           onClose={this.props.close}
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
-          className="notSelectable defaultCursor"
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle
-            style={
-              window.innerWidth < MOBILE_WIDTH
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { width: "350px", background: "#2f333d" }
-                : { width: "350px", background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
-              Create device
-            </font>
-          </DialogTitle>
+          <DialogTitle disableTypography>Create device</DialogTitle>
           <div
             style={
               typeof Storage !== "undefined" &&

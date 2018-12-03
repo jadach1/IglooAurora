@@ -70,6 +70,7 @@ class Boards extends Component {
           userData={this.props.userData}
           forceUpdate={this.props.forceUpdate}
           logOut={this.props.logOut}
+          client={this.props.client}
         />
       </React.Fragment>
     )

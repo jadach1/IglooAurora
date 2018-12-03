@@ -49,36 +49,12 @@ export default class CreatePlotNode extends React.Component {
         <Dialog
           open={this.props.open}
           onClose={this.props.close}
-          className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle
-            style={
-              window.innerWidth < MOBILE_WIDTH
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { width: "350px", background: "#2f333d" }
-                : { width: "350px", background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
-              Create plot node
-            </font>
-          </DialogTitle>
+          <DialogTitle disableTypography>Create plot node</DialogTitle>
           <div
             style={{
               paddingRight: "24px",
