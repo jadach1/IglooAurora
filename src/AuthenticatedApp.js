@@ -74,6 +74,7 @@ class AuthenticatedApp extends Component {
           isMobile={this.props.isMobile}
           logOut={this.props.logOut}
           forceUpdate={this.props.forceUpdate}
+          client={this.client}
         />
       </ApolloProvider>
     )

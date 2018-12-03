@@ -104,9 +104,7 @@ class ChangeNameDialog extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle style={{ width: "350px" }}>
-            Manage your profile
-          </DialogTitle>
+          <DialogTitle disableTypography>Manage your profile</DialogTitle>
           <div
             style={{
               paddingLeft: "24px",

@@ -50,8 +50,6 @@ class MainBody extends Component {
     this.props.deviceData.subscribeToMore({
       document: subscribeToNewValues,
       updateQuery: (prev, { subscriptionData }) => {
-        console.log("called", subscriptionData)
-
         if (!subscriptionData.data) {
           return prev
         }

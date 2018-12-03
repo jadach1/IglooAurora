@@ -181,9 +181,7 @@ class AuthDialog extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle style={{ width: "350px" }}>
-            Type your password
-          </DialogTitle>
+          <DialogTitle disableTypography>Type your password</DialogTitle>
           <div
             style={{
               paddingRight: "24px",
@@ -275,9 +273,7 @@ class AuthDialog extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle style={{ width: "350px" }}>
-            Manage authorizations
-          </DialogTitle>
+          <DialogTitle disableTypography>Manage authorizations</DialogTitle>
           <div
             style={{
               paddingLeft: "8px",
@@ -301,9 +297,7 @@ class AuthDialog extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle style={{ width: "350px" }}>
-            Choose a token name
-          </DialogTitle>
+          <DialogTitle disableTypography>Choose a token name</DialogTitle>
           <div
             style={{
               paddingRight: "24px",

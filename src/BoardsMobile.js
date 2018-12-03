@@ -74,6 +74,7 @@ class BoardsMobile extends Component {
             this.setState({ slideIndex: index })
           }}
           forceUpdate={this.props.forceUpdate}
+          client={this.props.client}
         />
       </React.Fragment>
     )

@@ -3,7 +3,6 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
-import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
@@ -13,6 +12,18 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
 import ToggleIcon from "material-ui-toggle-icon"
+import { ApolloClient } from "apollo-client"
+import { HttpLink } from "apollo-link-http"
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from "apollo-cache-inmemory"
+import { WebSocketLink } from "apollo-link-ws"
+import { split } from "apollo-link"
+import { getMainDefinition } from "apollo-utilities"
+import introspectionQueryResultData from "../../fragmentTypes.json"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 const MOBILE_WIDTH = 600
 
@@ -24,69 +35,127 @@ function Transition(props) {
   )
 }
 
-class DeleteAccountDialog extends React.Component {
-  state = { showPassword: false }
+export default class DeleteAccountDialog extends React.Component {
+  state = {
+    showPassword: false,
+    password: "",
+    token: "",
+    passwordError: "",
+    isPasswordEmpty: false,
+    deleteOpen: false,
+    timer: 5,
+  }
+
+  constructor(props) {
+    super(props)
+
+    const bearer = this.state.token
+    const wsLink = new WebSocketLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server")
+          ? "wss://" +
+            localStorage
+              .getItem("server")
+              .replace("https://", "")
+              .replace("http://", "") +
+            "/subscriptions"
+          : `wss://igloo-production.herokuapp.com/subscriptions`,
+      options: {
+        reconnect: true,
+        connectionParams: {
+          Authorization: "Bearer " + bearer,
+        },
+      },
+    })
+
+    const httpLink = new HttpLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://igloo-production.herokuapp.com/graphql`,
+      headers: {
+        Authorization: "Bearer " + bearer,
+      },
+    })
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === "OperationDefinition" && operation === "subscription"
+      },
+      wsLink,
+      httpLink
+    )
+
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache({ fragmentMatcher }),
+    })
+  }
+
+  async createToken() {
+    try {
+      let createTokenMutation = await this.props.client.mutate({
+        mutation: gql`
+          mutation($tokenType: TokenType!, $password: String!) {
+            createToken(tokenType: $tokenType, password: $password)
+          }
+        `,
+        variables: {
+          tokenType: "GENERATE_PERMANENT_TOKEN",
+          password: this.state.password,
+        },
+      })
+
+      this.setState({ token: createTokenMutation.data.createToken })
+    } catch (e) {
+      if (e.message === "GraphQL error: Wrong password") {
+        this.setState({ passwordError: "Wrong password" })
+      } else if (
+        e.message ===
+        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+      ) {
+        this.setState({ passwordError: "This account doesn't exist" })
+      } else {
+        this.setState({
+          passwordError: "Unexpected error",
+        })
+      }
+    }
+  }
+
+  secondsTimer = () => {
+    this.setState(({ timer }) => {
+      if (timer > 1 && this.state.deleteOpen) {
+        setTimeout(this.secondsTimer, 1000)
+      }
+
+      return {
+        timer: timer - 1,
+      }
+    })
+  }
 
   render() {
     return (
       <React.Fragment>
         <Dialog
-          open={this.props.deleteConfirmedOpen}
-          onClose={this.props.closeDeleteConfirmed}
+          open={this.props.open && !this.state.deleteOpen}
+          onClose={this.props.close}
           className="notSelectable defaultCursor"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle style={{ width: "350px" }}>
-            Are you sure you want to delete your account?
-          </DialogTitle>
-          <div
-            style={{
-              paddingLeft: "24px",
-              paddingRight: "24px",
-              height: "100%",
-            }}
-          >
-            Be careful, your data will be erased permanently.
-            <br /> <br />
-          </div>
-          <DialogActions>
-            <Button
-              keyboardFocused={true}
-              onClick={this.props.closeDeleteConfirmed}
-              style={{ marginRight: "4px" }}
-            >
-              Never mind
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#F44336" }}
-              disabled={this.props.isDeleteDisabled}
-              style={{ width: "120px" }}
-              disabledLabelColor="#751f19"
-            >
-              {this.props.isDeleteDisabled
-                ? "Delete (" + this.props.timer + ")"
-                : "Delete"}
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Dialog
-          open={this.props.deleteOpen}
-          onClose={this.props.closeDelete}
-          className="notSelectable defaultCursor"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
-          fullWidth
-          maxWidth="xs"
-        >
-          <DialogTitle style={{ width: "350px" }}>
-            Type your password
-          </DialogTitle>
+          <DialogTitle disableTypography>Type your password</DialogTitle>
           <div
             style={{
               paddingLeft: "24px",
@@ -113,7 +182,12 @@ class DeleteAccountDialog extends React.Component {
                     : false
                 }
                 onKeyPress={event => {
-                  if (event.key === "Enter") this.openMailDialog()
+                  if (event.key === "Enter") {
+                    this.createToken()
+                    this.setState({ deleteOpen: true })
+                    setTimeout(this.secondsTimer, 1000)
+                    this.props.close()
+                  }
                 }}
                 endAdornment={
                   this.state.password ? (
@@ -125,7 +199,7 @@ class DeleteAccountDialog extends React.Component {
                             ? { color: "white" }
                             : { color: "black" }
                         }
-                        onClick={this.handleClickShowPassword}
+                        onClick={() => this.setState({ showPassword: true })}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
                       >
@@ -155,35 +229,91 @@ class DeleteAccountDialog extends React.Component {
           </div>
           <DialogActions>
             <Button
-              keyboardFocused={true}
-              onClick={this.props.closeDelete}
-              style={{ marginRight: "4px" }}
+              onClick={() => {
+                this.setState({ deleteOpen: false })
+                this.props.close()
+              }}
             >
               Never mind
             </Button>
             <Button
               variant="contained"
               color="primary"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#F44336" }}
-              onClick={this.props.deleteConfirmed}
+              onClick={() => {
+                this.createToken()
+                this.setState({ deleteOpen: true })
+                setTimeout(this.secondsTimer, 1000)
+                this.props.close()
+              }}
             >
               Proceed
             </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.state.deleteOpen}
+          onClose={() => {
+            this.setState({ deleteOpen: false })
+            this.props.close()
+          }}
+          className="notSelectable defaultCursor"
+          TransitionComponent={Transition}
+          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle disableTypography>
+            Are you sure you want to delete your account?
+          </DialogTitle>
+          <div
+            style={{
+              paddingLeft: "24px",
+              paddingRight: "24px",
+              height: "100%",
+            }}
+          >
+            Be careful, your data will be erased permanently.
+            <br /> <br />
+          </div>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                this.setState({ deleteOpen: false })
+                this.props.close()
+              }}
+            >
+              Never mind
+            </Button>
+            <MuiThemeProvider theme={createMuiTheme({
+  palette: {
+    primary: { main: "#f44336" },
+  },
+  MuiDialogActions: {
+    action: {
+      marginRight: "4px",
+    },
+  },
+})}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.setState({ deleteOpen: false })
+                this.props.close()
+              }}
+              disabled={this.state.timer >= 1}
+              style={{
+                width: "120px",
+              }}
+            >
+              {this.state.timer >= 1
+                ? "Delete (" + this.state.timer + ")"
+                : "Delete"}
+            </Button>
+            </MuiThemeProvider>
           </DialogActions>
         </Dialog>
       </React.Fragment>
     )
   }
 }
-
-export default graphql(
-  gql`
-    mutation DeleteValue($id: ID!) {
-      deleteValue(id: $id)
-    }
-  `,
-  {
-    name: "DeleteAccount",
-  }
-)(DeleteAccountDialog)

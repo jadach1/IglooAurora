@@ -34,12 +34,7 @@ export default class TimeFormatDialog extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle
-          className="notSelectable defaultCursor"
-          style={window.innerWidth > MOBILE_WIDTH ? { width: "350px" } : null}
-        >
-          Change date and time format
-        </DialogTitle>
+        <DialogTitle disableTypography>Change date and time format</DialogTitle>
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >

@@ -22,8 +22,6 @@ export default class extends React.Component {
       <Dialog
         open={this.props.open}
         onClose={this.props.close}
-        titleClassName="notSelectable defaultCursor"
-        className="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         fullWidth
@@ -35,7 +33,6 @@ export default class extends React.Component {
             height: "100%",
             paddingLeft: "24px",
             paddingRight: "24px",
-            width: "350px",
           }}
         >
           You should have received a verification email.

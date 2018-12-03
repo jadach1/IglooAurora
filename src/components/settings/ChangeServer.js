@@ -75,30 +75,7 @@ export default class ChangePasswordDialog extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle
-          style={
-            window.innerWidth < MOBILE_WIDTH
-              ? typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                : { width: "calc(100% - 48px)", background: "#fff" }
-              : typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-              ? { width: "350px", background: "#2f333d" }
-              : { width: "350px", background: "#fff" }
-          }
-        >
-          <font
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? { color: "#fff" }
-                : {}
-            }
-          >
-            Change connected server
-          </font>
-        </DialogTitle>
+        <DialogTitle disableTypography>Change connected server</DialogTitle>
         <div
           style={
             typeof Storage !== "undefined" &&
