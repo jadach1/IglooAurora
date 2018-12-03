@@ -177,6 +177,11 @@ const darkTheme = createMuiTheme({
         color: "white",
       },
     },
+    MuiInput: {
+      root: {
+        color: "white",
+      },
+    },
     ...sharedStyles,
   },
 })
@@ -282,6 +287,7 @@ class App extends Component {
         }
       }
     }
+
     this.state = {
       bearer,
       isMobile: null,

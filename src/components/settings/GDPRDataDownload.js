@@ -35,9 +35,7 @@ class GDPRDataDownload extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle style={{ width: "350px" }}>
-            Download your data
-          </DialogTitle>
+          <DialogTitle disableTypography>Download your data</DialogTitle>
           <div
             style={{
               paddingRight: "24px",

@@ -488,6 +488,7 @@ class GraphQLFetcher extends Component {
               }}
               devicesSearchText={this.state.devicesSearchText}
               forceUpdate={this.props.forceUpdate}
+              client={this.props.client}
             />
           )
         } else {
@@ -517,6 +518,7 @@ class GraphQLFetcher extends Component {
               }}
               devicesSearchText={this.state.devicesSearchText}
               forceUpdate={this.props.forceUpdate}
+              client={this.props.client}
             />
           )
         }
@@ -535,6 +537,7 @@ class GraphQLFetcher extends Component {
             areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
             forceUpdate={this.props.forceUpdate}
+          client={this.props.client}
           />
         )
       }
@@ -577,6 +580,7 @@ class GraphQLFetcher extends Component {
                 localStorage.getItem("devMode") === "true"
               }
               forceUpdate={this.props.forceUpdate}
+              client={this.props.client}
             />
           )
         } else {
@@ -606,6 +610,7 @@ class GraphQLFetcher extends Component {
               }}
               devicesSearchText={this.state.devicesSearchText}
               forceUpdate={this.props.forceUpdate}
+              client={this.props.client}
             />
           )
         }
@@ -624,6 +629,7 @@ class GraphQLFetcher extends Component {
             areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
             forceUpdate={this.props.forceUpdate}
+          client={this.props.client}
           />
         )
       }

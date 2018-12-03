@@ -22,10 +22,7 @@ const StepActions = ({ step, handleNext, handlePrev }) => (
     <Button
       variant="contained"
       color="primary"
-      buttonStyle={{ backgroundColor: "#0083ff" }}
       disableTouchRipple={true}
-      disableFocusRipple={true}
-      primary={true}
       onClick={handleNext}
       style={{ marginRight: "4px" }}
     >
@@ -70,8 +67,6 @@ export default class TwoFactorDialog extends React.Component {
         contentStyle={twoFactorDialogContentStyle}
         onRequestClose={this.props.handleTwoFactorDialogClose}
         className="notSelectable"
-        bodyStyle={{ padding: "8px" }}
-        titleClassName="notSelectable defaultCursor"
         fullWidth
         maxWidth="xs"
       >

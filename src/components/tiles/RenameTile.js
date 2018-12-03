@@ -85,7 +85,7 @@ class RenameTileDialog extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle style={{ width: "350px" }}>Rename card</DialogTitle>
+        <DialogTitle disableTypography>Rename card</DialogTitle>
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >

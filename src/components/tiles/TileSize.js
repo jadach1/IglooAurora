@@ -75,7 +75,7 @@ class TileSize extends Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle style={{ width: "300px" }}>Change card size</DialogTitle>
+        <DialogTitle disableTypography>Change card size</DialogTitle>
         <RadioGroup
           onChange={(event, value) => this.setState({ radioValue: value })}
           value={this.state.radioValue}

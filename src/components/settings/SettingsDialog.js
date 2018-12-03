@@ -91,7 +91,6 @@ const allDialogsClosed = {
 class SettingsDialog extends React.Component {
   state = {
     isDeleteDisabled: true,
-    timer: 5,
     stepIndex: 0,
     showHidden: false,
     ...allDialogsClosed,
@@ -133,14 +132,12 @@ class SettingsDialog extends React.Component {
     this.setState({
       deleteDialogOpen: true,
       isDeleteDisabled: true,
-      timer: 5,
     })
   }
 
   deleteConfirmed = () => {
     this.handleDeleteDialogClose()
     this.handleDeleteConfirmedOpen()
-    setTimeout(this.secondsTimer, 1000)
   }
 
   handleDeleteConfirmedOpen = () => {
@@ -203,20 +200,6 @@ class SettingsDialog extends React.Component {
     this.setState({ nameDialogOpen: false })
   }
 
-  secondsTimer = () => {
-    this.setState(({ timer }) => {
-      if (timer > 1 && this.state.deleteConfirmedDialogOpen) {
-        setTimeout(this.secondsTimer, 1000)
-      }
-
-      return {
-        timer: timer - 1 || 5,
-        isDeleteDisabled: timer > 1,
-      }
-    })
-  }
-
-  // TODO: update react to next version and change this to getDerivedStateFromProps
   componentWillReceiveProps(nextProps) {
     this.setState(allDialogsClosed)
   }
@@ -1413,20 +1396,16 @@ rightToggle={
             </React.Fragment>
           )}
         </Dialog>
-        {/* 
+        {/*
         <TwoFactorDialog
           isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}
           handleTwoFactorDialogOpen={this.handleTwoFactorDialogOpen}
           handleTwoFactorDialogClose={this.handleTwoFactorDialogClose}
         /> */}
         <DeleteAccountDialog
-          deleteOpen={this.props.isOpen && this.state.deleteDialogOpen}
-          deleteConfirmedOpen={this.state.deleteConfirmedDialogOpen}
-          isDeleteDisabled={this.state.isDeleteDisabled}
-          timer={this.state.timer}
-          deleteConfirmed={this.deleteConfirmed}
-          closeDeleteConfirmed={this.handleDeleteConfirmedClose}
-          closeDelete={this.handleDeleteDialogClose}
+          open={this.props.isOpen && this.state.deleteDialogOpen}
+          close={() => this.setState({ deleteDialogOpen: false })}
+          client={this.props.client}
         />
         <ChangePasswordDialog
           passwordDialogOpen={

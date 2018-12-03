@@ -39,9 +39,7 @@ export default class ChangePasswordDialog extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle style={{ width: "350px" }}>
-          Change your password
-        </DialogTitle>
+        <DialogTitle disableTypography>Change your password</DialogTitle>
         <div
           style={{
             paddingLeft: "24px",

@@ -35,7 +35,7 @@ class DataSettings extends Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle style={{ width: "300px" }}>Data settings</DialogTitle>
+        <DialogTitle disableTypography>Data settings</DialogTitle>
         <div style={{ paddingLeft: "24px" }}>Unit of measurement</div>
         <RadioGroup
           onChange={(event, value) => this.setState({ unitValue: value })}

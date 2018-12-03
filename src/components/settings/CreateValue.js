@@ -99,30 +99,7 @@ class CreateValue extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle
-            style={
-              window.innerWidth < MOBILE_WIDTH
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { width: "350px", background: "#2f333d" }
-                : { width: "350px", background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
-              Create value
-            </font>
-          </DialogTitle>
+          <DialogTitle disableTypography>Create value</DialogTitle>
           <div
             style={{ marginLeft: "24px", marginRight: "24px", height: "100%" }}
           >
@@ -216,9 +193,8 @@ class CreateValue extends React.Component {
               variant="contained"
               color="primary"
               label="Change"
-              buttonStyle={{ backgroundColor: "#0083ff" }}
               onClick={this.props.close}
-              disabled={true}
+              disabled
             >
               Create
             </Button>
