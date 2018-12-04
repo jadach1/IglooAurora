@@ -302,7 +302,7 @@ class SettingsDialog extends React.Component {
         style={
           typeof Storage !== "undefined" &&
           localStorage.getItem("nightMode") === "true"
-            ? this.state.isDesktop
+            ? !this.props.fullScreen
               ? {
                   overflowY: "auto",
                   height: "calc(100vh - 220px)",
@@ -312,7 +312,7 @@ class SettingsDialog extends React.Component {
                   overflowY: "auto",
                   height: "calc(100vh - 128px)",
                 }
-            : this.state.isDesktop
+            : !this.props.fullScreen
             ? {
                 overflowY: "auto",
                 height: "calc(100vh - 220px)",
@@ -654,7 +654,7 @@ class SettingsDialog extends React.Component {
         style={
           typeof Storage !== "undefined" &&
           localStorage.getItem("nightMode") === "true"
-            ? this.state.isDesktop
+            ? !this.props.fullScreen
               ? {
                   overflowY: "auto",
                   height: "calc(100vh - 220px)",
@@ -664,7 +664,7 @@ class SettingsDialog extends React.Component {
                   overflowY: "auto",
                   height: "calc(100vh - 128px)",
                 }
-            : this.state.isDesktop
+            : !this.props.fullScreen
             ? {
                 overflowY: "auto",
                 height: "calc(100vh - 220px)",
@@ -976,7 +976,7 @@ rightToggle={
             style={
               typeof Storage !== "undefined" &&
               localStorage.getItem("nightMode") === "true"
-                ? this.state.isDesktop
+                ? !this.props.fullScreen
                   ? {
                       overflowY: "auto",
                       height: "calc(100vh - 220px)",
@@ -986,7 +986,7 @@ rightToggle={
                       overflowY: "auto",
                       height: "calc(100vh - 128px)",
                     }
-                : this.state.isDesktop
+                : !this.props.fullScreen
                 ? {
                     overflowY: "auto",
                     height: "calc(100vh - 220px)",
@@ -1234,7 +1234,6 @@ rightToggle={
           open={this.props.isOpen}
           onClose={this.props.closeSettingsDialog}
           TransitionComponent={Transition}
-          className="notSelectable defaultCursor"
           fullWidth
           maxWidth="sm"
           fullScreen={this.props.fullScreen}
@@ -1253,11 +1252,23 @@ rightToggle={
                       icon={<Icon>language</Icon>}
                       label="General"
                       value={0}
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("devMode") === "true"
+                          ? { width: "33%" }
+                          : { width: "50%" }
+                      }
                     />
                     <Tab
                       icon={<Icon>account_box</Icon>}
                       label="Account"
                       value={1}
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("devMode") === "true"
+                          ? { width: "33%" }
+                          : { width: "50%" }
+                      }
                     />
                     {typeof Storage !== "undefined" &&
                       localStorage.getItem("devMode") === "true" && (
@@ -1265,6 +1276,7 @@ rightToggle={
                           icon={<Icon>code</Icon>}
                           label="Development"
                           value={2}
+                          style={{ width: "33%" }}
                         />
                       )}
                   </Tabs>
@@ -1303,7 +1315,7 @@ rightToggle={
                       marginLeft: "-8px",
                     }}
                   >
-                    Settings{" "}
+                    Settings
                   </Typography>
                   <Tooltip id="tooltip-bottom" title="Close" placement="bottom">
                     <IconButton

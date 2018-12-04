@@ -67,8 +67,30 @@ let PendingShares = props => {
         {props.pendingBoardShares.map(boardShare => (
           <ListItem style={{ paddingLeft: "24px" }}>
             <ListItemText
-              primary={boardShare.board.customName}
-              secondary={"Shared by " + boardShare.sender.name}
+              primary={
+                <font
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
+                  {boardShare.board.customName}
+                </font>
+              }
+              secondary={
+                <font
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "#c1c2c5" }
+                      : { color: "#7a7a7a" }
+                  }
+                >
+                  {"Shared by " + boardShare.sender.name}
+                </font>
+              }
               style={{
                 whiteSpace: "nowrap",
                 overflow: "hidden",
@@ -79,11 +101,23 @@ let PendingShares = props => {
             <ListItemSecondaryAction>
               <IconButton
                 onClick={() => AcceptPendingBoardShare(boardShare.id)}
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "#c1c2c5" }
+                    : { color: "#7a7a7a" }
+                }
               >
                 <Icon>done</Icon>
               </IconButton>
               <IconButton
                 onClick={() => DeclinePendingBoardShare(boardShare.id)}
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "#c1c2c5" }
+                    : { color: "#7a7a7a" }
+                }
               >
                 <Icon>close</Icon>
               </IconButton>

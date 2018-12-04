@@ -17,6 +17,7 @@ class RecoveryMain extends Component {
         }
         userData={this.props.userData}
         isTokenValid={this.state.decodeToken.tokenType !== "PASSWORD_RECOVERY"}
+        client={this.props.client}
       />
     ) : (
       <PasswordRecovery
@@ -26,6 +27,7 @@ class RecoveryMain extends Component {
         }
         userData={this.props.userData}
         isTokenValid={this.state.decodeToken.tokenType !== "PASSWORD_RECOVERY"}
+        client={this.props.client}
       />
     )
   }

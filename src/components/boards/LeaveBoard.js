@@ -5,6 +5,8 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -72,17 +74,25 @@ class LeaveBoard extends React.Component {
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
           </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            primary={true}
-            onClick={() => {
-              this.stopSharing()
-              this.props.close()
-            }}
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#f44336" },
+              },
+            })}
           >
-            Leave board
-          </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.stopSharing()
+                this.props.close()
+              }}
+              style={{ margin: "0 4px" }}
+            >
+              Leave board
+            </Button>
+          </MuiThemeProvider>
         </DialogActions>
       </Dialog>
     )

@@ -85,7 +85,11 @@ export default class RecoveryFetcher extends Component {
         </Helmet>
         {queryString.parse("?" + window.location.href.split("?")[1]).token ? (
           <ApolloProvider client={this.client}>
-            <RecoveryMain mobile={this.props.mobile} token={this.state.token} />
+            <RecoveryMain
+              mobile={this.props.mobile}
+              token={this.state.token}
+              client={this.client}
+            />
           </ApolloProvider>
         ) : (
           <Redirect to="/dashboard" />
