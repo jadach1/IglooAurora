@@ -21,30 +21,25 @@ class GraphQLFetcher extends Component {
           customName
           createdAt
           updatedAt
-          notificationCount
           muted
           avatar
           myRole
+          pendingBoardShares {
+            id
+            role
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+          }
           devices {
             id
-            index
+            muted
             customName
-            icon
-            online
-            batteryStatus
-            batteryCharging
-            signalStatus
-            deviceType
-            createdAt
-            updatedAt
             board {
-              id
-            }
-            notifications {
-              id
-              content
-              date
-              visualized
+              myRole
             }
           }
           owner {
@@ -102,30 +97,25 @@ class GraphQLFetcher extends Component {
           customName
           createdAt
           updatedAt
-          notificationCount
           muted
           avatar
           myRole
+          pendingBoardShares {
+            id
+            role
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+          }
           devices {
             id
-            index
+            muted
             customName
-            icon
-            online
-            batteryStatus
-            batteryCharging
-            signalStatus
-            deviceType
-            createdAt
-            updatedAt
             board {
-              id
-            }
-            notifications {
-              id
-              content
-              date
-              visualized
+              myRole
             }
           }
           owner {
@@ -183,30 +173,25 @@ class GraphQLFetcher extends Component {
           customName
           createdAt
           updatedAt
-          notificationCount
           muted
           avatar
           myRole
+          pendingBoardShares {
+            id
+            role
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+          }
           devices {
             id
-            index
+            muted
             customName
-            icon
-            online
-            batteryStatus
-            batteryCharging
-            signalStatus
-            deviceType
-            createdAt
-            updatedAt
             board {
-              id
-            }
-            notifications {
-              id
-              content
-              date
-              visualized
+              myRole
             }
           }
           owner {
@@ -239,6 +224,128 @@ class GraphQLFetcher extends Component {
 
     this.props.userData.subscribeToMore({
       document: subscribeToBoardsUpdates,
+    })
+
+    const subscribeToBoardShareAccepted = gql`
+      subscription {
+        boardShareAccepted {
+          id
+          index
+          customName
+          createdAt
+          updatedAt
+          muted
+          avatar
+          myRole
+          pendingBoardShares {
+            id
+            role
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+          }
+          devices {
+            id
+            muted
+            customName
+            board {
+              myRole
+            }
+          }
+          owner {
+            id
+            email
+            name
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            name
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            name
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            name
+            profileIconColor
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToBoardShareAccepted,
+    })
+
+    const subscribeToBoardShareDeclined = gql`
+      subscription {
+        boardShareDeclined {
+          id
+          index
+          customName
+          createdAt
+          updatedAt
+          muted
+          avatar
+          myRole
+          pendingBoardShares {
+            id
+            role
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+          }
+          devices {
+            id
+            muted
+            customName
+            board {
+              myRole
+            }
+          }
+          owner {
+            id
+            email
+            name
+            profileIconColor
+          }
+          admins {
+            id
+            email
+            name
+            profileIconColor
+          }
+          editors {
+            id
+            email
+            name
+            profileIconColor
+          }
+          spectators {
+            id
+            email
+            name
+            profileIconColor
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToBoardShareDeclined,
     })
 
     const subscribeToBoardsDeletes = gql`
@@ -537,7 +644,7 @@ class GraphQLFetcher extends Component {
             areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
             forceUpdate={this.props.forceUpdate}
-          client={this.props.client}
+            client={this.props.client}
           />
         )
       }
@@ -629,7 +736,7 @@ class GraphQLFetcher extends Component {
             areSettingsOpen={this.state.areSettingsOpen}
             boardsSearchText={this.state.boardsSearchText}
             forceUpdate={this.props.forceUpdate}
-          client={this.props.client}
+            client={this.props.client}
           />
         )
       }

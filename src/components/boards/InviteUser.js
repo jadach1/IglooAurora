@@ -34,7 +34,9 @@ export default class InviteUser extends Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Invite an {this.props.selectedUserType}</DialogTitle>
+        <DialogTitle disableTypography>
+          Invite an {this.props.selectedUserType}
+        </DialogTitle>
 
         <FormControl
           style={{

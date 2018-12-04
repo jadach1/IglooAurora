@@ -22,6 +22,7 @@ import gql from "graphql-tag"
 import ChangeRole from "./ChangeRole"
 import ChangeOwner from "./ChangeOwner"
 import InviteUser from "./InviteUser"
+import StopSharing from "./StopSharing"
 
 const MOBILE_WIDTH = 600
 
@@ -143,7 +144,20 @@ class ShareBoard extends React.Component {
             <li key="Owner">
               <ul style={{ padding: "0" }}>
                 <ListSubheader
-                  style={{ backgroundColor: "white" }}
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? {
+                          color: "#c1c2c5",
+                          cursor: "default",
+                          backgroundColor: "#2f333d",
+                        }
+                      : {
+                          color: "#7a7a7a",
+                          cursor: "default",
+                          backgroundColor: "white",
+                        }
+                  }
                   className="notSelectable defaultCursor"
                 >
                   Owner
@@ -201,7 +215,20 @@ class ShareBoard extends React.Component {
               <li key="Admins">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader
-                    style={{ backgroundColor: "white" }}
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? {
+                            color: "#c1c2c5",
+                            cursor: "default",
+                            backgroundColor: "#2f333d",
+                          }
+                        : {
+                            color: "#7a7a7a",
+                            cursor: "default",
+                            backgroundColor: "white",
+                          }
+                    }
                     className="notSelectable defaultCursor"
                   >
                     Admins
@@ -325,7 +352,22 @@ class ShareBoard extends React.Component {
               )) && (
               <li key="Editors">
                 <ul style={{ padding: "0" }}>
-                  <ListSubheader style={{ backgroundColor: "white" }}>
+                  <ListSubheader
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? {
+                            color: "#c1c2c5",
+                            cursor: "default",
+                            backgroundColor: "#2f333d",
+                          }
+                        : {
+                            color: "#7a7a7a",
+                            cursor: "default",
+                            backgroundColor: "white",
+                          }
+                    }
+                  >
                     Editors
                   </ListSubheader>
                   {this.props.board.editors.map(item => (
@@ -449,7 +491,22 @@ class ShareBoard extends React.Component {
               )) && (
               <li key="Spectators">
                 <ul style={{ padding: "0" }}>
-                  <ListSubheader style={{ backgroundColor: "white" }}>
+                  <ListSubheader
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? {
+                            color: "#c1c2c5",
+                            cursor: "default",
+                            backgroundColor: "#2f333d",
+                          }
+                        : {
+                            color: "#7a7a7a",
+                            cursor: "default",
+                            backgroundColor: "white",
+                          }
+                    }
+                  >
                     Spectators
                   </ListSubheader>
                   {this.props.board.spectators.map(item => (
@@ -594,47 +651,6 @@ class ShareBoard extends React.Component {
             <Button onClick={this.props.close}>Close</Button>
           </DialogActions>
         </Dialog>
-        <Dialog
-          open={this.state.stopSharingOpen}
-          onClose={() => this.setState({ stopSharingOpen: false })}
-          className="notSelectable defaultCursor"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
-          fullWidth
-          maxWidth="xs"
-        >
-          <DialogTitle disableTypography>Stop sharing</DialogTitle>
-          <div
-            style={{
-              paddingLeft: "24px",
-              paddingRight: "24px",
-              width: "350px",
-              height: "100%",
-            }}
-          >
-            Are you sure you want to stop sharing this board with{" "}
-            {this.state.menuTarget && this.state.menuTarget.name}?<br />
-          </div>
-          <DialogActions>
-            <Button
-              onClick={() => this.setState({ stopSharingOpen: false })}
-              style={{ marginRight: "4px" }}
-            >
-              Never mind
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              primary={true}
-              onClick={() => {
-                this.stopSharing()
-                this.setState({ stopSharingOpen: false })
-              }}
-            >
-              Stop sharing
-            </Button>
-          </DialogActions>
-        </Dialog>
         <ChangeOwner
           open={this.state.changeOwnerOpen}
           close={() => this.setState({ changeOwnerOpen: false })}
@@ -649,6 +665,12 @@ class ShareBoard extends React.Component {
           close={() => this.setState({ inviteUserOpen: false })}
           selectedUserType={this.state.selectedUserType}
           inviteUser={this.inviteUser}
+        />
+        <StopSharing
+          open={this.state.stopSharingOpen}
+          close={() => this.setState({ stopSharingOpen: false })}
+          stopSharing={this.stopSharing}
+          menuTarget={this.state.menuTarget}
         />
       </React.Fragment>
     )
