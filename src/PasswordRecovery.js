@@ -12,12 +12,35 @@ import CircularProgress from "@material-ui/core/CircularProgress"
 import { Link } from "react-router-dom"
 import zxcvbn from "zxcvbn"
 import gql from "graphql-tag"
-import { graphql } from "react-apollo"
 import logo from "./styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
 
-class PasswordRecovery extends Component {
+export default class PasswordRecovery extends Component {
   state = { showPassword: false, redirect: false }
+
+  async updatePassword() {
+    let changePassword = await this.props.client.mutate({
+      mutation: gql`
+        mutation($newPassword: String!) {
+          changePassword(newPassword: $newPassword) {
+            token
+          }
+        }
+      `,
+      variables: {
+        newPassword: this.props.password,
+      },
+    })
+
+    this.setState({
+      token: changePassword.data.changePassword.token,
+    })
+
+    localStorage.setItem("bearer", this.state.token)
+    this.forceUpdate()
+
+    this.setState({ redirect: true })
+  }
 
   render() {
     document.body.style.backgroundColor = "#0057cb"
@@ -27,14 +50,6 @@ class PasswordRecovery extends Component {
     } = this.props
 
     let scoreText = ""
-
-    let changePassword = newPassword => {
-      this.props["ChangePassword"]({
-        variables: {
-          newPassword,
-        },
-      })
-    }
 
     switch (this.state.passwordScore) {
       case 0:
@@ -81,7 +96,7 @@ class PasswordRecovery extends Component {
           }}
           className="notSelectable defaultCursor"
         >
-          <CircularProgress size={100} color="secondary" />
+          <CircularProgress size={96} color="secondary" />
         </div>
       )
     }
@@ -126,7 +141,7 @@ class PasswordRecovery extends Component {
                     }
               }
             />
-            <Typography variant="h6" style={{ color: "white" }}>
+            <Typography variant="h4" style={{ color: "white" }}>
               Invalid token
             </Typography>
             <br />
@@ -161,7 +176,7 @@ class PasswordRecovery extends Component {
           style={{
             margin: "auto",
             textAlign: "center",
-            width: "327px",
+            width: "332px",
           }}
         >
           <img
@@ -184,7 +199,7 @@ class PasswordRecovery extends Component {
                   }
             }
           />
-          <Typography variant="h6" style={{ color: "white" }}>
+          <Typography variant="h4" style={{ color: "white" }}>
             Recover your account
           </Typography>
           <br />
@@ -226,8 +241,7 @@ class PasswordRecovery extends Component {
                   }}
                   onKeyPress={event => {
                     if (event.key === "Enter") {
-                      changePassword(this.props.password)
-                      this.setState({ redirect: true })
+                      this.updatePassword(this.props.password)
                     }
                   }}
                   endAdornment={
@@ -264,43 +278,25 @@ class PasswordRecovery extends Component {
             </Grid>
           </Grid>
           <br />
-          <Link
-            to="/dashboard"
-            style={{ textDecoration: "none", color: "black" }}
+          <Button
+            style={{ marginRight: "4px" }}
+            onClick={() => this.setState({ redirect: true })}
           >
-            <Button color="primary" style={{ marginRight: "4px" }}>
-              Never mind
-            </Button>
-          </Link>
-          <Link
-            to="/dashboard"
-            style={{ textDecoration: "none", color: "black" }}
+            Never mind
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            disabled={!user || !(this.state.passwordScore >= 2)}
+            onClick={() => {
+              this.updatePassword(this.props.password)
+            }}
           >
-            <Button
-              variant="contained"
-              color="secondary"
-              disabled={!user || !(this.state.passwordScore >= 2)}
-              onClick={() => changePassword(this.props.password)}
-            >
-              Change password
-            </Button>
-          </Link>
+            Change password
+          </Button>
         </div>
         {this.state.redirect && <Redirect push to="/dashboard" />}
       </div>
     )
   }
 }
-
-export default graphql(
-  gql`
-    mutation ChangePassword($newPassword: String!) {
-      changePassword(newPassword: $newPassword) {
-        id
-      }
-    }
-  `,
-  {
-    name: "ChangePassword",
-  }
-)(PasswordRecovery)

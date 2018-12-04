@@ -5,6 +5,8 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -59,15 +61,22 @@ class DeleteDevice extends React.Component {
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
           </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            primary={true}
-            buttonStyle={{ backgroundColor: "#f44336" }}
-            onClick={this.deleteDeviceMutation}
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#f44336" },
+              },
+            })}
           >
-            Delete
-          </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.deleteDeviceMutation}
+              style={{ margin: "0 4px" }}
+            >
+              Delete
+            </Button>
+          </MuiThemeProvider>
         </DialogActions>
       </Dialog>
     )

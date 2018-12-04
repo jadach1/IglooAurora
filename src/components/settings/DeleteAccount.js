@@ -7,6 +7,7 @@ import gql from "graphql-tag"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import FormControl from "@material-ui/core/FormControl"
+import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
@@ -24,6 +25,7 @@ import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import CircularProgress from "@material-ui/core/CircularProgress"
 
 const MOBILE_WIDTH = 600
 
@@ -114,7 +116,17 @@ export default class DeleteAccountDialog extends React.Component {
         },
       })
 
-      this.setState({ token: createTokenMutation.data.createToken })
+      this.setState({
+        token: createTokenMutation.data.createToken,
+        deleteOpen: true,
+        password: "",
+        showLoading: false,
+        showDeleteLoading: false,
+      })
+
+      this.props.close()
+
+      setTimeout(this.secondsTimer, 1000)
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
@@ -128,7 +140,27 @@ export default class DeleteAccountDialog extends React.Component {
           passwordError: "Unexpected error",
         })
       }
+
+      this.setState({ showLoading: false })
     }
+  }
+
+  async deleteUser() {
+    let deleteUserMutation = await this.client.mutate({
+      mutation: gql`
+        deleteUser {
+          deleteUser
+        }
+      `,
+    })
+
+    deleteUserMutation()
+
+    this.setState({
+      showDeleteLoading: false,
+    })
+
+    this.setState({ deleteOpen: false })
   }
 
   secondsTimer = () => {
@@ -141,6 +173,12 @@ export default class DeleteAccountDialog extends React.Component {
         timer: timer - 1,
       }
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.open !== nextProps.open && nextProps.open) {
+      this.setState({ isPasswordEmpty: false, passwordError: false })
+    }
   }
 
   render() {
@@ -184,9 +222,7 @@ export default class DeleteAccountDialog extends React.Component {
                 onKeyPress={event => {
                   if (event.key === "Enter") {
                     this.createToken()
-                    this.setState({ deleteOpen: true })
-                    setTimeout(this.secondsTimer, 1000)
-                    this.props.close()
+                    this.setState({ showLoading: true })
                   }
                 }}
                 endAdornment={
@@ -223,6 +259,17 @@ export default class DeleteAccountDialog extends React.Component {
                   ) : null
                 }
               />
+              <FormHelperText
+                style={
+                  this.state.passwordError || this.state.isPasswordEmpty
+                    ? { color: "#f44336" }
+                    : {}
+                }
+              >
+                {this.state.isPasswordEmpty
+                  ? "This field is required"
+                  : this.state.passwordError}
+              </FormHelperText>
             </FormControl>
             <br />
             <br />
@@ -230,7 +277,7 @@ export default class DeleteAccountDialog extends React.Component {
           <DialogActions>
             <Button
               onClick={() => {
-                this.setState({ deleteOpen: false })
+                this.setState({ password: "" })
                 this.props.close()
               }}
             >
@@ -239,21 +286,32 @@ export default class DeleteAccountDialog extends React.Component {
             <Button
               variant="contained"
               color="primary"
+              disabled={!this.state.password || this.state.showLoading}
               onClick={() => {
                 this.createToken()
-                this.setState({ deleteOpen: true })
-                setTimeout(this.secondsTimer, 1000)
-                this.props.close()
+                this.setState({ showLoading: true })
               }}
             >
               Proceed
+              {this.state.showLoading && (
+                <CircularProgress
+                  size={24}
+                  style={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    marginTop: -12,
+                    marginLeft: -12,
+                  }}
+                />
+              )}
             </Button>
           </DialogActions>
         </Dialog>
         <Dialog
           open={this.state.deleteOpen}
           onClose={() => {
-            this.setState({ deleteOpen: false })
+            this.setState({ deleteOpen: false, timer: 5 })
             this.props.close()
           }}
           className="notSelectable defaultCursor"
@@ -262,9 +320,7 @@ export default class DeleteAccountDialog extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle disableTypography>
-            Are you sure you want to delete your account?
-          </DialogTitle>
+          <DialogTitle disableTypography>Delete your account </DialogTitle>
           <div
             style={{
               paddingLeft: "24px",
@@ -278,38 +334,47 @@ export default class DeleteAccountDialog extends React.Component {
           <DialogActions>
             <Button
               onClick={() => {
-                this.setState({ deleteOpen: false })
+                this.setState({ deleteOpen: false, timer: 5 })
                 this.props.close()
               }}
             >
               Never mind
             </Button>
-            <MuiThemeProvider theme={createMuiTheme({
-  palette: {
-    primary: { main: "#f44336" },
-  },
-  MuiDialogActions: {
-    action: {
-      marginRight: "4px",
-    },
-  },
-})}>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                this.setState({ deleteOpen: false })
-                this.props.close()
-              }}
-              disabled={this.state.timer >= 1}
-              style={{
-                width: "120px",
-              }}
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#f44336" },
+                },
+              })}
             >
-              {this.state.timer >= 1
-                ? "Delete (" + this.state.timer + ")"
-                : "Delete"}
-            </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  this.setState({ deleteOpen: false, showDeleteLoading: true })
+                }}
+                disabled={this.state.timer >= 1}
+                style={{
+                  width: "120px",
+                  margin: "0 4px",
+                }}
+              >
+                {this.state.timer >= 1
+                  ? "Delete (" + this.state.timer + ")"
+                  : "Delete"}
+                {this.state.showDeleteLoading && (
+                  <CircularProgress
+                    size={24}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: -12,
+                      marginLeft: -12,
+                    }}
+                  />
+                )}
+              </Button>
             </MuiThemeProvider>
           </DialogActions>
         </Dialog>

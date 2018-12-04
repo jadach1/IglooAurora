@@ -26,7 +26,7 @@ export default class ForgotPassword extends React.Component {
   state = { email: "" }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.email !== this.state.email) {
+    if (!this.state.email && nextProps.email !== this.state.email) {
       this.setState({ email: nextProps.email })
     }
   }
@@ -42,24 +42,8 @@ export default class ForgotPassword extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle
-            className="notSelectable defaultCursor"
-            style={window.innerWidth > MOBILE_WIDTH ? { width: "350px" } : null}
-          >
-            Recover your password
-          </DialogTitle>
-
-          <div
-            style={
-              window.innerWidth > MOBILE_WIDTH
-                ? {
-                    paddingLeft: "24px",
-                    paddingRight: "24px",
-                    width: "350px",
-                  }
-                : { paddingLeft: "24px", paddingRight: "24px" }
-            }
-          >
+          <DialogTitle disableTypography>Recover your password</DialogTitle>
+          <div style={{ paddingLeft: "24px", paddingRight: "24px" }}>
             <div className="defaultCursor">
               Enter your email address and we will send you a link to reset your
               password
@@ -104,13 +88,11 @@ export default class ForgotPassword extends React.Component {
             </FormControl>
           </div>
           <br />
-
           <div style={{ height: "100%" }} />
           <DialogActions>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind
             </Button>
-
             <Button
               variant="contained"
               color="primary"

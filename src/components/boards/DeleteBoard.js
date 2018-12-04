@@ -5,6 +5,8 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
@@ -39,8 +41,6 @@ class DeleteBoard extends React.Component {
       <Dialog
         open={this.props.open}
         onClose={this.props.close}
-        className="notSelectable defaultCursor"
-        titleClassName="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         fullWidth
@@ -58,15 +58,22 @@ class DeleteBoard extends React.Component {
         </font>
         <DialogActions>
           <Button onClick={this.props.close}>Never mind</Button>
-          <Button
-            variant="contained"
-            color="primary"
-            primary={true}
-            buttonStyle={{ backgroundColor: "#f44336" }}
-            onClick={this.deleteBoardMutation}
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#f44336" },
+              },
+            })}
           >
-            Delete
-          </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.deleteBoardMutation}
+              style={{ margin: "0 4px" }}
+            >
+              Delete
+            </Button>
+          </MuiThemeProvider>
         </DialogActions>
       </Dialog>
     )

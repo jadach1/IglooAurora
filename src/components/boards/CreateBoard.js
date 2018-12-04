@@ -151,7 +151,7 @@ class CreateBoard extends React.Component {
                     marginLeft: "24px",
                     marginRight: "24px",
                   }
-                : { width: "350px", marginLeft: "24px", marginRight: "24px" }
+                : { marginLeft: "24px", marginRight: "24px" }
             }
           >
             <img
