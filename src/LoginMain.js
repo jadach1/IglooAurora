@@ -44,7 +44,7 @@ class UnAuthenticatedApp extends Component {
         <Helmet>
           <title>Igloo Aurora - Log in</title>
         </Helmet>
-        <div className="loginBackground">
+        <div className={this.props.unauthenticatedPicture}>
           <Paper className="loginForm">
             <div
               className="leftSide notSelectable"

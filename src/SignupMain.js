@@ -32,6 +32,7 @@ class UnAuthenticatedApp extends Component {
     if (typeof Storage !== "undefined" && localStorage.getItem("email")) {
       slideIndex = 1
     }
+
     this.state = {
       slideIndex,
     }
@@ -51,7 +52,7 @@ class UnAuthenticatedApp extends Component {
         <Helmet>
           <title>Igloo Aurora - Sign up</title>
         </Helmet>
-        <div className="loginBackground">
+        <div className={this.props.unauthenticatedPicture}>
           <Paper className="loginForm">
             <div
               className="leftSide notSelectable"
