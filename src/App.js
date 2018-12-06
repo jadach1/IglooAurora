@@ -288,6 +288,11 @@ class App extends Component {
       }
     }
 
+    let unauthenticatedPictures = [
+      "auroraLoginBackground",
+      "woodsLoginBackground",
+    ]
+
     this.state = {
       bearer,
       isMobile: null,
@@ -306,6 +311,9 @@ class App extends Component {
       signupPasswordError: "",
       name: "",
       nameError: "",
+      unauthenticatedPicture:
+        unauthenticatedPictures[Math.floor(Math.random() * 2)] ||
+        "auroraLoginBackground",
     }
   }
 
@@ -473,6 +481,7 @@ class App extends Component {
                     changeSignupEmail={signupEmail =>
                       this.setState({ signupEmail })
                     }
+                    unauthenticatedPicture={this.state.unauthenticatedPicture}
                   />
                 )
               }
@@ -519,6 +528,7 @@ class App extends Component {
                     changeLoginEmail={loginEmail =>
                       this.setState({ loginEmail })
                     }
+                    unauthenticatedPicture={this.state.unauthenticatedPicture}
                   />
                 )
               }

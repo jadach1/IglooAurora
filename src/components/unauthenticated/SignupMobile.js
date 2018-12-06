@@ -68,7 +68,7 @@ class SignupMobile extends Component {
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!, $name: String!) {
-            signupUser(email: $email, password: $password, name: $name) {
+            signUp(email: $email, password: $password, name: $name) {
               token
               user {
                 boards {
@@ -89,7 +89,7 @@ class SignupMobile extends Component {
         localStorage.setItem("email", this.props.email)
       }
 
-      this.props.signIn(loginMutation.data.signupUser.token)
+      this.props.signIn(loginMutation.data.signUp.token)
     } catch (e) {
       this.setState({ showLoading: false })
       if (

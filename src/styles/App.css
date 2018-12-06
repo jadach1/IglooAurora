@@ -106,18 +106,30 @@ body {
   user-select: none;
 }
 
-.loginBackground {
+.woodsLoginBackground {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
   width: 100%;
   margin: 0;
-  padding: 45px 0 45px 0;
   box-sizing: border-box;
   background-color: #f2f2f2;
   background-size: cover;
-  background-image: url("./assets/loginBackground.jpg");
+  background-image: url("./assets/woodsLoginBsckground.jpg");
+}
+
+.auroraLoginBackground {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  box-sizing: border-box;
+  background-color: #f2f2f2;
+  background-size: cover;
+  background-image: url("./assets/auroraLoginBackground.jpg");
 }
 
 .loginForm {

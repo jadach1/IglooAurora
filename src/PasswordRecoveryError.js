@@ -1,9 +1,11 @@
 import React from "react"
 import Typography from "@material-ui/core/Typography"
-import polarBear from "./styles/assets/polarBear.svg"
+import Button from "@material-ui/core/Button"
+import polarBear from "./styles/assets/polarBearWithBucket.svg"
+import { Redirect } from "react-router-dom"
 
-export default class OfflineScreen extends React.Component {
-  state = { isMobile: false }
+export default class PasswordRecoveryError extends React.Component {
+  state = { redirect: false, isMobile: false }
 
   updateDimensions() {
     if (window.innerWidth < 400) {
@@ -44,30 +46,31 @@ export default class OfflineScreen extends React.Component {
       >
         <Typography
           variant={this.state.isMobile ? "h5" : "h4"}
-          style={{ color: "white" }}
+          style={{ color: "white", marginTop: "16px", marginBottom: "32px" }}
         >
-          You are not connected, try again in a while
+          Yikes, it's an unexpected error!
         </Typography>
-        <br />
-        <br />
-        <br />
-        <br />
         <img
           alt="Sleeping Polar Bear"
           src={polarBear}
           className="notSelectable"
+          style={{ maxWidth: "300px" }}
         />
-        <br />
-        <br />
-        <br />
-        <br />
         <Typography
           variant={this.state.isMobile ? "h6" : "h5"}
-          gutterBottom
-          style={{ color: "white" }}
+          style={{ color: "white", margin: "32px 0" }}
         >
-          In the meantime, why don't you have a nap?
+          {this.props.error}
         </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => this.setState({ redirect: true })}
+          style={{ marginBottom: "16px" }}
+        >
+          Take me away!
+        </Button>
+        {this.state.redirect && <Redirect push to="/dashboard" />}
       </div>
     )
   }
