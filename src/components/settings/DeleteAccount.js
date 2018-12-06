@@ -6,6 +6,7 @@ import Button from "@material-ui/core/Button"
 import gql from "graphql-tag"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
+import Fade from "@material-ui/core/Fade"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
@@ -294,6 +295,13 @@ export default class DeleteAccountDialog extends React.Component {
             >
               Proceed
               {this.state.showLoading && (
+                      <Fade
+      in={true}
+      style={{
+        transitionDelay: "800ms",
+      }}
+      unmountOnExit
+    >
                 <CircularProgress
                   size={24}
                   style={{
@@ -303,7 +311,7 @@ export default class DeleteAccountDialog extends React.Component {
                     marginTop: -12,
                     marginLeft: -12,
                   }}
-                />
+                /></Fade>
               )}
             </Button>
           </DialogActions>
@@ -363,6 +371,13 @@ export default class DeleteAccountDialog extends React.Component {
                   ? "Delete (" + this.state.timer + ")"
                   : "Delete"}
                 {this.state.showDeleteLoading && (
+                      <Fade
+      in={true}
+      style={{
+        transitionDelay: "800ms",
+      }}
+      unmountOnExit
+    >
                   <CircularProgress
                     size={24}
                     style={{
@@ -372,7 +387,7 @@ export default class DeleteAccountDialog extends React.Component {
                       marginTop: -12,
                       marginLeft: -12,
                     }}
-                  />
+                  /></Fade>
                 )}
               </Button>
             </MuiThemeProvider>

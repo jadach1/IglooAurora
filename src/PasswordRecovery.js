@@ -1,4 +1,5 @@
 import React, { Component } from "react"
+import PasswordRecoveryError from "./PasswordRecoveryError"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
@@ -9,37 +10,71 @@ import Icon from "@material-ui/core/Icon"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import CircularProgress from "@material-ui/core/CircularProgress"
-import { Link } from "react-router-dom"
+import Fade from "@material-ui/core/Fade"
 import zxcvbn from "zxcvbn"
 import gql from "graphql-tag"
 import logo from "./styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
 
 export default class PasswordRecovery extends Component {
-  state = { showPassword: false, redirect: false }
+  state = {
+    showPassword: false,
+    redirect: false,
+    showLoading: false,
+    passwordError: "",
+  }
 
   async updatePassword() {
-    let changePassword = await this.props.client.mutate({
-      mutation: gql`
-        mutation($newPassword: String!) {
-          changePassword(newPassword: $newPassword) {
-            token
+    this.setState({ showLoading: true })
+
+    try {
+      let changePassword = await this.props.client.mutate({
+        mutation: gql`
+          mutation($newPassword: String!) {
+            changePassword(newPassword: $newPassword) {
+              token
+            }
           }
-        }
-      `,
-      variables: {
-        newPassword: this.props.password,
-      },
-    })
+        `,
+        variables: {
+          newPassword: this.props.password,
+        },
+      })
 
-    this.setState({
-      token: changePassword.data.changePassword.token,
-    })
+      this.setState({
+        token: changePassword.data.changePassword.token,
+      })
 
-    localStorage.setItem("bearer", this.state.token)
-    this.forceUpdate()
+      typeof Storage !== "undefined" &&
+        localStorage.setItem("bearer", this.state.token)
+      typeof Storage !== "undefined" &&
+        this.props.userData.user &&
+        localStorage.setItem("email", this.props.userData.user.email)
+      this.forceUpdate()
 
-    this.setState({ redirect: true })
+      this.setState({ redirect: true })
+    } catch (e) {
+      this.setState({ passwordError: "Unexpected error" })
+    }
+
+    this.setState({ showLoading: false })
+  }
+
+  updateDimensions() {
+    if (window.innerWidth < 400) {
+      !this.state.isMobile && this.setState({ isMobile: true })
+    } else {
+      this.state.isMobile && this.setState({ isMobile: false })
+    }
+  }
+
+  componentDidMount() {
+    this.updateDimensions()
+    window.addEventListener("resize", this.updateDimensions.bind(this))
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateDimensions.bind(this))
   }
 
   render() {
@@ -80,7 +115,14 @@ export default class PasswordRecovery extends Component {
     if (!this.props.password) scoreText = ""
 
     if (error) {
-      return "Unexpected error"
+      if (
+        error.message !==
+        "Network error: Response not successful: Received status code 401"
+      )
+        return "Unexpected error"
+      else {
+        return <PasswordRecoveryError error="Your recovery link is expired" />
+      }
     }
 
     if (loading) {
@@ -96,206 +138,164 @@ export default class PasswordRecovery extends Component {
           }}
           className="notSelectable defaultCursor"
         >
-          <CircularProgress size={96} color="secondary" />
+          <Fade
+            in={true}
+            style={{
+              transitionDelay: "800ms",
+            }}
+            unmountOnExit
+          >
+            <CircularProgress size={96} color="secondary" />
+          </Fade>
         </div>
       )
     }
 
     if (this.props.isTokenValid) {
-      return (
-        <div
-          style={{
-            width: "100vw",
-            height: "100vh",
-            backgroundColor: "#0057cb",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-          className="notSelectable defaultCursor"
-        >
-          <div
-            style={{
-              margin: "auto",
-              textAlign: "center",
-              width: "327px",
-            }}
-          >
-            <img
-              src={logo}
-              alt="Igloo logo"
-              className="notSelectable"
-              style={
-                window.innerHeight >= 690
-                  ? {
-                      width: "200px",
-                      marginBottom: "100px",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }
-                  : {
-                      width: "200px",
-                      marginBottom: "50px",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }
-              }
-            />
-            <Typography variant="h4" style={{ color: "white" }}>
-              Invalid token
-            </Typography>
-            <br />
-            <br />
-            <Link
-              to="/dashboard"
-              style={{ textDecoration: "none", color: "black" }}
-            >
-              <Button variant="contained" color="secondary">
-                Take me away!
-              </Button>
-            </Link>
-          </div>
-          {this.state.redirect && <Redirect push to="/dashboard" />}
-        </div>
-      )
+      return <PasswordRecoveryError error="Your recovery link isn't valid" />
+    }
+
+    if (this.state.redirect) {
+      return <Redirect push to="/dashboard" />
     }
 
     return (
       <div
         style={{
-          width: "100vw",
-          height: "100vh",
+          position: "absolute",
+          margin: "auto",
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          maxWidth: "332px",
+          maxHeight: "381px",
+          textAlign: "center",
+          padding: "0 32px",
           backgroundColor: "#0057cb",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
         }}
         className="notSelectable defaultCursor"
       >
-        <div
+        <img
+          src={logo}
+          alt="Igloo logo"
+          className="notSelectable"
           style={{
-            margin: "auto",
-            textAlign: "center",
-            width: "332px",
+            maxWidth: "192px",
+            marginBottom: "72px",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        />
+        <Typography
+          variant={this.state.isMobile ? "h5" : "h4"}
+          style={{ color: "white", marginBottom: "32px" }}
+        >
+          Recover your account
+        </Typography>
+        <Grid
+          container
+          spacing={0}
+          alignItems="flex-end"
+          style={{ width: "100%", marginBottom: "12px" }}
+        >
+          <Grid item style={{ marginRight: "16px" }}>
+            <Icon style={{ color: "white", marginBottom: "20px" }}>
+              vpn_key
+            </Icon>
+          </Grid>
+          <Grid item style={{ width: "calc(100% - 48px)" }}>
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="password"
+                placeholder="New password"
+                style={{
+                  color: "white",
+                }}
+                value={this.props.password}
+                type={this.state.showPassword ? "text" : "password"}
+                onChange={event => {
+                  this.setState({
+                    passwordScore: zxcvbn(event.target.value, [
+                      user.email,
+                      user.email.split("@")[0],
+                      user.name,
+                      "igloo",
+                      "igloo aurora",
+                      "aurora",
+                    ]).score,
+                    isPasswordEmpty: event.target.value === "",
+                  })
+                  this.props.updatePassword(event.target.value)
+                }}
+                onKeyPress={event => {
+                  if (event.key === "Enter") {
+                    this.updatePassword(this.props.password)
+                  }
+                }}
+                endAdornment={
+                  this.props.password ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() =>
+                          this.setState(oldState => ({
+                            showPassword: !oldState.showPassword,
+                          }))
+                        }
+                        onMouseDown={event => event.preventDefault()}
+                        tabIndex="-1"
+                        style={{ color: "white" }}
+                      >
+                        {this.state.showPassword ? (
+                          <Icon>visibility_off</Icon>
+                        ) : (
+                          <Icon>visibility</Icon>
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+              <FormHelperText
+                id="password-error-text-signup"
+                style={{ color: "white" }}
+              >
+                {scoreText}
+                {this.state.isPasswordEmpty
+                  ? "This field is required"
+                  : this.state.passwordError}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+        </Grid>
+        <Button
+          style={{ marginRight: "4px" }}
+          onClick={() => this.setState({ redirect: true })}
+        >
+          Never mind
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={!user || !(this.state.passwordScore >= 2)}
+          onClick={() => {
+            this.updatePassword(this.props.password)
           }}
         >
-          <img
-            src={logo}
-            alt="Igloo logo"
-            className="notSelectable"
-            style={
-              window.innerHeight >= 690
-                ? {
-                    width: "200px",
-                    marginBottom: "100px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                  }
-                : {
-                    width: "200px",
-                    marginBottom: "50px",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                  }
-            }
-          />
-          <Typography variant="h4" style={{ color: "white" }}>
-            Recover your account
-          </Typography>
-          <br />
-          <br />
-          <Grid
-            container
-            spacing={0}
-            alignItems="flex-end"
-            style={{ width: "100%" }}
-          >
-            <Grid item style={{ marginRight: "16px" }}>
-              <Icon style={{ color: "white", marginBottom: "20px" }}>
-                vpn_key
-              </Icon>
-            </Grid>
-            <Grid item style={{ width: "calc(100% - 40px)" }}>
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  id="password"
-                  placeholder="New password"
-                  style={{
-                    color: "white",
-                  }}
-                  value={this.props.password}
-                  type={this.state.showPassword ? "text" : "password"}
-                  onChange={event => {
-                    this.setState({
-                      passwordScore: zxcvbn(event.target.value, [
-                        user.email,
-                        user.email.split("@")[0],
-                        user.name,
-                        "igloo",
-                        "igloo aurora",
-                        "aurora",
-                      ]).score,
-                      isPasswordEmpty: event.target.value === "",
-                    })
-                    this.props.updatePassword(event.target.value)
-                  }}
-                  onKeyPress={event => {
-                    if (event.key === "Enter") {
-                      this.updatePassword(this.props.password)
-                    }
-                  }}
-                  endAdornment={
-                    this.props.password ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() =>
-                            this.setState(oldState => ({
-                              showPassword: !oldState.showPassword,
-                            }))
-                          }
-                          onMouseDown={event => event.preventDefault()}
-                          tabIndex="-1"
-                          style={{ color: "white" }}
-                        >
-                          {this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
-                          ) : (
-                            <Icon>visibility</Icon>
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-                <FormHelperText
-                  id="password-error-text-signup"
-                  style={{ color: "white" }}
-                >
-                  {scoreText}
-                  {this.state.isPasswordEmpty ? "This field is required" : ""}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-          </Grid>
-          <br />
-          <Button
-            style={{ marginRight: "4px" }}
-            onClick={() => this.setState({ redirect: true })}
-          >
-            Never mind
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            disabled={!user || !(this.state.passwordScore >= 2)}
-            onClick={() => {
-              this.updatePassword(this.props.password)
-            }}
-          >
-            Change password
-          </Button>
-        </div>
-        {this.state.redirect && <Redirect push to="/dashboard" />}
+          Change password
+          {this.state.showLoading && (
+            <CircularProgress
+              size={24}
+              style={{
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+                marginTop: -12,
+                marginLeft: -12,
+              }}
+            />
+          )}
+        </Button>
       </div>
     )
   }

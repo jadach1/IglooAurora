@@ -12,6 +12,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
 import Icon from "@material-ui/core/Icon"
 import IconButton from "@material-ui/core/IconButton"
+import Fade from "@material-ui/core/Fade"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 import { Redirect } from "react-router-dom"
@@ -45,7 +46,7 @@ class Login extends Component {
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!) {
-            authenticateUser(email: $email, password: $password) {
+            logIn(email: $email, password: $password) {
               token
               user {
                 boardCount
@@ -67,14 +68,14 @@ class Login extends Component {
       }
 
       this.props.setBoards(
-        loginMutation.data.authenticateUser.user.boardCount,
-        loginMutation.data.authenticateUser.user.boardCount === 1
-          ? loginMutation.data.authenticateUser.user.boards[0].id
+        loginMutation.data.logIn.user.boardCount,
+        loginMutation.data.logIn.user.boardCount === 1
+          ? loginMutation.data.logIn.user.boards[0].id
           : ""
       )
 
       this.props.signIn(
-        loginMutation.data.authenticateUser.token,
+        loginMutation.data.logIn.token,
         this.state.keepLoggedIn
       )
     } catch (e) {
@@ -165,6 +166,7 @@ class Login extends Component {
                     id="adornment-email-login"
                     placeholder="Email"
                     value={this.props.email}
+                    style={{ color: "black" }}
                     onChange={event => {
                       this.props.changeEmail(event.target.value)
                       this.setState({
@@ -234,6 +236,7 @@ class Login extends Component {
                     type={this.state.showPassword ? "text" : "password"}
                     value={this.props.password}
                     placeholder="Password"
+                    style={{ color: "black" }}
                     onChange={event => {
                       this.props.changePassword(event.target.value)
                       this.props.changePasswordError("")
@@ -360,16 +363,24 @@ class Login extends Component {
             >
               Log in
               {this.state.showLoading && (
-                <CircularProgress
-                  size={24}
+                <Fade
+                  in={true}
                   style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: -12,
-                    marginLeft: -12,
+                    transitionDelay: "800ms",
                   }}
-                />
+                  unmountOnExit
+                >
+                  <CircularProgress
+                    size={24}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: -12,
+                      marginLeft: -12,
+                    }}
+                  />
+                </Fade>
               )}
             </Button>
             <Typography variant="subtitle1" style={{ marginTop: "8px" }}>

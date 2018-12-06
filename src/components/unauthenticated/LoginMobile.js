@@ -58,7 +58,7 @@ export default class LoginMobile extends Component {
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!) {
-            authenticateUser(email: $email, password: $password) {
+            logIn(email: $email, password: $password) {
               id
               token
             }
@@ -75,7 +75,7 @@ export default class LoginMobile extends Component {
       }
 
       this.props.signIn(
-        loginMutation.data.authenticateUser.token,
+        loginMutation.data.logIn.token,
         this.state.keepLoggedIn
       )
     } catch (e) {

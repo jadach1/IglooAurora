@@ -77,7 +77,7 @@ class Signup extends Component {
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $password: String!, $name: String!) {
-            signupUser(email: $email, password: $password, name: $name) {
+            signUp(email: $email, password: $password, name: $name) {
               token
               user {
                 boards {
@@ -98,7 +98,7 @@ class Signup extends Component {
         localStorage.setItem("email", this.props.email)
       }
 
-      this.props.signIn(loginMutation.data.signupUser.token)
+      this.props.signIn(loginMutation.data.signUp.token)
     } catch (e) {
       this.setState({ showLoading: false })
       if (
@@ -229,6 +229,7 @@ class Signup extends Component {
                     id="adornment-email-signup"
                     placeholder="Full name"
                     value={this.props.name}
+                    style={{color:"black"}}
                     onChange={event => {
                       this.props.changeName(event.target.value)
                       this.setState({
@@ -299,6 +300,7 @@ class Signup extends Component {
                         ? true
                         : false
                     }
+                    style={{color:"black"}}
                     onChange={event => {
                       this.props.changeEmail(event.target.value)
                       this.props.changeEmailError("")
@@ -371,6 +373,7 @@ class Signup extends Component {
                       id="adornment-password-signup"
                       placeholder="Password"
                       color="secondary"
+                      style={{color:"black"}}
                       type={this.state.showPassword ? "text" : "password"}
                       value={this.props.password}
                       error={this.state.isPasswordEmpty ? true : false}

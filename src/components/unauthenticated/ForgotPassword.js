@@ -11,6 +11,9 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 const MOBILE_WIDTH = 600
 
@@ -22,7 +25,7 @@ function Transition(props) {
   )
 }
 
-export default class ForgotPassword extends React.Component {
+class ForgotPassword extends React.Component {
   state = { email: "" }
 
   componentWillReceiveProps(nextProps) {
@@ -33,12 +36,47 @@ export default class ForgotPassword extends React.Component {
 
   render() {
     return (
-      <React.Fragment>
+      <MuiThemeProvider
+        theme={createMuiTheme({
+          palette: {
+            default: { main: "#fff" },
+            primary: { light: "#0083ff", main: "#0057cb" },
+            secondary: { main: "#ff4081" },
+            error: { main: "#f44336" },
+          },
+          overrides: {
+            MuiDialogTitle: {
+              root: {
+                fontSize: "1.3125rem",
+                lineHeight: "1.16667em",
+                fontWeight: 500,
+                cursor: "default",
+                webkitTouchCallout: "none",
+                webkitUserSelect: "none",
+                khtmlUserSelect: "none",
+                mozUserSelect: "none",
+                msUserSelect: "none",
+                userSelect: "none",
+              },
+            },
+            MuiButton: {
+              containedPrimary: {
+                backgroundColor: "#0083ff",
+              },
+            },
+            MuiDialogActions: {
+              action: {
+                marginRight: "4px",
+              },
+            },
+          },
+        })}
+      >
         <Dialog
           open={this.props.open}
           onClose={this.props.close}
           TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullScreen={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -54,6 +92,7 @@ export default class ForgotPassword extends React.Component {
                 id="adornment-name-login"
                 placeholder="Email"
                 value={this.state.email}
+                style={{ color: "black" }}
                 onChange={event =>
                   this.setState({
                     email: event.target.value,
@@ -72,12 +111,6 @@ export default class ForgotPassword extends React.Component {
                         onClick={() => this.setState({ email: "" })}
                         onMouseDown={this.handleMouseDownPassword}
                         tabIndex="-1"
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
                       >
                         <Icon>clear</Icon>
                       </IconButton>
@@ -106,7 +139,9 @@ export default class ForgotPassword extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-      </React.Fragment>
+      </MuiThemeProvider>
     )
   }
 }
+
+export default withMobileDialog({ breakpoint: "xs" })(ForgotPassword)
