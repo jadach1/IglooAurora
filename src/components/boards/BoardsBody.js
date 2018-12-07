@@ -52,7 +52,7 @@ export default class BoardsBody extends Component {
       yourBoardsList = user.boards
         .filter(board => board.myRole === "OWNER")
         .filter(board =>
-          board.customName
+          board.name
             .toLowerCase()
             .includes(this.props.searchText.toLowerCase())
         )
@@ -72,7 +72,7 @@ export default class BoardsBody extends Component {
       boardsList = user.boards
         .filter(board => board.myRole !== "OWNER")
         .filter(board =>
-          board.customName
+          board.name
             .toLowerCase()
             .includes(this.props.searchText.toLowerCase())
         )

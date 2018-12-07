@@ -52,7 +52,6 @@ export default class DeleteAccountDialog extends React.Component {
   constructor(props) {
     super(props)
 
-    const bearer = this.state.token
     const wsLink = new WebSocketLink({
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server")
@@ -66,7 +65,7 @@ export default class DeleteAccountDialog extends React.Component {
       options: {
         reconnect: true,
         connectionParams: {
-          Authorization: "Bearer " + bearer,
+          Authorization: "Bearer " + this.state.token,
         },
       },
     })
@@ -77,7 +76,7 @@ export default class DeleteAccountDialog extends React.Component {
           ? localStorage.getItem("server") + "/graphql"
           : `http://igloo-production.herokuapp.com/graphql`,
       headers: {
-        Authorization: "Bearer " + bearer,
+        Authorization: "Bearer " + this.state.token,
       },
     })
 
@@ -104,6 +103,8 @@ export default class DeleteAccountDialog extends React.Component {
   }
 
   async createToken() {
+    this.setState({ showLoading: true })
+
     try {
       let createTokenMutation = await this.props.client.mutate({
         mutation: gql`
@@ -120,7 +121,6 @@ export default class DeleteAccountDialog extends React.Component {
       this.setState({
         token: createTokenMutation.data.createToken,
         deleteOpen: true,
-        password: "",
         showLoading: false,
         showDeleteLoading: false,
       })
@@ -187,7 +187,10 @@ export default class DeleteAccountDialog extends React.Component {
       <React.Fragment>
         <Dialog
           open={this.props.open && !this.state.deleteOpen}
-          onClose={this.props.close}
+          onClose={() => {
+            this.props.close()
+            this.setState({ password: "" })
+          }}
           className="notSelectable defaultCursor"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
@@ -223,7 +226,6 @@ export default class DeleteAccountDialog extends React.Component {
                 onKeyPress={event => {
                   if (event.key === "Enter") {
                     this.createToken()
-                    this.setState({ showLoading: true })
                   }
                 }}
                 endAdornment={
@@ -272,13 +274,10 @@ export default class DeleteAccountDialog extends React.Component {
                   : this.state.passwordError}
               </FormHelperText>
             </FormControl>
-            <br />
-            <br />
           </div>
           <DialogActions>
             <Button
               onClick={() => {
-                this.setState({ password: "" })
                 this.props.close()
               }}
             >
@@ -295,23 +294,24 @@ export default class DeleteAccountDialog extends React.Component {
             >
               Proceed
               {this.state.showLoading && (
-                      <Fade
-      in={true}
-      style={{
-        transitionDelay: "800ms",
-      }}
-      unmountOnExit
-    >
-                <CircularProgress
-                  size={24}
+                <Fade
+                  in={true}
                   style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: -12,
-                    marginLeft: -12,
+                    transitionDelay: "800ms",
                   }}
-                /></Fade>
+                  unmountOnExit
+                >
+                  <CircularProgress
+                    size={24}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: -12,
+                      marginLeft: -12,
+                    }}
+                  />
+                </Fade>
               )}
             </Button>
           </DialogActions>
@@ -371,23 +371,24 @@ export default class DeleteAccountDialog extends React.Component {
                   ? "Delete (" + this.state.timer + ")"
                   : "Delete"}
                 {this.state.showDeleteLoading && (
-                      <Fade
-      in={true}
-      style={{
-        transitionDelay: "800ms",
-      }}
-      unmountOnExit
-    >
-                  <CircularProgress
-                    size={24}
+                  <Fade
+                    in={true}
                     style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: -12,
-                      marginLeft: -12,
+                      transitionDelay: "800ms",
                     }}
-                  /></Fade>
+                    unmountOnExit
+                  >
+                    <CircularProgress
+                      size={24}
+                      style={{
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        marginTop: -12,
+                        marginLeft: -12,
+                      }}
+                    />
+                  </Fade>
                 )}
               </Button>
             </MuiThemeProvider>

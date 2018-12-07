@@ -39,7 +39,7 @@ class ReadWriteStringTile extends Component {
     return (
       <div className="readWriteStringTile notSelectable">
         <TextField
-          label={this.props.customName}
+          label={this.props.name}
           value={this.state.text}
           onChange={this.handleChange}
         />

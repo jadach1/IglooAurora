@@ -88,14 +88,14 @@ class AuthDialog extends React.Component {
   async getPermanentToken() {
     const tokenMutation = await this.client.mutate({
       mutation: gql`
-        mutation GeneratePermanentAccessToken($customName: String!) {
-          generatePermanentAccessToken(customName: $customName) {
+        mutation GeneratePermanentAccessToken($name: String!) {
+          generatePermanentAccessToken(name: $name) {
             token
           }
         }
       `,
       variables: {
-        customName: this.state.tokenName,
+        name: this.state.tokenName,
       },
     })
 
@@ -124,7 +124,7 @@ class AuthDialog extends React.Component {
                 <Icon>vpn_key</Icon>
               </ListItemIcon>
               <ListItemText
-                primary={token.customName}
+                primary={token.name}
                 secondary={
                   token.lastUsed ? (
                     <React.Fragment>
@@ -253,7 +253,7 @@ class AuthDialog extends React.Component {
               onClick={this.props.handleAuthDialogClose}
               style={{ marginRight: "4px" }}
             >
-              Never Mind
+              Never mind
             </Button>
             <Button
               variant="contained"
@@ -375,7 +375,7 @@ export default graphql(
         id
         permanentTokens {
           id
-          customName
+          name
           lastUsed
         }
       }

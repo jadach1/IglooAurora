@@ -1,6 +1,6 @@
 self.addEventListener("push", function(event) {
   const pushData = JSON.parse(event.data.text())
-  const title = pushData.device.customName
+  const title = pushData.device.name
   const options = {
     body: pushData.content,
   }

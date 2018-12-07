@@ -19,7 +19,7 @@ function Transition(props) {
 export default class FullScreenTile extends React.Component {
   render() {
     const { value } = this.props
-    const valueTitle = value.customName
+    const valueTitle = value.name
 
     return (
       <Dialog

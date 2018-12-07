@@ -64,7 +64,7 @@ class CreateNotification extends React.Component {
             name="device"
           >
             {this.props.allDevices.map(device => (
-              <MenuItem value={device.index}>{device.customName}</MenuItem>
+              <MenuItem value={device.index}>{device.name}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -181,13 +181,13 @@ export default graphql(
   gql`
     mutation CreateDevice(
       $deviceType: String
-      $customName: String!
+      $name: String!
       $boardId: ID!
       $firmware: String
     ) {
       createDevice(
         deviceType: $deviceType
-        customName: $customName
+        name: $name
         boardId: $boardId
         firmware: $firmware
       ) {

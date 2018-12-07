@@ -16,7 +16,7 @@ class MainBody extends Component {
           visibility
           valueDetails
           tileSize
-          customName
+          name
           updatedAt
           createdAt
           device {
@@ -78,7 +78,7 @@ class MainBody extends Component {
           visibility
           valueDetails
           tileSize
-          customName
+          name
           updatedAt
           createdAt
           device {
@@ -318,7 +318,7 @@ export default graphql(
           visibility
           valueDetails
           tileSize
-          customName
+          name
           updatedAt
           createdAt
           device {

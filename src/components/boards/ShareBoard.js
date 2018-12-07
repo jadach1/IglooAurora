@@ -79,9 +79,9 @@ class ShareBoard extends React.Component {
   }
 
   changeRole = role => {
-    this.props.InviteUser({
+    this.props.ChangeRole({
       variables: {
-        role: role.toUpperCase(),
+        newRole: role.toUpperCase(),
         boardId: this.props.board.id,
         email: this.state.menuTarget.email,
       },
@@ -90,7 +90,7 @@ class ShareBoard extends React.Component {
         shareBoard: {
           id: this.props.board.id,
           email: this.state.menuTarget.email,
-          role: role.toUpperCase(),
+          newRole: role.toUpperCase(),
           __typename: "Board",
         },
       },
@@ -700,5 +700,16 @@ export default graphql(
     {
       name: "InviteUser",
     }
+  )(graphql(
+    gql`
+      mutation ChangeRole($email: String!, $boardId: ID!, $newRole: Role!) {
+        changeRole(email: $email, boardId: $boardId, newRole: $newRole) {
+          id
+        }
+      }
+    `,
+    {
+      name: "ChangeRole",
+    }
   )(ShareBoard)
-)
+))

@@ -26,20 +26,20 @@ function Transition(props) {
 }
 
 class RenameDevice extends React.Component {
-  state = { customName: "" }
+  state = { name: "" }
 
   rename = () => {
     this.props["Rename"]({
       variables: {
         id: this.props.device.id,
-        customName: this.state.customName,
+        name: this.state.name,
       },
       optimisticResponse: {
         __typename: "Mutation",
         device: {
           __typename: this.props.device.__typename,
           id: this.props.device.id,
-          customName: this.state.customName,
+          name: this.state.name,
         },
       },
     })
@@ -48,8 +48,8 @@ class RenameDevice extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.open && !this.props.open) {
-      oldName = this.props.device.customName
-      this.setState({ customName: this.props.device.customName })
+      oldName = this.props.device.name
+      this.setState({ name: this.props.device.name })
     }
   }
 
@@ -76,20 +76,20 @@ class RenameDevice extends React.Component {
             <Input
               id="adornment-name-login"
               placeholder="Board Name"
-              value={this.state.customName}
+              value={this.state.name}
               onChange={event =>
                 this.setState({
-                  customName: event.target.value,
+                  name: event.target.value,
                 })
               }
               onKeyPress={event => {
                 if (event.key === "Enter") this.rename()
               }}
               endAdornment={
-                this.state.customName ? (
+                this.state.name ? (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() => this.setState({ customName: "" })}
+                      onClick={() => this.setState({ name: "" })}
                       onMouseDown={this.handleMouseDownPassword}
                       tabIndex="-1"
                       style={
@@ -117,7 +117,7 @@ class RenameDevice extends React.Component {
             color="primary"
             onClick={this.rename}
             disabled={
-              !this.state.customName || oldName === this.state.customName
+              !this.state.name || oldName === this.state.name
             }
           >
             Rename
@@ -130,10 +130,10 @@ class RenameDevice extends React.Component {
 
 export default graphql(
   gql`
-    mutation Rename($id: ID!, $customName: String) {
-      device(id: $id, customName: $customName) {
+    mutation Rename($id: ID!, $name: String) {
+      device(id: $id, name: $name) {
         id
-        customName
+        name
       }
     }
   `,

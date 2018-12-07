@@ -24,22 +24,21 @@ function Transition(props) {
 class ChangeBoard extends React.Component {
   state = { newBoard: this.props.device.board.id }
 
-  changeBoard = () => {
+  changeBoard = value => {
     this.props["ChangeBoard"]({
       variables: {
         id: this.props.device.id,
-        boardId: this.state.newBoard,
+        boardId: value,
       },
       optimisticResponse: {
         __typename: "Mutation",
         device: {
           __typename: this.props.device.__typename,
           id: this.props.device.id,
-          boardId: this.state.newBoard,
+          boardId: value,
         },
       },
     })
-    this.props.close()
   }
 
   render() {
@@ -55,33 +54,35 @@ class ChangeBoard extends React.Component {
       >
         <DialogTitle disableTypography>Change board</DialogTitle>
         <RadioGroup
-          onChange={(event, value) => this.setState({ newBoard: value })}
+          onChange={(event, value) => {
+            this.setState({ newBoard: value })
+            this.changeBoard(value)
+          }}
           value={this.state.newBoard || this.props.device.board.id}
           style={{ paddingLeft: "24px", paddingRight: "24px" }}
         >
           {this.props.boards &&
-            this.props.boards.map(board => (
-              <FormControlLabel
-                control={<Radio color="primary" />}
-                value={board.id}
-                label={board.customName}
-              />
-            ))}
+            this.props.boards
+              .sort(function(a, b) {
+                return a.myRole === "ONWER"
+                  ? b.myRole === "OWNER"
+                    ? 0
+                    : -1
+                  : b.myRole === "OWNER"
+                  ? 1
+                  : 0
+              })
+              .map(board => (
+                <FormControlLabel
+                  control={<Radio color="primary" />}
+                  value={board.id}
+                  label={board.name}
+                  disabled={board.myRole !== "OWNER"}
+                />
+              ))}
         </RadioGroup>
         <DialogActions>
-          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-            Never mind
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            primary={true}
-            style={{ marginRight: "8px" }}
-            onClick={this.changeBoard}
-            disabled={this.state.newBoard === this.props.device.board.id}
-          >
-            Change board
-          </Button>
+          <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>
     )
@@ -90,12 +91,9 @@ class ChangeBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation ChangeBoard($id: ID!, $boardId: ID) {
-      device(id: $id, boardId: $boardId) {
+    mutation ChangeBoard($id: ID!, $boardId: ID!) {
+      moveDevice(deviceId: $id, newBoardId: $boardId) {
         id
-        board {
-          id
-        }
       }
     }
   `,
