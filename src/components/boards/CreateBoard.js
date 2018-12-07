@@ -31,7 +31,7 @@ function Transition(props) {
 
 class CreateBoard extends React.Component {
   state = {
-    customName: "",
+    name: "",
     favorite: false,
     slideIndex: 0,
   }
@@ -66,13 +66,13 @@ class CreateBoard extends React.Component {
   createBoardMutation = () => {
     this.props.CreateBoard({
       variables: {
-        customName: this.state.customName,
+        name: this.state.name,
         avatar: this.selectImage(this.state.slideIndex),
       },
       optimisticResponse: {
         __typename: "Mutation",
         CreateBoard: {
-          customName: this.state.customName,
+          name: this.state.name,
           avatar: this.selectImage(this.state.slideIndex),
           __typename: "Board",
         },
@@ -104,20 +104,20 @@ class CreateBoard extends React.Component {
             <Input
               id="adornment-name-login"
               placeholder="Board Name"
-              value={this.state.customName}
+              value={this.state.name}
               onChange={event =>
                 this.setState({
-                  customName: event.target.value,
+                  name: event.target.value,
                 })
               }
               onKeyPress={event => {
                 if (event.key === "Enter") this.createBoardMutation()
               }}
               endAdornment={
-                this.state.customName ? (
+                this.state.name ? (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() => this.setState({ customName: "" })}
+                      onClick={() => this.setState({ name: "" })}
                       onMouseDown={this.handleMouseDownPassword}
                       tabIndex="-1"
                       style={
@@ -235,7 +235,7 @@ class CreateBoard extends React.Component {
             variant="contained"
             color="primary"
             onClick={this.createBoardMutation}
-            disabled={!this.state.customName}
+            disabled={!this.state.name}
           >
             Create board
           </Button>
@@ -247,10 +247,10 @@ class CreateBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation CreateBoard($customName: String!, $avatar: BoardPicture) {
-      createBoard(customName: $customName, avatar: $avatar) {
+    mutation CreateBoard($name: String!, $avatar: BoardPicture) {
+      createBoard(name: $name, avatar: $avatar) {
         id
-        customName
+        name
         avatar
       }
     }

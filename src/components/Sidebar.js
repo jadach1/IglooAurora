@@ -96,7 +96,7 @@ class Sidebar extends Component {
       devicesArray = this.props.searchText
         ? board.devices
             .filter(device =>
-              device.customName
+              device.name
                 .toLowerCase()
                 .includes(this.props.searchText.toLowerCase())
             )
@@ -138,7 +138,7 @@ class Sidebar extends Component {
             }}
           >
             {devicesArray
-              .filter(device => device.customName.toLowerCase())
+              .filter(device => device.name.toLowerCase())
               .filter(
                 device =>
                   this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
@@ -179,7 +179,7 @@ class Sidebar extends Component {
                               : { color: "black" }
                           }
                         >
-                          {device.customName}
+                          {device.name}
                         </span>
                       }
                       style={{
@@ -384,7 +384,7 @@ class Sidebar extends Component {
                   board &&
                   board.devices.filter(device =>
                     this.props.searchText
-                      ? device.customName
+                      ? device.name
                           .toLowerCase()
                           .includes(this.props.searchText.toLowerCase())
                       : true
@@ -406,7 +406,7 @@ class Sidebar extends Component {
                       board.devices &&
                       board.devices.filter(device =>
                         this.props.searchText
-                          ? device.customName
+                          ? device.name
                               .toLowerCase()
                               .includes(this.props.searchText.toLowerCase())
                           : true
@@ -418,7 +418,7 @@ class Sidebar extends Component {
                       board.devices.filter(device =>
                         this.props.searchText
                           ? true
-                          : device.customName
+                          : device.name
                               .toLowerCase()
                               .includes(this.props.searchText.toLowerCase())
                       )[0]

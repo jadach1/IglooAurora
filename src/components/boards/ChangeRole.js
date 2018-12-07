@@ -35,7 +35,10 @@ export default class ChangeRole extends Component {
       >
         <DialogTitle disableTypography>Change role</DialogTitle>
         <RadioGroup
-          onChange={event => this.setState({ value: event.target.value })}
+          onChange={event => {
+            this.setState({ value: event.target.value })
+            this.props.changeRole(event.target.value)
+          }}
           value={this.state.value}
           style={{ paddingLeft: "24px", paddingRight: "24px" }}
         >
@@ -56,17 +59,7 @@ export default class ChangeRole extends Component {
           />
         </RadioGroup>
         <DialogActions>
-          <Button onClick={this.props.close}>Never mind</Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={() => {
-              this.props.close()
-              this.props.changeRole(this.state.value)
-            }}
-          >
-            Change role
-          </Button>
+          <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>
     )

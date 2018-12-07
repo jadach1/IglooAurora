@@ -8,11 +8,23 @@ import Icon from "@material-ui/core/Icon"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import FormControl from "@material-ui/core/FormControl"
+import FormHelperText from "@material-ui/core/FormHelperText"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import ToggleIcon from "material-ui-toggle-icon"
-import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import { ApolloClient } from "apollo-client"
+import { HttpLink } from "apollo-link-http"
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from "apollo-cache-inmemory"
+import { WebSocketLink } from "apollo-link-ws"
+import { split } from "apollo-link"
+import { getMainDefinition } from "apollo-utilities"
+import introspectionQueryResultData from "../../fragmentTypes.json"
+import Fade from "@material-ui/core/Fade"
+import CircularProgress from "@material-ui/core/CircularProgress"
 
 const MOBILE_WIDTH = 600
 
@@ -25,9 +37,14 @@ function Transition(props) {
 }
 
 class ChangeMailDialog extends React.Component {
-  state = {
-    mailSnackOpen: false,
-    mailDialogOpen: false,
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      mailDialogOpen: false,
+      passwordError: "",
+      email: "",
+    }
   }
 
   openMailDialog = () => {
@@ -52,82 +69,159 @@ class ChangeMailDialog extends React.Component {
     })
   }
 
+  async createToken() {
+    try {
+      this.setState({ showLoading: true })
+
+      let createTokenMutation = await this.props.client.mutate({
+        mutation: gql`
+          mutation($tokenType: TokenType!, $password: String!) {
+            createToken(tokenType: $tokenType, password: $password)
+          }
+        `,
+        variables: {
+          tokenType: "CHANGE_EMAIL",
+          password: this.state.password,
+        },
+      })
+
+      this.setState({
+        token: createTokenMutation.data.createToken,
+        mailDialogOpen: true,
+        showDeleteLoading: false,
+      })
+
+      this.props.handleEmailDialogClose()
+    } catch (e) {
+      if (e.message === "GraphQL error: Wrong password") {
+        this.setState({ passwordError: "Wrong password" })
+      } else if (
+        e.message ===
+        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+      ) {
+        this.setState({ passwordError: "This account doesn't exist" })
+      } else {
+        this.setState({
+          passwordError: "Unexpected error",
+        })
+      }
+    }
+
+    this.setState({ showLoading: false })
+  }
+
+  async changeEmail() {
+    const wsLink = new WebSocketLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server")
+          ? "wss://" +
+            localStorage
+              .getItem("server")
+              .replace("https://", "")
+              .replace("http://", "") +
+            "/subscriptions"
+          : `wss://igloo-production.herokuapp.com/subscriptions`,
+      options: {
+        reconnect: true,
+        connectionParams: {
+          Authorization: "Bearer " + this.state.token,
+        },
+      },
+    })
+
+    const httpLink = new HttpLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://igloo-production.herokuapp.com/graphql`,
+      headers: {
+        Authorization: "Bearer " + this.state.token,
+      },
+    })
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === "OperationDefinition" && operation === "subscription"
+      },
+      wsLink,
+      httpLink
+    )
+
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache({ fragmentMatcher }),
+    })
+
+    try {
+      let changeEmailMutation = await this.client.mutate({
+        mutation: gql`
+          mutation($newEmail: String!) {
+            changeEmail(newEmail: $newEmail)
+          }
+        `,
+        variables: {
+          newEmail: this.state.email,
+        },
+      })
+
+      this.setState({
+        token: changeEmailMutation.data.changeEmail,
+      })
+
+      this.props.handleEmailDialogClose()
+
+      this.closeMailDialog()
+    } catch (e) {
+      if (e.message === "GraphQL error: Wrong password") {
+        this.setState({ emailError: "Wrong password" })
+      } else if (
+        e.message === "GraphQL error: A user with this email already exists"
+      ) {
+        this.setState({ emailError: "Email already taken" })
+      } else {
+        this.setState({
+          emailError: "Unexpected error",
+        })
+      }
+
+      this.setState({ showLoading: false })
+    }
+  }
+
   render() {
     const {
       userData: { user },
     } = this.props
 
-    let changeEmail = () => {}
-
-    if (user) {
-      changeEmail = email => {
-        this.props["ChangeEmail"]({
-          variables: {
-            email: email,
-          },
-          optimisticResponse: {
-            __typename: "Mutation",
-            user: {
-              id: user.id,
-              email: email,
-              __typename: "User",
-            },
-          },
-        })
-      }
-    }
-
     return (
       <React.Fragment>
         <Dialog
-          open={this.props.confirmationDialogOpen}
-          onClose={this.props.handleEmailDialogClose}
+          open={this.props.confirmationDialogOpen && !this.state.mailDialogOpen}
+          onClose={() => {
+            this.props.handleEmailDialogClose()
+            this.setState({ password: "" })
+          }}
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle
-            style={
-              window.innerWidth < MOBILE_WIDTH
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { width: "350px", background: "#2f333d" }
-                : { width: "350px", background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
-              Type your password
-            </font>
-          </DialogTitle>
+          <DialogTitle disableTypography>Type your password</DialogTitle>
           <div
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    height: "100%",
-                    paddingRight: "24px",
-                    paddingLeft: "24px",
-                    background: "#2f333d",
-                  }
-                : {
-                    height: "100%",
-                    paddingRight: "24px",
-                    paddingLeft: "24px",
-                  }
-            }
+            style={{
+              height: "100%",
+              paddingRight: "24px",
+              paddingLeft: "24px",
+            }}
           >
             <FormControl
               style={{
@@ -152,7 +246,7 @@ class ChangeMailDialog extends React.Component {
                     : false
                 }
                 onKeyPress={event => {
-                  if (event.key === "Enter") this.openMailDialog()
+                  if (event.key === "Enter") this.createToken()
                 }}
                 endAdornment={
                   this.state.password ? (
@@ -191,44 +285,67 @@ class ChangeMailDialog extends React.Component {
                   ) : null
                 }
               />
+              <FormHelperText
+                style={
+                  this.state.passwordError || this.state.isPasswordEmpty
+                    ? { color: "#f44336" }
+                    : {}
+                }
+              >
+                {this.state.isPasswordEmpty
+                  ? "This field is required"
+                  : this.state.passwordError}
+              </FormHelperText>
             </FormControl>
             <br />
           </div>
           <DialogActions>
-            <Button
-              onClick={this.props.handleEmailDialogClose}
-              style={{ marginRight: "4px" }}
-            >
-              <font
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : {}
-                }
-              >
-                Never Mind
-              </font>
+            <Button onClick={this.props.handleEmailDialogClose}>
+              Never mind
             </Button>
             <Button
               variant="contained"
               color="primary"
-              onClick={this.openMailDialog}
+              onClick={() => this.createToken()}
+              disabled={!this.state.password || this.state.showLoading}
             >
               Proceed
+              {this.state.showLoading && (
+                <Fade
+                  in={true}
+                  style={{
+                    transitionDelay: "800ms",
+                  }}
+                  unmountOnExit
+                >
+                  <CircularProgress
+                    size={24}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: -12,
+                      marginLeft: -12,
+                    }}
+                  />
+                </Fade>
+              )}
             </Button>
           </DialogActions>
         </Dialog>
         <Dialog
           open={this.state.mailDialogOpen}
-          onClose={this.closeMailDialog}
+          onClose={() => {
+            this.closeMailDialog()
+            this.props.handleEmailDialogClose()
+          }}
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle disableTypography>Manage your emails</DialogTitle>
+          <DialogTitle disableTypography>Change email</DialogTitle>
           <div
             style={{
               paddingLeft: "24px",
@@ -244,14 +361,16 @@ class ChangeMailDialog extends React.Component {
                 onChange={event =>
                   this.setState({
                     email: event.target.value,
-                    isMailEmpty: event.target.value === "",
+                    isEmailEmpty: event.target.value === "",
                   })
                 }
                 onKeyPress={event => {
-                  if (event.key === "Enter") changeEmail(this.state.email)
+                  if (event.key === "Enter") this.changeEmail(this.state.email)
                 }}
                 error={
-                  this.state.emailError || this.state.isMailEmpty ? true : false
+                  this.state.emailError || this.state.isEmailEmpty
+                    ? true
+                    : false
                 }
                 endAdornment={
                   this.state.email ? (
@@ -273,22 +392,33 @@ class ChangeMailDialog extends React.Component {
                   ) : null
                 }
               />
+              <FormHelperText
+                style={
+                  this.state.emailError || this.state.isEmailEmpty
+                    ? { color: "#f44336" }
+                    : {}
+                }
+              >
+                {this.state.isEmailEmpty
+                  ? "This field is required"
+                  : this.state.emailError}
+              </FormHelperText>
             </FormControl>
-            <br />
-            <br />
           </div>
           <DialogActions>
             <Button
-              onClick={this.closeMailDialog}
-              style={{ marginRight: "4px" }}
+              onClick={() => {
+                this.closeMailDialog()
+                this.props.handleEmailDialogClose()
+              }}
             >
               Never mind
             </Button>
             <Button
               variant="contained"
               color="primary"
-              onClick={() => changeEmail(this.state.email)}
-              disabled={!user}
+              onClick={() => this.changeEmail(this.state.email)}
+              disabled={this.state.email === "" || !user}
             >
               Change
             </Button>
@@ -299,16 +429,4 @@ class ChangeMailDialog extends React.Component {
   }
 }
 
-export default graphql(
-  gql`
-    mutation ChangeEmail($email: String!) {
-      user(email: $email) {
-        id
-        email
-      }
-    }
-  `,
-  {
-    name: "ChangeEmail",
-  }
-)(ChangeMailDialog)
+export default ChangeMailDialog

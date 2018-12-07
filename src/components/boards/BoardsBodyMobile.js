@@ -62,7 +62,7 @@ class BoardsBodyMobile extends Component {
       yourBoardsList = user.boards
         .filter(board => board.myRole === "OWNER")
         .filter(board =>
-          board.customName
+          board.name
             .toLowerCase()
             .includes(this.props.searchText.toLowerCase())
         )
@@ -82,7 +82,7 @@ class BoardsBodyMobile extends Component {
       boardsList = user.boards
         .filter(board => board.myRole !== "OWNER")
         .filter(board =>
-          board.customName
+          board.name
             .toLowerCase()
             .includes(this.props.searchText.toLowerCase())
         )

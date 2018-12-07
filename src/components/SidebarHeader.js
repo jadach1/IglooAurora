@@ -83,7 +83,7 @@ class SidebarHeader extends Component {
             )[0] &&
             this.props.boards.filter(
               board => board.id === this.props.selectedBoard
-            )[0].customName}
+            )[0].name}
         </Typography>
         <div
           style={{

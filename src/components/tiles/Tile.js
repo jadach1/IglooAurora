@@ -84,7 +84,7 @@ class Tile extends Component {
 
   render() {
     const { value } = this.props
-    const valueTitle = value.customName
+    const valueTitle = value.name
 
     let specificTile
 
@@ -146,7 +146,7 @@ class Tile extends Component {
         } else if (!!value.allowedValue) {
           specificTile = (
             <ReadWriteAllowedStringTile
-              customName={value.customName}
+              name={value.name}
               values={value.allowedValues}
               id={value.id}
               stringValue={value.stringValue}
@@ -162,7 +162,7 @@ class Tile extends Component {
     ) {
       specificTile = (
         <ReadWriteBoundedStringTile
-          customName={value.customName}
+          name={value.name}
           values={value.allowedValues}
           id={value.id}
           stringValue={value.stringValue}

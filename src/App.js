@@ -41,13 +41,6 @@ const sharedStyles = {
       backgroundColor: "#ff4081",
     },
   },
-  MuiRadio: {
-    colorPrimary: {
-      "&$checked": {
-        color: "#0083ff",
-      },
-    },
-  },
   MuiCheckbox: {
     colorPrimary: {
       "&$checked": { color: "#0083ff" },
@@ -116,6 +109,14 @@ const lightTheme = createMuiTheme({
         color: "black",
       },
     },
+    MuiRadio: {
+      colorPrimary: {
+        "&$checked": {
+          color: "#0083ff",
+        },
+        color: "white",
+      },
+    },
     ...sharedStyles,
   },
 })
@@ -179,6 +180,17 @@ const darkTheme = createMuiTheme({
     },
     MuiInput: {
       root: {
+        color: "white",
+      },
+    },
+    MuiFormControlLabel: {
+      label: { color: "white" },
+    },
+    MuiRadio: {
+      colorPrimary: {
+        "&$checked": {
+          color: "#0083ff",
+        },
         color: "white",
       },
     },

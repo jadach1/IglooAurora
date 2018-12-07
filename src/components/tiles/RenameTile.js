@@ -44,7 +44,7 @@ class RenameTileDialog extends React.Component {
     ]({
       variables: {
         id: this.props.value.id,
-        customName: this.state.tileName,
+        name: this.state.tileName,
       },
       optimisticResponse: {
         __typename: "Mutation",
@@ -61,7 +61,7 @@ class RenameTileDialog extends React.Component {
           : "booleanValue"]: {
           __typename: this.props.value.__typename,
           id: this.props.value.id,
-          customName: this.state.tileName,
+          name: this.state.tileName,
         },
       },
     })
@@ -151,10 +151,10 @@ class RenameTileDialog extends React.Component {
 
 export default graphql(
   gql`
-    mutation Rename($id: ID!, $customName: String) {
-      floatValue(id: $id, customName: $customName) {
+    mutation Rename($id: ID!, $name: String) {
+      floatValue(id: $id, name: $name) {
         id
-        customName
+        name
       }
     }
   `,
@@ -164,10 +164,10 @@ export default graphql(
 )(
   graphql(
     gql`
-      mutation Rename($id: ID!, $customName: String) {
-        stringValue(id: $id, customName: $customName) {
+      mutation Rename($id: ID!, $name: String) {
+        stringValue(id: $id, name: $name) {
           id
-          customName
+          name
         }
       }
     `,
@@ -177,10 +177,10 @@ export default graphql(
   )(
     graphql(
       gql`
-        mutation Rename($id: ID!, $customName: String) {
-          booleanValue(id: $id, customName: $customName) {
+        mutation Rename($id: ID!, $name: String) {
+          booleanValue(id: $id, name: $name) {
             id
-            customName
+            name
           }
         }
       `,
@@ -190,10 +190,10 @@ export default graphql(
     )(
       graphql(
         gql`
-          mutation Rename($id: ID!, $customName: String) {
-            plotValue(id: $id, customName: $customName) {
+          mutation Rename($id: ID!, $name: String) {
+            plotValue(id: $id, name: $name) {
               id
-              customName
+              name
             }
           }
         `,
@@ -203,10 +203,10 @@ export default graphql(
       )(
         graphql(
           gql`
-            mutation Rename($id: ID!, $customName: String) {
-              stringPlotValue(id: $id, customName: $customName) {
+            mutation Rename($id: ID!, $name: String) {
+              stringPlotValue(id: $id, name: $name) {
                 id
-                customName
+                name
               }
             }
           `,
@@ -216,10 +216,10 @@ export default graphql(
         )(
           graphql(
             gql`
-              mutation Rename($id: ID!, $customName: String) {
-                mapValue(id: $id, customName: $customName) {
+              mutation Rename($id: ID!, $name: String) {
+                mapValue(id: $id, name: $name) {
                   id
-                  customName
+                  name
                 }
               }
             `,

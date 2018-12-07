@@ -76,7 +76,7 @@ let PendingShares = props => {
                       : { color: "black" }
                   }
                 >
-                  {boardShare.board.customName}
+                  {boardShare.board.name}
                 </font>
               }
               secondary={

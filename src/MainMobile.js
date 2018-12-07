@@ -60,7 +60,7 @@ class MainMobile extends Component {
           } else {
             this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[0].id
@@ -83,7 +83,7 @@ class MainMobile extends Component {
           if (this.props.devicesSearchText !== "") {
             this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[1].id
@@ -108,7 +108,7 @@ class MainMobile extends Component {
           if (this.props.devicesSearchText !== "") {
             this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[2].id
@@ -133,7 +133,7 @@ class MainMobile extends Component {
           if (this.props.devicesSearchText !== "") {
             this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[3].id
@@ -155,7 +155,7 @@ class MainMobile extends Component {
           if (this.props.devicesSearchText !== "") {
             this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[4].id
@@ -177,7 +177,7 @@ class MainMobile extends Component {
           if (this.props.devicesSearchText !== "") {
             this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[5].id
@@ -199,7 +199,7 @@ class MainMobile extends Component {
           if (this.props.devicesSearchText !== "") {
             this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[6].id
@@ -221,7 +221,7 @@ class MainMobile extends Component {
           if (this.props.devicesSearchText !== "") {
             this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[7].id
@@ -243,7 +243,7 @@ class MainMobile extends Component {
           if (this.props.devicesSearchText !== "") {
             this.props.selectDevice(
               this.props.userData.user.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[8].id
@@ -295,7 +295,7 @@ class MainMobile extends Component {
         deviceCreated {
           id
           index
-          customName
+          name
           icon
           online
           batteryStatus
@@ -467,8 +467,8 @@ class MainMobile extends Component {
                       queryString.parse(
                         "?" + window.location.href.split("?")[1]
                       ).device
-                  )[0].customName
-                : "Igloo Aurora - " + board.customName
+                  )[0].name
+                : "Igloo Aurora - " + board.name
               : "Igloo Aurora"}
           </title>
         </Helmet>
@@ -613,11 +613,11 @@ export default graphql(
     query($id: ID!) {
       board(id: $id) {
         id
-        customName
+        name
         devices {
           id
           index
-          customName
+          name
           online
           batteryStatus
           batteryCharging

@@ -157,7 +157,7 @@ class BoardCard extends Component {
                       group
                     </Icon>
                   )}
-                  {this.props.board.customName}
+                  {this.props.board.name}
                 </Typography>
               </div>
             </Link>
