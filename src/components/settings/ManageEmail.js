@@ -54,7 +54,7 @@ export default class ChangeMailDialog extends React.Component {
           onClick={this.props.handleEmailDialogClose}
           style={{ marginRight: "4px" }}
         >
-          Never Mind
+          Never mind
         </Button>
         <Button variant="contained" color="primary" onClick={this.openMailDialog}>
           Proceed

@@ -27,7 +27,7 @@ function Transition(props) {
 }
 
 class CreateDevice extends React.Component {
-  state = { deviceType: "", customName: "", board: 0 }
+  state = { deviceType: "", name: "", board: 0 }
 
   render() {
     const {
@@ -44,7 +44,7 @@ class CreateDevice extends React.Component {
       this.props["CreateDevice"]({
         variables: {
           deviceType: this.state.deviceType,
-          customName: this.state.customName,
+          name: this.state.name,
           boardId: user.boards[this.state.board].id,
           firmware: this.state.firmware,
         },
@@ -66,7 +66,7 @@ class CreateDevice extends React.Component {
                 board => board.myRole === "ADMIN" || board.myRole === "OWNER"
               )
               .map(board => (
-                <MenuItem value={board.index}>{board.customName}</MenuItem>
+                <MenuItem value={board.index}>{board.name}</MenuItem>
               ))}
           </Select>
         </FormControl>
@@ -104,18 +104,18 @@ class CreateDevice extends React.Component {
               <Input
                 id="adornment-name-login"
                 placeholder="Custom name"
-                value={this.state.customName}
+                value={this.state.name}
                 onChange={event =>
-                  this.setState({ customName: event.target.value })
+                  this.setState({ name: event.target.value })
                 }
                 onKeyPress={event => {
                   if (event.key === "Enter") createDeviceMutation()
                 }}
                 endAdornment={
-                  this.state.customName && (
+                  this.state.name && (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={() => this.setState({ customName: "" })}
+                        onClick={() => this.setState({ name: "" })}
                         tabIndex="-1"
                         style={
                           typeof Storage !== "undefined" &&
@@ -217,7 +217,7 @@ class CreateDevice extends React.Component {
               label="Change"
               primary={true}
               onClick={createDeviceMutation}
-              disabled={!this.state.deviceType || !this.state.customName}
+              disabled={!this.state.deviceType || !this.state.name}
             >
               Create
             </Button>
@@ -232,13 +232,13 @@ export default graphql(
   gql`
     mutation CreateDevice(
       $deviceType: String
-      $customName: String!
+      $name: String!
       $boardId: ID!
       $firmware: String
     ) {
       createDevice(
         deviceType: $deviceType
-        customName: $customName
+        name: $name
         boardId: $boardId
         firmware: $firmware
       ) {

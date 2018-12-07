@@ -59,7 +59,6 @@ export default class LoginMobile extends Component {
         mutation: gql`
           mutation($email: String!, $password: String!) {
             logIn(email: $email, password: $password) {
-              id
               token
             }
           }

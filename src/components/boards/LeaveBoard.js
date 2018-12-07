@@ -67,7 +67,7 @@ class LeaveBoard extends React.Component {
       >
         <DialogTitle disableTypography>Leave board</DialogTitle>
         <div style={{ paddingLeft: "24px", height: "100%" }}>
-          Are you sure you want to leave {this.props.board.customName}?
+          Are you sure you want to leave {this.props.board.name}?
         </div>
         <br />
         <DialogActions>

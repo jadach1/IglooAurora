@@ -26,7 +26,7 @@ function Transition(props) {
 
 class CreateValue extends React.Component {
   state = {
-    customName: "",
+    name: "",
     device: 0,
     type: "",
   }
@@ -71,7 +71,7 @@ class CreateValue extends React.Component {
             name="device"
           >
             {this.props.allDevices.map(device => (
-              <MenuItem value={device.index}>{device.customName}</MenuItem>
+              <MenuItem value={device.index}>{device.name}</MenuItem>
             ))}
           </Select>
         </FormControl>
@@ -81,7 +81,7 @@ class CreateValue extends React.Component {
       this.props["CreateVaòue"]({
         variables: {
           deviceType: this.state.deviceType,
-          customName: this.state.customName,
+          name: this.state.name,
           boardId: user.boards[this.state.board].id,
           firmware: this.state.firmware,
         },
@@ -107,15 +107,15 @@ class CreateValue extends React.Component {
               <Input
                 id="adornment-name-login"
                 placeholder="Custom name"
-                value={this.state.customName}
+                value={this.state.name}
                 onChange={event =>
-                  this.setState({ customName: event.target.value })
+                  this.setState({ name: event.target.value })
                 }
                 onKeyPress={event => {
                   if (event.key === "Enter") createDeviceMutation()
                 }}
                 endAdornment={
-                  this.state.customName && (
+                  this.state.name && (
                     <InputAdornment position="end">
                       <IconButton
                         style={
@@ -124,7 +124,7 @@ class CreateValue extends React.Component {
                             ? { color: "white" }
                             : { color: "black" }
                         }
-                        onClick={() => this.setState({ customName: "" })}
+                        onClick={() => this.setState({ name: "" })}
                         tabIndex="-1"
                       >
                         <Icon>clear</Icon>

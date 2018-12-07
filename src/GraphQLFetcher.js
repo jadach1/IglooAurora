@@ -18,7 +18,7 @@ class GraphQLFetcher extends Component {
         boardCreated {
           id
           index
-          customName
+          name
           createdAt
           updatedAt
           muted
@@ -37,7 +37,7 @@ class GraphQLFetcher extends Component {
           devices {
             id
             muted
-            customName
+            name
             board {
               myRole
             }
@@ -94,7 +94,7 @@ class GraphQLFetcher extends Component {
         boardSharedWithYou {
           id
           index
-          customName
+          name
           createdAt
           updatedAt
           muted
@@ -113,7 +113,7 @@ class GraphQLFetcher extends Component {
           devices {
             id
             muted
-            customName
+            name
             board {
               myRole
             }
@@ -170,7 +170,7 @@ class GraphQLFetcher extends Component {
         boardUpdated {
           id
           index
-          customName
+          name
           createdAt
           updatedAt
           muted
@@ -189,7 +189,7 @@ class GraphQLFetcher extends Component {
           devices {
             id
             muted
-            customName
+            name
             board {
               myRole
             }
@@ -231,7 +231,7 @@ class GraphQLFetcher extends Component {
         boardShareAccepted {
           id
           index
-          customName
+          name
           createdAt
           updatedAt
           muted
@@ -250,7 +250,7 @@ class GraphQLFetcher extends Component {
           devices {
             id
             muted
-            customName
+            name
             board {
               myRole
             }
@@ -292,7 +292,7 @@ class GraphQLFetcher extends Component {
         boardShareDeclined {
           id
           index
-          customName
+          name
           createdAt
           updatedAt
           muted
@@ -311,7 +311,7 @@ class GraphQLFetcher extends Component {
           devices {
             id
             muted
-            customName
+            name
             board {
               myRole
             }
@@ -389,12 +389,12 @@ class GraphQLFetcher extends Component {
             }
             board {
               id
-              customName
+              name
             }
           }
           permanentTokens {
             id
-            customName
+            name
             lastUsed
           }
         }
@@ -410,7 +410,7 @@ class GraphQLFetcher extends Component {
         deviceCreated {
           id
           index
-          customName
+          name
           icon
           online
           batteryStatus
@@ -454,7 +454,7 @@ class GraphQLFetcher extends Component {
       subscription {
         permanentTokenCreated {
           id
-          customName
+          name
           lastUsed
         }
       }
@@ -785,13 +785,13 @@ export default graphql(
           }
           board {
             id
-            customName
+            name
           }
         }
         boards {
           id
           index
-          customName
+          name
           createdAt
           updatedAt
           muted
@@ -810,7 +810,7 @@ export default graphql(
           devices {
             id
             muted
-            customName
+            name
             board {
               myRole
             }

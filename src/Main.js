@@ -64,7 +64,7 @@ class Main extends Component {
           } else {
             this.setState({
               redirectTo: this.props.boardData.board.devices.filter(device =>
-                device.customName
+                device.name
                   .toLowerCase()
                   .includes(this.props.devicesSearchText.toLowerCase())
               )[index].id,
@@ -156,7 +156,7 @@ class Main extends Component {
         deviceCreated {
           id
           index
-          customName
+          name
           icon
           online
           batteryStatus
@@ -200,7 +200,7 @@ class Main extends Component {
         deviceUpdated {
           id
           index
-          customName
+          name
           icon
           online
           batteryStatus
@@ -342,8 +342,8 @@ class Main extends Component {
                       queryString.parse(
                         "?" + window.location.href.split("?")[1]
                       ).device
-                  )[0].customName
-                : "Igloo Aurora - " + board.customName
+                  )[0].name
+                : "Igloo Aurora - " + board.name
               : "Igloo Aurora"}
           </title>
         </Helmet>
@@ -512,11 +512,11 @@ export default graphql(
     query($id: ID!) {
       board(id: $id) {
         id
-        customName
+        name
         devices {
           id
           index
-          customName
+          name
           online
           batteryStatus
           batteryCharging

@@ -137,8 +137,8 @@ class MainBodyHeader extends Component {
               this.props.boardData.board &&
               this.props.boardData.board.devices.filter(
                 device => device.id === this.props.deviceId
-              )[0].customName) ||
-              (device && device.customName)}
+              )[0].name) ||
+              (device && device.name)}
           </Typography>
           <div
             style={{
@@ -247,7 +247,7 @@ class MainBodyHeader extends Component {
             boards={this.props.boards}
           />
         )}
-        {device && device.customName && (
+        {device && device.name && (
           <RenameDevice
             open={this.state.renameOpen}
             close={() => this.setState({ renameOpen: false })}
@@ -340,7 +340,7 @@ class MainBodyHeader extends Component {
                     onClick={() => {
                       if (navigator.share) {
                         navigator.share({
-                          title: device.customName + " on Igloo Aurora",
+                          title: device.name + " on Igloo Aurora",
                           url: window.location.href,
                         })
                       }
@@ -561,7 +561,7 @@ export default graphql(
           values {
             id
           }
-          customName
+          name
           updatedAt
           createdAt
           muted

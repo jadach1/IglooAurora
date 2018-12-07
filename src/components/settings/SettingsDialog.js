@@ -343,6 +343,7 @@ class SettingsDialog extends React.Component {
                           backgroundColor: "white",
                         }
                   }
+                  className="notSelectable defaultCursor"
                 >
                   Appearance
                 </ListSubheader>
@@ -393,6 +394,7 @@ class SettingsDialog extends React.Component {
                           backgroundColor: "white",
                         }
                   }
+                  className="notSelectable defaultCursor"
                 >
                   Notifications
                 </ListSubheader>
@@ -462,6 +464,7 @@ class SettingsDialog extends React.Component {
                           backgroundColor: "white",
                         }
                   }
+                  className="notSelectable defaultCursor"
                 >
                   Localization
                 </ListSubheader>
@@ -567,6 +570,7 @@ class SettingsDialog extends React.Component {
                           backgroundColor: "white",
                         }
                   }
+                  className="notSelectable defaultCursor"
                 >
                   Miscellaneous
                 </ListSubheader>
@@ -694,6 +698,7 @@ class SettingsDialog extends React.Component {
                         backgroundColor: "white",
                       }
                 }
+                className="notSelectable defaultCursor"
               >
                 Authentication
               </ListSubheader>
@@ -854,6 +859,7 @@ rightToggle={
                         backgroundColor: "white",
                       }
                 }
+                className="notSelectable defaultCursor"
               >
                 Account management
               </ListSubheader>
@@ -1016,6 +1022,7 @@ rightToggle={
                             backgroundColor: "white",
                           }
                     }
+                    className="notSelectable defaultCursor"
                   >
                     Tokens
                   </ListSubheader>
@@ -1071,6 +1078,7 @@ rightToggle={
                             backgroundColor: "white",
                           }
                     }
+                    className="notSelectable defaultCursor"
                   >
                     Devices and values
                   </ListSubheader>
@@ -1191,6 +1199,7 @@ rightToggle={
                             backgroundColor: "white",
                           }
                     }
+                    className="notSelectable defaultCursor"
                   >
                     Testing
                   </ListSubheader>
@@ -1511,6 +1520,7 @@ rightToggle={
             this.setState({ emailDialogOpen: false })
           }
           userData={this.props.userData}
+          client={this.props.client}
         />
         <ChangeServer
           open={this.props.isOpen && this.state.serverOpen}

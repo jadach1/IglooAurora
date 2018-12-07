@@ -31,7 +31,7 @@ function Transition(props) {
 
 class CustomizeBoard extends React.Component {
   state = {
-    customName: this.props.board.customName,
+    name: this.props.board.name,
     slideIndex: 0,
     initialSlideIndex: 0,
   }
@@ -61,7 +61,7 @@ class CustomizeBoard extends React.Component {
     this.props["Rename"]({
       variables: {
         id: this.props.board.id,
-        customName: this.state.customName,
+        name: this.state.name,
         avatar: this.selectImage(this.state.slideIndex),
       },
       optimisticResponse: {
@@ -69,7 +69,7 @@ class CustomizeBoard extends React.Component {
         board: {
           __typename: this.props.board.__typename,
           id: this.props.board.id,
-          customName: this.state.customName,
+          name: this.state.name,
           avatar: this.selectImage(this.state.slideIndex),
         },
       },
@@ -124,20 +124,20 @@ class CustomizeBoard extends React.Component {
             <Input
               id="adornment-name-login"
               placeholder="Board Name"
-              value={this.state.customName}
+              value={this.state.name}
               onChange={event =>
                 this.setState({
-                  customName: event.target.value,
+                  name: event.target.value,
                 })
               }
               onKeyPress={event => {
                 if (event.key === "Enter") this.rename()
               }}
               endAdornment={
-                this.state.customName ? (
+                this.state.name ? (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() => this.setState({ customName: "" })}
+                      onClick={() => this.setState({ name: "" })}
                       onMouseDown={this.handleMouseDownPassword}
                       tabIndex="-1"
                       style={
@@ -258,9 +258,9 @@ class CustomizeBoard extends React.Component {
             buttonStyle={{ backgroundColor: "#0083ff" }}
             onClick={this.rename}
             disabled={
-              !this.state.customName ||
+              !this.state.name ||
               (this.state.initialSlideIndex === this.state.slideIndex &&
-                this.props.board.customName === this.state.customName)
+                this.props.board.name === this.state.name)
             }
           >
             Customize
@@ -273,10 +273,10 @@ class CustomizeBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation Rename($id: ID!, $customName: String, $avatar: BoardPicture) {
-      board(id: $id, customName: $customName, avatar: $avatar) {
+    mutation Rename($id: ID!, $name: String, $avatar: BoardPicture) {
+      board(id: $id, name: $name, avatar: $avatar) {
         id
-        customName
+        name
         avatar
       }
     }

@@ -42,7 +42,7 @@ class ReadWriteBoundedStringTile extends Component {
     return (
       <div className="readOnlyFloatTile notSelectable">
         <FormControl>
-          <InputLabel>{this.props.customName}</InputLabel>
+          <InputLabel>{this.props.name}</InputLabel>
           <Input
             value={this.state.text}
             onChange={this.handleChange}
