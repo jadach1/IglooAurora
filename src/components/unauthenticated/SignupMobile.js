@@ -408,6 +408,7 @@ class SignupMobile extends Component {
           {this.state.showLoading && (
             <CircularProgress
               size={24}
+              color="secondary"
               style={{
                 position: "absolute",
                 top: "50%",

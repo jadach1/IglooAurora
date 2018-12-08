@@ -1,7 +1,14 @@
 import React from "react"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
-import { InMemoryCache } from "apollo-cache-inmemory"
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from "apollo-cache-inmemory"
+import { WebSocketLink } from "apollo-link-ws"
+import { split } from "apollo-link"
+import { getMainDefinition } from "apollo-utilities"
+import introspectionQueryResultData from "../../fragmentTypes.json"
 import Button from "@material-ui/core/Button"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
@@ -20,7 +27,10 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
+import Fade from "@material-ui/core/Fade"
+import CircularProgress from "@material-ui/core/CircularProgress"
 import FormControl from "@material-ui/core/FormControl"
+import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import ToggleIcon from "material-ui-toggle-icon"
@@ -42,24 +52,6 @@ class AuthDialog extends React.Component {
     tokenName: "",
     password: "",
     token: "",
-  }
-
-  constructor() {
-    super()
-
-    const link = new HttpLink({
-      uri:
-        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-          ? localStorage.getItem("server") + "/graphql"
-          : `http://igloo-production.herokuapp.com/graphql`,
-    })
-
-    this.client = new ApolloClient({
-      // By default, this client will send queries to the
-      //  `/graphql` endpoint on the same host
-      link,
-      cache: new InMemoryCache(),
-    })
   }
 
   deletePermanentToken = tokenID => {
@@ -85,23 +77,118 @@ class AuthDialog extends React.Component {
     this.setState({ authDialogOpen: false })
   }
 
-  async getPermanentToken() {
-    const tokenMutation = await this.client.mutate({
-      mutation: gql`
-        mutation GeneratePermanentAccessToken($name: String!) {
-          generatePermanentAccessToken(name: $name) {
-            token
+  async createToken() {
+    try {
+      this.setState({ showLoading: true })
+
+      let createTokenMutation = await this.props.client.mutate({
+        mutation: gql`
+          mutation($tokenType: TokenType!, $password: String!) {
+            createToken(tokenType: $tokenType, password: $password)
           }
-        }
-      `,
-      variables: {
-        name: this.state.tokenName,
+        `,
+        variables: {
+          tokenType: "GENERATE_PERMANENT_TOKEN",
+          password: this.state.password,
+        },
+      })
+
+      this.props.handleAuthDialogClose()
+
+      this.setState({
+        token: createTokenMutation.data.createToken,
+        authDialogOpen: true,
+      })
+    } catch (e) {
+      if (e.message === "GraphQL error: Wrong password") {
+        this.setState({ passwordError: "Wrong password" })
+      } else if (
+        e.message ===
+        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+      ) {
+        this.setState({ passwordError: "This account doesn't exist" })
+      } else {
+        this.setState({
+          passwordError: "Unexpected error",
+        })
+      }
+    }
+    this.setState({ showLoading: false })
+  }
+
+  async getPermanentToken() {
+    const wsLink = new WebSocketLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server")
+          ? "wss://" +
+            localStorage
+              .getItem("server")
+              .replace("https://", "")
+              .replace("http://", "") +
+            "/subscriptions"
+          : `wss://igloo-production.herokuapp.com/subscriptions`,
+      options: {
+        reconnect: true,
+        connectionParams: {
+          Authorization: "Bearer " + this.state.token,
+        },
       },
     })
 
-    this.setState({
-      token: tokenMutation.data.generatePermanentAccessToken.token,
+    const httpLink = new HttpLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://igloo-production.herokuapp.com/graphql`,
+      headers: {
+        Authorization: "Bearer " + this.state.token,
+      },
     })
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === "OperationDefinition" && operation === "subscription"
+      },
+      wsLink,
+      httpLink
+    )
+
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache({ fragmentMatcher }),
+    })
+
+    try {
+      const tokenMutation = await this.client.mutate({
+        mutation: gql`
+          mutation GeneratePermanentAccessToken($name: String!) {
+            createPermanentAccessToken(name: $name) {
+              token
+            }
+          }
+        `,
+        variables: {
+          name: this.state.tokenName,
+        },
+      })
+
+      this.setState({
+        tokenId: tokenMutation.data.createPermanentAccessToken.id,
+        generatedToken: tokenMutation.data.createPermanentAccessToken.token,
+      })
+    } catch (e) {
+      this.setState({
+        token: "Unexpected error",
+      })
+    }
   }
 
   render() {
@@ -126,33 +213,51 @@ class AuthDialog extends React.Component {
               <ListItemText
                 primary={token.name}
                 secondary={
-                  token.lastUsed ? (
-                    <React.Fragment>
-                      Last used{" "}
-                      <Moment fromNow>
-                        {moment.utc(
-                          token.lastUsed.split(".")[0],
-                          "YYYY-MM-DDTh:mm:ss"
-                        )}
-                      </Moment>
-                    </React.Fragment>
+                  this.state.tokenId !== token.id ? (
+                    token.lastUsed ? (
+                      <React.Fragment>
+                        Last used{" "}
+                        <Moment fromNow>
+                          {moment.utc(
+                            token.lastUsed.split(".")[0],
+                            "YYYY-MM-DDTh:mm:ss"
+                          )}
+                        </Moment>
+                      </React.Fragment>
+                    ) : (
+                      "Never used"
+                    )
                   ) : (
-                    "Never used"
+                    "Just created"
                   )
                 }
               />
               <ListItemSecondaryAction>
-                <IconButton
-                  onClick={() => this.deletePermanentToken(token.id)}
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                >
-                  <Icon>delete</Icon>
-                </IconButton>
+                {this.state.tokenId === token.id ? (
+                  <IconButton
+                    onClick={() => this.deletePermanentToken(token.id)}
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  >
+                    <Icon>copy</Icon>
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    onClick={() => this.deletePermanentToken(token.id)}
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  >
+                    <Icon>delete</Icon>
+                  </IconButton>
+                )}
               </ListItemSecondaryAction>
             </ListItem>
           ))}
@@ -208,7 +313,7 @@ class AuthDialog extends React.Component {
                     : false
                 }
                 onKeyPress={event => {
-                  if (event.key === "Enter") this.openAuthDialog()
+                  if (event.key === "Enter") this.createToken()
                 }}
                 endAdornment={
                   this.state.password ? (
@@ -244,9 +349,18 @@ class AuthDialog extends React.Component {
                   ) : null
                 }
               />
+              <FormHelperText
+                style={
+                  this.state.passwordError || this.state.isPasswordEmpty
+                    ? { color: "#f44336" }
+                    : {}
+                }
+              >
+                {this.state.isPasswordEmpty
+                  ? "This field is required"
+                  : this.state.passwordError}
+              </FormHelperText>
             </FormControl>
-            <br />
-            <br />
           </div>
           <DialogActions>
             <Button
@@ -258,9 +372,30 @@ class AuthDialog extends React.Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={this.openAuthDialog}
+              onClick={() => this.createToken()}
+              disabled={!this.state.password || this.state.showLoading}
             >
               Proceed
+              {this.state.showLoading && (
+                <Fade
+                  in={true}
+                  style={{
+                    transitionDelay: "800ms",
+                  }}
+                  unmountOnExit
+                >
+                  <CircularProgress
+                    size={24}
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      marginTop: -12,
+                      marginLeft: -12,
+                    }}
+                  />
+                </Fade>
+              )}
             </Button>
           </DialogActions>
         </Dialog>
@@ -339,8 +474,6 @@ class AuthDialog extends React.Component {
                 }
               />
             </FormControl>
-            <br />
-            <br />
           </div>
           <DialogActions>
             <Button

@@ -411,6 +411,9 @@ class MainBodyHeader extends Component {
                   toggleQuietMode(false)
                   this.handleMenuClose()
                 }}
+                disabled={
+                  this.props.userData.user && this.props.userData.user.quietMode
+                }
               >
                 <ListItemIcon>
                   <Icon>notifications</Icon>
@@ -430,6 +433,9 @@ class MainBodyHeader extends Component {
                   toggleQuietMode(true)
                   this.handleMenuClose()
                 }}
+                disabled={
+                  this.props.userData.user && this.props.userData.user.quietMode
+                }
               >
                 <ListItemIcon>
                   <Icon>notifications_off</Icon>

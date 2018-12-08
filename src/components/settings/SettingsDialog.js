@@ -255,16 +255,16 @@ class SettingsDialog extends React.Component {
         }
       }
 
-      toggleQuietMode = muted => {
+      toggleQuietMode = quietMode => {
         this.props["ToggleQuietMode"]({
           variables: {
-            muted,
+            quietMode,
           },
           optimisticResponse: {
             __typename: "Mutation",
             user: {
               id: user.id,
-              muted,
+              quietMode,
               __typename: "User",
             },
           },
@@ -402,9 +402,7 @@ class SettingsDialog extends React.Component {
                   disabled={!user}
                   button
                   disableRipple
-                  onClick={() => {
-                    user.muted ? toggleQuietMode(false) : toggleQuietMode(true)
-                  }}
+                  onClick={() => toggleQuietMode(!user.quietMode)}
                 >
                   <ListItemText
                     primary={
@@ -435,12 +433,8 @@ class SettingsDialog extends React.Component {
                   <ListItemSecondaryAction>
                     <Switch
                       disabled={!user}
-                      checked={user && user.muted}
-                      onChange={() => {
-                        user.muted
-                          ? toggleQuietMode(false)
-                          : toggleQuietMode(true)
-                      }}
+                      checked={user && user.quietMode}
+                      onChange={() => toggleQuietMode(!user.quietMode)}
                     />
                   </ListItemSecondaryAction>
                 </ListItem>
@@ -1446,6 +1440,7 @@ rightToggle={
           }
           handleAuthDialogClose={this.handleAuthDialogClose}
           userData={this.props.userData}
+          client={this.props.client}
         />
         {/*<ChangeLanguageDialog
           handleLanguageDialogClose={this.handleLanguageDialogClose}
@@ -1539,10 +1534,10 @@ rightToggle={
 
 export default graphql(
   gql`
-    mutation ToggleQuietMode($muted: Boolean!) {
-      user(muted: $muted) {
+    mutation ToggleQuietMode($quietMode: Boolean!) {
+      user(quietMode: $quietMode) {
         id
-        muted
+        quietMode
       }
     }
   `,
