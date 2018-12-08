@@ -86,11 +86,16 @@ class TileSize extends Component {
             control={<Radio color="primary" />}
             label="Normal"
           />
-          <FormControlLabel
-            value="WIDE"
-            control={<Radio color="primary" />}
-            label="Wide"
-          />
+          {!(
+            this.props.value.__typename === "FloatValue" &&
+            this.props.value.permission === "READ_ONLY"
+          ) && (
+            <FormControlLabel
+              value="WIDE"
+              control={<Radio color="primary" />}
+              label="Wide"
+            />
+          )}
           <FormControlLabel
             value="LARGE"
             control={<Radio color="primary" />}

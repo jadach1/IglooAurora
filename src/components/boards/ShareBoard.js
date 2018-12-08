@@ -659,6 +659,7 @@ class ShareBoard extends React.Component {
           open={this.state.changeRoleOpen}
           close={() => this.setState({ changeRoleOpen: false })}
           changeRole={this.changeRole}
+          selectedUserType={this.state.selectedUserForChangeRoleDialog}
         />
         <InviteUser
           open={this.state.inviteUserOpen}
@@ -700,16 +701,18 @@ export default graphql(
     {
       name: "InviteUser",
     }
-  )(graphql(
-    gql`
-      mutation ChangeRole($email: String!, $boardId: ID!, $newRole: Role!) {
-        changeRole(email: $email, boardId: $boardId, newRole: $newRole) {
-          id
+  )(
+    graphql(
+      gql`
+        mutation ChangeRole($email: String!, $boardId: ID!, $newRole: Role!) {
+          changeRole(email: $email, boardId: $boardId, newRole: $newRole) {
+            id
+          }
         }
+      `,
+      {
+        name: "ChangeRole",
       }
-    `,
-    {
-      name: "ChangeRole",
-    }
-  )(ShareBoard)
-))
+    )(ShareBoard)
+  )
+)

@@ -179,6 +179,8 @@ class ChangeMailDialog extends React.Component {
       this.props.handleEmailDialogClose()
 
       this.closeMailDialog()
+
+      typeof Storage !== "undefined" && localStorage.setItem("email",this.state.email)
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ emailError: "Wrong password" })

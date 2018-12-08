@@ -76,7 +76,6 @@ class Sidebar extends Component {
             typeof Storage !== "undefined" &&
             localStorage.getItem("nightMode") === "true"
               ? {
-                  background: "rgb(33, 37, 43)",
                   height: "calc(100% - 96px)",
                   paddingTop: "32px",
                 }

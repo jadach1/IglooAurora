@@ -485,7 +485,7 @@ class MainMobile extends Component {
                 userData={this.props.userData}
                 logOut={this.props.logOut}
                 forceUpdate={this.props.forceUpdate}
-          client={this.props.client}
+                client={this.props.client}
               />
               <AppBar position="sticky">
                 <SidebarHeader
@@ -509,8 +509,8 @@ class MainMobile extends Component {
                 key="sidebar"
                 style={
                   nightMode
-                    ? { background: "#21252b" }
-                    : { background: "#f2f2f2" }
+                    ? { background: "#2f333d" }
+                    : { background: "white" }
                 }
               >
                 <Sidebar
@@ -544,7 +544,7 @@ class MainMobile extends Component {
                 handleSwipe={index => {
                   this.setState({ slideIndex: index })
                 }}
-          client={this.props.client}
+                client={this.props.client}
               />
               <AppBar>
                 <MainBodyHeader
@@ -559,6 +559,7 @@ class MainMobile extends Component {
                   boardData={this.props.boardData}
                   boards={this.props.boards}
                   isMobile={true}
+            userData={this.props.userData}
                 />
               </AppBar>
               <div

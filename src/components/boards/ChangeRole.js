@@ -20,7 +20,11 @@ function Transition(props) {
 }
 
 export default class ChangeRole extends Component {
-  state = { email: "", value: "" }
+  constructor(props) {
+    super(props)
+
+    this.state = { email: "", value: null }
+  }
 
   render() {
     return (
@@ -39,7 +43,7 @@ export default class ChangeRole extends Component {
             this.setState({ value: event.target.value })
             this.props.changeRole(event.target.value)
           }}
-          value={this.state.value}
+          value={this.state.value || this.props.selectedUserType}
           style={{ paddingLeft: "24px", paddingRight: "24px" }}
         >
           <FormControlLabel
