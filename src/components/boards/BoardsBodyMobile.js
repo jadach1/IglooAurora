@@ -62,9 +62,7 @@ class BoardsBodyMobile extends Component {
       yourBoardsList = user.boards
         .filter(board => board.myRole === "OWNER")
         .filter(board =>
-          board.name
-            .toLowerCase()
-            .includes(this.props.searchText.toLowerCase())
+          board.name.toLowerCase().includes(this.props.searchText.toLowerCase())
         )
         .map(board => (
           <Grid key={board.id} item>
@@ -82,9 +80,7 @@ class BoardsBodyMobile extends Component {
       boardsList = user.boards
         .filter(board => board.myRole !== "OWNER")
         .filter(board =>
-          board.name
-            .toLowerCase()
-            .includes(this.props.searchText.toLowerCase())
+          board.name.toLowerCase().includes(this.props.searchText.toLowerCase())
         )
         .map(board => (
           <Grid key={board.id} item>

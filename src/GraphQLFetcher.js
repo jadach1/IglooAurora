@@ -772,7 +772,7 @@ export default graphql(
     query {
       user {
         id
-        muted
+        quietMode
         emailIsVerified
         name
         profileIconColor

@@ -321,6 +321,9 @@ class BoardCard extends Component {
               this.toggleQuietMode(this.props.board.muted ? false : true)
               this.handleMenuClose()
             }}
+            disabled={
+              this.props.userData.user && this.props.userData.user.quietMode
+            }
           >
             <ListItemIcon>
               <Icon>
