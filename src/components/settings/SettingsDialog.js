@@ -144,10 +144,6 @@ class SettingsDialog extends React.Component {
     this.setState({ deleteConfirmedDialogOpen: true })
   }
 
-  handlePasswordDialogOpen = () => {
-    this.setState({ passwordDialogOpen: true })
-  }
-
   handleDeleteDialogClose = () => {
     this.setState({ deleteDialogOpen: false })
   }
@@ -724,7 +720,7 @@ onClick={this.handleEmailDialogOpen}
               <ListItem
                 disabled={!user}
                 button
-                onClick={this.handlePasswordDialogOpen}
+                onClick={() => this.setState({ passwordDialogOpen: true })}
               >
                 <ListItemText
                   primary={
@@ -1423,10 +1419,10 @@ rightToggle={
           client={this.props.client}
         />
         <ChangePasswordDialog
-          passwordDialogOpen={
-            this.props.isOpen && this.state.passwordDialogOpen
-          }
+          open={this.props.isOpen && this.state.passwordDialogOpen}
           handlePasswordDialogClose={this.handlePasswordDialogClose}
+          userData={this.props.userData}
+          client={this.props.client}
         />
         {/* <ManageEmailDialog
           confirmationDialogOpen={

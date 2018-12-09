@@ -327,6 +327,10 @@ class App extends Component {
         unauthenticatedPictures[Math.floor(Math.random() * 2)] ||
         "auroraLoginBackground",
     }
+
+    typeof Storage !== "undefined" &&
+      localStorage.getItem("keepLoggedIn") === "" &&
+      localStorage.setItem("keepLoggedIn", "true")
   }
 
   updateDimensions() {
