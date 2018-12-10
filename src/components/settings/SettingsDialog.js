@@ -1420,7 +1420,7 @@ rightToggle={
         />
         <ChangePasswordDialog
           open={this.props.isOpen && this.state.passwordDialogOpen}
-          handlePasswordDialogClose={this.handlePasswordDialogClose}
+          close={this.handlePasswordDialogClose}
           userData={this.props.userData}
           client={this.props.client}
         />

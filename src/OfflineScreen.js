@@ -35,7 +35,7 @@ export default class OfflineScreen extends React.Component {
           bottom: 0,
           left: 0,
           maxWidth: "465px",
-          maxHeight: "636px",
+          maxHeight: "464px",
           textAlign: "center",
           padding: "0 32px",
           backgroundColor: "#0057cb",
@@ -48,19 +48,12 @@ export default class OfflineScreen extends React.Component {
         >
           You are not connected, try again in a while
         </Typography>
-        <br />
-        <br />
-        <br />
-        <br />
         <img
           alt="Sleeping Polar Bear"
           src={polarBear}
           className="notSelectable"
+          style={{ margin: "64px 0" }}
         />
-        <br />
-        <br />
-        <br />
-        <br />
         <Typography
           variant={this.state.isMobile ? "h6" : "h5"}
           gutterBottom

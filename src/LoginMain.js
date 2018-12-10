@@ -10,7 +10,7 @@ import { Redirect } from "react-router-dom"
 import Helmet from "react-helmet"
 
 class UnAuthenticatedApp extends Component {
-  state = { redirect: false }
+  state = { redirect: false, tapCounter: 0 }
 
   constructor() {
     super()
@@ -60,6 +60,11 @@ class UnAuthenticatedApp extends Component {
                   alt="Igloo logo"
                   className="notSelectable"
                   style={{ width: "300px", marginBottom: "77px" }}
+                  onClick={() =>
+                    this.setState(oldState => ({
+                      tapCounter: oldState.tapCounter++,
+                    }))
+                  }
                 />
                 <img
                   src={iglooTitle}
