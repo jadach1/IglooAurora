@@ -40,28 +40,33 @@ export default class ChangePasswordDialog extends React.Component {
         : "auto",
   }
 
-  render() {
-    let confirm = () => {
-      if (typeof Storage !== "undefined") {
-        localStorage.setItem("server", this.state.url)
-        localStorage.setItem("manualServer", this.state.url)
-      }
-
-      oldUrl = this.state.url
-
-      this.props.logOut()
-      this.props.close()
-    }
-
-    if (oldUrl === "") {
-      oldUrl = typeof Storage !== "undefined" && localStorage.getItem("server")
-    }
-
-    if (oldMode === "") {
+  componentWillReceiveProps(nextProps) {
+    if (this.props.open !== nextProps.open && nextProps.open) {
       oldMode =
         typeof Storage !== "undefined" && localStorage.getItem("server")
           ? "manual"
           : "auto"
+
+      oldUrl = typeof Storage !== "undefined" && localStorage.getItem("server")
+    }
+  }
+
+  render() {
+    let confirm = () => {
+      if (typeof Storage !== "undefined") {
+        if (this.state.mode === "manual") {
+          localStorage.setItem("server", this.state.url)
+          localStorage.setItem("manualServer", this.state.url)
+        } else {
+          localStorage.setItem("server", "")
+          localStorage.setItem("manualServer", this.state.url)
+        }
+        localStorage.setItem("bearer", "")
+        this.forceUpdate()
+      }
+
+      this.props.logOut()
+      this.props.close()
     }
 
     return (
@@ -96,11 +101,6 @@ export default class ChangePasswordDialog extends React.Component {
           <RadioGroup
             onChange={(event, value) => {
               this.setState({ mode: value })
-              if (typeof Storage !== "undefined") {
-                if (value === "auto") {
-                  localStorage.setItem("server", "")
-                }
-              }
             }}
             value={this.state.mode || "auto"}
             style={{ paddingLeft: "24px", paddingRight: "24px" }}
@@ -183,7 +183,6 @@ export default class ChangePasswordDialog extends React.Component {
               }
             />
           </FormControl>
-
           <br />
           <br />
         </div>
@@ -204,11 +203,10 @@ export default class ChangePasswordDialog extends React.Component {
             color="primary"
             onClick={confirm}
             disabled={
-              oldMode === this.state.mode ||
-              (this.state.mode === "manual" &&
-                (!this.state.url ||
-                  typeof Storage === "undefined" ||
-                  oldUrl === this.state.url))
+              typeof Storage === "undefined"
+                ? oldMode === this.state.mode
+                : oldMode === this.state.mode &&
+                  (this.state.mode === "manual" && this.state.url === oldUrl)
             }
           >
             Change

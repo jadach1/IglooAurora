@@ -149,7 +149,7 @@ export default class ChangePasswordDialog extends React.Component {
         },
       })
 
-      this.setState({newPasswordDialogOpen: false})
+      this.setState({ newPasswordDialogOpen: false })
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ emailError: "Wrong password" })
@@ -268,12 +268,9 @@ export default class ChangePasswordDialog extends React.Component {
                   : this.state.passwordError}
               </FormHelperText>
             </FormControl>
-            <br />
           </div>
           <DialogActions>
-            <Button onClick={this.props.handleEmailDialogClose}>
-              Never mind
-            </Button>
+            <Button onClick={this.props.close}>Never mind</Button>
             <Button
               variant="contained"
               color="primary"
