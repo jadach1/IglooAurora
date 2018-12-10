@@ -97,10 +97,19 @@ class MainBodyHeader extends Component {
               placement="bottom"
             >
               <IconButton
-                style={{
-                  color: "white",
-                  margin: "0 8px",
-                }}
+                style={
+                  this.props.boardData.board
+                    ? {
+                        color: "white",
+                        margin: "0 8px",
+                      }
+                    : {
+                        color: "white",
+                        margin: "0 8px",
+                        opacity: 0.5,
+                      }
+                }
+                disabled={!this.props.boardData.board}
                 onClick={() => this.setState({ goToDevices: true })}
               >
                 <Icon>chevron_left</Icon>
@@ -183,9 +192,21 @@ class MainBodyHeader extends Component {
                     (device && device.id)
                   )
                 }
-                style={{
-                  color: "white",
-                }}
+                style={
+                  (this.props.boardData.board &&
+                    this.props.boardData.board.devices.filter(
+                      device => device.id === this.props.deviceId
+                    )[0] &&
+                    this.props.boardData.board &&
+                    this.props.boardData.board.devices.filter(
+                      device => device.id === this.props.deviceId
+                    )[0].id) ||
+                  (device && device.id)
+                    ? {
+                        color: "white",
+                      }
+                    : { color: "white", opacity: 0.5 }
+                }
               >
                 <Icon>more_vert</Icon>
               </IconButton>

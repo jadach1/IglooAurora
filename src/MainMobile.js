@@ -509,7 +509,7 @@ class MainMobile extends Component {
                 key="sidebar"
                 style={
                   nightMode
-                    ? { background: "#2f333d" }
+                    ? { background: "#21252b" }
                     : { background: "white" }
                 }
               >

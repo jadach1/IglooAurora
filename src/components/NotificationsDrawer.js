@@ -163,16 +163,18 @@ class NotificationsDrawer extends React.Component {
   }
 
   clearAllNotifications = () => {
-    notificationsToFlush = device.notifications
-      .filter(
-        notification =>
-          notification.visualized === false &&
-          unreadNotifications.indexOf(notification.id) === -1
-      )
-      .map(notification => notification.id)
+    if (device) {
+      notificationsToFlush = device.notifications
+        .filter(
+          notification =>
+            notification.visualized === false &&
+            unreadNotifications.indexOf(notification.id) === -1
+        )
+        .map(notification => notification.id)
 
-    for (let i = 0; i < notificationsToFlush.length; i++) {
-      this.clearNotification(notificationsToFlush[i])
+      for (let i = 0; i < notificationsToFlush.length; i++) {
+        this.clearNotification(notificationsToFlush[i])
+      }
     }
   }
 
@@ -247,7 +249,9 @@ class NotificationsDrawer extends React.Component {
     if (error) notifications = "Unexpected error"
 
     if (loading || !this.props.completeDevice)
-      notifications = <CenteredSpinner />
+      notifications = <CenteredSpinner style={{
+        paddingTop: "32px",        
+      }}/>
 
     if (device && this.props.completeDevice) {
       let determineDiff = notification =>
@@ -329,7 +333,7 @@ class NotificationsDrawer extends React.Component {
       let cleanedNotificationsSections = removeDuplicates(notificationsSections)
 
       notifications = (
-        <List >
+        <List>
           {cleanedNotificationsSections.map(section => (
             <li>
               <ListSubheader
@@ -427,7 +431,7 @@ class NotificationsDrawer extends React.Component {
       )
 
       readNotifications = (
-        <List >
+        <List>
           {cleanedReadNotificationsSections.map(section => (
             <li>
               <ListSubheader
@@ -607,10 +611,7 @@ class NotificationsDrawer extends React.Component {
             }}
           >
             <ListItemIcon>
-              <Icon
-              >
-                markunread
-              </Icon>
+              <Icon>markunread</Icon>
             </ListItemIcon>
             <ListItemText>Mark as unread</ListItemText>
           </MenuItem>
@@ -630,11 +631,7 @@ class NotificationsDrawer extends React.Component {
         </Menu>
         <Tooltip title="Notifications" placement="bottom">
           <IconButton
-            style={
-              this.props.isMobile
-                ? { color: "white", marginTop: "8px" }
-                : { color: "white" }
-            }
+            style={{ color: "white" }}
             onClick={
               this.props.hiddenNotifications
                 ? () => {
