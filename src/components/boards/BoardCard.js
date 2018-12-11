@@ -394,6 +394,7 @@ class BoardCard extends Component {
             typeof Storage !== "undefined" &&
             localStorage.getItem("nightMode") === "true"
           }
+          client={this.props.client}
         />
         <LeaveBoard
           open={this.state.leaveOpen}

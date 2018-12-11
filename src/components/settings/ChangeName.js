@@ -126,7 +126,6 @@ class ChangeNameDialog extends React.Component {
               {this.getInitials(this.state.name)}
             </Avatar>
             <br />
-
             <FormControl style={{ width: "100%" }}>
               <Input
                 id="adornment-email-login"

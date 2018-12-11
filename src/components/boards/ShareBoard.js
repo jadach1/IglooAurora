@@ -59,25 +59,6 @@ class ShareBoard extends React.Component {
     }
   }
 
-  inviteUser = (role, email) => {
-    this.props.InviteUser({
-      variables: {
-        role: role,
-        boardId: this.props.board.id,
-        email: email,
-      },
-      optimisticResponse: {
-        __typename: "Mutation",
-        shareBoard: {
-          id: this.props.board.id,
-          email: email,
-          role: role,
-          __typename: "Board",
-        },
-      },
-    })
-  }
-
   changeRole = role => {
     this.props.ChangeRole({
       variables: {
@@ -665,7 +646,8 @@ class ShareBoard extends React.Component {
           open={this.state.inviteUserOpen}
           close={() => this.setState({ inviteUserOpen: false })}
           selectedUserType={this.state.selectedUserType}
-          inviteUser={this.inviteUser}
+          client={this.props.client}
+          boardId={this.props.board.id}
         />
         <StopSharing
           open={this.state.stopSharingOpen}
@@ -692,27 +674,14 @@ export default graphql(
 )(
   graphql(
     gql`
-      mutation InviteUser($email: String!, $boardId: ID!, $role: Role!) {
-        shareBoard(email: $email, boardId: $boardId, role: $role) {
+      mutation ChangeRole($email: String!, $boardId: ID!, $newRole: Role!) {
+        changeRole(email: $email, boardId: $boardId, newRole: $newRole) {
           id
         }
       }
     `,
     {
-      name: "InviteUser",
+      name: "ChangeRole",
     }
-  )(
-    graphql(
-      gql`
-        mutation ChangeRole($email: String!, $boardId: ID!, $newRole: Role!) {
-          changeRole(email: $email, boardId: $boardId, newRole: $newRole) {
-            id
-          }
-        }
-      `,
-      {
-        name: "ChangeRole",
-      }
-    )(ShareBoard)
-  )
+  )(ShareBoard)
 )

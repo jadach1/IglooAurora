@@ -3,7 +3,6 @@ import gql from "graphql-tag"
 import zxcvbn from "zxcvbn"
 import * as EmailValidator from "email-validator"
 import Button from "@material-ui/core/Button"
-import CircularProgress from "@material-ui/core/CircularProgress"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import FormControl from "@material-ui/core/FormControl"
@@ -16,6 +15,7 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import { Redirect } from "react-router-dom"
 import ToggleIcon from "material-ui-toggle-icon"
+import CenteredSpinner from "../CenteredSpinner"
 
 const theme = createMuiTheme({
   palette: {
@@ -94,7 +94,7 @@ class Signup extends Component {
         },
       })
 
-      if (typeof Storage !== "undefined") {
+      if (this.props.email !== "undefined" && typeof Storage !== "undefined") {
         localStorage.setItem("email", this.props.email)
       }
 
@@ -464,18 +464,7 @@ class Signup extends Component {
               }
             >
               Sign up
-              {this.state.showLoading && (
-                <CircularProgress
-                  size={24}
-                  style={{
-                    position: "absolute",
-                    top: "50%",
-                    left: "50%",
-                    marginTop: -12,
-                    marginLeft: -12,
-                  }}
-                />
-              )}
+              {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
 
             <Typography variant="subtitle1" style={{ marginTop: "8px" }}>

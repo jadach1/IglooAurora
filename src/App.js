@@ -1,9 +1,7 @@
 import React, { Component } from "react"
 import AuthenticatedApp from "./AuthenticatedApp"
-import LoginMain from "./LoginMain"
-import SignupMain from "./SignupMain"
-import LoginMainMobile from "./LoginMainMobile"
-import SignupMainMobile from "./SignupMainMobile"
+import UnauthenticatedMain from "./UnauthenticatedMain"
+import UnauthenticatedMainMobile from "./UnauthenticatedMainMobile"
 import jwt from "jsonwebtoken"
 import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
@@ -39,11 +37,6 @@ const sharedStyles = {
   MuiBadge: {
     colorPrimary: {
       backgroundColor: "#ff4081",
-    },
-  },
-  MuiCheckbox: {
-    colorPrimary: {
-      "&$checked": { color: "#0083ff" },
     },
   },
   MuiCircularProgress: {
@@ -109,12 +102,17 @@ const lightTheme = createMuiTheme({
         color: "black",
       },
     },
+    MuiCheckbox: {
+      colorPrimary: {
+        "&$checked": { color: "#0083ff" },
+      },
+    },
     MuiRadio: {
       colorPrimary: {
         "&$checked": {
           color: "#0083ff",
         },
-        color: "white",
+        color: "black",
       },
     },
     ...sharedStyles,
@@ -185,6 +183,14 @@ const darkTheme = createMuiTheme({
     },
     MuiFormControlLabel: {
       label: { color: "white" },
+    },
+    MuiCheckbox: {
+      colorPrimary: {
+        "&$checked": { color: "#0083ff" },
+      },
+      colorSecondary: {
+        color: "white",
+      },
     },
     MuiRadio: {
       colorPrimary: {
@@ -454,7 +460,8 @@ class App extends Component {
                 this.state.bearer ? (
                   <Redirect to="/dashboard" />
                 ) : this.state.isMobile ? (
-                  <LoginMainMobile
+                  <UnauthenticatedMainMobile
+                    isLogin
                     signIn={signIn}
                     password={this.state.loginPassword}
                     changePassword={loginPassword =>
@@ -475,7 +482,8 @@ class App extends Component {
                     }
                   />
                 ) : (
-                  <LoginMain
+                  <UnauthenticatedMain
+                    isLogin
                     signIn={signIn}
                     setBoards={(count, id) =>
                       this.setState({ boardCount: count, boardId: id })
@@ -508,7 +516,7 @@ class App extends Component {
                 this.state.bearer ? (
                   <Redirect to="/dashboard" />
                 ) : this.state.isMobile ? (
-                  <SignupMainMobile
+                  <UnauthenticatedMainMobile
                     signIn={signIn}
                     name={this.state.name}
                     changeName={name => this.setState({ name })}
@@ -527,7 +535,7 @@ class App extends Component {
                     }
                   />
                 ) : (
-                  <SignupMain
+                  <UnauthenticatedMain
                     signIn={signIn}
                     name={this.state.name}
                     changeName={name => this.setState({ name })}
