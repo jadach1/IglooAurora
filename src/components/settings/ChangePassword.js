@@ -23,8 +23,7 @@ import { WebSocketLink } from "apollo-link-ws"
 import { split } from "apollo-link"
 import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
-import Fade from "@material-ui/core/Fade"
-import CircularProgress from "@material-ui/core/CircularProgress"
+import CenteredSpinner from "../CenteredSpinner"
 
 const MOBILE_WIDTH = 600
 
@@ -39,6 +38,7 @@ function Transition(props) {
 export default class ChangePasswordDialog extends React.Component {
   state = {
     showPassword: false,
+    showNewPassword: false,
     token: "",
     password: "",
     newPasswordDialogOpen: false,
@@ -149,7 +149,9 @@ export default class ChangePasswordDialog extends React.Component {
         },
       })
 
-      this.setState({ newPasswordDialogOpen: false })
+      this.setState({
+        newPasswordDialogOpen: false,
+      })
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ emailError: "Wrong password" })
@@ -167,6 +169,18 @@ export default class ChangePasswordDialog extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.open !== this.props.open && this.props.open)
+      this.setState({
+        password: "",
+        isPasswordEmpty: false,
+        passwordError: "",
+        newPasswordError: "",
+        isNewPasswordEmpty: false,
+        newPassword: "",
+      })
+  }
+
   render() {
     const {
       userData: { user },
@@ -176,10 +190,7 @@ export default class ChangePasswordDialog extends React.Component {
       <React.Fragment>
         <Dialog
           open={this.props.open && !this.state.newPasswordDialogOpen}
-          onClose={() => {
-            this.props.close()
-            this.setState({ password: "" })
-          }}
+          onClose={() => this.props.close()}
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
@@ -278,35 +289,13 @@ export default class ChangePasswordDialog extends React.Component {
               disabled={!this.state.password || this.state.showLoading}
             >
               Proceed
-              {this.state.showLoading && (
-                <Fade
-                  in={true}
-                  style={{
-                    transitionDelay: "800ms",
-                  }}
-                  unmountOnExit
-                >
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: -12,
-                      marginLeft: -12,
-                    }}
-                  />
-                </Fade>
-              )}
+              {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>
         </Dialog>
         <Dialog
           open={this.state.newPasswordDialogOpen}
-          onClose={() => {
-            this.setState({ newPasswordDialogOpen: false })
-            this.props.close()
-          }}
+          onClose={this.props.close}
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
@@ -342,12 +331,12 @@ export default class ChangePasswordDialog extends React.Component {
                     : false
                 }
                 endAdornment={
-                  this.state.password ? (
+                  this.state.newPassword ? (
                     <InputAdornment position="end">
                       <IconButton
                         onClick={() =>
                           this.setState(oldState => ({
-                            showPassword: !oldState.showPassword,
+                            showNewPassword: !oldState.showNewPassword,
                           }))
                         }
                         tabIndex="-1"
@@ -361,14 +350,14 @@ export default class ChangePasswordDialog extends React.Component {
                         {/* fix for ToggleIcon glitch on Edge */}
                         {document.documentMode ||
                         /Edge/.test(navigator.userAgent) ? (
-                          this.state.showPassword ? (
+                          this.state.showNewPassword ? (
                             <Icon>visibility_off</Icon>
                           ) : (
                             <Icon>visibility</Icon>
                           )
                         ) : (
                           <ToggleIcon
-                            on={this.state.showPassword || false}
+                            on={this.state.showNewPassword || false}
                             onIcon={<Icon>visibility_off</Icon>}
                             offIcon={<Icon>visibility</Icon>}
                           />
@@ -394,8 +383,8 @@ export default class ChangePasswordDialog extends React.Component {
           <DialogActions>
             <Button
               onClick={() => {
-                this.closeMailDialog()
-                this.props.handleEmailDialogClose()
+                this.setState({ newPasswordDialogOpen: false })
+                this.props.close()
               }}
             >
               Never mind

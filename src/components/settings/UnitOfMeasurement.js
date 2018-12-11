@@ -42,7 +42,6 @@ export default class UnitOfMeasumentDialog extends React.Component {
           <RadioGroup
             onChange={event => this.setState({ value: event.target.value })}
             value={this.state.value || "auto"}
-            style={{ paddingLeft: "24px", paddingRight: "24px" }}
           >
             <FormControlLabel
               value="si"
@@ -60,7 +59,6 @@ export default class UnitOfMeasumentDialog extends React.Component {
           <RadioGroup
             onChange={event => this.setState({ value: event.target.value })}
             value={this.state.value || "auto"}
-            style={{ paddingLeft: "24px", paddingRight: "24px" }}
           >
             <FormControlLabel
               value="celsius"

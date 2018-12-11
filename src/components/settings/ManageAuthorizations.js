@@ -27,8 +27,6 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Fade from "@material-ui/core/Fade"
-import CircularProgress from "@material-ui/core/CircularProgress"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
@@ -187,6 +185,16 @@ class AuthDialog extends React.Component {
     } catch (e) {
       this.setState({
         token: "Unexpected error",
+      })
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.confirmationDialogOpen !== nextProps.confirmationDialogOpen && nextProps.confirmationDialogOpen) {
+      this.setState({
+        isPasswordEmpty: false,
+        passwordError: false,
+        password: "",
       })
     }
   }
@@ -376,26 +384,7 @@ class AuthDialog extends React.Component {
               disabled={!this.state.password || this.state.showLoading}
             >
               Proceed
-              {this.state.showLoading && (
-                <Fade
-                  in={true}
-                  style={{
-                    transitionDelay: "800ms",
-                  }}
-                  unmountOnExit
-                >
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: -12,
-                      marginLeft: -12,
-                    }}
-                  />
-                </Fade>
-              )}
+              {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>
         </Dialog>

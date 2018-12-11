@@ -541,7 +541,10 @@ class GraphQLFetcher extends Component {
       nextProps.user &&
       typeof Storage !== "undefined"
     ) {
-      if (this.props.userData.user.email !== nextProps) {
+      if (
+        this.props.userData.user.email !== "undefined" &&
+        this.props.userData.user.email !== nextProps.userData.user.email
+      ) {
         localStorage.setItem("email", this.props.userData.user.email)
       }
     }

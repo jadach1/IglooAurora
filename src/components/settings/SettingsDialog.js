@@ -1504,10 +1504,10 @@ rightToggle={
           close={() => this.setState({ gdprOpen: false })}
         />
         <ChangeEmail
-          confirmationDialogOpen={
+          open={
             this.props.isOpen && this.state.emailDialogOpen
           }
-          handleEmailDialogClose={() =>
+          close={() =>
             this.setState({ emailDialogOpen: false })
           }
           userData={this.props.userData}

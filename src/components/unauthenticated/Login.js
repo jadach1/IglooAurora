@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import gql from "graphql-tag"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
-import CircularProgress from "@material-ui/core/CircularProgress"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
@@ -12,11 +11,11 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
 import Icon from "@material-ui/core/Icon"
 import IconButton from "@material-ui/core/IconButton"
-import Fade from "@material-ui/core/Fade"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 import { Redirect } from "react-router-dom"
 import ToggleIcon from "material-ui-toggle-icon"
+import CenteredSpinner from "../CenteredSpinner"
 
 class Login extends Component {
   constructor() {
@@ -63,7 +62,7 @@ class Login extends Component {
         },
       })
 
-      if (typeof Storage !== "undefined") {
+      if (this.props.email !== "undefined" && typeof Storage !== "undefined") {
         localStorage.setItem("email", this.props.email)
       }
 
@@ -74,10 +73,7 @@ class Login extends Component {
           : ""
       )
 
-      this.props.signIn(
-        loginMutation.data.logIn.token,
-        this.state.keepLoggedIn
-      )
+      this.props.signIn(loginMutation.data.logIn.token, this.state.keepLoggedIn)
     } catch (e) {
       this.setState({ showLoading: false })
 
@@ -326,7 +322,7 @@ class Login extends Component {
               }
             />
           </div>
-          <div style={{ marginTop: "179px" }}>
+          <div style={{ marginTop: "176px" }}>
             <div style={{ textAlign: "right" }}>
               <Typography
                 variant="subtitle1"
@@ -362,26 +358,7 @@ class Login extends Component {
               }
             >
               Log in
-              {this.state.showLoading && (
-                <Fade
-                  in={true}
-                  style={{
-                    transitionDelay: "800ms",
-                  }}
-                  unmountOnExit
-                >
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: -12,
-                      marginLeft: -12,
-                    }}
-                  />
-                </Fade>
-              )}
+              {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
             <Typography variant="subtitle1" style={{ marginTop: "8px" }}>
               No account yet?{" "}

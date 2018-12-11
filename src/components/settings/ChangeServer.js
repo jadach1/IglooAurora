@@ -28,7 +28,7 @@ function Transition(props) {
   )
 }
 
-export default class ChangePasswordDialog extends React.Component {
+export default class ChangeServer extends React.Component {
   state = {
     url:
       (typeof Storage !== "undefined" && localStorage.getItem("server")) ||
@@ -65,7 +65,7 @@ export default class ChangePasswordDialog extends React.Component {
         this.forceUpdate()
       }
 
-      this.props.logOut()
+      !this.props.isUnauthenticated && this.props.logOut()
       this.props.close()
     }
 
@@ -103,7 +103,6 @@ export default class ChangePasswordDialog extends React.Component {
               this.setState({ mode: value })
             }}
             value={this.state.mode || "auto"}
-            style={{ paddingLeft: "24px", paddingRight: "24px" }}
           >
             <FormControlLabel
               value="auto"
