@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button"
 import gql from "graphql-tag"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Fade from "@material-ui/core/Fade"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
@@ -26,7 +25,7 @@ import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import CircularProgress from "@material-ui/core/CircularProgress"
+import CenteredSpinner from "../CenteredSpinner"
 
 const MOBILE_WIDTH = 600
 
@@ -122,7 +121,6 @@ export default class DeleteAccountDialog extends React.Component {
         token: createTokenMutation.data.createToken,
         deleteOpen: true,
         showLoading: false,
-        showDeleteLoading: false,
       })
 
       this.props.close()
@@ -157,10 +155,6 @@ export default class DeleteAccountDialog extends React.Component {
 
     deleteUserMutation()
 
-    this.setState({
-      showDeleteLoading: false,
-    })
-
     this.setState({ deleteOpen: false })
   }
 
@@ -178,7 +172,11 @@ export default class DeleteAccountDialog extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open && nextProps.open) {
-      this.setState({ isPasswordEmpty: false, passwordError: false })
+      this.setState({
+        isPasswordEmpty: false,
+        passwordError: false,
+        password: "",
+      })
     }
   }
 
@@ -293,26 +291,7 @@ export default class DeleteAccountDialog extends React.Component {
               }}
             >
               Proceed
-              {this.state.showLoading && (
-                <Fade
-                  in={true}
-                  style={{
-                    transitionDelay: "800ms",
-                  }}
-                  unmountOnExit
-                >
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: -12,
-                      marginLeft: -12,
-                    }}
-                  />
-                </Fade>
-              )}
+              {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>
         </Dialog>
@@ -359,7 +338,7 @@ export default class DeleteAccountDialog extends React.Component {
                 variant="contained"
                 color="primary"
                 onClick={() => {
-                  this.setState({ deleteOpen: false, showDeleteLoading: true })
+                  this.setState({ deleteOpen: false })
                 }}
                 disabled={this.state.timer >= 1}
                 style={{
@@ -370,26 +349,6 @@ export default class DeleteAccountDialog extends React.Component {
                 {this.state.timer >= 1
                   ? "Delete (" + this.state.timer + ")"
                   : "Delete"}
-                {this.state.showDeleteLoading && (
-                  <Fade
-                    in={true}
-                    style={{
-                      transitionDelay: "800ms",
-                    }}
-                    unmountOnExit
-                  >
-                    <CircularProgress
-                      size={24}
-                      style={{
-                        position: "absolute",
-                        top: "50%",
-                        left: "50%",
-                        marginTop: -12,
-                        marginLeft: -12,
-                      }}
-                    />
-                  </Fade>
-                )}
               </Button>
             </MuiThemeProvider>
           </DialogActions>

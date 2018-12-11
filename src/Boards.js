@@ -58,6 +58,7 @@ class Boards extends Component {
           searchBoards={this.props.searchBoards}
           searchText={this.props.boardsSearchText}
           snackBarHidden={this.props.snackBarHidden}
+          client={this.props.client}
         />
         <SettingsDialog
           isOpen={this.props.settingsOpen}

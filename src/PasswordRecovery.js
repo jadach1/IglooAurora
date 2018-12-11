@@ -15,6 +15,7 @@ import zxcvbn from "zxcvbn"
 import gql from "graphql-tag"
 import logo from "./styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
+import CenteredSpinner from "./components/CenteredSpinner"
 
 export default class PasswordRecovery extends Component {
   state = {
@@ -47,7 +48,9 @@ export default class PasswordRecovery extends Component {
 
       typeof Storage !== "undefined" &&
         localStorage.setItem("bearer", this.state.token)
-      typeof Storage !== "undefined" &&
+
+      this.props.userData.user.email !== "undefined" &&
+        typeof Storage !== "undefined" &&
         this.props.userData.user &&
         localStorage.setItem("email", this.props.userData.user.email)
       this.forceUpdate()
@@ -283,18 +286,7 @@ export default class PasswordRecovery extends Component {
           }}
         >
           Change password
-          {this.state.showLoading && (
-            <CircularProgress
-              size={24}
-              style={{
-                position: "absolute",
-                top: "50%",
-                left: "50%",
-                marginTop: -12,
-                marginLeft: -12,
-              }}
-            />
-          )}
+          {this.state.showLoading && <CenteredSpinner isInButton noDelay />}
         </Button>
       </div>
     )

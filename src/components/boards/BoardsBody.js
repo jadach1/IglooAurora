@@ -65,6 +65,7 @@ export default class BoardsBody extends Component {
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
               lastBoard={!user.boards[1]}
+              client={this.props.client}
             />
           </Grid>
         ))
@@ -85,6 +86,7 @@ export default class BoardsBody extends Component {
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
               lastBoard={!user.boards[1]}
+              client={this.props.client}
             />
           </Grid>
         ))

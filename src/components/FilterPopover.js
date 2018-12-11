@@ -135,6 +135,7 @@ export default class FilterPopover extends Component {
                 >
                   <Checkbox
                     checked={this.state.checked.indexOf(deviceType) !== -1}
+                    color="secondary"
                     tabIndex={-1}
                     disableRipple
                     onChange={this.handleToggle(deviceType)}

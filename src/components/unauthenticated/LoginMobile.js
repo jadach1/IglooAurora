@@ -4,7 +4,6 @@ import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
-import CircularProgress from "@material-ui/core/CircularProgress"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import Icon from "@material-ui/core/Icon"
 import Input from "@material-ui/core/Input"
@@ -16,6 +15,7 @@ import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 import logo from "../../styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
+import CenteredSpinner from "../CenteredSpinner"
 
 export default class LoginMobile extends Component {
   constructor() {
@@ -31,6 +31,8 @@ export default class LoginMobile extends Component {
           ? localStorage.getItem("keepLoggedIn") === "true"
           : true,
       redirect: false,
+      changeServerOpen: false,
+      tapCounter: 0,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -69,14 +71,11 @@ export default class LoginMobile extends Component {
         },
       })
 
-      if (typeof Storage !== "undefined") {
+      if (this.props.email !== "undefined" && typeof Storage !== "undefined") {
         localStorage.setItem("email", this.props.email)
       }
 
-      this.props.signIn(
-        loginMutation.data.logIn.token,
-        this.state.keepLoggedIn
-      )
+      this.props.signIn(loginMutation.data.logIn.token, this.state.keepLoggedIn)
     } catch (e) {
       this.setState({ showLoading: false })
 
@@ -134,6 +133,11 @@ export default class LoginMobile extends Component {
   }
 
   render() {
+    if (this.state.tapCounter === 7) {
+      this.setState({ tapCounter: 0 })
+      this.props.openChangeServer()
+    }
+
     return (
       <React.Fragment>
         <div
@@ -167,6 +171,11 @@ export default class LoginMobile extends Component {
                     marginRight: "auto",
                   }
             }
+            onClick={() =>
+              this.setState(oldState => ({
+                tapCounter: oldState.tapCounter + 1,
+              }))
+            }
           />
           <Typography
             variant="h3"
@@ -177,7 +186,6 @@ export default class LoginMobile extends Component {
             Log in
           </Typography>
           <br />
-
           <Grid
             container
             spacing={0}
@@ -345,7 +353,7 @@ export default class LoginMobile extends Component {
           </div>
           <Button
             variant="contained"
-            fullWidth={true}
+            fullWidth
             onClick={() => {
               this.setState({ showLoading: true })
               this.signIn()
@@ -358,30 +366,30 @@ export default class LoginMobile extends Component {
             }
           >
             Log in
-            {this.state.showLoading && (
-              <CircularProgress
-                size={24}
-                color="secondary"
-                style={{
-                  position: "absolute",
-                  top: "50%",
-                  left: "50%",
-                  marginTop: -12,
-                  marginLeft: -12,
-                }}
-              />
-            )}
+            {this.state.showLoading && <CenteredSpinner isInButton secondary />}
           </Button>
           <Typography
             variant="subtitle1"
-            style={{
-              marginTop: "16px",
-              marginBottom: "16px",
-              color: "white",
-              cursor: "pointer",
-              textAlign: "center",
-            }}
-            onClick={() => this.setState({ redirect: true })}
+            style={
+              this.state.showLoading
+                ? {
+                    marginTop: "16px",
+                    marginBottom: "16px",
+                    color: "white",
+                    opacity: 0.5,
+                    textAlign: "center",
+                  }
+                : {
+                    marginTop: "16px",
+                    marginBottom: "16px",
+                    color: "white",
+                    cursor: "pointer",
+                    textAlign: "center",
+                  }
+            }
+            onClick={() =>
+              !this.state.showLoading && this.setState({ redirect: true })
+            }
           >
             No account yet? Sign up!
           </Typography>

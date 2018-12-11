@@ -23,8 +23,7 @@ import { WebSocketLink } from "apollo-link-ws"
 import { split } from "apollo-link"
 import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
-import Fade from "@material-ui/core/Fade"
-import CircularProgress from "@material-ui/core/CircularProgress"
+import CenteredSpinner from "../CenteredSpinner"
 
 const MOBILE_WIDTH = 600
 
@@ -49,7 +48,7 @@ class ChangeMailDialog extends React.Component {
 
   openMailDialog = () => {
     this.setState({ mailDialogOpen: true })
-    this.props.handleEmailDialogClose()
+    this.props.close()
   }
 
   closeMailDialog = () => {
@@ -91,15 +90,10 @@ class ChangeMailDialog extends React.Component {
         showDeleteLoading: false,
       })
 
-      this.props.handleEmailDialogClose()
+      this.props.close()
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
-      } else if (
-        e.message ===
-        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
-      ) {
-        this.setState({ passwordError: "This account doesn't exist" })
       } else {
         this.setState({
           passwordError: "Unexpected error",
@@ -176,11 +170,13 @@ class ChangeMailDialog extends React.Component {
         token: changeEmailMutation.data.changeEmail,
       })
 
-      this.props.handleEmailDialogClose()
+      this.props.close()
 
       this.closeMailDialog()
 
-      typeof Storage !== "undefined" && localStorage.setItem("email",this.state.email)
+      this.state.email !== "undefined" &&
+        typeof Storage !== "undefined" &&
+        localStorage.setItem("email", this.state.email)
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ emailError: "Wrong password" })
@@ -188,6 +184,8 @@ class ChangeMailDialog extends React.Component {
         e.message === "GraphQL error: A user with this email already exists"
       ) {
         this.setState({ emailError: "Email already taken" })
+      } else if (e.message === "GraphQL error: Invalid email") {
+        this.setState({ emailError: "Invalid email" })
       } else {
         this.setState({
           emailError: "Unexpected error",
@@ -198,6 +196,18 @@ class ChangeMailDialog extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.open !== this.props.open && this.props.open)
+      this.setState({
+        password: "",
+        isPasswordEmpty: false,
+        passwordError: "",
+        emailError: "",
+        isEmailEmpty: false,
+        email: "",
+      })
+  }
+
   render() {
     const {
       userData: { user },
@@ -206,11 +216,8 @@ class ChangeMailDialog extends React.Component {
     return (
       <React.Fragment>
         <Dialog
-          open={this.props.confirmationDialogOpen && !this.state.mailDialogOpen}
-          onClose={() => {
-            this.props.handleEmailDialogClose()
-            this.setState({ password: "" })
-          }}
+          open={this.props.open && !this.state.mailDialogOpen}
+          onClose={this.props.close}
           className="notSelectable"
           TransitionComponent={Transition}
           fullScreen={window.innerWidth < MOBILE_WIDTH}
@@ -302,9 +309,7 @@ class ChangeMailDialog extends React.Component {
             <br />
           </div>
           <DialogActions>
-            <Button onClick={this.props.handleEmailDialogClose}>
-              Never mind
-            </Button>
+            <Button onClick={this.props.close}>Never mind</Button>
             <Button
               variant="contained"
               color="primary"
@@ -312,26 +317,7 @@ class ChangeMailDialog extends React.Component {
               disabled={!this.state.password || this.state.showLoading}
             >
               Proceed
-              {this.state.showLoading && (
-                <Fade
-                  in={true}
-                  style={{
-                    transitionDelay: "800ms",
-                  }}
-                  unmountOnExit
-                >
-                  <CircularProgress
-                    size={24}
-                    style={{
-                      position: "absolute",
-                      top: "50%",
-                      left: "50%",
-                      marginTop: -12,
-                      marginLeft: -12,
-                    }}
-                  />
-                </Fade>
-              )}
+              {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>
         </Dialog>
@@ -339,7 +325,8 @@ class ChangeMailDialog extends React.Component {
           open={this.state.mailDialogOpen}
           onClose={() => {
             this.closeMailDialog()
-            this.props.handleEmailDialogClose()
+            this.props.close()
+            this.setState({ emailError: "", isEmailEmpty: false })
           }}
           className="notSelectable"
           TransitionComponent={Transition}
@@ -411,7 +398,7 @@ class ChangeMailDialog extends React.Component {
             <Button
               onClick={() => {
                 this.closeMailDialog()
-                this.props.handleEmailDialogClose()
+                this.props.close()
               }}
             >
               Never mind

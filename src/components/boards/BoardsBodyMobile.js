@@ -73,6 +73,7 @@ class BoardsBodyMobile extends Component {
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
               lastBoard={!user.boards[1]}
+              client={this.props.client}
             />
           </Grid>
         ))
@@ -91,6 +92,7 @@ class BoardsBodyMobile extends Component {
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
               lastBoard={!user.boards[1]}
+              client={this.props.client}
             />
           </Grid>
         ))

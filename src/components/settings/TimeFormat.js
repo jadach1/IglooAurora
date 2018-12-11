@@ -38,11 +38,9 @@ export default class TimeFormatDialog extends React.Component {
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          Date
           <RadioGroup
             onChange={event => this.setState({ value: event.target.value })}
             value={this.state.value || "auto"}
-            style={{ paddingLeft: "24px", paddingRight: "24px" }}
           >
             <FormControlLabel
               value="dmy"
