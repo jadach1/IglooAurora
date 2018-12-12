@@ -24,31 +24,31 @@ function Transition(props) {
   )
 }
 
-let PendingShares = props => {
-  let AcceptPendingBoardShare = id =>
-    props.AcceptPendingBoardShare({
+let PendingOwnerChanges = props => {
+  let AcceptOwnership = id =>
+    props.AcceptPendingOwnerChange({
       variables: {
-        pendingBoardShareId: id,
+        pendingOwnerChangeId: id,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        pendingBoardShares: {
-          pendingBoardShareId: id,
-          __typename: "BoardShares",
+        pendingOwnerChanges: {
+          pendingOwnerChangeId: id,
+          __typename: "OwnerChange",
         },
       },
     })
 
-  let DeclinePendingBoardShare = id =>
-    props.DeclinePendingBoardShare({
+  let DeclineOwnership = id =>
+    props.DeclinePendingOwnerChange({
       variables: {
-        pendingBoardShareId: id,
+        pendingOwnerChangeId: id,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        pendingBoardShares: {
-          pendingBoardShareId: id,
-          __typename: "BoardShares",
+        pendingOwnerChanges: {
+          pendingOwnerChangeId: id,
+          __typename: "OwnerChange",
         },
       },
     })
@@ -62,9 +62,9 @@ let PendingShares = props => {
       fullWidth
       maxWidth="xs"
     >
-      <DialogTitle disableTypography>Pending share requests</DialogTitle>
+      <DialogTitle disableTypography>Pending transfer requests</DialogTitle>
       <List style={{ width: "100%", height: "100%" }}>
-        {props.pendingBoardShares.map(boardShare => (
+        {props.pendingOwnerChanges.map(ownerChange => (
           <ListItem style={{ paddingLeft: "24px" }}>
             <ListItemText
               primary={
@@ -76,7 +76,7 @@ let PendingShares = props => {
                       : { color: "black" }
                   }
                 >
-                  {boardShare.board.name}
+                  {ownerChange.board.name}
                 </font>
               }
               secondary={
@@ -88,7 +88,7 @@ let PendingShares = props => {
                       : { color: "#7a7a7a" }
                   }
                 >
-                  {"Sent by " + boardShare.sender.name}
+                  {"Sent by " + ownerChange.formerOwner.name}
                 </font>
               }
               style={{
@@ -100,7 +100,7 @@ let PendingShares = props => {
             />
             <ListItemSecondaryAction>
               <IconButton
-                onClick={() => AcceptPendingBoardShare(boardShare.id)}
+                onClick={() => AcceptOwnership(ownerChange.id)}
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
@@ -111,7 +111,7 @@ let PendingShares = props => {
                 <Icon>done</Icon>
               </IconButton>
               <IconButton
-                onClick={() => DeclinePendingBoardShare(boardShare.id)}
+                onClick={() => DeclineOwnership(ownerChange.id)}
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
@@ -134,22 +134,22 @@ let PendingShares = props => {
 
 export default graphql(
   gql`
-    mutation AcceptPendingBoardShare($pendingBoardShareId: ID!) {
-      acceptPendingBoardShare(pendingBoardShareId: $pendingBoardShareId)
+    mutation AcceptPendingOwnerChange($pendingOwnerChangeId: ID!) {
+      acceptPendingOwnerChange(pendingOwnerChangeId: $pendingOwnerChangeId)
     }
   `,
   {
-    name: "AcceptPendingBoardShare",
+    name: "AcceptPendingOwnerChange",
   }
 )(
   graphql(
     gql`
-      mutation DeclinePendingBoardShare($pendingBoardShareId: ID!) {
-        declinePendingBoardShare(pendingBoardShareId: $pendingBoardShareId)
+      mutation DeclinePendingOwnerChange($pendingOwnerChangeId: ID!) {
+        declinePendingOwnerChange(pendingOwnerChangeId: $pendingOwnerChangeId)
       }
     `,
     {
-      name: "DeclinePendingBoardShare",
+      name: "DeclinePendingOwnerChange",
     }
-  )(PendingShares)
+  )(PendingOwnerChanges)
 )

@@ -246,28 +246,23 @@ class MainBodyHeader extends Component {
           )[0] &&
           this.props.boardData.board.devices.filter(
             device => device.id === this.props.deviceId
-          )[0].id &&
-          this.props.boardData.board.devices.filter(
-            device => device.id === this.props.deviceId
-          )[0].board &&
-          this.props.boardData.board.devices.filter(
-            device => device.id === this.props.deviceId
-          )[0].board.id) ||
-          (device && device.id && device.board && device.board.id)) && (
-          <ChangeBoard
-            open={this.state.changeBoardOpen}
-            close={() => this.setState({ changeBoardOpen: false })}
-            userData={this.props.userData}
-            device={
-              device ||
-              (this.props.boardData.board &&
-                this.props.boardData.board.devices.filter(
-                  device => device.id === this.props.deviceId
-                )[0])
-            }
-            boards={this.props.boards}
-          />
-        )}
+          )[0].id) ||
+          (device && device.id)) &&
+          this.props.userData && (
+            <ChangeBoard
+              open={this.state.changeBoardOpen}
+              close={() => this.setState({ changeBoardOpen: false })}
+              userData={this.props.userData}
+              device={
+                device ||
+                (this.props.boardData.board &&
+                  this.props.boardData.board.devices.filter(
+                    device => device.id === this.props.deviceId
+                  )[0])
+              }
+              boards={this.props.boards}
+            />
+          )}
         {device && device.name && (
           <RenameDevice
             open={this.state.renameOpen}
@@ -582,9 +577,6 @@ export default graphql(
       query($id: ID!) {
         device(id: $id) {
           id
-          board {
-            id
-          }
           values {
             id
           }

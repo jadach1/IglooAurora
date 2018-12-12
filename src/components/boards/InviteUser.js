@@ -57,7 +57,7 @@ export default class InviteUser extends Component {
         e.message === "GraphQL error: You can't share a resource with yourself"
       ) {
         this.setState({
-          emailError: "This is yourself",
+          emailError: "This is you",
         })
       } else if (
         e.message === "GraphQL error: The user already has a role on this board"
@@ -79,6 +79,16 @@ export default class InviteUser extends Component {
     }
 
     this.setState({ showLoading: false })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.open !== nextProps.open && nextProps.open) {
+      this.setState({
+        isEmailEmpty: false,
+        emailError: false,
+        email: "",
+      })
+    }
   }
 
   render() {

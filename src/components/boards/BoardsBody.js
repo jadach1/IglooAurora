@@ -14,12 +14,14 @@ import BoardCard from "./BoardCard"
 import CreateBoard from "./CreateBoard"
 import Helmet from "react-helmet"
 import PendingShares from "./PendingShares"
+import PendingOwnerChanges from "./PendingOwnerChanges"
 
 export default class BoardsBody extends Component {
   state = {
     anchorEl: null,
     createOpen: false,
     pendingSharesOpen: false,
+    pendingOwnerChangesOpen: false,
     copyMessageOpen: false,
     searchText: "",
   }
@@ -52,9 +54,7 @@ export default class BoardsBody extends Component {
       yourBoardsList = user.boards
         .filter(board => board.myRole === "OWNER")
         .filter(board =>
-          board.name
-            .toLowerCase()
-            .includes(this.props.searchText.toLowerCase())
+          board.name.toLowerCase().includes(this.props.searchText.toLowerCase())
         )
         .map(board => (
           <Grid key={board.id} item>
@@ -73,9 +73,7 @@ export default class BoardsBody extends Component {
       boardsList = user.boards
         .filter(board => board.myRole !== "OWNER")
         .filter(board =>
-          board.name
-            .toLowerCase()
-            .includes(this.props.searchText.toLowerCase())
+          board.name.toLowerCase().includes(this.props.searchText.toLowerCase())
         )
         .map(board => (
           <Grid key={board.id} item>
@@ -233,6 +231,60 @@ export default class BoardsBody extends Component {
                     }}
                   >
                     {yourBoardsList}
+                    {user.pendingOwnerChanges[0] && (
+                      <Grid key="boardShares" item>
+                        <Paper
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? {
+                                  backgroundColor: "#2f333d",
+                                  width: "256px",
+                                  height: "192px",
+                                  cursor: "pointer",
+                                  textAlign: "center",
+                                  color: "white",
+                                }
+                              : {
+                                  backgroundColor: "#fff",
+                                  width: "256px",
+                                  height: "192px",
+                                  cursor: "pointer",
+                                  textAlign: "center",
+                                }
+                          }
+                          onClick={() =>
+                            this.setState({ pendingOwnerChangesOpen: true })
+                          }
+                        >
+                          <div
+                            style={{
+                              paddingTop: "50px",
+                              paddingBottom: "50px",
+                            }}
+                          >
+                            <Icon style={{ fontSize: "64px" }}>people</Icon>
+                            <br />
+                            <Typography
+                              variant="h5"
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : {}
+                              }
+                            >
+                              {user.pendingOwnerChanges.length > 99
+                                ? "99+ transfer requests"
+                                : user.pendingOwnerChanges.length +
+                                  (user.pendingOwnerChanges.length === 1
+                                    ? " transfer request"
+                                    : " transfer requests")}
+                            </Typography>
+                          </div>
+                        </Paper>
+                      </Grid>
+                    )}
                     <Grid key="create" item>
                       <Paper
                         style={
@@ -378,11 +430,11 @@ export default class BoardsBody extends Component {
                                 }
                               >
                                 {user.pendingBoardShares.length > 99
-                                  ? "99+ pending requests"
+                                  ? "99+ sharing requests"
                                   : user.pendingBoardShares.length +
                                     (user.pendingBoardShares.length === 1
-                                      ? " pending request"
-                                      : " pending requests")}
+                                      ? " sharing request"
+                                      : " sharing requests")}
                               </Typography>
                             </div>
                           </Paper>
@@ -404,6 +456,13 @@ export default class BoardsBody extends Component {
             open={this.state.pendingSharesOpen}
             close={() => this.setState({ pendingSharesOpen: false })}
             pendingBoardShares={user.pendingBoardShares}
+          />
+        )}
+        {user && user.pendingOwnerChanges && (
+          <PendingOwnerChanges
+            open={this.state.pendingOwnerChangesOpen}
+            close={() => this.setState({ pendingOwnerChangesOpen: false })}
+            pendingOwnerChanges={user.pendingOwnerChanges}
           />
         )}
       </React.Fragment>
