@@ -23,6 +23,8 @@ import ChangeRole from "./ChangeRole"
 import ChangeOwner from "./ChangeOwner"
 import InviteUser from "./InviteUser"
 import StopSharing from "./StopSharing"
+import RevokeInvite from "./RevokeInvite"
+import ChangePendingRole from "./ChangePendingRole"
 
 const MOBILE_WIDTH = 600
 
@@ -104,7 +106,9 @@ class ShareBoard extends React.Component {
             !this.state.inviteUserOpen &&
             !this.state.changeRoleOpen &&
             !this.state.stopSharingOpen &&
-            !this.state.changeOwnerOpen
+            !this.state.changeOwnerOpen &&
+            !this.state.changePendingRoleOpen &&
+            !this.state.revokeInviteOpen
           }
           onClose={this.props.close}
           TransitionComponent={Transition}
@@ -156,16 +160,42 @@ class ShareBoard extends React.Component {
                   </ListItemAvatar>
                   <ListItemText
                     primary={
-                      this.props.userData.user.email ===
-                      this.props.board.owner.email
-                        ? "You"
-                        : this.props.board.owner.name
+                      <font
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? {
+                                color: "white",
+                              }
+                            : {
+                                color: "black",
+                              }
+                        }
+                      >
+                        {this.props.userData.user.email ===
+                        this.props.board.owner.email
+                          ? "You"
+                          : this.props.board.owner.name}
+                      </font>
                     }
                     secondary={
-                      this.props.userData.user.email ===
-                      this.props.board.owner.email
-                        ? ""
-                        : this.props.board.owner.email
+                      <font
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? {
+                                color: "#c1c2c5",
+                              }
+                            : {
+                                color: "#7a7a7a",
+                              }
+                        }
+                      >
+                        {this.props.userData.user.email ===
+                        this.props.board.owner.email
+                          ? ""
+                          : this.props.board.owner.email}{" "}
+                      </font>
                     }
                   />
                   {this.props.userData.user.email ===
@@ -225,14 +255,40 @@ class ShareBoard extends React.Component {
                       </ListItemAvatar>
                       <ListItemText
                         primary={
-                          this.props.userData.user.email === item.email
-                            ? "You"
-                            : item.name
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
+                            {this.props.userData.user.email === item.email
+                              ? "You"
+                              : item.name}
+                          </font>
                         }
                         secondary={
-                          this.props.userData.user.email === item.email
-                            ? ""
-                            : item.email
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "#c1c2c5",
+                                  }
+                                : {
+                                    color: "#7a7a7a",
+                                  }
+                            }
+                          >
+                            {this.props.userData.user.email === item.email
+                              ? ""
+                              : item.email}
+                          </font>
                         }
                       />
                       {this.props.userData.user.email !== item.email && (
@@ -274,8 +330,38 @@ class ShareBoard extends React.Component {
                             </Avatar>
                           </ListItemAvatar>
                           <ListItemText
-                            primary={item.receiver.name + " (pending)"}
-                            secondary={item.receiver.email}
+                            primary={
+                              <font
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? {
+                                        color: "white",
+                                      }
+                                    : {
+                                        color: "black",
+                                      }
+                                }
+                              >
+                                {item.receiver.name + " (pending)"}
+                              </font>
+                            }
+                            secondary={
+                              <font
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? {
+                                        color: "#c1c2c5",
+                                      }
+                                    : {
+                                        color: "#7a7a7a",
+                                      }
+                                }
+                              >
+                                {item.receiver.email}
+                              </font>
+                            }
                           />
                           <ListItemSecondaryAction>
                             <IconButton
@@ -313,13 +399,18 @@ class ShareBoard extends React.Component {
                         <Avatar
                           style={{
                             backgroundColor: "transparent",
-                            color: "#000",
                           }}
                         >
                           <Icon>person_add</Icon>
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary="Invite an admin" />
+                      <ListItemText
+                        primary={
+                          <font style={{ color: "white" }}>
+                            Invite an admin
+                          </font>
+                        }
+                      />
                     </ListItem>
                   )}
                 </ul>
@@ -364,14 +455,40 @@ class ShareBoard extends React.Component {
                       </ListItemAvatar>
                       <ListItemText
                         primary={
-                          this.props.userData.user.email === item.email
-                            ? "You"
-                            : item.name
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
+                            {this.props.userData.user.email === item.email
+                              ? "You"
+                              : item.name}
+                          </font>
                         }
                         secondary={
-                          this.props.userData.user.email === item.email
-                            ? ""
-                            : item.email
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "#c1c2c5",
+                                  }
+                                : {
+                                    color: "#7a7a7a",
+                                  }
+                            }
+                          >
+                            {this.props.userData.user.email === item.email
+                              ? ""
+                              : item.email}
+                          </font>
                         }
                       />
                       {this.props.userData.user.email !== item.email && (
@@ -413,8 +530,38 @@ class ShareBoard extends React.Component {
                             </Avatar>
                           </ListItemAvatar>
                           <ListItemText
-                            primary={item.receiver.name + " (pending)"}
-                            secondary={item.receiver.email}
+                            primary={
+                              <font
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? {
+                                        color: "white",
+                                      }
+                                    : {
+                                        color: "black",
+                                      }
+                                }
+                              >
+                                {item.receiver.name + " (pending)"}
+                              </font>
+                            }
+                            secondary={
+                              <font
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? {
+                                        color: "#c1c2c5",
+                                      }
+                                    : {
+                                        color: "#7a7a7a",
+                                      }
+                                }
+                              >
+                                {item.receiver.email}
+                              </font>
+                            }
                           />
                           <ListItemSecondaryAction>
                             <IconButton
@@ -452,13 +599,18 @@ class ShareBoard extends React.Component {
                         <Avatar
                           style={{
                             backgroundColor: "transparent",
-                            color: "#000",
                           }}
                         >
                           <Icon>person_add</Icon>
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary="Invite an editor" />
+                      <ListItemText
+                        primary={
+                          <font style={{ color: "white" }}>
+                            Invite an editor
+                          </font>
+                        }
+                      />
                     </ListItem>
                   )}
                 </ul>
@@ -503,14 +655,40 @@ class ShareBoard extends React.Component {
                       </ListItemAvatar>
                       <ListItemText
                         primary={
-                          this.props.userData.user.email === item.email
-                            ? "You"
-                            : item.name
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
+                            {this.props.userData.user.email === item.email
+                              ? "You"
+                              : item.name}
+                          </font>
                         }
                         secondary={
-                          this.props.userData.user.email === item.email
-                            ? ""
-                            : item.email
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "#c1c2c5",
+                                  }
+                                : {
+                                    color: "#7a7a7a",
+                                  }
+                            }
+                          >
+                            {this.props.userData.user.email === item.email
+                              ? ""
+                              : item.email}
+                          </font>
                         }
                       />
                       {this.props.userData.user.email !== item.email && (
@@ -551,13 +729,18 @@ class ShareBoard extends React.Component {
                         <Avatar
                           style={{
                             backgroundColor: "transparent",
-                            color: "#000",
                           }}
                         >
                           <Icon>person_add</Icon>
                         </Avatar>
                       </ListItemAvatar>
-                      <ListItemText primary="Invite a spectator" />
+                      <ListItemText
+                        primary={
+                          <font style={{ color: "white" }}>
+                            Invite a spectator
+                          </font>
+                        }
+                      />
                     </ListItem>
                   )}
                 </ul>
@@ -585,7 +768,25 @@ class ShareBoard extends React.Component {
               <ListItemIcon>
                 <Icon>edit</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Change role" />
+              <ListItemText
+                inset
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? {
+                            color: "white",
+                          }
+                        : {
+                            color: "black",
+                          }
+                    }
+                  >
+                    Change role
+                  </font>
+                }
+              />
             </MenuItem>
             <MenuItem
               onClick={() =>
@@ -617,7 +818,23 @@ class ShareBoard extends React.Component {
               <ListItemIcon>
                 <Icon>edit</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Change role" />
+              <ListItemText inset 
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? {
+                            color: "white",
+                          }
+                        : {
+                            color: "black",
+                          }
+                    }
+                  >
+                    Change role
+                  </font>
+                } />
             </MenuItem>
             <MenuItem onClick={() => this.setState({ anchorEl2: null })}>
               <ListItemIcon>
@@ -635,12 +852,20 @@ class ShareBoard extends React.Component {
         <ChangeOwner
           open={this.state.changeOwnerOpen}
           close={() => this.setState({ changeOwnerOpen: false })}
+          client={this.props.client}
+          boardId={this.props.board.id}
         />
         <ChangeRole
           open={this.state.changeRoleOpen}
           close={() => this.setState({ changeRoleOpen: false })}
           changeRole={this.changeRole}
           selectedUserType={this.state.selectedUserForChangeRoleDialog}
+        />
+        <ChangePendingRole
+          open={this.state.changePendingRoleOpen}
+          close={() => this.setState({ changePendingRoleOpen: false })}
+          selectedUserType={this.state.selectedUserForChangeRoleDialog}
+          menuTarget={this.state.menuTarget}
         />
         <InviteUser
           open={this.state.inviteUserOpen}
@@ -653,6 +878,11 @@ class ShareBoard extends React.Component {
           open={this.state.stopSharingOpen}
           close={() => this.setState({ stopSharingOpen: false })}
           stopSharing={this.stopSharing}
+          menuTarget={this.state.menuTarget}
+        />
+        <RevokeInvite
+          open={this.state.revokeInviteOpen}
+          close={() => this.setState({ revokeInviteOpen: false })}
           menuTarget={this.state.menuTarget}
         />
       </React.Fragment>

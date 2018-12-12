@@ -38,19 +38,65 @@ function Transition(props) {
 }
 
 export default class DeleteAccountDialog extends React.Component {
-  state = {
-    showPassword: false,
-    password: "",
-    token: "",
-    passwordError: "",
-    isPasswordEmpty: false,
-    deleteOpen: false,
-    timer: 5,
+  constructor() {
+    super()
+    this.state = {
+      showPassword: false,
+      password: "",
+      token: "",
+      passwordError: "",
+      isPasswordEmpty: false,
+      deleteOpen: false,
+      timer: 5,
+    }
+
+    this.deleteUser = this.deleteUser.bind(this)
   }
 
-  constructor(props) {
-    super(props)
+  async createToken() {
+    this.setState({ showLoading: true })
 
+    try {
+      let createTokenMutation = await this.props.client.mutate({
+        mutation: gql`
+          mutation($tokenType: TokenType!, $password: String!) {
+            createToken(tokenType: $tokenType, password: $password)
+          }
+        `,
+        variables: {
+          tokenType: "DELETE_USER",
+          password: this.state.password,
+        },
+      })
+
+      this.setState({
+        token: createTokenMutation.data.createToken,
+        deleteOpen: true,
+        showLoading: false,
+      })
+
+      this.props.close()
+
+      setTimeout(this.secondsTimer, 1000)
+    } catch (e) {
+      if (e.message === "GraphQL error: Wrong password") {
+        this.setState({ passwordError: "Wrong password" })
+      } else if (
+        e.message ===
+        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+      ) {
+        this.setState({ passwordError: "This account doesn't exist" })
+      } else {
+        this.setState({
+          passwordError: "Unexpected error",
+        })
+      }
+
+      this.setState({ showLoading: false })
+    }
+  }
+
+  async deleteUser() {
     const wsLink = new WebSocketLink({
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server")
@@ -99,63 +145,16 @@ export default class DeleteAccountDialog extends React.Component {
       link,
       cache: new InMemoryCache({ fragmentMatcher }),
     })
-  }
 
-  async createToken() {
-    this.setState({ showLoading: true })
-
-    try {
-      let createTokenMutation = await this.props.client.mutate({
-        mutation: gql`
-          mutation($tokenType: TokenType!, $password: String!) {
-            createToken(tokenType: $tokenType, password: $password)
-          }
-        `,
-        variables: {
-          tokenType: "GENERATE_PERMANENT_TOKEN",
-          password: this.state.password,
-        },
-      })
-
-      this.setState({
-        token: createTokenMutation.data.createToken,
-        deleteOpen: true,
-        showLoading: false,
-      })
-
-      this.props.close()
-
-      setTimeout(this.secondsTimer, 1000)
-    } catch (e) {
-      if (e.message === "GraphQL error: Wrong password") {
-        this.setState({ passwordError: "Wrong password" })
-      } else if (
-        e.message ===
-        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
-      ) {
-        this.setState({ passwordError: "This account doesn't exist" })
-      } else {
-        this.setState({
-          passwordError: "Unexpected error",
-        })
-      }
-
-      this.setState({ showLoading: false })
-    }
-  }
-
-  async deleteUser() {
     let deleteUserMutation = await this.client.mutate({
       mutation: gql`
-        deleteUser {
+        mutation {
           deleteUser
         }
       `,
     })
 
     deleteUserMutation()
-
-    this.setState({ deleteOpen: false })
   }
 
   secondsTimer = () => {
@@ -316,7 +315,6 @@ export default class DeleteAccountDialog extends React.Component {
             }}
           >
             Be careful, your data will be erased permanently.
-            <br /> <br />
           </div>
           <DialogActions>
             <Button
@@ -337,9 +335,7 @@ export default class DeleteAccountDialog extends React.Component {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => {
-                  this.setState({ deleteOpen: false })
-                }}
+                onClick={this.deleteUser}
                 disabled={this.state.timer >= 1}
                 style={{
                   width: "120px",

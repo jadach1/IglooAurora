@@ -5,11 +5,14 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import FormControl from "@material-ui/core/FormControl"
+import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
+import gql from "graphql-tag"
+import CenteredSpinner from "../CenteredSpinner"
 
 const MOBILE_WIDTH = 600
 
@@ -24,6 +27,59 @@ function Transition(props) {
 class ChangeOwner extends Component {
   state = { email: "" }
 
+  async changeOwner() {
+    try {
+      this.setState({ showLoading: true })
+
+      await this.props.client.mutate({
+        mutation: gql`
+          mutation($boardId: ID!, $email: String!) {
+            changeOwner(boardId: $boardId, email: $email) {
+              id
+            }
+          }
+        `,
+        variables: {
+          boardId: this.props.boardId,
+          email: this.state.email,
+        },
+      })
+
+      this.props.close()
+    } catch (e) {
+      if (
+        e.message ===
+        "GraphQL error: This account doesn't exist, check the email passed"
+      ) {
+        this.setState({ emailError: "This account doesn't exist" })
+      } else if (
+        e.message === "GraphQL error: You already are the owner of this board"
+      ) {
+        this.setState({
+          emailError: "This is you",
+        })
+      } else if (
+        e.message === "GraphQL error: The user already has a role on this board"
+      ) {
+        this.setState({
+          emailError: "Board alreay shared",
+        })
+      } else if (
+        e.message === "GraphQL error: There is already a boardShare pending"
+      ) {
+        this.setState({
+          emailError: "Board alreay shared",
+        })
+      } else {
+        this.setState({
+          emailError: "Unexpected error",
+        })
+      }
+    }
+
+    this.setState({ showLoading: false })
+  }
+
   render() {
     return (
       <Dialog
@@ -36,6 +92,7 @@ class ChangeOwner extends Component {
         maxWidth="xs"
       >
         <DialogTitle disableTypography>Transfer ownership</DialogTitle>
+        <div style={{ height: "100%" }} >
         <FormControl
           style={{
             width: "calc(100% - 48px)",
@@ -55,9 +112,12 @@ class ChangeOwner extends Component {
             onKeyPress={event => {
               if (event.key === "Enter") {
                 this.setState({ addAdminOpen: false })
-                this.inviteUser(this.state.selectedUserType.toUpperCase())
+                this.changeOwner()
               }
             }}
+            error={
+              this.state.emailError || this.state.isEmailEmpty ? true : false
+            }
             endAdornment={
               this.state.email ? (
                 <InputAdornment position="end">
@@ -78,17 +138,30 @@ class ChangeOwner extends Component {
               ) : null
             }
           />
+          <FormHelperText
+            style={
+              this.state.emailError || this.state.isEmailEmpty
+                ? { color: "#f44336" }
+                : {}
+            }
+          >
+            {this.state.isEmailEmpty
+              ? "This field is required"
+              : this.state.emailError}
+          </FormHelperText>
         </FormControl>
-        <div style={{ height: "100%" }} />
-        <br />
+        </div>
         <DialogActions>
           <Button onClick={this.props.close}>Never mind</Button>
           <Button
             variant="contained"
             color="primary"
-            onClick={this.props.close}
+            onClick={() => {
+              this.changeOwner()
+            }}
           >
             Change owner
+            {this.state.showLoading && <CenteredSpinner isInButton />}
           </Button>
         </DialogActions>
       </Dialog>
