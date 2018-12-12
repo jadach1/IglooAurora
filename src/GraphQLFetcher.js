@@ -791,6 +791,17 @@ export default graphql(
             name
           }
         }
+        pendingOwnerChanges {
+          id
+          formerOwner {
+            id
+            name
+          }
+          board {
+            id
+            name
+          }
+        }
         boards {
           id
           index

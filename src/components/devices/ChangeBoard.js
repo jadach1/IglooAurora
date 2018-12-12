@@ -22,7 +22,7 @@ function Transition(props) {
 }
 
 class ChangeBoard extends React.Component {
-  state = { newBoard: this.props.device.board.id }
+  state = { newBoard: "" }
 
   changeBoard = value => {
     this.props["ChangeBoard"]({
@@ -39,6 +39,19 @@ class ChangeBoard extends React.Component {
         },
       },
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.userData.user) {
+      this.setState({
+        newBoard: nextProps.userData.user.boards.filter(
+          board =>
+            board.devices.filter(
+              device => device.id === this.props.device.id
+            )[0]
+        )[0].id,
+      })
+    }
   }
 
   render() {
@@ -58,7 +71,7 @@ class ChangeBoard extends React.Component {
             this.setState({ newBoard: value })
             this.changeBoard(value)
           }}
-          value={this.state.newBoard || this.props.device.board.id}
+          value={this.state.newBoard}
           style={{ paddingLeft: "24px", paddingRight: "24px" }}
         >
           {this.props.boards &&
