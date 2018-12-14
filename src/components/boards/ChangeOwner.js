@@ -80,6 +80,16 @@ class ChangeOwner extends Component {
     this.setState({ showLoading: false })
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.open !== nextProps.open && nextProps.open) {
+      this.setState({
+        isEmailEmpty: false,
+        emailError: false,
+        email: "",
+      })
+    }
+  }
+
   render() {
     return (
       <Dialog

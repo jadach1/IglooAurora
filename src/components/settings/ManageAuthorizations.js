@@ -50,6 +50,7 @@ class AuthDialog extends React.Component {
     tokenName: "",
     password: "",
     token: "",
+    tokenError: "",
   }
 
   deletePermanentToken = tokenID => {
@@ -102,7 +103,7 @@ class AuthDialog extends React.Component {
         this.setState({ passwordError: "Wrong password" })
       } else if (
         e.message ===
-        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+        "GraphQL error: User doesn't exist. Use `signUp` to create one"
       ) {
         this.setState({ passwordError: "This account doesn't exist" })
       } else {
@@ -169,6 +170,7 @@ class AuthDialog extends React.Component {
         mutation: gql`
           mutation GeneratePermanentAccessToken($name: String!) {
             createPermanentAccessToken(name: $name) {
+              id
               token
             }
           }
@@ -181,22 +183,87 @@ class AuthDialog extends React.Component {
       this.setState({
         tokenId: tokenMutation.data.createPermanentAccessToken.id,
         generatedToken: tokenMutation.data.createPermanentAccessToken.token,
+        nameOpen: false,
+        authDialogOpen: true,
+        tokenName: "",
       })
     } catch (e) {
       this.setState({
-        token: "Unexpected error",
+        tokenError: "Unexpected error",
       })
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.confirmationDialogOpen !== nextProps.confirmationDialogOpen && nextProps.confirmationDialogOpen) {
+    if (
+      this.props.confirmationDialogOpen !== nextProps.confirmationDialogOpen &&
+      nextProps.confirmationDialogOpen
+    ) {
       this.setState({
         isPasswordEmpty: false,
         passwordError: false,
         password: "",
       })
     }
+  }
+
+  componentDidMount() {
+    const tokenSubscriptionQuery = gql`
+      subscription {
+        permanentTokenCreated {
+          id
+          name
+          lastUsed
+        }
+      }
+    `
+
+    this.props.tokenData.subscribeToMore({
+      document: tokenSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newTokens = [
+          ...prev.user.permanentTokens,
+          subscriptionData.data.permanentTokenCreated,
+        ]
+
+        return {
+          user: {
+            ...prev.user,
+            permanentTokens: newTokens,
+          },
+        }
+      },
+    })
+
+    const subscribeToTokensDeletes = gql`
+      subscription {
+        permanentTokenDeleted
+      }
+    `
+
+    this.props.tokenData.subscribeToMore({
+      document: subscribeToTokensDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newTokens = prev.user.permanentTokens.filter(
+          token => token.id !== subscriptionData.data.permanentTokenDeleted
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            permanentTokens: newTokens,
+          },
+        }
+      },
+    })
   }
 
   render() {
@@ -327,8 +394,11 @@ class AuthDialog extends React.Component {
                   this.state.password ? (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={this.handleClickShowPassword}
-                        onMouseDown={this.handleMouseDownPassword}
+                        onClick={() =>
+                          this.setState(oldState => ({
+                            showPassword: !oldState.showPassword,
+                          }))
+                        }
                         tabIndex="-1"
                         style={
                           typeof Storage !== "undefined" &&
@@ -437,11 +507,18 @@ class AuthDialog extends React.Component {
                 onChange={event =>
                   this.setState({
                     tokenName: event.target.value,
+                    tokenError: "",
+                    isTokenEmpty: event.target.value === "",
                   })
                 }
                 onKeyPress={event => {
                   if (event.key === "Enter") this.getPermanentToken()
                 }}
+                error={
+                  this.state.tokenError || this.state.isTokenEmpty
+                    ? true
+                    : false
+                }
                 endAdornment={
                   this.state.tokenName ? (
                     <InputAdornment position="end">
@@ -462,6 +539,17 @@ class AuthDialog extends React.Component {
                   ) : null
                 }
               />
+              <FormHelperText
+                style={
+                  this.state.tokenName || this.state.isTokenEmpty
+                    ? { color: "#f44336" }
+                    : {}
+                }
+              >
+                {this.state.isTokenEmpty
+                  ? "This field is required"
+                  : this.state.tokenError}
+              </FormHelperText>
             </FormControl>
           </div>
           <DialogActions>
@@ -478,7 +566,6 @@ class AuthDialog extends React.Component {
               disabled={!this.state.tokenName}
               onClick={() => {
                 this.getPermanentToken()
-                this.setState({ nameOpen: false, authDialogOpen: true })
               }}
             >
               Get token

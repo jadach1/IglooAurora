@@ -62,7 +62,7 @@ export default class ChangeServer extends React.Component {
           localStorage.setItem("manualServer", this.state.url)
         }
         localStorage.setItem("bearer", "")
-        this.forceUpdate()
+        this.props.forceUpdate()
       }
 
       !this.props.isUnauthenticated && this.props.logOut()

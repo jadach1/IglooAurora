@@ -25,6 +25,7 @@ import InviteUser from "./InviteUser"
 import StopSharing from "./StopSharing"
 import RevokeInvite from "./RevokeInvite"
 import ChangePendingRole from "./ChangePendingRole"
+import RevokeOwnerChange from "./RevokeOwnerChange"
 
 const MOBILE_WIDTH = 600
 
@@ -42,11 +43,12 @@ class ShareBoard extends React.Component {
     inviteUserOpen: false,
     changeRoleOpen: false,
     stopSharingOpen: false,
+    changeOwnerOpen: false,
+    revokeOwnerChangeOpen: false,
     menuTarget: null,
     email: "",
     selectedUserType: "",
     selectedUserForChangeRoleDialog: "",
-    changeOwnerOpen: false,
   }
 
   getInitials = string => {
@@ -108,7 +110,8 @@ class ShareBoard extends React.Component {
             !this.state.stopSharingOpen &&
             !this.state.changeOwnerOpen &&
             !this.state.changePendingRoleOpen &&
-            !this.state.revokeInviteOpen
+            !this.state.revokeInviteOpen &&
+            !this.state.revokeOwnerChangeOpen
           }
           onClose={this.props.close}
           TransitionComponent={Transition}
@@ -215,6 +218,71 @@ class ShareBoard extends React.Component {
                     </ListItemSecondaryAction>
                   )}
                 </ListItem>
+                {(this.props.board.myRole === "ADMIN" ||
+                  this.props.board.myRole === "OWNER") &&
+                  this.props.board.pendingOwnerChanges.map(item => (
+                    <ListItem key={item.id}>
+                      <ListItemAvatar
+                        style={{
+                          backgroundColor: item.receiver.profileIconColor,
+                        }}
+                      >
+                        <Avatar>{this.getInitials(item.receiver.name)}</Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
+                            {item.receiver.name + " (pending)"}
+                          </font>
+                        }
+                        secondary={
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "#c1c2c5",
+                                  }
+                                : {
+                                    color: "#7a7a7a",
+                                  }
+                            }
+                          >
+                            {item.receiver.email}
+                          </font>
+                        }
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton
+                          onClick={event =>
+                            this.setState({
+                              revokeOwnerChangeOpen: true,
+                              menuTarget: item,
+                            })
+                          }
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          <Icon>remove_circle_outline</Icon>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  ))}
               </ul>
             </li>
             {(this.props.board.myRole === "ADMIN" ||
@@ -401,12 +469,36 @@ class ShareBoard extends React.Component {
                             backgroundColor: "transparent",
                           }}
                         >
-                          <Icon>person_add</Icon>
+                          <Icon
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
+                            person_add
+                          </Icon>
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
                         primary={
-                          <font style={{ color: "white" }}>
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
                             Invite an admin
                           </font>
                         }
@@ -601,12 +693,36 @@ class ShareBoard extends React.Component {
                             backgroundColor: "transparent",
                           }}
                         >
-                          <Icon>person_add</Icon>
+                          <Icon
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
+                            person_add
+                          </Icon>
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
                         primary={
-                          <font style={{ color: "white" }}>
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
                             Invite an editor
                           </font>
                         }
@@ -731,12 +847,36 @@ class ShareBoard extends React.Component {
                             backgroundColor: "transparent",
                           }}
                         >
-                          <Icon>person_add</Icon>
+                          <Icon
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
+                            person_add
+                          </Icon>
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
                         primary={
-                          <font style={{ color: "white" }}>
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    color: "white",
+                                  }
+                                : {
+                                    color: "black",
+                                  }
+                            }
+                          >
                             Invite a spectator
                           </font>
                         }
@@ -814,11 +954,16 @@ class ShareBoard extends React.Component {
               horizontal: "right",
             }}
           >
-            <MenuItem onClick={() => this.setState({ anchorEl2: null })}>
+            <MenuItem
+              onClick={() =>
+                this.setState({ anchorEl2: null, changePendingRoleOpen: true })
+              }
+            >
               <ListItemIcon>
                 <Icon>edit</Icon>
               </ListItemIcon>
-              <ListItemText inset 
+              <ListItemText
+                inset
                 primary={
                   <font
                     style={
@@ -834,9 +979,14 @@ class ShareBoard extends React.Component {
                   >
                     Change role
                   </font>
-                } />
+                }
+              />
             </MenuItem>
-            <MenuItem onClick={() => this.setState({ anchorEl2: null })}>
+            <MenuItem
+              onClick={() =>
+                this.setState({ anchorEl2: null, revokeInviteOpen: true })
+              }
+            >
               <ListItemIcon>
                 <Icon style={{ color: "#f44336" }}>remove_circle</Icon>
               </ListItemIcon>
@@ -883,6 +1033,11 @@ class ShareBoard extends React.Component {
         <RevokeInvite
           open={this.state.revokeInviteOpen}
           close={() => this.setState({ revokeInviteOpen: false })}
+          menuTarget={this.state.menuTarget}
+        />
+        <RevokeOwnerChange
+          open={this.state.revokeOwnerChangeOpen}
+          close={() => this.setState({ revokeOwnerChangeOpen: false })}
           menuTarget={this.state.menuTarget}
         />
       </React.Fragment>

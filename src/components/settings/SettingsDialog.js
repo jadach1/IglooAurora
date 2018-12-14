@@ -491,7 +491,16 @@ class SettingsDialog extends React.Component {
                             : { color: "#7a7a7a" }
                         }
                       >
-                        SI, Celsius
+                        {user &&
+                          (user.settings.lengthAndMass === "SI"
+                            ? "SI"
+                            : "Imperial") +
+                            ", " +
+                            (user.settings.temperature === "CELSIUS"
+                              ? "Celsius"
+                              : user.settings.temperature === "FAHREINHEIT"
+                              ? "Fahreinheit"
+                              : "Kelvin")}
                       </font>
                     }
                   />
@@ -535,7 +544,18 @@ class SettingsDialog extends React.Component {
                             : { color: "#7a7a7a" }
                         }
                       >
-                        DD/MM/YYYY, 24-hour clock
+                        {user &&
+                          (user.settings.dateFormat === "MDY"
+                            ? "MM/DD/YYYY"
+                            : user.settings.dateFormat === "DMY"
+                            ? "DD/MM/YYYY"
+                            : user.settings.dateFormat === "YMD"
+                            ? "YYYY/MM/DD"
+                            : "YYYY/DD/MM") +
+                            ", " +
+                            (user.settings.timeFormat === "H12"
+                              ? "12-hour clock"
+                              : "24-hour clock")}
                       </font>
                     }
                   />
@@ -1128,27 +1148,15 @@ rightToggle={
                     />
                   </ListItem>
                   <ListItem
-                    disabled={!user}
-                    button
-                    onClick={() => this.setState({ createNodeOpen: true })}
-                  >
-                    <ListItemText
-                      primary={
-                        <font
-                          style={
-                            typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                              ? { color: "white" }
-                              : { color: "black" }
-                          }
-                        >
-                          Create a new plot node
-                        </font>
-                      }
-                    />
-                  </ListItem>
-                  <ListItem
-                    disabled={!user}
+                                        disabled={
+                      !(
+                        allDevices &&
+                        allDevices.filter(
+                          device =>
+                            device.board && device.board.myRole !== "SPECTATOR"
+                        )[0]
+                      )
+                    }
                     button
                     onClick={() =>
                       this.setState({ createNotificationOpen: true })
@@ -1165,6 +1173,26 @@ rightToggle={
                           }
                         >
                           Create a new notification
+                        </font>
+                      }
+                    />
+                  </ListItem>
+                  <ListItem
+                    disabled={!user}
+                    button
+                    onClick={() => this.setState({ createNodeOpen: true })}
+                  >
+                    <ListItemText
+                      primary={
+                        <font
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          Create a new plot node
                         </font>
                       }
                     />
@@ -1417,6 +1445,8 @@ rightToggle={
           open={this.props.isOpen && this.state.deleteDialogOpen}
           close={() => this.setState({ deleteDialogOpen: false })}
           client={this.props.client}
+          forceUpdate={() => this.props.forceUpdate()}
+          logOut={this.props.logOut}
         />
         <ChangePasswordDialog
           open={this.props.isOpen && this.state.passwordDialogOpen}
@@ -1455,10 +1485,26 @@ rightToggle={
           timeFormatDialogOpen={
             this.props.isOpen && this.state.timeFormatDialogOpen
           }
+          dateFormat={
+            this.props.userData.user &&
+            this.props.userData.user.settings.dateFormat
+          }
+          timeFormat={
+            this.props.userData.user &&
+            this.props.userData.user.settings.timeFormat
+          }
         />
         <UnitOfMeasumentDialog
           handleUnitDialogClose={this.handleUnitDialogClose}
           unitDialogOpen={this.props.isOpen && this.state.unitDialogOpen}
+          temperature={
+            this.props.userData.user &&
+            this.props.userData.user.settings.temperature
+          }
+          lengthMass={
+            this.props.userData.user &&
+            this.props.userData.user.settings.lengthAndMass
+          }
         />
         <ChangeNameDialog
           handleNameDialogClose={this.handleNameDialogClose}
@@ -1504,12 +1550,8 @@ rightToggle={
           close={() => this.setState({ gdprOpen: false })}
         />
         <ChangeEmail
-          open={
-            this.props.isOpen && this.state.emailDialogOpen
-          }
-          close={() =>
-            this.setState({ emailDialogOpen: false })
-          }
+          open={this.props.isOpen && this.state.emailDialogOpen}
+          close={() => this.setState({ emailDialogOpen: false })}
           userData={this.props.userData}
           client={this.props.client}
         />
