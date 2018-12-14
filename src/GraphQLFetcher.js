@@ -34,6 +34,15 @@ class GraphQLFetcher extends Component {
               email
             }
           }
+          pendingOwnerChanges {
+            id
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+          }
           devices {
             id
             muted
@@ -89,9 +98,9 @@ class GraphQLFetcher extends Component {
       },
     })
 
-    const boardSharedWithYouSubscriptionQuery = gql`
+    const subscribeToBoardsUpdates = gql`
       subscription {
-        boardSharedWithYou {
+        boardUpdated {
           id
           index
           name
@@ -110,75 +119,8 @@ class GraphQLFetcher extends Component {
               email
             }
           }
-          devices {
+          pendingOwnerChanges {
             id
-            muted
-            name
-            board {
-              myRole
-            }
-          }
-          owner {
-            id
-            email
-            name
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            name
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            name
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            name
-            profileIconColor
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: boardSharedWithYouSubscriptionQuery,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-        const newBoards = [
-          ...prev.user.boards,
-          subscriptionData.data.boardSharedWithYou,
-        ]
-        return {
-          user: {
-            ...prev.user,
-            boards: newBoards,
-          },
-        }
-      },
-    })
-
-    const subscribeToBoardsUpdates = gql`
-      subscription {
-        boardUpdated {
-          id
-          index
-          name
-          createdAt
-          updatedAt
-          muted
-          avatar
-          myRole
-          pendingBoardShares {
-            id
-            role
             receiver {
               id
               profileIconColor
@@ -226,6 +168,67 @@ class GraphQLFetcher extends Component {
       document: subscribeToBoardsUpdates,
     })
 
+    const subscribeToBoardsDeletes = gql`
+      subscription {
+        boardDeleted
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToBoardsDeletes,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newBoards = prev.user.boards.filter(
+          board => board.id !== subscriptionData.data.boardDeleted
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            boards: newBoards,
+          },
+        }
+      },
+    })
+
+    const boardSharedWithYouSubscriptionQuery = gql`
+      subscription {
+        boardSharedWithYou {
+          id
+          sender {
+            id
+            name
+          }
+          board {
+            id
+            name
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: boardSharedWithYouSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+        const newBoardsShares = [
+          ...prev.user.pendingBoardShares,
+          subscriptionData.data.boardSharedWithYou,
+        ]
+        return {
+          user: {
+            ...prev.user,
+            pendingBoardShares: newBoardsShares,
+          },
+        }
+      },
+    })
+
     const subscribeToBoardShareAccepted = gql`
       subscription {
         boardShareAccepted {
@@ -240,6 +243,15 @@ class GraphQLFetcher extends Component {
           pendingBoardShares {
             id
             role
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+          }
+          pendingOwnerChanges {
+            id
             receiver {
               id
               profileIconColor
@@ -285,90 +297,74 @@ class GraphQLFetcher extends Component {
 
     this.props.userData.subscribeToMore({
       document: subscribeToBoardShareAccepted,
-    })
-
-    const subscribeToBoardShareDeclined = gql`
-      subscription {
-        boardShareDeclined {
-          id
-          index
-          name
-          createdAt
-          updatedAt
-          muted
-          avatar
-          myRole
-          pendingBoardShares {
-            id
-            role
-            receiver {
-              id
-              profileIconColor
-              name
-              email
-            }
-          }
-          devices {
-            id
-            muted
-            name
-            board {
-              myRole
-            }
-          }
-          owner {
-            id
-            email
-            name
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            name
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            name
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            name
-            profileIconColor
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToBoardShareDeclined,
-    })
-
-    const subscribeToBoardsDeletes = gql`
-      subscription {
-        boardDeleted
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToBoardsDeletes,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
 
-        const newBoards = prev.user.boards.filter(
-          board => board.id !== subscriptionData.data.boardDeleted
-        )
+        const newBoards = [
+          ...prev.user.boards,
+          subscriptionData.data.boardShareAccepted,
+        ]
 
         return {
           user: {
             ...prev.user,
             boards: newBoards,
+          },
+        }
+      },
+    })
+
+    const subscribeToBoardShareDeclined = gql`
+      subscription {
+        boardShareDeclined
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToBoardShareDeclined,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newBoardShares = prev.user.pendingBoardShares.filter(
+          pendingBoardShare =>
+            pendingBoardShare.id !== subscriptionData.data.boardShareDeclined
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingBoardShares: newBoardShares,
+          },
+        }
+      },
+    })
+
+    const subscribeToBoardShareRevoked = gql`
+      subscription {
+        boardShareRevoked
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToBoardShareRevoked,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newBoardShares = prev.user.pendingBoardShares.filter(
+          pendingBoardShare =>
+            pendingBoardShare.id !== subscriptionData.data.boardShareRevoked
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingBoardShares: newBoardShares,
           },
         }
       },
@@ -392,10 +388,11 @@ class GraphQLFetcher extends Component {
               name
             }
           }
-          permanentTokens {
-            id
-            name
-            lastUsed
+          settings {
+            timeFormat
+            dateFormat
+            lengthAndMass
+            temperature
           }
         }
       }
@@ -403,6 +400,19 @@ class GraphQLFetcher extends Component {
 
     this.props.userData.subscribeToMore({
       document: subscribeToUserUpdates,
+    })
+
+    const subscribeToUserDeleted = gql`
+      subscription {
+        userDeleted
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToUserDeleted,
+      updateQuery: (prev, { subscriptionData }) => {
+        this.props.logOut()
+      },
     })
 
     const deviceSubscriptionQuery = gql`
@@ -447,79 +457,6 @@ class GraphQLFetcher extends Component {
             devices: newDevices,
           },
         }
-      },
-    })
-
-    const tokenSubscriptionQuery = gql`
-      subscription {
-        permanentTokenCreated {
-          id
-          name
-          lastUsed
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: tokenSubscriptionQuery,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-        const newTokens = [
-          ...prev.user.permanentTokens,
-          subscriptionData.data.permanentTokenCreated,
-        ]
-        return {
-          user: {
-            ...prev.user,
-            permanentTokens: newTokens,
-          },
-        }
-      },
-    })
-
-    const subscribeToTokensDeletes = gql`
-      subscription {
-        permanentTokenDeleted
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToTokensDeletes,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newTokens = prev.user.permanentTokens.filter(
-          token => token.id !== subscriptionData.data.permanentTokenDeleted
-        )
-
-        return {
-          user: {
-            ...prev.user,
-            permanentTokens: newTokens,
-          },
-        }
-      },
-    })
-
-    const subscribeToUserDeletes = gql`
-      subscription {
-        userDeleted
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToUserDeletes,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        localStorage.setItem("bearer", "")
-        sessionStorage.setItem("bearer", "")
       },
     })
   }
@@ -793,7 +730,7 @@ export default graphql(
         }
         pendingOwnerChanges {
           id
-          formerOwner {
+          sender {
             id
             name
           }
@@ -801,6 +738,12 @@ export default graphql(
             id
             name
           }
+        }
+        settings {
+          timeFormat
+          dateFormat
+          lengthAndMass
+          temperature
         }
         boards {
           id
@@ -814,6 +757,15 @@ export default graphql(
           pendingBoardShares {
             id
             role
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+          }
+          pendingOwnerChanges {
+            id
             receiver {
               id
               profileIconColor

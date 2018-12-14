@@ -55,7 +55,7 @@ let PendingShares = props => {
 
   return (
     <Dialog
-      open={props.open}
+      open={props.open && props.pendingBoardShares.length}
       onClose={props.close}
       fullScreen={window.innerWidth < MOBILE_WIDTH}
       TransitionComponent={Transition}
