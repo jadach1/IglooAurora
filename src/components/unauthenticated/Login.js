@@ -74,6 +74,8 @@ class Login extends Component {
       )
 
       this.props.signIn(loginMutation.data.logIn.token, this.state.keepLoggedIn)
+
+      this.props.changePassword("")
     } catch (e) {
       this.setState({ showLoading: false })
 
@@ -81,7 +83,7 @@ class Login extends Component {
         this.props.changePasswordError("Wrong password")
       } else if (
         e.message ===
-        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+        "GraphQL error: User doesn't exist. Use `signUp` to create one"
       ) {
         this.props.changeEmailError("This account doesn't exist")
         this.props.changeSignupEmail(this.props.email)
@@ -107,7 +109,7 @@ class Login extends Component {
     } catch (e) {
       if (
         e.message ===
-        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+        "GraphQL error: User doesn't exist. Use `signUp` to create one"
       ) {
         this.setState({
           recoveryError: "This account does not exist",

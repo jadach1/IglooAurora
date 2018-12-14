@@ -91,6 +91,10 @@ class SignupMobile extends Component {
       }
 
       this.props.signIn(loginMutation.data.signUp.token)
+
+      this.props.changeName("")
+      this.props.changeEmail("")
+      this.props.changePassword("")
     } catch (e) {
       this.setState({ showLoading: false })
       if (

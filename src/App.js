@@ -480,6 +480,7 @@ class App extends Component {
                     changeSignupEmail={signupEmail =>
                       this.setState({ signupEmail })
                     }
+                     forceUpdate={() => this.forceUpdate()}
                   />
                 ) : (
                   <UnauthenticatedMain
@@ -506,6 +507,7 @@ class App extends Component {
                       this.setState({ signupEmail })
                     }
                     unauthenticatedPicture={this.state.unauthenticatedPicture}
+                    forceUpdate={() => this.forceUpdate()}
                   />
                 )
               }
@@ -533,6 +535,7 @@ class App extends Component {
                     changeLoginEmail={loginEmail =>
                       this.setState({ loginEmail })
                     }
+                    forceUpdate={() => this.forceUpdate()}
                   />
                 ) : (
                   <UnauthenticatedMain
@@ -553,6 +556,7 @@ class App extends Component {
                       this.setState({ loginEmail })
                     }
                     unauthenticatedPicture={this.state.unauthenticatedPicture}
+                    forceUpdate={() => this.forceUpdate()}
                   />
                 )
               }

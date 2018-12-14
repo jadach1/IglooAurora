@@ -72,7 +72,7 @@ export default class ChangePasswordDialog extends React.Component {
         this.setState({ passwordError: "Wrong password" })
       } else if (
         e.message ===
-        "GraphQL error: User doesn't exist. Use `SignupUser` to create one"
+        "GraphQL error: User doesn't exist. Use `signUp` to create one"
       ) {
         this.setState({ passwordError: "This account doesn't exist" })
       } else {

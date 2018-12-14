@@ -91,6 +91,7 @@ export default class UnAuthenticatedMainMobile extends Component {
         <ChangeServer
           open={this.state.changeServerOpen}
           close={() => this.setState({ changeServerOpen: false })}
+          forceUpdate={() => this.props.forceUpdate()}
           isUnauthenticated
         />
       </React.Fragment>

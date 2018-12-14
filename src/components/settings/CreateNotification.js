@@ -40,7 +40,7 @@ class CreateNotification extends React.Component {
     } = this.props
 
     let createNotificationMutation = () => {
-      this.props["CreateNotification"]({
+      this.props.CreateNotification({
         variables: {
           deviceId: user.devices[this.props.device].id,
         },
@@ -139,9 +139,6 @@ class CreateNotification extends React.Component {
                 }
               />
             </FormControl>
-
-            <br />
-            <br />
           </div>
           <DialogActions>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
@@ -179,23 +176,17 @@ class CreateNotification extends React.Component {
 
 export default graphql(
   gql`
-    mutation CreateDevice(
-      $deviceType: String
-      $name: String!
-      $boardId: ID!
-      $firmware: String
+    mutation CreateNotification(
+      $deviceId: ID!
+      $content: String!
+      $date: Date
     ) {
-      createDevice(
-        deviceType: $deviceType
-        name: $name
-        boardId: $boardId
-        firmware: $firmware
-      ) {
+      createNotification(deviceId: $deviceId, content: $content, date: $date) {
         id
       }
     }
   `,
   {
-    name: "CreateDevice",
+    name: "CreateNotification",
   }
 )(CreateNotification)

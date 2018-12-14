@@ -8,6 +8,8 @@ import DialogActions from "@material-ui/core/DialogActions"
 import Radio from "@material-ui/core/Radio"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 const MOBILE_WIDTH = 600
 
@@ -19,9 +21,50 @@ function Transition(props) {
   )
 }
 
-export default class UnitOfMeasumentDialog extends React.Component {
+class UnitOfMeasumentDialog extends React.Component {
   state = {
-    value: 1,
+    lengthMass: "",
+    temperature: "",
+  }
+
+  changeLengthMassUnit = lengthAndMass => {
+    this.props.ChangeLengthMassUnit({
+      variables: {
+        lengthAndMass,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        settings: {
+          lengthAndMass,
+          __typename: "Setting",
+        },
+      },
+    })
+  }
+
+  changeTemperatureUnit = temperature => {
+    this.props.ChangeTemperatureUnit({
+      variables: {
+        temperature,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        settings: {
+          temperature,
+          __typename: "Setting",
+        },
+      },
+    })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.lengthMass && nextProps.lengthMass) {
+      this.setState({ lengthMass: nextProps.lengthMass })
+    }
+
+    if (!this.props.temperature && nextProps.temperature) {
+      this.setState({ temperature: nextProps.temperature })
+    }
   }
 
   render() {
@@ -38,40 +81,46 @@ export default class UnitOfMeasumentDialog extends React.Component {
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          Lenght and mass
+          Length and mass
           <RadioGroup
-            onChange={event => this.setState({ value: event.target.value })}
-            value={this.state.value || "auto"}
+            onChange={event => {
+              this.setState({ lengthMass: event.target.value })
+              this.changeLengthMassUnit(event.target.value)
+            }}
+            value={this.state.lengthMass}
+            style={{ marginBottom: "16px" }}
           >
             <FormControlLabel
-              value="si"
+              value="SI"
               control={<Radio color="primary" />}
               label="SI units"
             />
             <FormControlLabel
-              value="imperial"
+              value="IMPERIAL"
               control={<Radio color="primary" />}
               label="Imperial units"
             />
           </RadioGroup>
-          <br />
           Temperature
           <RadioGroup
-            onChange={event => this.setState({ value: event.target.value })}
-            value={this.state.value || "auto"}
+            onChange={event => {
+              this.setState({ temperature: event.target.value })
+              this.changeTemperatureUnit(event.target.value)
+            }}
+            value={this.state.temperature}
           >
             <FormControlLabel
-              value="celsius"
+              value="CELSIUS"
               control={<Radio color="primary" />}
               label="Celsius"
             />
             <FormControlLabel
-              value="fahrenheit"
+              value="FAHRENHEIT"
               control={<Radio color="primary" />}
               label="Fahrenheit"
             />
             <FormControlLabel
-              value="kelvin"
+              value="KELVIN"
               control={<Radio color="primary" />}
               label="Kelvin"
             />
@@ -84,3 +133,29 @@ export default class UnitOfMeasumentDialog extends React.Component {
     )
   }
 }
+
+export default graphql(
+  gql`
+    mutation ChangeTemperatureUnit($lengthAndMass: LengthAndMass) {
+      settings(lengthAndMass: $lengthAndMass) {
+        lengthAndMass
+      }
+    }
+  `,
+  {
+    name: "ChangeLengthMassUnit",
+  }
+)(
+  graphql(
+    gql`
+      mutation ChangeTemperatureUnit($temperature: Temperature) {
+        settings(temperature: $temperature) {
+          temperature
+        }
+      }
+    `,
+    {
+      name: "ChangeTemperatureUnit",
+    }
+  )(UnitOfMeasumentDialog)
+)
