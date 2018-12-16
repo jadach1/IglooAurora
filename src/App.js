@@ -182,7 +182,13 @@ const darkTheme = createMuiTheme({
       },
     },
     MuiFormControlLabel: {
-      label: { color: "white" },
+      label: {
+        color: "white",
+        "&$disabled": {
+          color: "white",
+          opacity: "0.5",
+        },
+      },
     },
     MuiCheckbox: {
       colorPrimary: {
@@ -196,6 +202,10 @@ const darkTheme = createMuiTheme({
       colorPrimary: {
         "&$checked": {
           color: "#0083ff",
+        },
+        "&$disabled": {
+          color: "white",
+          opacity: "0.5",
         },
         color: "white",
       },
@@ -316,8 +326,8 @@ class App extends Component {
       isMobile: null,
       from: "",
       redirectToReferrer: false,
-      boardCount: 0,
-      boardId: "",
+      environmentCount: 0,
+      environmentId: "",
       loggedOut: false,
       loginEmail: email,
       loginEmailError: "",
@@ -398,8 +408,8 @@ class App extends Component {
         <Redirect
           to={
             this.state.from ||
-            (this.state.boardCount === 1
-              ? "/dashboard?board=" + this.state.boardId
+            (this.state.environmentCount === 1
+              ? "/dashboard?environment=" + this.state.environmentId
               : "/dashboard")
           }
         />
@@ -480,14 +490,17 @@ class App extends Component {
                     changeSignupEmail={signupEmail =>
                       this.setState({ signupEmail })
                     }
-                     forceUpdate={() => this.forceUpdate()}
+                    forceUpdate={() => this.forceUpdate()}
                   />
                 ) : (
                   <UnauthenticatedMain
                     isLogin
                     signIn={signIn}
-                    setBoards={(count, id) =>
-                      this.setState({ boardCount: count, boardId: id })
+                    setEnvironments={(count, id) =>
+                      this.setState({
+                        environmentCount: count,
+                        environmentId: id,
+                      })
                     }
                     password={this.state.loginPassword}
                     changePassword={loginPassword =>

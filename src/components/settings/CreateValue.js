@@ -82,7 +82,7 @@ class CreateValue extends React.Component {
         variables: {
           deviceType: this.state.deviceType,
           name: this.state.name,
-          boardId: user.boards[this.state.board].id,
+          environmentId: user.environments[this.state.environment].id,
           firmware: this.state.firmware,
         },
       })

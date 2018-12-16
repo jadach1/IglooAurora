@@ -10,13 +10,13 @@ import Paper from "@material-ui/core/Paper"
 import List from "@material-ui/core/List"
 import ListSubheader from "@material-ui/core/ListSubheader"
 import CenteredSpinner from "../CenteredSpinner"
-import BoardCard from "./BoardCard"
-import CreateBoard from "./CreateBoard"
+import EnvironmentCard from "./EnvironmentCard"
+import CreateEnvironment from "./CreateEnvironment"
 import Helmet from "react-helmet"
 import PendingShares from "./PendingShares"
 import PendingOwnerChanges from "./PendingOwnerChanges"
 
-export default class BoardsBody extends Component {
+export default class EnvironmentsBody extends Component {
   state = {
     anchorEl: null,
     createOpen: false,
@@ -31,8 +31,8 @@ export default class BoardsBody extends Component {
       userData: { error, user, loading },
     } = this.props
 
-    let boardsList = ""
-    let yourBoardsList = ""
+    let environmentsList = ""
+    let yourEnvironmentsList = ""
 
     let nightMode =
       typeof Storage !== "undefined" &&
@@ -43,47 +43,47 @@ export default class BoardsBody extends Component {
       localStorage.getItem("devMode") === "true"
 
     if (loading) {
-      yourBoardsList = <CenteredSpinner />
+      yourEnvironmentsList = <CenteredSpinner />
     }
 
     if (error) {
-      yourBoardsList = "Unexpected error"
+      yourEnvironmentsList = "Unexpected error"
     }
 
     if (user) {
-      yourBoardsList = user.boards
-        .filter(board => board.myRole === "OWNER")
-        .filter(board =>
-          board.name.toLowerCase().includes(this.props.searchText.toLowerCase())
+      yourEnvironmentsList = user.environments
+        .filter(environment => environment.myRole === "OWNER")
+        .filter(environment =>
+          environment.name.toLowerCase().includes(this.props.searchText.toLowerCase())
         )
-        .map(board => (
-          <Grid key={board.id} item>
-            <BoardCard
+        .map(environment => (
+          <Grid key={environment.id} item>
+            <EnvironmentCard
               userData={this.props.userData}
-              board={board}
+              environment={environment}
               nightMode={nightMode}
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
-              lastBoard={!user.boards[1]}
+              lastEnvironment={!user.environments[1]}
               client={this.props.client}
             />
           </Grid>
         ))
 
-      boardsList = user.boards
-        .filter(board => board.myRole !== "OWNER")
-        .filter(board =>
-          board.name.toLowerCase().includes(this.props.searchText.toLowerCase())
+      environmentsList = user.environments
+        .filter(environment => environment.myRole !== "OWNER")
+        .filter(environment =>
+          environment.name.toLowerCase().includes(this.props.searchText.toLowerCase())
         )
-        .map(board => (
-          <Grid key={board.id} item>
-            <BoardCard
+        .map(environment => (
+          <Grid key={environment.id} item>
+            <EnvironmentCard
               userData={this.props.userData}
-              board={board}
+              environment={environment}
               nightMode={nightMode}
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
-              lastBoard={!user.boards[1]}
+              lastEnvironment={!user.environments[1]}
               client={this.props.client}
             />
           </Grid>
@@ -119,23 +119,23 @@ export default class BoardsBody extends Component {
           <FormControl style={{ width: "400px" }}>
             <Input
               id="adornment-name-login"
-              placeholder="Search boards"
+              placeholder="Search environments"
               color="primary"
               className="notSelectable"
               value={this.props.searchText}
               style={nightMode ? { color: "white" } : { color: "black" }}
-              onChange={event => this.props.searchBoards(event.target.value)}
-              disabled={loading || error || (user && !user.boards[0])}
+              onChange={event => this.props.searchEnvironments(event.target.value)}
+              disabled={loading || error || (user && !user.environments[0])}
               startAdornment={
                 <InputAdornment position="start" style={{ cursor: "default" }}>
                   <Icon
                     style={
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
-                        ? user && user.boards[0]
+                        ? user && user.environments[0]
                           ? { color: "white" }
                           : { color: "white", opacity: "0.5" }
-                        : user && user.boards[0]
+                        : user && user.environments[0]
                         ? { color: "black" }
                         : { color: "black", opacity: "0.5" }
                     }
@@ -148,7 +148,7 @@ export default class BoardsBody extends Component {
                 this.props.searchText ? (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={() => this.props.searchBoards("")}
+                      onClick={() => this.props.searchEnvironments("")}
                       onMouseDown={this.handleMouseDownSearch}
                       style={
                         typeof Storage !== "undefined" &&
@@ -186,7 +186,7 @@ export default class BoardsBody extends Component {
           {loading && <CenteredSpinner large style={{ paddingTop: "32px" }} />}
           {user && (
             <List subheader={<li />}>
-              <li key="yourBoards">
+              <li key="yourEnvironments">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader
                     style={
@@ -216,7 +216,7 @@ export default class BoardsBody extends Component {
                             }
                       }
                     >
-                      Your boards
+                      Your environments
                     </Typography>
                   </ListSubheader>
                   <Grid
@@ -230,9 +230,9 @@ export default class BoardsBody extends Component {
                       marginRight: "32px",
                     }}
                   >
-                    {yourBoardsList}
+                    {yourEnvironmentsList}
                     {user.pendingOwnerChanges[0] && (
-                      <Grid key="boardShares" item>
+                      <Grid key="environmentShares" item>
                         <Paper
                           style={
                             typeof Storage !== "undefined" &&
@@ -322,7 +322,7 @@ export default class BoardsBody extends Component {
                                 : {}
                             }
                           >
-                            Create new board
+                            Create new environment
                           </Typography>
                         </div>
                       </Paper>
@@ -330,8 +330,8 @@ export default class BoardsBody extends Component {
                   </Grid>
                 </ul>
               </li>
-              {(boardsList[0] || user.pendingBoardShares[0]) && (
-                <li key="yourBoards">
+              {(environmentsList[0] || user.pendingEnvironmentShares[0]) && (
+                <li key="yourEnvironments">
                   <ul style={{ padding: "0" }}>
                     <ListSubheader
                       style={
@@ -377,9 +377,9 @@ export default class BoardsBody extends Component {
                         marginRight: "32px",
                       }}
                     >
-                      {boardsList}
-                      {user.pendingBoardShares[0] && (
-                        <Grid key="boardShares" item>
+                      {environmentsList}
+                      {user.pendingEnvironmentShares[0] && (
+                        <Grid key="environmentShares" item>
                           <Paper
                             style={
                               typeof Storage !== "undefined" &&
@@ -429,10 +429,10 @@ export default class BoardsBody extends Component {
                                     : {}
                                 }
                               >
-                                {user.pendingBoardShares.length > 99
+                                {user.pendingEnvironmentShares.length > 99
                                   ? "99+ sharing requests"
-                                  : user.pendingBoardShares.length +
-                                    (user.pendingBoardShares.length === 1
+                                  : user.pendingEnvironmentShares.length +
+                                    (user.pendingEnvironmentShares.length === 1
                                       ? " sharing request"
                                       : " sharing requests")}
                               </Typography>
@@ -447,15 +447,15 @@ export default class BoardsBody extends Component {
             </List>
           )}
         </div>
-        <CreateBoard
+        <CreateEnvironment
           open={this.state.createOpen}
           close={() => this.setState({ createOpen: false })}
         />
-        {user && user.pendingBoardShares && (
+        {user && user.pendingEnvironmentShares && (
           <PendingShares
             open={this.state.pendingSharesOpen}
             close={() => this.setState({ pendingSharesOpen: false })}
-            pendingBoardShares={user.pendingBoardShares}
+            pendingEnvironmentShares={user.pendingEnvironmentShares}
           />
         )}
         {user && user.pendingOwnerChanges && (

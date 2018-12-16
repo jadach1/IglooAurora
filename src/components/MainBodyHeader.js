@@ -3,7 +3,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import NotificationsDrawer from "./NotificationsDrawer"
 import DeviceInfo from "./devices/DeviceInfo"
-// import { CopyToClipboard } from "react-copy-to-clipboard"
+// import { CopyToClipenvironment } from "react-copy-to-clipenvironment"
 import Typography from "@material-ui/core/Typography"
 import Tooltip from "@material-ui/core/Tooltip"
 import Icon from "@material-ui/core/Icon"
@@ -15,7 +15,7 @@ import ListItemIcon from "@material-ui/core/ListItemIcon"
 import Menu from "@material-ui/core/Menu"
 import DeleteDevice from "./devices/DeleteDevice"
 import RenameDevice from "./devices/RenameDevice"
-import ChangeBoard from "./devices/ChangeBoard"
+import ChangeEnvironment from "./devices/ChangeEnvironment"
 import Redirect from "react-router-dom/Redirect"
 
 class MainBodyHeader extends Component {
@@ -24,7 +24,7 @@ class MainBodyHeader extends Component {
     infoOpen: false,
     deleteOpen: false,
     renameOpen: false,
-    changeBoardOpen: false,
+    changeEnvironmentOpen: false,
     goToDevices: false,
   }
 
@@ -98,7 +98,7 @@ class MainBodyHeader extends Component {
             >
               <IconButton
                 style={
-                  this.props.boardData.board
+                  this.props.environmentData.environment
                     ? {
                         color: "white",
                         margin: "0 8px",
@@ -109,7 +109,7 @@ class MainBodyHeader extends Component {
                         opacity: 0.5,
                       }
                 }
-                disabled={!this.props.boardData.board}
+                disabled={!this.props.environmentData.environment}
                 onClick={() => this.setState({ goToDevices: true })}
               >
                 <Icon>chevron_left</Icon>
@@ -139,12 +139,12 @@ class MainBodyHeader extends Component {
                   }
             }
           >
-            {(this.props.boardData.board &&
-              this.props.boardData.board.devices.filter(
+            {(this.props.environmentData.environment &&
+              this.props.environmentData.environment.devices.filter(
                 device => device.id === this.props.deviceId
               )[0] &&
-              this.props.boardData.board &&
-              this.props.boardData.board.devices.filter(
+              this.props.environmentData.environment &&
+              this.props.environmentData.environment.devices.filter(
                 device => device.id === this.props.deviceId
               )[0].name) ||
               (device && device.name)}
@@ -160,8 +160,8 @@ class MainBodyHeader extends Component {
           >
             <NotificationsDrawer
               completeDevice={
-                (this.props.boardData.board &&
-                  this.props.boardData.board.devices.filter(
+                (this.props.environmentData.environment &&
+                  this.props.environmentData.environment.devices.filter(
                     device => device.id === this.props.deviceId
                   )[0]) ||
                 device
@@ -181,24 +181,24 @@ class MainBodyHeader extends Component {
                 onClick={this.handleMenuOpen}
                 disabled={
                   !(
-                    (this.props.boardData.board &&
-                      this.props.boardData.board.devices.filter(
+                    (this.props.environmentData.environment &&
+                      this.props.environmentData.environment.devices.filter(
                         device => device.id === this.props.deviceId
                       )[0] &&
-                      this.props.boardData.board &&
-                      this.props.boardData.board.devices.filter(
+                      this.props.environmentData.environment &&
+                      this.props.environmentData.environment.devices.filter(
                         device => device.id === this.props.deviceId
                       )[0].id) ||
                     (device && device.id)
                   )
                 }
                 style={
-                  (this.props.boardData.board &&
-                    this.props.boardData.board.devices.filter(
+                  (this.props.environmentData.environment &&
+                    this.props.environmentData.environment.devices.filter(
                       device => device.id === this.props.deviceId
                     )[0] &&
-                    this.props.boardData.board &&
-                    this.props.boardData.board.devices.filter(
+                    this.props.environmentData.environment &&
+                    this.props.environmentData.environment.devices.filter(
                       device => device.id === this.props.deviceId
                     )[0].id) ||
                   (device && device.id)
@@ -213,17 +213,17 @@ class MainBodyHeader extends Component {
             </Tooltip>
           </div>
         </div>
-        {((this.props.boardData.board &&
-          this.props.boardData.board.devices.filter(
+        {((this.props.environmentData.environment &&
+          this.props.environmentData.environment.devices.filter(
             device => device.id === this.props.deviceId
           )[0] &&
-          this.props.boardData.board.devices.filter(
+          this.props.environmentData.environment.devices.filter(
             device => device.id === this.props.deviceId
           )[0].id &&
-          this.props.boardData.board.devices.filter(
+          this.props.environmentData.environment.devices.filter(
             device => device.id === this.props.deviceId
           )[0].createdAt &&
-          this.props.boardData.board.devices.filter(
+          this.props.environmentData.environment.devices.filter(
             device => device.id === this.props.deviceId
           )[0].updatedAt) ||
           (device && device.id && device.createdAt && device.updatedAt)) && (
@@ -232,35 +232,35 @@ class MainBodyHeader extends Component {
             close={() => this.setState({ infoOpen: false })}
             device={
               device ||
-              (this.props.boardData.board &&
-                this.props.boardData.board.devices.filter(
+              (this.props.environmentData.environment &&
+                this.props.environmentData.environment.devices.filter(
                   device => device.id === this.props.deviceId
                 )[0])
             }
             devMode={this.props.devMode}
           />
         )}
-        {((this.props.boardData.board &&
-          this.props.boardData.board.devices.filter(
+        {((this.props.environmentData.environment &&
+          this.props.environmentData.environment.devices.filter(
             device => device.id === this.props.deviceId
           )[0] &&
-          this.props.boardData.board.devices.filter(
+          this.props.environmentData.environment.devices.filter(
             device => device.id === this.props.deviceId
           )[0].id) ||
           (device && device.id)) &&
           this.props.userData && (
-            <ChangeBoard
-              open={this.state.changeBoardOpen}
-              close={() => this.setState({ changeBoardOpen: false })}
+            <ChangeEnvironment
+              open={this.state.changeEnvironmentOpen}
+              close={() => this.setState({ changeEnvironmentOpen: false })}
               userData={this.props.userData}
               device={
                 device ||
-                (this.props.boardData.board &&
-                  this.props.boardData.board.devices.filter(
+                (this.props.environmentData.environment &&
+                  this.props.environmentData.environment.devices.filter(
                     device => device.id === this.props.deviceId
                   )[0])
               }
-              boards={this.props.boards}
+              environments={this.props.environments}
             />
           )}
         {device && device.name && (
@@ -269,8 +269,8 @@ class MainBodyHeader extends Component {
             close={() => this.setState({ renameOpen: false })}
             device={
               device ||
-              (this.props.boardData.board &&
-                this.props.boardData.board.devices.filter(
+              (this.props.environmentData.environment &&
+                this.props.environmentData.environment.devices.filter(
                   device => device.id === this.props.deviceId
                 )[0])
             }
@@ -281,15 +281,15 @@ class MainBodyHeader extends Component {
           close={() => this.setState({ deleteOpen: false })}
           device={
             device ||
-            (this.props.boardData.board &&
-              this.props.boardData.board.devices.filter(
+            (this.props.environmentData.environment &&
+              this.props.environmentData.environment.devices.filter(
                 device => device.id === this.props.deviceId
               )[0])
           }
         />
         {(device ||
-          (this.props.boardData.board &&
-            this.props.boardData.board.devices.filter(
+          (this.props.environmentData.environment &&
+            this.props.environmentData.environment.devices.filter(
               device => device.id === this.props.deviceId
             )[0])) && (
           <Menu
@@ -376,7 +376,7 @@ class MainBodyHeader extends Component {
                     <ListItemText inset primary="Share" />
                   </MenuItem>
                 ) : (
-                  <CopyToClipboard text={window.location.href}>
+                  <CopyToClipenvironment text={window.location.href}>
                     <MenuItem
                       className="notSelectable"
                       style={
@@ -402,17 +402,17 @@ class MainBodyHeader extends Component {
                       </ListItemIcon>
                       <ListItemText inset primary="Get Link" />
                     </MenuItem>
-                  </CopyToClipboard>
+                  </CopyToClipenvironment>
                         )} */}
             {(device && device.muted) ||
             ((device ||
-              (this.props.boardData.board &&
-                this.props.boardData.board.devices.filter(
+              (this.props.environmentData.environment &&
+                this.props.environmentData.environment.devices.filter(
                   device => device.id === this.props.deviceId
                 )[0])) &&
               (device ||
-                (this.props.boardData.board &&
-                  this.props.boardData.board.devices.filter(
+                (this.props.environmentData.environment &&
+                  this.props.environmentData.environment.devices.filter(
                     device => device.id === this.props.deviceId
                   )[0]))) ? (
               <MenuItem
@@ -469,15 +469,15 @@ class MainBodyHeader extends Component {
                   : { color: "black" }
               }
               onClick={() => {
-                this.setState({ changeBoardOpen: true })
+                this.setState({ changeEnvironmentOpen: true })
                 this.handleMenuClose()
               }}
-              disabled={!(this.props.boards && this.props.boards.length > 1)}
+              disabled={!(this.props.environments && this.props.environments.length > 1)}
             >
               <ListItemIcon>
                 <Icon>swap_horiz</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Change board" disableTypography />
+              <ListItemText inset primary="Change environment" disableTypography />
             </MenuItem>
             {/*
                 {device.values.length > 1 && (
@@ -552,7 +552,7 @@ class MainBodyHeader extends Component {
         {this.state.goToDevices && (
           <Redirect
             push
-            to={"/dashboard?board=" + this.props.boardData.board.id}
+            to={"/dashboard?environment=" + this.props.environmentData.environment.id}
           />
         )}
       </React.Fragment>

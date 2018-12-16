@@ -27,46 +27,48 @@ function Transition(props) {
 }
 
 class CreateDevice extends React.Component {
-  state = { deviceType: "", name: "", board: 0 }
+  state = { deviceType: "", name: "", environment: 0 }
 
   render() {
     const {
       userData: { error, user, loading },
     } = this.props
 
-    let boards = ""
+    let environments = ""
 
-    if (error) boards = "Unexpected error"
+    if (error) environments = "Unexpected error"
 
-    if (loading) boards = <CenteredSpinner />
+    if (loading) environments = <CenteredSpinner />
 
     let createDeviceMutation = () => {
       this.props["CreateDevice"]({
         variables: {
           deviceType: this.state.deviceType,
           name: this.state.name,
-          boardId: user.boards[this.state.board].id,
+          environmentId: user.environments[this.state.environment].id,
           firmware: this.state.firmware,
         },
       })
+
+      this.props.close()
     }
 
     if (user)
-      boards = (
+      environments = (
         <FormControl style={{ width: "100%" }}>
           <Select
-            value={this.state.board}
+            value={this.state.environment}
             onChange={event => {
-              this.setState({ board: event.target.value })
+              this.setState({ environment: event.target.value })
             }}
-            name="board"
+            name="environment"
           >
-            {user.boards
+            {user.environments
               .filter(
-                board => board.myRole === "ADMIN" || board.myRole === "OWNER"
+                environment => environment.myRole === "ADMIN" || environment.myRole === "OWNER"
               )
-              .map(board => (
-                <MenuItem value={board.index}>{board.name}</MenuItem>
+              .map(environment => (
+                <MenuItem value={environment.index}>{environment.name}</MenuItem>
               ))}
           </Select>
         </FormControl>
@@ -105,9 +107,7 @@ class CreateDevice extends React.Component {
                 id="adornment-name-login"
                 placeholder="Custom name"
                 value={this.state.name}
-                onChange={event =>
-                  this.setState({ name: event.target.value })
-                }
+                onChange={event => this.setState({ name: event.target.value })}
                 onKeyPress={event => {
                   if (event.key === "Enter") createDeviceMutation()
                 }}
@@ -164,7 +164,7 @@ class CreateDevice extends React.Component {
               />
             </FormControl>
             <br /> <br />
-            {boards}
+            {environments}
             <br /> <br />
             <FormControl style={{ width: "100%" }}>
               <Input
@@ -233,13 +233,13 @@ export default graphql(
     mutation CreateDevice(
       $deviceType: String
       $name: String!
-      $boardId: ID!
+      $environmentId: ID!
       $firmware: String
     ) {
       createDevice(
         deviceType: $deviceType
         name: $name
-        boardId: $boardId
+        environmentId: $environmentId
         firmware: $firmware
       ) {
         id

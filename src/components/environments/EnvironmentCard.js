@@ -11,11 +11,11 @@ import Divider from "@material-ui/core/Divider"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
-import DeleteBoard from "./DeleteBoard"
-import CustomizeBoard from "./CustomizeBoard"
-import BoardInfo from "./BoardInfo"
-import ShareBoard from "./ShareBoard"
-import LeaveBoard from "./LeaveBoard"
+import DeleteEnvironment from "./DeleteEnvironment"
+import CustomizeEnvironment from "./CustomizeEnvironment"
+import EnvironmentInfo from "./EnvironmentInfo"
+import ShareEnvironment from "./ShareEnvironment"
+import LeaveEnvironment from "./LeaveEnvironment"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import fox from "../../styles/assets/fox.jpg"
@@ -24,7 +24,7 @@ import denali from "../../styles/assets/denali.jpg"
 import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
 
-class BoardCard extends Component {
+class EnvironmentCard extends Component {
   state = { deleteOpen: false, renameOpen: false, shareOpen: false }
 
   handleMenuOpen = event => {
@@ -38,15 +38,15 @@ class BoardCard extends Component {
   toggleFavorite = favorite =>
     this.props.ToggleFavorite({
       variables: {
-        id: this.props.board.id,
+        id: this.props.environment.id,
         favorite,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        board: {
-          id: this.props.board.id,
+        environment: {
+          id: this.props.environment.id,
           favorite,
-          __typename: "Board",
+          __typename: "Environment",
         },
       },
     })
@@ -54,25 +54,25 @@ class BoardCard extends Component {
   toggleQuietMode = muted =>
     this.props.ToggleQuietMode({
       variables: {
-        id: this.props.board.id,
+        id: this.props.environment.id,
         muted,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        board: {
-          id: this.props.board.id,
+        environment: {
+          id: this.props.environment.id,
           muted,
-          __typename: "Board",
+          __typename: "Environment",
         },
       },
     })
 
   render() {
     let isShared =
-      this.props.board.myRole === "OWNER" &&
-      (this.props.board.admins[0] ||
-        this.props.board.editors[0] ||
-        this.props.board.spectators[0])
+      this.props.environment.myRole === "OWNER" &&
+      (this.props.environment.admins[0] ||
+        this.props.environment.editors[0] ||
+        this.props.environment.spectators[0])
 
     return (
       <React.Fragment>
@@ -100,7 +100,7 @@ class BoardCard extends Component {
             }}
           >
             <Link
-              to={"/dashboard?board=" + this.props.board.id}
+              to={"/dashboard?environment=" + this.props.environment.id}
               style={
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
@@ -157,7 +157,7 @@ class BoardCard extends Component {
                       group
                     </Icon>
                   )}
-                  {this.props.board.name}
+                  {this.props.environment.name}
                 </Typography>
               </div>
             </Link>
@@ -188,7 +188,7 @@ class BoardCard extends Component {
             </div>
           </Toolbar>
           <Link
-            to={"/dashboard?board=" + this.props.board.id}
+            to={"/dashboard?environment=" + this.props.environment.id}
             style={
               typeof Storage !== "undefined" &&
               localStorage.getItem("nightMode") === "true"
@@ -196,7 +196,7 @@ class BoardCard extends Component {
                 : { color: "black", textDecoration: "none" }
             }
           >
-            {this.props.board.avatar === "DENALI" && (
+            {this.props.environment.avatar === "DENALI" && (
               <img
                 src={denali}
                 alt="Mt. Denali"
@@ -209,7 +209,7 @@ class BoardCard extends Component {
                 }}
               />
             )}
-            {this.props.board.avatar === "FOX" && (
+            {this.props.environment.avatar === "FOX" && (
               <img
                 src={fox}
                 alt="Fox"
@@ -222,7 +222,7 @@ class BoardCard extends Component {
                 }}
               />
             )}
-            {this.props.board.avatar === "TREETOPS" && (
+            {this.props.environment.avatar === "TREETOPS" && (
               <img
                 src={treetops}
                 alt="treetops"
@@ -235,7 +235,7 @@ class BoardCard extends Component {
                 }}
               />
             )}
-            {this.props.board.avatar === "PUFFIN" && (
+            {this.props.environment.avatar === "PUFFIN" && (
               <img
                 src={puffin}
                 alt="Puffin"
@@ -248,7 +248,7 @@ class BoardCard extends Component {
                 }}
               />
             )}
-            {this.props.board.avatar === "NORTHERN_LIGHTS" && (
+            {this.props.environment.avatar === "NORTHERN_LIGHTS" && (
               <img
                 src={northernLights}
                 alt="Northern lights"
@@ -301,7 +301,7 @@ class BoardCard extends Component {
             <ListItemText inset primary="Share" disableTypography />
           </MenuItem>
           {!(
-            this.props.userData.user.email === this.props.board.owner.email
+            this.props.userData.user.email === this.props.environment.owner.email
           ) && (
             <MenuItem
               onClick={() => {
@@ -312,13 +312,13 @@ class BoardCard extends Component {
               <ListItemIcon>
                 <Icon>remove_circle</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Leave board" disableTypography />
+              <ListItemText inset primary="Leave environment" disableTypography />
             </MenuItem>
           )}
           <Divider />
           <MenuItem
             onClick={() => {
-              this.toggleQuietMode(this.props.board.muted ? false : true)
+              this.toggleQuietMode(this.props.environment.muted ? false : true)
               this.handleMenuClose()
             }}
             disabled={
@@ -327,16 +327,16 @@ class BoardCard extends Component {
           >
             <ListItemIcon>
               <Icon>
-                {this.props.board.muted ? "notifications" : "notifications_off"}
+                {this.props.environment.muted ? "notifications" : "notifications_off"}
               </Icon>
             </ListItemIcon>
             <ListItemText
               inset
-              primary={this.props.board.muted ? "Unmute" : "Mute"}
+              primary={this.props.environment.muted ? "Unmute" : "Mute"}
               disableTypography
             />
           </MenuItem>
-          {this.props.board.myRole !== "SPECTATOR" && (
+          {this.props.environment.myRole !== "SPECTATOR" && (
             <React.Fragment>
               <Divider />
               <MenuItem
@@ -352,8 +352,8 @@ class BoardCard extends Component {
               </MenuItem>
             </React.Fragment>
           )}
-          {(this.props.board.myRole === "OWNER" ||
-            this.props.board.myRole === "ADMIN") && (
+          {(this.props.environment.myRole === "OWNER" ||
+            this.props.environment.myRole === "ADMIN") && (
             <MenuItem
               onClick={() => {
                 this.setState({ deleteOpen: true })
@@ -369,26 +369,26 @@ class BoardCard extends Component {
             </MenuItem>
           )}
         </Menu>
-        <BoardInfo
+        <EnvironmentInfo
           open={this.state.infoOpen}
           close={() => this.setState({ infoOpen: false })}
-          board={this.props.board}
+          environment={this.props.environment}
           devMode={this.props.devMode}
         />
-        <CustomizeBoard
+        <CustomizeEnvironment
           open={this.state.renameOpen}
           close={() => this.setState({ renameOpen: false })}
-          board={this.props.board}
+          environment={this.props.environment}
         />
-        <DeleteBoard
+        <DeleteEnvironment
           open={this.state.deleteOpen}
           close={() => this.setState({ deleteOpen: false })}
-          board={this.props.board}
+          environment={this.props.environment}
         />
-        <ShareBoard
+        <ShareEnvironment
           open={this.state.shareOpen}
           close={() => this.setState({ shareOpen: false })}
-          board={this.props.board}
+          environment={this.props.environment}
           userData={this.props.userData}
           nightMode={
             typeof Storage !== "undefined" &&
@@ -396,10 +396,10 @@ class BoardCard extends Component {
           }
           client={this.props.client}
         />
-        <LeaveBoard
+        <LeaveEnvironment
           open={this.state.leaveOpen}
           close={() => this.setState({ leaveOpen: false })}
-          board={this.props.board}
+          environment={this.props.environment}
           userData={this.props.userData}
           nightMode={
             typeof Storage !== "undefined" &&
@@ -414,7 +414,7 @@ class BoardCard extends Component {
 export default graphql(
   gql`
     mutation ToggleQuietMode($id: ID!, $muted: Boolean) {
-      board(id: $id, muted: $muted) {
+      environment(id: $id, muted: $muted) {
         id
         muted
       }
@@ -423,4 +423,4 @@ export default graphql(
   {
     name: "ToggleQuietMode",
   }
-)(BoardCard)
+)(EnvironmentCard)

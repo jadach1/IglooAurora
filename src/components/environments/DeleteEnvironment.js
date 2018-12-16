@@ -20,16 +20,16 @@ function Transition(props) {
   )
 }
 
-class DeleteBoard extends React.Component {
-  deleteBoardMutation = () => {
-    this.props["DeleteBoard"]({
+class DeleteEnvironment extends React.Component {
+  deleteEnvironmentMutation = () => {
+    this.props["DeleteEnvironment"]({
       variables: {
-        id: this.props.board.id,
+        id: this.props.environment.id,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        deleteBoard: {
-          id: this.props.board.id,
+        deleteEnvironment: {
+          id: this.props.environment.id,
         },
       },
     })
@@ -46,14 +46,14 @@ class DeleteBoard extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Delete board</DialogTitle>
+        <DialogTitle disableTypography>Delete environment</DialogTitle>
         <font
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          Be careful, this board will be deleted permanently.
+          Be careful, this environment will be deleted permanently.
           <br />
           <br />
-          Note that by deleting a board, you will delete all of its devices.
+          Note that by deleting a environment, you will delete all of its devices.
           <br /> <br />
         </font>
         <DialogActions>
@@ -68,7 +68,7 @@ class DeleteBoard extends React.Component {
             <Button
               variant="contained"
               color="primary"
-              onClick={this.deleteBoardMutation}
+              onClick={this.deleteEnvironmentMutation}
               style={{ margin: "0 4px" }}
             >
               Delete
@@ -82,11 +82,11 @@ class DeleteBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation DeleteBoard($id: ID!) {
-      deleteBoard(id: $id)
+    mutation DeleteEnvironment($id: ID!) {
+      deleteEnvironment(id: $id)
     }
   `,
   {
-    name: "DeleteBoard",
+    name: "DeleteEnvironment",
   }
-)(DeleteBoard)
+)(DeleteEnvironment)

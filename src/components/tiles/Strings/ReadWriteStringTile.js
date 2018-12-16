@@ -6,10 +6,8 @@ import gql from "graphql-tag"
 class ReadWriteStringTile extends Component {
   state = { text: this.props.stringValue }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.stringValue !== this.state.text) {
-      this.setState({ text: nextProps.stringValue })
-    }
+  componentDidMount() {
+    this.setState({ text: this.props.value })
   }
 
   handleChange = event => {
@@ -22,14 +20,14 @@ class ReadWriteStringTile extends Component {
     this.props.mutate({
       variables: {
         id: this.props.id,
-        stringValue: newValue,
+        value: newValue,
       },
       optimisticResponse: {
         __typename: "Mutation",
         stringValue: {
           __typename: "StringValue",
           id: this.props.id,
-          stringValue: newValue,
+          value: newValue,
         },
       },
     })
@@ -49,8 +47,8 @@ class ReadWriteStringTile extends Component {
 }
 
 const updateStringValue = gql`
-  mutation stringValue($id: ID!, $stringValue: String!) {
-    stringValue(id: $id, value: $stringValue) {
+  mutation stringValue($id: ID!, $value: String!) {
+    stringValue(id: $id, value: $value) {
       id
       value
     }

@@ -1,7 +1,7 @@
 import React from "react"
 import Dialog from "@material-ui/core/Dialog"
-import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
+import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
@@ -18,25 +18,25 @@ function Transition(props) {
   )
 }
 
-class InfoDialog extends React.Component {
+class EnvironmentInfo extends React.Component {
   state = { showHidden: false }
 
   render() {
     return (
       <Dialog
-        open={this.props.infoOpen}
-        onClose={this.props.handleInfoClose}
-        TransitionComponent={Transition}
+        open={this.props.open}
+        onClose={this.props.close}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={Transition}
       >
-        <DialogTitle disableTypography>Card information</DialogTitle>
+        <DialogTitle disableTypography>Environment information</DialogTitle>
         <div
-          style={{ paddingRight: "24px", marginLeft: "24px", height: "100%" }}
+          style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
           <b>Created: </b>
           <Moment fromNow>
             {moment.utc(
-              this.props.createdAt.split(".")[0],
+              this.props.environment.createdAt.split(".")[0],
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
@@ -45,27 +45,26 @@ class InfoDialog extends React.Component {
           <b>Last updated: </b>
           <Moment fromNow>
             {moment.utc(
-              this.props.updatedAt.split(".")[0],
+              this.props.environment.updatedAt.split(".")[0],
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
-          {typeof Storage !== "undefined" &&
-          localStorage.getItem("devMode") === "true" ? (
+          {this.props.devMode ? (
             <React.Fragment>
               <br />
               <br />
-              <b>ID: </b> {this.props.id}
+              <b>ID: </b> {this.props.environment.id}
             </React.Fragment>
           ) : (
             ""
           )}
         </div>
         <DialogActions>
-          <Button onClick={this.props.handleInfoClose}>Close</Button>
+          <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>
     )
   }
 }
 
-export default InfoDialog
+export default EnvironmentInfo

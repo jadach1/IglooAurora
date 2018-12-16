@@ -48,8 +48,8 @@ class Login extends Component {
             logIn(email: $email, password: $password) {
               token
               user {
-                boardCount
-                boards {
+                environmentCount
+                environments {
                   id
                 }
               }
@@ -66,10 +66,10 @@ class Login extends Component {
         localStorage.setItem("email", this.props.email)
       }
 
-      this.props.setBoards(
-        loginMutation.data.logIn.user.boardCount,
-        loginMutation.data.logIn.user.boardCount === 1
-          ? loginMutation.data.logIn.user.boards[0].id
+      this.props.setEnvironments(
+        loginMutation.data.logIn.user.environmentCount,
+        loginMutation.data.logIn.user.environmentCount === 1
+          ? loginMutation.data.logIn.user.environments[0].id
           : ""
       )
 
