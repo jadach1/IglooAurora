@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import React from "react"
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
@@ -10,8 +10,6 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
-const MOBILE_WIDTH = 600
-
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
@@ -20,17 +18,36 @@ function Transition(props) {
   )
 }
 
-class RevokeOwnerChange extends Component {
-  revokeInvite = () => {
-    this.props.RevokePendingOwnerChange({
+const MOBILE_WIDTH = 600
+
+class LeaveEnvironment extends React.Component {
+  deleteEnvironmentMutation = () => {
+    this.props["DeleteEnvironment"]({
       variables: {
-        pendingOwnerChangeId: this.props.menuTarget.id,
+        id: this.props.environment.id,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        revokePendingOwnerChange: {
-          pendingOwnerChangeId: this.props.menuTarget.id,
-          __typename: "PendingOwnerChange",
+        deleteEnvironment: {
+          id: this.props.environment.id,
+        },
+      },
+    })
+    this.props.close()
+  }
+
+  stopSharing = () => {
+    this.props.StopSharing({
+      variables: {
+        environmentId: this.props.environment.id,
+        email: this.props.userData.user.email,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        stopSharing: {
+          id: this.props.environment.id,
+          email: this.props.userData.user.email,
+          __typename: "Environment",
         },
       },
     })
@@ -42,23 +59,17 @@ class RevokeOwnerChange extends Component {
         open={this.props.open}
         onClose={this.props.close}
         className="notSelectable defaultCursor"
+        titleClassName="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Revoke invite</DialogTitle>
-        <div
-          style={{
-            paddingLeft: "24px",
-            paddingRight: "24px",
-            height: "100%",
-            marginBottom: "16px",
-          }}
-        >
-          Are you sure you want to revoke{" "}
-          {this.props.menuTarget && this.props.menuTarget.name}'s invite?
+        <DialogTitle disableTypography>Leave environment</DialogTitle>
+        <div style={{ paddingLeft: "24px", height: "100%" }}>
+          Are you sure you want to leave {this.props.environment.name}?
         </div>
+        <br />
         <DialogActions>
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
@@ -74,14 +85,12 @@ class RevokeOwnerChange extends Component {
               variant="contained"
               color="primary"
               onClick={() => {
-                this.revokeInvite()
+                this.stopSharing()
                 this.props.close()
               }}
-              style={{
-                margin: "0 4px",
-              }}
+              style={{ margin: "0 4px" }}
             >
-              Revoke
+              Leave environment
             </Button>
           </MuiThemeProvider>
         </DialogActions>
@@ -92,11 +101,24 @@ class RevokeOwnerChange extends Component {
 
 export default graphql(
   gql`
-    mutation RevokePendingOwnerChange($pendingOwnerChangeId: ID!) {
-      revokePendingOwnerChange(pendingOwnerChangeId: $pendingOwnerChangeId)
+    mutation StopSharing($email: String!, $environmentId: ID!) {
+      stopSharingEnvironment(email: $email, environmentId: $environmentId) {
+        id
+      }
     }
   `,
   {
-    name: "RevokePendingOwnerChange",
+    name: "StopSharing",
   }
-)(RevokeOwnerChange)
+)(
+  graphql(
+    gql`
+      mutation DeleteEnvironment($id: ID!) {
+        deleteEnvironment(id: $id)
+      }
+    `,
+    {
+      name: "DeleteEnvironment",
+    }
+  )(LeaveEnvironment)
+)

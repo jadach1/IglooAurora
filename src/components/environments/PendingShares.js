@@ -25,37 +25,37 @@ function Transition(props) {
 }
 
 let PendingShares = props => {
-  let AcceptPendingBoardShare = id =>
-    props.AcceptPendingBoardShare({
+  let AcceptPendingEnvironmentShare = id =>
+    props.AcceptPendingEnvironmentShare({
       variables: {
-        pendingBoardShareId: id,
+        pendingEnvironmentShareId: id,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        pendingBoardShares: {
-          pendingBoardShareId: id,
-          __typename: "BoardShares",
+        pendingEnvironmentShares: {
+          pendingEnvironmentShareId: id,
+          __typename: "EnvironmentShares",
         },
       },
     })
 
-  let DeclinePendingBoardShare = id =>
-    props.DeclinePendingBoardShare({
+  let DeclinePendingEnvironmentShare = id =>
+    props.DeclinePendingEnvironmentShare({
       variables: {
-        pendingBoardShareId: id,
+        pendingEnvironmentShareId: id,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        pendingBoardShares: {
-          pendingBoardShareId: id,
-          __typename: "BoardShares",
+        pendingEnvironmentShares: {
+          pendingEnvironmentShareId: id,
+          __typename: "EnvironmentShares",
         },
       },
     })
 
   return (
     <Dialog
-      open={props.open && props.pendingBoardShares.length}
+      open={props.open && props.pendingEnvironmentShares.length}
       onClose={props.close}
       fullScreen={window.innerWidth < MOBILE_WIDTH}
       TransitionComponent={Transition}
@@ -64,7 +64,7 @@ let PendingShares = props => {
     >
       <DialogTitle disableTypography>Pending share requests</DialogTitle>
       <List style={{ width: "100%", height: "100%" }}>
-        {props.pendingBoardShares.map(boardShare => (
+        {props.pendingEnvironmentShares.map(environmentShare => (
           <ListItem style={{ paddingLeft: "24px" }}>
             <ListItemText
               primary={
@@ -76,7 +76,7 @@ let PendingShares = props => {
                       : { color: "black" }
                   }
                 >
-                  {boardShare.board.name}
+                  {environmentShare.environment.name}
                 </font>
               }
               secondary={
@@ -88,7 +88,7 @@ let PendingShares = props => {
                       : { color: "#7a7a7a" }
                   }
                 >
-                  {"Sent by " + boardShare.sender.name}
+                  {"Sent by " + environmentShare.sender.name}
                 </font>
               }
               style={{
@@ -100,7 +100,7 @@ let PendingShares = props => {
             />
             <ListItemSecondaryAction>
               <IconButton
-                onClick={() => AcceptPendingBoardShare(boardShare.id)}
+                onClick={() => AcceptPendingEnvironmentShare(environmentShare.id)}
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
@@ -111,7 +111,7 @@ let PendingShares = props => {
                 <Icon>done</Icon>
               </IconButton>
               <IconButton
-                onClick={() => DeclinePendingBoardShare(boardShare.id)}
+                onClick={() => DeclinePendingEnvironmentShare(environmentShare.id)}
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
@@ -134,22 +134,22 @@ let PendingShares = props => {
 
 export default graphql(
   gql`
-    mutation AcceptPendingBoardShare($pendingBoardShareId: ID!) {
-      acceptPendingBoardShare(pendingBoardShareId: $pendingBoardShareId)
+    mutation AcceptPendingEnvironmentShare($pendingEnvironmentShareId: ID!) {
+      acceptPendingEnvironmentShare(pendingEnvironmentShareId: $pendingEnvironmentShareId)
     }
   `,
   {
-    name: "AcceptPendingBoardShare",
+    name: "AcceptPendingEnvironmentShare",
   }
 )(
   graphql(
     gql`
-      mutation DeclinePendingBoardShare($pendingBoardShareId: ID!) {
-        declinePendingBoardShare(pendingBoardShareId: $pendingBoardShareId)
+      mutation DeclinePendingEnvironmentShare($pendingEnvironmentShareId: ID!) {
+        declinePendingEnvironmentShare(pendingEnvironmentShareId: $pendingEnvironmentShareId)
       }
     `,
     {
-      name: "DeclinePendingBoardShare",
+      name: "DeclinePendingEnvironmentShare",
     }
   )(PendingShares)
 )

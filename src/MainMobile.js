@@ -314,20 +314,20 @@ class MainMobile extends Component {
       }
     `
 
-    this.props.boardData.subscribeToMore({
+    this.props.environmentData.subscribeToMore({
       document: deviceSubscriptionQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
         const newDevices = [
-          ...prev.board.devices,
+          ...prev.environment.devices,
           subscriptionData.data.deviceCreated,
         ]
 
         return {
-          board: {
-            ...prev.board,
+          environment: {
+            ...prev.environment,
             devices: newDevices,
           },
         }
@@ -370,7 +370,7 @@ class MainMobile extends Component {
       }
     `
 
-    this.props.boardData.subscribeToMore({
+    this.props.environmentData.subscribeToMore({
       document: subscribeToDevicesUpdates,
     })
 
@@ -380,20 +380,20 @@ class MainMobile extends Component {
       }
     `
 
-    this.props.boardData.subscribeToMore({
+    this.props.environmentData.subscribeToMore({
       document: subscribeToDevicesDeletes,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
 
-        const newDevices = prev.board.devices.filter(
+        const newDevices = prev.environment.devices.filter(
           device => device.id !== subscriptionData.data.deviceDeleted
         )
 
         return {
-          board: {
-            ...prev.board,
+          environment: {
+            ...prev.environment,
             devices: newDevices,
           },
         }
@@ -403,7 +403,7 @@ class MainMobile extends Component {
 
   render() {
     const {
-      boardData: { board },
+      environmentData: { environment },
     } = this.props
 
     let nightMode = ""
@@ -413,39 +413,42 @@ class MainMobile extends Component {
       typeof Storage !== "undefined" &&
       localStorage.getItem("nightMode") === "true"
 
-    if (board && this.props.boards) {
+    if (environment && this.props.environments) {
       let j
 
-      for (j = 0; j < this.props.boards.length; j++) {
+      for (j = 0; j < this.props.environments.length; j++) {
         deviceIdList = deviceIdList.concat(
-          this.props.boards[j].devices.map(device => device.id)
+          this.props.environments[j].devices.map(device => device.id)
         )
       }
 
-      let boardIdList = this.props.boards.map(board => board.id)
+      let environmentIdList = this.props.environments.map(
+        environment => environment.id
+      )
 
       if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
-        if (!boardIdList.includes(this.props.boardId))
+        if (!environmentIdList.includes(this.props.environmentId))
           return <Redirect exact to="/dashboard" />
       }
 
       let i
 
-      for (i = 0; i < board.devices.length; i++) {
+      for (i = 0; i < environment.devices.length; i++) {
         if (
-          board.devices[i].id ===
+          environment.devices[i].id ===
             queryString.parse("?" + window.location.href.split("?")[1])
               .device &&
-          board.id !==
-            queryString.parse("?" + window.location.href.split("?")[1]).board
+          environment.id !==
+            queryString.parse("?" + window.location.href.split("?")[1])
+              .environment
         ) {
           return (
             <Redirect
               to={
-                "/dashboard?board=" +
-                board.devices[i].board.id +
+                "/dashboard?environment=" +
+                environment.devices[i].environment.id +
                 "&device=" +
-                board.devices[i].id
+                environment.devices[i].id
               }
             />
           )
@@ -457,18 +460,18 @@ class MainMobile extends Component {
       <React.Fragment>
         <Helmet>
           <title>
-            {board
+            {environment
               ? queryString.parse("?" + window.location.href.split("?")[1])
                   .device
                 ? "Igloo Aurora - " +
-                  board.devices.filter(
+                  environment.devices.filter(
                     device =>
                       device.id ===
                       queryString.parse(
                         "?" + window.location.href.split("?")[1]
                       ).device
                   )[0].name
-                : "Igloo Aurora - " + board.name
+                : "Igloo Aurora - " + environment.name
               : "Igloo Aurora"}
           </title>
         </Helmet>
@@ -491,7 +494,7 @@ class MainMobile extends Component {
                 <SidebarHeader
                   logOut={this.props.logOut}
                   key="sidebarHeader"
-                  selectedBoard={this.props.boardId}
+                  selectedEnvironment={this.props.environmentId}
                   areSettingsOpen={this.props.areSettingsOpen}
                   openSettingsDialog={this.props.openSettings}
                   closeSettings={this.props.closeSettings}
@@ -501,7 +504,7 @@ class MainMobile extends Component {
                       drawer: false,
                     }))
                   }
-                  boards={this.props.boards}
+                  environments={this.props.environments}
                 />
               </AppBar>
               <div
@@ -521,9 +524,9 @@ class MainMobile extends Component {
                   selectedDevice={this.props.selectedDevice}
                   changeDrawerState={this.changeDrawerState}
                   isMobile={true}
-                  boardData={this.props.boardData}
+                  environmentData={this.props.environmentData}
                   nightMode={nightMode}
-                  selectedBoard={this.props.boardId}
+                  selectedEnvironment={this.props.environmentId}
                   searchDevices={this.props.searchDevices}
                   searchText={this.props.devicesSearchText}
                 />
@@ -556,10 +559,10 @@ class MainMobile extends Component {
                   showHiddenNotifications={this.showHiddenNotifications}
                   nightMode={nightMode}
                   devMode={devMode}
-                  boardData={this.props.boardData}
-                  boards={this.props.boards}
+                  environmentData={this.props.environmentData}
+                  environments={this.props.environments}
                   isMobile={true}
-            userData={this.props.userData}
+                  userData={this.props.userData}
                 />
               </AppBar>
               <div
@@ -579,11 +582,11 @@ class MainMobile extends Component {
                     isMobile={true}
                     nightMode={nightMode}
                     devMode={devMode}
-                    boardData={this.props.boardData}
+                    environmentData={this.props.environmentData}
                   />
                 </div>
                 <StatusBar
-                  boardData={this.props.boardData}
+                  environmentData={this.props.environmentData}
                   deviceId={this.props.selectedDevice}
                   nightMode={nightMode}
                   isMobile={true}
@@ -592,14 +595,14 @@ class MainMobile extends Component {
             </React.Fragment>
           )}
         </div>
-        {board &&
-          this.props.boards &&
+        {environment &&
+          this.props.environments &&
           !deviceIdList.includes(this.props.selectedDevice) && (
             <Redirect
               exact
               to={
-                this.props.boardId
-                  ? "/dashboard?board=" + this.props.boardId
+                this.props.environmentId
+                  ? "/dashboard?environment=" + this.props.environmentId
                   : "/dashboard"
               }
             />
@@ -612,7 +615,7 @@ class MainMobile extends Component {
 export default graphql(
   gql`
     query($id: ID!) {
-      board(id: $id) {
+      environment(id: $id) {
         id
         name
         devices {
@@ -637,7 +640,7 @@ export default graphql(
     }
   `,
   {
-    name: "boardData",
-    options: ({ boardId }) => ({ variables: { id: boardId } }),
+    name: "environmentData",
+    options: ({ environmentId }) => ({ variables: { id: environmentId } }),
   }
 )(hotkeys(MainMobile))

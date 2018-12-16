@@ -14,7 +14,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Divider from "@material-ui/core/Divider"
 import RenameTileDialog from "./RenameTile"
-import InfoDialog from "./InfoDialog.js"
+import CardInfo from "./CardInfo.js"
 import Typography from "@material-ui/core/Typography"
 import Icon from "@material-ui/core/Icon"
 import Tooltip from "@material-ui/core/Tooltip"
@@ -91,7 +91,7 @@ class Tile extends Component {
     if (value.__typename === "BooleanValue") {
       if (
         value.permission === "READ_ONLY" ||
-        value.device.board.myRole === "SPECTATOR"
+        value.device.environment.myRole === "SPECTATOR"
       ) {
         specificTile = <ReadOnlyBooleanTile value={value.boolValue} />
       } else {
@@ -102,7 +102,7 @@ class Tile extends Component {
     } else if (value.__typename === "FloatValue") {
       if (
         value.permission === "READ_ONLY" ||
-        value.device.board.myRole === "SPECTATOR"
+        value.device.environment.myRole === "SPECTATOR"
       ) {
         specificTile = (
           <ReadOnlyFloatTile
@@ -133,7 +133,7 @@ class Tile extends Component {
     } else if (value.__typename === "StringValue") {
       if (
         value.permission === "READ_ONLY" ||
-        value.device.board.myRole === "SPECTATOR"
+        value.device.environment.myRole === "SPECTATOR"
       ) {
         specificTile = (
           <ReadOnlyStringTile value={value.stringValue} id={value.id} />
@@ -482,7 +482,7 @@ class Tile extends Component {
           tileName={valueTitle}
           value={value}
         />
-        <InfoDialog
+        <CardInfo
           infoOpen={this.state.infoOpen}
           handleInfoClose={() => this.setState({ infoOpen: false })}
           createdAt={value.createdAt}

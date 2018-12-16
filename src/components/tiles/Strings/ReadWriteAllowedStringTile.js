@@ -43,7 +43,7 @@ class ReadWriteAllowedStringTile extends Component {
           <Select
             value={this.state.stringValue}
             onChange={this.handleChange}
-            name="board"
+            name="environment"
           >
             {noneAllowed && (
               <MenuItem value="" className="notSelectable">

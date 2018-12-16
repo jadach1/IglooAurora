@@ -7,8 +7,6 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import { graphql } from "react-apollo"
-import gql from "graphql-tag"
 
 const MOBILE_WIDTH = 600
 
@@ -20,22 +18,7 @@ function Transition(props) {
   )
 }
 
-class RevokeInvite extends Component {
-  revokeInvite = () => {
-    this.props.RevokeInvite({
-      variables: {
-        pendingBoardShareId: this.props.menuTarget.id,
-      },
-      optimisticResponse: {
-        __typename: "Mutation",
-        revokePendingBoardShare: {
-          pendingBoardShareId: this.props.menuTarget.id,
-          __typename: "PendingBoardShare",
-        },
-      },
-    })
-  }
-
+export default class StopSharing extends Component {
   render() {
     return (
       <Dialog
@@ -47,7 +30,7 @@ class RevokeInvite extends Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Revoke invite</DialogTitle>
+        <DialogTitle disableTypography>Stop sharing</DialogTitle>
         <div
           style={{
             paddingLeft: "24px",
@@ -56,8 +39,8 @@ class RevokeInvite extends Component {
             marginBottom: "16px",
           }}
         >
-          Are you sure you want to revoke{" "}
-          {this.props.menuTarget && this.props.menuTarget.name}'s invite?
+          Are you sure you want to stop sharing this environment with{" "}
+          {this.props.menuTarget && this.props.menuTarget.name}?
         </div>
         <DialogActions>
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
@@ -74,14 +57,14 @@ class RevokeInvite extends Component {
               variant="contained"
               color="primary"
               onClick={() => {
-                this.revokeInvite()
+                this.props.stopSharing()
                 this.props.close()
               }}
               style={{
                 margin: "0 4px",
               }}
             >
-              Revoke
+              Stop sharing
             </Button>
           </MuiThemeProvider>
         </DialogActions>
@@ -89,14 +72,3 @@ class RevokeInvite extends Component {
     )
   }
 }
-
-export default graphql(
-  gql`
-    mutation RevokeInvite($pendingBoardShareId: ID!) {
-      revokePendingBoardShare(pendingBoardShareId: $pendingBoardShareId)
-    }
-  `,
-  {
-    name: "RevokeInvite",
-  }
-)(RevokeInvite)

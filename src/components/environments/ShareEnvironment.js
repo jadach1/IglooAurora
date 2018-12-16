@@ -37,7 +37,7 @@ function Transition(props) {
   )
 }
 
-class ShareBoard extends React.Component {
+class ShareEnvironment extends React.Component {
   state = {
     menuOpen: false,
     inviteUserOpen: false,
@@ -67,16 +67,16 @@ class ShareBoard extends React.Component {
     this.props.ChangeRole({
       variables: {
         newRole: role.toUpperCase(),
-        boardId: this.props.board.id,
+        environmentId: this.props.environment.id,
         email: this.state.menuTarget.email,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        shareBoard: {
-          id: this.props.board.id,
+        shareEnvironment: {
+          id: this.props.environment.id,
           email: this.state.menuTarget.email,
           newRole: role.toUpperCase(),
-          __typename: "Board",
+          __typename: "Environment",
         },
       },
     })
@@ -85,15 +85,15 @@ class ShareBoard extends React.Component {
   stopSharing = () => {
     this.props.StopSharing({
       variables: {
-        boardId: this.props.board.id,
+        environmentId: this.props.environment.id,
         email: this.state.menuTarget.email,
       },
       optimisticResponse: {
         __typename: "Mutation",
         stopSharing: {
-          id: this.props.board.id,
+          id: this.props.environment.id,
           email: this.state.menuTarget.email,
-          __typename: "Board",
+          __typename: "Environment",
         },
       },
     })
@@ -120,7 +120,7 @@ class ShareBoard extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle disableTypography>Share board</DialogTitle>
+          <DialogTitle disableTypography>Share environment</DialogTitle>
           <List
             subheader={<li />}
             style={
@@ -150,15 +150,15 @@ class ShareBoard extends React.Component {
                 >
                   Owner
                 </ListSubheader>
-                <ListItem key={this.props.board.owner.id}>
+                <ListItem key={this.props.environment.owner.id}>
                   <ListItemAvatar>
                     <Avatar
                       style={{
-                        backgroundColor: this.props.board.owner
+                        backgroundColor: this.props.environment.owner
                           .profileIconColor,
                       }}
                     >
-                      {this.getInitials(this.props.board.owner.name)}
+                      {this.getInitials(this.props.environment.owner.name)}
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
@@ -176,9 +176,9 @@ class ShareBoard extends React.Component {
                         }
                       >
                         {this.props.userData.user.email ===
-                        this.props.board.owner.email
+                        this.props.environment.owner.email
                           ? "You"
-                          : this.props.board.owner.name}
+                          : this.props.environment.owner.name}
                       </font>
                     }
                     secondary={
@@ -195,14 +195,14 @@ class ShareBoard extends React.Component {
                         }
                       >
                         {this.props.userData.user.email ===
-                        this.props.board.owner.email
+                        this.props.environment.owner.email
                           ? ""
-                          : this.props.board.owner.email}{" "}
+                          : this.props.environment.owner.email}{" "}
                       </font>
                     }
                   />
                   {this.props.userData.user.email ===
-                    this.props.board.owner.email && (
+                    this.props.environment.owner.email && (
                     <ListItemSecondaryAction>
                       <IconButton
                         onClick={() => this.setState({ changeOwnerOpen: true })}
@@ -218,9 +218,9 @@ class ShareBoard extends React.Component {
                     </ListItemSecondaryAction>
                   )}
                 </ListItem>
-                {(this.props.board.myRole === "ADMIN" ||
-                  this.props.board.myRole === "OWNER") &&
-                  this.props.board.pendingOwnerChanges.map(item => (
+                {(this.props.environment.myRole === "ADMIN" ||
+                  this.props.environment.myRole === "OWNER") &&
+                  this.props.environment.pendingOwnerChanges.map(item => (
                     <ListItem key={item.id}>
                       <ListItemAvatar
                         style={{
@@ -285,11 +285,11 @@ class ShareBoard extends React.Component {
                   ))}
               </ul>
             </li>
-            {(this.props.board.myRole === "ADMIN" ||
-              this.props.board.myRole === "OWNER" ||
-              this.props.board.admins[0] ||
-              this.props.board.pendingBoardShares.filter(
-                boardShare => boardShare.role === "ADMIN"
+            {(this.props.environment.myRole === "ADMIN" ||
+              this.props.environment.myRole === "OWNER" ||
+              this.props.environment.admins[0] ||
+              this.props.environment.pendingEnvironmentShares.filter(
+                environmentShare => environmentShare.role === "ADMIN"
               )) && (
               <li key="Admins">
                 <ul style={{ padding: "0" }}>
@@ -312,7 +312,7 @@ class ShareBoard extends React.Component {
                   >
                     Admins
                   </ListSubheader>
-                  {this.props.board.admins.map(item => (
+                  {this.props.environment.admins.map(item => (
                     <ListItem key={item.id}>
                       <ListItemAvatar
                         style={{
@@ -382,10 +382,10 @@ class ShareBoard extends React.Component {
                       )}
                     </ListItem>
                   ))}
-                  {(this.props.board.myRole === "ADMIN" ||
-                    this.props.board.myRole === "OWNER") &&
-                    this.props.board.pendingBoardShares
-                      .filter(boardShare => boardShare.role === "ADMIN")
+                  {(this.props.environment.myRole === "ADMIN" ||
+                    this.props.environment.myRole === "OWNER") &&
+                    this.props.environment.pendingEnvironmentShares
+                      .filter(environmentShare => environmentShare.role === "ADMIN")
                       .map(item => (
                         <ListItem key={item.id}>
                           <ListItemAvatar
@@ -452,8 +452,8 @@ class ShareBoard extends React.Component {
                           </ListItemSecondaryAction>
                         </ListItem>
                       ))}
-                  {(this.props.board.myRole === "ADMIN" ||
-                    this.props.board.myRole === "OWNER") && (
+                  {(this.props.environment.myRole === "ADMIN" ||
+                    this.props.environment.myRole === "OWNER") && (
                     <ListItem
                       button
                       onClick={() =>
@@ -508,11 +508,11 @@ class ShareBoard extends React.Component {
                 </ul>
               </li>
             )}
-            {(this.props.board.myRole === "ADMIN" ||
-              this.props.board.myRole === "OWNER" ||
-              this.props.board.editors[0] ||
-              this.props.board.pendingBoardShares.filter(
-                boardShare => boardShare.role === "EDITOR"
+            {(this.props.environment.myRole === "ADMIN" ||
+              this.props.environment.myRole === "OWNER" ||
+              this.props.environment.editors[0] ||
+              this.props.environment.pendingEnvironmentShares.filter(
+                environmentShare => environmentShare.role === "EDITOR"
               )) && (
               <li key="Editors">
                 <ul style={{ padding: "0" }}>
@@ -534,7 +534,7 @@ class ShareBoard extends React.Component {
                   >
                     Editors
                   </ListSubheader>
-                  {this.props.board.editors.map(item => (
+                  {this.props.environment.editors.map(item => (
                     <ListItem key={item.id}>
                       <ListItemAvatar>
                         <Avatar
@@ -606,10 +606,10 @@ class ShareBoard extends React.Component {
                       )}
                     </ListItem>
                   ))}
-                  {(this.props.board.myRole === "ADMIN" ||
-                    this.props.board.myRole === "OWNER") &&
-                    this.props.board.pendingBoardShares
-                      .filter(boardShare => boardShare.role === "EDITOR")
+                  {(this.props.environment.myRole === "ADMIN" ||
+                    this.props.environment.myRole === "OWNER") &&
+                    this.props.environment.pendingEnvironmentShares
+                      .filter(environmentShare => environmentShare.role === "EDITOR")
                       .map(item => (
                         <ListItem key={item.id}>
                           <ListItemAvatar
@@ -676,8 +676,8 @@ class ShareBoard extends React.Component {
                           </ListItemSecondaryAction>
                         </ListItem>
                       ))}
-                  {(this.props.board.myRole === "ADMIN" ||
-                    this.props.board.myRole === "OWNER") && (
+                  {(this.props.environment.myRole === "ADMIN" ||
+                    this.props.environment.myRole === "OWNER") && (
                     <ListItem
                       button
                       onClick={() =>
@@ -732,11 +732,11 @@ class ShareBoard extends React.Component {
                 </ul>
               </li>
             )}
-            {(this.props.board.myRole === "ADMIN" ||
-              this.props.board.myRole === "OWNER" ||
-              this.props.board.spectators[0] ||
-              this.props.board.pendingBoardShares.filter(
-                boardShare => boardShare.role === "SPECTATOR"
+            {(this.props.environment.myRole === "ADMIN" ||
+              this.props.environment.myRole === "OWNER" ||
+              this.props.environment.spectators[0] ||
+              this.props.environment.pendingEnvironmentShares.filter(
+                environmentShare => environmentShare.role === "SPECTATOR"
               )) && (
               <li key="Spectators">
                 <ul style={{ padding: "0" }}>
@@ -758,7 +758,7 @@ class ShareBoard extends React.Component {
                   >
                     Spectators
                   </ListSubheader>
-                  {this.props.board.spectators.map(item => (
+                  {this.props.environment.spectators.map(item => (
                     <ListItem key={item.id}>
                       <ListItemAvatar>
                         <Avatar
@@ -830,8 +830,8 @@ class ShareBoard extends React.Component {
                       )}
                     </ListItem>
                   ))}
-                  {(this.props.board.myRole === "ADMIN" ||
-                    this.props.board.myRole === "OWNER") && (
+                  {(this.props.environment.myRole === "ADMIN" ||
+                    this.props.environment.myRole === "OWNER") && (
                     <ListItem
                       button
                       onClick={() =>
@@ -1003,7 +1003,7 @@ class ShareBoard extends React.Component {
           open={this.state.changeOwnerOpen}
           close={() => this.setState({ changeOwnerOpen: false })}
           client={this.props.client}
-          boardId={this.props.board.id}
+          environmentId={this.props.environment.id}
         />
         <ChangeRole
           open={this.state.changeRoleOpen}
@@ -1022,7 +1022,7 @@ class ShareBoard extends React.Component {
           close={() => this.setState({ inviteUserOpen: false })}
           selectedUserType={this.state.selectedUserType}
           client={this.props.client}
-          boardId={this.props.board.id}
+          environmentId={this.props.environment.id}
         />
         <StopSharing
           open={this.state.stopSharingOpen}
@@ -1047,8 +1047,8 @@ class ShareBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation StopSharing($email: String!, $boardId: ID!) {
-      stopSharingBoard(email: $email, boardId: $boardId) {
+    mutation StopSharing($email: String!, $environmentId: ID!) {
+      stopSharingEnvironment(email: $email, environmentId: $environmentId) {
         id
       }
     }
@@ -1059,8 +1059,8 @@ export default graphql(
 )(
   graphql(
     gql`
-      mutation ChangeRole($email: String!, $boardId: ID!, $newRole: Role!) {
-        changeRole(email: $email, boardId: $boardId, newRole: $newRole) {
+      mutation ChangeRole($email: String!, $environmentId: ID!, $newRole: Role!) {
+        changeRole(email: $email, environmentId: $environmentId, newRole: $newRole) {
           id
         }
       }
@@ -1068,5 +1068,5 @@ export default graphql(
     {
       name: "ChangeRole",
     }
-  )(ShareBoard)
+  )(ShareEnvironment)
 )

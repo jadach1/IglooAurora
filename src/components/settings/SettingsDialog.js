@@ -197,7 +197,9 @@ class SettingsDialog extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState(allDialogsClosed)
+    if (nextProps.isOpen !== this.props.isOpen && nextProps.isOpen) {
+      this.setState(allDialogsClosed)
+    }
   }
 
   render() {
@@ -241,12 +243,12 @@ class SettingsDialog extends React.Component {
     let profileIconColor = ""
 
     if (user) {
-      if (user.boards) {
+      if (user.environments) {
         allDevices = []
 
-        for (let i = 0; i < user.boards.length; i++) {
-          for (let j = 0; j < user.boards[i].devices.length; j++) {
-            allDevices.push(user.boards[i].devices[j])
+        for (let i = 0; i < user.environments.length; i++) {
+          for (let j = 0; j < user.environments[i].devices.length; j++) {
+            allDevices.push(user.environments[i].devices[j])
           }
         }
       }
@@ -498,7 +500,7 @@ class SettingsDialog extends React.Component {
                             ", " +
                             (user.settings.temperature === "CELSIUS"
                               ? "Celsius"
-                              : user.settings.temperature === "FAHREINHEIT"
+                              : user.settings.temperature === "FAHRENHEIT"
                               ? "Fahreinheit"
                               : "Kelvin")}
                       </font>
@@ -611,7 +613,7 @@ class SettingsDialog extends React.Component {
                             : { color: "black" }
                         }
                       >
-                        Keyboard shortcuts
+                        Keyenvironment shortcuts
                       </font>
                     }
                   />
@@ -1096,8 +1098,8 @@ rightToggle={
                     disabled={
                       !(
                         user &&
-                        user.boards.filter(
-                          board => board.myRole !== "SPECTATOR"
+                        user.environments.filter(
+                          environment => environment.myRole !== "SPECTATOR"
                         )[0]
                       )
                     }
@@ -1125,7 +1127,7 @@ rightToggle={
                         allDevices &&
                         allDevices.filter(
                           device =>
-                            device.board && device.board.myRole !== "SPECTATOR"
+                            device.environment && device.environment.myRole !== "SPECTATOR"
                         )[0]
                       )
                     }
@@ -1148,12 +1150,12 @@ rightToggle={
                     />
                   </ListItem>
                   <ListItem
-                                        disabled={
+                    disabled={
                       !(
                         allDevices &&
                         allDevices.filter(
                           device =>
-                            device.board && device.board.myRole !== "SPECTATOR"
+                            device.environment && device.environment.myRole !== "SPECTATOR"
                         )[0]
                       )
                     }
@@ -1258,7 +1260,28 @@ rightToggle={
     return (
       <React.Fragment>
         <Dialog
-          open={this.props.isOpen}
+          open={
+            this.props.isOpen &&
+            !this.state.deleteDialogOpen &&
+            !this.state.passwordDialogOpen &&
+            !this.state.emailDialogOpen &&
+            !this.state.deleteConfirmedDialogOpen &&
+            !this.state.twoFactorDialogOpen &&
+            !this.state.languageDialogOpen &&
+            !this.state.timeZoneDialogOpen &&
+            !this.state.timeFormatDialogOpen &&
+            !this.state.unitDialogOpen &&
+            !this.state.nameDialogOpen &&
+            !this.state.shortcutDialogOpen &&
+            !this.state.authDialogOpen &&
+            !this.state.createValueOpen &&
+            !this.state.createDeviceOpen &&
+            !this.state.createNotificationOpen &&
+            !this.state.createNodeOpen &&
+            !this.state.gdprOpen &&
+            !this.state.serverOpen &&
+            !this.state.verifyOpen
+          }
           onClose={this.props.closeSettingsDialog}
           TransitionComponent={Transition}
           fullWidth
@@ -1527,7 +1550,7 @@ rightToggle={
           userData={this.props.userData}
           allDevices={allDevices}
         />
-        {this.props.userData.user && this.props.userData.user.boards && (
+        {this.props.userData.user && this.props.userData.user.environments && (
           <CreateDevice
             open={this.props.isOpen && this.state.createDeviceOpen}
             close={() => this.setState({ createDeviceOpen: false })}

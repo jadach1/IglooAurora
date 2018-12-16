@@ -36,10 +36,10 @@ class ChangePendingRole extends Component {
       },
       optimisticResponse: {
         __typename: "Mutation",
-        pendingBoardShare: {
+        pendingEnvironmentShare: {
           id: this.props.menuTarget.id,
           role: role.toUpperCase(),
-          __typename: "PendingBoardShare",
+          __typename: "PendingEnvironmentShare",
         },
       },
     })
@@ -92,7 +92,7 @@ class ChangePendingRole extends Component {
 export default graphql(
   gql`
     mutation changePendingRole($id: ID!, $role: Role!) {
-      pendingBoardShare(id: $id, role: $role) {
+      pendingEnvironmentShare(id: $id, role: $role) {
         id
       }
     }

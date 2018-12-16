@@ -181,7 +181,7 @@ export default class FilterPopover extends Component {
           </div>
         </Popover>
         {this.state.redirect && (
-          <Redirect to={"/dashboard?board=" + this.props.boardId} />
+          <Redirect to={"/dashboard?environment=" + this.props.environmentId} />
         )}
       </React.Fragment>
     )

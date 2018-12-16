@@ -80,7 +80,7 @@ class Signup extends Component {
             signUp(email: $email, password: $password, name: $name) {
               token
               user {
-                boards {
+                environments {
                   id
                 }
               }

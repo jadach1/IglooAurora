@@ -64,7 +64,7 @@ class Sidebar extends Component {
 
   render() {
     const {
-      boardData: { loading, error, board },
+      environmentData: { loading, error, environment },
     } = this.props
 
     let sidebarContent = ""
@@ -91,9 +91,9 @@ class Sidebar extends Component {
 
     let devicesArray = []
 
-    if (board) {
+    if (environment) {
       devicesArray = this.props.searchText
-        ? board.devices
+        ? environment.devices
             .filter(device =>
               device.name
                 .toLowerCase()
@@ -103,7 +103,7 @@ class Sidebar extends Component {
               device =>
                 this.state.visibleDeviceTypes.indexOf(device.deviceType) !== -1
             )
-        : board.devices.filter(
+        : environment.devices.filter(
             device =>
               this.state.visibleDeviceTypes.indexOf(device.deviceType) !== -1
           )
@@ -112,15 +112,15 @@ class Sidebar extends Component {
         <React.Fragment>
           <FilterPopover
             open={this.state.popoverOpen}
-            boardId={this.props.selectedBoard}
+            environmentId={this.props.selectedEnvironment}
             currentDevice={
-              board.devices.filter(
+              environment.devices.filter(
                 device => device.id === this.props.selectedDevice
               )[0]
             }
             close={() => this.setState({ popoverOpen: false })}
             anchorEl={this.anchorEl}
-            devices={board.devices}
+            devices={environment.devices}
             setVisibleTypes={visibleTypes => {
               this.setState({ visibleDeviceTypes: visibleTypes })
             }}
@@ -147,11 +147,12 @@ class Sidebar extends Component {
                 <Link
                   to={
                     this.props.selectedDevice !== device.id
-                      ? "/dashboard?board=" +
-                        this.props.selectedBoard +
+                      ? "/dashboard?environment=" +
+                        this.props.selectedEnvironment +
                         "&device=" +
                         device.id
-                      : "/dashboard?board=" + this.props.selectedBoard
+                      : "/dashboard?environment=" +
+                        this.props.selectedEnvironment
                   }
                   style={{ textDecoration: "none", color: "black" }}
                 >
@@ -241,7 +242,7 @@ class Sidebar extends Component {
                 </Link>
               ))}
           </List>
-          <Zoom in={board}>
+          <Zoom in={environment}>
             <Button
               variant="fab"
               color="secondary"
@@ -305,8 +306,8 @@ class Sidebar extends Component {
               }
               disabled={
                 !(
-                  board &&
-                  board.devices.filter(
+                  environment &&
+                  environment.devices.filter(
                     device =>
                       this.state.visibleDeviceTypes.indexOf(
                         device.deviceType
@@ -323,8 +324,8 @@ class Sidebar extends Component {
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
                         ? !(
-                            board &&
-                            board.devices.filter(
+                            environment &&
+                            environment.devices.filter(
                               device =>
                                 this.state.visibleDeviceTypes.indexOf(
                                   device.deviceType
@@ -334,8 +335,8 @@ class Sidebar extends Component {
                           ? { color: "white", opacity: "0.5" }
                           : { color: "white" }
                         : !(
-                            board &&
-                            board.devices.filter(
+                            environment &&
+                            environment.devices.filter(
                               device =>
                                 this.state.visibleDeviceTypes.indexOf(
                                   device.deviceType
@@ -380,8 +381,8 @@ class Sidebar extends Component {
               }}
               disabled={
                 !(
-                  board &&
-                  board.devices.filter(device =>
+                  environment &&
+                  environment.devices.filter(device =>
                     this.props.searchText
                       ? device.name
                           .toLowerCase()
@@ -401,9 +402,9 @@ class Sidebar extends Component {
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                    ? board &&
-                      board.devices &&
-                      board.devices.filter(device =>
+                    ? environment &&
+                      environment.devices &&
+                      environment.devices.filter(device =>
                         this.props.searchText
                           ? device.name
                               .toLowerCase()
@@ -412,9 +413,9 @@ class Sidebar extends Component {
                       )[0]
                       ? { color: "white" }
                       : { color: "white", opacity: "0.5" }
-                    : board &&
-                      board.devices &&
-                      board.devices.filter(device =>
+                    : environment &&
+                      environment.devices &&
+                      environment.devices.filter(device =>
                         this.props.searchText
                           ? true
                           : device.name

@@ -81,7 +81,7 @@ export default class UnAuthenticatedMain extends Component {
                 client={this.client}
                 isDialog={false}
                 signIn={this.props.signIn}
-                setBoards={this.props.setBoards}
+                setEnvironments={this.props.setEnvironments}
                 password={this.props.password}
                 changePassword={this.props.changePassword}
                 passwordError={this.props.passwordError}

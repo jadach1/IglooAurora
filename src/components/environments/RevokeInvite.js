@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 import Button from "@material-ui/core/Button"
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
@@ -10,6 +10,8 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
+const MOBILE_WIDTH = 600
+
 function Transition(props) {
   return window.innerWidth > MOBILE_WIDTH ? (
     <Grow {...props} />
@@ -18,36 +20,17 @@ function Transition(props) {
   )
 }
 
-const MOBILE_WIDTH = 600
-
-class LeaveBoard extends React.Component {
-  deleteBoardMutation = () => {
-    this.props["DeleteBoard"]({
+class RevokeInvite extends Component {
+  revokeInvite = () => {
+    this.props.RevokeInvite({
       variables: {
-        id: this.props.board.id,
+        pendingEnvironmentShareId: this.props.menuTarget.id,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        deleteBoard: {
-          id: this.props.board.id,
-        },
-      },
-    })
-    this.props.close()
-  }
-
-  stopSharing = () => {
-    this.props.StopSharing({
-      variables: {
-        boardId: this.props.board.id,
-        email: this.props.userData.user.email,
-      },
-      optimisticResponse: {
-        __typename: "Mutation",
-        stopSharing: {
-          id: this.props.board.id,
-          email: this.props.userData.user.email,
-          __typename: "Board",
+        revokePendingEnvironmentShare: {
+          pendingEnvironmentShareId: this.props.menuTarget.id,
+          __typename: "PendingEnvironmentShare",
         },
       },
     })
@@ -59,17 +42,26 @@ class LeaveBoard extends React.Component {
         open={this.props.open}
         onClose={this.props.close}
         className="notSelectable defaultCursor"
-        titleClassName="notSelectable defaultCursor"
         TransitionComponent={Transition}
         fullScreen={window.innerWidth < MOBILE_WIDTH}
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Leave board</DialogTitle>
-        <div style={{ paddingLeft: "24px", height: "100%" }}>
-          Are you sure you want to leave {this.props.board.name}?
+        <DialogTitle disableTypography>Revoke invite</DialogTitle>
+        <div
+          style={{
+            paddingLeft: "24px",
+            paddingRight: "24px",
+            height: "100%",
+            marginBottom: "16px",
+          }}
+        >
+          Are you sure you want to revoke{" "}
+          {this.props.menuTarget &&
+            this.props.menuTarget.receiver &&
+            this.props.menuTarget.receiver.name}
+          's invite?
         </div>
-        <br />
         <DialogActions>
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
@@ -85,12 +77,14 @@ class LeaveBoard extends React.Component {
               variant="contained"
               color="primary"
               onClick={() => {
-                this.stopSharing()
+                this.revokeInvite()
                 this.props.close()
               }}
-              style={{ margin: "0 4px" }}
+              style={{
+                margin: "0 4px",
+              }}
             >
-              Leave board
+              Revoke
             </Button>
           </MuiThemeProvider>
         </DialogActions>
@@ -101,24 +95,11 @@ class LeaveBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation StopSharing($email: String!, $boardId: ID!) {
-      stopSharingBoard(email: $email, boardId: $boardId) {
-        id
-      }
+    mutation RevokeInvite($pendingEnvironmentShareId: ID!) {
+      revokePendingEnvironmentShare(pendingEnvironmentShareId: $pendingEnvironmentShareId)
     }
   `,
   {
-    name: "StopSharing",
+    name: "RevokeInvite",
   }
-)(
-  graphql(
-    gql`
-      mutation DeleteBoard($id: ID!) {
-        deleteBoard(id: $id)
-      }
-    `,
-    {
-      name: "DeleteBoard",
-    }
-  )(LeaveBoard)
-)
+)(RevokeInvite)

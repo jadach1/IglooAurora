@@ -75,7 +75,7 @@ class RenameDevice extends React.Component {
           >
             <Input
               id="adornment-name-login"
-              placeholder="Board Name"
+              placeholder="Environment Name"
               value={this.state.name}
               onChange={event =>
                 this.setState({

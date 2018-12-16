@@ -6,7 +6,7 @@ import AppBar from "@material-ui/core/AppBar"
 import { hotkeys } from "react-keyboard-shortcuts"
 import logo from "../../styles/assets/logo.svg"
 
-class BoardsHeader extends Component {
+class EnvironmentsHeader extends Component {
   hot_keys = {
     "alt+,": {
       priority: 1,
@@ -96,4 +96,4 @@ color="default"                >
   }
 }
 
-export default hotkeys(BoardsHeader)
+export default hotkeys(EnvironmentsHeader)

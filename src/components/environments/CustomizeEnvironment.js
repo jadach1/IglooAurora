@@ -29,9 +29,9 @@ function Transition(props) {
   )
 }
 
-class CustomizeBoard extends React.Component {
+class CustomizeEnvironment extends React.Component {
   state = {
-    name: this.props.board.name,
+    name: this.props.environment.name,
     slideIndex: 0,
     initialSlideIndex: 0,
   }
@@ -60,15 +60,15 @@ class CustomizeBoard extends React.Component {
   rename = () => {
     this.props["Rename"]({
       variables: {
-        id: this.props.board.id,
+        id: this.props.environment.id,
         name: this.state.name,
         avatar: this.selectImage(this.state.slideIndex),
       },
       optimisticResponse: {
         __typename: "Mutation",
-        board: {
-          __typename: this.props.board.__typename,
-          id: this.props.board.id,
+        environment: {
+          __typename: this.props.environment.__typename,
+          id: this.props.environment.id,
           name: this.state.name,
           avatar: this.selectImage(this.state.slideIndex),
         },
@@ -78,7 +78,7 @@ class CustomizeBoard extends React.Component {
   }
 
   componentDidMount() {
-    switch (this.props.board.avatar) {
+    switch (this.props.environment.avatar) {
       case "DENALI":
         this.setState({ slideIndex: 0, initialSlideIndex: 0 })
         break
@@ -112,7 +112,7 @@ class CustomizeBoard extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Customize board</DialogTitle>
+        <DialogTitle disableTypography>Customize environment</DialogTitle>
         <div style={{ height: "100%" }}>
           <FormControl
             style={{
@@ -123,7 +123,7 @@ class CustomizeBoard extends React.Component {
           >
             <Input
               id="adornment-name-login"
-              placeholder="Board Name"
+              placeholder="Environment Name"
               value={this.state.name}
               onChange={event =>
                 this.setState({
@@ -260,7 +260,7 @@ class CustomizeBoard extends React.Component {
             disabled={
               !this.state.name ||
               (this.state.initialSlideIndex === this.state.slideIndex &&
-                this.props.board.name === this.state.name)
+                this.props.environment.name === this.state.name)
             }
           >
             Customize
@@ -273,8 +273,8 @@ class CustomizeBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation Rename($id: ID!, $name: String, $avatar: BoardPicture) {
-      board(id: $id, name: $name, avatar: $avatar) {
+    mutation Rename($id: ID!, $name: String, $avatar: EnvironmentPicture) {
+      environment(id: $id, name: $name, avatar: $avatar) {
         id
         name
         avatar
@@ -284,4 +284,4 @@ export default graphql(
   {
     name: "Rename",
   }
-)(CustomizeBoard)
+)(CustomizeEnvironment)

@@ -1,10 +1,10 @@
 import React, { Component } from "react"
-import BoardsHeader from "./components/boards/BoardsHeader"
-import BoardsBody from "./components/boards/BoardsBody"
+import EnvironmentsHeader from "./components/environments/EnvironmentsHeader"
 import SettingsDialog from "./components/settings/SettingsDialog"
 import { hotkeys } from "react-keyboard-shortcuts"
+import EnvironmentsBodyMobile from "./components/environments/EnvironmentsBodyMobile"
 
-class Boards extends Component {
+class EnvironmentsMobile extends Component {
   state = {
     slideIndex: 0,
     settingsOpen: false,
@@ -42,35 +42,39 @@ class Boards extends Component {
     })
   }
 
+  handleChangeBTIndex = (event, value) => {
+    this.setState({ slideIndex: value })
+  }
+
   render() {
     return (
       <React.Fragment>
-        <BoardsHeader
+        <EnvironmentsHeader
           logOut={this.props.logOut}
           openSettings={this.props.openSettings}
           closeSettings={this.props.closeSettings}
           areSettingsOpen={this.props.areSettingsOpen}
           user={this.props.userData.user}
         />
-        <BoardsBody
+        <EnvironmentsBodyMobile
           userData={this.props.userData}
-          selectBoard={this.props.selectBoard}
-          searchBoards={this.props.searchBoards}
-          searchText={this.props.boardsSearchText}
-          snackBarHidden={this.props.snackBarHidden}
+          selectEnvironment={this.props.selectEnvironment}
+          searchEnvironments={this.props.searchEnvironments}
+          searchText={this.props.environmentsSearchText}
           client={this.props.client}
         />
         <SettingsDialog
           isOpen={this.props.settingsOpen}
           closeSettingsDialog={this.props.closeSettings}
           handleChange={this.handleSettingsTabChanged}
+          slideIndex={this.state.slideIndex}
+          handleChangeBTIndex={this.handleChangeBTIndex}
+          userData={this.props.userData}
+          logOut={this.props.logOut}
           handleSwipe={index => {
             this.setState({ slideIndex: index })
           }}
-          slideIndex={this.state.slideIndex}
-          userData={this.props.userData}
           forceUpdate={this.props.forceUpdate}
-          logOut={this.props.logOut}
           client={this.props.client}
         />
       </React.Fragment>
@@ -78,4 +82,4 @@ class Boards extends Component {
   }
 }
 
-export default hotkeys(Boards)
+export default hotkeys(EnvironmentsMobile)
