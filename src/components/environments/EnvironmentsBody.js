@@ -322,7 +322,7 @@ export default class EnvironmentsBody extends Component {
                                 : {}
                             }
                           >
-                            Create new environment
+                            New environment
                           </Typography>
                         </div>
                       </Paper>

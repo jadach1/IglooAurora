@@ -53,7 +53,8 @@ class DeleteEnvironment extends React.Component {
           Be careful, this environment will be deleted permanently.
           <br />
           <br />
-          Note that by deleting a environment, you will delete all of its devices.
+          Note that by deleting an environment, you will delete all of its
+          devices.
           <br /> <br />
         </font>
         <DialogActions>

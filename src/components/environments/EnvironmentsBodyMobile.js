@@ -62,7 +62,9 @@ class EnvironmentsBodyMobile extends Component {
       yourEnvironmentsList = user.environments
         .filter(environment => environment.myRole === "OWNER")
         .filter(environment =>
-          environment.name.toLowerCase().includes(this.props.searchText.toLowerCase())
+          environment.name
+            .toLowerCase()
+            .includes(this.props.searchText.toLowerCase())
         )
         .map(environment => (
           <Grid key={environment.id} item>
@@ -81,7 +83,9 @@ class EnvironmentsBodyMobile extends Component {
       environmentsList = user.environments
         .filter(environment => environment.myRole !== "OWNER")
         .filter(environment =>
-          environment.name.toLowerCase().includes(this.props.searchText.toLowerCase())
+          environment.name
+            .toLowerCase()
+            .includes(this.props.searchText.toLowerCase())
         )
         .map(environment => (
           <Grid key={environment.id} item>
@@ -106,7 +110,8 @@ class EnvironmentsBodyMobile extends Component {
         <div
           style={
             nightMode
-              ? (environmentsList[0] || (user && user.pendingEnvironmentShares[0])) &&
+              ? (environmentsList[0] ||
+                  (user && user.pendingEnvironmentShares[0])) &&
                 yourEnvironmentsList[0]
                 ? {
                     width: "100vw",
@@ -118,7 +123,8 @@ class EnvironmentsBodyMobile extends Component {
                     height: "calc(100vh - 64px)",
                     backgroundColor: "#21252b",
                   }
-              : (environmentsList[0] || (user && user.pendingEnvironmentShares[0])) &&
+              : (environmentsList[0] ||
+                  (user && user.pendingEnvironmentShares[0])) &&
                 yourEnvironmentsList[0]
               ? {
                   width: "100vw",
@@ -155,7 +161,9 @@ class EnvironmentsBodyMobile extends Component {
                 className="notSelectable"
                 value={this.props.searchText}
                 style={nightMode ? { color: "white" } : { color: "black" }}
-                onChange={event => this.props.searchEnvironments(event.target.value)}
+                onChange={event =>
+                  this.props.searchEnvironments(event.target.value)
+                }
                 disabled={loading || error || (user && !user.environments[0])}
                 startAdornment={
                   <InputAdornment
@@ -357,7 +365,7 @@ class EnvironmentsBodyMobile extends Component {
                                   : {}
                               }
                             >
-                              Create new environment
+                              New environment
                             </Typography>
                           </div>
                         </Paper>
@@ -553,7 +561,7 @@ class EnvironmentsBodyMobile extends Component {
                                 : {}
                             }
                           >
-                            Create new environment
+                            New environment
                           </Typography>
                         </div>
                       </Paper>
