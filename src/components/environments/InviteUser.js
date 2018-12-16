@@ -34,7 +34,11 @@ export default class InviteUser extends Component {
       await this.props.client.mutate({
         mutation: gql`
           mutation($environmentId: ID!, $email: String!, $role: Role!) {
-            shareEnvironment(environmentId: $environmentId, email: $email, role: $role) {
+            shareEnvironment(
+              environmentId: $environmentId
+              email: $email
+              role: $role
+            ) {
               id
             }
           }
@@ -60,16 +64,24 @@ export default class InviteUser extends Component {
           emailError: "This is you",
         })
       } else if (
-        e.message === "GraphQL error: The user already has a role on this environment"
+        e.message ===
+        "GraphQL error: The user already has a role on this environment"
       ) {
         this.setState({
           emailError: "Environment alreay shared",
         })
       } else if (
-        e.message === "GraphQL error: There is already a environmentShare pending"
+        e.message ===
+        "GraphQL error: There is already an environmentShare pending"
       ) {
         this.setState({
           emailError: "Environment alreay shared",
+        })
+      } else if (
+        e.message === "GraphQL error: There is already an ownerChange pending"
+      ) {
+        this.setState({
+          emailError: "This user has a pending ownership request",
         })
       } else {
         this.setState({

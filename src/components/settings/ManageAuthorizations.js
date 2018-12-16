@@ -32,6 +32,7 @@ import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import ToggleIcon from "material-ui-toggle-icon"
+import { CopyToClipboard } from "react-copy-to-clipboard"
 
 const MOBILE_WIDTH = 600
 
@@ -309,17 +310,18 @@ class AuthDialog extends React.Component {
               />
               <ListItemSecondaryAction>
                 {this.state.tokenId === token.id ? (
-                  <IconButton
-                    onClick={() => this.deletePermanentToken(token.id)}
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    <Icon>copy</Icon>
-                  </IconButton>
+                  <CopyToClipboard text={this.state.token}>
+                    <IconButton
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      <Icon>content_copy</Icon>
+                    </IconButton>
+                  </CopyToClipboard>
                 ) : (
                   <IconButton
                     onClick={() => this.deletePermanentToken(token.id)}

@@ -53,19 +53,22 @@ class ChangeOwner extends Component {
       ) {
         this.setState({ emailError: "This account doesn't exist" })
       } else if (
-        e.message === "GraphQL error: You already are the owner of this environment"
+        e.message ===
+        "GraphQL error: You already are the owner of this environment"
       ) {
         this.setState({
           emailError: "This is you",
         })
       } else if (
-        e.message === "GraphQL error: The user already has a role on this environment"
+        e.message ===
+        "GraphQL error: The user already has a role on this environment"
       ) {
         this.setState({
           emailError: "Environment alreay shared",
         })
       } else if (
-        e.message === "GraphQL error: There is already a environmentShare pending"
+        e.message ===
+        "GraphQL error: There is already an environmentShare pending"
       ) {
         this.setState({
           emailError: "Environment alreay shared",
@@ -102,64 +105,64 @@ class ChangeOwner extends Component {
         maxWidth="xs"
       >
         <DialogTitle disableTypography>Transfer ownership</DialogTitle>
-        <div style={{ height: "100%" }} >
-        <FormControl
-          style={{
-            width: "calc(100% - 48px)",
-            paddingLeft: "24px",
-            paddingRight: "24px",
-          }}
-        >
-          <Input
-            id="adornment-email-login"
-            placeholder="Email"
-            value={this.state.email}
-            onChange={event =>
-              this.setState({
-                email: event.target.value,
-              })
-            }
-            onKeyPress={event => {
-              if (event.key === "Enter") {
-                this.setState({ addAdminOpen: false })
-                this.changeOwner()
-              }
+        <div style={{ height: "100%" }}>
+          <FormControl
+            style={{
+              width: "calc(100% - 48px)",
+              paddingLeft: "24px",
+              paddingRight: "24px",
             }}
-            error={
-              this.state.emailError || this.state.isEmailEmpty ? true : false
-            }
-            endAdornment={
-              this.state.email ? (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => this.setState({ email: "" })}
-                    onMouseDown={this.handleMouseDownPassword}
-                    tabIndex="-1"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    <Icon>clear</Icon>
-                  </IconButton>
-                </InputAdornment>
-              ) : null
-            }
-          />
-          <FormHelperText
-            style={
-              this.state.emailError || this.state.isEmailEmpty
-                ? { color: "#f44336" }
-                : {}
-            }
           >
-            {this.state.isEmailEmpty
-              ? "This field is required"
-              : this.state.emailError}
-          </FormHelperText>
-        </FormControl>
+            <Input
+              id="adornment-email-login"
+              placeholder="Email"
+              value={this.state.email}
+              onChange={event =>
+                this.setState({
+                  email: event.target.value,
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter") {
+                  this.setState({ addAdminOpen: false })
+                  this.changeOwner()
+                }
+              }}
+              error={
+                this.state.emailError || this.state.isEmailEmpty ? true : false
+              }
+              endAdornment={
+                this.state.email ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => this.setState({ email: "" })}
+                      onMouseDown={this.handleMouseDownPassword}
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
+            <FormHelperText
+              style={
+                this.state.emailError || this.state.isEmailEmpty
+                  ? { color: "#f44336" }
+                  : {}
+              }
+            >
+              {this.state.isEmailEmpty
+                ? "This field is required"
+                : this.state.emailError}
+            </FormHelperText>
+          </FormControl>
         </div>
         <DialogActions>
           <Button onClick={this.props.close}>Never mind</Button>
