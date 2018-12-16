@@ -11,13 +11,13 @@ import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import FormControl from "@material-ui/core/FormControl"
 import CenteredSpinner from "../CenteredSpinner"
-import BoardCard from "./BoardCard"
-import CreateBoard from "./CreateBoard"
+import EnvironmentCard from "./EnvironmentCard"
+import CreateEnvironment from "./CreateEnvironment"
 import SwipeableViews from "react-swipeable-views"
 import Helmet from "react-helmet"
 import PendingShares from "./PendingShares"
 
-class BoardsBodyMobile extends Component {
+class EnvironmentsBodyMobile extends Component {
   state = {
     anchorEl: null,
     createOpen: false,
@@ -37,8 +37,8 @@ class BoardsBodyMobile extends Component {
       userData: { error, user, loading },
     } = this.props
 
-    let boardsList = ""
-    let yourBoardsList = ""
+    let environmentsList = ""
+    let yourEnvironmentsList = ""
 
     let nightMode = false
 
@@ -47,11 +47,11 @@ class BoardsBodyMobile extends Component {
       localStorage.getItem("devMode") === "true"
 
     if (loading) {
-      yourBoardsList = <CenteredSpinner />
+      yourEnvironmentsList = <CenteredSpinner />
     }
 
     if (error) {
-      yourBoardsList = "Unexpected error"
+      yourEnvironmentsList = "Unexpected error"
     }
 
     nightMode =
@@ -59,39 +59,39 @@ class BoardsBodyMobile extends Component {
       localStorage.getItem("nightMode") === "true"
 
     if (user) {
-      yourBoardsList = user.boards
-        .filter(board => board.myRole === "OWNER")
-        .filter(board =>
-          board.name.toLowerCase().includes(this.props.searchText.toLowerCase())
+      yourEnvironmentsList = user.environments
+        .filter(environment => environment.myRole === "OWNER")
+        .filter(environment =>
+          environment.name.toLowerCase().includes(this.props.searchText.toLowerCase())
         )
-        .map(board => (
-          <Grid key={board.id} item>
-            <BoardCard
+        .map(environment => (
+          <Grid key={environment.id} item>
+            <EnvironmentCard
               userData={this.props.userData}
-              board={board}
+              environment={environment}
               nightMode={nightMode}
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
-              lastBoard={!user.boards[1]}
+              lastEnvironment={!user.environments[1]}
               client={this.props.client}
             />
           </Grid>
         ))
 
-      boardsList = user.boards
-        .filter(board => board.myRole !== "OWNER")
-        .filter(board =>
-          board.name.toLowerCase().includes(this.props.searchText.toLowerCase())
+      environmentsList = user.environments
+        .filter(environment => environment.myRole !== "OWNER")
+        .filter(environment =>
+          environment.name.toLowerCase().includes(this.props.searchText.toLowerCase())
         )
-        .map(board => (
-          <Grid key={board.id} item>
-            <BoardCard
+        .map(environment => (
+          <Grid key={environment.id} item>
+            <EnvironmentCard
               userData={this.props.userData}
-              board={board}
+              environment={environment}
               nightMode={nightMode}
               devMode={devMode}
               showMessage={() => this.setState({ copyMessageOpen: true })}
-              lastBoard={!user.boards[1]}
+              lastEnvironment={!user.environments[1]}
               client={this.props.client}
             />
           </Grid>
@@ -106,8 +106,8 @@ class BoardsBodyMobile extends Component {
         <div
           style={
             nightMode
-              ? (boardsList[0] || (user && user.pendingBoardShares[0])) &&
-                yourBoardsList[0]
+              ? (environmentsList[0] || (user && user.pendingEnvironmentShares[0])) &&
+                yourEnvironmentsList[0]
                 ? {
                     width: "100vw",
                     height: "calc(100vh - 128px)",
@@ -118,8 +118,8 @@ class BoardsBodyMobile extends Component {
                     height: "calc(100vh - 64px)",
                     backgroundColor: "#21252b",
                   }
-              : (boardsList[0] || (user && user.pendingBoardShares[0])) &&
-                yourBoardsList[0]
+              : (environmentsList[0] || (user && user.pendingEnvironmentShares[0])) &&
+                yourEnvironmentsList[0]
               ? {
                   width: "100vw",
                   height: "calc(100vh - 128px)",
@@ -150,13 +150,13 @@ class BoardsBodyMobile extends Component {
             >
               <Input
                 id="adornment-name-login"
-                placeholder="Search boards"
+                placeholder="Search environments"
                 color="primary"
                 className="notSelectable"
                 value={this.props.searchText}
                 style={nightMode ? { color: "white" } : { color: "black" }}
-                onChange={event => this.props.searchBoards(event.target.value)}
-                disabled={loading || error || (user && !user.boards[0])}
+                onChange={event => this.props.searchEnvironments(event.target.value)}
+                disabled={loading || error || (user && !user.environments[0])}
                 startAdornment={
                   <InputAdornment
                     position="start"
@@ -165,10 +165,10 @@ class BoardsBodyMobile extends Component {
                     <Icon
                       style={
                         nightMode
-                          ? user && user.boards[0]
+                          ? user && user.environments[0]
                             ? { color: "white" }
                             : { color: "white", opacity: "0.5" }
-                          : user && user.boards[0]
+                          : user && user.environments[0]
                           ? { color: "black" }
                           : { color: "black", opacity: "0.5" }
                       }
@@ -181,7 +181,7 @@ class BoardsBodyMobile extends Component {
                   this.props.searchText ? (
                     <InputAdornment position="end">
                       <IconButton
-                        onClick={() => this.props.searchBoards("")}
+                        onClick={() => this.props.searchEnvironments("")}
                         onMouseDown={this.handleMouseDownSearch}
                         style={
                           nightMode ? { color: "white" } : { color: "black" }
@@ -207,7 +207,7 @@ class BoardsBodyMobile extends Component {
             </div>
           )}
           {user &&
-            (boardsList[0] || user.pendingBoardShares[0] ? (
+            (environmentsList[0] || user.pendingEnvironmentShares[0] ? (
               <SwipeableViews
                 index={this.state.slideIndex}
                 onChangeIndex={slideIndex => this.setState({ slideIndex })}
@@ -246,7 +246,7 @@ class BoardsBodyMobile extends Component {
                           }
                     }
                   >
-                    Your boards
+                    Your environments
                   </Typography>
                   <div
                     style={{ height: "calc(100vh - 257px)", overflowY: "auto" }}
@@ -262,7 +262,61 @@ class BoardsBodyMobile extends Component {
                         marginRight: "32px",
                       }}
                     >
-                      {yourBoardsList}
+                      {yourEnvironmentsList}
+                      {user.pendingOwnerChanges[0] && (
+                        <Grid key="environmentShares" item>
+                          <Paper
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? {
+                                    backgroundColor: "#2f333d",
+                                    width: "256px",
+                                    height: "192px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                    color: "white",
+                                  }
+                                : {
+                                    backgroundColor: "#fff",
+                                    width: "256px",
+                                    height: "192px",
+                                    cursor: "pointer",
+                                    textAlign: "center",
+                                  }
+                            }
+                            onClick={() =>
+                              this.setState({ pendingOwnerChangesOpen: true })
+                            }
+                          >
+                            <div
+                              style={{
+                                paddingTop: "50px",
+                                paddingBottom: "50px",
+                              }}
+                            >
+                              <Icon style={{ fontSize: "64px" }}>people</Icon>
+                              <br />
+                              <Typography
+                                variant="h5"
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? { color: "white" }
+                                    : {}
+                                }
+                              >
+                                {user.pendingOwnerChanges.length > 99
+                                  ? "99+ transfer requests"
+                                  : user.pendingOwnerChanges.length +
+                                    (user.pendingOwnerChanges.length === 1
+                                      ? " transfer request"
+                                      : " transfer requests")}
+                              </Typography>
+                            </div>
+                          </Paper>
+                        </Grid>
+                      )}
                       <Grid key="create" item>
                         <Paper
                           style={
@@ -303,7 +357,7 @@ class BoardsBodyMobile extends Component {
                                   : {}
                               }
                             >
-                              Create new board
+                              Create new environment
                             </Typography>
                           </div>
                         </Paper>
@@ -352,9 +406,9 @@ class BoardsBodyMobile extends Component {
                         marginRight: "32px",
                       }}
                     >
-                      {boardsList}
-                      {user && user.pendingBoardShares[0] && (
-                        <Grid key="boardShares" item>
+                      {environmentsList}
+                      {user && user.pendingEnvironmentShares[0] && (
+                        <Grid key="environmentShares" item>
                           <Paper
                             style={
                               typeof Storage !== "undefined" &&
@@ -404,10 +458,10 @@ class BoardsBodyMobile extends Component {
                                     : {}
                                 }
                               >
-                                {user.pendingBoardShares.length > 99
+                                {user.pendingEnvironmentShares.length > 99
                                   ? "99+ pending requests"
-                                  : user.pendingBoardShares.length +
-                                    (user.pendingBoardShares.length === 1
+                                  : user.pendingEnvironmentShares.length +
+                                    (user.pendingEnvironmentShares.length === 1
                                       ? " pending request"
                                       : " pending requests")}
                               </Typography>
@@ -445,7 +499,7 @@ class BoardsBodyMobile extends Component {
                         }
                   }
                 >
-                  Your boards
+                  Your environments
                 </Typography>
                 <div
                   style={{ height: "calc(100vh - 193px)", overflowY: "auto" }}
@@ -461,7 +515,7 @@ class BoardsBodyMobile extends Component {
                       marginRight: "32px",
                     }}
                   >
-                    {yourBoardsList}
+                    {yourEnvironmentsList}
                     <Grid key="create" item>
                       <Paper
                         style={
@@ -499,7 +553,7 @@ class BoardsBodyMobile extends Component {
                                 : {}
                             }
                           >
-                            Create new board
+                            Create new environment
                           </Typography>
                         </div>
                       </Paper>
@@ -508,7 +562,7 @@ class BoardsBodyMobile extends Component {
                 </div>
               </div>
             ))}
-          {user && (boardsList[0] || user.pendingBoardShares[0]) && (
+          {user && (environmentsList[0] || user.pendingEnvironmentShares[0]) && (
             <AppBar
               position="static"
               style={{
@@ -536,7 +590,7 @@ class BoardsBodyMobile extends Component {
               >
                 <BottomNavigationAction
                   icon={<Icon>person</Icon>}
-                  label="Your boards"
+                  label="Your environments"
                   style={
                     nightMode
                       ? this.state.slideIndex === 0
@@ -564,15 +618,15 @@ class BoardsBodyMobile extends Component {
             </AppBar>
           )}
         </div>
-        <CreateBoard
+        <CreateEnvironment
           open={this.state.createOpen}
           close={() => this.setState({ createOpen: false })}
         />
-        {user && user.pendingBoardShares && (
+        {user && user.pendingEnvironmentShares && (
           <PendingShares
             open={this.state.pendingSharesOpen}
             close={() => this.setState({ pendingSharesOpen: false })}
-            pendingBoardShares={user.pendingBoardShares}
+            pendingEnvironmentShares={user.pendingEnvironmentShares}
           />
         )}
       </React.Fragment>
@@ -580,4 +634,4 @@ class BoardsBodyMobile extends Component {
   }
 }
 
-export default BoardsBodyMobile
+export default EnvironmentsBodyMobile

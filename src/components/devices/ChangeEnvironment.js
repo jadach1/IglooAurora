@@ -21,21 +21,21 @@ function Transition(props) {
   )
 }
 
-class ChangeBoard extends React.Component {
-  state = { newBoard: "" }
+class ChangeEnvironment extends React.Component {
+  state = { newEnvironment: "" }
 
-  changeBoard = value => {
-    this.props["ChangeBoard"]({
+  changeEnvironment = value => {
+    this.props.ChangeEnvironment({
       variables: {
         id: this.props.device.id,
-        boardId: value,
+        environmentId: value,
       },
       optimisticResponse: {
         __typename: "Mutation",
         device: {
           __typename: this.props.device.__typename,
           id: this.props.device.id,
-          boardId: value,
+          environmentId: value,
         },
       },
     })
@@ -44,9 +44,9 @@ class ChangeBoard extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.userData.user) {
       this.setState({
-        newBoard: nextProps.userData.user.boards.filter(
-          board =>
-            board.devices.filter(
+        newEnvironment: nextProps.userData.user.environments.filter(
+          environment =>
+            environment.devices.filter(
               device => device.id === this.props.device.id
             )[0]
         )[0].id,
@@ -65,17 +65,17 @@ class ChangeBoard extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Change board</DialogTitle>
+        <DialogTitle disableTypography>Change environment</DialogTitle>
         <RadioGroup
           onChange={(event, value) => {
-            this.setState({ newBoard: value })
-            this.changeBoard(value)
+            this.setState({ newEnvironment: value })
+            this.changeEnvironment(value)
           }}
-          value={this.state.newBoard}
+          value={this.state.newEnvironment}
           style={{ paddingLeft: "24px", paddingRight: "24px" }}
         >
-          {this.props.boards &&
-            this.props.boards
+          {this.props.environments &&
+            this.props.environments
               .sort(function(a, b) {
                 return a.myRole === "ONWER"
                   ? b.myRole === "OWNER"
@@ -85,12 +85,12 @@ class ChangeBoard extends React.Component {
                   ? 1
                   : 0
               })
-              .map(board => (
+              .map(environment => (
                 <FormControlLabel
                   control={<Radio color="primary" />}
-                  value={board.id}
-                  label={board.name}
-                  disabled={board.myRole !== "OWNER"}
+                  value={environment.id}
+                  label={environment.name}
+                  disabled={environment.myRole !== "OWNER"}
                 />
               ))}
         </RadioGroup>
@@ -104,13 +104,13 @@ class ChangeBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation ChangeBoard($id: ID!, $boardId: ID!) {
-      moveDevice(deviceId: $id, newBoardId: $boardId) {
+    mutation ChangeEnvironment($id: ID!, $environmentId: ID!) {
+      moveDevice(deviceId: $id, newEnvironmentId: $environmentId) {
         id
       }
     }
   `,
   {
-    name: "ChangeBoard",
+    name: "ChangeEnvironment",
   }
-)(ChangeBoard)
+)(ChangeEnvironment)

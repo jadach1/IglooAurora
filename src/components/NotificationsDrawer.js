@@ -249,9 +249,13 @@ class NotificationsDrawer extends React.Component {
     if (error) notifications = "Unexpected error"
 
     if (loading || !this.props.completeDevice)
-      notifications = <CenteredSpinner style={{
-        paddingTop: "32px",        
-      }}/>
+      notifications = (
+        <CenteredSpinner
+          style={{
+            paddingTop: "32px",
+          }}
+        />
+      )
 
     if (device && this.props.completeDevice) {
       let determineDiff = notification =>

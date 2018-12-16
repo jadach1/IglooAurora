@@ -28,12 +28,12 @@ class SidebarHeader extends Component {
     },
     "alt+backspace": {
       priority: 1,
-      handler: event => this.setState({ goToBoards: true }),
+      handler: event => this.setState({ goToEnvironments: true }),
     },
   }
 
   state = {
-    goToBoards: false,
+    goToEnvironments: false,
   }
 
   render() {
@@ -52,7 +52,9 @@ class SidebarHeader extends Component {
       >
         <Tooltip
           id="tooltip-bottom"
-          title={<font className="notSelectable defaultCursor">Boards</font>}
+          title={
+            <font className="notSelectable defaultCursor">Environments</font>
+          }
           placement="bottom"
         >
           <IconButton
@@ -60,7 +62,7 @@ class SidebarHeader extends Component {
               marginLeft: "8px",
               color: "white",
             }}
-            onClick={() => this.setState({ goToBoards: true })}
+            onClick={() => this.setState({ goToEnvironments: true })}
           >
             <Icon>chevron_left</Icon>
           </IconButton>
@@ -77,12 +79,12 @@ class SidebarHeader extends Component {
             marginLeft: "8px",
           }}
         >
-          {this.props.boards &&
-            this.props.boards.filter(
-              board => board.id === this.props.selectedBoard
+          {this.props.environments &&
+            this.props.environments.filter(
+              environment => environment.id === this.props.selectedEnvironment
             )[0] &&
-            this.props.boards.filter(
-              board => board.id === this.props.selectedBoard
+            this.props.environments.filter(
+              environment => environment.id === this.props.selectedEnvironment
             )[0].name}
         </Typography>
         <div
@@ -128,7 +130,7 @@ class SidebarHeader extends Component {
             </IconButton>
           </Tooltip>
         </div>
-        {this.state.goToBoards && <Redirect push to="/dashboard" />}
+        {this.state.goToEnvironments && <Redirect push to="/dashboard" />}
       </div>
     )
   }

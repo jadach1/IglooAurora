@@ -1,7 +1,7 @@
 import React from "react"
 import Dialog from "@material-ui/core/Dialog"
-import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
+import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
@@ -18,25 +18,25 @@ function Transition(props) {
   )
 }
 
-class BoardInfo extends React.Component {
+class CardInfo extends React.Component {
   state = { showHidden: false }
 
   render() {
     return (
       <Dialog
-        open={this.props.open}
-        onClose={this.props.close}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        open={this.props.infoOpen}
+        onClose={this.props.handleInfoClose}
         TransitionComponent={Transition}
+        fullScreen={window.innerWidth < MOBILE_WIDTH}
       >
-        <DialogTitle disableTypography>Board information</DialogTitle>
+        <DialogTitle disableTypography>Card information</DialogTitle>
         <div
-          style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
+          style={{ paddingRight: "24px", marginLeft: "24px", height: "100%" }}
         >
           <b>Created: </b>
           <Moment fromNow>
             {moment.utc(
-              this.props.board.createdAt.split(".")[0],
+              this.props.createdAt.split(".")[0],
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
@@ -45,26 +45,27 @@ class BoardInfo extends React.Component {
           <b>Last updated: </b>
           <Moment fromNow>
             {moment.utc(
-              this.props.board.updatedAt.split(".")[0],
+              this.props.updatedAt.split(".")[0],
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
-          {this.props.devMode ? (
+          {typeof Storage !== "undefined" &&
+          localStorage.getItem("devMode") === "true" ? (
             <React.Fragment>
               <br />
               <br />
-              <b>ID: </b> {this.props.board.id}
+              <b>ID: </b> {this.props.id}
             </React.Fragment>
           ) : (
             ""
           )}
         </div>
         <DialogActions>
-          <Button onClick={this.props.close}>Close</Button>
+          <Button onClick={this.props.handleInfoClose}>Close</Button>
         </DialogActions>
       </Dialog>
     )
   }
 }
 
-export default BoardInfo
+export default CardInfo

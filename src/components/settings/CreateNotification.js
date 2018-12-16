@@ -30,6 +30,7 @@ class CreateNotification extends React.Component {
   state = {
     content: "",
     activeStep: 0,
+    deviceIndex: 0,
   }
 
   handleChange = (event, index, value) => this.setState({ value })
@@ -42,7 +43,14 @@ class CreateNotification extends React.Component {
     let createNotificationMutation = () => {
       this.props.CreateNotification({
         variables: {
-          deviceId: user.devices[this.props.device].id,
+          deviceId:
+            this.props.allDevices.filter(
+              device => device.index === this.state.deviceIndex
+            )[0] &&
+            this.props.allDevices.filter(
+              device => device.index === this.state.deviceIndex
+            )[0].id,
+          content: this.state.content,
         },
       })
     }
@@ -57,9 +65,9 @@ class CreateNotification extends React.Component {
       deviceList = (
         <FormControl style={{ width: "100%" }}>
           <Select
-            value={this.state.device || 0}
+            value={this.state.deviceIndex}
             onChange={event => {
-              this.setState({ device: event.target.value })
+              this.setState({ deviceIndex: event.target.value })
             }}
             name="device"
           >
@@ -99,9 +107,6 @@ class CreateNotification extends React.Component {
             }
           >
             {deviceList}
-            <br />
-            <br />
-
             <FormControl style={{ width: "100%" }}>
               <Input
                 id="adornment-name-login"
@@ -116,9 +121,12 @@ class CreateNotification extends React.Component {
                 onChange={event =>
                   this.setState({ content: event.target.value })
                 }
-                /*  onKeyPress={event => {
-                        if (event.key === "Enter") createDeviceMutation()
-                      }} */
+                onKeyPress={event => {
+                  if (event.key === "Enter") {
+                    createNotificationMutation()
+                    this.props.close()
+                  }
+                }}
                 endAdornment={
                   this.state.content && (
                     <InputAdornment position="end">
@@ -157,9 +165,9 @@ class CreateNotification extends React.Component {
               variant="contained"
               color="primary"
               label="Change"
-              primary={true}
-              buttonStyle={{ backgroundColor: "#0083ff" }}
-              disabled={!this.state.content || !this.state.device}
+              disabled={
+                !this.state.content || !this.state.deviceIndex === "undefined"
+              }
               onClick={() => {
                 createNotificationMutation()
                 this.props.close()
@@ -179,7 +187,7 @@ export default graphql(
     mutation CreateNotification(
       $deviceId: ID!
       $content: String!
-      $date: Date
+      $date: DateTime
     ) {
       createNotification(deviceId: $deviceId, content: $content, date: $date) {
         id

@@ -5,17 +5,17 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { Switch, Route, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
-import Boards from "./Boards"
+import Environments from "./Environments"
 import queryString from "query-string"
-import BoardsMobile from "./BoardsMobile"
+import EnvironmentsMobile from "./EnvironmentsMobile"
 import EmailNotVerified from "./components/EmailNotVerified"
 import GenericDialog from "./components/GenericDialog"
 
 class GraphQLFetcher extends Component {
   componentDidMount() {
-    const boardSubscriptionQuery = gql`
+    const environmentSubscriptionQuery = gql`
       subscription {
-        boardCreated {
+        environmentCreated {
           id
           index
           name
@@ -24,7 +24,7 @@ class GraphQLFetcher extends Component {
           muted
           avatar
           myRole
-          pendingBoardShares {
+          pendingEnvironmentShares {
             id
             role
             receiver {
@@ -47,7 +47,7 @@ class GraphQLFetcher extends Component {
             id
             muted
             name
-            board {
+            environment {
               myRole
             }
           }
@@ -80,27 +80,27 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: boardSubscriptionQuery,
+      document: environmentSubscriptionQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
-        const newBoards = [
-          ...prev.user.boards,
-          subscriptionData.data.boardCreated,
+        const newEnvironments = [
+          ...prev.user.environments,
+          subscriptionData.data.environmentCreated,
         ]
         return {
           user: {
             ...prev.user,
-            boards: newBoards,
+            environments: newEnvironments,
           },
         }
       },
     })
 
-    const subscribeToBoardsUpdates = gql`
+    const subscribeToEnvironmentsUpdates = gql`
       subscription {
-        boardUpdated {
+        environmentUpdated {
           id
           index
           name
@@ -109,7 +109,7 @@ class GraphQLFetcher extends Component {
           muted
           avatar
           myRole
-          pendingBoardShares {
+          pendingEnvironmentShares {
             id
             role
             receiver {
@@ -132,7 +132,7 @@ class GraphQLFetcher extends Component {
             id
             muted
             name
-            board {
+            environment {
               myRole
             }
           }
@@ -165,44 +165,44 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToBoardsUpdates,
+      document: subscribeToEnvironmentsUpdates,
     })
 
-    const subscribeToBoardsDeletes = gql`
+    const subscribeToEnvironmentsDeletes = gql`
       subscription {
-        boardDeleted
+        environmentDeleted
       }
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToBoardsDeletes,
+      document: subscribeToEnvironmentsDeletes,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
 
-        const newBoards = prev.user.boards.filter(
-          board => board.id !== subscriptionData.data.boardDeleted
+        const newEnvironments = prev.user.environments.filter(
+          environment => environment.id !== subscriptionData.data.environmentDeleted
         )
 
         return {
           user: {
             ...prev.user,
-            boards: newBoards,
+            environments: newEnvironments,
           },
         }
       },
     })
 
-    const boardSharedWithYouSubscriptionQuery = gql`
+    const environmentSharedWithYouSubscriptionQuery = gql`
       subscription {
-        boardSharedWithYou {
+        environmentSharedWithYou {
           id
           sender {
             id
             name
           }
-          board {
+          environment {
             id
             name
           }
@@ -211,27 +211,27 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: boardSharedWithYouSubscriptionQuery,
+      document: environmentSharedWithYouSubscriptionQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
-        const newBoardsShares = [
-          ...prev.user.pendingBoardShares,
-          subscriptionData.data.boardSharedWithYou,
+        const newEnvironmentsShares = [
+          ...prev.user.pendingEnvironmentShares,
+          subscriptionData.data.environmentSharedWithYou,
         ]
         return {
           user: {
             ...prev.user,
-            pendingBoardShares: newBoardsShares,
+            pendingEnvironmentShares: newEnvironmentsShares,
           },
         }
       },
     })
 
-    const subscribeToBoardShareAccepted = gql`
+    const subscribeToEnvironmentShareAccepted = gql`
       subscription {
-        boardShareAccepted {
+        environmentShareAccepted {
           id
           index
           name
@@ -240,7 +240,7 @@ class GraphQLFetcher extends Component {
           muted
           avatar
           myRole
-          pendingBoardShares {
+          pendingEnvironmentShares {
             id
             role
             receiver {
@@ -263,7 +263,7 @@ class GraphQLFetcher extends Component {
             id
             muted
             name
-            board {
+            environment {
               myRole
             }
           }
@@ -296,75 +296,196 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToBoardShareAccepted,
+      document: subscribeToEnvironmentShareAccepted,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
 
-        const newBoards = [
-          ...prev.user.boards,
-          subscriptionData.data.boardShareAccepted,
+        const newEnvironments = [
+          ...prev.user.environments,
+          subscriptionData.data.environmentShareAccepted,
         ]
 
         return {
           user: {
             ...prev.user,
-            boards: newBoards,
+            environments: newEnvironments,
           },
         }
       },
     })
 
-    const subscribeToBoardShareDeclined = gql`
+    const subscribeToEnvironmentShareDeclined = gql`
       subscription {
-        boardShareDeclined
+        environmentShareDeclined
       }
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToBoardShareDeclined,
+      document: subscribeToEnvironmentShareDeclined,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
 
-        const newBoardShares = prev.user.pendingBoardShares.filter(
-          pendingBoardShare =>
-            pendingBoardShare.id !== subscriptionData.data.boardShareDeclined
+        const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
+          pendingEnvironmentShare =>
+            pendingEnvironmentShare.id !== subscriptionData.data.environmentShareDeclined
         )
 
         return {
           user: {
             ...prev.user,
-            pendingBoardShares: newBoardShares,
+            pendingEnvironmentShares: newEnvironmentShares,
           },
         }
       },
     })
 
-    const subscribeToBoardShareRevoked = gql`
+    const subscribeToEnvironmentStoppedSharing = gql`
       subscription {
-        boardShareRevoked
+        environmentStoppedSharingWithYou
       }
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToBoardShareRevoked,
+      document: subscribeToEnvironmentStoppedSharing,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
 
-        const newBoardShares = prev.user.pendingBoardShares.filter(
-          pendingBoardShare =>
-            pendingBoardShare.id !== subscriptionData.data.boardShareRevoked
+        const newEnvironments = prev.user.environments.filter(
+          environment => environment.id !== subscriptionData.data.environmentStoppedSharingWithYou
         )
 
         return {
           user: {
             ...prev.user,
-            pendingBoardShares: newBoardShares,
+            environments: newEnvironments,
+          },
+        }
+      },
+    })
+
+    const subscribeToOwnerChangeBegan = gql`
+      subscription {
+        ownerChangeBegan {
+          id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+          sender {
+            id
+            profileIconColor
+            name
+            email
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToOwnerChangeBegan,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newOwnerChange = prev.user.pendingOwnerChanges.filter(
+          ownerChange =>
+            ownerChange.id !== subscriptionData.data.ownerChangeBegan
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingOwnerChanges: newOwnerChange,
+          },
+        }
+      },
+    })
+
+    const subscribeToEnvironmentShareRevoked = gql`
+      subscription {
+        environmentShareRevoked
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToEnvironmentShareRevoked,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
+          pendingEnvironmentShare =>
+            pendingEnvironmentShare.id !== subscriptionData.data.environmentShareRevoked
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingEnvironmentShares: newEnvironmentShares,
+          },
+        }
+      },
+    })
+
+    const subscribeToOwnerChangeDeclined = gql`
+      subscription {
+        ownerChangeDeclined
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToOwnerChangeDeclined,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
+          pendingOwnerChange =>
+            pendingOwnerChange.id !== subscriptionData.data.ownerChangeDeclined
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingOwnerChanges: newOwnerChanges,
+          },
+        }
+      },
+    })
+
+    const subscribeToOwnerChangeRevoked = gql`
+      subscription {
+        ownerChangeRevoked
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToOwnerChangeRevoked,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
+          pendingOwnerChange =>
+            pendingOwnerChange.id !== subscriptionData.data.ownerChangeRevoked
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingOwnerChanges: newOwnerChanges,
           },
         }
       },
@@ -377,13 +498,13 @@ class GraphQLFetcher extends Component {
           emailIsVerified
           name
           profileIconColor
-          pendingBoardShares {
+          pendingEnvironmentShares {
             id
             sender {
               id
               name
             }
-            board {
+            environment {
               id
               name
             }
@@ -459,13 +580,48 @@ class GraphQLFetcher extends Component {
         }
       },
     })
+
+    const deviceMovedSubscriptionQuery = gql`
+      subscription {
+        deviceMoved {
+          id
+          index
+          muted
+          name
+          environment {
+            myRole
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: deviceMovedSubscriptionQuery,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newDevices = [
+          ...prev.user.devices,
+          subscriptionData.data.deviceMoved,
+        ]
+
+        return {
+          user: {
+            ...prev.user,
+            devices: newDevices,
+          },
+        }
+      },
+    })
   }
 
   state = {
     selectedDevice: null,
-    selectedBoard: null,
+    selectedEnvironment: null,
     goToDevices: false,
-    boardsSearchText: "",
+    environmentsSearchText: "",
     devicesSearchText: "",
     areSettingsOpen: false,
   }
@@ -500,7 +656,7 @@ class GraphQLFetcher extends Component {
 
     const MainSelected = () => {
       if (
-        queryString.parse("?" + window.location.href.split("?")[1]).board ||
+        queryString.parse("?" + window.location.href.split("?")[1]).environment ||
         queryString.parse("?" + window.location.href.split("?")[1]).device
       ) {
         if (
@@ -518,17 +674,17 @@ class GraphQLFetcher extends Component {
               openSettings={() => this.setState({ areSettingsOpen: true })}
               closeSettings={() => this.setState({ areSettingsOpen: false })}
               areSettingsOpen={this.state.areSettingsOpen}
-              selectBoard={id => this.setState({ selectedBoard: id })}
-              boardId={
+              selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+              environmentId={
                 queryString.parse("?" + window.location.href.split("?")[1])
-                  .board
+                  .environment
               }
               devMode={
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("devMode") === "true"
               }
-              boards={
-                this.props.userData.user && this.props.userData.user.boards
+              environments={
+                this.props.userData.user && this.props.userData.user.environments
               }
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
@@ -548,17 +704,17 @@ class GraphQLFetcher extends Component {
               areSettingsOpen={this.state.areSettingsOpen}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
-              selectBoard={id => this.setState({ selectedBoard: id })}
-              boardId={
+              selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+              environmentId={
                 queryString.parse("?" + window.location.href.split("?")[1])
-                  .board
+                  .environment
               }
               devMode={
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("devMode") === "true"
               }
-              boards={
-                this.props.userData.user && this.props.userData.user.boards
+              environments={
+                this.props.userData.user && this.props.userData.user.environments
               }
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
@@ -571,18 +727,18 @@ class GraphQLFetcher extends Component {
         }
       } else {
         return (
-          <Boards
+          <Environments
             userData={this.props.userData}
             logOut={this.props.logOut}
-            selectBoard={id => this.setState({ selectedBoard: id })}
-            searchBoards={text => {
-              this.setState({ boardsSearchText: text })
+            selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+            searchEnvironments={text => {
+              this.setState({ environmentsSearchText: text })
             }}
             settingsOpen={this.state.areSettingsOpen}
             openSettings={() => this.setState({ areSettingsOpen: true })}
             closeSettings={() => this.setState({ areSettingsOpen: false })}
             areSettingsOpen={this.state.areSettingsOpen}
-            boardsSearchText={this.state.boardsSearchText}
+            environmentsSearchText={this.state.environmentsSearchText}
             forceUpdate={this.props.forceUpdate}
             client={this.props.client}
           />
@@ -592,7 +748,7 @@ class GraphQLFetcher extends Component {
 
     const MainMobileSelected = () => {
       if (
-        queryString.parse("?" + window.location.href.split("?")[1]).board ||
+        queryString.parse("?" + window.location.href.split("?")[1]).environment ||
         queryString.parse("?" + window.location.href.split("?")[1]).device
       ) {
         if (
@@ -610,13 +766,13 @@ class GraphQLFetcher extends Component {
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .device
               }
-              boards={
-                this.props.userData.user && this.props.userData.user.boards
+              environments={
+                this.props.userData.user && this.props.userData.user.environments
               }
-              selectBoard={id => this.setState({ selectedBoard: id })}
-              boardId={
+              selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+              environmentId={
                 queryString.parse("?" + window.location.href.split("?")[1])
-                  .board
+                  .environment
               }
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
@@ -640,13 +796,13 @@ class GraphQLFetcher extends Component {
               userData={this.props.userData}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
-              selectBoard={id => this.setState({ selectedBoard: id })}
-              boardId={
+              selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+              environmentId={
                 queryString.parse("?" + window.location.href.split("?")[1])
-                  .board
+                  .environment
               }
-              boards={
-                this.props.userData.user && this.props.userData.user.boards
+              environments={
+                this.props.userData.user && this.props.userData.user.environments
               }
               devMode={
                 typeof Storage !== "undefined" &&
@@ -663,18 +819,18 @@ class GraphQLFetcher extends Component {
         }
       } else {
         return (
-          <BoardsMobile
+          <EnvironmentsMobile
             userData={this.props.userData}
             logOut={this.props.logOut}
-            selectBoard={id => this.setState({ selectedBoard: id })}
-            searchBoards={text => {
-              this.setState({ boardsSearchText: text })
+            selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+            searchEnvironments={text => {
+              this.setState({ environmentsSearchText: text })
             }}
             settingsOpen={this.state.areSettingsOpen}
             openSettings={() => this.setState({ areSettingsOpen: true })}
             closeSettings={() => this.setState({ areSettingsOpen: false })}
             areSettingsOpen={this.state.areSettingsOpen}
-            boardsSearchText={this.state.boardsSearchText}
+            environmentsSearchText={this.state.environmentsSearchText}
             forceUpdate={this.props.forceUpdate}
             client={this.props.client}
           />
@@ -717,24 +873,36 @@ export default graphql(
         name
         profileIconColor
         email
-        pendingBoardShares {
+        pendingEnvironmentShares {
           id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
           sender {
             id
             name
           }
-          board {
+          environment {
             id
             name
           }
         }
         pendingOwnerChanges {
           id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
           sender {
             id
             name
           }
-          board {
+          environment {
             id
             name
           }
@@ -745,7 +913,7 @@ export default graphql(
           lengthAndMass
           temperature
         }
-        boards {
+        environments {
           id
           index
           name
@@ -754,10 +922,16 @@ export default graphql(
           muted
           avatar
           myRole
-          pendingBoardShares {
+          pendingEnvironmentShares {
             id
             role
             receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+            sender {
               id
               profileIconColor
               name
@@ -772,12 +946,19 @@ export default graphql(
               name
               email
             }
+            sender {
+              id
+              profileIconColor
+              name
+              email
+            }
           }
           devices {
             id
+            index
             muted
             name
-            board {
+            environment {
               myRole
             }
           }

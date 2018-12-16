@@ -57,7 +57,7 @@ export default class ChangeShortcutDialog extends React.Component {
                   : {}
               }
             >
-              Keyboard shortcuts
+              Keyenvironment shortcuts
             </font>
           </DialogTitle>
           <div

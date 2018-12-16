@@ -55,7 +55,7 @@ let PendingOwnerChanges = props => {
 
   return (
     <Dialog
-      open={props.open}
+      open={props.open && props.pendingEnvironmentShares.length}
       onClose={props.close}
       fullScreen={window.innerWidth < MOBILE_WIDTH}
       TransitionComponent={Transition}
@@ -76,7 +76,7 @@ let PendingOwnerChanges = props => {
                       : { color: "black" }
                   }
                 >
-                  {ownerChange.board.name}
+                  {ownerChange.environment.name}
                 </font>
               }
               secondary={
@@ -88,7 +88,7 @@ let PendingOwnerChanges = props => {
                       : { color: "#7a7a7a" }
                   }
                 >
-                  {"Sent by " + ownerChange.formerOwner.name}
+                  {"Sent by " + ownerChange.sender.name}
                 </font>
               }
               style={{

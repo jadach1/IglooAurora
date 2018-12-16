@@ -33,14 +33,14 @@ export default class InviteUser extends Component {
 
       await this.props.client.mutate({
         mutation: gql`
-          mutation($boardId: ID!, $email: String!, $role: Role!) {
-            shareBoard(boardId: $boardId, email: $email, role: $role) {
+          mutation($environmentId: ID!, $email: String!, $role: Role!) {
+            shareEnvironment(environmentId: $environmentId, email: $email, role: $role) {
               id
             }
           }
         `,
         variables: {
-          boardId: this.props.boardId,
+          environmentId: this.props.environmentId,
           email: this.state.email,
           role: this.props.selectedUserType.toUpperCase(),
         },
@@ -60,16 +60,16 @@ export default class InviteUser extends Component {
           emailError: "This is you",
         })
       } else if (
-        e.message === "GraphQL error: The user already has a role on this board"
+        e.message === "GraphQL error: The user already has a role on this environment"
       ) {
         this.setState({
-          emailError: "Board alreay shared",
+          emailError: "Environment alreay shared",
         })
       } else if (
-        e.message === "GraphQL error: There is already a boardShare pending"
+        e.message === "GraphQL error: There is already a environmentShare pending"
       ) {
         this.setState({
-          emailError: "Board alreay shared",
+          emailError: "Environment alreay shared",
         })
       } else {
         this.setState({

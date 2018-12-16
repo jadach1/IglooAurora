@@ -209,8 +209,8 @@ class MainBody extends Component {
           localStorage.getItem("nightMode") === "true"
         }
         devMode={this.props.devMode}
-        boardData={this.props.boardData}
-        boards={this.props.boards}
+        environmentData={this.props.environmentData}
+        environments={this.props.environments}
       />
     )
 
@@ -323,7 +323,7 @@ export default graphql(
           createdAt
           device {
             id
-            board {
+            environment {
               id
               myRole
             }

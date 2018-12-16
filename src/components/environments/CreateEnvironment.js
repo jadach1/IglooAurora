@@ -29,7 +29,7 @@ function Transition(props) {
   )
 }
 
-class CreateBoard extends React.Component {
+class CreateEnvironment extends React.Component {
   state = {
     name: "",
     favorite: false,
@@ -63,18 +63,18 @@ class CreateBoard extends React.Component {
     }
   }
 
-  createBoardMutation = () => {
-    this.props.CreateBoard({
+  createEnvironmentMutation = () => {
+    this.props.CreateEnvironment({
       variables: {
         name: this.state.name,
         avatar: this.selectImage(this.state.slideIndex),
       },
       optimisticResponse: {
         __typename: "Mutation",
-        CreateBoard: {
+        CreateEnvironment: {
           name: this.state.name,
           avatar: this.selectImage(this.state.slideIndex),
-          __typename: "Board",
+          __typename: "Environment",
         },
       },
     })
@@ -92,7 +92,7 @@ class CreateBoard extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Create board</DialogTitle>
+        <DialogTitle disableTypography>Create environment</DialogTitle>
         <div style={{ height: "100%" }}>
           <FormControl
             style={{
@@ -103,7 +103,7 @@ class CreateBoard extends React.Component {
           >
             <Input
               id="adornment-name-login"
-              placeholder="Board Name"
+              placeholder="Environment Name"
               value={this.state.name}
               onChange={event =>
                 this.setState({
@@ -111,7 +111,7 @@ class CreateBoard extends React.Component {
                 })
               }
               onKeyPress={event => {
-                if (event.key === "Enter") this.createBoardMutation()
+                if (event.key === "Enter") this.createEnvironmentMutation()
               }}
               endAdornment={
                 this.state.name ? (
@@ -234,10 +234,10 @@ class CreateBoard extends React.Component {
           <Button
             variant="contained"
             color="primary"
-            onClick={this.createBoardMutation}
+            onClick={this.createEnvironmentMutation}
             disabled={!this.state.name}
           >
-            Create board
+            Create environment
           </Button>
         </DialogActions>
       </Dialog>
@@ -247,8 +247,8 @@ class CreateBoard extends React.Component {
 
 export default graphql(
   gql`
-    mutation CreateBoard($name: String!, $avatar: BoardPicture) {
-      createBoard(name: $name, avatar: $avatar) {
+    mutation CreateEnvironment($name: String!, $avatar: EnvironmentPicture) {
+      createEnvironment(name: $name, avatar: $avatar) {
         id
         name
         avatar
@@ -256,6 +256,6 @@ export default graphql(
     }
   `,
   {
-    name: "CreateBoard",
+    name: "CreateEnvironment",
   }
-)(CreateBoard)
+)(CreateEnvironment)
