@@ -103,7 +103,7 @@ class CreateEnvironment extends React.Component {
           >
             <Input
               id="adornment-name-login"
-              placeholder="Environment Name"
+              placeholder="Environment name"
               value={this.state.name}
               onChange={event =>
                 this.setState({

@@ -123,7 +123,7 @@ class CustomizeEnvironment extends React.Component {
           >
             <Input
               id="adornment-name-login"
-              placeholder="Environment Name"
+              placeholder="Environment name"
               value={this.state.name}
               onChange={event =>
                 this.setState({
@@ -154,9 +154,6 @@ class CustomizeEnvironment extends React.Component {
               }
             />
           </FormControl>
-
-          <br />
-          <br />
           <SwipeableViews
             index={this.state.slideIndex}
             onChangeIndex={value => {
@@ -171,7 +168,7 @@ class CustomizeEnvironment extends React.Component {
                     marginLeft: "24px",
                     marginRight: "24px",
                   }
-                : { width: "350px", marginLeft: "24px", marginRight: "24px" }
+                : { width: "calc(100% - 48px", marginLeft: "24px", marginRight: "24px" }
             }
           >
             <img

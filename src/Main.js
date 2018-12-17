@@ -284,7 +284,7 @@ class Main extends Component {
 
       if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
         if (!environmentIdList.includes(this.props.environmentId))
-          return <Redirect exact to="/dashboard" />
+          return <Redirect exact to="/" />
       }
 
       let j
@@ -311,7 +311,7 @@ class Main extends Component {
           return (
             <Redirect
               to={
-                "/dashboard?environment=" +
+                "/?environment=" +
                 environment.devices[i].environment.id +
                 "&device=" +
                 environment.devices[i].id
@@ -486,19 +486,11 @@ class Main extends Component {
         {this.state.redirectTo && environment && (
           <Redirect
             push
-            to={
-              "/dashboard?environment=" +
-              environment.id +
-              "&device=" +
-              this.state.redirectTo
-            }
+            to={"/?environment=" + environment.id + "&device=" + this.state.redirectTo}
           />
         )}
         {this.state.deselectDevice && environment && (
-          <Redirect
-            push
-            to={"/dashboard?environment=" + environment.id}
-          />
+          <Redirect push to={"/?environment=" + environment.id} />
         )}
         {environment &&
           this.props.environments &&
@@ -507,8 +499,8 @@ class Main extends Component {
               exact
               to={
                 this.props.environmentId
-                  ? "/dashboard?environment=" + this.props.environmentId
-                  : "/dashboard"
+                  ? "/?environment=" + this.props.environmentId
+                  : "/"
               }
             />
           )}

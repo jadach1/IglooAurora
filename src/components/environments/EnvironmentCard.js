@@ -100,7 +100,7 @@ class EnvironmentCard extends Component {
             }}
           >
             <Link
-              to={"/dashboard?environment=" + this.props.environment.id}
+              to={"/?environment=" + this.props.environment.id}
               style={
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
@@ -188,7 +188,7 @@ class EnvironmentCard extends Component {
             </div>
           </Toolbar>
           <Link
-            to={"/dashboard?environment=" + this.props.environment.id}
+            to={"/?environment=" + this.props.environment.id}
             style={
               typeof Storage !== "undefined" &&
               localStorage.getItem("nightMode") === "true"
@@ -301,7 +301,8 @@ class EnvironmentCard extends Component {
             <ListItemText inset primary="Share" disableTypography />
           </MenuItem>
           {!(
-            this.props.userData.user.email === this.props.environment.owner.email
+            this.props.userData.user.email ===
+            this.props.environment.owner.email
           ) && (
             <MenuItem
               onClick={() => {
@@ -312,7 +313,11 @@ class EnvironmentCard extends Component {
               <ListItemIcon>
                 <Icon>remove_circle</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Leave environment" disableTypography />
+              <ListItemText
+                inset
+                primary="Leave environment"
+                disableTypography
+              />
             </MenuItem>
           )}
           <Divider />
@@ -327,7 +332,9 @@ class EnvironmentCard extends Component {
           >
             <ListItemIcon>
               <Icon>
-                {this.props.environment.muted ? "notifications" : "notifications_off"}
+                {this.props.environment.muted
+                  ? "notifications"
+                  : "notifications_off"}
               </Icon>
             </ListItemIcon>
             <ListItemText

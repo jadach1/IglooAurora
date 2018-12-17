@@ -70,7 +70,7 @@ export default class PasswordRecoveryError extends React.Component {
         >
           Take me away!
         </Button>
-        {this.state.redirect && <Redirect push to="/dashboard" />}
+        {this.state.redirect && <Redirect push to="/" />}
       </div>
     )
   }

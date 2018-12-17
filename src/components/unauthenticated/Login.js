@@ -47,12 +47,6 @@ class Login extends Component {
           mutation($email: String!, $password: String!) {
             logIn(email: $email, password: $password) {
               token
-              user {
-                environmentCount
-                environments {
-                  id
-                }
-              }
             }
           }
         `,
@@ -65,13 +59,6 @@ class Login extends Component {
       if (this.props.email !== "undefined" && typeof Storage !== "undefined") {
         localStorage.setItem("email", this.props.email)
       }
-
-      this.props.setEnvironments(
-        loginMutation.data.logIn.user.environmentCount,
-        loginMutation.data.logIn.user.environmentCount === 1
-          ? loginMutation.data.logIn.user.environments[0].id
-          : ""
-      )
 
       this.props.signIn(loginMutation.data.logIn.token, this.state.keepLoggedIn)
 

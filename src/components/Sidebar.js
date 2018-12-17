@@ -147,12 +147,11 @@ class Sidebar extends Component {
                 <Link
                   to={
                     this.props.selectedDevice !== device.id
-                      ? "/dashboard?environment=" +
+                      ? "/?environment=" +
                         this.props.selectedEnvironment +
                         "&device=" +
                         device.id
-                      : "/dashboard?environment=" +
-                        this.props.selectedEnvironment
+                      : "/?environment=" + this.props.selectedEnvironment
                   }
                   style={{ textDecoration: "none", color: "black" }}
                 >
