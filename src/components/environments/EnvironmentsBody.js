@@ -28,7 +28,7 @@ export default class EnvironmentsBody extends Component {
 
   render() {
     const {
-      userData: { error, user, loading },
+      userData: { error, loading, user },
     } = this.props
 
     let environmentsList = ""
@@ -54,7 +54,9 @@ export default class EnvironmentsBody extends Component {
       yourEnvironmentsList = user.environments
         .filter(environment => environment.myRole === "OWNER")
         .filter(environment =>
-          environment.name.toLowerCase().includes(this.props.searchText.toLowerCase())
+          environment.name
+            .toLowerCase()
+            .includes(this.props.searchText.toLowerCase())
         )
         .map(environment => (
           <Grid key={environment.id} item>
@@ -73,7 +75,9 @@ export default class EnvironmentsBody extends Component {
       environmentsList = user.environments
         .filter(environment => environment.myRole !== "OWNER")
         .filter(environment =>
-          environment.name.toLowerCase().includes(this.props.searchText.toLowerCase())
+          environment.name
+            .toLowerCase()
+            .includes(this.props.searchText.toLowerCase())
         )
         .map(environment => (
           <Grid key={environment.id} item>
@@ -124,7 +128,9 @@ export default class EnvironmentsBody extends Component {
               className="notSelectable"
               value={this.props.searchText}
               style={nightMode ? { color: "white" } : { color: "black" }}
-              onChange={event => this.props.searchEnvironments(event.target.value)}
+              onChange={event =>
+                this.props.searchEnvironments(event.target.value)
+              }
               disabled={loading || error || (user && !user.environments[0])}
               startAdornment={
                 <InputAdornment position="start" style={{ cursor: "default" }}>

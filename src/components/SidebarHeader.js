@@ -130,7 +130,7 @@ class SidebarHeader extends Component {
             </IconButton>
           </Tooltip>
         </div>
-        {this.state.goToEnvironments && <Redirect push to="/dashboard" />}
+        {this.state.goToEnvironments && <Redirect push to="/" />}
       </div>
     )
   }

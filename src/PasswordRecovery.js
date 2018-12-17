@@ -159,7 +159,7 @@ export default class PasswordRecovery extends Component {
     }
 
     if (this.state.redirect) {
-      return <Redirect push to="/dashboard" />
+      return <Redirect push to="/" />
     }
 
     return (

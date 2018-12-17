@@ -92,7 +92,7 @@ export default class RecoveryFetcher extends Component {
             />
           </ApolloProvider>
         ) : (
-          <Redirect to="/dashboard" />
+          <Redirect to="/" />
         )}
       </React.Fragment>
     )
