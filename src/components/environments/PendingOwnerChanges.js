@@ -55,7 +55,7 @@ let PendingOwnerChanges = props => {
 
   return (
     <Dialog
-      open={props.open && props.pendingEnvironmentShares.length}
+      open={props.open && props.pendingOwnerChanges.length}
       onClose={props.close}
       fullScreen={window.innerWidth < MOBILE_WIDTH}
       TransitionComponent={Transition}

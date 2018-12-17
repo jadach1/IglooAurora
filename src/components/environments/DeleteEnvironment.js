@@ -55,7 +55,6 @@ class DeleteEnvironment extends React.Component {
           <br />
           Note that by deleting an environment, you will delete all of its
           devices.
-          <br /> <br />
         </font>
         <DialogActions>
           <Button onClick={this.props.close}>Never mind</Button>

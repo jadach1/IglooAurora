@@ -326,7 +326,6 @@ class App extends Component {
       isMobile: null,
       from: "",
       redirectToReferrer: false,
-      environmentCount: 0,
       environmentId: "",
       loggedOut: false,
       loginEmail: email,
@@ -404,16 +403,7 @@ class App extends Component {
     if (redirectToReferrer) {
       this.setState({ redirectToReferrer: false })
 
-      return (
-        <Redirect
-          to={
-            this.state.from ||
-            (this.state.environmentCount === 1
-              ? "/dashboard?environment=" + this.state.environmentId
-              : "/dashboard")
-          }
-        />
-      )
+      return <Redirect to={this.state.from || "/"} />
     }
 
     if (localStorage.getItem("server") === null)
@@ -431,7 +421,8 @@ class App extends Component {
         <Online onChange={() => this.forceUpdate()}>
           <Switch>
             <Route
-              path="/dashboard/"
+              path="/"
+              exact
               render={props => {
                 if (this.state.bearer) {
                   return (
@@ -444,10 +435,10 @@ class App extends Component {
                   )
                 } else {
                   if (!this.state.loggedOut) {
-                    this.setState({
+                    window.location.href.split("?environment=")[1] && this.setState({
                       from:
-                        "/dashboard" +
-                        window.location.href.split("dashboard")[1],
+                        "/?environment=" +
+                        window.location.href.split("?environment=")[1],
                     })
                   }
 
@@ -468,7 +459,7 @@ class App extends Component {
               path="/login"
               render={() =>
                 this.state.bearer ? (
-                  <Redirect to="/dashboard" />
+                  <Redirect to="/" />
                 ) : this.state.isMobile ? (
                   <UnauthenticatedMainMobile
                     isLogin
@@ -496,12 +487,6 @@ class App extends Component {
                   <UnauthenticatedMain
                     isLogin
                     signIn={signIn}
-                    setEnvironments={(count, id) =>
-                      this.setState({
-                        environmentCount: count,
-                        environmentId: id,
-                      })
-                    }
                     password={this.state.loginPassword}
                     changePassword={loginPassword =>
                       this.setState({ loginPassword: loginPassword })
@@ -529,7 +514,7 @@ class App extends Component {
               path="/signup"
               render={() =>
                 this.state.bearer ? (
-                  <Redirect to="/dashboard" />
+                  <Redirect to="/" />
                 ) : this.state.isMobile ? (
                   <UnauthenticatedMainMobile
                     signIn={signIn}
@@ -577,13 +562,6 @@ class App extends Component {
             <Route
               path="/recovery"
               render={() => <RecoveryFetcher mobile={this.state.isMobile} />}
-            />
-            <Route
-              exact
-              path="/"
-              render={() => {
-                return <Redirect to="/dashboard" />
-              }}
             />
             <Route render={() => <Error404 isMobile={this.state.isMobile} />} />
           </Switch>

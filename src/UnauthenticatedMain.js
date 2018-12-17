@@ -81,7 +81,6 @@ export default class UnAuthenticatedMain extends Component {
                 client={this.client}
                 isDialog={false}
                 signIn={this.props.signIn}
-                setEnvironments={this.props.setEnvironments}
                 password={this.props.password}
                 changePassword={this.props.changePassword}
                 passwordError={this.props.passwordError}
@@ -114,7 +113,7 @@ export default class UnAuthenticatedMain extends Component {
         <ChangeServer
           open={this.state.changeServerOpen}
           close={() => this.setState({ changeServerOpen: false })}
-                    forceUpdate={() => this.props.forceUpdate()}
+          forceUpdate={() => this.props.forceUpdate()}
           isUnauthenticated
         />
         {this.props.redirect && (

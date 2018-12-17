@@ -100,7 +100,9 @@ let PendingShares = props => {
             />
             <ListItemSecondaryAction>
               <IconButton
-                onClick={() => AcceptPendingEnvironmentShare(environmentShare.id)}
+                onClick={() =>
+                  AcceptPendingEnvironmentShare(environmentShare.id)
+                }
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
@@ -111,7 +113,9 @@ let PendingShares = props => {
                 <Icon>done</Icon>
               </IconButton>
               <IconButton
-                onClick={() => DeclinePendingEnvironmentShare(environmentShare.id)}
+                onClick={() =>
+                  DeclinePendingEnvironmentShare(environmentShare.id)
+                }
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
@@ -135,7 +139,11 @@ let PendingShares = props => {
 export default graphql(
   gql`
     mutation AcceptPendingEnvironmentShare($pendingEnvironmentShareId: ID!) {
-      acceptPendingEnvironmentShare(pendingEnvironmentShareId: $pendingEnvironmentShareId)
+      acceptPendingEnvironmentShare(
+        pendingEnvironmentShareId: $pendingEnvironmentShareId
+      ) {
+        id
+      }
     }
   `,
   {
@@ -145,7 +153,9 @@ export default graphql(
   graphql(
     gql`
       mutation DeclinePendingEnvironmentShare($pendingEnvironmentShareId: ID!) {
-        declinePendingEnvironmentShare(pendingEnvironmentShareId: $pendingEnvironmentShareId)
+        declinePendingEnvironmentShare(
+          pendingEnvironmentShareId: $pendingEnvironmentShareId
+        )
       }
     `,
     {

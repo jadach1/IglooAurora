@@ -613,7 +613,7 @@ class SettingsDialog extends React.Component {
                             : { color: "black" }
                         }
                       >
-                        Keyenvironment shortcuts
+                        Keyboard shortcuts
                       </font>
                     }
                   />

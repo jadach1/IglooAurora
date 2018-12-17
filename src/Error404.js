@@ -30,7 +30,7 @@ export default class Error404 extends Component {
 
     if (this.state.redirect) {
       this.setState({ redirect: false })
-      return <Redirect push to="/dashboard" />
+      return <Redirect push to="/" />
     }
 
     return (

@@ -3,7 +3,7 @@ import Main from "./Main"
 import MainMobile from "./MainMobile"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import { Switch, Route, Redirect } from "react-router-dom"
+import { Switch, Route } from "react-router-dom"
 import Error404 from "./Error404"
 import Environments from "./Environments"
 import queryString from "query-string"
@@ -118,6 +118,12 @@ class GraphQLFetcher extends Component {
               name
               email
             }
+            sender {
+              id
+              profileIconColor
+              name
+              email
+            }
           }
           pendingOwnerChanges {
             id
@@ -127,9 +133,16 @@ class GraphQLFetcher extends Component {
               name
               email
             }
+            sender {
+              id
+              profileIconColor
+              name
+              email
+            }
           }
           devices {
             id
+            index
             muted
             name
             environment {
@@ -182,7 +195,8 @@ class GraphQLFetcher extends Component {
         }
 
         const newEnvironments = prev.user.environments.filter(
-          environment => environment.id !== subscriptionData.data.environmentDeleted
+          environment =>
+            environment.id !== subscriptionData.data.environmentDeleted
         )
 
         return {
@@ -331,7 +345,8 @@ class GraphQLFetcher extends Component {
 
         const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
           pendingEnvironmentShare =>
-            pendingEnvironmentShare.id !== subscriptionData.data.environmentShareDeclined
+            pendingEnvironmentShare.id !==
+            subscriptionData.data.environmentShareDeclined
         )
 
         return {
@@ -357,7 +372,9 @@ class GraphQLFetcher extends Component {
         }
 
         const newEnvironments = prev.user.environments.filter(
-          environment => environment.id !== subscriptionData.data.environmentStoppedSharingWithYou
+          environment =>
+            environment.id !==
+            subscriptionData.data.environmentStoppedSharingWithYou
         )
 
         return {
@@ -369,9 +386,9 @@ class GraphQLFetcher extends Component {
       },
     })
 
-    const subscribeToOwnerChangeBegan = gql`
+    const subscribeToOwnerChangeReceived = gql`
       subscription {
-        ownerChangeBegan {
+        ownerChangeReceived {
           id
           receiver {
             id
@@ -381,16 +398,18 @@ class GraphQLFetcher extends Component {
           }
           sender {
             id
-            profileIconColor
             name
-            email
+          }
+          environment {
+            id
+            name
           }
         }
       }
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToOwnerChangeBegan,
+      document: subscribeToOwnerChangeReceived,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -398,7 +417,7 @@ class GraphQLFetcher extends Component {
 
         const newOwnerChange = prev.user.pendingOwnerChanges.filter(
           ownerChange =>
-            ownerChange.id !== subscriptionData.data.ownerChangeBegan
+            ownerChange.id !== subscriptionData.data.ownerChangeReceived
         )
 
         return {
@@ -425,7 +444,8 @@ class GraphQLFetcher extends Component {
 
         const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
           pendingEnvironmentShare =>
-            pendingEnvironmentShare.id !== subscriptionData.data.environmentShareRevoked
+            pendingEnvironmentShare.id !==
+            subscriptionData.data.environmentShareRevoked
         )
 
         return {
@@ -645,10 +665,16 @@ class GraphQLFetcher extends Component {
 
   render() {
     const {
-      userData: { user },
+      userData: { error, user },
     } = this.props
 
     let emailIsVerified = true
+
+    if (error) {
+      if (error.message === "GraphQL error: This user doesn't exist anymore") {
+        this.props.logOut()
+      }
+    }
 
     if (user) {
       emailIsVerified = user.emailIsVerified
@@ -656,7 +682,8 @@ class GraphQLFetcher extends Component {
 
     const MainSelected = () => {
       if (
-        queryString.parse("?" + window.location.href.split("?")[1]).environment ||
+        queryString.parse("?" + window.location.href.split("?")[1])
+          .environment ||
         queryString.parse("?" + window.location.href.split("?")[1]).device
       ) {
         if (
@@ -674,7 +701,9 @@ class GraphQLFetcher extends Component {
               openSettings={() => this.setState({ areSettingsOpen: true })}
               closeSettings={() => this.setState({ areSettingsOpen: false })}
               areSettingsOpen={this.state.areSettingsOpen}
-              selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+              selectEnvironment={id =>
+                this.setState({ selectedEnvironment: id })
+              }
               environmentId={
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .environment
@@ -684,7 +713,8 @@ class GraphQLFetcher extends Component {
                 localStorage.getItem("devMode") === "true"
               }
               environments={
-                this.props.userData.user && this.props.userData.user.environments
+                this.props.userData.user &&
+                this.props.userData.user.environments
               }
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
@@ -704,7 +734,9 @@ class GraphQLFetcher extends Component {
               areSettingsOpen={this.state.areSettingsOpen}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
-              selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+              selectEnvironment={id =>
+                this.setState({ selectedEnvironment: id })
+              }
               environmentId={
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .environment
@@ -714,7 +746,8 @@ class GraphQLFetcher extends Component {
                 localStorage.getItem("devMode") === "true"
               }
               environments={
-                this.props.userData.user && this.props.userData.user.environments
+                this.props.userData.user &&
+                this.props.userData.user.environments
               }
               searchDevices={text => {
                 this.setState({ devicesSearchText: text })
@@ -748,7 +781,8 @@ class GraphQLFetcher extends Component {
 
     const MainMobileSelected = () => {
       if (
-        queryString.parse("?" + window.location.href.split("?")[1]).environment ||
+        queryString.parse("?" + window.location.href.split("?")[1])
+          .environment ||
         queryString.parse("?" + window.location.href.split("?")[1]).device
       ) {
         if (
@@ -767,9 +801,12 @@ class GraphQLFetcher extends Component {
                   .device
               }
               environments={
-                this.props.userData.user && this.props.userData.user.environments
+                this.props.userData.user &&
+                this.props.userData.user.environments
               }
-              selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+              selectEnvironment={id =>
+                this.setState({ selectedEnvironment: id })
+              }
               environmentId={
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .environment
@@ -796,13 +833,16 @@ class GraphQLFetcher extends Component {
               userData={this.props.userData}
               selectDevice={id => this.setState({ selectedDevice: id })}
               selectedDevice={null}
-              selectEnvironment={id => this.setState({ selectedEnvironment: id })}
+              selectEnvironment={id =>
+                this.setState({ selectedEnvironment: id })
+              }
               environmentId={
                 queryString.parse("?" + window.location.href.split("?")[1])
                   .environment
               }
               environments={
-                this.props.userData.user && this.props.userData.user.environments
+                this.props.userData.user &&
+                this.props.userData.user.environments
               }
               devMode={
                 typeof Storage !== "undefined" &&
@@ -844,13 +884,8 @@ class GraphQLFetcher extends Component {
           <Route
             exact
             strict
-            path="/dashboard"
+            path="/"
             render={this.props.isMobile ? MainMobileSelected : MainSelected}
-          />
-          <Route
-            exact
-            path="/dashboard/"
-            render={() => <Redirect to="/dashboard" />}
           />
           <Route render={() => <Error404 isMobile={this.props.isMobile} />} />
         </Switch>

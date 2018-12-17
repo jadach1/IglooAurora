@@ -472,12 +472,18 @@ class MainBodyHeader extends Component {
                 this.setState({ changeEnvironmentOpen: true })
                 this.handleMenuClose()
               }}
-              disabled={!(this.props.environments && this.props.environments.length > 1)}
+              disabled={
+                !(this.props.environments && this.props.environments.length > 1)
+              }
             >
               <ListItemIcon>
                 <Icon>swap_horiz</Icon>
               </ListItemIcon>
-              <ListItemText inset primary="Change environment" disableTypography />
+              <ListItemText
+                inset
+                primary="Change environment"
+                disableTypography
+              />
             </MenuItem>
             {/*
                 {device.values.length > 1 && (
@@ -552,7 +558,7 @@ class MainBodyHeader extends Component {
         {this.state.goToDevices && (
           <Redirect
             push
-            to={"/dashboard?environment=" + this.props.environmentData.environment.id}
+            to={"/?environment=" + this.props.environmentData.environment.id}
           />
         )}
       </React.Fragment>

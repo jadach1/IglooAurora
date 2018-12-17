@@ -428,7 +428,7 @@ class MainMobile extends Component {
 
       if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
         if (!environmentIdList.includes(this.props.environmentId))
-          return <Redirect exact to="/dashboard" />
+          return <Redirect exact to="/" />
       }
 
       let i
@@ -445,7 +445,7 @@ class MainMobile extends Component {
           return (
             <Redirect
               to={
-                "/dashboard?environment=" +
+                "/?environment=" +
                 environment.devices[i].environment.id +
                 "&device=" +
                 environment.devices[i].id
@@ -602,8 +602,8 @@ class MainMobile extends Component {
               exact
               to={
                 this.props.environmentId
-                  ? "/dashboard?environment=" + this.props.environmentId
-                  : "/dashboard"
+                  ? "/?environment=" + this.props.environmentId
+                  : "/"
               }
             />
           )}
