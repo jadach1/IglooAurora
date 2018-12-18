@@ -21,8 +21,14 @@ function Transition(props) {
 class GDPRDataDownload extends React.Component {
   render() {
     const {
-      userData: { user },
+      userData: { error, user },
     } = this.props
+
+    if (error) {
+      if (error.message === "GraphQL error: This user doesn't exist anymore") {
+        this.props.logOut()
+      }
+    }
 
     return (
       <React.Fragment>

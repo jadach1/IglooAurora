@@ -61,7 +61,7 @@ class ChangeLanguageDialog extends React.Component {
 
   render() {
     const {
-      userData: { user },
+      userData: { error, user },
     } = this.props
 
     const languageDialogActions = [
@@ -71,6 +71,12 @@ class ChangeLanguageDialog extends React.Component {
     let changeLanguage = () => {}
 
     let lang
+
+    if (error) {
+      if (error.message === "GraphQL error: This user doesn't exist anymore") {
+        this.props.logOut()
+      }
+    }
 
     if (user) {
       changeLanguage = language =>

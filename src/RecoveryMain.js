@@ -9,6 +9,15 @@ class RecoveryMain extends Component {
   state = { recoveryPassword: "", decodeToken: jwtDecode(this.props.token) }
 
   render() {
+    if (this.props.userData.error) {
+      if (
+        this.props.userData.error.message ===
+        "GraphQL error: This user doesn't exist anymore"
+      ) {
+        this.props.logOut()
+      }
+    }
+
     return (
       <React.Fragment>
         <Helmet>
