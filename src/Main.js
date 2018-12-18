@@ -255,8 +255,14 @@ class Main extends Component {
 
   render() {
     const {
-      environmentData: { environment },
+      environmentData: { error, environment },
     } = this.props
+
+    if (error) {
+      if (error.message === "GraphQL error: This user doesn't exist anymore") {
+        this.props.logOut()
+      }
+    }
 
     let nightMode = false
     let devMode = false
@@ -441,6 +447,7 @@ class Main extends Component {
                 devMode={devMode}
                 environmentData={this.props.environmentData}
                 isMobile={false}
+                logOut={this.props.logOut}
                 environments={this.props.environments}
               />
               <StatusBar
@@ -486,7 +493,12 @@ class Main extends Component {
         {this.state.redirectTo && environment && (
           <Redirect
             push
-            to={"/?environment=" + environment.id + "&device=" + this.state.redirectTo}
+            to={
+              "/?environment=" +
+              environment.id +
+              "&device=" +
+              this.state.redirectTo
+            }
           />
         )}
         {this.state.deselectDevice && environment && (

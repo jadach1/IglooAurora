@@ -1496,6 +1496,7 @@ rightToggle={
           languageDialogOpen={
             this.props.isOpen && this.state.languageDialogOpen
           }
+          logOut={this.props.logOut}
         />
         <TimeZoneDialog
           handleTimeDialogClose={this.handleTimeDialogClose}

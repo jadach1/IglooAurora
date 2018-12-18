@@ -175,6 +175,7 @@ class MainBodyHeader extends Component {
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
               }
+              logOut={this.props.logOut}
             />
             <Tooltip id="tooltip-more" title="More" placement="bottom">
               <IconButton
@@ -479,11 +480,7 @@ class MainBodyHeader extends Component {
               <ListItemIcon>
                 <Icon>swap_horiz</Icon>
               </ListItemIcon>
-              <ListItemText
-                inset
-                primary="Change environment"
-                disableTypography
-              />
+              <ListItemText inset primary="Move" disableTypography />
             </MenuItem>
             {/*
                 {device.values.length > 1 && (

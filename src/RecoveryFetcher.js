@@ -89,6 +89,7 @@ export default class RecoveryFetcher extends Component {
               mobile={this.props.mobile}
               token={this.state.token}
               client={this.client}
+              logOut={this.props.logOut}
             />
           </ApolloProvider>
         ) : (

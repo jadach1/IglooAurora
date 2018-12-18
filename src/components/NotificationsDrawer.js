@@ -246,7 +246,13 @@ class NotificationsDrawer extends React.Component {
     let noNotificationsUI = ""
     let readNotificationsUI = ""
 
-    if (error) notifications = "Unexpected error"
+    if (error) {
+      notifications = "Unexpected error"
+
+      if (error.message === "GraphQL error: This user doesn't exist anymore") {
+        this.props.logOut()
+      }
+    }
 
     if (loading || !this.props.completeDevice)
       notifications = (
