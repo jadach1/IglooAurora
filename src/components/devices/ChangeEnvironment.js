@@ -80,7 +80,7 @@ class ChangeEnvironment extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Change environment</DialogTitle>
+        <DialogTitle disableTypography>Move device</DialogTitle>
         <RadioGroup
           onChange={(event, value) => {
             this.setState({ newEnvironment: value })

@@ -40,8 +40,7 @@ class DeviceInfo extends React.Component {
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
-          <br />
-          <br />
+          <br /> <br className="notSelectable" />
           <b>Last updated: </b>
           <Moment fromNow>
             {moment.utc(
@@ -52,8 +51,7 @@ class DeviceInfo extends React.Component {
           {typeof Storage !== "undefined" &&
             localStorage.getItem("devMode") === "true" && (
               <React.Fragment>
-                <br />
-                <br />
+                <br /> <br className="notSelectable" />
                 <b>ID: </b> {this.props.device.id}
                 {this.props.device.firmware && (
                   <React.Fragment>

@@ -270,7 +270,16 @@ class AuthDialog extends React.Component {
   render() {
     let tokenList = ""
 
-    if (this.props.tokenData.error) tokenList = "Unexpected error"
+    if (this.props.tokenData.error) {
+      tokenList = "Unexpected error"
+
+      if (
+        this.props.tokenData.error.message ===
+        "GraphQL error: This user doesn't exist anymore"
+      ) {
+        this.props.logOut()
+      }
+    }
 
     if (
       this.props.tokenData.loading ||
@@ -282,30 +291,50 @@ class AuthDialog extends React.Component {
       tokenList = (
         <List>
           {this.props.tokenData.user.permanentTokens.map(token => (
-            <ListItem button>
+            <ListItem >
               <ListItemIcon>
                 <Icon>vpn_key</Icon>
               </ListItemIcon>
               <ListItemText
-                primary={token.name}
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  >
+                    {token.name}
+                  </font>
+                }
                 secondary={
-                  this.state.tokenId !== token.id ? (
-                    token.lastUsed ? (
-                      <React.Fragment>
-                        Last used{" "}
-                        <Moment fromNow>
-                          {moment.utc(
-                            token.lastUsed.split(".")[0],
-                            "YYYY-MM-DDTh:mm:ss"
-                          )}
-                        </Moment>
-                      </React.Fragment>
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "#c1c2c5" }
+                        : { color: "#7a7a7a" }
+                    }
+                  >
+                    {this.state.tokenId !== token.id ? (
+                      token.lastUsed ? (
+                        <React.Fragment>
+                          Last used{" "}
+                          <Moment fromNow>
+                            {moment.utc(
+                              token.lastUsed.split(".")[0],
+                              "YYYY-MM-DDTh:mm:ss"
+                            )}
+                          </Moment>
+                        </React.Fragment>
+                      ) : (
+                        "Never used"
+                      )
                     ) : (
-                      "Never used"
-                    )
-                  ) : (
-                    "Just created"
-                  )
+                      "Just created"
+                    )}
+                  </font>
                 }
               />
               <ListItemSecondaryAction>
@@ -347,7 +376,20 @@ class AuthDialog extends React.Component {
             <ListItemIcon>
               <Icon>add</Icon>
             </ListItemIcon>
-            <ListItemText primary="Get a new permanent token" />
+            <ListItemText
+              primary={
+                <font
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
+                  Get a new permanent token
+                </font>
+              }
+            />
           </ListItem>
         </List>
       )

@@ -41,7 +41,7 @@ class EnvironmentInfo extends React.Component {
             )}
           </Moment>
           <br />
-          <br />
+          <br className="notSelectable" />
           <b>Last updated: </b>
           <Moment fromNow>
             {moment.utc(
@@ -52,7 +52,7 @@ class EnvironmentInfo extends React.Component {
           {this.props.devMode ? (
             <React.Fragment>
               <br />
-              <br />
+              <br className="notSelectable" />
               <b>ID: </b> {this.props.environment.id}
             </React.Fragment>
           ) : (

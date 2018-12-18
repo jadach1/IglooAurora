@@ -41,7 +41,7 @@ class CardInfo extends React.Component {
             )}
           </Moment>
           <br />
-          <br />
+          <br className="notSelectable" />
           <b>Last updated: </b>
           <Moment fromNow>
             {moment.utc(
@@ -53,7 +53,7 @@ class CardInfo extends React.Component {
           localStorage.getItem("devMode") === "true" ? (
             <React.Fragment>
               <br />
-              <br />
+              <br className="notSelectable" />
               <b>ID: </b> {this.props.id}
             </React.Fragment>
           ) : (

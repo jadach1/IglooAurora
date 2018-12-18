@@ -403,7 +403,7 @@ class MainMobile extends Component {
 
   render() {
     const {
-      environmentData: { environment },
+      environmentData: { error, environment },
     } = this.props
 
     let nightMode = ""
@@ -412,6 +412,12 @@ class MainMobile extends Component {
     nightMode =
       typeof Storage !== "undefined" &&
       localStorage.getItem("nightMode") === "true"
+
+    if (error) {
+      if (error.message === "GraphQL error: This user doesn't exist anymore") {
+        this.props.logOut()
+      }
+    }
 
     if (environment && this.props.environments) {
       let j

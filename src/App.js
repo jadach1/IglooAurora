@@ -435,11 +435,12 @@ class App extends Component {
                   )
                 } else {
                   if (!this.state.loggedOut) {
-                    window.location.href.split("?environment=")[1] && this.setState({
-                      from:
-                        "/?environment=" +
-                        window.location.href.split("?environment=")[1],
-                    })
+                    window.location.href.split("?environment=")[1] &&
+                      this.setState({
+                        from:
+                          "/?environment=" +
+                          window.location.href.split("?environment=")[1],
+                      })
                   }
 
                   return typeof Storage !== "undefined" &&

@@ -315,7 +315,7 @@ class EnvironmentCard extends Component {
               </ListItemIcon>
               <ListItemText
                 inset
-                primary="Leave environment"
+                primary="Leave"
                 disableTypography
               />
             </MenuItem>
