@@ -58,7 +58,6 @@ function MySnackbarContent(props) {
           style={{ color: "white" }}
           onClick={() => {
             openDialog()
-            closeSnackbar()
           }}
           color="primary"
         >

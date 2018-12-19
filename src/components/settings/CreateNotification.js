@@ -10,9 +10,7 @@ import CenteredSpinner from "../CenteredSpinner"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import Icon from "@material-ui/core/Icon"
-import FormControl from "@material-ui/core/FormControl"
-import Select from "@material-ui/core/Select"
-import Input from "@material-ui/core/Input"
+import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 
@@ -30,10 +28,16 @@ class CreateNotification extends React.Component {
   state = {
     content: "",
     activeStep: 0,
-    deviceIndex: 0,
+    device: "",
   }
 
   handleChange = (event, index, value) => this.setState({ value })
+
+  componentWillReceiveProps(nextProps) {
+    if (!this.state.device && nextProps.allDevices.length) {
+      this.setState({ device: nextProps.allDevices[0].id })
+    }
+  }
 
   render() {
     const {
@@ -43,13 +47,7 @@ class CreateNotification extends React.Component {
     let createNotificationMutation = () => {
       this.props.CreateNotification({
         variables: {
-          deviceId:
-            this.props.allDevices.filter(
-              device => device.index === this.state.deviceIndex
-            )[0] &&
-            this.props.allDevices.filter(
-              device => device.index === this.state.deviceIndex
-            )[0].id,
+          deviceId: this.state.device,
           content: this.state.content,
         },
       })
@@ -63,19 +61,21 @@ class CreateNotification extends React.Component {
 
     if (user)
       deviceList = (
-        <FormControl style={{ width: "100%" }}>
-          <Select
-            value={this.state.deviceIndex}
-            onChange={event => {
-              this.setState({ deviceIndex: event.target.value })
-            }}
-            name="device"
-          >
-            {this.props.allDevices.map(device => (
-              <MenuItem value={device.index}>{device.name}</MenuItem>
-            ))}
-          </Select>
-        </FormControl>
+        <TextField
+          value={this.state.device}
+          onChange={event => {
+            this.setState({ device: event.target.value })
+          }}
+          select
+          variant="outlined"
+          name="device"
+          label="Device"
+          style={{ width: "100%", marginBottom: "16px" }}
+        >
+          {this.props.allDevices.map(device => (
+            <MenuItem value={device.id}>{device.name}</MenuItem>
+          ))}
+        </TextField>
       )
 
     return (
@@ -107,46 +107,47 @@ class CreateNotification extends React.Component {
             }
           >
             {deviceList}
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-name-login"
-                placeholder="Notification content"
-                value={this.state.content}
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                }
-                onChange={event =>
-                  this.setState({ content: event.target.value })
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") {
-                    createNotificationMutation()
-                    this.props.close()
-                  }
-                }}
-                endAdornment={
-                  this.state.content && (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => this.setState({ content: "" })}
-                        tabIndex="-1"
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  )
-                }
-              />
-            </FormControl>
+            <TextField
+              id="adornment-name-login"
+              variant="outlined"
+              label="Notification content"
+              value={this.state.content}
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? {
+                      color: "white",
+                      width: "100%",
+                      marginBottom: "8px",
+                    }
+                  : {
+                      color: "black",
+                      width: "100%",
+                      marginBottom: "8px",
+                    }
+              }
+              multiline
+              rows="4"
+              onChange={event => this.setState({ content: event.target.value })}
+              endAdornment={
+                this.state.content && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => this.setState({ content: "" })}
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                )
+              }
+            />
           </div>
           <DialogActions>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>

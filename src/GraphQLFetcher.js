@@ -330,6 +330,93 @@ class GraphQLFetcher extends Component {
       },
     })
 
+    const subscribeToEnvironmentShareUpdated = gql`
+    subscription {
+      environmentShareUpdated {
+        id
+        index
+        name
+        createdAt
+        updatedAt
+        muted
+        avatar
+        myRole
+        pendingEnvironmentShares {
+          id
+          role
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+        }
+        pendingOwnerChanges {
+          id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+        }
+        devices {
+          id
+          muted
+          name
+          environment {
+            myRole
+          }
+        }
+        owner {
+          id
+          email
+          name
+          profileIconColor
+        }
+        admins {
+          id
+          email
+          name
+          profileIconColor
+        }
+        editors {
+          id
+          email
+          name
+          profileIconColor
+        }
+        spectators {
+          id
+          email
+          name
+          profileIconColor
+        }
+      }
+    }
+  `
+
+  this.props.userData.subscribeToMore({
+    document: subscribeToEnvironmentShareUpdated,
+    updateQuery: (prev, { subscriptionData }) => {
+      if (!subscriptionData.data) {
+        return prev
+      }
+
+      const newEnvironments = [
+        ...prev.user.environments,
+        subscriptionData.data.environmentShareUpdated,
+      ]
+
+      return {
+        user: {
+          ...prev.user,
+          environments: newEnvironments,
+        },
+      }
+    },
+  })
+
     const subscribeToEnvironmentShareDeclined = gql`
       subscription {
         environmentShareDeclined
