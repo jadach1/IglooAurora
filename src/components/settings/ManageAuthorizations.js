@@ -291,7 +291,7 @@ class AuthDialog extends React.Component {
       tokenList = (
         <List>
           {this.props.tokenData.user.permanentTokens.map(token => (
-            <ListItem >
+            <ListItem>
               <ListItemIcon>
                 <Icon>vpn_key</Icon>
               </ListItemIcon>
@@ -339,7 +339,7 @@ class AuthDialog extends React.Component {
               />
               <ListItemSecondaryAction>
                 {this.state.tokenId === token.id ? (
-                  <CopyToClipboard text={this.state.token}>
+                  <CopyToClipboard text={this.state.generatedToken}>
                     <IconButton
                       style={
                         typeof Storage !== "undefined" &&
