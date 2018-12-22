@@ -405,13 +405,14 @@ export default graphql(
       $name: String!
       $deviceId: ID!
       $permission: ValuePermission!
-      $visibility: Visibility!
+      $visibility: ValueVisibility
       $value: Float!
     ) {
       createFloatValue(
         name: $name
         deviceId: $deviceId
         permission: $permission
+        visibility: $visibility
         value: $value
       ) {
         id
@@ -428,13 +429,14 @@ export default graphql(
         $name: String!
         $deviceId: ID!
         $permission: ValuePermission!
-        $visibility: Visibility!
+        $visibility: ValueVisibility
         $value: String!
       ) {
         createStringValue(
           name: $name
           deviceId: $deviceId
           permission: $permission
+          visibility: $visibility
           value: $value
         ) {
           id
@@ -451,11 +453,12 @@ export default graphql(
           $name: String!
           $deviceId: ID!
           $permission: ValuePermission!
-          $visibility: Visibility!
+          $visibility: ValueVisibility
         ) {
           createPlotValue(
             name: $name
             deviceId: $deviceId
+            visibility: $visibility
             permission: $permission
           ) {
             id
@@ -472,13 +475,14 @@ export default graphql(
             $name: String!
             $deviceId: ID!
             $permission: ValuePermission!
-            $visibility: Visibility!
+            $visibility: ValueVisibility
             $value: Boolean!
           ) {
             createBooleanValue(
               name: $name
               deviceId: $deviceId
               permission: $permission
+              visibility: $visibility
               value: $value
             ) {
               id
@@ -495,11 +499,12 @@ export default graphql(
               $name: String!
               $deviceId: ID!
               $permission: ValuePermission!
-              $visibility: Visibility!
+              $visibility: ValueVisibility
             ) {
               createCategoryPlotValue(
                 name: $name
                 deviceId: $deviceId
+                visibility: $visibility
                 permission: $permission
               ) {
                 id
