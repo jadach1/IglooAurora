@@ -21,32 +21,15 @@ function Transition(props) {
 const MOBILE_WIDTH = 600
 
 class LeaveEnvironment extends React.Component {
-  deleteEnvironmentMutation = () => {
-    this.props["DeleteEnvironment"]({
-      variables: {
-        id: this.props.environment.id,
-      },
-      optimisticResponse: {
-        __typename: "Mutation",
-        deleteEnvironment: {
-          id: this.props.environment.id,
-        },
-      },
-    })
-    this.props.close()
-  }
-
-  stopSharing = () => {
-    this.props.StopSharing({
+   leaveEnvironment = () => {
+    this.props.LeaveEnvironment({
       variables: {
         environmentId: this.props.environment.id,
-        email: this.props.userData.user.email,
       },
       optimisticResponse: {
         __typename: "Mutation",
         stopSharing: {
           id: this.props.environment.id,
-          email: this.props.userData.user.email,
           __typename: "Environment",
         },
       },
@@ -85,7 +68,7 @@ class LeaveEnvironment extends React.Component {
               variant="contained"
               color="primary"
               onClick={() => {
-                this.stopSharing()
+                this.leaveEnvironment()
                 this.props.close()
               }}
               style={{ margin: "0 4px" }}
@@ -101,24 +84,11 @@ class LeaveEnvironment extends React.Component {
 
 export default graphql(
   gql`
-    mutation StopSharing($email: String!, $environmentId: ID!) {
-      stopSharingEnvironment(email: $email, environmentId: $environmentId) {
-        id
-      }
+    mutation LeaveEnvironment( $environmentId: ID!) {
+      leaveEnvironment( environmentId: $environmentId)
     }
   `,
   {
-    name: "StopSharing",
+    name: "LeaveEnvironment",
   }
-)(
-  graphql(
-    gql`
-      mutation DeleteEnvironment($id: ID!) {
-        deleteEnvironment(id: $id)
-      }
-    `,
-    {
-      name: "DeleteEnvironment",
-    }
-  )(LeaveEnvironment)
-)
+)(LeaveEnvironment)

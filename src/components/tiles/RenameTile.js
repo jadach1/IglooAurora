@@ -36,8 +36,8 @@ class RenameTileDialog extends React.Component {
         ? "RenameStringValue"
         : this.props.value.__typename === "PlotValue"
         ? "RenamePlotValue"
-        : this.props.value.__typename === "StringPlotValue"
-        ? "RenameStringPlotValue"
+        : this.props.value.__typename === "CategoryPlotValue"
+        ? "RenameCategoryPlotValue"
         : this.props.value.__typename === "MapValue"
         ? "RenameMapValue"
         : "RenameBooleanValue"
@@ -54,8 +54,8 @@ class RenameTileDialog extends React.Component {
           ? "stringValue"
           : this.props.value.__typename === "PlotValue"
           ? "plotValue"
-          : this.props.value.__typename === "StringPlotValue"
-          ? "stringPlotValue"
+          : this.props.value.__typename === "CategoryPlotValue"
+          ? "categoryPlotValue"
           : this.props.value.__typename === "MapValue"
           ? "mapValue"
           : "booleanValue"]: {
@@ -204,14 +204,14 @@ export default graphql(
         graphql(
           gql`
             mutation Rename($id: ID!, $name: String) {
-              stringPlotValue(id: $id, name: $name) {
+              categoryPlotValue(id: $id, name: $name) {
                 id
                 name
               }
             }
           `,
           {
-            name: "RenameStringPlotValue",
+            name: "RenameCategoryPlotValue",
           }
         )(
           graphql(

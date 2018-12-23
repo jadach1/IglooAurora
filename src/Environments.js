@@ -59,6 +59,7 @@ class Environments extends Component {
           searchText={this.props.environmentsSearchText}
           snackBarHidden={this.props.snackBarHidden}
           client={this.props.client}
+          mobile={this.props.mobile}
         />
         <SettingsDialog
           isOpen={this.props.settingsOpen}

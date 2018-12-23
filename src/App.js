@@ -11,6 +11,7 @@ import OfflineScreen from "./OfflineScreen"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
+// Material-UI customizations that do not change between light mode and night mode
 const sharedStyles = {
   MuiDialogActions: {
     action: {
@@ -214,6 +215,7 @@ const darkTheme = createMuiTheme({
   },
 })
 
+//TODO: ?
 function setupWebPush(token) {
   const applicationServerPublicKey =
     "BOZG_RBpt8yVp6J1JN08zCEPSFbYC_aHQQKNY0isQDnozk9GXZAiSHMnnXowvfacQeh38j2TQAyp9yT0qpUXS6Y"
@@ -233,18 +235,17 @@ function setupWebPush(token) {
     return outputArray
   }
 
-  // check support
+  // checks whether the browser supports push service workers and push notifications
   if ("serviceWorker" in navigator && "PushManager" in window) {
-    // registering service worker
     navigator.serviceWorker.register("webPushSw.js").then(function(swReg) {
-      // checking push subscription
+      // checks whether user is already subscribed to push notifications
       swReg.pushManager.getSubscription().then(function(subscription) {
         const isSubscribed = !(subscription === null)
 
         if (isSubscribed) {
           sendSubscriptionToServer(subscription)
         } else {
-          // subscribing user
+          // subscribes user
           const applicationServerKey = urlB64ToUint8Array(
             applicationServerPublicKey
           )
@@ -260,28 +261,29 @@ function setupWebPush(token) {
         }
       })
     })
-  } else {
   }
 
   function sendSubscriptionToServer(subscription) {
+    // the server URL changes based on whether the server setting is set to "auto" or "manual"
     const serverUrl =
       typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
         ? localStorage.getItem("server") + "/webPushSubscribe"
         : `http://igloo-production.herokuapp.com/webPushSubscribe`
 
+    //TODO: ?
     fetch(serverUrl, {
-      body: JSON.stringify(subscription), // must match 'Content-Type' header
-      cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-      credentials: "same-origin", // include, same-origin, *omit
+      body: JSON.stringify(subscription),
+      cache: "no-cache",
+      credentials: "same-origin",
       headers: {
         "user-agent": "Mozilla/4.0 MDN Example",
         "content-type": "application/json",
         authorization: "Bearer " + token,
       },
-      method: "POST", // *GET, POST, PUT, DELETE, etc.
-      mode: "cors", // no-cors, cors, *same-origin
-      redirect: "follow", // manual, *follow, error
-      referrer: "no-referrer", // *client, no-referrer
+      method: "POST",
+      mode: "cors",
+      redirect: "follow",
+      referrer: "no-referrer",
     })
   }
 }
@@ -290,6 +292,7 @@ class App extends Component {
   constructor() {
     let email = ""
 
+    // gets the email of the last user that logged in
     if (typeof Storage !== "undefined") {
       email = localStorage.getItem("email") || ""
     }
@@ -297,12 +300,15 @@ class App extends Component {
     super()
 
     let bearer = ""
-    // reuse previous session's bearer if present
+    // reuses previous session's bearer if present
     if (typeof Storage !== "undefined") {
+      // looks for the bearer in both localStorage and sessionStorage:
+      // - localStorage is used if the user prefers to be automatically logged in
+      // - sessionStorage is used if they prefer to log out at the end of every session
       bearer =
         localStorage.getItem("bearer") || sessionStorage.getItem("bearer") || ""
 
-      // ask for a new token 1 day before the expiration date
+      // asks for a new token 1 day before the expiration date
       if (bearer !== "") {
         const expirationDate = jwt.decode(bearer).exp
         const tomorrow = Math.floor(new Date() / 1000) + 86400
@@ -316,6 +322,7 @@ class App extends Component {
       }
     }
 
+    // names of CSS classes for each of the unauthenticated screen backgrounds
     let unauthenticatedPictures = [
       "auroraLoginBackground",
       "woodsLoginBackground",
@@ -338,11 +345,15 @@ class App extends Component {
       signupPasswordError: "",
       name: "",
       nameError: "",
+      // chooses a background for the unauthenticated screen at random
+      // in case of error, the one with the aurora is displayed
       unauthenticatedPicture:
         unauthenticatedPictures[Math.floor(Math.random() * 2)] ||
         "auroraLoginBackground",
     }
 
+    // keepLoggedIn is the parameter that determines whether the user is automatically logged back in every time
+    // if keepLoggedIn wasn't assigned a value, it is set to true
     typeof Storage !== "undefined" &&
       localStorage.getItem("keepLoggedIn") === "" &&
       localStorage.setItem("keepLoggedIn", "true")
@@ -360,6 +371,7 @@ class App extends Component {
     this.updateDimensions()
     window.addEventListener("resize", this.updateDimensions.bind(this))
 
+    // a little easter egg for our most curious users
     console.log(
       "Hello! If you're reading this, you've probably got some experience with web development, so why don't you contribute to our open source repository?\nhttps://github.com/IglooCloud/IglooAurora"
     )
@@ -373,6 +385,8 @@ class App extends Component {
     const signIn = (bearer, keepLoggedIn) => {
       this.setState({ bearer })
 
+      // the bearer is saved to either localStorage or sessionStorage depending on the keepLoggedIn paramter
+      // localStorage is kept even when the user closes the web app, sessionStorage is cleared when the session ends
       if (keepLoggedIn) {
         if (typeof Storage !== "undefined") {
           localStorage.setItem("bearer", bearer)
@@ -387,6 +401,7 @@ class App extends Component {
 
       setupWebPush(bearer)
 
+      // redirectToReferrer is set to true, this means that the user will be redirected to the page they were on before being asked to log in
       this.setState({ redirectToReferrer: true, loginPassword: "" })
     }
 
@@ -418,6 +433,7 @@ class App extends Component {
             : lightTheme
         }
       >
+        {/* this.forceUpdate makes sure that the application reacts to the changes of the variables stored  */}
         <Online onChange={() => this.forceUpdate()}>
           <Switch>
             <Route
@@ -434,7 +450,10 @@ class App extends Component {
                     />
                   )
                 } else {
+                  // if the bearer is not present because the user chose to log out in this session, their referrer is not saved
+                  // the referrer is the address of the page on which the user was before being asked to log in
                   if (!this.state.loggedOut) {
+                    // this check avoids redirecting the user to aurora.igloo.ooo/?environmentundefined in case there is nothing after ?environment=
                     window.location.href.split("?environment=")[1] &&
                       this.setState({
                         from:
@@ -442,16 +461,12 @@ class App extends Component {
                           window.location.href.split("?environment=")[1],
                       })
                   }
-
+                  // the user is redirected to the log in screen if someone already logged in on their machine
                   return typeof Storage !== "undefined" &&
                     localStorage.getItem("email") ? (
-                    <Redirect
-                      to={{
-                        pathname: "/login",
-                      }}
-                    />
+                    <Redirect to="/login" />
                   ) : (
-                    <Redirect to={{ pathname: "/signup" }} />
+                    <Redirect to="/signup" />
                   )
                 }
               }}
