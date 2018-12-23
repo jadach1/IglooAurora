@@ -25,7 +25,11 @@ function Transition(props) {
 }
 
 class CreateDevice extends React.Component {
-  state = { deviceType: "", name: "", environment: "" }
+  state = {
+    deviceType: "",
+    name: "",
+    environment: "",
+  }
 
   componentWillReceiveProps(nextProps) {
     if (
@@ -34,6 +38,10 @@ class CreateDevice extends React.Component {
       nextProps.userData.user.environments.length
     ) {
       this.setState({ environment: nextProps.userData.user.environments[0].id })
+    }
+
+    if (this.props.open !== nextProps.open && nextProps.open === true) {
+      this.setState({ name: "", nameEmpty: "", deviceTypeEmpty: "" })
     }
   }
 
@@ -49,12 +57,11 @@ class CreateDevice extends React.Component {
     if (loading) environments = <CenteredSpinner />
 
     let createDeviceMutation = () => {
-      this.props["CreateDevice"]({
+      this.props.CreateDevice({
         variables: {
           deviceType: this.state.deviceType,
           name: this.state.name,
           environmentId: this.state.environment,
-          firmware: this.state.firmware,
         },
       })
 
@@ -66,13 +73,17 @@ class CreateDevice extends React.Component {
         <TextField
           value={this.state.environment}
           onChange={event => {
-            this.setState({ environment: event.target.value })
+            this.setState({
+              environment: event.target.value,
+            })
           }}
           label="Environment"
           variant="outlined"
           select
+          required
           style={{ width: "100%", marginBottom: "16px" }}
           InputLabelProps={{ shrink: true }}
+          disabled={user.environments.length < 2}
         >
           {user.environments
             .filter(
@@ -94,6 +105,7 @@ class CreateDevice extends React.Component {
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           fullWidth
           maxWidth="xs"
+          className="notSelectable"
         >
           <DialogTitle disableTypography>Create device</DialogTitle>
           <div
@@ -117,11 +129,18 @@ class CreateDevice extends React.Component {
               id="adornment-name-login"
               label="Custom name"
               value={this.state.name}
-              onChange={event => this.setState({ name: event.target.value })}
+              error={this.state.nameEmpty}
+              onChange={event =>
+                this.setState({
+                  name: event.target.value,
+                  nameEmpty: event.target.value === "",
+                })
+              }
               style={{ width: "100%", marginBottom: "16px" }}
               onKeyPress={event => {
                 if (event.key === "Enter") createDeviceMutation()
               }}
+              required
               variant="outlined"
               endAdornment={
                 this.state.name && (
@@ -147,12 +166,17 @@ class CreateDevice extends React.Component {
               label="Device type"
               value={this.state.deviceType}
               variant="outlined"
+              error={this.state.deviceTypeEmpty}
               onChange={event =>
-                this.setState({ deviceType: event.target.value })
+                this.setState({
+                  deviceType: event.target.value,
+                  deviceTypeEmpty: event.target.value === "",
+                })
               }
               onKeyPress={event => {
                 if (event.key === "Enter") createDeviceMutation()
               }}
+              required
               style={{ width: "100%", marginBottom: "16px" }}
               endAdornment={
                 this.state.deviceType && (
@@ -174,37 +198,6 @@ class CreateDevice extends React.Component {
               }
             />
             {environments}
-            <TextField
-              id="adornment-name-login"
-              label="Firmware"
-              value={this.state.firmware}
-              style={{ width: "100%", marginBottom: "8px" }}
-              variant="outlined"
-              onChange={event =>
-                this.setState({ firmware: event.target.value })
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter") createDeviceMutation()
-              }}
-              endAdornment={
-                this.state.firmware && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => this.setState({ firmware: "" })}
-                      tabIndex="-1"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      <Icon>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }
-            />
           </div>
           <DialogActions>
             <Button
@@ -238,16 +231,14 @@ class CreateDevice extends React.Component {
 export default graphql(
   gql`
     mutation CreateDevice(
-      $deviceType: String
+      $deviceType: String!
       $name: String!
       $environmentId: ID!
-      $firmware: String
     ) {
       createDevice(
         deviceType: $deviceType
         name: $name
         environmentId: $environmentId
-        firmware: $firmware
       ) {
         id
       }

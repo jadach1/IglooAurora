@@ -720,7 +720,6 @@ secondaryText="Add or delete emails you use to log in"
 onClick={this.handleEmailDialogOpen}
 /> */}
               <ListItem
-                disabled={!user}
                 button
                 onClick={() => this.setState({ emailDialogOpen: true })}
               >
@@ -740,7 +739,6 @@ onClick={this.handleEmailDialogOpen}
                 />
               </ListItem>
               <ListItem
-                disabled={!user}
                 button
                 onClick={() => this.setState({ passwordDialogOpen: true })}
               >
@@ -877,7 +875,6 @@ rightToggle={
               </ListSubheader>
               {user && !user.emailIsVerified && (
                 <ListItem
-                  disabled={!user}
                   button
                   onClick={() => this.setState({ verifyOpen: true })}
                 >
@@ -961,11 +958,7 @@ rightToggle={
                   }
                 />
               </ListItem>
-              <ListItem
-                disabled={!user}
-                button
-                onClick={this.handleDeleteDialogOpen}
-              >
+              <ListItem button onClick={this.handleDeleteDialogOpen}>
                 <ListItemText
                   primary={
                     <span style={{ color: "#f44336" }}>
@@ -1127,7 +1120,8 @@ rightToggle={
                         allDevices &&
                         allDevices.filter(
                           device =>
-                            device.environment && device.environment.myRole !== "SPECTATOR"
+                            device.environment &&
+                            device.environment.myRole !== "SPECTATOR"
                         )[0]
                       )
                     }
@@ -1155,7 +1149,8 @@ rightToggle={
                         allDevices &&
                         allDevices.filter(
                           device =>
-                            device.environment && device.environment.myRole !== "SPECTATOR"
+                            device.environment &&
+                            device.environment.myRole !== "SPECTATOR"
                         )[0]
                       )
                     }
@@ -1195,6 +1190,26 @@ rightToggle={
                           }
                         >
                           Create a new plot node
+                        </font>
+                      }
+                    />
+                  </ListItem>
+                  <ListItem
+                    disabled={!user}
+                    button
+                    onClick={() => this.setState({ createCategoryNodeOpen: true })}
+                  >
+                    <ListItemText
+                      primary={
+                        <font
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          Create a new category plot node
                         </font>
                       }
                     />
@@ -1547,6 +1562,7 @@ rightToggle={
         />
         <CreateValue
           open={this.props.isOpen && this.state.createValueOpen}
+          openDialog={() => this.setState({ createvalueOpen: true })}
           close={() => this.setState({ createValueOpen: false })}
           userData={this.props.userData}
           allDevices={allDevices}

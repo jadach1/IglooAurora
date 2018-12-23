@@ -36,7 +36,7 @@ class TileSize extends Component {
           : this.props.value.__typename === "PlotValue"
           ? "ChangePlotSize"
           : this.props.value.__typename === "StringValue"
-          ? "ChangeStringPlotSize"
+          ? "ChangeCategoryPlotSize"
           : this.props.value.__typename === "MapValue"
           ? "ChangeMapSize"
           : "ChangeBooleanSize"
@@ -53,7 +53,7 @@ class TileSize extends Component {
             ? "stringValue"
             : this.props.value.__typename === "plotValue"
             ? "plotValue"
-            : this.props.value.__typename === "stringPlotValue"
+            : this.props.value.__typename === "categoryPlotValue"
             ? "stringValue"
             : this.props.value.__typename === "mapValue"
             ? "mapValue"
@@ -220,7 +220,7 @@ export default graphql(
                 $size: TileSize
                 $visibility: ValueVisibility
               ) {
-                stringPlotValue(
+                categoryPlotValue(
                   tileSize: $size
                   id: $id
                   visibility: $visibility
@@ -232,7 +232,7 @@ export default graphql(
               }
             `,
             {
-              name: "ChangeStringPlotSize",
+              name: "ChangeCategoryPlotSize",
             }
           )(TileSize)
         )

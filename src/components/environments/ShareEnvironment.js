@@ -288,9 +288,10 @@ class ShareEnvironment extends React.Component {
             {(this.props.environment.myRole === "ADMIN" ||
               this.props.environment.myRole === "OWNER" ||
               this.props.environment.admins[0] ||
-              this.props.environment.pendingEnvironmentShares.filter(
-                environmentShare => environmentShare.role === "ADMIN"
-              )) && (
+              (this.props.environment.pendingEnvironmentShares &&
+                this.props.environment.pendingEnvironmentShares.filter(
+                  environmentShare => environmentShare.role === "ADMIN"
+                ))) && (
               <li key="Admins">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader
@@ -385,7 +386,9 @@ class ShareEnvironment extends React.Component {
                   {(this.props.environment.myRole === "ADMIN" ||
                     this.props.environment.myRole === "OWNER") &&
                     this.props.environment.pendingEnvironmentShares
-                      .filter(environmentShare => environmentShare.role === "ADMIN")
+                      .filter(
+                        environmentShare => environmentShare.role === "ADMIN"
+                      )
                       .map(item => (
                         <ListItem key={item.id}>
                           <ListItemAvatar
@@ -511,9 +514,10 @@ class ShareEnvironment extends React.Component {
             {(this.props.environment.myRole === "ADMIN" ||
               this.props.environment.myRole === "OWNER" ||
               this.props.environment.editors[0] ||
-              this.props.environment.pendingEnvironmentShares.filter(
-                environmentShare => environmentShare.role === "EDITOR"
-              )) && (
+              (this.props.environment.pendingEnvironmentShares &&
+                this.props.environment.pendingEnvironmentShares.filter(
+                  environmentShare => environmentShare.role === "EDITOR"
+                ))) && (
               <li key="Editors">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader
@@ -609,7 +613,9 @@ class ShareEnvironment extends React.Component {
                   {(this.props.environment.myRole === "ADMIN" ||
                     this.props.environment.myRole === "OWNER") &&
                     this.props.environment.pendingEnvironmentShares
-                      .filter(environmentShare => environmentShare.role === "EDITOR")
+                      .filter(
+                        environmentShare => environmentShare.role === "EDITOR"
+                      )
                       .map(item => (
                         <ListItem key={item.id}>
                           <ListItemAvatar
@@ -735,9 +741,10 @@ class ShareEnvironment extends React.Component {
             {(this.props.environment.myRole === "ADMIN" ||
               this.props.environment.myRole === "OWNER" ||
               this.props.environment.spectators[0] ||
-              this.props.environment.pendingEnvironmentShares.filter(
-                environmentShare => environmentShare.role === "SPECTATOR"
-              )) && (
+              (this.props.environment.pendingEnvironmentShares &&
+                this.props.environment.pendingEnvironmentShares.filter(
+                  environmentShare => environmentShare.role === "SPECTATOR"
+                ))) && (
               <li key="Spectators">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader
@@ -1059,8 +1066,16 @@ export default graphql(
 )(
   graphql(
     gql`
-      mutation ChangeRole($email: String!, $environmentId: ID!, $newRole: Role!) {
-        changeRole(email: $email, environmentId: $environmentId, newRole: $newRole) {
+      mutation ChangeRole(
+        $email: String!
+        $environmentId: ID!
+        $newRole: Role!
+      ) {
+        changeRole(
+          email: $email
+          environmentId: $environmentId
+          newRole: $newRole
+        ) {
           id
         }
       }
