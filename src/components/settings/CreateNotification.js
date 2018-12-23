@@ -37,6 +37,10 @@ class CreateNotification extends React.Component {
     if (!this.state.device && nextProps.allDevices.length) {
       this.setState({ device: nextProps.allDevices[0].id })
     }
+
+    if (this.props.open !== nextProps.open && nextProps.open === true) {
+      this.setState({ content: "", contentEmpty: "" })
+    }
   }
 
   render() {
@@ -64,13 +68,17 @@ class CreateNotification extends React.Component {
         <TextField
           value={this.state.device}
           onChange={event => {
-            this.setState({ device: event.target.value })
+            this.setState({
+              device: event.target.value,
+            })
           }}
           select
           variant="outlined"
+          required
           name="device"
           label="Device"
           style={{ width: "100%", marginBottom: "16px" }}
+          disabled={this.props.allDevices.length < 2}
         >
           {this.props.allDevices.map(device => (
             <MenuItem value={device.id}>{device.name}</MenuItem>
@@ -87,6 +95,7 @@ class CreateNotification extends React.Component {
           fullScreen={window.innerWidth < MOBILE_WIDTH}
           fullWidth
           maxWidth="xs"
+          className="notSelectable"
         >
           <DialogTitle disableTypography>Create notification</DialogTitle>
           <div
@@ -110,6 +119,7 @@ class CreateNotification extends React.Component {
             <TextField
               id="adornment-name-login"
               variant="outlined"
+              required
               label="Notification content"
               value={this.state.content}
               style={
@@ -128,7 +138,13 @@ class CreateNotification extends React.Component {
               }
               multiline
               rows="4"
-              onChange={event => this.setState({ content: event.target.value })}
+              error={this.state.contentEmpty}
+              onChange={event =>
+                this.setState({
+                  content: event.target.value,
+                  contentEmpty: event.target.value === "",
+                })
+              }
               endAdornment={
                 this.state.content && (
                   <InputAdornment position="end">

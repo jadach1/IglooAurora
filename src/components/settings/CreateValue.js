@@ -14,7 +14,7 @@ import TextField from "@material-ui/core/TextField"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import Switch from "@material-ui/core/Switch"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
@@ -60,7 +60,9 @@ class CreateValue extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (!this.state.device && nextProps.allDevices.length) {
-      this.setState({ device: nextProps.allDevices[0].id })
+      this.setState({
+        device: nextProps.allDevices[0].id,
+      })
     }
   }
 
@@ -83,10 +85,12 @@ class CreateValue extends React.Component {
             this.setState({ device: event.target.value })
           }}
           label="Device"
+          required
           variant="outlined"
           select
           style={{ width: "100%", marginBottom: "16px" }}
           InputLabelProps={{ shrink: true }}
+          disabled={this.props.allDevices.length < 2}
         >
           {this.props.allDevices.map(device => (
             <MenuItem value={device.id}>{device.name}</MenuItem>
@@ -102,8 +106,15 @@ class CreateValue extends React.Component {
           <TextField
             label="Value"
             value={this.state.value}
+            error={this.state.valueEmpty}
+            required
             type="number"
-            onChange={event => this.setState({ value: event.target.value })}
+            onChange={event =>
+              this.setState({
+                value: event.target.value,
+                valueEmpty: event.target.value === "",
+              })
+            }
             onKeyPress={event => {
               if (
                 event.key === "Enter" &&
@@ -112,8 +123,11 @@ class CreateValue extends React.Component {
                 this.state.permission &&
                 this.state.device &&
                 this.state.name
-              )
+              ) {
+                this.setState({ valueSettingsOpen: false })
                 createValueMutation()
+                this.props.close()
+              }
             }}
             style={{ width: "100%", marginBottom: "16px" }}
             variant="outlined"
@@ -125,8 +139,15 @@ class CreateValue extends React.Component {
         value = (
           <TextField
             label="Value"
+            required
             value={this.state.value}
-            onChange={event => this.setState({ value: event.target.value })}
+            error={this.state.valueEmpty}
+            onChange={event =>
+              this.setState({
+                value: event.target.value,
+                valueEmpty: event.target.value === "",
+              })
+            }
             onKeyPress={event => {
               if (
                 event.key === "Enter" &&
@@ -135,8 +156,11 @@ class CreateValue extends React.Component {
                 this.state.permission &&
                 this.state.device &&
                 this.state.name
-              )
+              ) {
+                this.setState({ valueSettingsOpen: false })
                 createValueMutation()
+                this.props.close()
+              }
             }}
             style={{ width: "100%", marginBottom: "16px" }}
             variant="outlined"
@@ -146,16 +170,19 @@ class CreateValue extends React.Component {
 
       case "boolean":
         value = (
-          <FormControlLabel
-            control={
-              <Switch
-                checked={this.state.value}
-                onChange={event => this.setState({ value: event.target.value })}
-              />
-            }
-            label="Value"
-            labelPlacement="start"
-          />
+          <List>
+            <ListItem style={{ marginTop: "-3px", marginBottom: "13px" }}>
+              <ListItemText primary="Value *" />
+              <ListItemSecondaryAction>
+                <Switch
+                  checked={this.state.value}
+                  onChange={event =>
+                    this.setState(oldState => ({ value: !oldState.value }))
+                  }
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
         )
         break
 
@@ -241,8 +268,20 @@ class CreateValue extends React.Component {
             <ListItem
               button
               onClick={() =>
-                this.setState({ valueSettingsOpen: true, type: "boolean" })
+                this.setState({
+                  valueSettingsOpen: true,
+                  type: "boolean",
+                  value: "",
+                  valueEmpty: "",
+                  name: "",
+                  nameEmpty: "",
+                })
               }
+              style={{
+                paddingLeft: "24px",
+                paddingRight: "24px",
+                height: "100%",
+              }}
             >
               <ListItemText primary="Boolean" />
             </ListItem>
@@ -252,32 +291,61 @@ class CreateValue extends React.Component {
                 this.setState({
                   valueSettingsOpen: true,
                   type: "category plot",
+                  value: "",
+                  valueEmpty: "",
+                  name: "",
+                  nameEmpty: "",
                 })
               }
+              style={{ paddingLeft: "24px", paddingRight: "24px" }}
             >
               <ListItemText primary="Category plot" />
             </ListItem>
             <ListItem
               button
               onClick={() =>
-                this.setState({ valueSettingsOpen: true, type: "float" })
+                this.setState({
+                  valueSettingsOpen: true,
+                  type: "float",
+                  value: "",
+                  valueEmpty: "",
+                  name: "",
+                  nameEmpty: "",
+                })
               }
+              style={{ paddingLeft: "24px", paddingRight: "24px" }}
             >
               <ListItemText primary="Float" />
             </ListItem>
             <ListItem
               button
               onClick={() =>
-                this.setState({ valueSettingsOpen: true, type: "plot" })
+                this.setState({
+                  valueSettingsOpen: true,
+                  type: "plot",
+                  value: "",
+                  valueEmpty: "",
+                  name: "",
+                  nameEmpty: "",
+                })
               }
+              style={{ paddingLeft: "24px", paddingRight: "24px" }}
             >
               <ListItemText primary="Plot" />
             </ListItem>
             <ListItem
               button
               onClick={() =>
-                this.setState({ valueSettingsOpen: true, type: "string" })
+                this.setState({
+                  valueSettingsOpen: true,
+                  type: "string",
+                  value: "",
+                  valueEmpty: "",
+                  name: "",
+                  nameEmpty: "",
+                })
               }
+              style={{ paddingLeft: "24px", paddingRight: "24px" }}
             >
               <ListItemText primary="String" />
             </ListItem>
@@ -303,15 +371,34 @@ class CreateValue extends React.Component {
               height: "100%",
             }}
           >
+            {value}
             <TextField
               id="adornment-name-login"
               label="Custom name"
+              required
               variant="outlined"
               value={this.state.name}
+              error={this.state.nameEmpty}
               style={{ width: "100%", marginBottom: "16px" }}
-              onChange={event => this.setState({ name: event.target.value })}
+              onChange={event =>
+                this.setState({
+                  name: event.target.value,
+                  nameEmpty: event.target.value === "",
+                })
+              }
               onKeyPress={event => {
-                if (event.key === "Enter") createValueMutation()
+                if (
+                  event.key === "Enter" &&
+                  this.state.visibility &&
+                  this.state.type &&
+                  this.state.permission &&
+                  this.state.device &&
+                  this.state.name
+                ) {
+                  this.setState({ valueSettingsOpen: false })
+                  createValueMutation()
+                  this.props.close()
+                }
               }}
               endAdornment={
                 this.state.name && (
@@ -332,17 +419,19 @@ class CreateValue extends React.Component {
                 )
               }
             />
-            {value}
             {devices}
             <TextField
               value={this.state.permission}
               onChange={event => {
-                this.setState({ permission: event.target.value })
+                this.setState({
+                  permission: event.target.value,
+                })
               }}
               label="Permission"
               variant="outlined"
               style={{ width: "100%", marginBottom: "16px" }}
               select
+              required
               InputLabelProps={{ shrink: true }}
             >
               <MenuItem value="READ_ONLY">Read only</MenuItem>
@@ -368,11 +457,11 @@ class CreateValue extends React.Component {
             <Button
               onClick={() => {
                 this.setState({ valueSettingsOpen: false })
-                this.props.close()
+                this.props.openDialog()
               }}
               style={{ marginRight: "4px" }}
             >
-              Never mind
+              Go back
             </Button>
             <Button
               variant="contained"

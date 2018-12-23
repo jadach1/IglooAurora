@@ -185,8 +185,8 @@ class Tile extends Component {
           ? "ChangeStringSize"
           : value.__typename === "PlotValue"
           ? "ChangePlotSize"
-          : value.__typename === "StringPlotValue"
-          ? "ChangeStringPlotSize"
+          : value.__typename === "CategoryPlotValue"
+          ? "ChangeCategoryPlotSize"
           : value.__typename === "MapValue"
           ? "ChangeMapSize"
           : "ChangeBooleanSize"
@@ -203,8 +203,8 @@ class Tile extends Component {
             ? "stringValue"
             : value.__typename === "PlotValue"
             ? "plotValue"
-            : value.__typename === "StringPlotValue"
-            ? "stringPlotValue"
+            : value.__typename === "CategoryPlotValue"
+            ? "categoryPlotValue"
             : value.__typename === "MapValue"
             ? "mapValue"
             : "booleanValue"]: {
@@ -601,7 +601,7 @@ export default graphql(
                 $size: TileSize
                 $visibility: ValueVisibility
               ) {
-                stringPlotValue(
+                categoryPlotValue(
                   tileSize: $size
                   id: $id
                   visibility: $visibility
@@ -613,7 +613,7 @@ export default graphql(
               }
             `,
             {
-              name: "ChangeStringPlotSize",
+              name: "ChangeCategoryPlotSize",
             }
           )(Tile)
         )
