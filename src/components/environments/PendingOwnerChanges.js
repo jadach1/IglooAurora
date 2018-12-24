@@ -135,7 +135,9 @@ let PendingOwnerChanges = props => {
 export default graphql(
   gql`
     mutation AcceptPendingOwnerChange($pendingOwnerChangeId: ID!) {
-      acceptPendingOwnerChange(pendingOwnerChangeId: $pendingOwnerChangeId)
+      acceptPendingOwnerChange(pendingOwnerChangeId: $pendingOwnerChangeId) {
+        id
+      }
     }
   `,
   {

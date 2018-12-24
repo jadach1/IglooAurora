@@ -10,6 +10,8 @@ import Paper from "@material-ui/core/Paper"
 import BottomNavigation from "@material-ui/core/BottomNavigation"
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction"
 import AppBar from "@material-ui/core/AppBar"
+import List from "@material-ui/core/List"
+import ListSubheader from "@material-ui/core/ListSubheader"
 import SwipeableViews from "react-swipeable-views"
 import CenteredSpinner from "../CenteredSpinner"
 import EnvironmentCard from "./EnvironmentCard"
@@ -54,7 +56,7 @@ export default class EnvironmentsBody extends Component {
           className="notSelectable defaultCursor"
           style={{
             width: "calc(100vw - 64px)",
-            margin:"0"
+            margin: "0",
           }}
         >
           {user.environments
@@ -180,7 +182,7 @@ export default class EnvironmentsBody extends Component {
           className="notSelectable defaultCursor"
           style={{
             width: "calc(100vw - 64px)",
-            margin:"0"
+            margin: "0",
           }}
         >
           {user.environments
@@ -707,61 +709,83 @@ export default class EnvironmentsBody extends Component {
               }
             >
               {user && (
-                <React.Fragment>
-                  <Typography
-                    variant="h4"
-                    className="notSelectable defaultCursor"
-                    style={
-                      nightMode
-                        ? {
-                            textAlign: "center",
-                            lineHeight: "64px",
-                            height: "64px",
-                            color: "white",
+                <List subheader={<li />}>
+                  <li key="yourEnvironments">
+                    <ul style={{ padding: "0" }}>
+                      <ListSubheader
+                        style={
+                          nightMode
+                            ? { backgroundColor: "#21252b" }
+                            : { backgroundColor: "#f2f2f2" }
+                        }
+                      >
+                        <Typography
+                          variant="h4"
+                          className="notSelectable defaultCursor"
+                          style={
+                            nightMode
+                              ? {
+                                  textAlign: "center",
+                                  lineHeight: "64px",
+                                  height: "64px",
+                                  color: "white",
+                                }
+                              : {
+                                  textAlign: "center",
+                                  lineHeight: "64px",
+                                  height: "64px",
+                                  color: "black",
+                                }
                           }
-                        : {
-                            textAlign: "center",
-                            lineHeight: "64px",
-                            height: "64px",
-                            color: "black",
-                          }
-                    }
-                  >
-                    Your environments
-                  </Typography>
-                  {yourEnvironmentsList}
-                </React.Fragment>
+                        >
+                          Your environments
+                        </Typography>
+                      </ListSubheader>
+                      {yourEnvironmentsList}
+                    </ul>
+                  </li>
+                  {user &&
+                    (user.environments.filter(
+                      environment => environment.myRole !== "OWNER"
+                    )[0] ||
+                      user.pendingEnvironmentShares[0]) && (
+                      <li key="yourEnvironments">
+                        <ul style={{ padding: "0" }}>
+                          <ListSubheader
+                            style={
+                              nightMode
+                                ? { backgroundColor: "#21252b" }
+                                : { backgroundColor: "#f2f2f2" }
+                            }
+                          >
+                            <Typography
+                              variant="h4"
+                              className="notSelectable defaultCursor"
+                              style={
+                                nightMode
+                                  ? {
+                                      textAlign: "center",
+                                      lineHeight: "64px",
+                                      height: "64px",
+                                      color: "white",
+                                    }
+                                  : {
+                                      textAlign: "center",
+                                      lineHeight: "64px",
+                                      height: "64px",
+                                      color: "black",
+                                    }
+                              }
+                            >
+                              Shared with you
+                            </Typography>
+                          </ListSubheader>
+                          {sharedEnvironmentsList}
+                        </ul>
+                      </li>
+                    )}
+                </List>
               )}
-              {user &&
-                (user.environments.filter(
-                  environment => environment.myRole !== "OWNER"
-                )[0] ||
-                  user.pendingEnvironmentShares[0]) && (
-                  <React.Fragment>
-                    <Typography
-                      variant="h4"
-                      className="notSelectable defaultCursor"
-                      style={
-                        nightMode
-                          ? {
-                              textAlign: "center",
-                              lineHeight: "64px",
-                              height: "64px",
-                              color: "white",
-                            }
-                          : {
-                              textAlign: "center",
-                              lineHeight: "64px",
-                              height: "64px",
-                              color: "black",
-                            }
-                      }
-                    >
-                      Shared with you
-                    </Typography>
-                    {sharedEnvironmentsList}
-                  </React.Fragment>
-                )}
             </div>
           </React.Fragment>
         )}

@@ -73,7 +73,7 @@ class LeaveEnvironment extends React.Component {
               }}
               style={{ margin: "0 4px" }}
             >
-              Leave environment
+              Leave
             </Button>
           </MuiThemeProvider>
         </DialogActions>
