@@ -20,13 +20,9 @@ import SwipeableViews from "react-swipeable-views"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import ChangeNameDialog from "./ChangeName"
-// import TwoFactorDialog from "./Enable2FA"
 import DeleteAccountDialog from "./DeleteAccount"
-// import ManageEmailDialog from "./ManageEmail"
 import ChangePasswordDialog from "./ChangePassword"
-//import ChangeLanguageDialog from "./ChangeLanguage"
 import TimeFormatDialog from "./TimeFormat"
-// import TimeZoneDialog from "./TimeZone"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import ManageAuthorizations from "./ManageAuthorizations"
 import Shortcuts from "./Shortcuts"
@@ -45,7 +41,6 @@ import Tooltip from "@material-ui/core/Tooltip"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
-// var moment = require("moment-timezone")
 
 let allDevices = []
 
@@ -236,8 +231,6 @@ class SettingsDialog extends React.Component {
 
     let toggleQuietMode = () => {}
 
-    // let languageText = "English"
-
     let name = ""
 
     let profileIconColor = ""
@@ -268,27 +261,6 @@ class SettingsDialog extends React.Component {
           },
         })
       }
-
-      /*       switch (user.language) {
-        case "en":
-          languageText = "English"
-          break
-        case "de":
-          languageText = "Deutsch"
-          break
-        case "es":
-          languageText = "Español"
-          break
-        case "it":
-          languageText = "Italiano"
-          break
-        case "zh-Hans":
-          languageText = "中文(简体)"
-          break
-        default:
-          languageText = "English"
-          break
-      } */
 
       name = user.name
 
@@ -460,12 +432,6 @@ class SettingsDialog extends React.Component {
                 >
                   Localization
                 </ListSubheader>
-                {/*
-  <ListItem
-    primaryText="Change language"
-    secondaryText={languageText}
-    onClick={this.handleLanguageDialogOpen}
-  /> */}
                 <ListItem
                   disabled={!user}
                   button
@@ -507,18 +473,6 @@ class SettingsDialog extends React.Component {
                     }
                   />
                 </ListItem>
-                {/*     <Divider />
-  <ListSubheader style={{ cursor: "default" }}>Time</ListSubheader>
-<ListItem
-    primaryText="Change time zone"
-    secondaryText={
-      "Auto: (UTC" +
-      moment.tz(moment.tz.guess()).format("Z") +
-      ") " +
-      moment.tz.guess().split("/")[1]
-    }
-    onClick={this.handleTimeDialogOpen}
-  /> */}
                 <ListItem
                   disabled={!user}
                   button
@@ -714,11 +668,6 @@ class SettingsDialog extends React.Component {
               >
                 Authentication
               </ListSubheader>
-              {/* <ListItem
-primaryText="Manage emails"
-secondaryText="Add or delete emails you use to log in"
-onClick={this.handleEmailDialogOpen}
-/> */}
               <ListItem
                 button
                 onClick={() => this.setState({ emailDialogOpen: true })}
@@ -825,30 +774,6 @@ onClick={this.handleEmailDialogOpen}
                   />
                 </ListItemSecondaryAction>
               </ListItem>
-              {/*       <ListItem
-primaryText="Two-factor authentication"
-secondaryText="Make your account safer by verifying it is actually you"
-rightToggle={
-<Toggle
-  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-  rippleStyle={{ color: "#0083ff" }}
-  onToggle={this.handleTwoFactorDialogOpen}
-/>
-}
-/>
-<ListItem
-primaryText="Passwordless authentication"
-secondaryText="Use your fingerprint, your face or an external device to log in"
-rightToggle={
-<Toggle
-  thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
-  trackSwitchedStyle={{ backgroundColor: "#71c4ff" }}
-  rippleStyle={{ color: "#0083ff" }}
-  onToggle={this.handleTwoFactorDialogOpen}
-/>
-}
-/> */}
               <Divider />
             </ul>
           </li>
@@ -1197,7 +1122,9 @@ rightToggle={
                   <ListItem
                     disabled={!user}
                     button
-                    onClick={() => this.setState({ createCategoryNodeOpen: true })}
+                    onClick={() =>
+                      this.setState({ createCategoryNodeOpen: true })
+                    }
                   >
                     <ListItemText
                       primary={
@@ -1473,12 +1400,6 @@ rightToggle={
             </React.Fragment>
           )}
         </Dialog>
-        {/*
-        <TwoFactorDialog
-          isOpen={this.props.isOpen && this.state.twoFactorDialogOpen}
-          handleTwoFactorDialogOpen={this.handleTwoFactorDialogOpen}
-          handleTwoFactorDialogClose={this.handleTwoFactorDialogClose}
-        /> */}
         <DeleteAccountDialog
           open={this.props.isOpen && this.state.deleteDialogOpen}
           close={() => this.setState({ deleteDialogOpen: false })}
@@ -1492,12 +1413,6 @@ rightToggle={
           userData={this.props.userData}
           client={this.props.client}
         />
-        {/* <ManageEmailDialog
-          confirmationDialogOpen={
-            this.props.isOpen && this.state.emailDialogOpen
-          }
-          handleEmailDialogClose={this.handleEmailDialogClose}
-        /> */}
         <ManageAuthorizations
           confirmationDialogOpen={
             this.props.isOpen && this.state.authDialogOpen
@@ -1507,19 +1422,6 @@ rightToggle={
           client={this.props.client}
           logOut={this.props.logOut}
         />
-        {/*<ChangeLanguageDialog
-          handleLanguageDialogClose={this.handleLanguageDialogClose}
-          languageDialogOpen={
-            this.props.isOpen && this.state.languageDialogOpen
-          }
-          logOut={this.props.logOut}
-        />
-        <TimeZoneDialog
-          handleTimeDialogClose={this.handleTimeDialogClose}
-          timeZoneDialogOpen={
-            this.props.isOpen && this.state.timeZoneDialogOpen
-          }
-        /> */}
         <TimeFormatDialog
           handleTimeFormatDialogClose={this.handleTimeFormatDialogClose}
           timeFormatDialogOpen={
@@ -1568,13 +1470,11 @@ rightToggle={
           userData={this.props.userData}
           allDevices={allDevices}
         />
-        {this.props.userData.user && this.props.userData.user.environments && (
-          <CreateDevice
-            open={this.props.isOpen && this.state.createDeviceOpen}
-            close={() => this.setState({ createDeviceOpen: false })}
-            userData={this.props.userData}
-          />
-        )}
+        <CreateDevice
+          open={this.props.isOpen && this.state.createDeviceOpen}
+          close={() => this.setState({ createDeviceOpen: false })}
+          userData={this.props.userData}
+        />
         <CreateNotification
           open={this.props.isOpen && this.state.createNotificationOpen}
           close={() => this.setState({ createNotificationOpen: false })}
@@ -1595,6 +1495,7 @@ rightToggle={
           close={() => this.setState({ emailDialogOpen: false })}
           userData={this.props.userData}
           client={this.props.client}
+          email={user && user.email}
         />
         <ChangeServer
           open={this.props.isOpen && this.state.serverOpen}
