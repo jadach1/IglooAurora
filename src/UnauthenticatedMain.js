@@ -14,10 +14,12 @@ import ChangeServer from "./components/settings/ChangeServer"
 export default class UnAuthenticatedMain extends Component {
   state = { redirect: false, tapCounter: 0, changeServerOpen: false }
 
-  constructor() {
-    super()
+  render() {
+    if (this.state.tapCounter === 7) {
+      this.setState({ changeServerOpen: true, tapCounter: 0 })
+    }
 
-    const link = new HttpLink({
+    let link = new HttpLink({
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? localStorage.getItem("server") + "/graphql"
@@ -30,12 +32,6 @@ export default class UnAuthenticatedMain extends Component {
       link,
       cache: new InMemoryCache(),
     })
-  }
-
-  render() {
-    if (this.state.tapCounter === 7) {
-      this.setState({ changeServerOpen: true, tapCounter: 0 })
-    }
 
     return (
       <React.Fragment>
