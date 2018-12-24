@@ -70,13 +70,13 @@ export default class InviteUser extends Component {
         })
       } else if (
         e.message ===
-        "GraphQL error: There is already an environmentShare pending"
+        "GraphQL error: There is already a pending environmentShare"
       ) {
         this.setState({
           emailError: "Environment alreay shared",
         })
       } else if (
-        e.message === "GraphQL error: There is already an ownerChange pending"
+        e.message === "GraphQL error: There is already a pending ownerChange"
       ) {
         this.setState({
           emailError: "This user has a pending ownership request",
