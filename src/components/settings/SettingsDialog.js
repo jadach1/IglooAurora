@@ -1308,7 +1308,7 @@ rightToggle={
               <DialogTitle style={{ padding: "0" }}>
                 <AppBar position="sticky">
                   <Tabs
-                    onChange={this.props.handleChange}
+                    onChange={this.props.handleSettingsTabChanged}
                     value={this.props.slideIndex}
                     centered
                     fullWidth
@@ -1407,7 +1407,7 @@ rightToggle={
                 }}
               >
                 <BottomNavigation
-                  onChange={this.props.handleChangeBTIndex}
+                  onChange={this.props.handleSettingsTabChanged}
                   value={this.props.slideIndex}
                   showLabels
                   style={
@@ -1505,6 +1505,7 @@ rightToggle={
           handleAuthDialogClose={this.handleAuthDialogClose}
           userData={this.props.userData}
           client={this.props.client}
+          logOut={this.props.logOut}
         />
         {/*<ChangeLanguageDialog
           handleLanguageDialogClose={this.handleLanguageDialogClose}

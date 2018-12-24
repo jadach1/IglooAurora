@@ -26,6 +26,7 @@ class Environments extends Component {
     "alt+3": {
       priority: 1,
       handler: event => {
+        //prevents the user from reaching the development tab with the shortcut if dev mode is off
         if (
           this.props.settingsOpen &&
           typeof Storage !== "undefined" &&
@@ -34,12 +35,6 @@ class Environments extends Component {
           this.setState({ slideIndex: 2 })
       },
     },
-  }
-
-  handleSettingsTabChanged = (event, value) => {
-    this.setState({
-      slideIndex: value,
-    })
   }
 
   render() {
@@ -64,7 +59,11 @@ class Environments extends Component {
         <SettingsDialog
           isOpen={this.props.settingsOpen}
           closeSettingsDialog={this.props.closeSettings}
-          handleChange={this.handleSettingsTabChanged}
+          handleSettingsTabChanged={(event, value) => {
+            this.setState({
+              slideIndex: value,
+            })
+          }}
           handleSwipe={index => {
             this.setState({ slideIndex: index })
           }}

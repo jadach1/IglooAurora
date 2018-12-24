@@ -229,15 +229,7 @@ class MainBody extends Component {
           onClick={() => {
             this.props.changeShowHiddenState()
           }}
-          label={this.props.showHidden ? "Show less" : "Show more"}
-          icon={
-            this.props.showHidden ? (
-              <Icon>keyboard_arrow_up</Icon>
-            ) : (
-              <Icon>keyboard_arrow_down</Icon>
-            )
-          }
-          fullWidth={true}
+          fullWidth
           className="divider notSelectable"
           key="showMoreLessButton"
           style={
@@ -251,10 +243,21 @@ class MainBody extends Component {
               ? { backgroundColor: "transparent", color: "white" }
               : { backgroundColor: "transparent", color: "black" }
           }
-        />,
-        <div className="itemsList hiddenItems" key="hiddenTilesContainer">
-          {this.props.showHidden ? hiddenTiles : ""}
-        </div>,
+        >
+          {this.props.showHidden ? (
+            <Icon>keyboard_arrow_up</Icon>
+          ) : (
+            <Icon>keyboard_arrow_down</Icon>
+          )}
+          {this.props.showHidden ? "Show less" : "Show more"}
+        </Button>,
+        this.props.showHidden ? (
+          <div className="itemsList hiddenItems" key="hiddenTilesContainer">
+            {hiddenTiles}
+          </div>
+        ) : (
+          ""
+        ),
       ]
     }
 
@@ -318,7 +321,6 @@ export default graphql(
         signalStatus
         values {
           id
-          permission
           visibility
           valueDetails
           tileSize
@@ -336,14 +338,17 @@ export default graphql(
             floatValue: value
             precision
             boundaries
+            permission
           }
           ... on StringValue {
             stringValue: value
             maxChars
             allowedValues
+            permission
           }
           ... on BooleanValue {
             boolValue: value
+            permission
           }
           ... on PlotValue {
             plotValue: value {

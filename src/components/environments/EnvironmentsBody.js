@@ -7,8 +7,6 @@ import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import Paper from "@material-ui/core/Paper"
-import List from "@material-ui/core/List"
-import ListSubheader from "@material-ui/core/ListSubheader"
 import BottomNavigation from "@material-ui/core/BottomNavigation"
 import BottomNavigationAction from "@material-ui/core/BottomNavigationAction"
 import AppBar from "@material-ui/core/AppBar"
@@ -56,8 +54,7 @@ export default class EnvironmentsBody extends Component {
           className="notSelectable defaultCursor"
           style={{
             width: "calc(100vw - 64px)",
-            marginLeft: "32px",
-            marginRight: "32px",
+            margin:"0"
           }}
         >
           {user.environments
@@ -183,8 +180,7 @@ export default class EnvironmentsBody extends Component {
           className="notSelectable defaultCursor"
           style={{
             width: "calc(100vw - 64px)",
-            marginLeft: "32px",
-            marginRight: "32px",
+            margin:"0"
           }}
         >
           {user.environments
@@ -388,29 +384,126 @@ export default class EnvironmentsBody extends Component {
                 <CenteredSpinner style={{ paddingTop: "32px" }} />
               </div>
             )}
-            {user && (
-            (user.environments.filter(
-              environment => environment.myRole !== "OWNER"
-            )[0] ||
-              user.pendingEnvironmentShares[0]) ? (
-              <SwipeableViews
-                index={this.state.slideIndex}
-                onChangeIndex={slideIndex => this.setState({ slideIndex })}
-              >
+            {user &&
+              (user.environments.filter(
+                environment => environment.myRole !== "OWNER"
+              )[0] || user.pendingEnvironmentShares[0] ? (
+                <SwipeableViews
+                  index={this.state.slideIndex}
+                  onChangeIndex={slideIndex => this.setState({ slideIndex })}
+                >
+                  <div
+                    style={
+                      nightMode
+                        ? {
+                            overflowY: "auto",
+                            height: "calc(100vh - 192px)",
+                            background: "#21252b",
+                          }
+                        : {
+                            overflowY: "auto",
+                            height: "calc(100vh - 192px)",
+                            background: "#f2f2f2",
+                          }
+                    }
+                  >
+                    <Typography
+                      variant="h4"
+                      className="notSelectable defaultCursor"
+                      style={
+                        nightMode
+                          ? {
+                              textAlign: "center",
+                              lineHeight: "64px",
+                              height: "64px",
+                              color: "white",
+                            }
+                          : {
+                              textAlign: "center",
+                              lineHeight: "64px",
+                              height: "64px",
+                              color: "black",
+                            }
+                      }
+                    >
+                      Your environments
+                    </Typography>
+                    <div
+                      style={{
+                        height: "calc(100% - 64px)",
+                        overflowY: "auto",
+                      }}
+                    >
+                      <Grid
+                        container
+                        justify="center"
+                        spacing={16}
+                        className="notSelectable defaultCursor"
+                        style={{
+                          width: "calc(100vw - 64px)",
+                          marginLeft: "32px",
+                          marginRight: "32px",
+                        }}
+                      >
+                        {yourEnvironmentsList}
+                      </Grid>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      overflowY: "auto",
+                      height: "calc(100vh - 192px)",
+                    }}
+                  >
+                    <Typography
+                      variant="h4"
+                      className="notSelectable defaultCursor"
+                      style={
+                        nightMode
+                          ? {
+                              textAlign: "center",
+                              lineHeight: "64px",
+                              height: "64px",
+                              color: "white",
+                            }
+                          : {
+                              textAlign: "center",
+                              lineHeight: "64px",
+                              height: "64px",
+                              color: "black",
+                            }
+                      }
+                    >
+                      Shared with you
+                    </Typography>
+                    <div
+                      style={{
+                        height: "calc(100% - 64px)",
+                        overflowY: "auto",
+                      }}
+                    >
+                      <Grid
+                        container
+                        justify="center"
+                        spacing={16}
+                        className="notSelectable defaultCursor"
+                        style={{
+                          width: "calc(100vw - 64px)",
+                          marginLeft: "32px",
+                          marginRight: "32px",
+                        }}
+                      >
+                        {sharedEnvironmentsList}
+                      </Grid>
+                    </div>
+                  </div>
+                </SwipeableViews>
+              ) : (
                 <div
-                  style={
-                    nightMode
-                      ? {
-                          overflowY: "auto",
-                          height: "calc(100vh - 192px)",
-                          background: "#21252b",
-                        }
-                      : {
-                          overflowY: "auto",
-                          height: "calc(100vh - 192px)",
-                          background: "#f2f2f2",
-                        }
-                  }
+                  style={{
+                    overflowY: "auto",
+                    height: "calc(100vh - 128px)",
+                  }}
                 >
                   <Typography
                     variant="h4"
@@ -419,13 +512,13 @@ export default class EnvironmentsBody extends Component {
                       nightMode
                         ? {
                             textAlign: "center",
-                            lineHeight:"64px"
-,                            height: "64px",
+                            lineHeight: "64px",
+                            height: "64px",
                             color: "white",
                           }
                         : {
-                            textAlign: "center",                         lineHeight:"64px"
-                            ,
+                            textAlign: "center",
+                            lineHeight: "64px",
                             height: "64px",
                             color: "black",
                           }
@@ -434,7 +527,7 @@ export default class EnvironmentsBody extends Component {
                     Your environments
                   </Typography>
                   <div
-                    style={{ height: "calc(100% - 64px)", overflowY: "auto" }}
+                    style={{ height: "calc(100vh - 192px)", overflowY: "auto" }}
                   >
                     <Grid
                       container
@@ -451,99 +544,7 @@ export default class EnvironmentsBody extends Component {
                     </Grid>
                   </div>
                 </div>
-                <div
-                  style={{
-                    overflowY: "auto",
-                    height: "calc(100vh - 192px)",
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    className="notSelectable defaultCursor"
-                    style={
-                      nightMode
-                        ? {
-                            textAlign: "center",
-                            marginTop: "8px",
-                            marginBottom: "16px",
-                            color: "white",
-                          }
-                        : {
-                            textAlign: "center",
-                            marginTop: "8px",
-                            marginBottom: "16px",
-                            color: "black",
-                          }
-                    }
-                  >
-                    Shared with you
-                  </Typography>
-                  <div
-                    style={{ height: "calc(100% - 64px)", overflowY: "auto" }}
-                  >
-                    <Grid
-                      container
-                      justify="center"
-                      spacing={16}
-                      className="notSelectable defaultCursor"
-                      style={{
-                        width: "calc(100vw - 64px)",
-                        marginLeft: "32px",
-                        marginRight: "32px",
-                      }}
-                    >
-                      {sharedEnvironmentsList}
-                    </Grid>
-                  </div>
-                </div>
-              </SwipeableViews>
-            ) : (
-              <div
-                style={{
-                  overflowY: "auto",
-                  height: "calc(100vh - 128px)",
-                }}
-              >
-                <Typography
-                  variant="h4"
-                  className="notSelectable defaultCursor"
-                  style={
-                    nightMode
-                      ? {
-                          textAlign: "center",
-                          paddingTop: "8px",
-                          marginBottom: "16px",
-                          color: "white",
-                        }
-                      : {
-                          textAlign: "center",
-                          paddingTop: "8px",
-                          marginBottom: "16px",
-                          color: "black",
-                        }
-                  }
-                >
-                  Your environments
-                </Typography>
-                <div
-                  style={{ height: "calc(100vh - 193px)", overflowY: "auto" }}
-                >
-                  <Grid
-                    container
-                    justify="center"
-                    spacing={16}
-                    className="notSelectable defaultCursor"
-                    style={{
-                      width: "calc(100vw - 64px)",
-                      marginLeft: "32px",
-                      marginRight: "32px",
-                    }}
-                  >
-                    {yourEnvironmentsList}
-                  </Grid>
-                </div>
-              </div>
-                ))}
+              ))}
             {user &&
               (user.environments.filter(
                 environment => environment.myRole !== "OWNER"
@@ -706,88 +707,61 @@ export default class EnvironmentsBody extends Component {
               }
             >
               {user && (
-                <List subheader={<li />}>
-                  <li key="yourEnvironments">
-                    <ul style={{ padding: "0" }}>
-                      <ListSubheader
-                        style={
-                          nightMode
-                            ? { backgroundColor: "#21252b" }
-                            : { backgroundColor: "#f2f2f2" }
-                        }
-                      >
-                        <Typography
-                          variant="h4"
-                          className="notSelectable defaultCursor"
-                          style={
-                            nightMode
-                              ? {
-                                  textAlign: "center",
-                                  paddingTop: "8px",
-                                  paddingBottom: "8px",
-                                  marginBottom: "8px",
-                                  color: "white",
-                                }
-                              : {
-                                  textAlign: "center",
-                                  paddingTop: "8px",
-                                  paddingBottom: "8px",
-                                  marginBottom: "8px",
-                                  color: "black",
-                                }
+                <React.Fragment>
+                  <Typography
+                    variant="h4"
+                    className="notSelectable defaultCursor"
+                    style={
+                      nightMode
+                        ? {
+                            textAlign: "center",
+                            lineHeight: "64px",
+                            height: "64px",
+                            color: "white",
                           }
-                        >
-                          Your environments
-                        </Typography>
-                      </ListSubheader>
-                      {yourEnvironmentsList}
-                    </ul>
-                  </li>
-                  {(user.environments.filter(
-                    environment => environment.myRole !== "OWNER"
-                  )[0] ||
-                    user.pendingEnvironmentShares[0]) && (
-                    <li key="yourEnvironments">
-                      <ul style={{ padding: "0" }}>
-                        <ListSubheader
-                          style={
-                            nightMode
-                              ? { backgroundColor: "#21252b" }
-                              : { backgroundColor: "#f2f2f2" }
+                        : {
+                            textAlign: "center",
+                            lineHeight: "64px",
+                            height: "64px",
+                            color: "black",
                           }
-                        >
-                          <Typography
-                            variant="h4"
-                            className="notSelectable defaultCursor"
-                            style={
-                              nightMode
-                                ? {
-                                    textAlign: "center",
-                                    marginTop: "8px",
-                                    paddingTop: "8px",
-                                    paddingBottom: "8px",
-                                    marginBottom: "8px",
-                                    color: "white",
-                                  }
-                                : {
-                                    textAlign: "center",
-                                    marginTop: "8px",
-                                    paddingTop: "8px",
-                                    paddingBottom: "8px",
-                                    marginBottom: "8px",
-                                    color: "black",
-                                  }
-                            }
-                          >
-                            Shared with you
-                          </Typography>
-                        </ListSubheader>
-                        {sharedEnvironmentsList}
-                      </ul>
-                    </li>
-                  )}
-                </List>
+                    }
+                  >
+                    Your environments
+                  </Typography>
+                  {yourEnvironmentsList}
+                </React.Fragment>
               )}
+              {user &&
+                (user.environments.filter(
+                  environment => environment.myRole !== "OWNER"
+                )[0] ||
+                  user.pendingEnvironmentShares[0]) && (
+                  <React.Fragment>
+                    <Typography
+                      variant="h4"
+                      className="notSelectable defaultCursor"
+                      style={
+                        nightMode
+                          ? {
+                              textAlign: "center",
+                              lineHeight: "64px",
+                              height: "64px",
+                              color: "white",
+                            }
+                          : {
+                              textAlign: "center",
+                              lineHeight: "64px",
+                              height: "64px",
+                              color: "black",
+                            }
+                      }
+                    >
+                      Shared with you
+                    </Typography>
+                    {sharedEnvironmentsList}
+                  </React.Fragment>
+                )}
             </div>
           </React.Fragment>
         )}
