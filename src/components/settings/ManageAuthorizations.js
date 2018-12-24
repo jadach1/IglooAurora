@@ -45,27 +45,16 @@ function Transition(props) {
 }
 
 class AuthDialog extends React.Component {
-  state = {
-    authSnackOpen: false,
-    authDialogOpen: false,
-    tokenName: "",
-    password: "",
-    token: "",
-    tokenError: "",
-  }
-
-  deletePermanentToken = tokenID => {
-    this.props["DeletePermanentAccesToken"]({
-      variables: {
-        id: tokenID,
-      },
-      optimisticResponse: {
-        __typename: "Mutation",
-        DeletePermanentAccesToken: {
-          id: tokenID,
-        },
-      },
-    })
+  constructor() {
+    super()
+    this.state = {
+      authSnackOpen: false,
+      authDialogOpen: false,
+      tokenName: "",
+      password: "",
+      token: "",
+      tokenError: "",
+    }
   }
 
   openAuthDialog = () => {
@@ -88,7 +77,7 @@ class AuthDialog extends React.Component {
           }
         `,
         variables: {
-          tokenType: "GENERATE_PERMANENT_TOKEN",
+          tokenType: "MANAGE_PERMANENT_TOKENS",
           password: this.state.password,
         },
       })
@@ -117,6 +106,8 @@ class AuthDialog extends React.Component {
   }
 
   async getPermanentToken() {
+
+
     const wsLink = new WebSocketLink({
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server")
@@ -193,6 +184,70 @@ class AuthDialog extends React.Component {
         tokenError: "Unexpected error",
       })
     }
+  }
+
+  async deletePermanentToken(tokenId) {
+
+
+    const wsLink = new WebSocketLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server")
+          ? "wss://" +
+            localStorage
+              .getItem("server")
+              .replace("https://", "")
+              .replace("http://", "") +
+            "/subscriptions"
+          : `wss://igloo-production.herokuapp.com/subscriptions`,
+      options: {
+        reconnect: true,
+        connectionParams: {
+          Authorization: "Bearer " + this.state.token,
+        },
+      },
+    })
+
+    const httpLink = new HttpLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `http://igloo-production.herokuapp.com/graphql`,
+      headers: {
+        Authorization: "Bearer " + this.state.token,
+      },
+    })
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === "OperationDefinition" && operation === "subscription"
+      },
+      wsLink,
+      httpLink
+    )
+
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache({ fragmentMatcher }),
+    })
+
+    await this.client.mutate({
+      mutation: gql`
+        mutation DeletePermanentAccessToken($id: ID!) {
+          deletePermanentAccessToken(id: $id)
+        }
+      `,
+      variables: {
+        id: tokenId,
+      },
+    })
   }
 
   componentWillReceiveProps(nextProps) {
@@ -635,15 +690,4 @@ export default graphql(
     }
   `,
   { name: "tokenData" }
-)(
-  graphql(
-    gql`
-      mutation DeletePermanentAccesToken($id: ID!) {
-        deletePermanentAccesToken(id: $id)
-      }
-    `,
-    {
-      name: "DeletePermanentAccesToken",
-    }
-  )(AuthDialog)
-)
+)(AuthDialog)
