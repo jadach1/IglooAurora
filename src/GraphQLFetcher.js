@@ -246,6 +246,8 @@ class GraphQLFetcher extends Component {
       subscription {
         environmentShareAccepted {
           id
+          environment {
+            id
           index
           name
           createdAt
@@ -262,6 +264,12 @@ class GraphQLFetcher extends Component {
               name
               email
             }
+            sender {
+              id
+              profileIconColor
+              name
+              email
+            }
           }
           pendingOwnerChanges {
             id
@@ -271,9 +279,16 @@ class GraphQLFetcher extends Component {
               name
               email
             }
+            sender {
+              id
+              profileIconColor
+              name
+              email
+            }
           }
           devices {
             id
+            index
             muted
             name
             environment {
@@ -304,6 +319,7 @@ class GraphQLFetcher extends Component {
             name
             profileIconColor
           }
+                  }
         }
       }
     `
@@ -317,13 +333,20 @@ class GraphQLFetcher extends Component {
 
         const newEnvironments = [
           ...prev.user.environments,
-          subscriptionData.data.environmentShareAccepted,
+          subscriptionData.data.environmentShareAccepted.environment,
         ]
+
+               const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
+          pendingEnvironmentShare =>
+            pendingEnvironmentShare.id !==
+            subscriptionData.data.environmentShareAccepted.id
+        )
 
         return {
           user: {
             ...prev.user,
             environments: newEnvironments,
+            pendingEnvironmentShares: newEnvironmentShares,
           },
         }
       },
