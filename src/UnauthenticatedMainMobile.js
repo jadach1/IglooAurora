@@ -8,14 +8,8 @@ import ChangeServer from "./components/settings/ChangeServer"
 import Helmet from "react-helmet"
 
 export default class UnAuthenticatedMainMobile extends Component {
-  constructor() {
-    super()
-
-    this.state = {
-      changeServerOpen: false,
-    }
-
-    const link = new HttpLink({
+  render() {
+    let link = new HttpLink({
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? localStorage.getItem("server") + "/graphql"
@@ -28,9 +22,7 @@ export default class UnAuthenticatedMainMobile extends Component {
       link,
       cache: new InMemoryCache(),
     })
-  }
 
-  render() {
     return (
       <React.Fragment>
         <Helmet>
