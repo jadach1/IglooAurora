@@ -5,10 +5,8 @@ import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
-import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import FormControl from "@material-ui/core/FormControl"
-import FormHelperText from "@material-ui/core/FormHelperText"
+import TextField from "@material-ui/core/TextField"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import ToggleIcon from "material-ui-toggle-icon"
@@ -41,8 +39,12 @@ class ChangeMailDialog extends React.Component {
 
     this.state = {
       mailDialogOpen: false,
+      password: "",
+      passwordEmpty: false,
       passwordError: "",
-      email: "",
+      passwordemail: props.email,
+      emailError: "",
+      emailEmpty: false,
     }
   }
 
@@ -200,10 +202,10 @@ class ChangeMailDialog extends React.Component {
     if (nextProps.open !== this.props.open && this.props.open)
       this.setState({
         password: "",
-        isPasswordEmpty: false,
+        passwordEmpty: false,
         passwordError: "",
         emailError: "",
-        isEmailEmpty: false,
+        emailEmpty: false,
         email: "",
       })
   }
@@ -232,81 +234,69 @@ class ChangeMailDialog extends React.Component {
               paddingLeft: "24px",
             }}
           >
-            <FormControl
+            <TextField
+              id="change-email-password"
+              label="Password"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password}
+              variant="outlined"
+              error={this.state.passwordEmpty || this.state.passwordError}
+              helperText={
+                this.state.passwordEmpty
+                  ? "This field is required"
+                  : this.state.passwordError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  password: event.target.value,
+                  passwordEmpty: event.target.value === "",
+                  passwordError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter" && this.state.password !== "" && user)
+                  this.createToken()
+              }}
               style={{
                 width: "100%",
               }}
-            >
-              <Input
-                id="adornment-password-login"
-                type={this.state.showPassword ? "text" : "password"}
-                value={this.state.password}
-                placeholder="Password"
-                onChange={event =>
-                  this.setState({
-                    password: event.target.value,
-                    passwordError: "",
-                    isPasswordEmpty: event.target.value === "",
-                  })
-                }
-                error={
-                  this.state.passwordError || this.state.isPasswordEmpty
-                    ? true
-                    : false
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.createToken()
-                }}
-                endAdornment={
-                  this.state.password ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() =>
-                          this.setState(oldState => ({
-                            showPassword: !oldState.showPassword,
-                          }))
-                        }
-                        tabIndex="-1"
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        {/* fix for ToggleIcon glitch on Edge */}
-                        {document.documentMode ||
-                        /Edge/.test(navigator.userAgent) ? (
-                          this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
-                          ) : (
-                            <Icon>visibility</Icon>
-                          )
+              InputProps={{
+                endAdornment: this.state.password && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState(oldState => ({
+                          showPassword: !oldState.showPassword,
+                        }))
+                      }
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.54)" }
+                      }
+                    >
+                      {/* fix for ToggleIcon glitch on Edge */}
+                      {document.documentMode ||
+                      /Edge/.test(navigator.userAgent) ? (
+                        this.state.showPassword ? (
+                          <Icon>visibility_off</Icon>
                         ) : (
-                          <ToggleIcon
-                            on={this.state.showPassword || false}
-                            onIcon={<Icon>visibility_off</Icon>}
-                            offIcon={<Icon>visibility</Icon>}
-                          />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-              <FormHelperText
-                style={
-                  this.state.passwordError || this.state.isPasswordEmpty
-                    ? { color: "#f44336" }
-                    : {}
-                }
-              >
-                {this.state.isPasswordEmpty
-                  ? "This field is required"
-                  : this.state.passwordError}
-              </FormHelperText>
-            </FormControl>
-            <br />
+                          <Icon>visibility</Icon>
+                        )
+                      ) : (
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<Icon>visibility_off</Icon>}
+                          offIcon={<Icon>visibility</Icon>}
+                        />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </div>
           <DialogActions>
             <Button onClick={this.props.close}>Never mind</Button>
@@ -337,62 +327,56 @@ class ChangeMailDialog extends React.Component {
           <DialogTitle disableTypography>Change email</DialogTitle>
           <div
             style={{
-              paddingLeft: "24px",
-              paddingRight: "24px",
               height: "100%",
+              padding: "0 24px",
             }}
           >
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-email-login"
-                placeholder="Email"
-                value={this.state.email}
-                onChange={event =>
-                  this.setState({
-                    email: event.target.value,
-                    isEmailEmpty: event.target.value === "",
-                  })
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.changeEmail(this.state.email)
-                }}
-                error={
-                  this.state.emailError || this.state.isEmailEmpty
-                    ? true
-                    : false
-                }
-                endAdornment={
-                  this.state.email ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={this.handleClickCancelEmail}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-              <FormHelperText
-                style={
-                  this.state.emailError || this.state.isEmailEmpty
-                    ? { color: "#f44336" }
-                    : {}
-                }
-              >
-                {this.state.isEmailEmpty
+            <TextField
+              id="new-email"
+              label={"New email"}
+              value={this.state.email}
+              variant="outlined"
+              error={this.state.emailEmpty || this.state.emailError}
+              helperText={
+                this.state.emailEmpty
                   ? "This field is required"
-                  : this.state.emailError}
-              </FormHelperText>
-            </FormControl>
+                  : this.state.emailError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  email: event.target.value,
+                  emailEmpty: event.target.value === "",
+                  emailError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter" && this.state.email !== "")
+                  this.changeEmail(this.state.email)
+              }}
+              style={{
+                width: "100%",
+              }}
+              InputProps={{
+                endAdornment: this.state.email && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState({ email: "", emailEmpty: true })
+                      }
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.54)" }
+                      }
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </div>
           <DialogActions>
             <Button
@@ -407,7 +391,7 @@ class ChangeMailDialog extends React.Component {
               variant="contained"
               color="primary"
               onClick={() => this.changeEmail(this.state.email)}
-              disabled={this.state.email === "" || !user}
+              disabled={this.state.email === ""}
             >
               Change
             </Button>

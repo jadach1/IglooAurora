@@ -2,8 +2,7 @@ import React from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Button from "@material-ui/core/Button"
-import FormControl from "@material-ui/core/FormControl"
-import Input from "@material-ui/core/Input"
+import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
@@ -32,6 +31,7 @@ function Transition(props) {
 class CustomizeEnvironment extends React.Component {
   state = {
     name: this.props.environment.name,
+    nameEmpty: false,
     slideIndex: 0,
     initialSlideIndex: 0,
   }
@@ -114,46 +114,44 @@ class CustomizeEnvironment extends React.Component {
       >
         <DialogTitle disableTypography>Customize environment</DialogTitle>
         <div style={{ height: "100%" }}>
-          <FormControl
+          <TextField
+            id="customize-environment-name"
+            label="Name"
+            value={this.state.name}
+            variant="outlined"
+            error={this.state.nameEmpty}
+            onChange={event =>
+              this.setState({
+                name: event.target.value,
+                nameEmpty: event.target.value === "",
+              })
+            }
+            onKeyPress={event => {
+              if (event.key === "Enter" && !this.state.nameEmpty) this.rename()
+            }}
             style={{
               width: "calc(100% - 48px)",
-              paddingLeft: "24px",
-              paddingRight: "24px",
+              margin: "0 24px 16px 24px",
             }}
-          >
-            <Input
-              id="adornment-name-login"
-              placeholder="Environment name"
-              value={this.state.name}
-              onChange={event =>
-                this.setState({
-                  name: event.target.value,
-                })
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter") this.rename()
-              }}
-              endAdornment={
-                this.state.name ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => this.setState({ name: "" })}
-                      onMouseDown={this.handleMouseDownPassword}
-                      tabIndex="-1"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      <Icon>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ) : null
-              }
-            />
-          </FormControl>
+            InputProps={{
+              endAdornment: this.state.name && (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => this.setState({ name: "", nameEmpty: true })}
+                    tabIndex="-1"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "rgba(0, 0, 0, 0.46)" }
+                        : { color: "rgba(0, 0, 0, 0.54)" }
+                    }
+                  >
+                    <Icon>clear</Icon>
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
           <SwipeableViews
             index={this.state.slideIndex}
             onChangeIndex={value => {
@@ -168,7 +166,11 @@ class CustomizeEnvironment extends React.Component {
                     marginLeft: "24px",
                     marginRight: "24px",
                   }
-                : { width: "calc(100% - 48px", marginLeft: "24px", marginRight: "24px" }
+                : {
+                    width: "calc(100% - 48px",
+                    marginLeft: "24px",
+                    marginRight: "24px",
+                  }
             }
           >
             <img
