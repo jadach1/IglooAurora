@@ -279,16 +279,6 @@ class MainMobile extends Component {
       hiddenNotifications: !oldState.hiddenNotifications,
     }))
 
-  handleSettingsTabChanged = (event, value) => {
-    this.setState({
-      slideIndex: value,
-    })
-  }
-
-  handleChangeBTIndex = (event, value) => {
-    this.setState({ slideIndex: value })
-  }
-
   componentDidMount() {
     const deviceSubscriptionQuery = gql`
       subscription {
@@ -487,9 +477,11 @@ class MainMobile extends Component {
               <SettingsDialog
                 isOpen={this.props.areSettingsOpen}
                 closeSettingsDialog={this.props.closeSettings}
-                handleChange={this.handleSettingsTabChanged}
+                handleSettingsTabChanged={(event, value) => {
+                  this.setState({
+                    slideIndex: value,
+                  })}}
                 slideIndex={this.state.slideIndex}
-                handleChangeBTIndex={this.handleChangeBTIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
                 logOut={this.props.logOut}
@@ -543,9 +535,11 @@ class MainMobile extends Component {
               <SettingsDialog
                 isOpen={this.props.areSettingsOpen}
                 closeSettingsDialog={this.props.closeSettings}
-                handleChange={this.handleSettingsTabChanged}
+                handleSettingsTabChanged={(event, value) => {
+                  this.setState({
+                    slideIndex: value,
+                  })}}
                 slideIndex={this.state.slideIndex}
-                handleChangeBTIndex={this.handleChangeBTIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
                 logOut={this.props.logOut}

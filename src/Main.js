@@ -328,12 +328,6 @@ class Main extends Component {
       }
     }
 
-    let handleSettingsTabChanged = (event, value) => {
-      this.setState({
-        slideIndex: value,
-      })
-    }
-
     return (
       <React.Fragment>
         <Helmet>
@@ -363,7 +357,11 @@ class Main extends Component {
           <SettingsDialog
             isOpen={this.props.areSettingsOpen}
             closeSettingsDialog={this.props.closeSettings}
-            handleChange={handleSettingsTabChanged}
+            handleSettingsTabChanged={(event, value) => {
+              this.setState({
+                slideIndex: value,
+              })
+            }}
             slideIndex={this.state.slideIndex}
             nightMode={nightMode}
             userData={this.props.userData}
