@@ -89,7 +89,7 @@ class CreateValue extends React.Component {
           variant="outlined"
           select
           style={{ width: "100%", marginBottom: "16px" }}
-          InputLabelProps={{ shrink: true }}
+          InputLabelProps={this.state.device && { shrink: true }}
           disabled={this.props.allDevices.length < 2}
         >
           {this.props.allDevices.map(device => (
@@ -420,23 +420,25 @@ class CreateValue extends React.Component {
               }
             />
             {devices}
-            <TextField
-              value={this.state.permission}
-              onChange={event => {
-                this.setState({
-                  permission: event.target.value,
-                })
-              }}
-              label="Permission"
-              variant="outlined"
-              style={{ width: "100%", marginBottom: "16px" }}
-              select
-              required
-              InputLabelProps={{ shrink: true }}
-            >
-              <MenuItem value="READ_ONLY">Read only</MenuItem>
-              <MenuItem value="READ_WRITE">Read and write</MenuItem>
-            </TextField>
+            {this.state.type !== "plot" && this.state.type !== "category plot" && (
+              <TextField
+                value={this.state.permission}
+                onChange={event => {
+                  this.setState({
+                    permission: event.target.value,
+                  })
+                }}
+                label="Permission"
+                variant="outlined"
+                style={{ width: "100%", marginBottom: "16px" }}
+                select
+                required
+                InputLabelProps={this.state.permission && { shrink: true }}
+              >
+                <MenuItem value="READ_ONLY">Read only</MenuItem>
+                <MenuItem value="READ_WRITE">Read and write</MenuItem>
+              </TextField>
+            )}
             <TextField
               value={this.state.visibility}
               onChange={event => {
@@ -446,7 +448,7 @@ class CreateValue extends React.Component {
               variant="outlined"
               style={{ width: "100%", marginBottom: "8px" }}
               select
-              InputLabelProps={{ shrink: true }}
+              InputLabelProps={this.state.visibility && { shrink: true }}
             >
               <MenuItem value="VISIBLE">Visible</MenuItem>
               <MenuItem value="HIDDEN">Hidden</MenuItem>
