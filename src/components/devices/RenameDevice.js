@@ -5,8 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import Icon from "@material-ui/core/Icon"
-import FormControl from "@material-ui/core/FormControl"
-import Input from "@material-ui/core/Input"
+import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
@@ -26,7 +25,7 @@ function Transition(props) {
 }
 
 class RenameDevice extends React.Component {
-  state = { name: "" }
+  state = { name: "", nameEmpty: false }
 
   rename = () => {
     this.props["Rename"]({
@@ -66,48 +65,45 @@ class RenameDevice extends React.Component {
       >
         <DialogTitle disableTypography>Rename device</DialogTitle>
         <div style={{ height: "100%" }}>
-          <FormControl
+          <TextField
+            id="rename-device"
+            label="Name"
+            value={this.state.name}
+            variant="outlined"
+            error={this.state.nameEmpty}
+            onChange={event =>
+              this.setState({
+                name: event.target.value,
+                nameEmpty: event.target.value === "",
+              })
+            }
+            onKeyPress={event => {
+              if (event.key === "Enter" && !this.state.nameEmpty) this.rename()
+            }}
             style={{
               width: "calc(100% - 48px)",
-              paddingLeft: "24px",
-              paddingRight: "24px",
+              margin: "0 24px 16px 24px",
             }}
-          >
-            <Input
-              id="adornment-name-login"
-              placeholder="Environment Name"
-              value={this.state.name}
-              onChange={event =>
-                this.setState({
-                  name: event.target.value,
-                })
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter") this.rename()
-              }}
-              endAdornment={
-                this.state.name ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => this.setState({ name: "" })}
-                      onMouseDown={this.handleMouseDownPassword}
-                      tabIndex="-1"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      <Icon>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ) : null
-              }
-            />
-          </FormControl>
+            InputProps={{
+              endAdornment: this.state.name && (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => this.setState({ name: "",nameEmpty:true })}
+                    tabIndex="-1"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "rgba(0, 0, 0, 0.46)" }
+                        : { color: "rgba(0, 0, 0, 0.54)" }
+                    }
+                  >
+                    <Icon>clear</Icon>
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
         </div>
-        <br />
         <DialogActions>
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
@@ -116,9 +112,7 @@ class RenameDevice extends React.Component {
             variant="contained"
             color="primary"
             onClick={this.rename}
-            disabled={
-              !this.state.name || oldName === this.state.name
-            }
+            disabled={!this.state.name || oldName === this.state.name}
           >
             Rename
           </Button>

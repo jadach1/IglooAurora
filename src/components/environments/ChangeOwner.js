@@ -4,9 +4,7 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
-import FormControl from "@material-ui/core/FormControl"
-import FormHelperText from "@material-ui/core/FormHelperText"
-import Input from "@material-ui/core/Input"
+import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Grow from "@material-ui/core/Grow"
@@ -25,7 +23,7 @@ function Transition(props) {
 }
 
 class ChangeOwner extends Component {
-  state = { email: "" }
+  state = { email: "", emailEmpty: false }
 
   async changeOwner() {
     try {
@@ -86,7 +84,7 @@ class ChangeOwner extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open && nextProps.open) {
       this.setState({
-        isEmailEmpty: false,
+        emailEmpty: false,
         emailError: false,
         email: "",
       })
@@ -106,63 +104,53 @@ class ChangeOwner extends Component {
       >
         <DialogTitle disableTypography>Transfer ownership</DialogTitle>
         <div style={{ height: "100%" }}>
-          <FormControl
+          <TextField
+            id="owner-email"
+            label="Owner email"
+            value={this.state.email}
+            variant="outlined"
+            error={this.state.emailEmpty || this.state.emailError}
+            helperText={
+              this.state.isEmailEmpty
+                ? "This field is required"
+                : this.state.emailError || " "
+            }
+            onChange={event =>
+              this.setState({
+                email: event.target.value,
+                emailEmpty: event.target.value === "",
+                emailError: "",
+              })
+            }
+            onKeyPress={event => {
+              if (event.key === "Enter" && !this.state.emailEmpty)
+                this.changeOwner()
+            }}
             style={{
               width: "calc(100% - 48px)",
-              paddingLeft: "24px",
-              paddingRight: "24px",
+              margin: "0 24px",
             }}
-          >
-            <Input
-              id="adornment-email-login"
-              placeholder="Email"
-              value={this.state.email}
-              onChange={event =>
-                this.setState({
-                  email: event.target.value,
-                })
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter") {
-                  this.setState({ addAdminOpen: false })
-                  this.changeOwner()
-                }
-              }}
-              error={
-                this.state.emailError || this.state.isEmailEmpty ? true : false
-              }
-              endAdornment={
-                this.state.email ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => this.setState({ email: "" })}
-                      onMouseDown={this.handleMouseDownPassword}
-                      tabIndex="-1"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      <Icon>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ) : null
-              }
-            />
-            <FormHelperText
-              style={
-                this.state.emailError || this.state.isEmailEmpty
-                  ? { color: "#f44336" }
-                  : {}
-              }
-            >
-              {this.state.isEmailEmpty
-                ? "This field is required"
-                : this.state.emailError}
-            </FormHelperText>
-          </FormControl>
+            InputProps={{
+              endAdornment: this.state.email && (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() =>
+                      this.setState({ email: "", emailEmpty: true })
+                    }
+                    tabIndex="-1"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "rgba(0, 0, 0, 0.46)" }
+                        : { color: "rgba(0, 0, 0, 0.54)" }
+                    }
+                  >
+                    <Icon>clear</Icon>
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
         </div>
         <DialogActions>
           <Button onClick={this.props.close}>Never mind</Button>
@@ -172,6 +160,7 @@ class ChangeOwner extends Component {
             onClick={() => {
               this.changeOwner()
             }}
+            disabled={this.state.email === "" || this.state.emailError}
           >
             Change owner
             {this.state.showLoading && <CenteredSpinner isInButton />}

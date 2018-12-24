@@ -4,9 +4,8 @@ import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Icon from "@material-ui/core/Icon"
-import Input from "@material-ui/core/Input"
+import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import FormControl from "@material-ui/core/FormControl"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import IconButton from "@material-ui/core/IconButton"
@@ -115,75 +114,64 @@ export default class ChangeServer extends React.Component {
               label="Manual"
             />
           </RadioGroup>
-          <FormControl style={{ width: "100%" }}>
-            <Input
-              id="adornment-email-login"
-              placeholder="Server address"
-              value={this.state.url}
-              onChange={event => {
-                this.setState({
-                  url: event.target.value,
-                })
-              }}
-              onKeyPress={event => {
-                if (
-                  event.key === "Enter" &&
-                  !(
-                    oldMode === this.state.mode ||
-                    (this.state.mode === "manual" &&
-                      (!this.state.url ||
-                        typeof Storage === "undefined" ||
-                        oldUrl === this.state.url))
-                  )
-                ) {
-                  confirm()
-                }
-              }}
-              style={
-                this.state.mode === "manual"
-                  ? typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : { color: "black" }
-                  : typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                  ? { color: "#c1c2c5" }
-                  : { color: "#7a7a7a" }
+          <TextField
+            id="change-name"
+            label="Name"
+            value={this.state.url}
+            variant="outlined"
+            error={this.state.urlEmpty || this.state.urlError}
+            helperText={
+              this.state.urlEmpty
+                ? "This field is required"
+                : this.state.urlError || " "
+            }
+            onChange={event =>
+              this.setState({
+                url: event.target.value,
+                urlEmpty: event.target.value === "",
+                urlError: "",
+              })
+            }
+            onKeyPress={event => {
+              if (event.key === "Enter" && this.state.url !== "") {
+                confirm()
               }
-              disabled={this.state.mode === "auto"}
-              endAdornment={
-                this.state.url ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => {
-                        this.setState({ url: "" })
-                      }}
-                      onMouseDown={event => {
-                        event.preventDefault()
-                      }}
-                      tabIndex="-1"
-                      disabled={this.state.mode === "auto"}
-                      style={
-                        this.state.mode === "manual"
-                          ? typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                          : typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                          ? { color: "#c1c2c5" }
-                          : { color: "#7a7a7a" }
-                      }
-                    >
-                      <Icon>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ) : null
-              }
-            />
-          </FormControl>
-          <br />
-          <br />
+            }}
+            style={{
+              marginTop: "16px",
+              width: "100%",
+            }}
+            disabled={this.state.mode === "auto"}
+            InputProps={{
+              endAdornment: this.state.url && (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => {
+                      this.setState({ name: "" })
+                    }}
+                    onMouseDown={event => {
+                      event.preventDefault()
+                    }}
+                    style={
+                      this.state.mode === "auto"
+                        ? typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.54)" }
+                        : typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    tabIndex="-1"
+                    disabled={this.state.mode === "auto"}
+                  >
+                    <Icon>clear</Icon>
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
         </div>
         <DialogActions>
           <Button
