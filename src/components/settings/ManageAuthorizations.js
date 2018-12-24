@@ -15,6 +15,7 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import TextField from "@material-ui/core/TextField"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
 import { graphql } from "react-apollo"
@@ -27,9 +28,6 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import FormControl from "@material-ui/core/FormControl"
-import FormHelperText from "@material-ui/core/FormHelperText"
-import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import ToggleIcon from "material-ui-toggle-icon"
 import { CopyToClipboard } from "react-copy-to-clipboard"
@@ -54,6 +52,7 @@ class AuthDialog extends React.Component {
       password: "",
       token: "",
       tokenError: "",
+      tokenEmpty: false,
     }
   }
 
@@ -96,6 +95,10 @@ class AuthDialog extends React.Component {
         "GraphQL error: User doesn't exist. Use `signUp` to create one"
       ) {
         this.setState({ passwordError: "This account doesn't exist" })
+      } else if (
+        (e.message = "GraphQL error: This user doesn't exist anymore")
+      ) {
+        this.props.logOut()
       } else {
         this.setState({
           passwordError: "Unexpected error",
@@ -106,8 +109,6 @@ class AuthDialog extends React.Component {
   }
 
   async getPermanentToken() {
-
-
     const wsLink = new WebSocketLink({
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server")
@@ -187,8 +188,6 @@ class AuthDialog extends React.Component {
   }
 
   async deletePermanentToken(tokenId) {
-
-
     const wsLink = new WebSocketLink({
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server")
@@ -468,76 +467,70 @@ class AuthDialog extends React.Component {
               height: "100%",
             }}
           >
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-password-login"
-                type={this.state.showPassword ? "text" : "password"}
-                value={this.state.password}
-                placeholder="Password"
-                onChange={event =>
-                  this.setState({
-                    password: event.target.value,
-                    passwordError: "",
-                    isPasswordEmpty: event.target.value === "",
-                  })
-                }
-                error={
-                  this.state.passwordError || this.state.isPasswordEmpty
-                    ? true
-                    : false
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.createToken()
-                }}
-                endAdornment={
-                  this.state.password ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() =>
-                          this.setState(oldState => ({
-                            showPassword: !oldState.showPassword,
-                          }))
-                        }
-                        tabIndex="-1"
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        {/* fix for ToggleIcon glitch on Edge */}
-                        {document.documentMode ||
-                        /Edge/.test(navigator.userAgent) ? (
-                          this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
-                          ) : (
-                            <Icon>visibility</Icon>
-                          )
-                        ) : (
-                          <ToggleIcon
-                            on={this.state.showPassword || false}
-                            onIcon={<Icon>visibility_off</Icon>}
-                            offIcon={<Icon>visibility</Icon>}
-                          />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-              <FormHelperText
-                style={
-                  this.state.passwordError || this.state.isPasswordEmpty
-                    ? { color: "#f44336" }
-                    : {}
-                }
-              >
-                {this.state.isPasswordEmpty
+            {" "}
+            <TextField
+              id="auth-password"
+              label="Password"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password}
+              variant="outlined"
+              error={this.state.passwordEmpty || this.state.passwordError}
+              helperText={
+                this.state.passwordEmpty
                   ? "This field is required"
-                  : this.state.passwordError}
-              </FormHelperText>
-            </FormControl>
+                  : this.state.passwordError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  password: event.target.value,
+                  passwordEmpty: event.target.value === "",
+                  passwordError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter" && this.state.password !== "")
+                  this.createToken()
+              }}
+              style={{
+                width: "100%",
+              }}
+              InputProps={{
+                endAdornment: this.state.password && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState(oldState => ({
+                          showPassword: !oldState.showPassword,
+                        }))
+                      }
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.54)" }
+                      }
+                    >
+                      {/* fix for ToggleIcon glitch on Edge */}
+                      {document.documentMode ||
+                      /Edge/.test(navigator.userAgent) ? (
+                        this.state.showPassword ? (
+                          <Icon>visibility_off</Icon>
+                        ) : (
+                          <Icon>visibility</Icon>
+                        )
+                      ) : (
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<Icon>visibility_off</Icon>}
+                          offIcon={<Icon>visibility</Icon>}
+                        />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </div>
           <DialogActions>
             <Button
@@ -598,58 +591,57 @@ class AuthDialog extends React.Component {
               height: "100%",
             }}
           >
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-password-login"
-                value={this.state.tokenName}
-                placeholder="Token"
-                onChange={event =>
-                  this.setState({
-                    tokenName: event.target.value,
-                    tokenError: "",
-                    isTokenEmpty: event.target.value === "",
-                  })
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") this.getPermanentToken()
-                }}
-                error={
-                  this.state.tokenError || this.state.isTokenEmpty
-                    ? true
-                    : false
-                }
-                endAdornment={
-                  this.state.tokenName ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => this.setState({ tokenName: "" })}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        <Icon>close</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-              <FormHelperText
-                style={
-                  this.state.tokenName || this.state.isTokenEmpty
-                    ? { color: "#f44336" }
-                    : {}
-                }
-              >
-                {this.state.isTokenEmpty
+            <TextField
+              id="token-name"
+              label="Token name"
+              value={this.state.tokenName}
+              variant="outlined"
+              error={this.state.tokenEmpty || this.state.tokenError}
+              helperText={
+                this.state.tokenEmpty
                   ? "This field is required"
-                  : this.state.tokenError}
-              </FormHelperText>
-            </FormControl>
+                  : this.state.tokenError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  tokenName: event.target.value,
+                  tokenEmpty: event.target.value === "",
+                  tokenError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter" && this.state.tokenName !== "") {
+                  this.getPermanentToken()
+                }
+              }}
+              style={{
+                marginTop: "16px",
+                width: "100%",
+              }}
+              InputProps={{
+                endAdornment: this.state.tokenName && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        this.setState({ tokenName: "" })
+                      }}
+                      onMouseDown={event => {
+                        event.preventDefault()
+                      }}
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.54)" }
+                      }
+                      tabIndex="-1"
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </div>
           <DialogActions>
             <Button

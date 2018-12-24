@@ -5,9 +5,7 @@ import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import FormControl from "@material-ui/core/FormControl"
-import FormHelperText from "@material-ui/core/FormHelperText"
-import Input from "@material-ui/core/Input"
+import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
@@ -96,7 +94,7 @@ export default class InviteUser extends Component {
   componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open && nextProps.open) {
       this.setState({
-        isEmailEmpty: false,
+        emailEmpty: false,
         emailError: false,
         email: "",
       })
@@ -117,70 +115,65 @@ export default class InviteUser extends Component {
         <DialogTitle disableTypography>
           Invite an {this.props.selectedUserType}
         </DialogTitle>
-        <FormControl
-          style={{
-            width: "calc(100% - 48px)",
-            paddingLeft: "24px",
-            paddingRight: "24px",
-          }}
-        >
-          <Input
-            id="adornment-email-login"
-            placeholder="Email"
+        <div style={{ height: "100%" }}>
+          <TextField
+            id="invite-user-email"
+            label={
+              // makes the first letter capital
+              this.props.selectedUserType.charAt(0).toUpperCase() +
+              this.props.selectedUserType.slice(1) +
+              " email"
+            }
             value={this.state.email}
+            variant="outlined"
+            error={this.state.emailEmpty || this.state.emailError}
+            helperText={
+              this.state.emailEmpty
+                ? "This field is required"
+                : this.state.emailError || " "
+            }
             onChange={event =>
               this.setState({
                 email: event.target.value,
+                emailEmpty: event.target.value === "",
                 emailError: "",
-                isEmailEmpty: event.target.value === "",
               })
             }
             onKeyPress={event => {
-              if (event.key === "Enter") this.inviteUser()
+              if (event.key === "Enter" && !this.state.emailEmpty)
+                this.inviteUser()
             }}
-            error={
-              this.state.emailError || this.state.isEmailEmpty ? true : false
-            }
-            endAdornment={
-              this.state.email ? (
+            style={{
+              width: "calc(100% - 48px)",
+              margin: "0 24px",
+            }}
+            InputProps={{
+              endAdornment: this.state.email && (
                 <InputAdornment position="end">
                   <IconButton
-                    onClick={() => this.setState({ email: "" })}
-                    onMouseDown={this.handleMouseDownPassword}
+                    onClick={() => this.setState({ email: "",emailEmpty:true })}
                     tabIndex="-1"
                     style={
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
+                        ? { color: "rgba(0, 0, 0, 0.46)" }
+                        : { color: "rgba(0, 0, 0, 0.54)" }
                     }
                   >
                     <Icon>clear</Icon>
                   </IconButton>
                 </InputAdornment>
-              ) : null
-            }
+              ),
+            }}
           />
-          <FormHelperText
-            style={
-              this.state.emailError || this.state.isEmailEmpty
-                ? { color: "#f44336" }
-                : {}
-            }
-          >
-            {this.state.isEmailEmpty
-              ? "This field is required"
-              : this.state.emailError}
-          </FormHelperText>
-        </FormControl>
-        <div style={{ height: "100%" }} />
+        </div>
         <DialogActions>
           <Button onClick={this.props.close}>Never mind</Button>
           <Button
             variant="contained"
             color="primary"
             onClick={() => this.inviteUser()}
-            disabled={this.state.showLoading}
+            disabled={this.state.email === "" || this.state.emailError}
           >
             Invite
             {this.state.showLoading && <CenteredSpinner isInButton />}

@@ -5,8 +5,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import Avatar from "@material-ui/core/Avatar"
 import Icon from "@material-ui/core/Icon"
-import FormControl from "@material-ui/core/FormControl"
-import Input from "@material-ui/core/Input"
+import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Grow from "@material-ui/core/Grow"
@@ -125,47 +124,62 @@ class ChangeNameDialog extends React.Component {
             >
               {this.getInitials(this.state.name)}
             </Avatar>
-            <br />
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-email-login"
-                placeholder="Email"
-                value={this.state.name}
-                onChange={event => {
-                  this.setState({
-                    name: event.target.value,
-                  })
-                }}
-                onKeyPress={event => {
-                  if (event.key === "Enter") changeName(this.state.name)
-                }}
-                endAdornment={
-                  this.state.name ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => {
-                          this.setState({ name: "" })
-                        }}
-                        onMouseDown={event => {
-                          event.preventDefault()
-                        }}
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                        tabIndex="-1"
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
+            <TextField
+              id="change-name"
+              label="Name"
+              value={this.state.name}
+              variant="outlined"
+              error={this.state.nameEmpty || this.state.nameError}
+              helperText={
+                this.state.nameEmpty
+                  ? "This field is required"
+                  : this.state.nameError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  name: event.target.value,
+                  nameEmpty: event.target.value === "",
+                  nameError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (
+                  event.key === "Enter" &&
+                  this.state.name !== "" &&
+                  this.state.name !== oldName
+                ) {
+                  changeName(this.state.name)
+                  this.props.handleNameDialogClose()
                 }
-              />
-            </FormControl>
-            <br />
-            <br />
+              }}
+              style={{
+                marginTop: "16px",
+                width: "100%",
+              }}
+              InputProps={{
+                endAdornment: this.state.name && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        this.setState({ name: "" })
+                      }}
+                      onMouseDown={event => {
+                        event.preventDefault()
+                      }}
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                        ? { color: "rgba(0, 0, 0, 0.46)" }
+                        : { color: "rgba(0, 0, 0, 0.54)" }
+                      }
+                      tabIndex="-1"
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </div>
           <DialogActions>
             <Button
