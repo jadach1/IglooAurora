@@ -209,7 +209,7 @@ class GraphQLFetcher extends Component {
 
     const environmentSharedWithYouSubscriptionQuery = gql`
       subscription {
-        environmentSharedWithYou {
+        environmentShareReceived {
           id
           sender {
             id
@@ -229,10 +229,12 @@ class GraphQLFetcher extends Component {
         if (!subscriptionData.data) {
           return prev
         }
+
         const newEnvironmentsShares = [
           ...prev.user.pendingEnvironmentShares,
-          subscriptionData.data.environmentSharedWithYou,
+          subscriptionData.data.environmentShareReceived,
         ]
+
         return {
           user: {
             ...prev.user,
@@ -248,78 +250,78 @@ class GraphQLFetcher extends Component {
           id
           environment {
             id
-          index
-          name
-          createdAt
-          updatedAt
-          muted
-          avatar
-          myRole
-          pendingEnvironmentShares {
-            id
-            role
-            receiver {
-              id
-              profileIconColor
-              name
-              email
-            }
-            sender {
-              id
-              profileIconColor
-              name
-              email
-            }
-          }
-          pendingOwnerChanges {
-            id
-            receiver {
-              id
-              profileIconColor
-              name
-              email
-            }
-            sender {
-              id
-              profileIconColor
-              name
-              email
-            }
-          }
-          devices {
-            id
             index
-            muted
             name
-            environment {
-              myRole
+            createdAt
+            updatedAt
+            muted
+            avatar
+            myRole
+            pendingEnvironmentShares {
+              id
+              role
+              receiver {
+                id
+                profileIconColor
+                name
+                email
+              }
+              sender {
+                id
+                profileIconColor
+                name
+                email
+              }
+            }
+            pendingOwnerChanges {
+              id
+              receiver {
+                id
+                profileIconColor
+                name
+                email
+              }
+              sender {
+                id
+                profileIconColor
+                name
+                email
+              }
+            }
+            devices {
+              id
+              index
+              muted
+              name
+              environment {
+                myRole
+              }
+            }
+            owner {
+              id
+              email
+              name
+              profileIconColor
+            }
+            admins {
+              id
+              email
+              name
+              profileIconColor
+            }
+            editors {
+              id
+              email
+              name
+              profileIconColor
+            }
+            spectators {
+              id
+              email
+              name
+              profileIconColor
             }
           }
-          owner {
-            id
-            email
-            name
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            name
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            name
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            name
-            profileIconColor
-          }
-                  }
         }
       }
     `
@@ -336,7 +338,7 @@ class GraphQLFetcher extends Component {
           subscriptionData.data.environmentShareAccepted.environment,
         ]
 
-               const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
+        const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
           pendingEnvironmentShare =>
             pendingEnvironmentShare.id !==
             subscriptionData.data.environmentShareAccepted.id
@@ -533,6 +535,116 @@ class GraphQLFetcher extends Component {
           user: {
             ...prev.user,
             pendingOwnerChanges: newOwnerChange,
+          },
+        }
+      },
+    })
+
+    const subscribeToOwnerChangeAccepted = gql`
+      subscription {
+        ownerChangeAccepted {
+          id
+          environment {
+            id
+            index
+            name
+            createdAt
+            updatedAt
+            muted
+            avatar
+            myRole
+            pendingEnvironmentShares {
+              id
+              role
+              receiver {
+                id
+                profileIconColor
+                name
+                email
+              }
+              sender {
+                id
+                profileIconColor
+                name
+                email
+              }
+            }
+            pendingOwnerChanges {
+              id
+              receiver {
+                id
+                profileIconColor
+                name
+                email
+              }
+              sender {
+                id
+                profileIconColor
+                name
+                email
+              }
+            }
+            devices {
+              id
+              index
+              muted
+              name
+              environment {
+                myRole
+              }
+            }
+            owner {
+              id
+              email
+              name
+              profileIconColor
+            }
+            admins {
+              id
+              email
+              name
+              profileIconColor
+            }
+            editors {
+              id
+              email
+              name
+              profileIconColor
+            }
+            spectators {
+              id
+              email
+              name
+              profileIconColor
+            }
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: subscribeToOwnerChangeAccepted,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newEnvironments = [
+          ...prev.user.environments,
+          subscriptionData.data.ownerChangeAccepted.environment,
+        ]
+
+        const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
+          pendingOwnerChange =>
+            pendingOwnerChange.id !==
+            subscriptionData.data.ownerChangeAccepted.id
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            environments: newEnvironments,
+            pendingOwnerChanges: newOwnerChanges,
           },
         }
       },

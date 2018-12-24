@@ -34,18 +34,14 @@ function Transition(props) {
 }
 
 class ChangeMailDialog extends React.Component {
-  constructor(props) {
-    super(props)
-
-    this.state = {
-      mailDialogOpen: false,
-      password: "",
-      passwordEmpty: false,
-      passwordError: "",
-      passwordemail: props.email,
-      emailError: "",
-      emailEmpty: false,
-    }
+  state = {
+    mailDialogOpen: false,
+    password: "",
+    passwordEmpty: false,
+    passwordError: "",
+    passwordemail: "",
+    emailError: "",
+    emailEmpty: false,
   }
 
   openMailDialog = () => {
@@ -206,7 +202,7 @@ class ChangeMailDialog extends React.Component {
         passwordError: "",
         emailError: "",
         emailEmpty: false,
-        email: "",
+        email: this.props.email,
       })
   }
 
@@ -337,6 +333,7 @@ class ChangeMailDialog extends React.Component {
               value={this.state.email}
               variant="outlined"
               error={this.state.emailEmpty || this.state.emailError}
+              InputLabelProps={this.state.email && { shrink: true }}
               helperText={
                 this.state.emailEmpty
                   ? "This field is required"

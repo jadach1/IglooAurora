@@ -82,7 +82,7 @@ class CreateDevice extends React.Component {
           select
           required
           style={{ width: "100%", marginBottom: "16px" }}
-          InputLabelProps={{ shrink: true }}
+          InputLabelProps={this.state.environment && { shrink: true }}
           disabled={user.environments.length < 2}
         >
           {user.environments

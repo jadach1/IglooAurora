@@ -66,7 +66,7 @@ class ChangeOwner extends Component {
         })
       } else if (
         e.message ===
-        "GraphQL error: There is already an environmentShare pending"
+        "GraphQL error: There is already a pending environmentShare"
       ) {
         this.setState({
           emailError: "Environment alreay shared",
