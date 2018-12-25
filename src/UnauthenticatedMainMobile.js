@@ -8,6 +8,8 @@ import ChangeServer from "./components/settings/ChangeServer"
 import Helmet from "react-helmet"
 
 export default class UnAuthenticatedMainMobile extends Component {
+  state = { redirect: false, tapCounter: 0, changeServerOpen: false }
+
   render() {
     let link = new HttpLink({
       uri:
