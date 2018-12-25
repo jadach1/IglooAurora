@@ -538,6 +538,7 @@ class MainMobile extends Component {
                     nightMode={nightMode}
                     devMode={devMode}
                     environmentData={this.props.environmentData}
+                    userData={this.props.userData}
                   />
                 </div>
                 <StatusBar

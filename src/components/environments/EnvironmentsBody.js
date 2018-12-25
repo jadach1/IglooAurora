@@ -55,7 +55,7 @@ export default class EnvironmentsBody extends Component {
           spacing={16}
           className="notSelectable defaultCursor"
           style={{
-            width: "calc(100vw - 64px)",
+            width: "100%",
             margin: "0",
           }}
         >
@@ -181,7 +181,7 @@ export default class EnvironmentsBody extends Component {
           spacing={16}
           className="notSelectable defaultCursor"
           style={{
-            width: "calc(100vw - 64px)",
+            width: "100%",
             margin: "0",
           }}
         >
