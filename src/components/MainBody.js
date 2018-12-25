@@ -5,6 +5,8 @@ import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Icon from "@material-ui/core/Icon"
+import { Redirect } from "react-router-dom"
+import queryString from "query-string"
 
 class MainBody extends Component {
   componentDidMount() {
@@ -143,7 +145,7 @@ class MainBody extends Component {
   render() {
     const { loading, error, device } = this.props.deviceData
 
-    if (loading) {
+    if (loading ) {
       return (
         <div
           style={
@@ -179,6 +181,21 @@ class MainBody extends Component {
     if (error) {
       if (error.message === "GraphQL error: This user doesn't exist anymore") {
         this.props.logOut()
+      }
+
+      if (
+        error.message === "GraphQL error: This id is not valid" ||
+        error.message === "GraphQL error: The requested resource does not exist"
+      ) {
+        return (
+          <Redirect
+            to={
+              "/?environment=" +
+              queryString.parse("?" + window.location.href.split("?")[1])
+                .environment
+            }
+          />
+        )
       }
 
       return (
@@ -278,6 +295,18 @@ class MainBody extends Component {
       )
     }
 
+    //changes the environment id in the url so that it is the correct one for the device
+    if (
+      device.environment.id !==
+      queryString.parse("?" + window.location.href.split("?")[1]).environment
+    ) {
+      return (
+        <Redirect
+          to={"/?environment=" + device.environment.id + "&device=" + device.id}
+        />
+      )
+    }
+
     return (
       <div
         style={
@@ -319,6 +348,9 @@ export default graphql(
         batteryStatus
         batteryCharging
         signalStatus
+        environment {
+          id
+        }
         values {
           id
           visibility

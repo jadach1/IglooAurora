@@ -10,13 +10,10 @@ import AppBar from "@material-ui/core/AppBar"
 import SettingsDialog from "./components/settings/SettingsDialog"
 import MainBodyHeader from "./components/MainBodyHeader"
 import StatusBar from "./components/devices/StatusBar"
-import { Redirect } from "react-router-dom"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Helmet from "react-helmet"
 import queryString from "query-string"
-
-let deviceIdList = []
 
 class MainMobile extends Component {
   state = {
@@ -408,50 +405,6 @@ class MainMobile extends Component {
         this.props.logOut()
       }
     }
-
-    if (environment && this.props.environments) {
-      let j
-
-      for (j = 0; j < this.props.environments.length; j++) {
-        deviceIdList = deviceIdList.concat(
-          this.props.environments[j].devices.map(device => device.id)
-        )
-      }
-
-      let environmentIdList = this.props.environments.map(
-        environment => environment.id
-      )
-
-      if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
-        if (!environmentIdList.includes(this.props.environmentId))
-          return <Redirect exact to="/" />
-      }
-
-      let i
-
-      for (i = 0; i < environment.devices.length; i++) {
-        if (
-          environment.devices[i].id ===
-            queryString.parse("?" + window.location.href.split("?")[1])
-              .device &&
-          environment.id !==
-            queryString.parse("?" + window.location.href.split("?")[1])
-              .environment
-        ) {
-          return (
-            <Redirect
-              to={
-                "/?environment=" +
-                environment.devices[i].environment.id +
-                "&device=" +
-                environment.devices[i].id
-              }
-            />
-          )
-        }
-      }
-    }
-
     return (
       <React.Fragment>
         <Helmet>
@@ -480,7 +433,8 @@ class MainMobile extends Component {
                 handleSettingsTabChanged={(event, value) => {
                   this.setState({
                     slideIndex: value,
-                  })}}
+                  })
+                }}
                 slideIndex={this.state.slideIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
@@ -538,7 +492,8 @@ class MainMobile extends Component {
                 handleSettingsTabChanged={(event, value) => {
                   this.setState({
                     slideIndex: value,
-                  })}}
+                  })
+                }}
                 slideIndex={this.state.slideIndex}
                 nightMode={nightMode}
                 userData={this.props.userData}
@@ -595,18 +550,6 @@ class MainMobile extends Component {
             </React.Fragment>
           )}
         </div>
-        {environment &&
-          this.props.environments &&
-          !deviceIdList.includes(this.props.selectedDevice) && (
-            <Redirect
-              exact
-              to={
-                this.props.environmentId
-                  ? "/?environment=" + this.props.environmentId
-                  : "/"
-              }
-            />
-          )}
       </React.Fragment>
     )
   }
