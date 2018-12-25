@@ -48,7 +48,9 @@ export default class GenericDialog extends Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle disableTypography>Unlocking superpowers!</DialogTitle>
+          <DialogTitle disableTypography style={{ textAlign: "center" }}>
+            Unlocking superpowers!
+          </DialogTitle>
           <CenteredSpinner style={{ margin: "12px 0 32px 0" }} noDelay large />
           <div
             style={{

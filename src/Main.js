@@ -14,8 +14,6 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Helmet from "react-helmet"
 
-let deviceIdList = []
-
 class Main extends Component {
   state = {
     drawer: false,
@@ -283,51 +281,6 @@ class Main extends Component {
       typeof Storage !== "undefined" &&
       localStorage.getItem("nightMode") === "true"
 
-    if (this.props.environments) {
-      let environmentIdList = this.props.environments.map(
-        environment => environment.id
-      )
-
-      if (!queryString.parse("?" + window.location.href.split("?")[1]).device) {
-        if (!environmentIdList.includes(this.props.environmentId))
-          return <Redirect exact to="/" />
-      }
-
-      let j
-
-      for (j = 0; j < this.props.environments.length; j++) {
-        deviceIdList = deviceIdList.concat(
-          this.props.environments[j].devices.map(device => device.id)
-        )
-      }
-    }
-
-    if (environment) {
-      let i
-
-      for (i = 0; i < environment.devices.length; i++) {
-        if (
-          environment.devices[i].id ===
-            queryString.parse("?" + window.location.href.split("?")[1])
-              .device &&
-          environment.id !==
-            queryString.parse("?" + window.location.href.split("?")[1])
-              .environment
-        ) {
-          return (
-            <Redirect
-              to={
-                "/?environment=" +
-                environment.devices[i].environment.id +
-                "&device=" +
-                environment.devices[i].id
-              }
-            />
-          )
-        }
-      }
-    }
-
     return (
       <React.Fragment>
         <Helmet>
@@ -502,18 +455,6 @@ class Main extends Component {
         {this.state.deselectDevice && environment && (
           <Redirect push to={"/?environment=" + environment.id} />
         )}
-        {environment &&
-          this.props.environments &&
-          !deviceIdList.includes(this.props.selectedDevice) && (
-            <Redirect
-              exact
-              to={
-                this.props.environmentId
-                  ? "/?environment=" + this.props.environmentId
-                  : "/"
-              }
-            />
-          )}
       </React.Fragment>
     )
   }
