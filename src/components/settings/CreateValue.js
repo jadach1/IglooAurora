@@ -84,7 +84,8 @@ class CreateValue extends React.Component {
           onChange={event => {
             this.setState({ device: event.target.value })
           }}
-          label="Device"
+                helperText=" "
+                label="Device"
           required
           variant="outlined"
           select
@@ -107,6 +108,7 @@ class CreateValue extends React.Component {
             label="Value"
             value={this.state.value}
             error={this.state.valueEmpty}
+            helperText={this.state.valueEmpty ? "This field is required" : " "}
             required
             type="number"
             onChange={event =>
@@ -142,6 +144,7 @@ class CreateValue extends React.Component {
             required
             value={this.state.value}
             error={this.state.valueEmpty}
+            helperText={this.state.valueEmpty ? "This field is required" : " "}
             onChange={event =>
               this.setState({
                 value: event.target.value,
@@ -264,7 +267,11 @@ class CreateValue extends React.Component {
           maxWidth="xs"
         >
           <DialogTitle disableTypography>Choose value type</DialogTitle>
-          <List>
+          <List
+            style={{
+              height: "100%",
+            }}
+          >
             <ListItem
               button
               onClick={() =>
@@ -279,9 +286,7 @@ class CreateValue extends React.Component {
               }
               style={{
                 paddingLeft: "24px",
-                paddingRight: "24px",
-                height: "100%",
-              }}
+                paddingRight: "24px",}}
             >
               <ListItemText primary="Boolean" />
             </ListItem>
@@ -379,6 +384,7 @@ class CreateValue extends React.Component {
               variant="outlined"
               value={this.state.name}
               error={this.state.nameEmpty}
+              helperText={this.state.nameEmpty ? "This field is required" : " "}
               style={{ width: "100%", marginBottom: "16px" }}
               onChange={event =>
                 this.setState({
@@ -431,6 +437,7 @@ class CreateValue extends React.Component {
                 label="Permission"
                 variant="outlined"
                 style={{ width: "100%", marginBottom: "16px" }}
+                helperText=" "
                 select
                 required
                 InputLabelProps={this.state.permission && { shrink: true }}
@@ -444,6 +451,7 @@ class CreateValue extends React.Component {
               onChange={event => {
                 this.setState({ visibility: event.target.value })
               }}
+              helperText=" "
               label="Visibility"
               variant="outlined"
               style={{ width: "100%", marginBottom: "8px" }}

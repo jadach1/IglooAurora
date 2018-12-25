@@ -130,6 +130,7 @@ class CreateDevice extends React.Component {
               label="Custom name"
               value={this.state.name}
               error={this.state.nameEmpty}
+              helperText={this.state.nameEmpty ? "This field is required" : " "}
               onChange={event =>
                 this.setState({
                   name: event.target.value,
@@ -167,6 +168,9 @@ class CreateDevice extends React.Component {
               value={this.state.deviceType}
               variant="outlined"
               error={this.state.deviceTypeEmpty}
+              helperText={
+                this.state.deviceTypeEmpty ? "This field is required" : " "
+              }
               onChange={event =>
                 this.setState({
                   deviceType: event.target.value,

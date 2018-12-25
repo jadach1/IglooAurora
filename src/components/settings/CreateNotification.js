@@ -73,6 +73,7 @@ class CreateNotification extends React.Component {
             })
           }}
           select
+                 helperText=" "
           variant="outlined"
           required
           name="device"
@@ -139,6 +140,7 @@ class CreateNotification extends React.Component {
               multiline
               rows="4"
               error={this.state.contentEmpty}
+              helperText={this.state.contentEmpty ? "This field is required" : " "}
               onChange={event =>
                 this.setState({
                   content: event.target.value,
