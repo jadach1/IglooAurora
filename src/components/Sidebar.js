@@ -17,6 +17,8 @@ import Button from "@material-ui/core/Button"
 import Zoom from "@material-ui/core/Zoom"
 import AddDevice from "./AddDevice"
 import { hotkeys } from "react-keyboard-shortcuts"
+import { Redirect } from "react-router-dom"
+import queryString from "query-string"
 
 class Sidebar extends Component {
   state = {
@@ -69,7 +71,7 @@ class Sidebar extends Component {
 
     let sidebarContent = ""
 
-    if (loading) {
+    if (loading || this.props.mainBodyLoading) {
       sidebarContent = (
         <CenteredSpinner
           style={
@@ -87,6 +89,16 @@ class Sidebar extends Component {
 
     if (error) {
       sidebarContent = "Unexpected error"
+
+      // if there's no environment with the id in the url and no device is selected, the user gets redirected
+      if (
+        (error.message === "GraphQL error: This id is not valid" ||
+          error.message ===
+            "GraphQL error: The requested resource does not exist") &&
+        !queryString.parse("?" + window.location.href.split("?")[1]).device
+      ) {
+        return <Redirect to="/" />
+      }
     }
 
     let devicesArray = []
