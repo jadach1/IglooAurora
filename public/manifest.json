@@ -5,7 +5,7 @@
   "background_color": "#0057cb",
   "display": "standalone",
   "Scope": "/",
-  "start_url": "https://igloo.ooo/",
+  "start_url": "https://aurora.igloo.ooo/",
   "orientation": "any",
   "icons": [
     {
@@ -526,5 +526,5 @@
   ],
   "splash_pages": null,
   "lang": "",
-  "description": "The official client for Igloo Cloud Framework"
+  "description": "The official client for Igloo"
 }
