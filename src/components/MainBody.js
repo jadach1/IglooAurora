@@ -145,7 +145,7 @@ class MainBody extends Component {
   render() {
     const { loading, error, device } = this.props.deviceData
 
-    if (loading ) {
+    if (loading) {
       return (
         <div
           style={
@@ -231,6 +231,7 @@ class MainBody extends Component {
         }
         devMode={this.props.devMode}
         environmentData={this.props.environmentData}
+        userData={this.props.userData}
         environments={this.props.environments}
       />
     )
@@ -295,16 +296,27 @@ class MainBody extends Component {
       )
     }
 
-    //changes the environment id in the url so that it is the correct one for the device
-    if (
-      device.environment.id !==
-      queryString.parse("?" + window.location.href.split("?")[1]).environment
-    ) {
-      return (
-        <Redirect
-          to={"/?environment=" + device.environment.id + "&device=" + device.id}
-        />
-      )
+    if (this.props.userData.user) {
+      //returns the id of the environemnt that contains the device
+      let deviceEnvironmentId = this.props.userData.user.environments.filter(
+        environment =>
+          environment.devices.filter(
+            environmentDevice =>
+              environmentDevice.id === this.props.deviceData.device.id
+          )[0]
+      )[0].id
+
+      //changes the environment id in the url so that it is the correct one for the device
+      if (
+        deviceEnvironmentId !==
+        queryString.parse("?" + window.location.href.split("?")[1]).environment
+      ) {
+        return (
+          <Redirect
+            to={"/?environment=" + deviceEnvironmentId + "&device=" + device.id}
+          />
+        )
+      }
     }
 
     return (
@@ -348,9 +360,6 @@ export default graphql(
         batteryStatus
         batteryCharging
         signalStatus
-        environment {
-          id
-        }
         values {
           id
           visibility
@@ -361,10 +370,6 @@ export default graphql(
           createdAt
           device {
             id
-            environment {
-              id
-              myRole
-            }
           }
           ... on FloatValue {
             floatValue: value
