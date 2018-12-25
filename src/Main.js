@@ -400,6 +400,7 @@ class Main extends Component {
                 isMobile={false}
                 logOut={this.props.logOut}
                 environments={this.props.environments}
+                userData={this.props.userData}
               />
               <StatusBar
                 environmentData={this.props.environmentData}
