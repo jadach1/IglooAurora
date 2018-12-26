@@ -298,13 +298,29 @@ class MainBody extends Component {
 
     if (this.props.userData.user) {
       //returns the id of the environemnt that contains the device
-      let deviceEnvironmentId = this.props.userData.user.environments.filter(
-        environment =>
-          environment.devices.filter(
-            environmentDevice =>
-              environmentDevice.id === this.props.deviceData.device.id
-          )[0]
-      )[0].id
+      let deviceEnvironmentId =
+        this.props.userData.user.environments.filter(
+          environment =>
+            environment.devices.filter(
+              environmentDevice =>
+                environmentDevice.id === this.props.deviceData.device.id
+            ) &&
+            environment.devices.filter(
+              environmentDevice =>
+                environmentDevice.id === this.props.deviceData.device.id
+            )[0]
+        )[0] &&
+        this.props.userData.user.environments.filter(
+          environment =>
+            environment.devices.filter(
+              environmentDevice =>
+                environmentDevice.id === this.props.deviceData.device.id
+            ) &&
+            environment.devices.filter(
+              environmentDevice =>
+                environmentDevice.id === this.props.deviceData.device.id
+            )[0]
+        )[0].id
 
       //changes the environment id in the url so that it is the correct one for the device
       if (
