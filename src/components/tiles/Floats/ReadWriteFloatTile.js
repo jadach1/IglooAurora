@@ -6,40 +6,42 @@ import Icon from "@material-ui/core/Icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
-class ReadWriteStringTile extends Component {
-  constructor(props) {
+class ReadWriteFloatTile extends Component {
+  constructor(props){
     super(props)
-    this.state = { value: props.value || "" }
+  this.state = { value: props.defaultValue || "" }
   }
 
-  handleChange = newValue => {
-    this.props.mutate({
-      variables: {
-        id: this.props.id,
-        value: newValue,
-      },
-      optimisticResponse: {
-        __typename: "Mutation",
-        stringValue: {
-          __typename: "StringValue",
+  mutateFloatValue = value => {
+      this.props.floatValue({
+        variables: {
           id: this.props.id,
-          value: newValue,
+          value: parseFloat(value)
+          ,
         },
-      },
-    })
-  }
+        optimisticResponse: {
+          __typename: "Mutation",
+          device: {
+            id: this.props.id,
+            value: parseFloat(value),
+            __typename: "FloatValue",
+          },
+        },
+      })
+    }
 
   render() {
     return (
       <TextField
-        id="read-write-string-tile"
+        id="read-write-float-tile"
+        type="number"
         value={this.state.value}
         variant="outlined"
-        onChange={event => {
+        onChange={event =>{
           this.setState({
             value: event.target.value,
           })
-          this.handleChange(event.target.value)
+this.mutateFloatValue(event.target.value)
         }}
         style={{
           width: "calc(100% - 48px)",
@@ -72,13 +74,14 @@ class ReadWriteStringTile extends Component {
   }
 }
 
-const updateStringValue = gql`
-  mutation stringValue($id: ID!, $value: String!) {
-    stringValue(id: $id, value: $value) {
-      id
-      value
-    }
+export default graphql(gql`
+mutation floatValue($id: ID!, $value: Float!) {
+  floatValue(id: $id, value: $value) {
+    id
+    value
   }
-`
-
-export default graphql(updateStringValue)(ReadWriteStringTile)
+}
+`,
+  {
+    name: "floatValue",
+  })(ReadWriteFloatTile)

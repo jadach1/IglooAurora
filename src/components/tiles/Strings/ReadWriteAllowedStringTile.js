@@ -1,12 +1,14 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import FormControl from "@material-ui/core/FormControl"
-import Select from "@material-ui/core/Select"
 import MenuItem from "@material-ui/core/MenuItem"
+import TextField from "@material-ui/core/TextField"
 
 class ReadWriteAllowedStringTile extends Component {
-  state = { selectedValue: "" }
+  constructor(props){
+    super(props)
+  this.state = { selectedValue: props.stringValue }
+  }
 
   handleChange = event => {
     this.setState({ selectedValue: event.target.value })
@@ -38,24 +40,31 @@ class ReadWriteAllowedStringTile extends Component {
     })
 
     return (
-      <div className="readWriteBooleanTile notSelectable">
-        <FormControl style={{ width: "100%" }}>
-          <Select
-            value={this.state.stringValue}
-            onChange={this.handleChange}
-            name="environment"
-          >
-            {noneAllowed && (
-              <MenuItem value="" className="notSelectable">
+       <TextField
+          value={this.state.selectedValue}
+          onChange={event => {
+            this.setState({
+              selectedValue: event.target.value,
+            })
+          }}
+          variant="outlined"
+          select
+          required
+                  style={{
+          width: "calc(100% - 48px)",
+          margin: "calc(50% - 64px) 24px",
+        }}
+          InputLabelProps={this.state.selectedValue && { shrink: true }}
+          disabled={menuItems.length < 1}
+        >
+            { noneAllowed && <MenuItem value="">
                 <em>None</em>
-              </MenuItem>
-            )}
-            {menuItems.map(value => (
-              <MenuItem value={value}>{value}</MenuItem>
+              </MenuItem>}
+          { menuItems
+            .map(item => (
+              <MenuItem value={item}>{item}</MenuItem>
             ))}
-          </Select>
-        </FormControl>
-      </div>
+        </TextField>
     )
   }
 }

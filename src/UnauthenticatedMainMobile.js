@@ -15,7 +15,7 @@ export default class UnAuthenticatedMainMobile extends Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? localStorage.getItem("server") + "/graphql"
-          : `http://igloo-production.herokuapp.com/graphql`,
+          : `https://igloo-production.herokuapp.com/graphql`,
     })
 
     this.client = new ApolloClient({

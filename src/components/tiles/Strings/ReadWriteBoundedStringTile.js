@@ -1,59 +1,59 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import Input from "@material-ui/core/Input"
-import InputLabel from "@material-ui/core/InputLabel"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import FormControl from "@material-ui/core/FormControl"
+import TextField from "@material-ui/core/TextField"
 
 class ReadWriteBoundedStringTile extends Component {
-  state = { text: this.props.stringValue }
+  state = { value: this.props.stringValue }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.stringValue !== this.state.text) {
-      this.setState({ text: nextProps.stringValue })
+      this.setState({ value: nextProps.stringValue })
     }
   }
 
   handleChange = event => {
-    this.setState({
-      text: event.target.value,
-    })
-
     this.props.mutate({
       variables: {
         id: this.props.id,
-        stringValue: this.state.text,
+        stringValue: this.state.value,
       },
       optimisticResponse: {
         __typename: "Mutation",
         stringValue: {
           __typename: "StringValue",
           id: this.props.id,
-          stringValue: this.state.text,
+          stringValue: this.state.value,
         },
       },
     })
   }
 
   render() {
-    const charCount = this.state.text || 0
-
     return (
-      <div className="readOnlyFloatTile notSelectable">
-        <FormControl>
-          <InputLabel>{this.props.name}</InputLabel>
-          <Input
-            value={this.state.text}
-            onChange={this.handleChange}
-            endAdornment={
-              <InputAdornment style={{ cursor: "default" }}>
-                {charCount.length}/{this.props.maxChars}
-              </InputAdornment>
-            }
-          />
-        </FormControl>
-      </div>
+       <TextField
+        id="read-write-string-tile"
+        value={this.state.value}
+        variant="outlined"
+        onChange={event => {
+          if (event.target.value.length<=this.props.maxChars){
+          this.setState({
+            value: event.target.value,
+          })
+          this.handleChange(event.target.value)}}
+        }
+        style={{
+          width: "calc(100% - 48px)",
+          margin: "calc(50% - 64px) 24px",
+        }}
+        InputProps={{
+          endAdornment:
+            <InputAdornment position="end" className="notSelectable defaultCursor">
+              {this.state.value.length+"/"+this.props.maxChars}
+            </InputAdornment>
+        }}
+      />
     )
   }
 }
