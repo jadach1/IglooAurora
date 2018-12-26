@@ -83,7 +83,6 @@ class NotificationsDrawer extends React.Component {
           id
           content
           date
-          visualized
           device {
             id
           }
@@ -97,22 +96,15 @@ class NotificationsDrawer extends React.Component {
         if (!subscriptionData.data) {
           return prev
         }
-        const newNotification = subscriptionData.data.notificationUpdated
-
-        if (notificationsToFlush.includes(newNotification.id)) {
-          newNotification.visualized = false
-        }
-
-        const newNotifications = prev.device.notifications.map(notification =>
-          notification.id === newNotification.id
-            ? newNotification
-            : notification
-        )
+        const newNotification = [
+          ...prev.user.notifications,
+          subscriptionData.data.notificationUpdated,
+        ]
 
         return {
-          device: {
-            ...prev.device,
-            notifications: newNotifications,
+          user: {
+            ...prev.user,
+            notifications: newNotification,
           },
         }
       },
@@ -147,17 +139,9 @@ class NotificationsDrawer extends React.Component {
   }
 
   clearNotification = id => {
-    this.props["ClearNotification"]({
+    this.props.ClearNotification({
       variables: {
         id: id,
-      },
-      optimisticResponse: {
-        __typename: "Mutation",
-        notification: {
-          id: id,
-          visualized: true,
-          __typename: "Notification",
-        },
       },
     })
   }
@@ -178,14 +162,18 @@ class NotificationsDrawer extends React.Component {
     }
   }
 
-  updateVisualizedNotifications = () => {
-    device.notifications.forEach(notification =>
-      Object.defineProperty(notification, "visualized", {
-        value: true,
-        writable: true,
-        configurable: true,
-      })
-    )
+  showNotificationsAsRead = () => {
+    if (device) {
+      device.notifications
+        .filter(notification => !unreadNotifications.includes(notification.id))
+        .forEach(notification =>
+          Object.defineProperty(notification, "visualized", {
+            value: true,
+            writable: true,
+            configurable: true,
+          })
+        )
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -565,18 +553,6 @@ class NotificationsDrawer extends React.Component {
         readNotificationsUI = (
           <Button
             onClick={() => this.props.showHiddenNotifications()}
-            label={
-              this.props.hiddenNotifications
-                ? "Hide read notifications"
-                : "Show read notifications"
-            }
-            icon={
-              this.props.hiddenNotifications ? (
-                <Icon>keyboard_arrow_up</Icon>
-              ) : (
-                <Icon>keyboard_arrow_down</Icon>
-              )
-            }
             fullWidth={true}
             className="divider"
             key="showMoreLessButton"
@@ -591,7 +567,16 @@ class NotificationsDrawer extends React.Component {
                 ? { backgroundColor: "transparent", color: "white" }
                 : { backgroundColor: "transparent", color: "black" }
             }
-          />
+          >
+            {this.props.hiddenNotifications ? (
+              <Icon>keyboard_arrow_up</Icon>
+            ) : (
+              <Icon>keyboard_arrow_down</Icon>
+            )}
+            {this.props.hiddenNotifications
+              ? "Hide read notifications"
+              : "Show read notifications"}
+          </Button>
         )
       }
     }
@@ -672,9 +657,9 @@ class NotificationsDrawer extends React.Component {
           anchor="right"
           open={this.props.drawer}
           onClose={() => {
-            this.updateVisualizedNotifications()
             notificationsToFlush = []
             this.props.changeDrawerState()
+            this.showNotificationsAsRead()
           }}
           swipeAreaWidth={0}
           disableBackdropTransition={false}
@@ -780,7 +765,6 @@ export default graphql(
       mutation ClearNotification($id: ID!) {
         notification(id: $id, visualized: true) {
           id
-          visualized
         }
       }
     `,

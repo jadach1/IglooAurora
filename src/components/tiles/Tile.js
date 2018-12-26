@@ -8,6 +8,7 @@ import ReadWriteAllowedStringTile from "./Strings/ReadWriteAllowedStringTile"
 import ReadWriteStringTile from "./Strings/ReadWriteStringTile"
 import ReadWriteBoundedStringTile from "./Strings/ReadWriteBoundedStringTile"
 import ReadWriteBoundedFloatTile from "./Floats/ReadWriteBoundedFloatTile"
+import ReadWriteFloatTile from "./Floats/ReadWriteFloatTile"
 import PlotTile from "./PlotTile"
 import FullScreenTile from "./FullScreenTile"
 import { graphql } from "react-apollo"
@@ -26,7 +27,6 @@ import ListItemText from "@material-ui/core/ListItemText"
 import TileSize from "./TileSize"
 import DataSettings from "./DataSettings"
 import ToggleIcon from "material-ui-toggle-icon"
-//import ShareValue from "./ShareValue"
 
 class Tile extends Component {
   state = {
@@ -88,94 +88,102 @@ class Tile extends Component {
 
     let specificTile
 
-      if (value.__typename === "BooleanValue") {
-        if (
-          value.permission === "READ_ONLY" ||
-          this.state.environmentRole === "SPECTATOR"
-        ) {
-          specificTile = <ReadOnlyBooleanTile value={value.boolValue} />
-        } else {
+    if (value.__typename === "BooleanValue") {
+      if (
+        value.permission === "READ_ONLY" ||
+        value.myRole === "SPECTATOR"
+      ) {
+        specificTile = <ReadOnlyBooleanTile value={value.boolValue} />
+      } else {
+        specificTile = (
+          <ReadWriteBooleanTile value={value.boolValue} id={value.id} />
+        )
+      }
+    } else if (value.__typename === "FloatValue") {
+      if (
+        value.permission === "READ_ONLY" ||
+        value.myRole === "SPECTATOR"
+      ) {
+        specificTile = (
+          <ReadOnlyFloatTile
+            value={value.floatValue}
+            valueDetails={value.valueDetails}
+            nightMode={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+            }
+          />
+        )
+      } else {
+        if (value.boundaries) {
           specificTile = (
-            <ReadWriteBooleanTile value={value.boolValue} id={value.id} />
-          )
-        }
-      } else if (value.__typename === "FloatValue") {
-        if (
-          value.permission === "READ_ONLY" ||
-          this.state.environmentRole === "SPECTATOR"
-        ) {
-          specificTile = (
-            <ReadOnlyFloatTile
-              value={value.floatValue}
-              valueDetails={value.valueDetails}
-              nightMode={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-              }
+            <ReadWriteBoundedFloatTile
+              id={value.id}
+              min={value.boundaries[0]}
+              max={value.boundaries[1]}
+              defaultValue={value.floatValue}
+              step={value.precision || undefined} // avoid passing null, pass undefined instead
+              disabled={value.permission === "READ_ONLY"}
             />
           )
         } else {
-          if (value.boundaries) {
-            specificTile = (
-              <ReadWriteBoundedFloatTile
-                id={value.id}
-                min={value.boundaries[0]}
-                max={value.boundaries[1]}
-                defaultValue={value.floatValue}
-                step={value.precision || undefined} // avoid passing null, pass undefined instead
-                disabled={value.permission === "READ_ONLY"}
-              />
-            )
-          } else {
-            specificTile = "I'm a read/write unbounded float"
-          }
-        }
-      } else if (value.__typename === "StringValue") {
-        if (
-          value.permission === "READ_ONLY" ||
-          this.state.environmentRole === "SPECTATOR"
-        ) {
           specificTile = (
-            <ReadOnlyStringTile value={value.stringValue} id={value.id} />
+            <ReadWriteFloatTile id={value.id} defaultValue={value.floatValue} valueDetails={value.valueDetails}/>
           )
-        } else {
-          if (!value.allowedValues && !value.maxChars) {
-            specificTile = (
-              <ReadWriteStringTile value={value.stringValue} id={value.id} />
-            )
-          } else if (!!value.allowedValue) {
-            specificTile = (
-              <ReadWriteAllowedStringTile
-                name={value.name}
-                values={value.allowedValues}
-                id={value.id}
-                stringValue={value.stringValue}
-              />
-            )
-          } else if (value.maxChars) {
-          }
         }
-      } else if (
-        value.__typename === "StringValue" &&
-        value.permission === "READ_WRITE" &&
-        !!value.allowedValues
+      }
+    } else if (value.__typename === "StringValue") {
+      if (
+        value.permission === "READ_ONLY" ||
+        value.myRole === "SPECTATOR"
       ) {
         specificTile = (
-          <ReadWriteBoundedStringTile
-            name={value.name}
-            values={value.allowedValues}
-            id={value.id}
-            stringValue={value.stringValue}
-            maxChars={value.maxChars}
-          />
-        )
-      } else if (value.__typename === "PlotValue") {
-        specificTile = (
-          <PlotTile value={value.plotValue} threshold={value.threshold} />
+          <ReadOnlyStringTile value={value.stringValue} id={value.id} />
         )
       } else {
-        specificTile = ""
+        if (!value.allowedValues && !value.maxChars) {
+          specificTile = (
+            <ReadWriteStringTile value={value.stringValue} id={value.id} valueDetails={value.valueDetails}/>
+          )
+        } else if (value.allowedValues) {
+          specificTile = (
+            <ReadWriteAllowedStringTile
+              name={value.name}
+              values={value.allowedValues}
+              id={value.id}
+              stringValue={value.stringValue}
+            />
+          )
+        } else if (value.maxChars) {          
+      specificTile = (
+        <ReadWriteBoundedStringTile
+          name={value.name}
+          id={value.id}
+          stringValue={value.stringValue}
+          maxChars={value.maxChars}
+        />)
+        }
       }
+    } else if (
+      value.__typename === "StringValue" &&
+      value.permission === "READ_WRITE" &&
+      !!value.maxChars
+    ) {
+      specificTile = (
+        <ReadWriteBoundedStringTile
+          name={value.name}
+          id={value.id}
+          stringValue={value.stringValue}
+          maxChars={value.maxChars}
+        />
+      )
+    } else if (value.__typename === "PlotValue") {
+      specificTile = (
+        <PlotTile value={value.plotValue} threshold={value.threshold} />
+      )
+    } else {
+      specificTile = ""
+    }
 
     const updateShown = visible =>
       this.props[
