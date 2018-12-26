@@ -119,7 +119,7 @@ export default class DeleteAccountDialog extends React.Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? localStorage.getItem("server") + "/graphql"
-          : `http://igloo-production.herokuapp.com/graphql`,
+          : `https://igloo-production.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },

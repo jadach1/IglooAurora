@@ -84,8 +84,8 @@ class CreateValue extends React.Component {
           onChange={event => {
             this.setState({ device: event.target.value })
           }}
-                helperText=" "
-                label="Device"
+          helperText=" "
+          label="Device"
           required
           variant="outlined"
           select
@@ -286,7 +286,8 @@ class CreateValue extends React.Component {
               }
               style={{
                 paddingLeft: "24px",
-                paddingRight: "24px",}}
+                paddingRight: "24px",
+              }}
             >
               <ListItemText primary="Boolean" />
             </ListItem>

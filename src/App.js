@@ -268,7 +268,7 @@ function setupWebPush(token) {
     const serverUrl =
       typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
         ? localStorage.getItem("server") + "/webPushSubscribe"
-        : `http://igloo-production.herokuapp.com/webPushSubscribe`
+        : `https://igloo-production.herokuapp.com/webPushSubscribe`
 
     //TODO: ?
     fetch(serverUrl, {

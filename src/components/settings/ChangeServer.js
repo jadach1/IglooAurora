@@ -32,7 +32,7 @@ export default class ChangeServer extends React.Component {
     url:
       (typeof Storage !== "undefined" && localStorage.getItem("server")) ||
       localStorage.getItem("manualServer") ||
-      "http://igloo-production.herokuapp.com",
+      "https://igloo-production.herokuapp.com",
     mode:
       typeof Storage !== "undefined" && localStorage.getItem("server")
         ? "manual"
