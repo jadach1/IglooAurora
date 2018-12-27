@@ -61,6 +61,8 @@ const listStyles = {
   },
 }
 
+let installPromptEvent
+
 const allDialogsClosed = {
   deleteDialogOpen: false,
   passwordDialogOpen: false,
@@ -197,10 +199,31 @@ class SettingsDialog extends React.Component {
     }
   }
 
+  addToHomeScreen = () => {
+    if (installPromptEvent) {
+      // Show the modal add to home screen dialog
+      installPromptEvent.prompt()
+      // Wait for the user to respond to the prompt
+      installPromptEvent.userChoice.then(() => {
+        // Clear the saved prompt since it can't be used again
+        installPromptEvent = null
+        this.forceUpdate()
+      })
+    }
+  }
+
   render() {
     const {
       userData: { user },
     } = this.props
+
+    window.addEventListener("beforeinstallprompt", event => {
+      // Prevent Chrome <= 67 from automatically showing the install prompt
+      event.preventDefault()
+      // Stash the event so it can be triggered later.
+      installPromptEvent = event
+      this.forceUpdate()
+    })
 
     let toggleNightMode = () => {
       if (typeof Storage !== "undefined") {
@@ -540,7 +563,7 @@ class SettingsDialog extends React.Component {
                 >
                   Miscellaneous
                 </ListSubheader>
-                <ListItem button>
+              {installPromptEvent &&  <ListItem button onClick={this.addToHomeScreen}>
                   <ListItemText
                     primary={
                       <font
@@ -555,7 +578,7 @@ class SettingsDialog extends React.Component {
                       </font>
                     }
                   />
-                </ListItem>
+                </ListItem>}
                 <ListItem button onClick={this.handleShortcutDialogOpen}>
                   <ListItemText
                     primary={

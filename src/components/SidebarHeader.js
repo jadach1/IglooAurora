@@ -77,6 +77,7 @@ class SidebarHeader extends Component {
             color: "white",
             lineHeight: "64px",
             marginLeft: "8px",
+            marginRight: "8px",
           }}
         >
           {this.props.environments &&
@@ -87,49 +88,6 @@ class SidebarHeader extends Component {
               environment => environment.id === this.props.selectedEnvironment
             )[0].name}
         </Typography>
-        <div
-          style={{
-            padding: "0",
-            marginLeft: "auto",
-            marginRight: "8px",
-            float: "right",
-            minWidth: "96px",
-          }}
-        >
-          {/* <a href="drekar.igloo.ooo">
-              <Tooltip
-                id="tooltip-bottom"
-                title="Go to Magellan"
-                placement="bottom"
-              >
-                <IconButton
-                  className="sidebarHeaderButton"
-                  style={{ color: "white" }}
-                >
-                  <Icon color="primary">map</Icon>
-                </IconButton>
-              </Tooltip>
-            </a> */}
-          <Tooltip
-            id="tooltip-bottom"
-            title={
-              <font className="notSelectable defaultCursor">Settings</font>
-            }
-            placement="bottom"
-          >
-            <IconButton
-              onClick={this.props.openSettingsDialog}
-              style={{ color: "white" }}
-            >
-              <Icon>settings</Icon>
-            </IconButton>
-          </Tooltip>
-          <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
-            <IconButton onClick={this.props.logOut} style={{ color: "white" }}>
-              <Icon>exit_to_app</Icon>
-            </IconButton>
-          </Tooltip>
-        </div>
         {this.state.goToEnvironments && <Redirect push to="/" />}
       </div>
     )
