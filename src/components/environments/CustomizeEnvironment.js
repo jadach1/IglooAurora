@@ -100,6 +100,12 @@ class CustomizeEnvironment extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.open !== nextProps.open && nextProps.open) {
+      this.setState({ nameEmpty: false, name: "" })
+    }
+  }
+
   render() {
     return (
       <Dialog
@@ -120,6 +126,7 @@ class CustomizeEnvironment extends React.Component {
             value={this.state.name}
             variant="outlined"
             error={this.state.nameEmpty}
+            helperText={this.state.nameEmpty ? "This field is required" : " "}
             onChange={event =>
               this.setState({
                 name: event.target.value,
