@@ -37,8 +37,12 @@ class CreateEnvironment extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
+<<<<<<< HEAD
     if (this.props.open !== nextProps.open && nextProps.open) {
       this.setState({ nameEmpty: false, name: "" })
+=======
+    if (nextProps.open === true) {
+>>>>>>> 242c6a6978a2a700d165d801633fa69e5c88cb15
       this.setState({ slideIndex: Math.floor(Math.random() * 5) })
     }
   }
@@ -99,9 +103,14 @@ class CreateEnvironment extends React.Component {
             id="create-environment-name"
             label="Name"
             value={this.state.name}
+<<<<<<< HEAD
             error={this.state.nameEmpty}
             helperText={this.state.nameEmpty ? "This field is required" : " "}
             variant="outlined"
+=======
+            variant="outlined"
+            error={this.state.nameEmpty}
+>>>>>>> 242c6a6978a2a700d165d801633fa69e5c88cb15
             onChange={event =>
               this.setState({
                 name: event.target.value,
