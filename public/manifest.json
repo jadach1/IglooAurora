@@ -1,18 +1,10 @@
 {
   "name": "Igloo Aurora",
-<<<<<<< HEAD
   "short_name": "Aurora",
   "theme_color": "#0057cb",
   "background_color": "#0057cb",
   "display": "standalone",
   "scope": "/",
-=======
-  "short_name": "Igloo Aurora",
-  "theme_color": "#0057cb",
-  "background_color": "#0057cb",
-  "display": "standalone",
-  "Scope": "/",
->>>>>>> 242c6a6978a2a700d165d801633fa69e5c88cb15
   "start_url": "https://aurora.igloo.ooo/",
   "orientation": "any",
   "icons": [
@@ -532,10 +524,5 @@
       "sizes": "16x16"
     }
   ],
-<<<<<<< HEAD
-=======
-  "splash_pages": null,
-  "lang": "",
->>>>>>> 242c6a6978a2a700d165d801633fa69e5c88cb15
   "description": "The official client for Igloo"
 }

@@ -677,12 +677,21 @@ class NotificationsDrawer extends React.Component {
               <AppBar position="sticky" style={{ height: "64px" }}>
                 <div
                   className="notSelectable"
-                  style={{
-                    height: "64px",
-                    backgroundColor: "#0083ff",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
+                  style={
+                    this.props.isMobile
+                      ? {
+                          height: "64px",
+                          backgroundColor: "#0057cb",
+                          display: "flex",
+                          alignItems: "center",
+                        }
+                      : {
+                          height: "64px",
+                          backgroundColor: "#0083ff",
+                          display: "flex",
+                          alignItems: "center",
+                        }
+                  }
                 >
                   <Tooltip
                     id="tooltip-bottom"

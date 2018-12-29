@@ -313,15 +313,11 @@ class EnvironmentCard extends Component {
               <ListItemIcon>
                 <Icon>remove_circle</Icon>
               </ListItemIcon>
-<<<<<<< HEAD
-              <ListItemText inset primary="Leave" disableTypography />
-=======
               <ListItemText
                 inset
                 primary="Leave"
                 disableTypography
               />
->>>>>>> 242c6a6978a2a700d165d801633fa69e5c88cb15
             </MenuItem>
           )}
           <Divider />

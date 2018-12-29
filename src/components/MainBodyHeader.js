@@ -176,6 +176,7 @@ class MainBodyHeader extends Component {
                 localStorage.getItem("nightMode") === "true"
               }
               logOut={this.props.logOut}
+              isMobile={this.props.isMobile}
             />
             <Tooltip id="tooltip-more" title="More" placement="bottom">
               <IconButton
