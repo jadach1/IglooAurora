@@ -1,64 +1,165 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="HandheldFriendly" content="true" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="HandheldFriendly" content="true" />
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="prefetch" href="./assets/polarBear.svg" />
 
-  <link rel="prefetch" href="./assets/polarBear.svg">
+    <link rel="prefetch" href="./assets/iglooTitle.svg" />
+    <link rel="prefetch" href="./assets/logo.svg" />
 
-  <link rel="prefetch" href="./assets/iglooTitle.svg">
-  <link rel="prefetch" href="./assets/logo.svg">
+    <title>Igloo Aurora</title>
+    <meta name="theme-color" content="#0057cb" />
+    <meta name="msapplication-TileColor" content="#0057cb" />
+    <meta
+      name="msapplication-TileImage"
+      content="./windows/Square150x150Logo.scale-100"
+    />
 
+    <link
+      rel="icon"
+      sizes="192x192"
+      href="./android/android-launchericon-192x192.png"
+    />
+    <link
+      rel="icon"
+      sizes="512x512"
+      href="./android/android-launchericon-512x512.png"
+    />
+    <link rel="apple-touch-icon" href="./ios/ios-appicon-1024-1024.png" />
+    <link
+      rel="apple-touch-icon"
+      sizes="152x152"
+      href="./ios/ios-appicon-152-152.png"
+    />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./ios/ios-appicon-180-180.png"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link
+      rel="apple-touch-startup-image"
+      href="./ios/ios-launchimage-1536-2048.png"
+    />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+    <link
+      href="/ios-launchimage-2732-2048.png"
+      sizes="2732x2048"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-2436-1125.png"
+      sizes="2436x1125"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-2224-1668.png"
+      sizes="2208x1242"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-2208-1242.png"
+      sizes="2208x1242"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-2048-2732.png"
+      sizes="2048x2732"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-2048-1536.png"
+      sizes="2048x1536"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-1668-2224.png"
+      sizes="1668x2224"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-1536-2048.png"
+      sizes="1536x2048"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-1334-750.png"
+      sizes="1334x750"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-1242-2208.png"
+      sizes="1242x2208"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-1136-640.png"
+      sizes="1136x640"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-1125-2436.png"
+      sizes="1125x2436"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-1024-768.png"
+      sizes="1024x768"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-768-1024.png"
+      sizes="768x1024"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-750-1334.png"
+      sizes="750x1334"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-640-1136.png"
+      sizes="640x1336"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-640-960.png"
+      sizes="640x960"
+      rel="apple-touch-startup-image"
+    />
+    <link
+      href="/ios-launchimage-320-480.png"
+      sizes="320x480"
+      rel="apple-touch-startup-image"
+    />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <script src="manup.js"></script>
+  </head>
 
-  <title>Igloo Aurora</title>
-  <meta name="theme-color" content="#0057cb">
-
-  <link rel="icon" sizes="192x192" href="./android/android-launchericon-192x192.png">
-  <link rel="apple-touch-icon" href="./ios/ios-appicon-1024-1024.png">
-  <link rel="apple-touch-icon" sizes="152x152" href="./ios/ios-appicon-152-152.png">
-  <link rel="apple-touch-icon" sizes="180x180" href="./ios/ios-appicon-180-180.png">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <link rel="apple-touch-startup-image" href="./ios/ios-launchimage-1536-2048.png">
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
-  <link href="/ios-launchimage-2732-2048.png" sizes="2732x2048" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-2436-1125.png" sizes="2436x1125" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-2224-1668.png" sizes="2208x1242" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-2208-1242.png" sizes="2208x1242" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-2048-2732.png" sizes="2048x2732" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-2048-1536.png" sizes="2048x1536" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-1668-2224.png" sizes="1668x2224" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-1536-2048.png" sizes="1536x2048" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-1334-750.png" sizes="1334x750" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-1242-2208.png" sizes="1242x2208" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-1136-640.png" sizes="1136x640" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-1125-2436.png" sizes="1125x2436" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-1024-768.png" sizes="1024x768" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-768-1024.png" sizes="768x1024" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-750-1334.png" sizes="750x1334" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-640-1136.png" sizes="640x1336" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-640-960.png" sizes="640x960" rel="apple-touch-startup-image" />
-  <link href="/ios-launchimage-320-480.png" sizes="320x480" rel="apple-touch-startup-image" />
-
-  <script src="manup.js"></script>
-</head>
-
-<body>
-  <noscript>
-    <div style="color:black;text-align: center">
-      <div className=" notSelectable defaultCursor">
-        <h1>Yikes, Javascript is disabled!</h1>
-        <h2>
-          Enable it to access Igloo Aurora
-        </h2>
+  <body>
+    <noscript>
+      <div style="color:black;text-align: center">
+        <div className=" notSelectable defaultCursor">
+          <h1>Yikes, Javascript is disabled!</h1>
+          <h2>Enable it to access Igloo Aurora</h2>
+        </div>
       </div>
-    </div>
-  </noscript>
-  <div id="root"></div>
-  <!--
+    </noscript>
+    <div id="root"></div>
+    <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.
 
@@ -68,6 +169,5 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
-</body>
-
+  </body>
 </html>

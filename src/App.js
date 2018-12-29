@@ -355,7 +355,7 @@ class App extends Component {
     // keepLoggedIn is the parameter that determines whether the user is automatically logged back in every time
     // if keepLoggedIn wasn't assigned a value, it is set to true
     typeof Storage !== "undefined" &&
-      localStorage.getItem("keepLoggedIn") === "" &&
+      !localStorage.getItem("keepLoggedIn") &&
       localStorage.setItem("keepLoggedIn", "true")
   }
 

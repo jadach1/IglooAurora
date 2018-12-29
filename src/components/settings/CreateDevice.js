@@ -41,7 +41,7 @@ class CreateDevice extends React.Component {
     }
 
     if (this.props.open !== nextProps.open && nextProps.open === true) {
-      this.setState({ name: "", nameEmpty: "", deviceTypeEmpty: "" })
+      this.setState({ name: "", nameEmpty: "",deviceType:"", deviceTypeEmpty: "" })
     }
   }
 
