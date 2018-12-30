@@ -12,6 +12,8 @@ import IconButton from "@material-ui/core/IconButton"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Radio from "@material-ui/core/Radio"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 const MOBILE_WIDTH = 600
 
@@ -32,7 +34,7 @@ export default class ChangeServer extends React.Component {
     url:
       (typeof Storage !== "undefined" && localStorage.getItem("server")) ||
       localStorage.getItem("manualServer") ||
-      "https://igloo-production.herokuapp.com",
+      "https://bering.igloo.ooo",
     mode:
       typeof Storage !== "undefined" && localStorage.getItem("server")
         ? "manual"
@@ -47,6 +49,18 @@ export default class ChangeServer extends React.Component {
           : "auto"
 
       oldUrl = typeof Storage !== "undefined" && localStorage.getItem("server")
+
+      this.setState({
+        urlEmpty: false,
+        url:
+          (typeof Storage !== "undefined" && localStorage.getItem("server")) ||
+          localStorage.getItem("manualServer") ||
+          "https://bering.igloo.ooo",
+        mode:
+          typeof Storage !== "undefined" && localStorage.getItem("server")
+            ? "manual"
+            : "auto",
+      })
     }
   }
 
@@ -68,7 +82,7 @@ export default class ChangeServer extends React.Component {
       this.props.close()
     }
 
-    return (
+    const dialog = (
       <Dialog
         open={this.props.open}
         onClose={this.props.close}
@@ -81,21 +95,11 @@ export default class ChangeServer extends React.Component {
       >
         <DialogTitle disableTypography>Change connected server</DialogTitle>
         <div
-          style={
-            typeof Storage !== "undefined" &&
-            localStorage.getItem("nightMode") === "true"
-              ? {
-                  height: "100%",
-                  paddingRight: "24px",
-                  paddingLeft: "24px",
-                  background: "#2f333d",
-                }
-              : {
-                  height: "100%",
-                  paddingRight: "24px",
-                  paddingLeft: "24px",
-                }
-          }
+          style={{
+            height: "100%",
+            paddingRight: "24px",
+            paddingLeft: "24px",
+          }}
         >
           <RadioGroup
             onChange={(event, value) => {
@@ -147,22 +151,11 @@ export default class ChangeServer extends React.Component {
                 <InputAdornment position="end">
                   <IconButton
                     onClick={() => {
-                      this.setState({ name: "" })
+                      this.setState({ url: "", urlEmpty: true })
                     }}
                     onMouseDown={event => {
                       event.preventDefault()
                     }}
-                    style={
-                      this.state.mode === "auto"
-                        ? typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                          ? { color: "rgba(0, 0, 0, 0.62)" }
-                          : { color: "rgba(0, 0, 0, 0.38)" }
-                        : typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
                     tabIndex="-1"
                     disabled={this.state.mode === "auto"}
                   >
@@ -174,15 +167,7 @@ export default class ChangeServer extends React.Component {
           />
         </div>
         <DialogActions>
-          <Button
-            onClick={this.props.close}
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? { color: "white", marginRight: "4px" }
-                : { marginRight: "4px" }
-            }
-          >
+          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind
           </Button>
           <Button
@@ -191,15 +176,68 @@ export default class ChangeServer extends React.Component {
             onClick={confirm}
             disabled={
               typeof Storage === "undefined"
-                ? oldMode === this.state.mode
-                : oldMode === this.state.mode &&
-                  (this.state.mode === "manual" && this.state.url === oldUrl)
+                ? oldMode === this.state.mode || this.state.url === ""
+                : (oldMode === this.state.mode &&
+                    (this.state.mode === "manual" &&
+                      this.state.url === oldUrl)) ||
+                  this.state.url === ""
             }
           >
             Change
           </Button>
         </DialogActions>
       </Dialog>
+    )
+
+    return this.props.unauthenticated ? (
+      <MuiThemeProvider
+        theme={createMuiTheme({
+          palette: {
+            default: { main: "#fff" },
+            primary: { light: "#0083ff", main: "#0057cb" },
+            secondary: { main: "#ff4081" },
+            error: { main: "#f44336" },
+          },
+          overrides: {
+            MuiDialogTitle: {
+              root: {
+                fontSize: "1.3125rem",
+                lineHeight: "1.16667em",
+                fontWeight: 500,
+                cursor: "default",
+                webkitTouchCallout: "none",
+                webkitUserSelect: "none",
+                khtmlUserSelect: "none",
+                mozUserSelect: "none",
+                msUserSelect: "none",
+                userSelect: "none",
+              },
+            },
+            MuiButton: {
+              containedPrimary: {
+                backgroundColor: "#0083ff",
+              },
+            },
+            MuiDialogActions: {
+              action: {
+                marginRight: "4px",
+              },
+            },
+            MuiRadio: {
+              colorPrimary: {
+                "&$checked": {
+                  color: "#0083ff",
+                },
+                color: "black",
+              },
+            },
+          },
+        })}
+      >
+        {dialog}
+      </MuiThemeProvider>
+    ) : (
+      dialog
     )
   }
 }

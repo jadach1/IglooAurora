@@ -118,7 +118,7 @@ class AuthDialog extends React.Component {
               .replace("https://", "")
               .replace("http://", "") +
             "/subscriptions"
-          : `wss://igloo-production.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -131,7 +131,7 @@ class AuthDialog extends React.Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? localStorage.getItem("server") + "/graphql"
-          : `https://igloo-production.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -197,7 +197,7 @@ class AuthDialog extends React.Component {
               .replace("https://", "")
               .replace("http://", "") +
             "/subscriptions"
-          : `wss://igloo-production.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -210,7 +210,7 @@ class AuthDialog extends React.Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? localStorage.getItem("server") + "/graphql"
-          : `https://igloo-production.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },

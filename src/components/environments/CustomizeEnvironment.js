@@ -30,7 +30,6 @@ function Transition(props) {
 
 class CustomizeEnvironment extends React.Component {
   state = {
-    name: this.props.environment.name,
     nameEmpty: false,
     slideIndex: 0,
     initialSlideIndex: 0,
@@ -102,7 +101,7 @@ class CustomizeEnvironment extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open && nextProps.open) {
-      this.setState({ nameEmpty: false, name: "" })
+      this.setState({ nameEmpty: false, name: nextProps.environment.name })
     }
   }
 

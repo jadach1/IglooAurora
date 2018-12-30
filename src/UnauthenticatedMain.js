@@ -23,7 +23,7 @@ export default class UnAuthenticatedMain extends Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? localStorage.getItem("server") + "/graphql"
-          : `https://igloo-production.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
     })
 
     this.client = new ApolloClient({
@@ -111,6 +111,7 @@ export default class UnAuthenticatedMain extends Component {
           close={() => this.setState({ changeServerOpen: false })}
           forceUpdate={() => this.props.forceUpdate()}
           isUnauthenticated
+          unauthenticated
         />
         {this.props.redirect && (
           <Redirect to={this.props.isLogin ? "/signup" : "/login"} />

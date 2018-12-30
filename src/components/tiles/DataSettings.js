@@ -36,48 +36,50 @@ class DataSettings extends Component {
         maxWidth="xs"
       >
         <DialogTitle disableTypography>Data settings</DialogTitle>
-        <div style={{ paddingLeft: "24px" }}>Unit of measurement</div>
-        <RadioGroup
-          onChange={(event, value) => this.setState({ unitValue: value })}
-          value={this.state.unitValue}
-          style={{ paddingLeft: "24px", paddingRight: "24px" }}
-        >
-          <FormControlLabel
-            value="celsius"
-            control={<Radio color="primary" />}
-            label="Celsius (°C)"
-          />
-          <FormControlLabel
-            value="fahrenheit"
-            control={<Radio color="primary" />}
-            label="Fahrenheit (°F)"
-          />
-          <FormControlLabel
-            value="kelvin"
-            control={<Radio color="primary" />}
-            label="Kelvin (K)"
-          />
-        </RadioGroup>
-        <br />
-        <div style={{ paddingLeft: "24px" }}>Visualization</div>
-        <RadioGroup
-          onChange={(event, value) =>
-            this.setState({ visualizationValue: value })
-          }
-          value={this.state.visualizationValue}
-          style={{ paddingLeft: "24px", paddingRight: "24px" }}
-        >
-          <FormControlLabel
-            value="number"
-            control={<Radio color="primary" />}
-            label="Number"
-          />
-          <FormControlLabel
-            value="plot"
-            control={<Radio color="primary" />}
-            label="Plot"
-          />
-        </RadioGroup>
+        <div style={{ height: "100%" }}>
+          <div style={{ paddingLeft: "24px" }}>Unit of measurement</div>
+          <RadioGroup
+            onChange={(event, value) => this.setState({ unitValue: value })}
+            value={this.state.unitValue}
+            style={{ paddingLeft: "24px", paddingRight: "24px" }}
+          >
+            <FormControlLabel
+              value="celsius"
+              control={<Radio color="primary" />}
+              label="Celsius (°C)"
+            />
+            <FormControlLabel
+              value="fahrenheit"
+              control={<Radio color="primary" />}
+              label="Fahrenheit (°F)"
+            />
+            <FormControlLabel
+              value="kelvin"
+              control={<Radio color="primary" />}
+              label="Kelvin (K)"
+            />
+          </RadioGroup>
+          <br />
+          <div style={{ paddingLeft: "24px" }}>Visualization</div>
+          <RadioGroup
+            onChange={(event, value) =>
+              this.setState({ visualizationValue: value })
+            }
+            value={this.state.visualizationValue}
+            style={{ paddingLeft: "24px", paddingRight: "24px" }}
+          >
+            <FormControlLabel
+              value="number"
+              control={<Radio color="primary" />}
+              label="Number"
+            />
+            <FormControlLabel
+              value="plot"
+              control={<Radio color="primary" />}
+              label="Plot"
+            />
+          </RadioGroup>
+        </div>
         <DialogActions>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>

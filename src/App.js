@@ -116,6 +116,15 @@ const lightTheme = createMuiTheme({
         color: "black",
       },
     },
+    MuiInputLabel: {
+      cursor: "default",
+      webkitTouchCallout: "none",
+      webkitUserSelect: "none",
+      khtmlUserSelect: "none",
+      mozUserSelect: "none",
+      msUserSelect: "none",
+      userSelect: "none",
+    },
     ...sharedStyles,
   },
 })
@@ -211,11 +220,25 @@ const darkTheme = createMuiTheme({
         color: "white",
       },
     },
+    MuiOutlinedInput: {
+      root: { color: "white" },
+    },
+    MuiInputLabel: {
+      root: {
+        color: "rgba(255, 255, 255, 0.54)",
+        "&$focused": {
+          color: "#0083ff",
+          "&$error": {
+            color: "#f44336",
+            "&$disabled": { color: "rgba(255, 255, 255, 0.54)" },
+          },
+        },
+      },
+    },
     ...sharedStyles,
   },
 })
 
-//TODO: ?
 function setupWebPush(token) {
   const applicationServerPublicKey =
     "BOZG_RBpt8yVp6J1JN08zCEPSFbYC_aHQQKNY0isQDnozk9GXZAiSHMnnXowvfacQeh38j2TQAyp9yT0qpUXS6Y"
@@ -268,7 +291,7 @@ function setupWebPush(token) {
     const serverUrl =
       typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
         ? localStorage.getItem("server") + "/webPushSubscribe"
-        : `https://igloo-production.herokuapp.com/webPushSubscribe`
+        : `https://bering.igloo.ooo/webPushSubscribe`
 
     //TODO: ?
     fetch(serverUrl, {

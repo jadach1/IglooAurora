@@ -2,9 +2,7 @@ import React from "react"
 import * as EmailValidator from "email-validator"
 import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
-import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import FormControl from "@material-ui/core/FormControl"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
 import DialogTitle from "@material-ui/core/DialogTitle"
@@ -12,6 +10,7 @@ import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import TextField from "@material-ui/core/TextField"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
@@ -29,8 +28,8 @@ class ForgotPassword extends React.Component {
   state = { email: "" }
 
   componentWillReceiveProps(nextProps) {
-    if (!this.state.email && nextProps.email !== this.state.email) {
-      this.setState({ email: nextProps.email })
+    if (this.props.open !== nextProps.open && nextProps.open) {
+      this.setState({ email: nextProps.email, emailError: false })
     }
   }
 
@@ -81,47 +80,59 @@ class ForgotPassword extends React.Component {
           maxWidth="xs"
         >
           <DialogTitle disableTypography>Recover your password</DialogTitle>
-          <div style={{ paddingLeft: "24px", paddingRight: "24px" }}>
-            <div className="defaultCursor">
+          <div
+            style={{
+              paddingLeft: "24px",
+              paddingRight: "24px",
+              height: "100%",
+            }}
+          >
+            <div className="defaultCursor notSelectable">
               Enter your email address and we will send you a link to reset your
-              password
+              password.
             </div>
-            <br />
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="adornment-name-login"
-                placeholder="Email"
-                value={this.state.email}
-                style={{ color: "black" }}
-                onChange={event =>
-                  this.setState({
-                    email: event.target.value,
-                  })
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") {
-                    this.props.recover(this.state.email)
-                    this.props.close()
-                  }
-                }}
-                endAdornment={
-                  this.state.email ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() => this.setState({ email: "" })}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                      >
-                        <Icon>clear</Icon>
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-            </FormControl>
+            <TextField
+              id="forgot-password-email"
+              label="Email"
+              value={this.state.email}
+              variant="outlined"
+              error={this.state.emailEmpty || this.state.emailError}
+              helperText={
+                this.state.emailEmpty
+                  ? "This field is required"
+                  : this.state.emailError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  email: event.target.value,
+                  emailEmpty: event.target.value === "",
+                  emailError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter" && !this.state.emailEmpty)
+                  this.changeOwner()
+              }}
+              style={{
+                width: "100%",
+                marginTop: "16px",
+              }}
+              InputProps={{
+                endAdornment: this.state.email && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState({ email: "", emailEmpty: true })
+                      }
+                      tabIndex="-1"
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </div>
-          <br />
-          <div style={{ height: "100%" }} />
           <DialogActions>
             <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
               Never mind
