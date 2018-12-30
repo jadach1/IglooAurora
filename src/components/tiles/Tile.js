@@ -15,6 +15,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Divider from "@material-ui/core/Divider"
 import RenameTileDialog from "./RenameTile"
+import DeleteValue from "./DeleteValue"
 import CardInfo from "./CardInfo.js"
 import Typography from "@material-ui/core/Typography"
 import Icon from "@material-ui/core/Icon"
@@ -40,6 +41,7 @@ class Tile extends Component {
     tileSizeOpen: false,
     dataSettingsOpen: false,
     shareValueOpen: false,
+    deleteOpen: false,
   }
 
   handleClick = event => {
@@ -89,10 +91,7 @@ class Tile extends Component {
     let specificTile
 
     if (value.__typename === "BooleanValue") {
-      if (
-        value.permission === "READ_ONLY" ||
-        value.myRole === "SPECTATOR"
-      ) {
+      if (value.permission === "READ_ONLY" || value.myRole === "SPECTATOR") {
         specificTile = <ReadOnlyBooleanTile value={value.boolValue} />
       } else {
         specificTile = (
@@ -100,10 +99,7 @@ class Tile extends Component {
         )
       }
     } else if (value.__typename === "FloatValue") {
-      if (
-        value.permission === "READ_ONLY" ||
-        value.myRole === "SPECTATOR"
-      ) {
+      if (value.permission === "READ_ONLY" || value.myRole === "SPECTATOR") {
         specificTile = (
           <ReadOnlyFloatTile
             value={value.floatValue}
@@ -128,22 +124,27 @@ class Tile extends Component {
           )
         } else {
           specificTile = (
-            <ReadWriteFloatTile id={value.id} defaultValue={value.floatValue} valueDetails={value.valueDetails}/>
+            <ReadWriteFloatTile
+              id={value.id}
+              defaultValue={value.floatValue}
+              valueDetails={value.valueDetails}
+            />
           )
         }
       }
     } else if (value.__typename === "StringValue") {
-      if (
-        value.permission === "READ_ONLY" ||
-        value.myRole === "SPECTATOR"
-      ) {
+      if (value.permission === "READ_ONLY" || value.myRole === "SPECTATOR") {
         specificTile = (
           <ReadOnlyStringTile value={value.stringValue} id={value.id} />
         )
       } else {
         if (!value.allowedValues && !value.maxChars) {
           specificTile = (
-            <ReadWriteStringTile value={value.stringValue} id={value.id} valueDetails={value.valueDetails}/>
+            <ReadWriteStringTile
+              value={value.stringValue}
+              id={value.id}
+              valueDetails={value.valueDetails}
+            />
           )
         } else if (value.allowedValues) {
           specificTile = (
@@ -154,14 +155,15 @@ class Tile extends Component {
               stringValue={value.stringValue}
             />
           )
-        } else if (value.maxChars) {          
-      specificTile = (
-        <ReadWriteBoundedStringTile
-          name={value.name}
-          id={value.id}
-          stringValue={value.stringValue}
-          maxChars={value.maxChars}
-        />)
+        } else if (value.maxChars) {
+          specificTile = (
+            <ReadWriteBoundedStringTile
+              name={value.name}
+              id={value.id}
+              stringValue={value.stringValue}
+              maxChars={value.maxChars}
+            />
+          )
         }
       }
     } else if (
@@ -471,6 +473,22 @@ class Tile extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Rename" disableTypography />
                 </MenuItem>
+                {typeof Storage !== "undefined" &&
+                  localStorage.getItem("devMode") === "true" && (
+                    <MenuItem
+                      onClick={() => {
+                        this.setState({ deleteOpen: true })
+                        this.handleMenuClose()
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon style={{ color: "#f44336" }}>delete</Icon>
+                      </ListItemIcon>
+                      <ListItemText inset>
+                        <span style={{ color: "#f44336" }}>Delete</span>
+                      </ListItemText>
+                    </MenuItem>
+                  )}
               </Menu>
             </div>
           </div>
@@ -506,6 +524,11 @@ class Tile extends Component {
         <DataSettings
           open={this.state.dataSettingsOpen}
           close={() => this.setState({ dataSettingsOpen: false })}
+        />
+        <DeleteValue
+          open={this.state.deleteOpen}
+          id={value.id}
+          close={() => this.setState({ deleteOpen: false })}
         />
       </React.Fragment>
     )

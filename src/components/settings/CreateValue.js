@@ -289,7 +289,20 @@ class CreateValue extends React.Component {
                 paddingRight: "24px",
               }}
             >
-              <ListItemText primary="Boolean" />
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    Boolean
+                  </font>
+                }
+              />
             </ListItem>
             <ListItem
               button
@@ -305,7 +318,18 @@ class CreateValue extends React.Component {
               }
               style={{ paddingLeft: "24px", paddingRight: "24px" }}
             >
-              <ListItemText primary="Category plot" />
+              <ListItemText  primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    Category plot
+                  </font>
+                }/>
             </ListItem>
             <ListItem
               button
@@ -321,7 +345,20 @@ class CreateValue extends React.Component {
               }
               style={{ paddingLeft: "24px", paddingRight: "24px" }}
             >
-              <ListItemText primary="Float" />
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    Float
+                  </font>
+                }
+              />
             </ListItem>
             <ListItem
               button
@@ -337,7 +374,20 @@ class CreateValue extends React.Component {
               }
               style={{ paddingLeft: "24px", paddingRight: "24px" }}
             >
-              <ListItemText primary="Plot" />
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    Plot
+                  </font>
+                }
+              />
             </ListItem>
             <ListItem
               button
@@ -353,7 +403,20 @@ class CreateValue extends React.Component {
               }
               style={{ paddingLeft: "24px", paddingRight: "24px" }}
             >
-              <ListItemText primary="String" />
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    String
+                  </font>
+                }
+              />
             </ListItem>
           </List>
           <DialogActions>

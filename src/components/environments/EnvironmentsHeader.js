@@ -59,19 +59,6 @@ class EnvironmentsHeader extends Component {
               float: "right",
             }}
           >
-            {/* <a href="drekar.igloo.ooo">
-              <Tooltip
-                id="tooltip-bottom"
-                title="Go to Magellan"
-                placement="bottom"
-              >
-                <IconButton
-                  className="sidebarHeaderButton"
-color="default"                >
-                  <Icon style={{ color: "white" }}>map</Icon>
-                </IconButton>
-              </Tooltip>
-            </a> */}
             <Tooltip id="tooltip-bottom" title="Settings" placement="bottom">
               <IconButton
                 onClick={this.props.openSettings}

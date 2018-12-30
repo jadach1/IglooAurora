@@ -76,7 +76,6 @@ class MainBody extends Component {
       subscription {
         valueUpdated {
           id
-          permission
           visibility
           valueDetails
           tileSize
@@ -384,6 +383,7 @@ export default graphql(
           name
           updatedAt
           createdAt
+          myRole
           device {
             id
           }

@@ -9,6 +9,7 @@ body {
   font-family: Roboto, Segoe UI, sans-serif;
   -ms-content-zooming: none;
   touch-action: none;
+  overscroll-behavior-y: none;
 }
 
 .main {

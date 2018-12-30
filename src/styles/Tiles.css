@@ -64,33 +64,15 @@
   line-height: 48px;
   grid-area: min;
 }
+
 .readWriteBoundedFloatTile .max {
   line-height: 48px;
   grid-area: max;
 }
+
 .readWriteBoundedFloatTile .slider {
   padding-top: 16px;
   grid-area: slider;
-}
-.readWriteBoundedFloatTile .number {
-  grid-area: number;
-  text-align: center;
-  line-height: 32px;
-}
-
-.readOnlyFloatTile {
-  display: grid;
-  grid-template-rows: auto 50px auto;
-  grid-template-columns: auto;
-  grid-template-areas: "." "number" ".";
-}
-
-.readOnlyFloatTile .number {
-  grid-area: number;
-  margin-top: auto;
-  margin-bottom: auto;
-  font-size: 50px;
-  text-align: center;
 }
 
 .readWriteBooleanTile {

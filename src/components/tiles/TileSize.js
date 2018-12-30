@@ -76,32 +76,35 @@ class TileSize extends Component {
         maxWidth="xs"
       >
         <DialogTitle disableTypography>Change card size</DialogTitle>
-        <RadioGroup
-          onChange={(event, value) => this.setState({ radioValue: value })}
-          value={this.state.radioValue}
-          style={{ paddingLeft: "24px", paddingRight: "24px" }}
-        >
-          <FormControlLabel
-            value="NORMAL"
-            control={<Radio color="primary" />}
-            label="Normal"
-          />
-          {!(
-            this.props.value.__typename === "FloatValue" &&
-            this.props.value.permission === "READ_ONLY"
-          ) && (
+        <div style={{ height: "100%" }}>
+          {" "}
+          <RadioGroup
+            onChange={(event, value) => this.setState({ radioValue: value })}
+            value={this.state.radioValue}
+            style={{ paddingLeft: "24px", paddingRight: "24px" }}
+          >
+            <FormControlLabel
+              value="NORMAL"
+              control={<Radio color="primary" />}
+              label="Normal"
+            />
             <FormControlLabel
               value="WIDE"
               control={<Radio color="primary" />}
               label="Wide"
             />
-          )}
-          <FormControlLabel
-            value="LARGE"
-            control={<Radio color="primary" />}
-            label="Large"
-          />
-        </RadioGroup>
+            {!(
+              this.props.value.__typename === "FloatValue" &&
+              this.props.value.permission === "READ_ONLY"
+            ) && (
+              <FormControlLabel
+                value="LARGE"
+                control={<Radio color="primary" />}
+                label="Large"
+              />
+            )}
+          </RadioGroup>
+        </div>
         <DialogActions>
           <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
             Never mind

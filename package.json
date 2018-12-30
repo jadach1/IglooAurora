@@ -2,7 +2,7 @@
   "name": "igloo-aurora",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://igloo.ooo",
+  "homepage": "https://aurora.igloo.ooo",
   "dependencies": {
     "@material-ui/core": "^3.3.2",
     "@material-ui/lab": "^3.0.0-alpha.20",
