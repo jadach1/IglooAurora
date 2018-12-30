@@ -8,18 +8,17 @@ import Slide from "@material-ui/core/Slide"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import Radio from "@material-ui/core/Radio"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class ChangeRole extends Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class ChangeRole extends Component {
   constructor(props) {
     super(props)
 
@@ -32,8 +31,11 @@ export default class ChangeRole extends Component {
         open={this.props.open}
         onClose={this.props.close}
         className="notSelectable defaultCursor"
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -69,3 +71,5 @@ export default class ChangeRole extends Component {
     )
   }
 }
+
+export default withMobileDialog({ breakpoint: "xs" })(ChangeRole)

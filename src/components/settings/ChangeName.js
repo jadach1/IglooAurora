@@ -12,17 +12,16 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
 let oldName = ""
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class ChangeNameDialog extends React.Component {
@@ -98,8 +97,11 @@ class ChangeNameDialog extends React.Component {
           open={this.props.confirmationDialogOpen}
           onClose={this.props.handleNameDialogClose}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -169,8 +171,8 @@ class ChangeNameDialog extends React.Component {
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
-                        ? { color: "rgba(0, 0, 0, 0.46)" }
-                        : { color: "rgba(0, 0, 0, 0.54)" }
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.54)" }
                       }
                       tabIndex="-1"
                     >
@@ -220,4 +222,4 @@ export default graphql(
   {
     name: "ChangeName",
   }
-)(ChangeNameDialog)
+)(withMobileDialog({ breakpoint: "xs" })(ChangeNameDialog))

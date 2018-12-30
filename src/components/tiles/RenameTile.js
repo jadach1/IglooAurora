@@ -12,17 +12,16 @@ import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
-
-const MOBILE_WIDTH = 600
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
 let oldName = ""
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
+
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class RenameTileDialog extends React.Component {
@@ -80,8 +79,11 @@ class RenameTileDialog extends React.Component {
       <Dialog
         open={this.props.renameTileOpen}
         onClose={this.props.handleRenameTileDialogClose}
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -226,7 +228,7 @@ export default graphql(
             {
               name: "RenameMapValue",
             }
-          )(RenameTileDialog)
+          )(withMobileDialog({ breakpoint: "xs" })(RenameTileDialog))
         )
       )
     )

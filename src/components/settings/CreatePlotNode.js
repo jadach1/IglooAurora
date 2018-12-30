@@ -5,19 +5,18 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 //import CenteredSpinner from "../CenteredSpinner"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class CreatePlotNode extends React.Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class CreatePlotNode extends React.Component {
   state = {
     content: "",
     activeStep: 0,
@@ -49,8 +48,11 @@ export default class CreatePlotNode extends React.Component {
         <Dialog
           open={this.props.open}
           onClose={this.props.close}
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -84,3 +86,4 @@ export default class CreatePlotNode extends React.Component {
     )
   }
 }
+export default withMobileDialog({ breakpoint: "xs" })(CreatePlotNode)

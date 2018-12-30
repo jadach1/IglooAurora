@@ -17,15 +17,14 @@ import denali from "../../styles/assets/denali.jpg"
 import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
 import SwipeableViews from "react-swipeable-views"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class CreateEnvironment extends React.Component {
@@ -38,8 +37,13 @@ class CreateEnvironment extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.open !== nextProps.open && nextProps.open) {
-      this.setState({ nameEmpty: false, name: "",slideIndex: Math.floor(Math.random() * 5)  })
-  }}
+      this.setState({
+        nameEmpty: false,
+        name: "",
+        slideIndex: Math.floor(Math.random() * 5),
+      })
+    }
+  }
 
   selectImage = index => {
     switch (index) {
@@ -86,8 +90,11 @@ class CreateEnvironment extends React.Component {
         open={this.props.open}
         onClose={this.props.close}
         className="notSelectable"
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -141,7 +148,7 @@ class CreateEnvironment extends React.Component {
               })
             }}
             style={
-              window.innerWidth < MOBILE_WIDTH
+              this.props.fullScreen
                 ? {
                     width: "calc(100vw - 48px)",
                     marginLeft: "24px",
@@ -254,4 +261,4 @@ export default graphql(
   {
     name: "CreateEnvironment",
   }
-)(CreateEnvironment)
+)(withMobileDialog({ breakpoint: "xs" })(CreateEnvironment))

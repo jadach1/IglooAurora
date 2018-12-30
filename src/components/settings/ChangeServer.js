@@ -14,22 +14,21 @@ import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Radio from "@material-ui/core/Radio"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-
-const MOBILE_WIDTH = 600
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
 let oldUrl = ""
 
 let oldMode = ""
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class ChangeServer extends React.Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class ChangeServer extends React.Component {
   state = {
     url:
       (typeof Storage !== "undefined" && localStorage.getItem("server")) ||
@@ -88,8 +87,11 @@ export default class ChangeServer extends React.Component {
         onClose={this.props.close}
         className="notSelectable"
         titleClassName="notSelectable defaultCursor"
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -241,3 +243,5 @@ export default class ChangeServer extends React.Component {
     )
   }
 }
+
+export default withMobileDialog({ breakpoint: "xs" })(ChangeServer)

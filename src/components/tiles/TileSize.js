@@ -10,15 +10,14 @@ import Slide from "@material-ui/core/Slide"
 import RadioGroup from "@material-ui/core/RadioGroup"
 import Radio from "@material-ui/core/Radio"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class TileSize extends Component {
@@ -70,14 +69,16 @@ class TileSize extends Component {
       <Dialog
         open={this.props.open}
         onClose={this.props.close}
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
         <DialogTitle disableTypography>Change card size</DialogTitle>
         <div style={{ height: "100%" }}>
-          {" "}
           <RadioGroup
             onChange={(event, value) => this.setState({ radioValue: value })}
             value={this.state.radioValue}
@@ -237,7 +238,7 @@ export default graphql(
             {
               name: "ChangeCategoryPlotSize",
             }
-          )(TileSize)
+          )(withMobileDialog({ breakpoint: "xs" })(TileSize))
         )
       )
     )

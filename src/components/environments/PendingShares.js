@@ -13,16 +13,7 @@ import ListItemText from "@material-ui/core/ListItemText"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
-
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
-}
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
 let PendingShares = props => {
   let AcceptPendingEnvironmentShare = id =>
@@ -53,12 +44,21 @@ let PendingShares = props => {
       },
     })
 
+  function GrowTransition(props) {
+    return <Grow {...props} />
+  }
+
+  function SlideTransition(props) {
+    return <Slide direction="up" {...props} />
+  }
+
   return (
     <Dialog
       open={props.open && props.pendingEnvironmentShares.length}
       onClose={props.close}
-      fullScreen={window.innerWidth < MOBILE_WIDTH}
-      TransitionComponent={Transition}
+      fullScreen={props.fullScreen}
+      disableBackdropClick={props.fullScreen}
+      TransitionComponent={props.fullScreen ? SlideTransition : GrowTransition}
       fullWidth
       maxWidth="xs"
     >
@@ -161,5 +161,5 @@ export default graphql(
     {
       name: "DeclinePendingEnvironmentShare",
     }
-  )(PendingShares)
+  )(withMobileDialog({ breakpoint: "xs" })(PendingShares))
 )

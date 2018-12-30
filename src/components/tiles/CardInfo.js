@@ -7,15 +7,14 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import moment from "moment"
 import Moment from "react-moment"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class CardInfo extends React.Component {
@@ -26,8 +25,11 @@ class CardInfo extends React.Component {
       <Dialog
         open={this.props.infoOpen}
         onClose={this.props.handleInfoClose}
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
       >
         <DialogTitle disableTypography>Card information</DialogTitle>
         <div
@@ -68,4 +70,4 @@ class CardInfo extends React.Component {
   }
 }
 
-export default CardInfo
+export default withMobileDialog({ breakpoint: "xs" })(CardInfo)

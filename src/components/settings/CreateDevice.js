@@ -13,15 +13,14 @@ import Icon from "@material-ui/core/Icon"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import TextField from "@material-ui/core/TextField"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class CreateDevice extends React.Component {
@@ -41,7 +40,12 @@ class CreateDevice extends React.Component {
     }
 
     if (this.props.open !== nextProps.open && nextProps.open === true) {
-      this.setState({ name: "", nameEmpty: "",deviceType:"", deviceTypeEmpty: "" })
+      this.setState({
+        name: "",
+        nameEmpty: "",
+        deviceType: "",
+        deviceTypeEmpty: "",
+      })
     }
   }
 
@@ -101,8 +105,11 @@ class CreateDevice extends React.Component {
         <Dialog
           open={this.props.open}
           onClose={this.props.close}
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
           className="notSelectable"
@@ -251,4 +258,4 @@ export default graphql(
   {
     name: "CreateDevice",
   }
-)(CreateDevice)
+)(withMobileDialog({ breakpoint: "xs" })(CreateDevice))

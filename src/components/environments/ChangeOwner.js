@@ -11,15 +11,14 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class ChangeOwner extends Component {
@@ -97,8 +96,11 @@ class ChangeOwner extends Component {
         open={this.props.open}
         onClose={this.props.close}
         className="notSelectable defaultCursor"
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -171,4 +173,4 @@ class ChangeOwner extends Component {
   }
 }
 
-export default ChangeOwner
+export default withMobileDialog({ breakpoint: "xs" })(ChangeOwner)

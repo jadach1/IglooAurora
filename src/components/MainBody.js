@@ -14,13 +14,13 @@ class MainBody extends Component {
       subscription {
         valueCreated {
           id
-          permission
           visibility
           valueDetails
           tileSize
           name
           updatedAt
           createdAt
+          myRole
           device {
             id
           }
@@ -28,14 +28,17 @@ class MainBody extends Component {
             floatValue: value
             precision
             boundaries
+            permission
           }
           ... on StringValue {
             stringValue: value
             maxChars
             allowedValues
+            permission
           }
           ... on BooleanValue {
             boolValue: value
+            permission
           }
           ... on PlotValue {
             plotValue: value {
@@ -82,6 +85,7 @@ class MainBody extends Component {
           name
           updatedAt
           createdAt
+          myRole
           device {
             id
           }
@@ -89,14 +93,17 @@ class MainBody extends Component {
             floatValue: value
             precision
             boundaries
+            permission
           }
           ... on StringValue {
             stringValue: value
             maxChars
             allowedValues
+            permission
           }
           ... on BooleanValue {
             boolValue: value
+            permission
           }
           ... on PlotValue {
             plotValue: value {

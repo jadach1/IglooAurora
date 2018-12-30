@@ -7,15 +7,14 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import moment from "moment"
 import Moment from "react-moment"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class DeviceInfo extends React.Component {
@@ -26,8 +25,11 @@ class DeviceInfo extends React.Component {
       <Dialog
         open={this.props.infoOpen}
         onClose={this.props.close}
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
       >
         <DialogTitle disableTypography>Device information</DialogTitle>
         <div
@@ -72,4 +74,4 @@ class DeviceInfo extends React.Component {
   }
 }
 
-export default DeviceInfo
+export default withMobileDialog({ breakpoint: "xs" })(DeviceInfo)

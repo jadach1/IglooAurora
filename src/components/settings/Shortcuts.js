@@ -11,18 +11,17 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class ChangeShortcutDialog extends React.Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class ShortcutDialog extends React.Component {
   render() {
     return (
       <React.Fragment>
@@ -30,15 +29,18 @@ export default class ChangeShortcutDialog extends React.Component {
           open={this.props.shortcutDialogOpen}
           onClose={this.props.handleShortcutDialogClose}
           className="notSelectable"
-          TransitionComponent={Transition}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
           titleClassName="defaultCursor"
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="sm"
         >
           <DialogTitle
             style={
-              window.innerWidth < MOBILE_WIDTH
+              window.innerWidth < this.props.fullScreen
                 ? typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
                   ? { width: "calc(100% - 48px)", background: "#2f333d" }
@@ -270,3 +272,5 @@ export default class ChangeShortcutDialog extends React.Component {
     )
   }
 }
+
+export default withMobileDialog({ breakpoint: "xs" })(ShortcutDialog)

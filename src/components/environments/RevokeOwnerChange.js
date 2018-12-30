@@ -9,15 +9,14 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class RevokeOwnerChange extends Component {
@@ -42,8 +41,11 @@ class RevokeOwnerChange extends Component {
         open={this.props.open}
         onClose={this.props.close}
         className="notSelectable defaultCursor"
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -102,4 +104,5 @@ export default graphql(
   {
     name: "RevokePendingOwnerChange",
   }
-)(RevokeOwnerChange)
+)(withMobileDialog({ breakpoint: "xs" })(RevokeOwnerChange)
+)

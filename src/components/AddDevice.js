@@ -7,18 +7,17 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class AddDevice extends Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class AddDevice extends Component {
   state = { authDialogOpen: false }
 
   render() {
@@ -27,8 +26,11 @@ export default class AddDevice extends Component {
         <Dialog
           open={this.props.open}
           onClose={this.props.close}
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
           className="notSelectable defaultCursor"
@@ -70,8 +72,10 @@ export default class AddDevice extends Component {
         <Dialog
           open={this.state.authDialogOpen}
           onClose={() => this.setState({ authDialogOpen: false })}
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={window.innerWidth < this.props.fullScreen}
           className="notSelectable defaultCursor"
           fullWidth
           maxWidth="xs"
@@ -118,3 +122,5 @@ export default class AddDevice extends Component {
     )
   }
 }
+
+export default withMobileDialog({ breakpoint: "xs" })(AddDevice)

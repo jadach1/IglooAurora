@@ -10,15 +10,14 @@ import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class UnitOfMeasumentDialog extends React.Component {
@@ -72,8 +71,11 @@ class UnitOfMeasumentDialog extends React.Component {
       <Dialog
         open={this.props.unitDialogOpen}
         onClose={this.props.handleUnitDialogClose}
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -157,5 +159,5 @@ export default graphql(
     {
       name: "ChangeTemperatureUnit",
     }
-  )(UnitOfMeasumentDialog)
+  )(withMobileDialog({ breakpoint: "xs" })(UnitOfMeasumentDialog))
 )
