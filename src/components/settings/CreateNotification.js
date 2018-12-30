@@ -13,15 +13,14 @@ import Icon from "@material-ui/core/Icon"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class CreateNotification extends React.Component {
@@ -73,7 +72,7 @@ class CreateNotification extends React.Component {
             })
           }}
           select
-                 helperText=" "
+          helperText=" "
           variant="outlined"
           required
           name="device"
@@ -92,8 +91,11 @@ class CreateNotification extends React.Component {
         <Dialog
           open={this.props.open}
           onClose={this.props.close}
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
           className="notSelectable"
@@ -140,7 +142,9 @@ class CreateNotification extends React.Component {
               multiline
               rows="4"
               error={this.state.contentEmpty}
-              helperText={this.state.contentEmpty ? "This field is required" : " "}
+              helperText={
+                this.state.contentEmpty ? "This field is required" : " "
+              }
               onChange={event =>
                 this.setState({
                   content: event.target.value,
@@ -216,4 +220,4 @@ export default graphql(
   {
     name: "CreateNotification",
   }
-)(CreateNotification)
+)(withMobileDialog({ breakpoint: "xs" })(CreateNotification))

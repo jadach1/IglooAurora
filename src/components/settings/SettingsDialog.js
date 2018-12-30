@@ -42,17 +42,15 @@ import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-let allDevices = []
-
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
+
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+let allDevices = []
 
 const listStyles = {
   root: {
@@ -563,22 +561,24 @@ class SettingsDialog extends React.Component {
                 >
                   Miscellaneous
                 </ListSubheader>
-              {installPromptEvent &&  <ListItem button onClick={this.addToHomeScreen}>
-                  <ListItemText
-                    primary={
-                      <font
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        Add to home screen
-                      </font>
-                    }
-                  />
-                </ListItem>}
+                {installPromptEvent && (
+                  <ListItem button onClick={this.addToHomeScreen}>
+                    <ListItemText
+                      primary={
+                        <font
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          Add to home screen
+                        </font>
+                      }
+                    />
+                  </ListItem>
+                )}
                 <ListItem button onClick={this.handleShortcutDialogOpen}>
                   <ListItemText
                     primary={
@@ -1248,7 +1248,9 @@ class SettingsDialog extends React.Component {
             !this.state.verifyOpen
           }
           onClose={this.props.closeSettingsDialog}
-          TransitionComponent={Transition}
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullWidth
           maxWidth="sm"
           fullScreen={this.props.fullScreen}

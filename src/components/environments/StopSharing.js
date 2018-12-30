@@ -7,26 +7,28 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class StopSharing extends Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class StopSharing extends Component {
   render() {
     return (
       <Dialog
         open={this.props.open}
         onClose={this.props.close}
         className="notSelectable defaultCursor"
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -72,3 +74,5 @@ export default class StopSharing extends Component {
     )
   }
 }
+
+export default withMobileDialog({ breakpoint: "xs" })(StopSharing)

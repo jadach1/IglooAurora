@@ -7,15 +7,14 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import moment from "moment"
 import Moment from "react-moment"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class EnvironmentInfo extends React.Component {
@@ -26,8 +25,11 @@ class EnvironmentInfo extends React.Component {
       <Dialog
         open={this.props.open}
         onClose={this.props.close}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
-        TransitionComponent={Transition}
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
       >
         <DialogTitle disableTypography>Environment information</DialogTitle>
         <div
@@ -67,4 +69,4 @@ class EnvironmentInfo extends React.Component {
   }
 }
 
-export default EnvironmentInfo
+export default withMobileDialog({ breakpoint: "xs" })(EnvironmentInfo)

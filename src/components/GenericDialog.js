@@ -10,18 +10,17 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import Konami from "react-konami-code"
 import CenteredSpinner from "./CenteredSpinner"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class GenericDialog extends Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class GenericDialog extends Component {
   state = {
     open: false,
     confirmationOpen: false,
@@ -43,24 +42,41 @@ export default class GenericDialog extends Component {
           open={this.state.open}
           onClose={() => this.setState({ open: false, confirmationOpen: true })}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
           <DialogTitle disableTypography style={{ textAlign: "center" }}>
             Unlocking superpowers!
           </DialogTitle>
-          <CenteredSpinner style={{ margin: "12px 0 32px 0" }} noDelay large />
           <div
             style={{
-              paddingLeft: "24px",
-              paddingRight: "24px",
-              textAlign: "center",
-              marginBottom: "8px",
+              height: "100%",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
             }}
           >
-            Please wait, this could take a few minutes
+          <div>
+            <CenteredSpinner
+              style={{ margin: "12px 0 32px 0" }}
+              noDelay
+              large
+            />
+            <div
+              style={{
+                paddingLeft: "24px",
+                paddingRight: "24px",
+                textAlign: "center",
+                marginBottom: "8px",
+              }}
+            >
+              Please wait, this could take a few minutes
+            </div>
+            </div>
           </div>
           <DialogActions>
             <Button
@@ -77,8 +93,11 @@ export default class GenericDialog extends Component {
           open={this.state.confirmationOpen}
           onClose={() => this.setState({ open: false })}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -122,3 +141,5 @@ export default class GenericDialog extends Component {
     )
   }
 }
+
+export default withMobileDialog({ breakpoint: "xs" })(GenericDialog)

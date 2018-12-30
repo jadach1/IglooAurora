@@ -22,18 +22,17 @@ import { split } from "apollo-link"
 import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
 import CenteredSpinner from "../CenteredSpinner"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class ChangePasswordDialog extends React.Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class ChangePasswordDialog extends React.Component {
   state = {
     showPassword: false,
     showNewPassword: false,
@@ -190,8 +189,11 @@ export default class ChangePasswordDialog extends React.Component {
           open={this.props.open && !this.state.newPasswordDialogOpen}
           onClose={() => this.props.close()}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -203,70 +205,70 @@ export default class ChangePasswordDialog extends React.Component {
               paddingLeft: "24px",
             }}
           >
-          <TextField
-            id="change-current-password"
-            label="Current password"
-            type={this.state.showPassword ? "text" : "password"}
-            value={this.state.password}
-            variant="outlined"
-            error={this.state.passwordEmpty || this.state.passwordError}
-            helperText={
-              this.state.passwordEmpty
-                ? "This field is required"
-                : this.state.passwordError || " "
-            }
-            onChange={event =>
-              this.setState({
-                password: event.target.value,
-                passwordEmpty: event.target.value === "",
-                passwordError: "",
-              })
-            }
-            onKeyPress={event => {
-              if (event.key === "Enter" && this.state.password !== "")
-                this.createToken()
-            }}
-            style={{
-              width: "100%",
-            }}
-            InputProps={{
-              endAdornment: this.state.password && (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() =>
-                      this.setState(oldState => ({
-                        showPassword: !oldState.showPassword,
-                      }))
-                    }
-                    tabIndex="-1"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "rgba(0, 0, 0, 0.46)" }
-                        : { color: "rgba(0, 0, 0, 0.54)" }
-                    }
-                  >
-                    {/* fix for ToggleIcon glitch on Edge */}
-                    {document.documentMode ||
-                    /Edge/.test(navigator.userAgent) ? (
-                      this.state.showPassword ? (
-                        <Icon>visibility_off</Icon>
+            <TextField
+              id="change-current-password"
+              label="Current password"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password}
+              variant="outlined"
+              error={this.state.passwordEmpty || this.state.passwordError}
+              helperText={
+                this.state.passwordEmpty
+                  ? "This field is required"
+                  : this.state.passwordError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  password: event.target.value,
+                  passwordEmpty: event.target.value === "",
+                  passwordError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter" && this.state.password !== "")
+                  this.createToken()
+              }}
+              style={{
+                width: "100%",
+              }}
+              InputProps={{
+                endAdornment: this.state.password && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState(oldState => ({
+                          showPassword: !oldState.showPassword,
+                        }))
+                      }
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.54)" }
+                      }
+                    >
+                      {/* fix for ToggleIcon glitch on Edge */}
+                      {document.documentMode ||
+                      /Edge/.test(navigator.userAgent) ? (
+                        this.state.showPassword ? (
+                          <Icon>visibility_off</Icon>
+                        ) : (
+                          <Icon>visibility</Icon>
+                        )
                       ) : (
-                        <Icon>visibility</Icon>
-                      )
-                    ) : (
-                      <ToggleIcon
-                        on={this.state.showPassword || false}
-                        onIcon={<Icon>visibility_off</Icon>}
-                        offIcon={<Icon>visibility</Icon>}
-                      />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-                      </div>
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<Icon>visibility_off</Icon>}
+                          offIcon={<Icon>visibility</Icon>}
+                        />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
           <DialogActions>
             <Button onClick={this.props.close}>Never mind</Button>
             <Button
@@ -284,8 +286,10 @@ export default class ChangePasswordDialog extends React.Component {
           open={this.state.newPasswordDialogOpen}
           onClose={this.props.close}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={window.innerWidth < this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -297,69 +301,73 @@ export default class ChangePasswordDialog extends React.Component {
               height: "100%",
             }}
           >
-
-          <TextField
-            id="change-new-password"
-            label="New password"
-            type={this.state.showNewPassword ? "text" : "password"}
-            value={this.state.newPassword}
-            variant="outlined"
-            error={this.state.newPasswordEmpty || this.state.newPasswordError}
-            helperText={
-              this.state.newPasswordEmpty
-                ? "This field is required"
-                : this.state.newPasswordError || " "
-            }
-            onChange={event =>
-              this.setState({
-                newPassword: event.target.value,
-                newPasswordEmpty: event.target.value === "",
-                newPasswordError: "",
-              })
-            }
-            onKeyPress={event => {
-              if (event.key === "Enter" && this.state.newPassword !== "" && user)
-                this.createToken()
-            }}
-            style={{
-              width: "100%",
-            }}
-            InputProps={{
-              endAdornment: this.state.newPassword && (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() =>
-                      this.setState(oldState => ({
-                        showNewPassword: !oldState.showNewPassword,
-                      }))
-                    }
-                    tabIndex="-1"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "rgba(0, 0, 0, 0.46)" }
-                        : { color: "rgba(0, 0, 0, 0.54)" }
-                    }
-                  >
-                    {/* fix for ToggleIcon glitch on Edge */}
-                    {document.documentMode ||
-                    /Edge/.test(navigator.userAgent) ? (
-                      this.state.showPassword ? (
-                        <Icon>visibility_off</Icon>
+            <TextField
+              id="change-new-password"
+              label="New password"
+              type={this.state.showNewPassword ? "text" : "password"}
+              value={this.state.newPassword}
+              variant="outlined"
+              error={this.state.newPasswordEmpty || this.state.newPasswordError}
+              helperText={
+                this.state.newPasswordEmpty
+                  ? "This field is required"
+                  : this.state.newPasswordError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  newPassword: event.target.value,
+                  newPasswordEmpty: event.target.value === "",
+                  newPasswordError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (
+                  event.key === "Enter" &&
+                  this.state.newPassword !== "" &&
+                  user
+                )
+                  this.createToken()
+              }}
+              style={{
+                width: "100%",
+              }}
+              InputProps={{
+                endAdornment: this.state.newPassword && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState(oldState => ({
+                          showNewPassword: !oldState.showNewPassword,
+                        }))
+                      }
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.54)" }
+                      }
+                    >
+                      {/* fix for ToggleIcon glitch on Edge */}
+                      {document.documentMode ||
+                      /Edge/.test(navigator.userAgent) ? (
+                        this.state.showPassword ? (
+                          <Icon>visibility_off</Icon>
+                        ) : (
+                          <Icon>visibility</Icon>
+                        )
                       ) : (
-                        <Icon>visibility</Icon>
-                      )
-                    ) : (
-                      <ToggleIcon
-                        on={this.state.showPassword || false}
-                        onIcon={<Icon>visibility_off</Icon>}
-                        offIcon={<Icon>visibility</Icon>}
-                      />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}/>
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<Icon>visibility_off</Icon>}
+                          offIcon={<Icon>visibility</Icon>}
+                        />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
           </div>
           <DialogActions>
             <Button
@@ -384,3 +392,5 @@ export default class ChangePasswordDialog extends React.Component {
     )
   }
 }
+
+export default withMobileDialog({ breakpoint: "xs" })(ChangePasswordDialog)

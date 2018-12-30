@@ -22,15 +22,14 @@ import { split } from "apollo-link"
 import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
 import CenteredSpinner from "../CenteredSpinner"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class ChangeMailDialog extends React.Component {
@@ -217,8 +216,11 @@ class ChangeMailDialog extends React.Component {
           open={this.props.open && !this.state.mailDialogOpen}
           onClose={this.props.close}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+                    fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -315,8 +317,10 @@ class ChangeMailDialog extends React.Component {
             this.setState({ emailError: "", isEmailEmpty: false })
           }}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={window.innerWidth < this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -399,4 +403,5 @@ class ChangeMailDialog extends React.Component {
   }
 }
 
-export default ChangeMailDialog
+export default withMobileDialog({ breakpoint: "xs" })(ChangeMailDialog
+)

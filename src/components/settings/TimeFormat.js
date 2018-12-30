@@ -10,15 +10,14 @@ import RadioGroup from "@material-ui/core/RadioGroup"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class TimeFormatDialog extends React.Component {
@@ -70,9 +69,12 @@ class TimeFormatDialog extends React.Component {
         open={this.props.timeFormatDialogOpen}
         onClose={this.props.handleTimeFormatDialogClose}
         className="notSelectable"
-        TransitionComponent={Transition}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
         titleClassName="defaultCursor"
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -163,5 +165,5 @@ export default graphql(
     {
       name: "ChangeTimeFormat",
     }
-  )(TimeFormatDialog)
+  )(withMobileDialog({ breakpoint: "xs" })(TimeFormatDialog))
 )

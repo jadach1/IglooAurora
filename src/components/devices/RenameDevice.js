@@ -11,17 +11,16 @@ import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
 let oldName = ""
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class RenameDevice extends React.Component {
@@ -57,8 +56,11 @@ class RenameDevice extends React.Component {
       <Dialog
         open={this.props.open}
         onClose={this.props.close}
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         className="notSelectable defaultCursor"
         fullWidth
         maxWidth="xs"
@@ -88,7 +90,7 @@ class RenameDevice extends React.Component {
               endAdornment: this.state.name && (
                 <InputAdornment position="end">
                   <IconButton
-                    onClick={() => this.setState({ name: "",nameEmpty:true })}
+                    onClick={() => this.setState({ name: "", nameEmpty: true })}
                     tabIndex="-1"
                     style={
                       typeof Storage !== "undefined" &&
@@ -134,4 +136,4 @@ export default graphql(
   {
     name: "Rename",
   }
-)(RenameDevice)
+)(withMobileDialog({ breakpoint: "xs" })(RenameDevice))

@@ -31,15 +31,14 @@ import Slide from "@material-ui/core/Slide"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import ToggleIcon from "material-ui-toggle-icon"
 import { CopyToClipboard } from "react-copy-to-clipboard"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class AuthDialog extends React.Component {
@@ -454,8 +453,11 @@ class AuthDialog extends React.Component {
           open={this.props.confirmationDialogOpen}
           onClose={this.props.handleAuthDialogClose}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -554,8 +556,11 @@ class AuthDialog extends React.Component {
           open={this.state.authDialogOpen}
           onClose={this.closeAuthDialog}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+                    fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -578,8 +583,10 @@ class AuthDialog extends React.Component {
           open={this.state.nameOpen}
           onClose={() => this.setState({ nameOpen: false })}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={window.innerWidth < this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -682,4 +689,5 @@ export default graphql(
     }
   `,
   { name: "tokenData" }
-)(AuthDialog)
+)(withMobileDialog({ breakpoint: "xs" })(AuthDialog)
+)

@@ -5,18 +5,17 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import Slide from "@material-ui/core/Slide"
 import Grow from "@material-ui/core/Grow"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class FullScreenTile extends React.Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class FullScreenTile extends React.Component {
   render() {
     const { value } = this.props
     const valueTitle = value.name
@@ -25,8 +24,11 @@ export default class FullScreenTile extends React.Component {
       <Dialog
         open={this.props.fullScreen}
         onClose={this.props.handleClose}
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -39,3 +41,4 @@ export default class FullScreenTile extends React.Component {
     )
   }
 }
+export default withMobileDialog({ breakpoint: "xs" })(FullScreenTile)

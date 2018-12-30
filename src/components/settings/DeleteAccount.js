@@ -26,18 +26,17 @@ import introspectionQueryResultData from "../../fragmentTypes.json"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import CenteredSpinner from "../CenteredSpinner"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class DeleteAccountDialog extends React.Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class DeleteAccountDialog extends React.Component {
   constructor() {
     super()
     this.state = {
@@ -189,8 +188,11 @@ export default class DeleteAccountDialog extends React.Component {
             this.setState({ password: "" })
           }}
           className="notSelectable defaultCursor"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -301,8 +303,10 @@ export default class DeleteAccountDialog extends React.Component {
             this.props.close()
           }}
           className="notSelectable defaultCursor"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={window.innerWidth < this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -353,3 +357,4 @@ export default class DeleteAccountDialog extends React.Component {
     )
   }
 }
+export default withMobileDialog({ breakpoint: "xs" })(DeleteAccountDialog)

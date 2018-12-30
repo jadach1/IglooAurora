@@ -26,15 +26,14 @@ import StopSharing from "./StopSharing"
 import RevokeInvite from "./RevokeInvite"
 import ChangePendingRole from "./ChangePendingRole"
 import RevokeOwnerChange from "./RevokeOwnerChange"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class ShareEnvironment extends React.Component {
@@ -114,8 +113,11 @@ class ShareEnvironment extends React.Component {
             !this.state.revokeOwnerChangeOpen
           }
           onClose={this.props.close}
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
           className="notSelectable defaultCursor"
           fullWidth
           maxWidth="xs"
@@ -124,7 +126,7 @@ class ShareEnvironment extends React.Component {
           <List
             subheader={<li />}
             style={
-              window.innerWidth < MOBILE_WIDTH
+              this.props.fullScreen
                 ? { overflow: "auto", height: "100%" }
                 : { overflow: "auto", maxHeight: "420px" }
             }
@@ -1083,5 +1085,5 @@ export default graphql(
     {
       name: "ChangeRole",
     }
-  )(ShareEnvironment)
-)
+  )(withMobileDialog({ breakpoint: "xs" })(ShareEnvironment)
+))

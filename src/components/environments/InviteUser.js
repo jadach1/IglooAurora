@@ -11,18 +11,17 @@ import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
 import CenteredSpinner from "../CenteredSpinner"
 import gql from "graphql-tag"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
-
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-export default class InviteUser extends Component {
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
+
+class InviteUser extends Component {
   state = { email: "", value: "" }
 
   async inviteUser() {
@@ -107,13 +106,18 @@ export default class InviteUser extends Component {
         open={this.props.open}
         onClose={this.props.close}
         className="notSelectable defaultCursor"
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
         <DialogTitle disableTypography>
-          Invite an {this.props.selectedUserType}
+          {this.props.selectedUserType === "spectator"
+            ? "Invite a spectator"
+            : "Invite an " + this.props.selectedUserType}
         </DialogTitle>
         <div style={{ height: "100%" }}>
           <TextField
@@ -151,7 +155,9 @@ export default class InviteUser extends Component {
               endAdornment: this.state.email && (
                 <InputAdornment position="end">
                   <IconButton
-                    onClick={() => this.setState({ email: "",emailEmpty:true })}
+                    onClick={() =>
+                      this.setState({ email: "", emailEmpty: true })
+                    }
                     tabIndex="-1"
                     style={
                       typeof Storage !== "undefined" &&
@@ -183,3 +189,5 @@ export default class InviteUser extends Component {
     )
   }
 }
+
+export default withMobileDialog({ breakpoint: "xs" })(InviteUser)

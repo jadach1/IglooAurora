@@ -18,15 +18,14 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import Switch from "@material-ui/core/Switch"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-const MOBILE_WIDTH = 600
+function GrowTransition(props) {
+  return <Grow {...props} />
+}
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
 }
 
 class CreateValue extends React.Component {
@@ -261,8 +260,11 @@ class CreateValue extends React.Component {
         <Dialog
           open={this.props.open && !this.state.valueSettingsOpen}
           onClose={this.props.close}
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+                    fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -427,8 +429,10 @@ class CreateValue extends React.Component {
           open={this.state.valueSettingsOpen}
           onClose={() => this.setState({ valueSettingsOpen: false })}
           className="notSelectable"
-          TransitionComponent={Transition}
-          fullScreen={window.innerWidth < MOBILE_WIDTH}
+          TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+          fullScreen={window.innerWidth < this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -677,8 +681,8 @@ export default graphql(
           {
             name: "CreateCategoryPlotValue",
           }
-        )(CreateValue)
-      )
+        )(withMobileDialog({ breakpoint: "xs" })(CreateValue)
+      ))
     )
   )
 )

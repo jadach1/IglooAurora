@@ -9,19 +9,18 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-function Transition(props) {
-  return window.innerWidth > MOBILE_WIDTH ? (
-    <Grow {...props} />
-  ) : (
-    <Slide direction="up" {...props} />
-  )
+function GrowTransition(props) {
+  return <Grow {...props} />
 }
 
-const MOBILE_WIDTH = 600
+function SlideTransition(props) {
+  return <Slide direction="up" {...props} />
+}
 
 class LeaveEnvironment extends React.Component {
-   leaveEnvironment = () => {
+  leaveEnvironment = () => {
     this.props.LeaveEnvironment({
       variables: {
         environmentId: this.props.environment.id,
@@ -43,8 +42,11 @@ class LeaveEnvironment extends React.Component {
         onClose={this.props.close}
         className="notSelectable defaultCursor"
         titleClassName="notSelectable defaultCursor"
-        TransitionComponent={Transition}
-        fullScreen={window.innerWidth < MOBILE_WIDTH}
+        TransitionComponent={
+          this.props.fullScreen ? SlideTransition : GrowTransition
+        }
+        fullScreen={this.props.fullScreen}
+        disableBackdropClick={this.props.fullScreen}
         fullWidth
         maxWidth="xs"
       >
@@ -84,11 +86,11 @@ class LeaveEnvironment extends React.Component {
 
 export default graphql(
   gql`
-    mutation LeaveEnvironment( $environmentId: ID!) {
-      leaveEnvironment( environmentId: $environmentId)
+    mutation LeaveEnvironment($environmentId: ID!) {
+      leaveEnvironment(environmentId: $environmentId)
     }
   `,
   {
     name: "LeaveEnvironment",
   }
-)(LeaveEnvironment)
+)(withMobileDialog({ breakpoint: "xs" })(LeaveEnvironment))
