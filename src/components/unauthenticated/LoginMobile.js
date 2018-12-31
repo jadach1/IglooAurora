@@ -225,7 +225,14 @@ export default class LoginMobile extends Component {
                   endAdornment={
                     this.props.email ? (
                       <InputAdornment position="end">
-                        <IconButton tabIndex="-1" style={{ color: "white" }}>
+                        <IconButton
+                          onClick={() => {
+                            this.props.changeEmail("")
+                            this.setState({ isMailEmpty: true })
+                          }}
+                          tabIndex="-1"
+                          style={{ color: "white" }}
+                        >
                           <Icon>clear</Icon>
                         </IconButton>
                       </InputAdornment>

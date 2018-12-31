@@ -106,19 +106,6 @@ class Login extends Component {
     }
   }
 
-  handleClickShowPassword = () => {
-    this.setState({ showPassword: !this.state.showPassword })
-  }
-
-  handleMouseDownPassword = event => {
-    event.preventDefault()
-  }
-
-  handleClickCancelEmail = () => {
-    this.props.changeEmail("")
-    this.setState({ isMailEmpty: true })
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -178,8 +165,10 @@ class Login extends Component {
                       this.props.email ? (
                         <InputAdornment position="end">
                           <IconButton
-                            onClick={this.handleClickCancelEmail}
-                            onMouseDown={this.handleMouseDownPassword}
+                            onClick={()=>{
+                              this.props.changeEmail("")
+                              this.setState({ isMailEmpty: true })}
+                            }
                             tabIndex="-1"
                             style={{ color: "black" }}
                           >
@@ -249,7 +238,7 @@ class Login extends Component {
                       this.props.password ? (
                         <InputAdornment position="end">
                           <IconButton
-                            onClick={this.handleClickShowPassword}
+                            onClick={()=>this.setState({ showPassword: !this.state.showPassword })}
                             onMouseDown={this.handleMouseDownPassword}
                             tabIndex="-1"
                             style={{ color: "black" }}

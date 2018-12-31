@@ -454,8 +454,8 @@ class AuthDialog extends React.Component {
           onClose={this.props.handleAuthDialogClose}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
           fullWidth
@@ -557,10 +557,10 @@ class AuthDialog extends React.Component {
           onClose={this.closeAuthDialog}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
-                    fullScreen={this.props.fullScreen}
-        disableBackdropClick={this.props.fullScreen}
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -584,8 +584,8 @@ class AuthDialog extends React.Component {
           onClose={() => this.setState({ nameOpen: false })}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={window.innerWidth < this.props.fullScreen}
           fullWidth
           maxWidth="xs"
@@ -631,9 +631,6 @@ class AuthDialog extends React.Component {
                     <IconButton
                       onClick={() => {
                         this.setState({ tokenName: "" })
-                      }}
-                      onMouseDown={event => {
-                        event.preventDefault()
                       }}
                       style={
                         typeof Storage !== "undefined" &&
@@ -689,5 +686,4 @@ export default graphql(
     }
   `,
   { name: "tokenData" }
-)(withMobileDialog({ breakpoint: "xs" })(AuthDialog)
-)
+)(withMobileDialog({ breakpoint: "xs" })(AuthDialog))

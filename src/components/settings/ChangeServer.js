@@ -155,9 +155,6 @@ class ChangeServer extends React.Component {
                     onClick={() => {
                       this.setState({ url: "", urlEmpty: true })
                     }}
-                    onMouseDown={event => {
-                      event.preventDefault()
-                    }}
                     tabIndex="-1"
                     disabled={this.state.mode === "auto"}
                   >
