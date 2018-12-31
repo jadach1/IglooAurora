@@ -120,10 +120,6 @@ class Signup extends Component {
     this.setState({ showPassword: !this.state.showPassword })
   }
 
-  handleMouseDownPassword = event => {
-    event.preventDefault()
-  }
-
   handleClickCancelEmail = () => {
     this.props.changeEmail("")
     this.setState({ isMailEmpty: true })
@@ -263,7 +259,6 @@ class Signup extends Component {
                               })
                             }}
                             style={{ color: "black" }}
-                            onMouseDown={this.handleMouseDownPassword}
                           >
                             <Icon>clear</Icon>
                           </IconButton>
@@ -331,7 +326,6 @@ class Signup extends Component {
                           <IconButton
                             tabIndex="-1"
                             onClick={this.handleClickCancelEmail}
-                            onMouseDown={this.handleMouseDownPassword}
                             style={{ color: "black" }}
                           >
                             <Icon>clear</Icon>

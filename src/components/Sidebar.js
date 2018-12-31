@@ -39,14 +39,6 @@ class Sidebar extends Component {
     },
   }
 
-  handleMouseDownSearch = event => {
-    event.preventDefault()
-  }
-
-  handleClickCancelSearch = () => {
-    this.props.searchDevices("")
-  }
-
   updateDimensions() {
     if (window.innerWidth < 1080) {
       this.setState({ lessThan1080: true })
@@ -174,8 +166,8 @@ class Sidebar extends Component {
                       this.props.selectedDevice === device.id
                         ? typeof Storage !== "undefined" &&
                           localStorage.getItem("nightMode") === "true"
-                          ? { backgroundColor: "#282c34" }
-                          : { backgroundColor: "#d4d4d4" }
+                          ? { backgroundColor: "#282c34", cursor: "pointer" }
+                          : { backgroundColor: "#d4d4d4", cursor: "pointer" }
                         : null
                     }
                     key={device.id}
@@ -197,6 +189,7 @@ class Sidebar extends Component {
                         whiteSpace: "nowrap",
                         overflow: "hidden",
                         textOverflow: "ellipsis",
+                        cursor: "pointer",
                       }}
                       secondary={
                         <span
@@ -232,23 +225,22 @@ class Sidebar extends Component {
                         </span>
                       }
                     />
-                    {device.notificationCount ? (
-                      <ListItemSecondaryAction>
-                        <Badge
-                          badgeContent={
-                            device.notificationCount > 99
-                              ? "99+"
-                              : device.notificationCount
-                          }
-                          color="primary"
-                          className="notSelectable sidebarBadge"
-                          style={{ marginRight: "24px" }}
-                          onClick={() => {
-                            this.props.changeDrawerState()
-                          }}
-                        />
-                      </ListItemSecondaryAction>
-                    ) : null}
+                    <ListItemSecondaryAction>
+                      <Badge
+                        badgeContent={
+                          device.notificationCount > 99
+                            ? "99+"
+                            : device.notificationCount
+                        }
+                        invisible={!device.notificationCount}
+                        color="primary"
+                        className="notSelectable"
+                        style={{ marginRight: "24px", cursor: "pointer" }}
+                        onClick={() => {
+                          this.props.changeDrawerState()
+                        }}
+                      />
+                    </ListItemSecondaryAction>
                   </ListItem>
                 </Link>
               ))}
@@ -366,8 +358,7 @@ class Sidebar extends Component {
                 this.props.searchText ? (
                   <InputAdornment position="end">
                     <IconButton
-                      onClick={this.handleClickCancelSearch}
-                      onMouseDown={this.handleMouseDownSearch}
+                      onClick={() => this.props.searchDevices("")}
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"

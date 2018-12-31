@@ -135,7 +135,13 @@ class CustomizeEnvironment extends React.Component {
               })
             }
             onKeyPress={event => {
-              if (event.key === "Enter" && !this.state.nameEmpty) this.rename()
+              if (
+                event.key === "Enter" &&
+                !this.state.nameEmpty &&
+                (this.state.initialSlideIndex !== this.state.slideIndex ||
+                  this.props.environment.name !== this.state.name)
+              )
+                this.rename()
             }}
             style={{
               width: "calc(100% - 48px)",

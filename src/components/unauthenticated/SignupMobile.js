@@ -112,10 +112,6 @@ class SignupMobile extends Component {
     this.setState({ showPassword: !this.state.showPassword })
   }
 
-  handleMouseDownPassword = event => {
-    event.preventDefault()
-  }
-
   handleClickCancelEmail = () => {
     this.props.changeEmail("")
     this.setState({ isMailEmpty: true })
@@ -249,7 +245,6 @@ class SignupMobile extends Component {
                           this.props.changeName("")
                           this.setState({ isNameValid: false })
                         }}
-                        onMouseDown={this.handleMouseDownPassword}
                         style={{ color: "white" }}
                       >
                         <Icon>clear</Icon>
@@ -304,7 +299,6 @@ class SignupMobile extends Component {
                       <IconButton
                         tabIndex="-1"
                         onClick={this.handleClickCancelEmail}
-                        onMouseDown={this.handleMouseDownPassword}
                         style={{ color: "white" }}
                       >
                         <Icon>clear</Icon>
@@ -367,7 +361,6 @@ class SignupMobile extends Component {
                       <IconButton
                         tabIndex="-1"
                         onClick={this.handleClickShowPassword}
-                        onMouseDown={this.handleMouseDownPassword}
                         style={{ color: "white" }}
                       >
                         {/* fix for ToggleIcon glitch on Edge */}

@@ -675,7 +675,6 @@ export default class EnvironmentsBody extends Component {
                       <InputAdornment position="end">
                         <IconButton
                           onClick={() => this.props.searchEnvironments("")}
-                          onMouseDown={this.handleMouseDownSearch}
                           style={
                             typeof Storage !== "undefined" &&
                             localStorage.getItem("nightMode") === "true"
@@ -751,35 +750,45 @@ export default class EnvironmentsBody extends Component {
                       user.pendingEnvironmentShares[0]) && (
                       <li key="yourEnvironments">
                         <ul style={{ padding: "0" }}>
-                          <ListSubheader
-                            style={
-                              nightMode
-                                ? { backgroundColor: "#21252b" }
-                                : { backgroundColor: "#f2f2f2" }
-                            }
-                          >
-                            <Typography
-                              variant="h4"
-                              className="notSelectable defaultCursor"
+                          {user.environments
+                            .filter(
+                              environment => environment.myRole !== "OWNER"
+                            )
+                            .filter(environment =>
+                              environment.name
+                                .toLowerCase()
+                                .includes(this.props.searchText.toLowerCase())
+                            )[0] && (
+                            <ListSubheader
                               style={
                                 nightMode
-                                  ? {
-                                      textAlign: "center",
-                                      lineHeight: "64px",
-                                      height: "64px",
-                                      color: "white",
-                                    }
-                                  : {
-                                      textAlign: "center",
-                                      lineHeight: "64px",
-                                      height: "64px",
-                                      color: "black",
-                                    }
+                                  ? { backgroundColor: "#21252b" }
+                                  : { backgroundColor: "#f2f2f2" }
                               }
                             >
-                              Shared with you
-                            </Typography>
-                          </ListSubheader>
+                              <Typography
+                                variant="h4"
+                                className="notSelectable defaultCursor"
+                                style={
+                                  nightMode
+                                    ? {
+                                        textAlign: "center",
+                                        lineHeight: "64px",
+                                        height: "64px",
+                                        color: "white",
+                                      }
+                                    : {
+                                        textAlign: "center",
+                                        lineHeight: "64px",
+                                        height: "64px",
+                                        color: "black",
+                                      }
+                                }
+                              >
+                                Shared with you
+                              </Typography>
+                            </ListSubheader>
+                          )}
                           {sharedEnvironmentsList}
                         </ul>
                       </li>

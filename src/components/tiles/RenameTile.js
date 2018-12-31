@@ -111,9 +111,6 @@ class RenameTileDialog extends React.Component {
                       onClick={() => {
                         this.setState({ tileName: "" })
                       }}
-                      onMouseDown={event => {
-                        event.preventDefault()
-                      }}
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"

@@ -178,6 +178,8 @@ class NotificationsDrawer extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (this.props.drawer !== nextProps.drawer && nextProps.drawer) {
+      unreadNotifications = []
+
       this.clearAllNotifications()
     }
 
@@ -538,11 +540,21 @@ class NotificationsDrawer extends React.Component {
         noNotificationsUI = (
           <Typography
             variant="h5"
-            style={{
-              textAlign: "center",
-              marginTop: "32px",
-              marginBottom: "32px",
-            }}
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    textAlign: "center",
+                    marginTop: "32px",
+                    marginBottom: "32px",
+                    color: "white",
+                  }
+                : {
+                    textAlign: "center",
+                    marginTop: "32px",
+                    marginBottom: "32px",
+                  }
+            }
           >
             No new notifications
           </Typography>
@@ -608,7 +620,18 @@ class NotificationsDrawer extends React.Component {
             <ListItemIcon>
               <Icon>markunread</Icon>
             </ListItemIcon>
-            <ListItemText>Mark as unread</ListItemText>
+            <ListItemText>
+              <font
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }
+              >
+                Mark as unread
+              </font>
+            </ListItemText>
           </MenuItem>
           <MenuItem
             onClick={() => {
@@ -620,7 +643,7 @@ class NotificationsDrawer extends React.Component {
               <Icon style={{ color: "#f44336" }}>delete</Icon>
             </ListItemIcon>
             <ListItemText inset>
-              <span style={{ color: "#f44336" }}>Delete</span>
+              <font style={{ color: "#f44336" }}>Delete</font>
             </ListItemText>
           </MenuItem>
         </Menu>
@@ -638,18 +661,15 @@ class NotificationsDrawer extends React.Component {
                   }
             }
           >
-            {notificationCount ? (
-              <Badge
-                badgeContent={
-                  notificationCount > 99 ? "99+" : notificationCount
-                }
-                color="primary"
-              >
-                <Icon>notifications</Icon>
-              </Badge>
-            ) : (
-              <Icon>notifications_none</Icon>
-            )}
+            <Badge
+              badgeContent={notificationCount > 99 ? "99+" : notificationCount}
+              color="primary"
+              invisible={!notificationCount}
+            >
+              <Icon>
+                {notificationCount ? "notifications" : "notifications_none"}
+              </Icon>
+            </Badge>
           </IconButton>
         </Tooltip>
         <SwipeableDrawer

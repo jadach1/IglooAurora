@@ -165,9 +165,6 @@ class ChangeNameDialog extends React.Component {
                       onClick={() => {
                         this.setState({ name: "" })
                       }}
-                      onMouseDown={event => {
-                        event.preventDefault()
-                      }}
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
