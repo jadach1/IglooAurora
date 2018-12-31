@@ -131,7 +131,7 @@ class CreateEnvironment extends React.Component {
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
                         ? { color: "rgba(0, 0, 0, 0.46)" }
-                        : { color: "rgba(0, 0, 0, 0.54)" }
+                        : { color: "rgba(0, 0, 0, 0.46)" }
                     }
                   >
                     <Icon>clear</Icon>

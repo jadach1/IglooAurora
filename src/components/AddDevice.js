@@ -27,8 +27,8 @@ class AddDevice extends Component {
           open={this.props.open}
           onClose={this.props.close}
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
           fullWidth
@@ -73,9 +73,10 @@ class AddDevice extends Component {
           open={this.state.authDialogOpen}
           onClose={() => this.setState({ authDialogOpen: false })}
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
-          fullScreen={window.innerWidth < this.props.fullScreen}
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           className="notSelectable defaultCursor"
           fullWidth
           maxWidth="xs"

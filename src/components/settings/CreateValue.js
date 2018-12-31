@@ -174,7 +174,14 @@ class CreateValue extends React.Component {
         value = (
           <List>
             <ListItem style={{ marginTop: "-3px", marginBottom: "13px" }}>
-              <ListItemText primary="Value *" />
+              <ListItemText
+                primary={<font style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : {}
+                }>Value *</font>}
+                              />
               <ListItemSecondaryAction>
                 <Switch
                   checked={this.state.value}
@@ -261,10 +268,10 @@ class CreateValue extends React.Component {
           open={this.props.open && !this.state.valueSettingsOpen}
           onClose={this.props.close}
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
-                    fullScreen={this.props.fullScreen}
-        disableBackdropClick={this.props.fullScreen}
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -320,7 +327,8 @@ class CreateValue extends React.Component {
               }
               style={{ paddingLeft: "24px", paddingRight: "24px" }}
             >
-              <ListItemText  primary={
+              <ListItemText
+                primary={
                   <font
                     style={
                       typeof Storage !== "undefined" &&
@@ -331,7 +339,8 @@ class CreateValue extends React.Component {
                   >
                     Category plot
                   </font>
-                }/>
+                }
+              />
             </ListItem>
             <ListItem
               button
@@ -430,9 +439,10 @@ class CreateValue extends React.Component {
           onClose={() => this.setState({ valueSettingsOpen: false })}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
-          fullScreen={window.innerWidth < this.props.fullScreen}
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -681,8 +691,8 @@ export default graphql(
           {
             name: "CreateCategoryPlotValue",
           }
-        )(withMobileDialog({ breakpoint: "xs" })(CreateValue)
-      ))
+        )(withMobileDialog({ breakpoint: "xs" })(CreateValue))
+      )
     )
   )
 )

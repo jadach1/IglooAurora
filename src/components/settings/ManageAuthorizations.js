@@ -80,8 +80,6 @@ class AuthDialog extends React.Component {
         },
       })
 
-      this.props.handleAuthDialogClose()
-
       this.setState({
         token: createTokenMutation.data.createToken,
         authDialogOpen: true,
@@ -450,7 +448,11 @@ class AuthDialog extends React.Component {
     return (
       <React.Fragment>
         <Dialog
-          open={this.props.confirmationDialogOpen}
+          open={
+            this.props.confirmationDialogOpen &&
+            !this.state.authDialogOpen &&
+            !this.state.nameOpen
+          }
           onClose={this.props.handleAuthDialogClose}
           className="notSelectable"
           TransitionComponent={
@@ -469,7 +471,6 @@ class AuthDialog extends React.Component {
               height: "100%",
             }}
           >
-            {" "}
             <TextField
               id="auth-password"
               label="Password"
@@ -510,7 +511,7 @@ class AuthDialog extends React.Component {
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
                           ? { color: "rgba(0, 0, 0, 0.46)" }
-                          : { color: "rgba(0, 0, 0, 0.54)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
                       }
                     >
                       {/* fix for ToggleIcon glitch on Edge */}
@@ -553,7 +554,7 @@ class AuthDialog extends React.Component {
           </DialogActions>
         </Dialog>
         <Dialog
-          open={this.state.authDialogOpen}
+          open={this.state.authDialogOpen && !this.state.nameOpen}
           onClose={this.closeAuthDialog}
           className="notSelectable"
           TransitionComponent={
@@ -586,7 +587,8 @@ class AuthDialog extends React.Component {
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition
           }
-          fullScreen={window.innerWidth < this.props.fullScreen}
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -636,7 +638,7 @@ class AuthDialog extends React.Component {
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
                           ? { color: "rgba(0, 0, 0, 0.46)" }
-                          : { color: "rgba(0, 0, 0, 0.54)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
                       }
                       tabIndex="-1"
                     >

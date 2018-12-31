@@ -62,8 +62,6 @@ class ChangePasswordDialog extends React.Component {
         newPasswordDialogOpen: true,
         showDeleteLoading: false,
       })
-
-      this.props.handlePasswordDialogClose()
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
@@ -190,8 +188,8 @@ class ChangePasswordDialog extends React.Component {
           onClose={() => this.props.close()}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
           fullWidth
@@ -245,7 +243,7 @@ class ChangePasswordDialog extends React.Component {
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
                           ? { color: "rgba(0, 0, 0, 0.46)" }
-                          : { color: "rgba(0, 0, 0, 0.54)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
                       }
                     >
                       {/* fix for ToggleIcon glitch on Edge */}
@@ -287,9 +285,10 @@ class ChangePasswordDialog extends React.Component {
           onClose={this.props.close}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
-          fullScreen={window.innerWidth < this.props.fullScreen}
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -345,7 +344,7 @@ class ChangePasswordDialog extends React.Component {
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
                           ? { color: "rgba(0, 0, 0, 0.46)" }
-                          : { color: "rgba(0, 0, 0, 0.54)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
                       }
                     >
                       {/* fix for ToggleIcon glitch on Edge */}

@@ -40,7 +40,7 @@ class ShortcutDialog extends React.Component {
         >
           <DialogTitle
             style={
-              window.innerWidth < this.props.fullScreen
+              this.props.fullScreen
                 ? typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
                   ? { width: "calc(100% - 48px)", background: "#2f333d" }

@@ -63,7 +63,7 @@ class Sidebar extends Component {
 
     let sidebarContent = ""
 
-    if (loading || this.props.mainBodyLoading) {
+    if (loading) {
       sidebarContent = (
         <CenteredSpinner
           style={
@@ -82,14 +82,31 @@ class Sidebar extends Component {
     if (error) {
       sidebarContent = "Unexpected error"
 
-      // if there's no environment with the id in the url and no device is selected, the user gets redirected
       if (
-        (error.message === "GraphQL error: This id is not valid" ||
-          error.message ===
-            "GraphQL error: The requested resource does not exist") &&
-        !queryString.parse("?" + window.location.href.split("?")[1]).device
+        error.message === "GraphQL error: This id is not valid" ||
+        error.message === "GraphQL error: The requested resource does not exist"
       ) {
-        return <Redirect to="/" />
+        if (
+          queryString.parse("?" + window.location.href.split("?")[1]).device
+        ) {
+          // if a device is selected the sidebar keeps loading, waiting for the device to redirect the user
+          sidebarContent = (
+            <CenteredSpinner
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? {
+                      height: "calc(100% - 96px)",
+                      paddingTop: "32px",
+                    }
+                  : { height: "calc(100% - 96px)", paddingTop: "32px" }
+              }
+            />
+          )
+        } else {
+          // if there's no environment with the id in the url and no device is selected, the user gets redirected
+          return <Redirect to="/" />
+        }
       }
     }
 
@@ -359,6 +376,7 @@ class Sidebar extends Component {
                   <InputAdornment position="end">
                     <IconButton
                       onClick={() => this.props.searchDevices("")}
+                      tabIndex="-1"
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"

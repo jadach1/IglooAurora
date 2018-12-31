@@ -366,6 +366,7 @@ export default class EnvironmentsBody extends Component {
                           style={
                             nightMode ? { color: "white" } : { color: "black" }
                           }
+                          tabIndex="-1"
                         >
                           <Icon>clear</Icon>
                         </IconButton>
@@ -681,6 +682,7 @@ export default class EnvironmentsBody extends Component {
                               ? { color: "white" }
                               : { color: "black" }
                           }
+                          tabIndex="-1"
                         >
                           <Icon>clear</Icon>
                         </IconButton>

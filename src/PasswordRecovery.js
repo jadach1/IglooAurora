@@ -245,7 +245,6 @@ export default class PasswordRecovery extends Component {
                             showPassword: !oldState.showPassword,
                           }))
                         }
-                        onMouseDown={event => event.preventDefault()}
                         tabIndex="-1"
                         style={{ color: "white" }}
                       >
