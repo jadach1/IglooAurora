@@ -86,8 +86,6 @@ class ChangeMailDialog extends React.Component {
         mailDialogOpen: true,
         showDeleteLoading: false,
       })
-
-      this.props.close()
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
@@ -217,10 +215,10 @@ class ChangeMailDialog extends React.Component {
           onClose={this.props.close}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
-                    fullScreen={this.props.fullScreen}
-        disableBackdropClick={this.props.fullScreen}
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -272,7 +270,7 @@ class ChangeMailDialog extends React.Component {
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
                           ? { color: "rgba(0, 0, 0, 0.46)" }
-                          : { color: "rgba(0, 0, 0, 0.54)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
                       }
                     >
                       {/* fix for ToggleIcon glitch on Edge */}
@@ -318,9 +316,10 @@ class ChangeMailDialog extends React.Component {
           }}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
-          fullScreen={window.innerWidth < this.props.fullScreen}
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >
@@ -369,7 +368,7 @@ class ChangeMailDialog extends React.Component {
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
                           ? { color: "rgba(0, 0, 0, 0.46)" }
-                          : { color: "rgba(0, 0, 0, 0.54)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
                       }
                     >
                       <Icon>clear</Icon>
@@ -403,5 +402,4 @@ class ChangeMailDialog extends React.Component {
   }
 }
 
-export default withMobileDialog({ breakpoint: "xs" })(ChangeMailDialog
-)
+export default withMobileDialog({ breakpoint: "xs" })(ChangeMailDialog)

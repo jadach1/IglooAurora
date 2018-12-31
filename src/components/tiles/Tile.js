@@ -360,19 +360,6 @@ class Tile extends Component {
                   horizontal: "right",
                 }}
               >
-                {/* <MenuItem
-                  primaryText="See on the map"
-                  className="notSelectable"
-                  leftIcon={<Icon>place</Icon>}
-                  style={
-                    typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                />
-                <Divider
-                  style={typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true" ? { background: "#21252b" } : {}}
-                /> */}
                 <MenuItem
                   onClick={() => {
                     this.setState({ infoOpen: true })
@@ -384,14 +371,7 @@ class Tile extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Information" disableTypography />
                 </MenuItem>
-                <Divider
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { background: "#21252b" }
-                      : {}
-                  }
-                />
+                <Divider />
                 <MenuItem
                   onClick={() => {
                     value.visibility === "VISIBLE"
@@ -453,14 +433,7 @@ class Tile extends Component {
                     disableTypography
                   />
                 </MenuItem>
-                <Divider
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { background: "#21252b" }
-                      : {}
-                  }
-                />
+                <Divider />
                 <MenuItem
                   primaryText="Rename"
                   onClick={() => {

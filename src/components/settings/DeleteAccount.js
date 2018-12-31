@@ -74,8 +74,6 @@ class DeleteAccountDialog extends React.Component {
         showLoading: false,
       })
 
-      this.props.close()
-
       setTimeout(this.secondsTimer, 1000)
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
@@ -189,8 +187,8 @@ class DeleteAccountDialog extends React.Component {
           }}
           className="notSelectable defaultCursor"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
           fullWidth
@@ -304,9 +302,10 @@ class DeleteAccountDialog extends React.Component {
           }}
           className="notSelectable defaultCursor"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
-          fullScreen={window.innerWidth < this.props.fullScreen}
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           fullWidth
           maxWidth="xs"
         >

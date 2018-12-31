@@ -225,15 +225,21 @@ const darkTheme = createMuiTheme({
     },
     MuiInputLabel: {
       root: {
-        color: "rgba(255, 255, 255, 0.54)",
+        color: "rgba(255, 255, 255, 0.46)",
         "&$focused": {
           color: "#0083ff",
           "&$error": {
             color: "#f44336",
-            "&$disabled": { color: "rgba(255, 255, 255, 0.54)" },
+            "&$disabled": { color: "rgba(255, 255, 255, 0.46)" },
           },
         },
       },
+    },
+    MuiSelect: {
+      icon: { color: "white" },
+    },
+    MuiDivider: {
+      root: { backgroundColor: "rgba(255, 255, 255, 0.12)" },
     },
     ...sharedStyles,
   },
