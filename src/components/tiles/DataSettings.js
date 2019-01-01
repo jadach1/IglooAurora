@@ -61,26 +61,6 @@ class DataSettings extends Component {
               label="Kelvin (K)"
             />
           </RadioGroup>
-          <br />
-          <div style={{ paddingLeft: "24px" }}>Visualization</div>
-          <RadioGroup
-            onChange={(event, value) =>
-              this.setState({ visualizationValue: value })
-            }
-            value={this.state.visualizationValue}
-            style={{ paddingLeft: "24px", paddingRight: "24px" }}
-          >
-            <FormControlLabel
-              value="number"
-              control={<Radio color="primary" />}
-              label="Number"
-            />
-            <FormControlLabel
-              value="plot"
-              control={<Radio color="primary" />}
-              label="Plot"
-            />
-          </RadioGroup>
         </div>
         <DialogActions>
           <Button onClick={this.props.close}>Close</Button>

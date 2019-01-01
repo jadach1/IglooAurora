@@ -47,7 +47,7 @@ class RenameDevice extends React.Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.open && !this.props.open) {
       oldName = this.props.device.name
-      this.setState({ name: this.props.device.name })
+      this.setState({ name: this.props.device.name, nameEmpty: "" })
     }
   }
 
@@ -73,6 +73,7 @@ class RenameDevice extends React.Component {
             value={this.state.name}
             variant="outlined"
             error={this.state.nameEmpty}
+            helperText={this.state.nameEmpty ? "This field is required" : " "}
             onChange={event =>
               this.setState({
                 name: event.target.value,
@@ -84,7 +85,7 @@ class RenameDevice extends React.Component {
             }}
             style={{
               width: "calc(100% - 48px)",
-              margin: "0 24px 16px 24px",
+              margin: "0 24px",
             }}
             InputProps={{
               endAdornment: this.state.name && (
