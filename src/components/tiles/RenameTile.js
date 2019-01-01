@@ -7,8 +7,7 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import FormControl from "@material-ui/core/FormControl"
-import Input from "@material-ui/core/Input"
+import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
@@ -25,7 +24,7 @@ function SlideTransition(props) {
 }
 
 class RenameTileDialog extends React.Component {
-  state = { tileName: null }
+  state = { name: null }
 
   rename = () => {
     this.props[
@@ -43,7 +42,7 @@ class RenameTileDialog extends React.Component {
     ]({
       variables: {
         id: this.props.value.id,
-        name: this.state.tileName,
+        name: this.state.name,
       },
       optimisticResponse: {
         __typename: "Mutation",
@@ -60,7 +59,7 @@ class RenameTileDialog extends React.Component {
           : "booleanValue"]: {
           __typename: this.props.value.__typename,
           id: this.props.value.id,
-          name: this.state.tileName,
+          name: this.state.name,
         },
       },
     })
@@ -69,8 +68,8 @@ class RenameTileDialog extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.renameTileOpen && !this.props.renameTileOpen) {
-      oldName = this.props.tileName
-      this.setState({ tileName: this.props.tileName })
+      oldName = this.props.name
+      this.setState({ name: this.props.name, nameEmpty: "" })
     }
   }
 
@@ -91,41 +90,44 @@ class RenameTileDialog extends React.Component {
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          <FormControl style={{ width: "100%" }}>
-            <Input
-              id="adornment-email-login"
-              placeholder="Card name"
-              value={this.state.tileName}
-              onChange={event => {
-                this.setState({
-                  tileName: event.target.value,
-                })
-              }}
-              onKeyPress={event => {
-                if (event.key === "Enter") this.rename()
-              }}
-              endAdornment={
-                this.state.tileName ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => {
-                        this.setState({ tileName: "" })
-                      }}
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                      tabIndex="-1"
-                    >
-                      <Icon>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                ) : null
-              }
-            />
-          </FormControl>
+          <TextField
+            id="rename-card"
+            label="Name"
+            value={this.state.name}
+            variant="outlined"
+            error={this.state.nameEmpty}
+            helperText={this.state.nameEmpty ? "This field is required" : " "}
+            onChange={event =>
+              this.setState({
+                name: event.target.value,
+                nameEmpty: event.target.value === "",
+              })
+            }
+            onKeyPress={event => {
+              if (event.key === "Enter" && !this.state.nameEmpty) this.rename()
+            }}
+            style={{
+              width: "100%",
+            }}
+            InputProps={{
+              endAdornment: this.state.name && (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => this.setState({ name: "", nameEmpty: true })}
+                    tabIndex="-1"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "rgba(0, 0, 0, 0.46)" }
+                        : { color: "rgba(0, 0, 0, 0.46)" }
+                    }
+                  >
+                    <Icon>clear</Icon>
+                  </IconButton>
+                </InputAdornment>
+              ),
+            }}
+          />
         </div>
         <DialogActions>
           <Button
@@ -138,7 +140,7 @@ class RenameTileDialog extends React.Component {
             variant="contained"
             color="primary"
             onClick={this.rename}
-            disabled={!this.state.tileName || oldName === this.state.tileName}
+            disabled={!this.state.name || oldName === this.state.name}
           >
             Rename
           </Button>

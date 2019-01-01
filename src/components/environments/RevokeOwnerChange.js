@@ -104,5 +104,4 @@ export default graphql(
   {
     name: "RevokePendingOwnerChange",
   }
-)(withMobileDialog({ breakpoint: "xs" })(RevokeOwnerChange)
-)
+)(withMobileDialog({ breakpoint: "xs" })(RevokeOwnerChange))

@@ -84,10 +84,12 @@ class GraphQLFetcher extends Component {
         if (!subscriptionData.data) {
           return prev
         }
+
         const newEnvironments = [
           ...prev.user.environments,
           subscriptionData.data.environmentCreated,
         ]
+
         return {
           user: {
             ...prev.user,
@@ -211,6 +213,12 @@ class GraphQLFetcher extends Component {
       subscription {
         environmentShareReceived {
           id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
           sender {
             id
             name
@@ -422,23 +430,6 @@ class GraphQLFetcher extends Component {
 
     this.props.userData.subscribeToMore({
       document: subscribeToEnvironmentShareUpdated,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newEnvironments = [
-          ...prev.user.environments,
-          subscriptionData.data.environmentShareUpdated,
-        ]
-
-        return {
-          user: {
-            ...prev.user,
-            environments: newEnvironments,
-          },
-        }
-      },
     })
 
     const subscribeToEnvironmentShareDeclined = gql`
@@ -526,10 +517,10 @@ class GraphQLFetcher extends Component {
           return prev
         }
 
-        const newOwnerChange = prev.user.pendingOwnerChanges.filter(
-          ownerChange =>
-            ownerChange.id !== subscriptionData.data.ownerChangeReceived
-        )
+        const newOwnerChange = [
+          ...prev.user.pendingOwnerChanges,
+          subscriptionData.data.ownerChangeReceived,
+        ]
 
         return {
           user: {
