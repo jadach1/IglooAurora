@@ -127,8 +127,8 @@ class ShareEnvironment extends React.Component {
             subheader={<li />}
             style={
               this.props.fullScreen
-                ? { overflow: "auto", height: "100%" }
-                : { overflow: "auto", maxHeight: "420px" }
+                ? { overflow: "auto", height: "100%",padding:"0" }
+                : { overflow: "auto", maxHeight: "420px",padding:"0" }
             }
           >
             <li key="Owner">

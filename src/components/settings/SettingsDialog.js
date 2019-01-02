@@ -316,7 +316,7 @@ class SettingsDialog extends React.Component {
         }
       >
         <div style={listStyles.root}>
-          <List style={{ width: "100%" }} subheader={<li />}>
+          <List style={{ width: "100%",padding:"0" }} subheader={<li />}>
             <li key="appearance">
               <ul style={{ padding: "0" }}>
                 <ListSubheader

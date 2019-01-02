@@ -9,16 +9,15 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import IconButton from "@material-ui/core/IconButton"
-import RadioGroup from "@material-ui/core/RadioGroup"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
-import Radio from "@material-ui/core/Radio"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
-
-let oldUrl = ""
-
-let oldMode = ""
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
+import ListItemText from "@material-ui/core/ListItemText"
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import isUrl from "nice-is-url"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -29,163 +28,411 @@ function SlideTransition(props) {
 }
 
 class ChangeServer extends React.Component {
-  state = {
-    url:
-      (typeof Storage !== "undefined" && localStorage.getItem("server")) ||
-      localStorage.getItem("manualServer") ||
-      "https://bering.igloo.ooo",
-    mode:
-      typeof Storage !== "undefined" && localStorage.getItem("server")
-        ? "manual"
-        : "auto",
+  state = { url: "", newServerOpen: false }
+
+  selectUrl = url => {
+    if (typeof Storage !== "undefined") {
+      localStorage.setItem("server", url)
+      localStorage.setItem("bearer", "")
+      this.props.forceUpdate()
+    }
+
+    !this.props.isUnauthenticated && this.props.logOut()
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (this.props.open !== nextProps.open && nextProps.open) {
-      oldMode =
-        typeof Storage !== "undefined" && localStorage.getItem("server")
-          ? "manual"
-          : "auto"
+  addServer = () => {
+    localStorage.getItem("serverList") && isUrl(this.state.url)
+      ? localStorage.setItem(
+          "serverList",
+          JSON.stringify([
+            { name: this.state.name, url: this.state.url },
+            ...JSON.parse(localStorage.getItem("serverList")),
+          ])
+        )
+      : localStorage.setItem(
+          "serverList",
+          JSON.stringify([{ name: this.state.name, url: this.state.url }])
+        )
+  }
 
-      oldUrl = typeof Storage !== "undefined" && localStorage.getItem("server")
+  deleteServer = url => {
+    localStorage.getItem("serverList") &&
+      localStorage.setItem(
+        "serverList",
+        JSON.stringify(
+          JSON.parse(localStorage.getItem("serverList")).filter(
+            server => server.url !== url
+          )
+        )
+      )
 
-      this.setState({
-        urlEmpty: false,
-        url:
-          (typeof Storage !== "undefined" && localStorage.getItem("server")) ||
-          localStorage.getItem("manualServer") ||
-          "https://bering.igloo.ooo",
-        mode:
-          typeof Storage !== "undefined" && localStorage.getItem("server")
-            ? "manual"
-            : "auto",
-      })
-    }
+    if (localStorage.getItem("server") !== "https://bering.igloo.ooo")
+      this.selectUrl("https://bering.igloo.ooo")
+
+    this.forceUpdate()
+  }
+
+  serverListContainsItem = () => {
+    return (
+      typeof Storage !== "undefined" &&
+      JSON.parse(localStorage.getItem("serverList")) &&
+      JSON.parse(localStorage.getItem("serverList")).some(
+        server => server.url === this.state.url
+      )
+    )
   }
 
   render() {
-    let confirm = () => {
-      if (typeof Storage !== "undefined") {
-        if (this.state.mode === "manual") {
-          localStorage.setItem("server", this.state.url)
-          localStorage.setItem("manualServer", this.state.url)
-        } else {
-          localStorage.setItem("server", "")
-          localStorage.setItem("manualServer", this.state.url)
-        }
-        localStorage.setItem("bearer", "")
-        this.props.forceUpdate()
-      }
-
-      !this.props.isUnauthenticated && this.props.logOut()
-      this.props.close()
-    }
+    const dialogList =
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("serverList") &&
+      JSON.parse(localStorage.getItem("serverList")).map(server => (
+        <ListItem
+          button
+          selected={localStorage.getItem("server") === server.url}
+          onClick={() =>
+            localStorage.getItem("server") !== server.url &&
+            this.selectUrl(server.url)
+          }
+        >
+          <ListItemIcon>
+            <Icon>cloud</Icon>
+          </ListItemIcon>
+          <ListItemText
+            primary={
+              <font
+                style={
+                  !this.props.unauthenticated &&
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }
+              >
+                {server.name}
+              </font>
+            }
+            secondary={
+              <font
+                style={
+                  !this.props.unauthenticated &&
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "#c1c2c5" }
+                    : { color: "#7a7a7a" }
+                }
+              >
+                {server.url}
+              </font>
+            }
+          />
+          <ListItemSecondaryAction>
+            <IconButton
+              onClick={() => this.deleteServer(server.url)}
+              style={
+                !this.props.unauthenticated &&
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white" }
+                  : { color: "black" }
+              }
+            >
+              <Icon>delete</Icon>
+            </IconButton>
+          </ListItemSecondaryAction>
+        </ListItem>
+      ))
 
     const dialog = (
-      <Dialog
-        open={this.props.open}
-        onClose={this.props.close}
-        className="notSelectable"
-        titleClassName="notSelectable defaultCursor"
-        TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
-        fullScreen={this.props.fullScreen}
-        disableBackdropClick={this.props.fullScreen}
-        fullWidth
-        maxWidth="xs"
-      >
-        <DialogTitle disableTypography>Change connected server</DialogTitle>
-        <div
-          style={{
-            height: "100%",
-            paddingRight: "24px",
-            paddingLeft: "24px",
-          }}
+      <React.Fragment>
+        <Dialog
+          open={
+            typeof Storage !== "undefined" &&
+            this.props.open &&
+            !this.state.newServerOpen
+          }
+          onClose={this.props.close}
+          className="notSelectable"
+          titleClassName="notSelectable defaultCursor"
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
+          fullWidth
+          maxWidth="xs"
         >
-          <RadioGroup
-            onChange={(event, value) => {
-              this.setState({ mode: value })
-            }}
-            value={this.state.mode || "auto"}
-          >
-            <FormControlLabel
-              value="auto"
-              control={<Radio color="primary" />}
-              label="Auto"
-            />
-            <FormControlLabel
-              value="manual"
-              control={<Radio color="primary" />}
-              label="Manual"
-            />
-          </RadioGroup>
-          <TextField
-            id="change-name"
-            label="Name"
-            value={this.state.url}
-            variant="outlined"
-            error={this.state.urlEmpty || this.state.urlError}
-            helperText={
-              this.state.urlEmpty
-                ? "This field is required"
-                : this.state.urlError || " "
-            }
-            onChange={event =>
-              this.setState({
-                url: event.target.value,
-                urlEmpty: event.target.value === "",
-                urlError: "",
-              })
-            }
-            onKeyPress={event => {
-              if (event.key === "Enter" && this.state.url !== "") {
-                confirm()
+          <DialogTitle disableTypography>Change connected server</DialogTitle>
+          <div style={{ height: "100%" }}>
+            <List
+              style={{
+                padding: "0",
+              }}
+            >
+              <ListItem
+                button
+                selected={
+                  localStorage.getItem("server") === "https://bering.igloo.ooo"
+                }
+                onClick={() =>
+                  localStorage.getItem("server") !==
+                    "https://bering.igloo.ooo" &&
+                  this.selectUrl("https://bering.igloo.ooo")
+                }
+              >
+                <ListItemIcon>
+                  <Icon>cloud_done</Icon>
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        !this.props.unauthenticated &&
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      Default server
+                    </font>
+                  }
+                  secondary={<font>https://bering.igloo.ooo</font>}
+                />
+              </ListItem>
+              {dialogList}
+              <ListItem
+                button
+                onClick={() =>
+                  this.setState({
+                    newServerOpen: true,
+                  })
+                }
+              >
+                <ListItemIcon>
+                  <Icon>add</Icon>
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        !this.props.unauthenticated &&
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      New server
+                    </font>
+                  }
+                />
+              </ListItem>
+            </List>
+          </div>
+          <DialogActions>
+            <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.state.newServerOpen}
+          onClose={() =>
+            this.setState({
+              newServerOpen: false,
+              url: "",
+              urlEmpty: false,
+              name: "",
+              nameEmpty: false,
+            })
+          }
+          className="notSelectable"
+          titleClassName="notSelectable defaultCursor"
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle disableTypography>Change connected server</DialogTitle>
+          <div style={{ height: "100%", padding: "0 24px" }}>
+            <TextField
+              id="custom-server-name"
+              label="Server name"
+              value={this.state.name}
+              variant="outlined"
+              error={this.state.nameEmpty || this.state.nameError}
+              helperText={
+                this.state.nameEmpty
+                  ? "This field is required"
+                  : this.state.nameError || " "
               }
-            }}
-            style={{
-              marginTop: "16px",
-              width: "100%",
-            }}
-            disabled={this.state.mode === "auto"}
-            InputProps={{
-              endAdornment: this.state.url && (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => {
-                      this.setState({ url: "", urlEmpty: true })
-                    }}
-                    tabIndex="-1"
-                    disabled={this.state.mode === "auto"}
-                  >
-                    <Icon>clear</Icon>
-                  </IconButton>
-                </InputAdornment>
-              ),
-            }}
-          />
-        </div>
-        <DialogActions>
-          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-            Never mind
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={confirm}
-            disabled={
-              typeof Storage === "undefined"
-                ? oldMode === this.state.mode || this.state.url === ""
-                : (oldMode === this.state.mode &&
-                    (this.state.mode === "manual" &&
-                      this.state.url === oldUrl)) ||
-                  this.state.url === ""
-            }
-          >
-            Change
-          </Button>
-        </DialogActions>
-      </Dialog>
+              onChange={event =>
+                this.setState({
+                  name: event.target.value,
+                  nameEmpty: event.target.value === "",
+                  nameError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (
+                  event.key === "Enter" &&
+                  this.state.name &&
+                  this.state.url &&
+                  typeof Storage !== "undefined" &&
+                  isUrl(this.state.url) &&
+                  (localStorage.getItem("serverList") &&
+                    JSON.parse(localStorage.getItem("serverList")).indexOf(
+                      this.state.name
+                    ) !== -1)
+                ) {
+                  this.addServer()
+                  this.setState({
+                    newServerOpen: false,
+                    url: "",
+                    urlEmpty: false,
+                    name: "",
+                    nameEmpty: false,
+                  })
+                }
+              }}
+              style={{
+                marginTop: "16px",
+                width: "100%",
+              }}
+              InputProps={{
+                endAdornment: this.state.name && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        this.setState({ name: "" })
+                      }}
+                      style={
+                        !this.props.unauthenticated &&
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(255, 255, 255, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
+                      }
+                      tabIndex="-1"
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              id="custom-server-url"
+              label="Server URL"
+              value={this.state.url}
+              variant="outlined"
+              error={this.state.urlEmpty || this.state.urlError}
+              helperText={
+                this.state.urlEmpty
+                  ? "This field is required"
+                  : this.state.urlError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  url: event.target.value,
+                  urlEmpty: event.target.value === "",
+                  urlError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (
+                  event.key === "Enter" &&
+                  this.state.url &&
+                  this.state.name &&
+                  typeof Storage !== "undefined" &&
+                  isUrl(this.state.url) &&
+                  (localStorage.getItem("serverList") &&
+                    JSON.parse(localStorage.getItem("serverList")).indexOf(
+                      this.state.url
+                    ) !== -1)
+                ) {
+                  this.addServer()
+                  this.setState({
+                    newServerOpen: false,
+                    url: "",
+                    urlEmpty: false,
+                    name: "",
+                    nameEmpty: false,
+                  })
+                }
+              }}
+              style={{
+                marginTop: "16px",
+                width: "100%",
+              }}
+              InputProps={{
+                endAdornment: this.state.url && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        this.setState({ url: "" })
+                      }}
+                      style={
+                        !this.props.unauthenticated &&
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(255, 255, 255, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
+                      }
+                      tabIndex="-1"
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <DialogActions>
+            <Button
+              onClick={() =>
+                this.setState({
+                  newServerOpen: false,
+                  url: "",
+                  urlEmpty: false,
+                  name: "",
+                  nameEmpty: false,
+                })
+              }
+              style={{ marginRight: "4px" }}
+            >
+              Never mind
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.addServer()
+                this.setState({
+                  newServerOpen: false,
+                  url: "",
+                  urlEmpty: false,
+                  name: "",
+                  nameEmpty: false,
+                })
+              }}
+              disabled={
+                !this.state.name ||
+                !this.state.url ||
+                typeof Storage === "undefined" ||
+                this.serverListContainsItem() ||
+                !isUrl(this.state.url)
+              }
+            >
+              Add
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </React.Fragment>
     )
 
     return this.props.unauthenticated ? (
@@ -220,14 +467,6 @@ class ChangeServer extends React.Component {
             MuiDialogActions: {
               action: {
                 marginRight: "4px",
-              },
-            },
-            MuiRadio: {
-              colorPrimary: {
-                "&$checked": {
-                  color: "#0083ff",
-                },
-                color: "black",
               },
             },
           },
