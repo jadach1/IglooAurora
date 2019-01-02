@@ -99,7 +99,11 @@ class AddDevice extends Component {
                   }
             }
           >
-            <List>
+            <List
+              style={{
+                padding: "0",
+              }}
+            >
               {[
                 "Read and write access to itself",
                 "Read and write access to other devices",

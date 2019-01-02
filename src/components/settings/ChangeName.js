@@ -98,8 +98,8 @@ class ChangeNameDialog extends React.Component {
           onClose={this.props.handleNameDialogClose}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
           fullWidth
@@ -168,7 +168,7 @@ class ChangeNameDialog extends React.Component {
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
-                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          ? { color: "rgba(255, 255, 255, 0.46)" }
                           : { color: "rgba(0, 0, 0, 0.46)" }
                       }
                       tabIndex="-1"

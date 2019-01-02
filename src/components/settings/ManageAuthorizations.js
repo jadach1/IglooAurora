@@ -340,7 +340,9 @@ class AuthDialog extends React.Component {
 
     if (this.props.tokenData.user && this.props.tokenData.user.permanentTokens)
       tokenList = (
-        <List>
+        <List style={{
+              padding: "0",
+            }}>
           {this.props.tokenData.user.permanentTokens.map(token => (
             <ListItem>
               <ListItemIcon>

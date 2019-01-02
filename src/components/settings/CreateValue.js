@@ -172,16 +172,26 @@ class CreateValue extends React.Component {
 
       case "boolean":
         value = (
-          <List>
+          <List
+            style={{
+              padding: "0",
+            }}
+          >
             <ListItem style={{ marginTop: "-3px", marginBottom: "13px" }}>
               <ListItemText
-                primary={<font style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "white" }
-                    : {}
-                }>Value *</font>}
-                              />
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    Value *
+                  </font>
+                }
+              />
               <ListItemSecondaryAction>
                 <Switch
                   checked={this.state.value}
