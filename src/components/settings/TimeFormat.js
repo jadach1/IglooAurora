@@ -61,6 +61,13 @@ class TimeFormatDialog extends React.Component {
     if (!this.props.dateFormat && nextProps.dateFormat) {
       this.setState({ dateFormat: nextProps.dateFormat })
     }
+
+    if (this.props.timeFormatDialogOpen !== nextProps.timeFormatDialogOpen) {
+      this.setState({
+        dateFormat: nextProps.dateFormat,
+        timeFormat: nextProps.timeFormat,
+      })
+    }
   }
 
   render() {

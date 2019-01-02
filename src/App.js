@@ -299,7 +299,6 @@ function setupWebPush(token) {
         ? localStorage.getItem("server") + "/webPushSubscribe"
         : `https://bering.igloo.ooo/webPushSubscribe`
 
-    //TODO: ?
     fetch(serverUrl, {
       body: JSON.stringify(subscription),
       cache: "no-cache",
@@ -339,7 +338,7 @@ class App extends Component {
 
       // asks for a new token 1 day before the expiration date
       if (bearer !== "") {
-        const expirationDate = jwt.decode(bearer).exp
+        const expirationDate = jwt.decode(bearer) && jwt.decode(bearer).exp
         const tomorrow = Math.floor(new Date() / 1000) + 86400
         if (expirationDate < tomorrow) {
           bearer = ""

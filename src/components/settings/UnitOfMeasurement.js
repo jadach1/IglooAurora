@@ -64,6 +64,13 @@ class UnitOfMeasumentDialog extends React.Component {
     if (!this.props.temperature && nextProps.temperature) {
       this.setState({ temperature: nextProps.temperature })
     }
+
+    if (this.props.unitDialogOpen !== nextProps.unitDialogOpen) {
+      this.setState({
+        temperature: nextProps.temperature,
+        lengthMass: nextProps.lengthMass,
+      })
+    }
   }
 
   render() {

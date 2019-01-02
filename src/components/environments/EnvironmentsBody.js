@@ -12,6 +12,7 @@ import BottomNavigationAction from "@material-ui/core/BottomNavigationAction"
 import AppBar from "@material-ui/core/AppBar"
 import List from "@material-ui/core/List"
 import ListSubheader from "@material-ui/core/ListSubheader"
+import ButtonBase from "@material-ui/core/ButtonBase"
 import SwipeableViews from "react-swipeable-views"
 import CenteredSpinner from "../CenteredSpinner"
 import EnvironmentCard from "./EnvironmentCard"
@@ -81,6 +82,62 @@ export default class EnvironmentsBody extends Component {
             ))}
           {user.pendingOwnerChanges[0] && (
             <Grid key="environmentShares" item>
+              <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
+                <Paper
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? {
+                          backgroundColor: "#2f333d",
+                          width: "256px",
+                          height: "192px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                          color: "white",
+                        }
+                      : {
+                          backgroundColor: "#fff",
+                          width: "256px",
+                          height: "192px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                        }
+                  }
+                  onClick={() =>
+                    this.setState({ pendingOwnerChangesOpen: true })
+                  }
+                >
+                  <div
+                    style={{
+                      paddingTop: "50px",
+                      paddingBottom: "50px",
+                    }}
+                  >
+                    <Icon style={{ fontSize: "64px" }}>people</Icon>
+                    <br />
+                    <Typography
+                      variant="h5"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : {}
+                      }
+                    >
+                      {user.pendingOwnerChanges.length > 99
+                        ? "99+ transfer requests"
+                        : user.pendingOwnerChanges.length +
+                          (user.pendingOwnerChanges.length === 1
+                            ? " transfer request"
+                            : " transfer requests")}
+                    </Typography>
+                  </div>
+                </Paper>
+              </ButtonBase>
+            </Grid>
+          )}
+          <Grid key="create" item>
+            <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
               <Paper
                 style={
                   typeof Storage !== "undefined" &&
@@ -101,15 +158,10 @@ export default class EnvironmentsBody extends Component {
                         textAlign: "center",
                       }
                 }
-                onClick={() => this.setState({ pendingOwnerChangesOpen: true })}
+                onClick={() => this.setState({ createOpen: true })}
               >
-                <div
-                  style={{
-                    paddingTop: "50px",
-                    paddingBottom: "50px",
-                  }}
-                >
-                  <Icon style={{ fontSize: "64px" }}>people</Icon>
+                <div style={{ paddingTop: "50px", paddingBottom: "50px" }}>
+                  <Icon style={{ fontSize: "64px" }}>add</Icon>
                   <br />
                   <Typography
                     variant="h5"
@@ -120,56 +172,11 @@ export default class EnvironmentsBody extends Component {
                         : {}
                     }
                   >
-                    {user.pendingOwnerChanges.length > 99
-                      ? "99+ transfer requests"
-                      : user.pendingOwnerChanges.length +
-                        (user.pendingOwnerChanges.length === 1
-                          ? " transfer request"
-                          : " transfer requests")}
+                    New environment
                   </Typography>
                 </div>
               </Paper>
-            </Grid>
-          )}
-          <Grid key="create" item>
-            <Paper
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? {
-                      backgroundColor: "#2f333d",
-                      width: "256px",
-                      height: "192px",
-                      cursor: "pointer",
-                      textAlign: "center",
-                      color: "white",
-                    }
-                  : {
-                      backgroundColor: "#fff",
-                      width: "256px",
-                      height: "192px",
-                      cursor: "pointer",
-                      textAlign: "center",
-                    }
-              }
-              onClick={() => this.setState({ createOpen: true })}
-            >
-              <div style={{ paddingTop: "50px", paddingBottom: "50px" }}>
-                <Icon style={{ fontSize: "64px" }}>add</Icon>
-                <br />
-                <Typography
-                  variant="h5"
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : {}
-                  }
-                >
-                  New environment
-                </Typography>
-              </div>
-            </Paper>
+            </ButtonBase>
           </Grid>
         </Grid>
       )
@@ -207,62 +214,64 @@ export default class EnvironmentsBody extends Component {
             ))}
           {user.pendingEnvironmentShares[0] && (
             <Grid key="environmentShares" item>
-              <Paper
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? {
-                        backgroundColor: "#2f333d",
-                        width: "256px",
-                        height: "192px",
-                        cursor: "pointer",
-                        textAlign: "center",
-                        color: "white",
-                      }
-                    : {
-                        backgroundColor: "#fff",
-                        width: "256px",
-                        height: "192px",
-                        cursor: "pointer",
-                        textAlign: "center",
-                      }
-                }
-                onClick={() => this.setState({ pendingSharesOpen: true })}
-              >
-                <div
-                  style={{
-                    paddingTop: "50px",
-                    paddingBottom: "50px",
-                  }}
+              <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
+                <Paper
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? {
+                          backgroundColor: "#2f333d",
+                          width: "256px",
+                          height: "192px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                          color: "white",
+                        }
+                      : {
+                          backgroundColor: "#fff",
+                          width: "256px",
+                          height: "192px",
+                          cursor: "pointer",
+                          textAlign: "center",
+                        }
+                  }
+                  onClick={() => this.setState({ pendingSharesOpen: true })}
                 >
-                  <Icon
+                  <div
                     style={{
-                      fontSize: "48px",
-                      marginBottom: "8px",
-                      marginTop: "8px",
+                      paddingTop: "50px",
+                      paddingBottom: "50px",
                     }}
                   >
-                    share
-                  </Icon>
-                  <br />
-                  <Typography
-                    variant="h5"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : {}
-                    }
-                  >
-                    {user.pendingEnvironmentShares.length > 99
-                      ? "99+ sharing requests"
-                      : user.pendingEnvironmentShares.length +
-                        (user.pendingEnvironmentShares.length === 1
-                          ? " sharing request"
-                          : " sharing requests")}
-                  </Typography>
-                </div>
-              </Paper>
+                    <Icon
+                      style={{
+                        fontSize: "48px",
+                        marginBottom: "8px",
+                        marginTop: "8px",
+                      }}
+                    >
+                      share
+                    </Icon>
+                    <br />
+                    <Typography
+                      variant="h5"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : {}
+                      }
+                    >
+                      {user.pendingEnvironmentShares.length > 99
+                        ? "99+ sharing requests"
+                        : user.pendingEnvironmentShares.length +
+                          (user.pendingEnvironmentShares.length === 1
+                            ? " sharing request"
+                            : " sharing requests")}
+                    </Typography>
+                  </div>
+                </Paper>
+              </ButtonBase>
             </Grid>
           )}
         </Grid>
@@ -321,13 +330,12 @@ export default class EnvironmentsBody extends Component {
             >
               <FormControl
                 style={{
-                  marginTop: "16px",
                   width: "calc(100% - 32px)",
                   maxWidth: "400px",
                 }}
               >
                 <Input
-                  id="adornment-name-login"
+                  id="search-environments"
                   placeholder="Search environments"
                   color="primary"
                   className="notSelectable"
