@@ -3,7 +3,6 @@ import Sidebar from "./components/Sidebar"
 import SidebarHeader from "./components/SidebarHeader"
 import MainBody from "./components/MainBody"
 import MainBodyHeader from "./components/MainBodyHeader"
-import SettingsDialog from "./components/settings/SettingsDialog"
 import "./styles/App.css"
 import "./styles/Tiles.css"
 import { hotkeys } from "react-keyboard-shortcuts"
@@ -307,24 +306,6 @@ class Main extends Component {
           </title>
         </Helmet>
         <div className="main">
-          <SettingsDialog
-            isOpen={this.props.areSettingsOpen}
-            closeSettingsDialog={this.props.closeSettings}
-            handleSettingsTabChanged={(event, value) => {
-              this.setState({
-                slideIndex: value,
-              })
-            }}
-            slideIndex={this.state.slideIndex}
-            nightMode={nightMode}
-            userData={this.props.userData}
-            logOut={this.props.logOut}
-            forceUpdate={this.props.forceUpdate}
-            handleSwipe={index => {
-              this.setState({ slideIndex: index })
-            }}
-            client={this.props.client}
-          />
           <div className="invisibleHeader" key="invisibleHeader" />
           <SidebarHeader
             logOut={this.props.logOut}

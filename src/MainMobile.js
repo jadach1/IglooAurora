@@ -7,7 +7,6 @@ import "./styles/Tiles.css"
 import "./styles/MobileApp.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import AppBar from "@material-ui/core/AppBar"
-import SettingsDialog from "./components/settings/SettingsDialog"
 import MainBodyHeader from "./components/MainBodyHeader"
 import StatusBar from "./components/devices/StatusBar"
 import { graphql } from "react-apollo"
@@ -427,21 +426,6 @@ class MainMobile extends Component {
         <div className="mobileMain">
           {this.props.selectedDevice == null ? (
             <React.Fragment>
-              <SettingsDialog
-                isOpen={this.props.areSettingsOpen}
-                closeSettingsDialog={this.props.closeSettings}
-                handleSettingsTabChanged={(event, value) => {
-                  this.setState({
-                    slideIndex: value,
-                  })
-                }}
-                slideIndex={this.state.slideIndex}
-                nightMode={nightMode}
-                userData={this.props.userData}
-                logOut={this.props.logOut}
-                forceUpdate={this.props.forceUpdate}
-                client={this.props.client}
-              />
               <AppBar position="sticky">
                 <SidebarHeader
                   logOut={this.props.logOut}
@@ -486,24 +470,6 @@ class MainMobile extends Component {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <SettingsDialog
-                isOpen={this.props.areSettingsOpen}
-                closeSettingsDialog={this.props.closeSettings}
-                handleSettingsTabChanged={(event, value) => {
-                  this.setState({
-                    slideIndex: value,
-                  })
-                }}
-                slideIndex={this.state.slideIndex}
-                nightMode={nightMode}
-                userData={this.props.userData}
-                logOut={this.props.logOut}
-                forceUpdate={this.props.forceUpdate}
-                handleSwipe={index => {
-                  this.setState({ slideIndex: index })
-                }}
-                client={this.props.client}
-              />
               <AppBar>
                 <MainBodyHeader
                   deviceId={this.props.selectedDevice}

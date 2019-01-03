@@ -559,7 +559,7 @@ class CreateValue extends React.Component {
               }}
               style={{ marginRight: "4px" }}
             >
-              Go back
+              Never mind
             </Button>
             <Button
               variant="contained"
