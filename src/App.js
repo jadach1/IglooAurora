@@ -449,8 +449,10 @@ class App extends Component {
       return <Redirect to={this.state.from || "/"} />
     }
 
-    if (localStorage.getItem("server") === null)
-      localStorage.setItem("server", "")
+    if (typeof Storage !== "undefined") {
+      if (localStorage.getItem("server") === null)
+        localStorage.setItem("server", "")
+    }
 
     return (
       <MuiThemeProvider

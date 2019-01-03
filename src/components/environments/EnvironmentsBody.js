@@ -418,30 +418,9 @@ export default class EnvironmentsBody extends Component {
                           }
                     }
                   >
-                    <Typography
-                      variant="h4"
-                      className="notSelectable defaultCursor"
-                      style={
-                        nightMode
-                          ? {
-                              textAlign: "center",
-                              lineHeight: "64px",
-                              height: "64px",
-                              color: "white",
-                            }
-                          : {
-                              textAlign: "center",
-                              lineHeight: "64px",
-                              height: "64px",
-                              color: "black",
-                            }
-                      }
-                    >
-                      Your environments
-                    </Typography>
                     <div
                       style={{
-                        height: "calc(100% - 64px)",
+                        height: "100%",
                         overflowY: "auto",
                       }}
                     >
@@ -466,30 +445,9 @@ export default class EnvironmentsBody extends Component {
                       height: "calc(100vh - 192px)",
                     }}
                   >
-                    <Typography
-                      variant="h4"
-                      className="notSelectable defaultCursor"
-                      style={
-                        nightMode
-                          ? {
-                              textAlign: "center",
-                              lineHeight: "64px",
-                              height: "64px",
-                              color: "white",
-                            }
-                          : {
-                              textAlign: "center",
-                              lineHeight: "64px",
-                              height: "64px",
-                              color: "black",
-                            }
-                      }
-                    >
-                      Shared with you
-                    </Typography>
                     <div
                       style={{
-                        height: "calc(100% - 64px)",
+                        height: "100%",
                         overflowY: "auto",
                       }}
                     >

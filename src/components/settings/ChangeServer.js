@@ -41,17 +41,22 @@ class ChangeServer extends React.Component {
   }
 
   addServer = () => {
-    localStorage.getItem("serverList") && isUrl(this.state.url)
+    let url = this.state.url
+    if (url.substring(0, 3) && url.substring(0, 3) !== "http") {
+      url = "https://" + url
+    }
+
+    localStorage.getItem("serverList") && isUrl(url)
       ? localStorage.setItem(
           "serverList",
           JSON.stringify([
-            { name: this.state.name, url: this.state.url },
+            { name: this.state.name, url },
             ...JSON.parse(localStorage.getItem("serverList")),
           ])
         )
       : localStorage.setItem(
           "serverList",
-          JSON.stringify([{ name: this.state.name, url: this.state.url }])
+          JSON.stringify([{ name: this.state.name, url }])
         )
   }
 
@@ -74,11 +79,16 @@ class ChangeServer extends React.Component {
 
   serverListContainsItem = () => {
     return (
-      typeof Storage !== "undefined" &&
-      JSON.parse(localStorage.getItem("serverList")) &&
-      JSON.parse(localStorage.getItem("serverList")).some(
-        server => server.url === this.state.url
-      )
+      (typeof Storage !== "undefined" &&
+        JSON.parse(localStorage.getItem("serverList")) &&
+        JSON.parse(localStorage.getItem("serverList")).some(
+          server => server.url === this.state.url
+        )) ||
+      (typeof Storage !== "undefined" &&
+        JSON.parse(localStorage.getItem("serverList")) &&
+        JSON.parse(localStorage.getItem("serverList")).some(
+          server => server.url === "https://" + this.state.url
+        ))
     )
   }
 
@@ -282,12 +292,15 @@ class ChangeServer extends React.Component {
                   event.key === "Enter" &&
                   this.state.name &&
                   this.state.url &&
-                  typeof Storage !== "undefined" &&
                   isUrl(this.state.url) &&
+                  typeof Storage !== "undefined" &&
                   (localStorage.getItem("serverList") &&
                     JSON.parse(localStorage.getItem("serverList")).indexOf(
                       this.state.name
-                    ) !== -1)
+                    ) === -1) &&
+                  this.state.url !== "https://bering.igloo.ooo" &&
+                  this.state.url !== "bering.igloo.ooo" &&
+                  this.state.url !== "http://bering.igloo.ooo"
                 ) {
                   this.addServer()
                   this.setState({
@@ -348,12 +361,15 @@ class ChangeServer extends React.Component {
                   event.key === "Enter" &&
                   this.state.url &&
                   this.state.name &&
-                  typeof Storage !== "undefined" &&
                   isUrl(this.state.url) &&
+                  typeof Storage !== "undefined" &&
                   (localStorage.getItem("serverList") &&
                     JSON.parse(localStorage.getItem("serverList")).indexOf(
                       this.state.url
-                    ) !== -1)
+                    ) === -1) &&
+                  this.state.url !== "https://bering.igloo.ooo" &&
+                  this.state.url !== "bering.igloo.ooo" &&
+                  this.state.url !== "http://bering.igloo.ooo"
                 ) {
                   this.addServer()
                   this.setState({
@@ -425,7 +441,10 @@ class ChangeServer extends React.Component {
                 !this.state.url ||
                 typeof Storage === "undefined" ||
                 this.serverListContainsItem() ||
-                !isUrl(this.state.url)
+                !isUrl(this.state.url) ||
+                this.state.url === "https://bering.igloo.ooo" ||
+                this.state.url === "bering.igloo.ooo" ||
+                this.state.url === "http://bering.igloo.ooo"
               }
             >
               Add
@@ -462,6 +481,11 @@ class ChangeServer extends React.Component {
             MuiButton: {
               containedPrimary: {
                 backgroundColor: "#0083ff",
+              },
+            },
+            MuiListItemIcon: {
+              root: {
+                color: "black",
               },
             },
             MuiDialogActions: {

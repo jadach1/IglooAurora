@@ -179,14 +179,7 @@ class Sidebar extends Component {
                   <ListItem
                     button
                     className="notSelectable"
-                    style={
-                      this.props.selectedDevice === device.id
-                        ? typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                          ? { backgroundColor: "#282c34", cursor: "pointer" }
-                          : { backgroundColor: "#d4d4d4", cursor: "pointer" }
-                        : null
-                    }
+                    selected={this.props.selectedDevice === device.id}
                     key={device.id}
                   >
                     <ListItemText

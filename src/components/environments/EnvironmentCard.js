@@ -11,6 +11,7 @@ import Divider from "@material-ui/core/Divider"
 import Paper from "@material-ui/core/Paper"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
+import ButtonBase from "@material-ui/core/ButtonBase"
 import DeleteEnvironment from "./DeleteEnvironment"
 import CustomizeEnvironment from "./CustomizeEnvironment"
 import EnvironmentInfo from "./EnvironmentInfo"
@@ -76,193 +77,200 @@ class EnvironmentCard extends Component {
 
     return (
       <React.Fragment>
-        <Paper
-          style={
-            typeof Storage !== "undefined" &&
-            localStorage.getItem("nightMode") === "true"
-              ? {
-                  backgroundColor: "#2f333d",
-                  width: "256px",
-                  height: "192px",
-                }
-              : {
-                  backgroundColor: "#fff",
-                  width: "256px",
-                  height: "192px",
-                }
-          }
+        <ButtonBase
+          focusRipple
+          style={{ borderRadius: "4px", textAlign: "left" }}
         >
-          <Toolbar
-            style={{
-              height: "64px",
-              paddingLeft: "0",
-              paddingRight: "24px",
-            }}
-          >
-            <Link
-              to={"/?environment=" + this.props.environment.id}
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? {
-                      color: "white",
-                      textDecoration: "none",
-                      height: "64px",
-                      borderTopLeftRadius: "4px",
-                      borderTopRightRadius: "4px",
-                    }
-                  : {
-                      color: "black",
-                      textDecoration: "none",
-                      height: "64px",
-                      borderTopLeftRadius: "4px",
-                      borderTopRightRadius: "4px",
-                    }
-              }
-            >
-              <div
-                style={{
-                  borderTopLeftRadius: "4px",
-                  borderTopRightRadius: "4px",
-                  paddingLeft: "16px",
-                  width: "240px",
-                }}
-              >
-                <Typography
-                  variant="h6"
-                  className="notSelectable"
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? {
-                          color: "white",
-                          overflow: "hidden",
-                          whiteSpace: "nowrap",
-                          textOverflow: "ellipsis",
-                          lineHeight: "64px",
-                          width: "184px",
-                        }
-                      : {
-                          color: "black",
-                          overflow: "hidden",
-                          whiteSpace: "nowrap",
-                          textOverflow: "ellipsis",
-                          lineHeight: "64px",
-                          width: "184px",
-                        }
+          <Paper
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    backgroundColor: "#2f333d",
+                    width: "256px",
+                    height: "192px",
                   }
-                >
-                  {isShared && (
-                    <Icon style={{ marginRight: "8px", marginBottom: "-5px" }}>
-                      group
-                    </Icon>
-                  )}
-                  {this.props.environment.name}
-                </Typography>
-              </div>
-            </Link>
-            <div
+                : {
+                    backgroundColor: "#fff",
+                    width: "256px",
+                    height: "192px",
+                  }
+            }
+          >
+            <Toolbar
               style={{
-                marginLeft: "-56px",
-                borderRadius: "50%",
+                height: "64px",
+                paddingLeft: "0",
+                paddingRight: "24px",
               }}
             >
-              <Tooltip id="tooltip-bottom" title="More" placement="bottom">
-                <IconButton onClick={this.handleMenuOpen}>
-                  <Icon
+              <Link
+                to={"/?environment=" + this.props.environment.id}
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? {
+                        color: "white",
+                        textDecoration: "none",
+                        height: "64px",
+                        borderTopLeftRadius: "4px",
+                        borderTopRightRadius: "4px",
+                      }
+                    : {
+                        color: "black",
+                        textDecoration: "none",
+                        height: "64px",
+                        borderTopLeftRadius: "4px",
+                        borderTopRightRadius: "4px",
+                      }
+                }
+              >
+                <div
+                  style={{
+                    borderTopLeftRadius: "4px",
+                    borderTopRightRadius: "4px",
+                    paddingLeft: "16px",
+                    width: "240px",
+                  }}
+                >
+                  <Typography
+                    variant="h6"
+                    className="notSelectable"
                     style={
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
                         ? {
                             color: "white",
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                            lineHeight: "64px",
+                            width: "184px",
                           }
                         : {
                             color: "black",
+                            overflow: "hidden",
+                            whiteSpace: "nowrap",
+                            textOverflow: "ellipsis",
+                            lineHeight: "64px",
+                            width: "184px",
                           }
                     }
                   >
-                    more_vert
-                  </Icon>
-                </IconButton>
-              </Tooltip>
-            </div>
-          </Toolbar>
-          <Link
-            to={"/?environment=" + this.props.environment.id}
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? { color: "white", textDecoration: "none" }
-                : { color: "black", textDecoration: "none" }
-            }
-          >
-            {this.props.environment.avatar === "DENALI" && (
-              <img
-                src={denali}
-                alt="Mt. Denali"
-                className="notSelectable"
+                    {isShared && (
+                      <Icon
+                        style={{ marginRight: "8px", marginBottom: "-5px" }}
+                      >
+                        group
+                      </Icon>
+                    )}
+                    {this.props.environment.name}
+                  </Typography>
+                </div>
+              </Link>
+              <div
                 style={{
-                  width: "100%",
-                  height: "128px",
-                  borderBottomLeftRadius: "4px",
-                  borderBottomRightRadius: "4px",
+                  marginLeft: "-56px",
+                  borderRadius: "50%",
                 }}
-              />
-            )}
-            {this.props.environment.avatar === "FOX" && (
-              <img
-                src={fox}
-                alt="Fox"
-                className="notSelectable"
-                style={{
-                  width: "100%",
-                  height: "128px",
-                  borderBottomLeftRadius: "4px",
-                  borderBottomRightRadius: "4px",
-                }}
-              />
-            )}
-            {this.props.environment.avatar === "TREETOPS" && (
-              <img
-                src={treetops}
-                alt="treetops"
-                className="notSelectable"
-                style={{
-                  width: "100%",
-                  height: "128px",
-                  borderBottomLeftRadius: "4px",
-                  borderBottomRightRadius: "4px",
-                }}
-              />
-            )}
-            {this.props.environment.avatar === "PUFFIN" && (
-              <img
-                src={puffin}
-                alt="Puffin"
-                className="notSelectable"
-                style={{
-                  width: "100%",
-                  height: "128px",
-                  borderBottomLeftRadius: "4px",
-                  borderBottomRightRadius: "4px",
-                }}
-              />
-            )}
-            {this.props.environment.avatar === "NORTHERN_LIGHTS" && (
-              <img
-                src={northernLights}
-                alt="Northern lights"
-                className="notSelectable"
-                style={{
-                  width: "100%",
-                  height: "128px",
-                  borderBottomLeftRadius: "4px",
-                  borderBottomRightRadius: "4px",
-                }}
-              />
-            )}
-          </Link>
-        </Paper>
+              >
+                <Tooltip id="tooltip-bottom" title="More" placement="bottom">
+                  <IconButton onClick={this.handleMenuOpen}>
+                    <Icon
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              color: "white",
+                            }
+                          : {
+                              color: "black",
+                            }
+                      }
+                    >
+                      more_vert
+                    </Icon>
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </Toolbar>
+            <Link
+              to={"/?environment=" + this.props.environment.id}
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white", textDecoration: "none" }
+                  : { color: "black", textDecoration: "none" }
+              }
+            >
+              {this.props.environment.avatar === "DENALI" && (
+                <img
+                  src={denali}
+                  alt="Mt. Denali"
+                  className="notSelectable"
+                  style={{
+                    width: "100%",
+                    height: "128px",
+                    borderBottomLeftRadius: "4px",
+                    borderBottomRightRadius: "4px",
+                  }}
+                />
+              )}
+              {this.props.environment.avatar === "FOX" && (
+                <img
+                  src={fox}
+                  alt="Fox"
+                  className="notSelectable"
+                  style={{
+                    width: "100%",
+                    height: "128px",
+                    borderBottomLeftRadius: "4px",
+                    borderBottomRightRadius: "4px",
+                  }}
+                />
+              )}
+              {this.props.environment.avatar === "TREETOPS" && (
+                <img
+                  src={treetops}
+                  alt="treetops"
+                  className="notSelectable"
+                  style={{
+                    width: "100%",
+                    height: "128px",
+                    borderBottomLeftRadius: "4px",
+                    borderBottomRightRadius: "4px",
+                  }}
+                />
+              )}
+              {this.props.environment.avatar === "PUFFIN" && (
+                <img
+                  src={puffin}
+                  alt="Puffin"
+                  className="notSelectable"
+                  style={{
+                    width: "100%",
+                    height: "128px",
+                    borderBottomLeftRadius: "4px",
+                    borderBottomRightRadius: "4px",
+                  }}
+                />
+              )}
+              {this.props.environment.avatar === "NORTHERN_LIGHTS" && (
+                <img
+                  src={northernLights}
+                  alt="Northern lights"
+                  className="notSelectable"
+                  style={{
+                    width: "100%",
+                    height: "128px",
+                    borderBottomLeftRadius: "4px",
+                    borderBottomRightRadius: "4px",
+                  }}
+                />
+              )}
+            </Link>
+          </Paper>
+        </ButtonBase>
         <Menu
           id="simple-menu"
           anchorEl={this.state.anchorEl}
