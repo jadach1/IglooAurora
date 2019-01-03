@@ -48,6 +48,7 @@ class SidebarHeader extends Component {
           gridArea: "sidebarHeader",
           background: "#0057cb",
           zIndex: 1000,
+          maxWidth: "100vw",
         }}
       >
         <Tooltip
