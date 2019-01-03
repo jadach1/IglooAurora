@@ -430,9 +430,10 @@ export default class EnvironmentsBody extends Component {
                         spacing={16}
                         className="notSelectable defaultCursor"
                         style={{
-                          width: "calc(100vw - 64px)",
-                          marginLeft: "32px",
-                          marginRight: "32px",
+                          width: "calc(100vw - 16px)",
+                          marginLeft: "8px",
+                          marginRight: "8px",
+                          marginBottom:"8px"
                         }}
                       >
                         {yourEnvironmentsList}
@@ -457,9 +458,10 @@ export default class EnvironmentsBody extends Component {
                         spacing={16}
                         className="notSelectable defaultCursor"
                         style={{
-                          width: "calc(100vw - 64px)",
-                          marginLeft: "32px",
-                          marginRight: "32px",
+                          width: "calc(100vw - 16px)",
+                          marginLeft: "8px",
+                          marginRight: "8px",
+                          marginBottom:"8px"
                         }}
                       >
                         {sharedEnvironmentsList}
@@ -504,9 +506,10 @@ export default class EnvironmentsBody extends Component {
                       spacing={16}
                       className="notSelectable defaultCursor"
                       style={{
-                        width: "calc(100vw - 64px)",
-                        marginLeft: "32px",
-                        marginRight: "32px",
+                        width: "calc(100vw - 16px)",
+                        marginLeft: "8px",
+                        marginRight: "8px",
+                        marginBottom:"8px"
                       }}
                     >
                       {yourEnvironmentsList}

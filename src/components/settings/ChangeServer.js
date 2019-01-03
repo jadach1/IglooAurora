@@ -42,7 +42,7 @@ class ChangeServer extends React.Component {
 
   addServer = () => {
     let url = this.state.url
-    if (url.substring(0, 3) && url.substring(0, 3) !== "http") {
+    if (url.substring(0, 4) && url.substring(0, 4) !== "http") {
       url = "https://" + url
     }
 
@@ -292,12 +292,9 @@ class ChangeServer extends React.Component {
                   event.key === "Enter" &&
                   this.state.name &&
                   this.state.url &&
-                  isUrl(this.state.url) &&
                   typeof Storage !== "undefined" &&
-                  (localStorage.getItem("serverList") &&
-                    JSON.parse(localStorage.getItem("serverList")).indexOf(
-                      this.state.name
-                    ) === -1) &&
+                  !this.serverListContainsItem() &&
+                  isUrl(this.state.url) &&
                   this.state.url !== "https://bering.igloo.ooo" &&
                   this.state.url !== "bering.igloo.ooo" &&
                   this.state.url !== "http://bering.igloo.ooo"
@@ -359,14 +356,11 @@ class ChangeServer extends React.Component {
               onKeyPress={event => {
                 if (
                   event.key === "Enter" &&
-                  this.state.url &&
                   this.state.name &&
-                  isUrl(this.state.url) &&
+                  this.state.url &&
                   typeof Storage !== "undefined" &&
-                  (localStorage.getItem("serverList") &&
-                    JSON.parse(localStorage.getItem("serverList")).indexOf(
-                      this.state.url
-                    ) === -1) &&
+                  !this.serverListContainsItem() &&
+                  isUrl(this.state.url) &&
                   this.state.url !== "https://bering.igloo.ooo" &&
                   this.state.url !== "bering.igloo.ooo" &&
                   this.state.url !== "http://bering.igloo.ooo"

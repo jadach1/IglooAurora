@@ -451,7 +451,7 @@ class App extends Component {
 
     if (typeof Storage !== "undefined") {
       if (localStorage.getItem("server") === null)
-        localStorage.setItem("server", "")
+        localStorage.setItem("server", "https://bering.igloo.ooo/")
     }
 
     return (
