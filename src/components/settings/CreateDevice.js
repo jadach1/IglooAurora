@@ -14,6 +14,16 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import TextField from "@material-ui/core/TextField"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import ExpansionPanel from "@material-ui/core/ExpansionPanel"
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
+import Typography from "@material-ui/core/Typography"
+import Slider from "@material-ui/lab/Slider"
+import List from "@material-ui/core/List"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import Switch from "@material-ui/core/Switch"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -28,6 +38,10 @@ class CreateDevice extends React.Component {
     deviceType: "",
     name: "",
     environment: "",
+    battery: 0,
+    signal: 0,
+    batteryCharging: false,
+    expanded: "general",
   }
 
   componentWillReceiveProps(nextProps) {
@@ -106,8 +120,8 @@ class CreateDevice extends React.Component {
           open={this.props.open}
           onClose={this.props.close}
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
           fullWidth
@@ -132,83 +146,157 @@ class CreateDevice extends React.Component {
                   }
             }
           >
-            <TextField
-              id="adornment-name-login"
-              label="Custom name"
-              value={this.state.name}
-              error={this.state.nameEmpty}
-              helperText={this.state.nameEmpty ? "This field is required" : " "}
-              onChange={event =>
-                this.setState({
-                  name: event.target.value,
-                  nameEmpty: event.target.value === "",
-                })
+            <ExpansionPanel
+              expanded={this.state.expanded === "general"}
+              onChange={(event, expanded) =>
+                this.setState({ expanded: expanded ? "general" : null })
               }
-              style={{ width: "100%", marginBottom: "16px" }}
-              onKeyPress={event => {
-                if (event.key === "Enter") createDeviceMutation()
-              }}
-              required
-              variant="outlined"
-              endAdornment={
-                this.state.name && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => this.setState({ name: "" })}
-                      tabIndex="-1"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
+            >
+              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+                <Typography>General</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <TextField
+                  id="create-device-name"
+                  label="Name"
+                  value={this.state.name}
+                  error={this.state.nameEmpty}
+                  helperText={
+                    this.state.nameEmpty ? "This field is required" : " "
+                  }
+                  onChange={event =>
+                    this.setState({
+                      name: event.target.value,
+                      nameEmpty: event.target.value === "",
+                    })
+                  }
+                  style={{ width: "100%", marginBottom: "16px" }}
+                  onKeyPress={event => {
+                    if (event.key === "Enter") createDeviceMutation()
+                  }}
+                  required
+                  variant="outlined"
+                  endAdornment={
+                    this.state.name && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ name: "" })}
+                          tabIndex="-1"
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                />
+                <TextField
+                  id="create-device-type"
+                  label="Device type"
+                  value={this.state.deviceType}
+                  variant="outlined"
+                  error={this.state.deviceTypeEmpty}
+                  helperText={
+                    this.state.deviceTypeEmpty ? "This field is required" : " "
+                  }
+                  onChange={event =>
+                    this.setState({
+                      deviceType: event.target.value,
+                      deviceTypeEmpty: event.target.value === "",
+                    })
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") createDeviceMutation()
+                  }}
+                  required
+                  style={{ width: "100%", marginBottom: "16px" }}
+                  endAdornment={
+                    this.state.deviceType && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => this.setState({ deviceType: "" })}
+                          tabIndex="-1"
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                />
+                {environments}
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+            <ExpansionPanel
+              expanded={this.state.expanded === "advanced"}
+              onChange={(event, expanded) =>
+                this.setState({ expanded: expanded ? "advanced" : null })
+              }
+            >
+              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+                <Typography> Advanced</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <Typography>Signal</Typography>
+                <Slider
+                  value={this.state.signal}
+                  onChange={(event, value) => this.setState({ signal: value })}
+                  min={0}
+                  max={100}
+                  step={1}
+                />
+                <Typography>Battery</Typography>
+                <Slider
+                  value={this.state.battery}
+                  onChange={(event, value) => this.setState({ battery: value })}
+                  min={0}
+                  max={100}
+                  step={1}
+                />
+                <List
+                  style={{
+                    padding: "0",
+                  }}
+                >
+                  <ListItem style={{ marginTop: "-3px", marginBottom: "13px" }}>
+                    <ListItemText
+                      primary={
+                        <font
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : {}
+                          }
+                        >
+                          Battery charging
+                        </font>
                       }
-                    >
-                      <Icon>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }
-            />
-            <TextField
-              id="adornment-name-login"
-              label="Device type"
-              value={this.state.deviceType}
-              variant="outlined"
-              error={this.state.deviceTypeEmpty}
-              helperText={
-                this.state.deviceTypeEmpty ? "This field is required" : " "
-              }
-              onChange={event =>
-                this.setState({
-                  deviceType: event.target.value,
-                  deviceTypeEmpty: event.target.value === "",
-                })
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter") createDeviceMutation()
-              }}
-              required
-              style={{ width: "100%", marginBottom: "16px" }}
-              endAdornment={
-                this.state.deviceType && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => this.setState({ deviceType: "" })}
-                      tabIndex="-1"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      <Icon>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }
-            />
-            {environments}
+                    />
+                    <ListItemSecondaryAction>
+                      <Switch
+                        checked={this.state.batteryCharging}
+                        onChange={event =>
+                          this.setState(oldState => ({
+                            batteryCharging: !oldState.batteryCharging,
+                          }))
+                        }
+                      />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                </List>
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
           </div>
           <DialogActions>
             <Button

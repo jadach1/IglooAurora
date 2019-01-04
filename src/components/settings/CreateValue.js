@@ -19,6 +19,10 @@ import Switch from "@material-ui/core/Switch"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Typography from "@material-ui/core/Typography"
+import ExpansionPanel from "@material-ui/core/ExpansionPanel"
+import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
+import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -37,6 +41,7 @@ class CreateValue extends React.Component {
     visibility: "VISIBLE",
     valueSettingsOpen: false,
     value: null,
+    expanded: "general",
   }
 
   handleNext = () => {
@@ -464,92 +469,229 @@ class CreateValue extends React.Component {
               height: "100%",
             }}
           >
-            {value}
-            <TextField
-              id="adornment-name-login"
-              label="Custom name"
-              required
-              variant="outlined"
-              value={this.state.name}
-              error={this.state.nameEmpty}
-              helperText={this.state.nameEmpty ? "This field is required" : " "}
-              style={{ width: "100%", marginBottom: "16px" }}
-              onChange={event =>
-                this.setState({
-                  name: event.target.value,
-                  nameEmpty: event.target.value === "",
-                })
+            <ExpansionPanel
+              expanded={this.state.expanded === "general"}
+              onChange={(event, expanded) =>
+                this.setState({ expanded: expanded ? "general" : null })
               }
-              onKeyPress={event => {
-                if (
-                  event.key === "Enter" &&
-                  this.state.visibility &&
-                  this.state.type &&
-                  this.state.permission &&
-                  this.state.device &&
-                  this.state.name
-                ) {
-                  this.setState({ valueSettingsOpen: false })
-                  createValueMutation()
-                  this.props.close()
-                }
-              }}
-              endAdornment={
-                this.state.name && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                      onClick={() => this.setState({ name: "" })}
-                      tabIndex="-1"
-                    >
-                      <Icon>clear</Icon>
-                    </IconButton>
-                  </InputAdornment>
-                )
-              }
-            />
-            {devices}
-            {this.state.type !== "plot" && this.state.type !== "category plot" && (
-              <TextField
-                value={this.state.permission}
-                onChange={event => {
-                  this.setState({
-                    permission: event.target.value,
-                  })
-                }}
-                label="Permission"
-                variant="outlined"
-                style={{ width: "100%", marginBottom: "16px" }}
-                helperText=" "
-                select
-                required
-                InputLabelProps={this.state.permission && { shrink: true }}
-              >
-                <MenuItem value="READ_ONLY">Read only</MenuItem>
-                <MenuItem value="READ_WRITE">Read and write</MenuItem>
-              </TextField>
-            )}
-            <TextField
-              value={this.state.visibility}
-              onChange={event => {
-                this.setState({ visibility: event.target.value })
-              }}
-              helperText=" "
-              label="Visibility"
-              variant="outlined"
-              style={{ width: "100%", marginBottom: "8px" }}
-              select
-              InputLabelProps={this.state.visibility && { shrink: true }}
             >
-              <MenuItem value="VISIBLE">Visible</MenuItem>
-              <MenuItem value="HIDDEN">Hidden</MenuItem>
-              <MenuItem value="INVISIBLE">Invisible</MenuItem>
-            </TextField>
+              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+                <Typography>General</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                {value}
+                <TextField
+                  id="value-name"
+                  label="Name"
+                  required
+                  variant="outlined"
+                  value={this.state.name}
+                  error={this.state.nameEmpty}
+                  helperText={
+                    this.state.nameEmpty ? "This field is required" : " "
+                  }
+                  style={{ width: "100%", marginBottom: "16px" }}
+                  onChange={event =>
+                    this.setState({
+                      name: event.target.value,
+                      nameEmpty: event.target.value === "",
+                    })
+                  }
+                  onKeyPress={event => {
+                    if (
+                      event.key === "Enter" &&
+                      this.state.visibility &&
+                      this.state.type &&
+                      this.state.permission &&
+                      this.state.device &&
+                      this.state.name
+                    ) {
+                      this.setState({ valueSettingsOpen: false })
+                      createValueMutation()
+                      this.props.close()
+                    }
+                  }}
+                  endAdornment={
+                    this.state.name && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                          onClick={() => this.setState({ name: "" })}
+                          tabIndex="-1"
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                />
+                {devices}
+                {this.state.type !== "plot" &&
+                  this.state.type !== "category plot" && (
+                    <TextField
+                      value={this.state.permission}
+                      onChange={event => {
+                        this.setState({
+                          permission: event.target.value,
+                        })
+                      }}
+                      label="Permission"
+                      variant="outlined"
+                      style={{ width: "100%", marginBottom: "16px" }}
+                      helperText=" "
+                      select
+                      required
+                      InputLabelProps={
+                        this.state.permission && { shrink: true }
+                      }
+                    >
+                      <MenuItem value="READ_ONLY">Read only</MenuItem>
+                      <MenuItem value="READ_WRITE">Read and write</MenuItem>
+                    </TextField>
+                  )}
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+            <ExpansionPanel
+              expanded={this.state.expanded === "float"}
+              onChange={(event, expanded) =>
+                this.setState({ expanded: expanded ? "float" : null })
+              }
+            >
+              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+                <Typography>Float options</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <TextField
+                  label="Minimum"
+                  value={this.state.min}
+                  type="number"
+                  onChange={event =>
+                    this.setState({
+                      min: event.target.min,
+                    })
+                  }
+                  onKeyPress={event => {
+                    if (
+                      event.key === "Enter" &&
+                      this.state.visibility &&
+                      this.state.type &&
+                      this.state.permission &&
+                      this.state.device &&
+                      this.state.name
+                    ) {
+                      this.setState({ valueSettingsOpen: false })
+                      createValueMutation()
+                      this.props.close()
+                    }
+                  }}
+                  style={{ width: "100%", marginBottom: "16px" }}
+                  variant="outlined"
+                />
+                <TextField
+                  label="Maximum"
+                  value={this.state.max}
+                  type="number"
+                  onChange={event =>
+                    this.setState({
+                      max: event.target.min,
+                    })
+                  }
+                  onKeyPress={event => {
+                    if (
+                      event.key === "Enter" &&
+                      this.state.visibility &&
+                      this.state.type &&
+                      this.state.permission &&
+                      this.state.device &&
+                      this.state.name
+                    ) {
+                      this.setState({ valueSettingsOpen: false })
+                      createValueMutation()
+                      this.props.close()
+                    }
+                  }}
+                  style={{ width: "100%", marginBottom: "16px" }}
+                  variant="outlined"
+                />
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
+            <ExpansionPanel
+              expanded={this.state.expanded === "advanced"}
+              onChange={(event, expanded) =>
+                this.setState({ expanded: expanded ? "advanced" : null })
+              }
+            >
+              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+                <Typography>Advanced</Typography>
+              </ExpansionPanelSummary>
+              <ExpansionPanelDetails>
+                <TextField
+                  value={this.state.visibility}
+                  onChange={event => {
+                    this.setState({ visibility: event.target.value })
+                  }}
+                  helperText=" "
+                  label="Visibility"
+                  variant="outlined"
+                  style={{ width: "100%", marginBottom: "8px" }}
+                  select
+                  InputLabelProps={this.state.visibility && { shrink: true }}
+                >
+                  <MenuItem value="VISIBLE">Visible</MenuItem>
+                  <MenuItem value="HIDDEN">Hidden</MenuItem>
+                  <MenuItem value="INVISIBLE">Invisible</MenuItem>
+                </TextField>
+                <TextField
+                  id="unit-of-measurement"
+                  label="Unit of mesaurement"
+                  variant="outlined"
+                  value={this.state.unit}
+                  style={{ width: "100%", marginBottom: "16px" }}
+                  onChange={event =>
+                    this.setState({
+                      unit: event.target.value,
+                    })
+                  }
+                  onKeyPress={event => {
+                    if (
+                      event.key === "Enter" &&
+                      this.state.visibility &&
+                      this.state.type &&
+                      this.state.permission &&
+                      this.state.device &&
+                      this.state.name
+                    ) {
+                      this.setState({ valueSettingsOpen: false })
+                      createValueMutation()
+                      this.props.close()
+                    }
+                  }}
+                  endAdornment={
+                    this.state.unit && (
+                      <InputAdornment position="end">
+                        <IconButton
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                          onClick={() => this.setState({ unit: "" })}
+                          tabIndex="-1"
+                        >
+                          <Icon>clear</Icon>
+                        </IconButton>
+                      </InputAdornment>
+                    )
+                  }
+                />
+              </ExpansionPanelDetails>
+            </ExpansionPanel>
           </div>
           <DialogActions>
             <Button

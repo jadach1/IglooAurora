@@ -32,6 +32,7 @@ class DeleteDevice extends React.Component {
         },
       },
     })
+    this.props.deselectDevice()
     this.props.close()
   }
 

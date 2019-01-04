@@ -112,7 +112,8 @@ class MainBodyHeader extends Component {
                 disabled={!this.props.environmentData.environment}
                 onClick={() => this.setState({ goToDevices: true })}
               >
-                <Icon>chevron_left</Icon>
+                <Icon>arrow_back
+</Icon>
               </IconButton>
             </Tooltip>
           )}
@@ -288,6 +289,7 @@ class MainBodyHeader extends Component {
                 device => device.id === this.props.deviceId
               )[0])
           }
+          deselectDevice={() => this.setState({ goToDevices: true })}
         />
         {(device ||
           (this.props.environmentData.environment &&

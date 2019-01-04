@@ -65,7 +65,8 @@ class SidebarHeader extends Component {
             }}
             onClick={() => this.setState({ goToEnvironments: true })}
           >
-            <Icon>chevron_left</Icon>
+            <Icon>arrow_back
+</Icon>
           </IconButton>
         </Tooltip>
         <Typography
