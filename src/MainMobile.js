@@ -410,7 +410,13 @@ class MainMobile extends Component {
           <title>
             {environment
               ? queryString.parse("?" + window.location.href.split("?")[1])
-                  .device
+                  .device &&
+                environment.devices.filter(
+                  device =>
+                    device.id ===
+                    queryString.parse("?" + window.location.href.split("?")[1])
+                      .device
+                )[0]
                 ? "Igloo Aurora - " +
                   environment.devices.filter(
                     device =>

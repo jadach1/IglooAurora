@@ -80,6 +80,7 @@ class EnvironmentCard extends Component {
         <ButtonBase
           focusRipple
           style={{ borderRadius: "4px", textAlign: "left" }}
+          tabIndex="-1"
         >
           <Paper
             style={
@@ -96,34 +97,35 @@ class EnvironmentCard extends Component {
                     height: "192px",
                   }
             }
+            tabIndex="-1"
           >
-            <Toolbar
-              style={{
-                height: "64px",
-                paddingLeft: "0",
-                paddingRight: "24px",
-              }}
+            <Link
+              to={"/?environment=" + this.props.environment.id}
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? {
+                      color: "white",
+                      textDecoration: "none",
+                      height: "64px",
+                      borderTopLeftRadius: "4px",
+                      borderTopRightRadius: "4px",
+                    }
+                  : {
+                      color: "black",
+                      textDecoration: "none",
+                      height: "64px",
+                      borderTopLeftRadius: "4px",
+                      borderTopRightRadius: "4px",
+                    }
+              }
             >
-              <Link
-                to={"/?environment=" + this.props.environment.id}
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? {
-                        color: "white",
-                        textDecoration: "none",
-                        height: "64px",
-                        borderTopLeftRadius: "4px",
-                        borderTopRightRadius: "4px",
-                      }
-                    : {
-                        color: "black",
-                        textDecoration: "none",
-                        height: "64px",
-                        borderTopLeftRadius: "4px",
-                        borderTopRightRadius: "4px",
-                      }
-                }
+              <Toolbar
+                style={{
+                  height: "64px",
+                  paddingLeft: "0",
+                  paddingRight: "0",
+                }}
               >
                 <div
                   style={{
@@ -167,42 +169,32 @@ class EnvironmentCard extends Component {
                     {this.props.environment.name}
                   </Typography>
                 </div>
-              </Link>
-              <div
-                style={{
-                  marginLeft: "-56px",
-                  borderRadius: "50%",
-                }}
-              >
-                <Tooltip id="tooltip-bottom" title="More" placement="bottom">
-                  <IconButton onClick={this.handleMenuOpen}>
-                    <Icon
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? {
-                              color: "white",
-                            }
-                          : {
-                              color: "black",
-                            }
-                      }
-                    >
-                      more_vert
-                    </Icon>
-                  </IconButton>
-                </Tooltip>
-              </div>
-            </Toolbar>
-            <Link
-              to={"/?environment=" + this.props.environment.id}
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white", textDecoration: "none" }
-                  : { color: "black", textDecoration: "none" }
-              }
-            >
+                <div
+                  style={{
+                    marginLeft: "-56px",
+                    borderRadius: "50%",
+                  }}
+                >
+                  <Tooltip id="tooltip-bottom" title="More" placement="bottom">
+                    <IconButton onClick={this.handleMenuOpen}>
+                      <Icon
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? {
+                                color: "white",
+                              }
+                            : {
+                                color: "black",
+                              }
+                        }
+                      >
+                        more_vert
+                      </Icon>
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </Toolbar>
               {this.props.environment.avatar === "DENALI" && (
                 <img
                   src={denali}

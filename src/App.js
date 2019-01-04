@@ -69,6 +69,9 @@ const sharedStyles = {
       },
     },
   },
+  MuiExpansionPanelDetails: {
+    root: { display: null },
+  },
 }
 
 const lightTheme = createMuiTheme({
