@@ -112,8 +112,7 @@ class MainBodyHeader extends Component {
                 disabled={!this.props.environmentData.environment}
                 onClick={() => this.setState({ goToDevices: true })}
               >
-                <Icon>arrow_back
-</Icon>
+                <Icon>arrow_back</Icon>
               </IconButton>
             </Tooltip>
           )}
@@ -590,6 +589,7 @@ export default graphql(
           updatedAt
           createdAt
           muted
+          deviceType
           firmware
           notifications {
             id

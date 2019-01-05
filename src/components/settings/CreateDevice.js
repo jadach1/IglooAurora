@@ -172,7 +172,13 @@ class CreateDevice extends React.Component {
                   }
                   style={{ width: "100%", marginBottom: "16px" }}
                   onKeyPress={event => {
-                    if (event.key === "Enter") createDeviceMutation()
+                    if (
+                      event.key === "Enter" &&
+                      this.state.deviceType &&
+                      !this.state.name
+                    ) {
+                      createDeviceMutation()
+                    }
                   }}
                   required
                   variant="outlined"
@@ -211,7 +217,13 @@ class CreateDevice extends React.Component {
                     })
                   }
                   onKeyPress={event => {
-                    if (event.key === "Enter") createDeviceMutation()
+                    if (
+                      event.key === "Enter" &&
+                      this.state.deviceType &&
+                      !this.state.name
+                    ) {
+                      createDeviceMutation()
+                    }
                   }}
                   required
                   style={{ width: "100%", marginBottom: "16px" }}
@@ -244,9 +256,32 @@ class CreateDevice extends React.Component {
               }
             >
               <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
-                <Typography> Advanced</Typography>
+                <Typography>Advanced</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
+                <TextField
+                  id="device-index"
+                  label="Index"
+                  value={this.state.index}
+                  helperText=" "
+                  type="number"
+                  onChange={event =>
+                    this.setState({
+                      index: event.target.value,
+                    })
+                  }
+                  onKeyPress={event => {
+                    if (
+                      event.key === "Enter" &&
+                      this.state.deviceType &&
+                      !this.state.name
+                    ) {
+                      createDeviceMutation()
+                    }
+                  }}
+                  style={{ width: "100%", marginBottom: "16px" }}
+                  variant="outlined"
+                />
                 <Typography>Signal</Typography>
                 <Slider
                   value={this.state.signal}

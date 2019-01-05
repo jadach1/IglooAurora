@@ -42,6 +42,7 @@ class CreateValue extends React.Component {
     valueSettingsOpen: false,
     value: null,
     expanded: "general",
+    tileSize: "",
   }
 
   handleNext = () => {
@@ -556,70 +557,188 @@ class CreateValue extends React.Component {
                   )}
               </ExpansionPanelDetails>
             </ExpansionPanel>
-            <ExpansionPanel
-              expanded={this.state.expanded === "float"}
-              onChange={(event, expanded) =>
-                this.setState({ expanded: expanded ? "float" : null })
-              }
-            >
-              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
-                <Typography>Float options</Typography>
-              </ExpansionPanelSummary>
-              <ExpansionPanelDetails>
-                <TextField
-                  label="Minimum"
-                  value={this.state.min}
-                  type="number"
-                  onChange={event =>
-                    this.setState({
-                      min: event.target.min,
-                    })
-                  }
-                  onKeyPress={event => {
-                    if (
-                      event.key === "Enter" &&
-                      this.state.visibility &&
-                      this.state.type &&
-                      this.state.permission &&
-                      this.state.device &&
-                      this.state.name
-                    ) {
-                      this.setState({ valueSettingsOpen: false })
-                      createValueMutation()
-                      this.props.close()
+            {this.state.type === "string" && (
+              <ExpansionPanel
+                expanded={this.state.expanded === "string"}
+                onChange={(event, expanded) =>
+                  this.setState({ expanded: expanded ? "string" : null })
+                }
+              >
+                <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+                  <Typography>String options</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <TextField
+                    id="max-chars"
+                    label="Maximum charaters"
+                    value={this.state.maxChars}
+                    type="number"
+                    helperText=" "
+                    onChange={event =>
+                      this.setState({
+                        maxChars: event.target.value,
+                      })
                     }
-                  }}
-                  style={{ width: "100%", marginBottom: "16px" }}
-                  variant="outlined"
-                />
-                <TextField
-                  label="Maximum"
-                  value={this.state.max}
-                  type="number"
-                  onChange={event =>
-                    this.setState({
-                      max: event.target.min,
-                    })
-                  }
-                  onKeyPress={event => {
-                    if (
-                      event.key === "Enter" &&
-                      this.state.visibility &&
-                      this.state.type &&
-                      this.state.permission &&
-                      this.state.device &&
-                      this.state.name
-                    ) {
-                      this.setState({ valueSettingsOpen: false })
-                      createValueMutation()
-                      this.props.close()
+                    onKeyPress={event => {
+                      if (
+                        event.key === "Enter" &&
+                        this.state.visibility &&
+                        this.state.type &&
+                        this.state.permission &&
+                        this.state.device &&
+                        this.state.name
+                      ) {
+                        this.setState({ valueSettingsOpen: false })
+                        createValueMutation()
+                        this.props.close()
+                      }
+                    }}
+                    style={{ width: "100%", marginBottom: "16px" }}
+                    variant="outlined"
+            /></ExpansionPanelDetails></ExpansionPanel>)}
+            {this.state.type === "float" && (
+              <ExpansionPanel
+                expanded={this.state.expanded === "float"}
+                onChange={(event, expanded) =>
+                  this.setState({ expanded: expanded ? "float" : null })
+                }
+              >
+                <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+                  <Typography>Float options</Typography>
+                </ExpansionPanelSummary>
+                <ExpansionPanelDetails>
+                  <TextField
+                    id="min"
+                    label="Minimum"
+                    value={this.state.min}
+                    type="number"
+                    helperText=" "
+                    onChange={event =>
+                      this.setState({
+                        min: event.target.value,
+                      })
                     }
-                  }}
-                  style={{ width: "100%", marginBottom: "16px" }}
-                  variant="outlined"
-                />
-              </ExpansionPanelDetails>
-            </ExpansionPanel>
+                    onKeyPress={event => {
+                      if (
+                        event.key === "Enter" &&
+                        this.state.visibility &&
+                        this.state.type &&
+                        this.state.permission &&
+                        this.state.device &&
+                        this.state.name
+                      ) {
+                        this.setState({ valueSettingsOpen: false })
+                        createValueMutation()
+                        this.props.close()
+                      }
+                    }}
+                    style={{ width: "100%", marginBottom: "16px" }}
+                    variant="outlined"
+                  />
+                  <TextField
+                    id="max"
+                    label="Maximum"
+                    value={this.state.max}
+                    helperText=" "
+                    type="number"
+                    onChange={event =>
+                      this.setState({
+                        max: event.target.value,
+                      })
+                    }
+                    onKeyPress={event => {
+                      if (
+                        event.key === "Enter" &&
+                        this.state.visibility &&
+                        this.state.type &&
+                        this.state.permission &&
+                        this.state.device &&
+                        this.state.name
+                      ) {
+                        this.setState({ valueSettingsOpen: false })
+                        createValueMutation()
+                        this.props.close()
+                      }
+                    }}
+                    style={{ width: "100%", marginBottom: "16px" }}
+                    variant="outlined"
+                  />
+                  <TextField
+                    id="precision"
+                    label="Precision"
+                    value={this.state.precision}
+                    helperText=" "
+                    type="number"
+                    onChange={event =>
+                      this.setState({
+                        precision: event.target.value,
+                      })
+                    }
+                    onKeyPress={event => {
+                      if (
+                        event.key === "Enter" &&
+                        this.state.visibility &&
+                        this.state.type &&
+                        this.state.permission &&
+                        this.state.device &&
+                        this.state.name
+                      ) {
+                        this.setState({ valueSettingsOpen: false })
+                        createValueMutation()
+                        this.props.close()
+                      }
+                    }}
+                    style={{ width: "100%", marginBottom: "16px" }}
+                    variant="outlined"
+                  />
+                  <TextField
+                    id="unit-of-measurement"
+                    label="Unit of mesaurement"
+                    helperText=" "
+                    variant="outlined"
+                    value={this.state.unit}
+                    style={{ width: "100%", marginBottom: "16px" }}
+                    onChange={event =>
+                      this.setState({
+                        unit: event.target.value,
+                      })
+                    }
+                    onKeyPress={event => {
+                      if (
+                        event.key === "Enter" &&
+                        this.state.visibility &&
+                        this.state.type &&
+                        this.state.permission &&
+                        this.state.device &&
+                        this.state.name
+                      ) {
+                        this.setState({ valueSettingsOpen: false })
+                        createValueMutation()
+                        this.props.close()
+                      }
+                    }}
+                    endAdornment={
+                      this.state.unit && (
+                        <InputAdornment position="end">
+                          <IconButton
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
+                            onClick={() => this.setState({ unit: "" })}
+                            tabIndex="-1"
+                          >
+                            <Icon>clear</Icon>
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }
+                  />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            )}
             <ExpansionPanel
               expanded={this.state.expanded === "advanced"}
               onChange={(event, expanded) =>
@@ -647,14 +766,33 @@ class CreateValue extends React.Component {
                   <MenuItem value="INVISIBLE">Invisible</MenuItem>
                 </TextField>
                 <TextField
-                  id="unit-of-measurement"
-                  label="Unit of mesaurement"
+                  value={this.state.tileSize}
+                  onChange={event => {
+                    this.setState({ tileSize: event.target.value })
+                  }}
+                  helperText=" "
+                  label="Tile size"
                   variant="outlined"
-                  value={this.state.unit}
-                  style={{ width: "100%", marginBottom: "16px" }}
+                  style={{ width: "100%", marginBottom: "8px" }}
+                  select
+                  InputLabelProps={this.state.tileSize && { shrink: true }}
+                >
+                  <MenuItem value="">
+                    <em>None</em>
+                  </MenuItem>
+                  <MenuItem value="NORMAL">Normal</MenuItem>
+                  <MenuItem value="WIDE">Wide</MenuItem>
+                  <MenuItem value="LARGE">Large</MenuItem>
+                </TextField>
+                <TextField
+                  id="value-index"
+                  label="Index"
+                  value={this.state.index}
+                  helperText=" "
+                  type="number"
                   onChange={event =>
                     this.setState({
-                      unit: event.target.value,
+                      index: event.target.value,
                     })
                   }
                   onKeyPress={event => {
@@ -671,24 +809,8 @@ class CreateValue extends React.Component {
                       this.props.close()
                     }
                   }}
-                  endAdornment={
-                    this.state.unit && (
-                      <InputAdornment position="end">
-                        <IconButton
-                          style={
-                            typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                              ? { color: "white" }
-                              : { color: "black" }
-                          }
-                          onClick={() => this.setState({ unit: "" })}
-                          tabIndex="-1"
-                        >
-                          <Icon>clear</Icon>
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }
+                  style={{ width: "100%", marginBottom: "16px" }}
+                  variant="outlined"
                 />
               </ExpansionPanelDetails>
             </ExpansionPanel>

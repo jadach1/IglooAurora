@@ -46,18 +46,19 @@ class ChangeServer extends React.Component {
       url = "https://" + url
     }
 
-    localStorage.getItem("serverList") && isUrl(url)
-      ? localStorage.setItem(
-          "serverList",
-          JSON.stringify([
-            { name: this.state.name, url },
-            ...JSON.parse(localStorage.getItem("serverList")),
-          ])
-        )
-      : localStorage.setItem(
-          "serverList",
-          JSON.stringify([{ name: this.state.name, url }])
-        )
+    typeof Storage !== "undefined" &&
+      (localStorage.getItem("serverList") && isUrl(url)
+        ? localStorage.setItem(
+            "serverList",
+            JSON.stringify([
+              { name: this.state.name, url },
+              ...JSON.parse(localStorage.getItem("serverList")),
+            ])
+          )
+        : localStorage.setItem(
+            "serverList",
+            JSON.stringify([{ name: this.state.name, url }])
+          ))
   }
 
   deleteServer = url => {
@@ -71,7 +72,10 @@ class ChangeServer extends React.Component {
         )
       )
 
-    if (localStorage.getItem("server") !== "https://bering.igloo.ooo")
+    if (
+      typeof Storage !== "undefined" &&
+      localStorage.getItem("server") !== "https://bering.igloo.ooo"
+    )
       this.selectUrl("https://bering.igloo.ooo")
 
     this.forceUpdate()
@@ -101,6 +105,7 @@ class ChangeServer extends React.Component {
           button
           selected={localStorage.getItem("server") === server.url}
           onClick={() =>
+            typeof Storage !== "undefined" &&
             localStorage.getItem("server") !== server.url &&
             this.selectUrl(server.url)
           }
@@ -182,9 +187,11 @@ class ChangeServer extends React.Component {
               <ListItem
                 button
                 selected={
+                  typeof Storage !== "undefined" &&
                   localStorage.getItem("server") === "https://bering.igloo.ooo"
                 }
                 onClick={() =>
+                  typeof Storage !== "undefined" &&
                   localStorage.getItem("server") !==
                     "https://bering.igloo.ooo" &&
                   this.selectUrl("https://bering.igloo.ooo")
@@ -297,7 +304,10 @@ class ChangeServer extends React.Component {
                   isUrl(this.state.url) &&
                   this.state.url !== "https://bering.igloo.ooo" &&
                   this.state.url !== "bering.igloo.ooo" &&
-                  this.state.url !== "http://bering.igloo.ooo"
+                  this.state.url !== "http://bering.igloo.ooo" &&
+                  this.state.url !== "http://bering.igloo.ooo/" &&
+                  this.state.url !== "bering.igloo.ooo/" &&
+                  this.state.url !== "https://bering.igloo.ooo/"
                 ) {
                   this.addServer()
                   this.setState({
