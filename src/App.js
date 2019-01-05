@@ -323,16 +323,14 @@ class App extends Component {
   constructor() {
     let email = ""
 
-    // gets the email of the last user that logged in
-    if (typeof Storage !== "undefined") {
-      email = localStorage.getItem("email") || ""
-    }
-
     super()
 
     let bearer = ""
     // reuses previous session's bearer if present
     if (typeof Storage !== "undefined") {
+      // gets the email of the last user that logged in
+      email = localStorage.getItem("email") || ""
+
       // looks for the bearer in both localStorage and sessionStorage:
       // - localStorage is used if the user prefers to be automatically logged in
       // - sessionStorage is used if they prefer to log out at the end of every session
@@ -453,8 +451,9 @@ class App extends Component {
     }
 
     if (typeof Storage !== "undefined") {
-      if (localStorage.getItem("server") === null)
-        localStorage.setItem("server", "https://bering.igloo.ooo/")
+      if (localStorage.getItem("server") === null) {
+        localStorage.setItem("server", "https://bering.igloo.ooo")
+      }
     }
 
     return (

@@ -50,6 +50,9 @@ class DeviceInfo extends React.Component {
               "YYYY-MM-DDTh:mm:ss"
             )}
           </Moment>
+          <br /> <br className="notSelectable" />
+          <b>Device type: </b>
+          {this.props.device.deviceType}
           {typeof Storage !== "undefined" &&
             localStorage.getItem("devMode") === "true" && (
               <React.Fragment>

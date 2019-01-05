@@ -1243,6 +1243,7 @@ export default graphql(
             index
             muted
             name
+            deviceType
             environment {
               myRole
             }
