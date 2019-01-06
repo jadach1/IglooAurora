@@ -2,6 +2,10 @@ import React, { Component } from "react"
 import Slider from "@material-ui/lab/Slider"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import TextField from "@material-ui/core/TextField"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import IconButton from "@material-ui/core/IconButton"
+import Icon from "@material-ui/core/Icon"
 
 class ReadWriteBooleanTile extends Component {
   constructor(props) {
@@ -21,44 +25,21 @@ class ReadWriteBooleanTile extends Component {
 
   render() {
     return (
-      <div className="readWriteBoundedFloatTile notSelectable">
-        <div className="min">{this.props.min}</div>
-        <Slider
-          min={this.props.min}
-          max={this.props.max}
-          step={this.props.step}
-          value={this.state.value}
-          className="slider"
-          sliderStyle={{ marginTop: "0", marginBottom: "0" }}
-          onChange={(e, newValue) => this.setState({ value: newValue })}
-          onDragStop={e => {
-            this.props.mutate({
-              variables: {
-                id: this.props.id,
-                value: this.state.value,
-              },
-              optimisticResponse: {
-                __typename: "Mutation",
-                floatValue: {
-                  __typename: "FloatValue",
-                  id: this.props.id,
-                  value: this.state.value,
-                },
-              },
-            })
-          }}
-          disabled={this.props.disabled}
-        />
-        <div className="max">{this.props.max}</div>
-        <input
-          min={this.props.min}
-          max={this.props.max}
-          step={this.props.step}
-          value={this.state.value}
-          onChange={e => {
-            this.setState({ value: parseFloat(e.target.value) })
-            if (this.timeout) clearTimeout(this.timeout)
-            this.timeout = setTimeout(() => {
+      <div
+        className="notSelectable"
+        style={{ paddingLeft: "24px", paddingRight: "24px" }}
+      >
+        <div style={{ display: "flex", marginBottom: "16px" }}>
+          {this.props.min}
+          <Slider
+            min={this.props.min}
+            max={this.props.max}
+            step={this.props.step}
+            value={this.state.value}
+            className="slider"
+            sliderStyle={{ marginTop: "0", marginBottom: "0" }}
+            onChange={(e, newValue) => this.setState({ value: newValue })}
+            onDragStop={e => {
               this.props.mutate({
                 variables: {
                   id: this.props.id,
@@ -73,11 +54,52 @@ class ReadWriteBooleanTile extends Component {
                   },
                 },
               })
-            }, 100)
-          }}
-          className="number"
+            }}
+            disabled={this.props.disabled}
+          />
+          {this.props.max}
+        </div>
+        <TextField
+          id="read.write-bounded-float-tile-value"
+          value={this.state.value}
           type="number"
+          onChange={event =>
+            this.setState({
+              value: event.target.value,
+            })
+          }
           disabled={this.props.disabled}
+          InputProps={{
+            inputProps: { min: this.props.min, max: this.props.max },
+            endAdornment: this.props.valueDetails ? (
+              <InputAdornment
+                position="end"
+                className="notSelectable defaultCursor"
+              >
+                {this.props.valueDetails}
+              </InputAdornment>
+            ) : (
+              this.state.value &&
+              this.state.value !== 0 && (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => this.setState({ value: "" })}
+                    tabIndex="-1"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "rgba(0, 0, 0, 0.46)" }
+                        : { color: "rgba(0, 0, 0, 0.46)" }
+                    }
+                  >
+                    <Icon>clear</Icon>
+                  </IconButton>
+                </InputAdornment>
+              )
+            ),
+          }}
+          style={{ width: "100%", marginBottom: "16px" }}
+          variant="outlined"
         />
       </div>
     )
