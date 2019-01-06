@@ -50,16 +50,6 @@
   color: green;
 }
 
-.readWriteBoundedFloatTile {
-  width: 100%;
-  height: calc(100% - 64px);
-
-  display: grid;
-  grid-template-columns: 16px 24px 8px auto 8px 24px 16px;
-  grid-template-rows: auto 48px 32px auto;
-  grid-template-areas: ". . . . . . ." ". min . slider . max ." ". . . number . . ." ". . . . . . .";
-}
-
 .readWriteBoundedFloatTile .min {
   line-height: 48px;
   grid-area: min;
