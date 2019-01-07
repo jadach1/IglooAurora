@@ -47,10 +47,11 @@ this.mutateFloatValue(event.target.value)
           width: "calc(100% - 48px)",
           margin: "calc(50% - 64px) 24px",
         }}
+        InputLabelProps={this.state.value && { shrink: true }}
         InputProps={{
-          endAdornment: ( this.props.valueDetails ?
+          endAdornment: ( this.props.unitOfMeasurement ?
             <InputAdornment position="end" className="notSelectable defaultCursor">
-              {this.props.valueDetails}
+              {this.props.unitOfMeasurement}
             </InputAdornment>
          : this.state.value && (
             <InputAdornment position="end">

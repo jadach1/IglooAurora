@@ -158,6 +158,7 @@ class ChangeNameDialog extends React.Component {
                 marginTop: "16px",
                 width: "100%",
               }}
+              InputLabelProps={this.state.name && { shrink: true }}
               InputProps={{
                 endAdornment: this.state.name && (
                   <InputAdornment position="end">

@@ -147,6 +147,7 @@ class CustomizeEnvironment extends React.Component {
               width: "calc(100% - 48px)",
               margin: "0 24px 16px 24px",
             }}
+            InputLabelProps={this.state.name && { shrink: true }}
             InputProps={{
               endAdornment: this.state.name && (
                 <InputAdornment position="end">

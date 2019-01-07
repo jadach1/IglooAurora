@@ -27,37 +27,15 @@ class RenameTileDialog extends React.Component {
   state = { name: null }
 
   rename = () => {
-    this.props[
-      this.props.value.__typename === "FloatValue"
-        ? "RenameFloatValue"
-        : this.props.value.__typename === "StringValue"
-        ? "RenameStringValue"
-        : this.props.value.__typename === "PlotValue"
-        ? "RenamePlotValue"
-        : this.props.value.__typename === "CategoryPlotValue"
-        ? "RenameCategoryPlotValue"
-        : this.props.value.__typename === "MapValue"
-        ? "RenameMapValue"
-        : "RenameBooleanValue"
-    ]({
+    this.props.Rename({
       variables: {
         id: this.props.value.id,
         name: this.state.name,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        [this.props.value.__typename === "FloatValue"
-          ? "floatValue"
-          : this.props.value.__typename === "StringValue"
-          ? "stringValue"
-          : this.props.value.__typename === "PlotValue"
-          ? "plotValue"
-          : this.props.value.__typename === "CategoryPlotValue"
-          ? "categoryPlotValue"
-          : this.props.value.__typename === "MapValue"
-          ? "mapValue"
-          : "booleanValue"]: {
-          __typename: this.props.value.__typename,
+        value: {
+          __typename: "Value",
           id: this.props.value.id,
           name: this.state.name,
         },
@@ -68,8 +46,8 @@ class RenameTileDialog extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.renameTileOpen && !this.props.renameTileOpen) {
-      oldName = this.props.name
-      this.setState({ name: this.props.name, nameEmpty: "" })
+      oldName = this.props.tileName
+      this.setState({ name: this.props.tileName, nameEmpty: "" })
     }
   }
 
@@ -109,6 +87,7 @@ class RenameTileDialog extends React.Component {
             style={{
               width: "100%",
             }}
+            InputLabelProps={this.state.name && { shrink: true }}
             InputProps={{
               endAdornment: this.state.name && (
                 <InputAdornment position="end">
@@ -153,83 +132,13 @@ class RenameTileDialog extends React.Component {
 export default graphql(
   gql`
     mutation Rename($id: ID!, $name: String) {
-      floatValue(id: $id, name: $name) {
+      value(id: $id, name: $name) {
         id
         name
       }
     }
   `,
   {
-    name: "RenameFloatValue",
+    name: "Rename",
   }
-)(
-  graphql(
-    gql`
-      mutation Rename($id: ID!, $name: String) {
-        stringValue(id: $id, name: $name) {
-          id
-          name
-        }
-      }
-    `,
-    {
-      name: "RenameStringValue",
-    }
-  )(
-    graphql(
-      gql`
-        mutation Rename($id: ID!, $name: String) {
-          booleanValue(id: $id, name: $name) {
-            id
-            name
-          }
-        }
-      `,
-      {
-        name: "RenameBooleanValue",
-      }
-    )(
-      graphql(
-        gql`
-          mutation Rename($id: ID!, $name: String) {
-            plotValue(id: $id, name: $name) {
-              id
-              name
-            }
-          }
-        `,
-        {
-          name: "RenamePlotValue",
-        }
-      )(
-        graphql(
-          gql`
-            mutation Rename($id: ID!, $name: String) {
-              categoryPlotValue(id: $id, name: $name) {
-                id
-                name
-              }
-            }
-          `,
-          {
-            name: "RenameCategoryPlotValue",
-          }
-        )(
-          graphql(
-            gql`
-              mutation Rename($id: ID!, $name: String) {
-                mapValue(id: $id, name: $name) {
-                  id
-                  name
-                }
-              }
-            `,
-            {
-              name: "RenameMapValue",
-            }
-          )(withMobileDialog({ breakpoint: "xs" })(RenameTileDialog))
-        )
-      )
-    )
-  )
-)
+)(withMobileDialog({ breakpoint: "xs" })(RenameTileDialog))

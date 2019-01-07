@@ -47,6 +47,7 @@ class ReadWriteBoundedStringTile extends Component {
           width: "calc(100% - 48px)",
           margin: "calc(50% - 64px) 24px",
         }}
+        InputLabelProps={this.state.value && { shrink: true }}
         InputProps={{
           endAdornment:
             <InputAdornment position="end" className="notSelectable defaultCursor">

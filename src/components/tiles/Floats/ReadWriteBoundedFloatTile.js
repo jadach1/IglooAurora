@@ -69,14 +69,15 @@ class ReadWriteBooleanTile extends Component {
             })
           }
           disabled={this.props.disabled}
+          InputLabelProps={this.state.value && { shrink: true }}
           InputProps={{
             inputProps: { min: this.props.min, max: this.props.max },
-            endAdornment: this.props.valueDetails ? (
+            endAdornment: this.props.unitOfMeasurement ? (
               <InputAdornment
                 position="end"
                 className="notSelectable defaultCursor"
               >
-                {this.props.valueDetails}
+                {this.props.unitOfMeasurement}
               </InputAdornment>
             ) : (
               this.state.value &&

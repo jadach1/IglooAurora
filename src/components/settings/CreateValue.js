@@ -138,6 +138,7 @@ class CreateValue extends React.Component {
             }}
             style={{ width: "100%", marginBottom: "16px" }}
             variant="outlined"
+            InputLabelProps={this.state.value && { shrink: true }}
           />
         )
         break
@@ -172,6 +173,7 @@ class CreateValue extends React.Component {
             }}
             style={{ width: "100%", marginBottom: "16px" }}
             variant="outlined"
+            InputLabelProps={this.state.value && { shrink: true }}
           />
         )
         break
@@ -512,6 +514,7 @@ class CreateValue extends React.Component {
                       this.props.close()
                     }
                   }}
+                  InputLabelProps={this.state.name && { shrink: true }}
                   endAdornment={
                     this.state.name && (
                       <InputAdornment position="end">
@@ -595,7 +598,11 @@ class CreateValue extends React.Component {
                     }}
                     style={{ width: "100%", marginBottom: "16px" }}
                     variant="outlined"
-            /></ExpansionPanelDetails></ExpansionPanel>)}
+                    InputLabelProps={this.state.maxChars && { shrink: true }}
+                  />
+                </ExpansionPanelDetails>
+              </ExpansionPanel>
+            )}
             {this.state.type === "float" && (
               <ExpansionPanel
                 expanded={this.state.expanded === "float"}
@@ -634,6 +641,7 @@ class CreateValue extends React.Component {
                     }}
                     style={{ width: "100%", marginBottom: "16px" }}
                     variant="outlined"
+                    InputLabelProps={this.state.min && { shrink: true }}
                   />
                   <TextField
                     id="max"
@@ -662,6 +670,7 @@ class CreateValue extends React.Component {
                     }}
                     style={{ width: "100%", marginBottom: "16px" }}
                     variant="outlined"
+                    InputLabelProps={this.state.max && { shrink: true }}
                   />
                   <TextField
                     id="precision"
@@ -690,6 +699,7 @@ class CreateValue extends React.Component {
                     }}
                     style={{ width: "100%", marginBottom: "16px" }}
                     variant="outlined"
+                    InputLabelProps={this.state.precision && { shrink: true }}
                   />
                   <TextField
                     id="unit-of-measurement"
@@ -717,6 +727,7 @@ class CreateValue extends React.Component {
                         this.props.close()
                       }
                     }}
+                    InputLabelProps={this.state.unit && { shrink: true }}
                     endAdornment={
                       this.state.unit && (
                         <InputAdornment position="end">
@@ -811,6 +822,7 @@ class CreateValue extends React.Component {
                   }}
                   style={{ width: "100%", marginBottom: "16px" }}
                   variant="outlined"
+                  InputLabelProps={this.state.index && { shrink: true }}
                 />
               </ExpansionPanelDetails>
             </ExpansionPanel>
