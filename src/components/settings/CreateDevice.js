@@ -182,8 +182,9 @@ class CreateDevice extends React.Component {
                   }}
                   required
                   variant="outlined"
-                  endAdornment={
-                    this.state.name && (
+                  InputLabelProps={this.state.name && { shrink: true }}
+                  InputProps={{
+                    endAdornment: this.state.name && (
                       <InputAdornment position="end">
                         <IconButton
                           onClick={() => this.setState({ name: "" })}
@@ -198,8 +199,8 @@ class CreateDevice extends React.Component {
                           <Icon>clear</Icon>
                         </IconButton>
                       </InputAdornment>
-                    )
-                  }
+                    ),
+                  }}
                 />
                 <TextField
                   id="create-device-type"
@@ -227,8 +228,9 @@ class CreateDevice extends React.Component {
                   }}
                   required
                   style={{ width: "100%", marginBottom: "16px" }}
-                  endAdornment={
-                    this.state.deviceType && (
+                  InputLabelProps={this.state.deviceType && { shrink: true }}
+                  InputProps={{
+                    endAdornment: this.state.deviceType && (
                       <InputAdornment position="end">
                         <IconButton
                           onClick={() => this.setState({ deviceType: "" })}
@@ -243,8 +245,8 @@ class CreateDevice extends React.Component {
                           <Icon>clear</Icon>
                         </IconButton>
                       </InputAdornment>
-                    )
-                  }
+                    ),
+                  }}
                 />
                 {environments}
               </ExpansionPanelDetails>
@@ -281,6 +283,7 @@ class CreateDevice extends React.Component {
                   }}
                   style={{ width: "100%", marginBottom: "16px" }}
                   variant="outlined"
+                  InputLabelProps={this.state.index && { shrink: true }}
                 />
                 <Typography>Signal</Typography>
                 <Slider

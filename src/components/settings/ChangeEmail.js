@@ -256,6 +256,7 @@ class ChangeMailDialog extends React.Component {
               style={{
                 width: "100%",
               }}
+              InputLabelProps={this.state.password && { shrink: true }}
               InputProps={{
                 endAdornment: this.state.password && (
                   <InputAdornment position="end">
@@ -336,7 +337,6 @@ class ChangeMailDialog extends React.Component {
               value={this.state.email}
               variant="outlined"
               error={this.state.emailEmpty || this.state.emailError}
-              InputLabelProps={this.state.email && { shrink: true }}
               helperText={
                 this.state.emailEmpty
                   ? "This field is required"
@@ -356,6 +356,7 @@ class ChangeMailDialog extends React.Component {
               style={{
                 width: "100%",
               }}
+              InputLabelProps={this.state.email && { shrink: true }}
               InputProps={{
                 endAdornment: this.state.email && (
                   <InputAdornment position="end">

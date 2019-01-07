@@ -499,6 +499,7 @@ class AuthDialog extends React.Component {
               style={{
                 width: "100%",
               }}
+              InputLabelProps={this.state.password && { shrink: true }}
               InputProps={{
                 endAdornment: this.state.password && (
                   <InputAdornment position="end">
@@ -629,6 +630,7 @@ class AuthDialog extends React.Component {
                 marginTop: "16px",
                 width: "100%",
               }}
+              InputLabelProps={this.state.tokenName && { shrink: true }}
               InputProps={{
                 endAdornment: this.state.tokenName && (
                   <InputAdornment position="end">

@@ -79,6 +79,7 @@ class CreateNotification extends React.Component {
           label="Device"
           style={{ width: "100%", marginBottom: "16px" }}
           disabled={this.props.allDevices.length < 2}
+          InputLabelProps={this.state.device && { shrink: true }}
         >
           {this.props.allDevices.map(device => (
             <MenuItem value={device.id}>{device.name}</MenuItem>
@@ -92,8 +93,8 @@ class CreateNotification extends React.Component {
           open={this.props.open}
           onClose={this.props.close}
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
           fullWidth
@@ -120,7 +121,7 @@ class CreateNotification extends React.Component {
           >
             {deviceList}
             <TextField
-              id="adornment-name-login"
+              id="create-notification-content"
               variant="outlined"
               required
               label="Notification content"
@@ -151,6 +152,7 @@ class CreateNotification extends React.Component {
                   contentEmpty: event.target.value === "",
                 })
               }
+              InputLabelProps={this.state.content && { shrink: true }}
               endAdornment={
                 this.state.content && (
                   <InputAdornment position="end">

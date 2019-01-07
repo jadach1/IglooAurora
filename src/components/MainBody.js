@@ -15,7 +15,7 @@ class MainBody extends Component {
         valueCreated {
           id
           visibility
-          valueDetails
+          unitOfMeasurement
           tileSize
           name
           updatedAt
@@ -80,7 +80,7 @@ class MainBody extends Component {
         valueUpdated {
           id
           visibility
-          valueDetails
+          unitOfMeasurement
           tileSize
           name
           updatedAt
@@ -385,7 +385,7 @@ export default graphql(
         values {
           id
           visibility
-          valueDetails
+          unitOfMeasurement
           tileSize
           name
           updatedAt

@@ -54,7 +54,7 @@ class ReadWriteAllowedStringTile extends Component {
           width: "calc(100% - 48px)",
           margin: "calc(50% - 64px) 24px",
         }}
-          InputLabelProps={this.state.selectedValue && { shrink: true }}
+        InputLabelProps={this.state.selectedValue && { shrink: true }}
           disabled={menuItems.length < 1}
         >
             { noneAllowed && <MenuItem value="">

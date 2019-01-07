@@ -103,7 +103,7 @@ class Tile extends Component {
         specificTile = (
           <ReadOnlyFloatTile
             value={value.floatValue}
-            valueDetails={value.valueDetails}
+            unitOfMeasurement={value.unitOfMeasurement}
             nightMode={
               typeof Storage !== "undefined" &&
               localStorage.getItem("nightMode") === "true"
@@ -127,7 +127,7 @@ class Tile extends Component {
             <ReadWriteFloatTile
               id={value.id}
               defaultValue={value.floatValue}
-              valueDetails={value.valueDetails}
+              unitOfMeasurement={value.unitOfMeasurement}
             />
           )
         }
@@ -143,7 +143,7 @@ class Tile extends Component {
             <ReadWriteStringTile
               value={value.stringValue}
               id={value.id}
-              valueDetails={value.valueDetails}
+              unitOfMeasurement={value.unitOfMeasurement}
             />
           )
         } else if (value.allowedValues) {
@@ -188,37 +188,15 @@ class Tile extends Component {
     }
 
     const updateShown = visible =>
-      this.props[
-        value.__typename === "FloatValue"
-          ? "ChangeFloatSize"
-          : value.__typename === "StringValue"
-          ? "ChangeStringSize"
-          : value.__typename === "PlotValue"
-          ? "ChangePlotSize"
-          : value.__typename === "CategoryPlotValue"
-          ? "ChangeCategoryPlotSize"
-          : value.__typename === "MapValue"
-          ? "ChangeMapSize"
-          : "ChangeBooleanSize"
-      ]({
+      this.props.ChangeVisiility({
         variables: {
           id: value.id,
           visibility: visible ? "VISIBLE" : "HIDDEN",
         },
         optimisticResponse: {
           __typename: "Mutation",
-          [value.__typename === "FloatValue"
-            ? "floatValue"
-            : value.__typename === "StringValue"
-            ? "stringValue"
-            : value.__typename === "PlotValue"
-            ? "plotValue"
-            : value.__typename === "CategoryPlotValue"
-            ? "categoryPlotValue"
-            : value.__typename === "MapValue"
-            ? "mapValue"
-            : "booleanValue"]: {
-            __typename: value.__typename,
+          value: {
+            __typename: "Value",
             id: value.id,
             visibility: visible ? "VISIBLE" : "HIDDEN",
           },
@@ -510,118 +488,14 @@ class Tile extends Component {
 
 export default graphql(
   gql`
-    mutation ChangeSize(
-      $id: ID!
-      $size: TileSize
-      $visibility: ValueVisibility
-    ) {
-      floatValue(tileSize: $size, id: $id, visibility: $visibility) {
+    mutation ChangeVisiility($id: ID!, $visibility: ValueVisibility) {
+      value(id: $id, visibility: $visibility) {
         id
         visibility
-        tileSize
       }
     }
   `,
   {
-    name: "ChangeFloatSize",
+    name: "ChangeVisiility",
   }
-)(
-  graphql(
-    gql`
-      mutation ChangeSize(
-        $id: ID!
-        $size: TileSize
-        $visibility: ValueVisibility
-      ) {
-        stringValue(tileSize: $size, id: $id, visibility: $visibility) {
-          id
-          tileSize
-          visibility
-        }
-      }
-    `,
-    {
-      name: "ChangeStringSize",
-    }
-  )(
-    graphql(
-      gql`
-        mutation ChangeSize(
-          $id: ID!
-          $size: TileSize
-          $visibility: ValueVisibility
-        ) {
-          booleanValue(tileSize: $size, id: $id, visibility: $visibility) {
-            id
-            visibility
-            tileSize
-          }
-        }
-      `,
-      {
-        name: "ChangeBooleanSize",
-      }
-    )(
-      graphql(
-        gql`
-          mutation ChangeSize(
-            $id: ID!
-            $size: TileSize
-            $visibility: ValueVisibility
-          ) {
-            plotValue(tileSize: $size, id: $id, visibility: $visibility) {
-              id
-              visibility
-              tileSize
-            }
-          }
-        `,
-        {
-          name: "ChangePlotSize",
-        }
-      )(
-        graphql(
-          gql`
-            mutation ChangeSize(
-              $id: ID!
-              $size: TileSize
-              $visibility: ValueVisibility
-            ) {
-              mapValue(tileSize: $size, id: $id, visibility: $visibility) {
-                id
-                visibility
-                tileSize
-              }
-            }
-          `,
-          {
-            name: "ChangeMapSize",
-          }
-        )(
-          graphql(
-            gql`
-              mutation ChangeSize(
-                $id: ID!
-                $size: TileSize
-                $visibility: ValueVisibility
-              ) {
-                categoryPlotValue(
-                  tileSize: $size
-                  id: $id
-                  visibility: $visibility
-                ) {
-                  id
-                  visibility
-                  tileSize
-                }
-              }
-            `,
-            {
-              name: "ChangeCategoryPlotSize",
-            }
-          )(Tile)
-        )
-      )
-    )
-  )
-)
+)(Tile)

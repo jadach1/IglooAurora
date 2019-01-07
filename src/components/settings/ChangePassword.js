@@ -229,6 +229,7 @@ class ChangePasswordDialog extends React.Component {
               style={{
                 width: "100%",
               }}
+              InputLabelProps={this.state.password && { shrink: true }}
               InputProps={{
                 endAdornment: this.state.password && (
                   <InputAdornment position="end">
@@ -330,6 +331,7 @@ class ChangePasswordDialog extends React.Component {
               style={{
                 width: "100%",
               }}
+              InputLabelProps={this.state.newPassword && { shrink: true }}
               InputProps={{
                 endAdornment: this.state.newPassword && (
                   <InputAdornment position="end">

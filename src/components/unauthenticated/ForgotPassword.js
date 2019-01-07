@@ -118,7 +118,8 @@ class ForgotPassword extends React.Component {
                 width: "100%",
                 marginTop: "16px",
               }}
-              InputProps={{
+        InputLabelProps={this.state.email && { shrink: true }}
+        InputProps={{
                 endAdornment: this.state.email && (
                   <InputAdornment position="end">
                     <IconButton

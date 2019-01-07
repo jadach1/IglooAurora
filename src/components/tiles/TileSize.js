@@ -27,37 +27,15 @@ class TileSize extends Component {
 
   render() {
     const updateTileMutation = size => {
-      this.props[
-        this.props.value.__typename === "FloatValue"
-          ? "ChangeFloatSize"
-          : this.props.value.__typename === "StringValue"
-          ? "ChangeStringSize"
-          : this.props.value.__typename === "PlotValue"
-          ? "ChangePlotSize"
-          : this.props.value.__typename === "StringValue"
-          ? "ChangeCategoryPlotSize"
-          : this.props.value.__typename === "MapValue"
-          ? "ChangeMapSize"
-          : "ChangeBooleanSize"
-      ]({
+      this.props.ChangeSize({
         variables: {
           id: this.props.value.id,
           size,
         },
         optimisticResponse: {
           __typename: "Mutation",
-          [this.props.value.__typename === "floatValue"
-            ? "floatValue"
-            : this.props.value.__typename === "stringValue"
-            ? "stringValue"
-            : this.props.value.__typename === "plotValue"
-            ? "plotValue"
-            : this.props.value.__typename === "categoryPlotValue"
-            ? "stringValue"
-            : this.props.value.__typename === "mapValue"
-            ? "mapValue"
-            : "booleanValue"]: {
-            __typename: this.props.value.__typename,
+          value: {
+            __typename: "Value",
             id: this.props.value.id,
             tileSize: size,
           },
@@ -80,7 +58,9 @@ class TileSize extends Component {
         <DialogTitle disableTypography>Change card size</DialogTitle>
         <div style={{ height: "100%" }}>
           <RadioGroup
-            onChange={(event, value) => this.setState({ radioValue: value })}
+            onChange={(event, value) => {this.setState({ radioValue: value })
+              updateTileMutation(value)
+          }}
             value={this.state.radioValue}
             style={{ paddingLeft: "24px", paddingRight: "24px" }}
           >
@@ -107,19 +87,8 @@ class TileSize extends Component {
           </RadioGroup>
         </div>
         <DialogActions>
-          <Button onClick={this.props.close} style={{ marginRight: "4px" }}>
-            Never mind
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            primary={true}
-            onClick={() => {
-              updateTileMutation(this.state.radioValue)
-              this.props.close()
-            }}
-          >
-            Change size
+          <Button onClick={this.props.close} >
+            Close
           </Button>
         </DialogActions>
       </Dialog>
@@ -134,7 +103,7 @@ export default graphql(
       $size: TileSize
       $visibility: ValueVisibility
     ) {
-      floatValue(tileSize: $size, id: $id, visibility: $visibility) {
+      value(tileSize: $size, id: $id, visibility: $visibility) {
         id
         visibility
         tileSize
@@ -142,105 +111,6 @@ export default graphql(
     }
   `,
   {
-    name: "ChangeFloatSize",
+    name: "ChangeSize",
   }
-)(
-  graphql(
-    gql`
-      mutation ChangeSize(
-        $id: ID!
-        $size: TileSize
-        $visibility: ValueVisibility
-      ) {
-        stringValue(tileSize: $size, id: $id, visibility: $visibility) {
-          id
-          tileSize
-          visibility
-        }
-      }
-    `,
-    {
-      name: "ChangeStringSize",
-    }
-  )(
-    graphql(
-      gql`
-        mutation ChangeSize(
-          $id: ID!
-          $size: TileSize
-          $visibility: ValueVisibility
-        ) {
-          booleanValue(tileSize: $size, id: $id, visibility: $visibility) {
-            id
-            visibility
-            tileSize
-          }
-        }
-      `,
-      {
-        name: "ChangeBooleanSize",
-      }
-    )(
-      graphql(
-        gql`
-          mutation ChangeSize(
-            $id: ID!
-            $size: TileSize
-            $visibility: ValueVisibility
-          ) {
-            plotValue(tileSize: $size, id: $id, visibility: $visibility) {
-              id
-              visibility
-              tileSize
-            }
-          }
-        `,
-        {
-          name: "ChangePlotSize",
-        }
-      )(
-        graphql(
-          gql`
-            mutation ChangeSize(
-              $id: ID!
-              $size: TileSize
-              $visibility: ValueVisibility
-            ) {
-              mapValue(tileSize: $size, id: $id, visibility: $visibility) {
-                id
-                visibility
-                tileSize
-              }
-            }
-          `,
-          {
-            name: "ChangeMapSize",
-          }
-        )(
-          graphql(
-            gql`
-              mutation ChangeSize(
-                $id: ID!
-                $size: TileSize
-                $visibility: ValueVisibility
-              ) {
-                categoryPlotValue(
-                  tileSize: $size
-                  id: $id
-                  visibility: $visibility
-                ) {
-                  id
-                  visibility
-                  tileSize
-                }
-              }
-            `,
-            {
-              name: "ChangeCategoryPlotSize",
-            }
-          )(withMobileDialog({ breakpoint: "xs" })(TileSize))
-        )
-      )
-    )
-  )
-)
+)(withMobileDialog({ breakpoint: "xs" })(TileSize))

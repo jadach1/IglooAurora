@@ -151,6 +151,7 @@ class InviteUser extends Component {
               width: "calc(100% - 48px)",
               margin: "0 24px",
             }}
+            InputLabelProps={this.state.email && { shrink: true }}
             InputProps={{
               endAdornment: this.state.email && (
                 <InputAdornment position="end">

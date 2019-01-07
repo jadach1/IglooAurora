@@ -38,7 +38,7 @@ export default function ReadOnlyFloatTile(props) {
               : { color: "#7a7a7a" }
           }
         >
-          {props.valueDetails}
+          {props.unitOfMeasurement}
         </font>
       </Typography>
     </div>
