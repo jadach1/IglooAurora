@@ -283,7 +283,8 @@ class ChangePasswordDialog extends React.Component {
         </Dialog>
         <Dialog
           open={this.state.newPasswordDialogOpen}
-          onClose={this.props.close}
+          onClose={()=>{this.props.close()
+            this.setState({newPasswordDialogOpen:false}) }}
           className="notSelectable"
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition

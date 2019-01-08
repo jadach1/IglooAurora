@@ -43,28 +43,6 @@ class ChangeMailDialog extends React.Component {
     emailEmpty: false,
   }
 
-  openMailDialog = () => {
-    this.setState({ mailDialogOpen: true })
-    this.props.close()
-  }
-
-  closeMailDialog = () => {
-    this.setState({ mailDialogOpen: false })
-  }
-
-  handleMailSnackOpen = () => {
-    this.setState({
-      mailSnackOpen: true,
-    })
-    this.closeMailDialog()
-  }
-
-  handleMailSnackClose = () => {
-    this.setState({
-      mailSnackOpen: false,
-    })
-  }
-
   async createToken() {
     try {
       this.setState({ showLoading: true })
@@ -311,9 +289,8 @@ class ChangeMailDialog extends React.Component {
         <Dialog
           open={this.state.mailDialogOpen}
           onClose={() => {
-            this.closeMailDialog()
+            this.setState({ mailDialogOpen: false })
             this.props.close()
-            this.setState({ emailError: "", isEmailEmpty: false })
           }}
           className="notSelectable"
           TransitionComponent={

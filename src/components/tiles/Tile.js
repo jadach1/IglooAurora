@@ -111,12 +111,12 @@ class Tile extends Component {
           />
         )
       } else {
-        if (value.boundaries) {
+        if (value.min && value.max) {
           specificTile = (
             <ReadWriteBoundedFloatTile
               id={value.id}
-              min={value.boundaries[0]}
-              max={value.boundaries[1]}
+              min={value.min}
+              max={value.max}
               defaultValue={value.floatValue}
               step={value.precision || undefined} // avoid passing null, pass undefined instead
               disabled={value.permission === "READ_ONLY"}
@@ -128,6 +128,8 @@ class Tile extends Component {
               id={value.id}
               defaultValue={value.floatValue}
               unitOfMeasurement={value.unitOfMeasurement}
+              min={value.min}
+              max={value.max}
             />
           )
         }

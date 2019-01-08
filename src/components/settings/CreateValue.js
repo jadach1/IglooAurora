@@ -42,7 +42,7 @@ class CreateValue extends React.Component {
     valueSettingsOpen: false,
     value: null,
     expanded: "general",
-    tileSize: "",
+    tileSize: "NORMAL",
   }
 
   handleNext = () => {
@@ -788,9 +788,6 @@ class CreateValue extends React.Component {
                   select
                   InputLabelProps={this.state.tileSize && { shrink: true }}
                 >
-                  <MenuItem value="">
-                    <em>None</em>
-                  </MenuItem>
                   <MenuItem value="NORMAL">Normal</MenuItem>
                   <MenuItem value="WIDE">Wide</MenuItem>
                   <MenuItem value="LARGE">Large</MenuItem>
