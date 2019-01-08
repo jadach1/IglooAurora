@@ -30,8 +30,9 @@ import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import ToggleIcon from "material-ui-toggle-icon"
-import { CopyToClipboard } from "react-copy-to-clipboard"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -62,6 +63,7 @@ class AuthDialog extends React.Component {
 
   closeAuthDialog = () => {
     this.setState({ authDialogOpen: false })
+    this.props.handleAuthDialogClose()
   }
 
   async createToken() {
@@ -340,9 +342,11 @@ class AuthDialog extends React.Component {
 
     if (this.props.tokenData.user && this.props.tokenData.user.permanentTokens)
       tokenList = (
-        <List style={{
-              padding: "0",
-            }}>
+        <List
+          style={{
+            padding: "0",
+          }}
+        >
           {this.props.tokenData.user.permanentTokens.map(token => (
             <ListItem>
               <ListItemIcon>
@@ -391,22 +395,8 @@ class AuthDialog extends React.Component {
                 }
               />
               <ListItemSecondaryAction>
-                {this.state.tokenId === token.id ? (
-                  <CopyToClipboard text={this.state.generatedToken}>
-                    <IconButton
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      <Icon>content_copy</Icon>
-                    </IconButton>
-                  </CopyToClipboard>
-                ) : (
                   <IconButton
-                    onClick={() => this.deletePermanentToken(token.id)}
+            onClick={event => this.setState({menuTarget:token.id,anchorEl: event.currentTarget,})}
                     style={
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
@@ -414,9 +404,8 @@ class AuthDialog extends React.Component {
                         : { color: "black" }
                     }
                   >
-                    <Icon>delete</Icon>
+                    <Icon>more_vert</Icon>
                   </IconButton>
-                )}
               </ListItemSecondaryAction>
             </ListItem>
           ))}
@@ -571,9 +560,6 @@ class AuthDialog extends React.Component {
           <DialogTitle disableTypography>Manage authorizations</DialogTitle>
           <div
             style={{
-              paddingLeft: "8px",
-              paddingRight: "8px",
-              paddingBottom: "0px",
               height: "100%",
             }}
           >
@@ -673,6 +659,46 @@ class AuthDialog extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+        <Menu
+                id="auth-menu-target"
+                anchorEl={this.state.anchorEl}
+                open={this.state.anchorEl}
+                onClose={() => this.setState({ anchorEl: null })}
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+                transformOrigin={{
+                  vertical: "top",
+                  horizontal: "right",
+                }}
+              >
+              <MenuItem
+                      onClick={() => {
+                        this.setState({anchorEl:false})
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon >content_copy</Icon>
+                      </ListItemIcon>
+                      <ListItemText inset>
+                     Copy
+                      </ListItemText>
+                    </MenuItem>
+               <MenuItem
+                      onClick={() => {
+                        this.deletePermanentToken(this.state.menuTarget)
+                        this.setState({anchorEl:false})
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon style={{ color: "#f44336" }}>delete</Icon>
+                      </ListItemIcon>
+                      <ListItemText inset>
+                        <span style={{ color: "#f44336" }}>Delete</span>
+                      </ListItemText>
+                    </MenuItem>
+          </Menu>
       </React.Fragment>
     )
   }

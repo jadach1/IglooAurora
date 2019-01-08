@@ -7,28 +7,27 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
 class ReadWriteFloatTile extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
-  this.state = { value: props.defaultValue || "" }
+    this.state = { value: props.defaultValue || "" }
   }
 
   mutateFloatValue = value => {
-      this.props.floatValue({
-        variables: {
+    this.props.floatValue({
+      variables: {
+        id: this.props.id,
+        value: parseFloat(value),
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        device: {
           id: this.props.id,
-          value: parseFloat(value)
-          ,
+          value: parseFloat(value),
+          __typename: "FloatValue",
         },
-        optimisticResponse: {
-          __typename: "Mutation",
-          device: {
-            id: this.props.id,
-            value: parseFloat(value),
-            __typename: "FloatValue",
-          },
-        },
-      })
-    }
+      },
+    })
+  }
 
   render() {
     return (
@@ -37,11 +36,11 @@ class ReadWriteFloatTile extends Component {
         type="number"
         value={this.state.value}
         variant="outlined"
-        onChange={event =>{
+        onChange={event => {
           this.setState({
             value: event.target.value,
           })
-this.mutateFloatValue(event.target.value)
+          this.mutateFloatValue(event.target.value)
         }}
         style={{
           width: "calc(100% - 48px)",
@@ -49,40 +48,49 @@ this.mutateFloatValue(event.target.value)
         }}
         InputLabelProps={this.state.value && { shrink: true }}
         InputProps={{
-          endAdornment: ( this.props.unitOfMeasurement ?
-            <InputAdornment position="end" className="notSelectable defaultCursor">
+          //max && min isn't handled here, but rather in <ReadWriteBoundedFloatTile />
+          inputProps: { max: this.props.max, min: this.props.min },
+          endAdornment: this.props.unitOfMeasurement ? (
+            <InputAdornment
+              position="end"
+              className="notSelectable defaultCursor"
+            >
               {this.props.unitOfMeasurement}
             </InputAdornment>
-         : this.state.value && (
-            <InputAdornment position="end">
-              <IconButton
-                onClick={() => this.setState({ value: "" })}
-                tabIndex="-1"
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { color: "rgba(0, 0, 0, 0.46)" }
-                    : { color: "rgba(0, 0, 0, 0.46)" }
-                }
-              >
-                <Icon>clear</Icon>
-              </IconButton>
-            </InputAdornment>
-          ))
+          ) : (
+            this.state.value && (
+              <InputAdornment position="end">
+                <IconButton
+                  onClick={() => this.setState({ value: "" })}
+                  tabIndex="-1"
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "rgba(0, 0, 0, 0.46)" }
+                      : { color: "rgba(0, 0, 0, 0.46)" }
+                  }
+                >
+                  <Icon>clear</Icon>
+                </IconButton>
+              </InputAdornment>
+            )
+          ),
         }}
       />
     )
   }
 }
 
-export default graphql(gql`
-mutation floatValue($id: ID!, $value: Float!) {
-  floatValue(id: $id, value: $value) {
-    id
-    value
-  }
-}
-`,
+export default graphql(
+  gql`
+    mutation floatValue($id: ID!, $value: Float!) {
+      floatValue(id: $id, value: $value) {
+        id
+        value
+      }
+    }
+  `,
   {
     name: "floatValue",
-  })(ReadWriteFloatTile)
+  }
+)(ReadWriteFloatTile)

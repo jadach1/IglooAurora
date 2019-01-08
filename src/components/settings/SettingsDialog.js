@@ -1006,7 +1006,7 @@ class SettingsDialog extends React.Component {
                               : { color: "#7a7a7a", cursor: "default" }
                           }
                         >
-                          Generate, view and delete your accounts access tokens
+                          Generate, view and delete your account's access tokens
                         </font>
                       }
                     />

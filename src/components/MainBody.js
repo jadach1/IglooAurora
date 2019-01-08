@@ -27,7 +27,8 @@ class MainBody extends Component {
           ... on FloatValue {
             floatValue: value
             precision
-            boundaries
+            min
+            max
             permission
           }
           ... on StringValue {
@@ -92,7 +93,8 @@ class MainBody extends Component {
           ... on FloatValue {
             floatValue: value
             precision
-            boundaries
+            min
+            max
             permission
           }
           ... on StringValue {
@@ -397,7 +399,8 @@ export default graphql(
           ... on FloatValue {
             floatValue: value
             precision
-            boundaries
+            min
+            max
             permission
           }
           ... on StringValue {
