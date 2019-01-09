@@ -114,10 +114,10 @@ class ShareEnvironment extends React.Component {
           }
           onClose={this.props.close}
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
-        disableBackdropClick={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
           className="notSelectable defaultCursor"
           fullWidth
           maxWidth="xs"
@@ -127,8 +127,8 @@ class ShareEnvironment extends React.Component {
             subheader={<li />}
             style={
               this.props.fullScreen
-                ? { overflow: "auto", height: "100%",padding:"0" }
-                : { overflow: "auto", maxHeight: "420px",padding:"0" }
+                ? { overflow: "auto", height: "100%", padding: "0" }
+                : { overflow: "auto", maxHeight: "420px", padding: "0" }
             }
           >
             <li key="Owner">
@@ -1085,5 +1085,5 @@ export default graphql(
     {
       name: "ChangeRole",
     }
-  )(withMobileDialog({ breakpoint: "xs" })(ShareEnvironment)
-))
+  )(withMobileDialog({ breakpoint: "xs" })(ShareEnvironment))
+)
