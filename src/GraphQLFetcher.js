@@ -886,8 +886,6 @@ class GraphQLFetcher extends Component {
       if (error.message === "GraphQL error: This user doesn't exist anymore") {
         this.props.logOut()
       }
-
-      console.log(error.message)
     }
 
     if (user) {

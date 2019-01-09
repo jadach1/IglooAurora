@@ -33,6 +33,9 @@ import ToggleIcon from "material-ui-toggle-icon"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
+import clipboardCopy from "clipboard-copy"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -248,6 +251,75 @@ class AuthDialog extends React.Component {
     })
   }
 
+  async regeneratePermanentToken(tokenId) {
+    const wsLink = new WebSocketLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server")
+          ? "wss://" +
+            localStorage
+              .getItem("server")
+              .replace("https://", "")
+              .replace("http://", "") +
+            "/subscriptions"
+          : `wss://bering.igloo.ooo/subscriptions`,
+      options: {
+        reconnect: true,
+        connectionParams: {
+          Authorization: "Bearer " + this.state.token,
+        },
+      },
+    })
+
+    const httpLink = new HttpLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? localStorage.getItem("server") + "/graphql"
+          : `https://bering.igloo.ooo/graphql`,
+      headers: {
+        Authorization: "Bearer " + this.state.token,
+      },
+    })
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === "OperationDefinition" && operation === "subscription"
+      },
+      wsLink,
+      httpLink
+    )
+
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache({ fragmentMatcher }),
+    })
+
+    const regenerateTokenMutation = await this.client.mutate({
+      mutation: gql`
+        mutation RegeneratePermanentAccessToken($id: ID!) {
+          regeneratePermanentAccessToken(id: $id)
+        }
+      `,
+      variables: {
+        id: tokenId,
+      },
+    })
+
+    this.setState({
+      copyToken: regenerateTokenMutation.data.regeneratePermanentAccessToken,
+      anchorEl: null,
+    })
+
+    clipboardCopy(this.state.copyToken)
+  }
+
   componentWillReceiveProps(nextProps) {
     if (
       this.props.confirmationDialogOpen !== nextProps.confirmationDialogOpen &&
@@ -395,17 +467,22 @@ class AuthDialog extends React.Component {
                 }
               />
               <ListItemSecondaryAction>
-                  <IconButton
-            onClick={event => this.setState({menuTarget:token.id,anchorEl: event.currentTarget,})}
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    <Icon>more_vert</Icon>
-                  </IconButton>
+                <IconButton
+                  onClick={event =>
+                    this.setState({
+                      menuTarget: token.id,
+                      anchorEl: event.currentTarget,
+                    })
+                  }
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
+                  <Icon>more_vert</Icon>
+                </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
           ))}
@@ -442,7 +519,8 @@ class AuthDialog extends React.Component {
           open={
             this.props.confirmationDialogOpen &&
             !this.state.authDialogOpen &&
-            !this.state.nameOpen
+            !this.state.nameOpen &&
+            !this.state.deleteOpen
           }
           onClose={this.props.handleAuthDialogClose}
           className="notSelectable"
@@ -546,7 +624,11 @@ class AuthDialog extends React.Component {
           </DialogActions>
         </Dialog>
         <Dialog
-          open={this.state.authDialogOpen && !this.state.nameOpen}
+          open={
+            this.state.authDialogOpen &&
+            !this.state.nameOpen &&
+            !this.state.deleteOpen
+          }
           onClose={this.closeAuthDialog}
           className="notSelectable"
           TransitionComponent={
@@ -659,46 +741,106 @@ class AuthDialog extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
-        <Menu
-                id="auth-menu-target"
-                anchorEl={this.state.anchorEl}
-                open={this.state.anchorEl}
-                onClose={() => this.setState({ anchorEl: null })}
-                anchorOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
+        <Dialog
+          open={this.state.deleteOpen}
+          onClose={() => this.setState({ deleteOpen: false })}
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
+          className="notSelectable defaultCursor"
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle disableTypography>Delete token</DialogTitle>
+          <font
+            style={{
+              paddingLeft: "24px",
+              paddingRight: "24px",
+              height: "100%",
+            }}
+          >
+            Be careful, the token{" "}
+            {this.props.tokenData.user &&
+              this.props.tokenData.user.permanentTokens.filter(
+                token => token.id === this.state.menuTarget
+              )[0] &&
+              this.props.tokenData.user.permanentTokens.filter(
+                token => token.id === this.state.menuTarget
+              )[0].name}{" "}
+            will be deleted permanently.
+          </font>
+          <DialogActions>
+            <Button
+              onClick={() => this.setState({ deleteOpen: false })}
+              style={{ marginRight: "4px" }}
+            >
+              Never mind
+            </Button>
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#f44336" },
+                },
+              })}
+            >
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  this.setState({ deleteOpen: false })
+                  this.deletePermanentToken(this.state.menuTarget)
                 }}
-                transformOrigin={{
-                  vertical: "top",
-                  horizontal: "right",
-                }}
+                style={{ margin: "0 4px" }}
               >
-              <MenuItem
-                      onClick={() => {
-                        this.setState({anchorEl:false})
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Icon >content_copy</Icon>
-                      </ListItemIcon>
-                      <ListItemText inset>
-                     Copy
-                      </ListItemText>
-                    </MenuItem>
-               <MenuItem
-                      onClick={() => {
-                        this.deletePermanentToken(this.state.menuTarget)
-                        this.setState({anchorEl:false})
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Icon style={{ color: "#f44336" }}>delete</Icon>
-                      </ListItemIcon>
-                      <ListItemText inset>
-                        <span style={{ color: "#f44336" }}>Delete</span>
-                      </ListItemText>
-                    </MenuItem>
-          </Menu>
+                Delete
+              </Button>
+            </MuiThemeProvider>
+          </DialogActions>
+        </Dialog>
+        <Menu
+          id="auth-menu-target"
+          anchorEl={this.state.anchorEl}
+          open={this.state.anchorEl}
+          onClose={() => this.setState({ anchorEl: null })}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <MenuItem
+            onClick={
+              this.state.tokenId === this.state.menuTarget
+                ? () => {
+                    clipboardCopy(this.state.generatedToken)
+                    this.setState({ menuTarget: null })
+                  }
+                : () => this.regeneratePermanentToken(this.state.menuTarget)
+            }
+          >
+            <ListItemIcon>
+              <Icon>content_copy</Icon>
+            </ListItemIcon>
+            <ListItemText inset>Copy</ListItemText>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.setState({ anchorEl: false, deleteOpen: true })
+            }}
+          >
+            <ListItemIcon>
+              <Icon style={{ color: "#f44336" }}>delete</Icon>
+            </ListItemIcon>
+            <ListItemText inset>
+              <span style={{ color: "#f44336" }}>Delete</span>
+            </ListItemText>
+          </MenuItem>
+        </Menu>
       </React.Fragment>
     )
   }
