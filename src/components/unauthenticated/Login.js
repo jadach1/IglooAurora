@@ -165,10 +165,10 @@ class Login extends Component {
                       this.props.email ? (
                         <InputAdornment position="end">
                           <IconButton
-                            onClick={()=>{
+                            onClick={() => {
                               this.props.changeEmail("")
-                              this.setState({ isMailEmpty: true })}
-                            }
+                              this.setState({ isMailEmpty: true })
+                            }}
                             tabIndex="-1"
                             style={{ color: "black" }}
                           >
@@ -238,7 +238,11 @@ class Login extends Component {
                       this.props.password ? (
                         <InputAdornment position="end">
                           <IconButton
-                            onClick={()=>this.setState({ showPassword: !this.state.showPassword })}
+                            onClick={() =>
+                              this.setState({
+                                showPassword: !this.state.showPassword,
+                              })
+                            }
                             onMouseDown={this.handleMouseDownPassword}
                             tabIndex="-1"
                             style={{ color: "black" }}

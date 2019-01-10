@@ -16,6 +16,7 @@ import * as EmailValidator from "email-validator"
 import logo from "../../styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
 import CenteredSpinner from "../CenteredSpinner"
+import ToggleIcon from "material-ui-toggle-icon"
 
 export default class LoginMobile extends Component {
   constructor() {
@@ -296,10 +297,20 @@ export default class LoginMobile extends Component {
                           tabIndex="-1"
                           style={{ color: "white" }}
                         >
-                          {this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
+                          {/* fix for ToggleIcon glitch on Edge */}
+                          {document.documentMode ||
+                          /Edge/.test(navigator.userAgent) ? (
+                            this.state.showPassword ? (
+                              <Icon>visibility_off</Icon>
+                            ) : (
+                              <Icon>visibility</Icon>
+                            )
                           ) : (
-                            <Icon>visibility</Icon>
+                            <ToggleIcon
+                              on={this.state.showPassword || false}
+                              onIcon={<Icon>visibility_off</Icon>}
+                              offIcon={<Icon>visibility</Icon>}
+                            />
                           )}
                         </IconButton>
                       </InputAdornment>

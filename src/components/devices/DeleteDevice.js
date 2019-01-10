@@ -54,7 +54,9 @@ class DeleteDevice extends React.Component {
         <font
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          Be careful, this device will be deleted permanently.
+          Be careful,{" "}
+            {this.props.device &&
+              this.props.device.name}{" "}will be deleted permanently.
           <br />
           <br />
           Note that by deleting a device, you will delete all of its values and

@@ -481,6 +481,7 @@ class Tile extends Component {
         <DeleteValue
           open={this.state.deleteOpen}
           id={value.id}
+          name={value.name}
           close={() => this.setState({ deleteOpen: false })}
         />
       </React.Fragment>

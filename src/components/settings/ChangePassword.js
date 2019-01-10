@@ -173,6 +173,8 @@ class ChangePasswordDialog extends React.Component {
         newPasswordError: "",
         isNewPasswordEmpty: false,
         newPassword: "",
+        showPassword: false,
+        showNewPassword: false,
       })
   }
 
@@ -283,8 +285,10 @@ class ChangePasswordDialog extends React.Component {
         </Dialog>
         <Dialog
           open={this.state.newPasswordDialogOpen}
-          onClose={()=>{this.props.close()
-            this.setState({newPasswordDialogOpen:false}) }}
+          onClose={() => {
+            this.props.close()
+            this.setState({ newPasswordDialogOpen: false })
+          }}
           className="notSelectable"
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition
@@ -353,14 +357,14 @@ class ChangePasswordDialog extends React.Component {
                       {/* fix for ToggleIcon glitch on Edge */}
                       {document.documentMode ||
                       /Edge/.test(navigator.userAgent) ? (
-                        this.state.showPassword ? (
+                        this.state.showNewPassword ? (
                           <Icon>visibility_off</Icon>
                         ) : (
                           <Icon>visibility</Icon>
                         )
                       ) : (
                         <ToggleIcon
-                          on={this.state.showPassword || false}
+                          on={this.state.showNewPassword || false}
                           onIcon={<Icon>visibility_off</Icon>}
                           offIcon={<Icon>visibility</Icon>}
                         />

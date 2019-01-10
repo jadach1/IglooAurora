@@ -52,7 +52,8 @@ class DeleteValue extends React.Component {
         <font
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          Be careful, this card will be deleted permanently.
+          Be careful,{" "}
+            {this.props.name}{" "}will be deleted permanently.
         </font>
         <DialogActions>
           <Button onClick={this.props.close}>Never mind</Button>
