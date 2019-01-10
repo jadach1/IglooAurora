@@ -172,6 +172,7 @@ class DeleteAccountDialog extends React.Component {
         isPasswordEmpty: false,
         passwordError: false,
         password: "",
+        showPassword: false,
       })
     }
   }

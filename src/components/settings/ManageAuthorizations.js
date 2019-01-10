@@ -329,6 +329,7 @@ class AuthDialog extends React.Component {
         isPasswordEmpty: false,
         passwordError: false,
         password: "",
+        showPassword: false,
       })
     }
   }
@@ -761,7 +762,7 @@ class AuthDialog extends React.Component {
               height: "100%",
             }}
           >
-            Be careful, the token{" "}
+            Be careful,{" "}
             {this.props.tokenData.user &&
               this.props.tokenData.user.permanentTokens.filter(
                 token => token.id === this.state.menuTarget

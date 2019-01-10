@@ -178,6 +178,7 @@ class ChangeMailDialog extends React.Component {
         emailError: "",
         emailEmpty: false,
         email: this.props.email,
+        showPassword: false,
       })
   }
 

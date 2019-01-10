@@ -316,7 +316,7 @@ class SettingsDialog extends React.Component {
         }
       >
         <div style={listStyles.root}>
-          <List style={{ width: "100%",padding:"0" }} subheader={<li />}>
+          <List style={{ width: "100%", padding: "0" }} subheader={<li />}>
             <li key="appearance">
               <ul style={{ padding: "0" }}>
                 <ListSubheader
@@ -1057,7 +1057,7 @@ class SettingsDialog extends React.Component {
                               : { color: "black" }
                           }
                         >
-                          Create a new device
+                          Create device
                         </font>
                       }
                     />
@@ -1086,7 +1086,7 @@ class SettingsDialog extends React.Component {
                               : { color: "black" }
                           }
                         >
-                          Create a new value
+                          Create value
                         </font>
                       }
                     />
@@ -1117,7 +1117,7 @@ class SettingsDialog extends React.Component {
                               : { color: "black" }
                           }
                         >
-                          Create a new notification
+                          Create notification
                         </font>
                       }
                     />
@@ -1137,7 +1137,7 @@ class SettingsDialog extends React.Component {
                               : { color: "black" }
                           }
                         >
-                          Create a new plot node
+                          Create plot node
                         </font>
                       }
                     />
@@ -1159,7 +1159,7 @@ class SettingsDialog extends React.Component {
                               : { color: "black" }
                           }
                         >
-                          Create a new category plot node
+                          Create category plot node
                         </font>
                       }
                     />
