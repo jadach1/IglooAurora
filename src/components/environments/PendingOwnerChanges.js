@@ -67,7 +67,7 @@ class PendingOwnerChanges extends Component {
       >
         <DialogTitle disableTypography>Pending transfer requests</DialogTitle>
         <List style={{ width: "100%", height: "100%" }}>
-          {this.props.pendingOwnerChanges.map(ownerChange => (
+          {this.props.pendingOwnerChanges.map(pendingOwnerChange => (
             <ListItem style={{ paddingLeft: "24px" }}>
               <ListItemText
                 primary={
@@ -79,7 +79,7 @@ class PendingOwnerChanges extends Component {
                         : { color: "black" }
                     }
                   >
-                    {ownerChange.environment.name}
+                    {pendingOwnerChange.environment.name}
                   </font>
                 }
                 secondary={
@@ -91,7 +91,7 @@ class PendingOwnerChanges extends Component {
                         : { color: "#7a7a7a" }
                     }
                   >
-                    {"Sent by " + ownerChange.sender.name}
+                    {"Sent by " + pendingOwnerChange.sender.name}
                   </font>
                 }
                 style={{
@@ -103,7 +103,7 @@ class PendingOwnerChanges extends Component {
               />
               <ListItemSecondaryAction>
                 <IconButton
-                  onClick={() => this.AcceptOwnership(ownerChange.id)}
+                  onClick={() => this.AcceptOwnership(pendingOwnerChange.id)}
                   style={
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
@@ -114,7 +114,7 @@ class PendingOwnerChanges extends Component {
                   <Icon>done</Icon>
                 </IconButton>
                 <IconButton
-                  onClick={() => this.DeclineOwnership(ownerChange.id)}
+                  onClick={() => this.DeclineOwnership(pendingOwnerChange.id)}
                   style={
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"

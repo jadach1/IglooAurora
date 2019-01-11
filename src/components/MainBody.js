@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import Tile from "./tiles/Tile"
+import Card from "./cards/Card"
 import CenteredSpinner from "./CenteredSpinner"
 import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
@@ -16,7 +16,7 @@ class MainBody extends Component {
           id
           visibility
           unitOfMeasurement
-          tileSize
+          cardSize
           name
           updatedAt
           createdAt
@@ -82,7 +82,7 @@ class MainBody extends Component {
           id
           visibility
           unitOfMeasurement
-          tileSize
+          cardSize
           name
           updatedAt
           createdAt
@@ -225,12 +225,12 @@ class MainBody extends Component {
     }
 
     const values = device.values
-    let visibleTiles = values.filter(value => value.visibility === "VISIBLE")
+    let visibleCards = values.filter(value => value.visibility === "VISIBLE")
 
-    let hiddenTiles = values.filter(value => value.visibility === "HIDDEN")
+    let hiddenCards = values.filter(value => value.visibility === "HIDDEN")
 
-    const renderTile = value => (
-      <Tile
+    const renderCard = value => (
+      <Card
         value={value}
         key={value.id}
         nightMode={
@@ -244,13 +244,13 @@ class MainBody extends Component {
       />
     )
 
-    visibleTiles = visibleTiles.map(renderTile)
-    hiddenTiles = hiddenTiles.map(renderTile)
+    visibleCards = visibleCards.map(renderCard)
+    hiddenCards = hiddenCards.map(renderCard)
 
-    let hiddenTilesUI = ""
+    let hiddenCardsUI = ""
 
-    if (hiddenTiles.length !== 0) {
-      hiddenTilesUI = [
+    if (hiddenCards.length !== 0) {
+      hiddenCardsUI = [
         <Button
           onClick={() => {
             this.props.changeShowHiddenState()
@@ -278,8 +278,8 @@ class MainBody extends Component {
           {this.props.showHidden ? "Show less" : "Show more"}
         </Button>,
         this.props.showHidden ? (
-          <div className="itemsList hiddenItems" key="hiddenTilesContainer">
-            {hiddenTiles}
+          <div className="itemsList hiddenItems" key="hiddenCardsContainer">
+            {hiddenCards}
           </div>
         ) : (
           ""
@@ -288,7 +288,7 @@ class MainBody extends Component {
     }
 
     let noItemsUI = ""
-    if (hiddenTiles.length + visibleTiles.length === 0) {
+    if (hiddenCards.length + visibleCards.length === 0) {
       noItemsUI = (
         <div
           style={{
@@ -296,7 +296,7 @@ class MainBody extends Component {
             textAlign: "center",
             marginTop: "32px",
           }}
-          key="noTilesUI"
+          key="noCardsUI"
           className="notSelectable"
         >
           This device has no values
@@ -366,10 +366,10 @@ class MainBody extends Component {
           style={{ width: "100%", height: "100%" }}
         >
           {noItemsUI}
-          <div className="itemsList" key="visibleTilesContainer">
-            {visibleTiles}
+          <div className="itemsList" key="visibleCardsContainer">
+            {visibleCards}
           </div>
-          {hiddenTilesUI}
+          {hiddenCardsUI}
         </div>
       </div>
     )
@@ -388,7 +388,7 @@ export default graphql(
           id
           visibility
           unitOfMeasurement
-          tileSize
+          cardSize
           name
           updatedAt
           createdAt

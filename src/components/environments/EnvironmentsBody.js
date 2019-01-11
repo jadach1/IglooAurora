@@ -81,7 +81,7 @@ export default class EnvironmentsBody extends Component {
               </Grid>
             ))}
           {user.pendingOwnerChanges[0] && (
-            <Grid key="environmentShares" item>
+            <Grid key="pendingEnvironmentShares" item>
               <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
                 <Paper
                   style={
@@ -213,7 +213,7 @@ export default class EnvironmentsBody extends Component {
               </Grid>
             ))}
           {user.pendingEnvironmentShares[0] && (
-            <Grid key="environmentShares" item>
+            <Grid key="pendingEnvironmentShares" item>
               <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
                 <Paper
                   style={
@@ -430,7 +430,7 @@ export default class EnvironmentsBody extends Component {
                         spacing={16}
                         className="notSelectable defaultCursor"
                         style={{
-                          width: "calc(100vw - 16px)",
+                          width: "calc(100% - 16px)",
                           marginLeft: "8px",
                           marginRight: "8px",
                           marginBottom:"8px"
@@ -458,7 +458,7 @@ export default class EnvironmentsBody extends Component {
                         spacing={16}
                         className="notSelectable defaultCursor"
                         style={{
-                          width: "calc(100vw - 16px)",
+                          width: "calc(100% - 16px)",
                           marginLeft: "8px",
                           marginRight: "8px",
                           marginBottom:"8px"
@@ -506,7 +506,7 @@ export default class EnvironmentsBody extends Component {
                       spacing={16}
                       className="notSelectable defaultCursor"
                       style={{
-                        width: "calc(100vw - 16px)",
+                        width: "calc(100% - 16px)",
                         marginLeft: "8px",
                         marginRight: "8px",
                         marginBottom:"8px"

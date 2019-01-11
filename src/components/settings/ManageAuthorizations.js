@@ -163,8 +163,8 @@ class AuthDialog extends React.Component {
     try {
       const tokenMutation = await this.client.mutate({
         mutation: gql`
-          mutation GeneratePermanentAccessToken($name: String!) {
-            createPermanentAccessToken(name: $name) {
+          mutation GeneratePermanentToken($name: String!) {
+            createPermanentToken(name: $name) {
               id
               token
             }
@@ -176,8 +176,8 @@ class AuthDialog extends React.Component {
       })
 
       this.setState({
-        tokenId: tokenMutation.data.createPermanentAccessToken.id,
-        generatedToken: tokenMutation.data.createPermanentAccessToken.token,
+        tokenId: tokenMutation.data.createPermanentToken.id,
+        generatedToken: tokenMutation.data.createPermanentToken.token,
         nameOpen: false,
         authDialogOpen: true,
         tokenName: "",
@@ -241,8 +241,8 @@ class AuthDialog extends React.Component {
 
     await this.client.mutate({
       mutation: gql`
-        mutation DeletePermanentAccessToken($id: ID!) {
-          deletePermanentAccessToken(id: $id)
+        mutation DeletePermanentToken($id: ID!) {
+          deletePermanentToken(id: $id)
         }
       `,
       variables: {
@@ -303,8 +303,8 @@ class AuthDialog extends React.Component {
 
     const regenerateTokenMutation = await this.client.mutate({
       mutation: gql`
-        mutation RegeneratePermanentAccessToken($id: ID!) {
-          regeneratePermanentAccessToken(id: $id)
+        mutation RegeneratePermanentToken($id: ID!) {
+          regeneratePermanentToken(id: $id)
         }
       `,
       variables: {
@@ -313,7 +313,7 @@ class AuthDialog extends React.Component {
     })
 
     this.setState({
-      copyToken: regenerateTokenMutation.data.regeneratePermanentAccessToken,
+      copyToken: regenerateTokenMutation.data.regeneratePermanentToken,
       anchorEl: null,
     })
 

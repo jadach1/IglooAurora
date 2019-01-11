@@ -21,7 +21,7 @@ class GraphQLFetcher extends Component {
           createdAt
           updatedAt
           muted
-          avatar
+          picture
           myRole
           pendingEnvironmentShares {
             id
@@ -108,7 +108,7 @@ class GraphQLFetcher extends Component {
           createdAt
           updatedAt
           muted
-          avatar
+          picture
           myRole
           pendingEnvironmentShares {
             id
@@ -209,9 +209,9 @@ class GraphQLFetcher extends Component {
       },
     })
 
-    const environmentSharedWithYouSubscriptionQuery = gql`
+    const pendingEnvironmentSharedWithYouSubscriptionQuery = gql`
       subscription {
-        environmentShareReceived {
+        pendingEnvironmentShareReceived {
           id
           receiver {
             id
@@ -232,7 +232,7 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: environmentSharedWithYouSubscriptionQuery,
+      document: pendingEnvironmentSharedWithYouSubscriptionQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -240,7 +240,7 @@ class GraphQLFetcher extends Component {
 
         const newEnvironmentsShares = [
           ...prev.user.pendingEnvironmentShares,
-          subscriptionData.data.environmentShareReceived,
+          subscriptionData.data.pendingEnvironmentShareReceived,
         ]
 
         return {
@@ -254,7 +254,7 @@ class GraphQLFetcher extends Component {
 
     const subscribeToEnvironmentShareAccepted = gql`
       subscription {
-        environmentShareAccepted {
+        pendingEnvironmentShareAccepted {
           id
           environment {
             id
@@ -263,7 +263,7 @@ class GraphQLFetcher extends Component {
             createdAt
             updatedAt
             muted
-            avatar
+            picture
             myRole
             pendingEnvironmentShares {
               id
@@ -343,13 +343,13 @@ class GraphQLFetcher extends Component {
 
         const newEnvironments = [
           ...prev.user.environments,
-          subscriptionData.data.environmentShareAccepted.environment,
+          subscriptionData.data.pendingEnvironmentShareAccepted.environment,
         ]
 
         const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
           pendingEnvironmentShare =>
             pendingEnvironmentShare.id !==
-            subscriptionData.data.environmentShareAccepted.id
+            subscriptionData.data.pendingEnvironmentShareAccepted.id
         )
 
         return {
@@ -364,14 +364,14 @@ class GraphQLFetcher extends Component {
 
     const subscribeToEnvironmentShareUpdated = gql`
       subscription {
-        environmentShareUpdated {
+        pendingEnvironmentShareUpdated {
           id
           index
           name
           createdAt
           updatedAt
           muted
-          avatar
+          picture
           myRole
           pendingEnvironmentShares {
             id
@@ -434,7 +434,7 @@ class GraphQLFetcher extends Component {
 
     const subscribeToEnvironmentShareDeclined = gql`
       subscription {
-        environmentShareDeclined
+        pendingEnvironmentShareDeclined
       }
     `
 
@@ -448,7 +448,7 @@ class GraphQLFetcher extends Component {
         const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
           pendingEnvironmentShare =>
             pendingEnvironmentShare.id !==
-            subscriptionData.data.environmentShareDeclined
+            subscriptionData.data.pendingEnvironmentShareDeclined
         )
 
         return {
@@ -490,7 +490,7 @@ class GraphQLFetcher extends Component {
 
     const subscribeToOwnerChangeReceived = gql`
       subscription {
-        ownerChangeReceived {
+        pendingOwnerChangeReceived {
           id
           receiver {
             id
@@ -519,7 +519,7 @@ class GraphQLFetcher extends Component {
 
         const newOwnerChange = [
           ...prev.user.pendingOwnerChanges,
-          subscriptionData.data.ownerChangeReceived,
+          subscriptionData.data.pendingOwnerChangeReceived,
         ]
 
         return {
@@ -533,7 +533,7 @@ class GraphQLFetcher extends Component {
 
     const subscribeToOwnerChangeAccepted = gql`
       subscription {
-        ownerChangeAccepted {
+        pendingOwnerChangeAccepted {
           id
           environment {
             id
@@ -542,7 +542,7 @@ class GraphQLFetcher extends Component {
             createdAt
             updatedAt
             muted
-            avatar
+            picture
             myRole
             pendingEnvironmentShares {
               id
@@ -622,13 +622,13 @@ class GraphQLFetcher extends Component {
 
         const newEnvironments = [
           ...prev.user.environments,
-          subscriptionData.data.ownerChangeAccepted.environment,
+          subscriptionData.data.pendingOwnerChangeAccepted.environment,
         ]
 
         const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
           pendingOwnerChange =>
             pendingOwnerChange.id !==
-            subscriptionData.data.ownerChangeAccepted.id
+            subscriptionData.data.pendingOwnerChangeAccepted.id
         )
 
         return {
@@ -643,7 +643,7 @@ class GraphQLFetcher extends Component {
 
     const subscribeToEnvironmentShareRevoked = gql`
       subscription {
-        environmentShareRevoked
+        pendingEnvironmentShareRevoked
       }
     `
 
@@ -657,7 +657,7 @@ class GraphQLFetcher extends Component {
         const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
           pendingEnvironmentShare =>
             pendingEnvironmentShare.id !==
-            subscriptionData.data.environmentShareRevoked
+            subscriptionData.data.pendingEnvironmentShareRevoked
         )
 
         return {
@@ -671,7 +671,7 @@ class GraphQLFetcher extends Component {
 
     const subscribeToOwnerChangeDeclined = gql`
       subscription {
-        ownerChangeDeclined
+        pendingOwnerChangeDeclined
       }
     `
 
@@ -684,7 +684,7 @@ class GraphQLFetcher extends Component {
 
         const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
           pendingOwnerChange =>
-            pendingOwnerChange.id !== subscriptionData.data.ownerChangeDeclined
+            pendingOwnerChange.id !== subscriptionData.data.pendingOwnerChangeDeclined
         )
 
         return {
@@ -698,7 +698,7 @@ class GraphQLFetcher extends Component {
 
     const subscribeToOwnerChangeRevoked = gql`
       subscription {
-        ownerChangeRevoked
+        pendingOwnerChangeRevoked
       }
     `
 
@@ -711,7 +711,7 @@ class GraphQLFetcher extends Component {
 
         const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
           pendingOwnerChange =>
-            pendingOwnerChange.id !== subscriptionData.data.ownerChangeRevoked
+            pendingOwnerChange.id !== subscriptionData.data.pendingOwnerChangeRevoked
         )
 
         return {
@@ -1203,7 +1203,7 @@ export default graphql(
           createdAt
           updatedAt
           muted
-          avatar
+          picture
           myRole
           pendingEnvironmentShares {
             id

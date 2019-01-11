@@ -6,7 +6,7 @@ import Icon from "@material-ui/core/Icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
-class ReadWriteStringTile extends Component {
+class ReadWriteStringCard extends Component {
   constructor(props) {
     super(props)
     this.state = { value: props.value || "" }
@@ -32,7 +32,7 @@ class ReadWriteStringTile extends Component {
   render() {
     return (
       <TextField
-        id="read-write-string-tile"
+        id="read-write-string-card"
         value={this.state.value}
         variant="outlined"
         onChange={event => {
@@ -82,4 +82,4 @@ const updateStringValue = gql`
   }
 `
 
-export default graphql(updateStringValue)(ReadWriteStringTile)
+export default graphql(updateStringValue)(ReadWriteStringCard)

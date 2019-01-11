@@ -15,7 +15,7 @@ function SlideTransition(props) {
   return <Slide direction="up" {...props} />
 }
 
-class FullScreenTile extends React.Component {
+class FullScreenCard extends React.Component {
   render() {
     const { value } = this.props
     const valueTitle = value.name
@@ -33,7 +33,7 @@ class FullScreenTile extends React.Component {
         maxWidth="xs"
       >
         <DialogTitle disableTypography>{valueTitle}</DialogTitle>
-        <div style={{ height: "100%" }}>{this.props.specificTile}</div>
+        <div style={{ height: "100%" }}>{this.props.specificCard}</div>
         <DialogActions>
           <Button onClick={this.props.handleClose}>Close</Button>
         </DialogActions>
@@ -41,4 +41,4 @@ class FullScreenTile extends React.Component {
     )
   }
 }
-export default withMobileDialog({ breakpoint: "xs" })(FullScreenTile)
+export default withMobileDialog({ breakpoint: "xs" })(FullScreenCard)

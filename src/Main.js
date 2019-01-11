@@ -4,7 +4,7 @@ import SidebarHeader from "./components/SidebarHeader"
 import MainBody from "./components/MainBody"
 import MainBodyHeader from "./components/MainBodyHeader"
 import "./styles/App.css"
-import "./styles/Tiles.css"
+import "./styles/Cards.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import StatusBar from "./components/devices/StatusBar"
 import { Redirect } from "react-router-dom"
@@ -132,7 +132,7 @@ class Main extends Component {
 
     this.state = {
       showHidden: false,
-      isTileFullScreen: false,
+      isCardFullScreen: false,
       drawer: false,
       copyMessageOpen: false,
       deselectDevice: false,

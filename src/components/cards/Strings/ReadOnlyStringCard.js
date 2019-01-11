@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import Typography from "@material-ui/core/Typography"
 
-class ReadOnlyStringTile extends Component {
+class ReadOnlyStringCard extends Component {
   render() {
     return (
       <div
@@ -37,4 +37,4 @@ class ReadOnlyStringTile extends Component {
   }
 }
 
-export default ReadOnlyStringTile
+export default ReadOnlyStringCard

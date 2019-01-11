@@ -462,8 +462,26 @@ class MainBodyHeader extends Component {
                 <ListItemText inset primary="Mute" disableTypography />
               </MenuItem>
             )}
-            <Divider />
-            <MenuItem
+                  {device &&  device.myRole !== "SPECTATOR" &&   <React.Fragment>   <Divider />  <MenuItem
+              className="notSelectable"
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white" }
+                  : { color: "black" }
+              }
+              onClick={() => {
+                this.setState({ renameOpen: true })
+                this.handleMenuClose()
+              }}
+            >
+              <ListItemIcon>
+                <Icon>mode_edit</Icon>
+              </ListItemIcon>
+              <ListItemText inset primary="Rename" disableTypography />
+            </MenuItem></React.Fragment> }
+          { (device && (device.myRole === "OWNER" ||
+            device.myRole === "ADMIN")) && <React.Fragment>  <MenuItem
               className="notSelectable"
               style={
                 typeof Storage !== "undefined" &&
@@ -484,55 +502,7 @@ class MainBodyHeader extends Component {
               </ListItemIcon>
               <ListItemText inset primary="Move" disableTypography />
             </MenuItem>
-            {/*
-                {device.values.length > 1 && (
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                    onClick={() => {
-                      this.handleOpen()
-                      this.handleMenuClose()
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Icon
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        swap_vert
-                      </Icon>
-                    </ListItemIcon>
-                    <ListItemText inset primary="Rearrange cards" />
-                  </MenuItem>
-                      )} */}
-            <MenuItem
-              className="notSelectable"
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white" }
-                  : { color: "black" }
-              }
-              onClick={() => {
-                this.setState({ renameOpen: true })
-                this.handleMenuClose()
-              }}
-            >
-              <ListItemIcon>
-                <Icon>mode_edit</Icon>
-              </ListItemIcon>
-              <ListItemText inset primary="Rename" disableTypography />
-            </MenuItem>
-            <MenuItem
+           <MenuItem
               className="notSelectable"
               style={
                 typeof Storage !== "undefined" &&
@@ -551,7 +521,7 @@ class MainBodyHeader extends Component {
               <ListItemText inset>
                 <span style={{ color: "#f44336" }}>Delete</span>
               </ListItemText>
-            </MenuItem>
+            </MenuItem></React.Fragment>}
           </Menu>
         )}
         {this.state.goToDevices && (
@@ -585,6 +555,7 @@ export default graphql(
           values {
             id
           }
+          myRole
           name
           updatedAt
           createdAt

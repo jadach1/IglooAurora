@@ -292,7 +292,7 @@ class ShareEnvironment extends React.Component {
               this.props.environment.admins[0] ||
               (this.props.environment.pendingEnvironmentShares &&
                 this.props.environment.pendingEnvironmentShares.filter(
-                  environmentShare => environmentShare.role === "ADMIN"
+                  pendingEnvironmentShare => pendingEnvironmentShare.role === "ADMIN"
                 ))) && (
               <li key="Admins">
                 <ul style={{ padding: "0" }}>
@@ -389,7 +389,7 @@ class ShareEnvironment extends React.Component {
                     this.props.environment.myRole === "OWNER") &&
                     this.props.environment.pendingEnvironmentShares
                       .filter(
-                        environmentShare => environmentShare.role === "ADMIN"
+                        pendingEnvironmentShare => pendingEnvironmentShare.role === "ADMIN"
                       )
                       .map(item => (
                         <ListItem key={item.id}>
@@ -518,7 +518,7 @@ class ShareEnvironment extends React.Component {
               this.props.environment.editors[0] ||
               (this.props.environment.pendingEnvironmentShares &&
                 this.props.environment.pendingEnvironmentShares.filter(
-                  environmentShare => environmentShare.role === "EDITOR"
+                  pendingEnvironmentShare => pendingEnvironmentShare.role === "EDITOR"
                 ))) && (
               <li key="Editors">
                 <ul style={{ padding: "0" }}>
@@ -616,7 +616,7 @@ class ShareEnvironment extends React.Component {
                     this.props.environment.myRole === "OWNER") &&
                     this.props.environment.pendingEnvironmentShares
                       .filter(
-                        environmentShare => environmentShare.role === "EDITOR"
+                        pendingEnvironmentShare => pendingEnvironmentShare.role === "EDITOR"
                       )
                       .map(item => (
                         <ListItem key={item.id}>
@@ -745,7 +745,7 @@ class ShareEnvironment extends React.Component {
               this.props.environment.spectators[0] ||
               (this.props.environment.pendingEnvironmentShares &&
                 this.props.environment.pendingEnvironmentShares.filter(
-                  environmentShare => environmentShare.role === "SPECTATOR"
+                  pendingEnvironmentShare => pendingEnvironmentShare.role === "SPECTATOR"
                 ))) && (
               <li key="Spectators">
                 <ul style={{ padding: "0" }}>

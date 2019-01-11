@@ -70,13 +70,13 @@ class CreateEnvironment extends React.Component {
     this.props.CreateEnvironment({
       variables: {
         name: this.state.name,
-        avatar: this.selectImage(this.state.slideIndex),
+        picture: this.selectImage(this.state.slideIndex),
       },
       optimisticResponse: {
         __typename: "Mutation",
         CreateEnvironment: {
           name: this.state.name,
-          avatar: this.selectImage(this.state.slideIndex),
+          picture: this.selectImage(this.state.slideIndex),
           __typename: "Environment",
         },
       },
@@ -251,11 +251,11 @@ class CreateEnvironment extends React.Component {
 
 export default graphql(
   gql`
-    mutation CreateEnvironment($name: String!, $avatar: EnvironmentPicture) {
-      createEnvironment(name: $name, avatar: $avatar) {
+    mutation CreateEnvironment($name: String!, $picture: EnvironmentPicture) {
+      createEnvironment(name: $name, picture: $picture) {
         id
         name
-        avatar
+        picture
       }
     }
   `,

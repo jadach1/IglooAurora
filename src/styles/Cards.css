@@ -1,4 +1,4 @@
-.tileHeader {
+.cardHeader {
   width: 100%;
   height: 64px;
   display: grid;
@@ -7,7 +7,7 @@
   grid-template-areas: "title buttons";
 }
 
-.tileTitle {
+.cardTitle {
   grid-area: title;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -17,61 +17,61 @@
   user-select: none;
 }
 
-.tileHeader .tileHeaderButtons {
+.cardHeader .cardHeaderButtons {
   grid-area: buttons;
 }
 
-.readOnlyBooleanTile,
-.readOnlyFloatTile,
-.readWriteBooleanTile {
+.readOnlyBooleanCard,
+.readOnlyFloatCard,
+.readWriteBooleanCard {
   width: 100%;
   height: calc(100% - 64px);
 }
 
-.readOnlyBooleanTile svg {
+.readOnlyBooleanCard svg {
   height: 100px;
   padding: 47px 75px 47px 75px;
 }
 
-.wide .readOnlyBooleanTile svg {
+.wide .readOnlyBooleanCard svg {
   padding: 47px 207px 47px 207px;
 }
 
-.large .readOnlyBooleanTile svg {
+.large .readOnlyBooleanCard svg {
   height: 200px;
   padding: 130px 157px 130px 157px;
 }
 
-.readOnlyBooleanTile svg {
+.readOnlyBooleanCard svg {
   color: red;
 }
 
-.readOnlyBooleanTile.active svg {
+.readOnlyBooleanCard.active svg {
   color: green;
 }
 
-.readWriteBoundedFloatTile .min {
+.readWriteBoundedFloatCard .min {
   line-height: 48px;
   grid-area: min;
 }
 
-.readWriteBoundedFloatTile .max {
+.readWriteBoundedFloatCard .max {
   line-height: 48px;
   grid-area: max;
 }
 
-.readWriteBoundedFloatTile .slider {
+.readWriteBoundedFloatCard .slider {
   padding-top: 16px;
   grid-area: slider;
 }
 
-.readWriteBooleanTile {
+.readWriteBooleanCard {
   display: grid;
   grid-template-rows: auto 24px auto;
   grid-template-columns: auto 50px auto;
   grid-template-areas: ". . ." ". switch ." ". . .";
 }
 
-.readWriteBooleanTile .switch {
+.readWriteBooleanCard .switch {
   grid-area: switch;
 }

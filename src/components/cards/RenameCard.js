@@ -23,7 +23,7 @@ function SlideTransition(props) {
   return <Slide direction="up" {...props} />
 }
 
-class RenameTileDialog extends React.Component {
+class RenameCardDialog extends React.Component {
   state = { name: null }
 
   rename = () => {
@@ -41,21 +41,21 @@ class RenameTileDialog extends React.Component {
         },
       },
     })
-    this.props.handleRenameTileDialogClose()
+    this.props.handleRenameCardDialogClose()
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.renameTileOpen && !this.props.renameTileOpen) {
-      oldName = this.props.tileName
-      this.setState({ name: this.props.tileName, nameEmpty: "" })
+    if (nextProps.renameCardOpen && !this.props.renameCardOpen) {
+      oldName = this.props.cardName
+      this.setState({ name: this.props.cardName, nameEmpty: "" })
     }
   }
 
   render() {
     return (
       <Dialog
-        open={this.props.renameTileOpen}
-        onClose={this.props.handleRenameTileDialogClose}
+        open={this.props.renameCardOpen}
+        onClose={this.props.handleRenameCardDialogClose}
         TransitionComponent={
           this.props.fullScreen ? SlideTransition : GrowTransition
         }
@@ -110,7 +110,7 @@ class RenameTileDialog extends React.Component {
         </div>
         <DialogActions>
           <Button
-            onClick={this.props.handleRenameTileDialogClose}
+            onClick={this.props.handleRenameCardDialogClose}
             style={{ marginRight: "4px" }}
           >
             Never mind
@@ -141,4 +141,4 @@ export default graphql(
   {
     name: "Rename",
   }
-)(withMobileDialog({ breakpoint: "xs" })(RenameTileDialog))
+)(withMobileDialog({ breakpoint: "xs" })(RenameCardDialog))

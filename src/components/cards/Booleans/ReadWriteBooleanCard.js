@@ -3,10 +3,10 @@ import Switch from "@material-ui/core/Switch"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
-class ReadWriteBooleanTile extends Component {
+class ReadWriteBooleanCard extends Component {
   render() {
     return (
-      <div className="readWriteBooleanTile">
+      <div className="readWriteBooleanCard">
         <Switch
           className="switch"
           thumbSwitchedStyle={{ backgroundColor: "#0083ff" }}
@@ -44,4 +44,4 @@ const updateBooleanValue = gql`
   }
 `
 
-export default graphql(updateBooleanValue)(ReadWriteBooleanTile)
+export default graphql(updateBooleanValue)(ReadWriteBooleanCard)

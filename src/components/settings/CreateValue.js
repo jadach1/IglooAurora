@@ -42,7 +42,7 @@ class CreateValue extends React.Component {
     valueSettingsOpen: false,
     value: null,
     expanded: "general",
-    tileSize: "NORMAL",
+    cardSize: "NORMAL",
   }
 
   handleNext = () => {
@@ -777,16 +777,16 @@ class CreateValue extends React.Component {
                   <MenuItem value="INVISIBLE">Invisible</MenuItem>
                 </TextField>
                 <TextField
-                  value={this.state.tileSize}
+                  value={this.state.cardSize}
                   onChange={event => {
-                    this.setState({ tileSize: event.target.value })
+                    this.setState({ cardSize: event.target.value })
                   }}
                   helperText=" "
-                  label="Tile size"
+                  label="Card size"
                   variant="outlined"
                   style={{ width: "100%", marginBottom: "8px" }}
                   select
-                  InputLabelProps={this.state.tileSize && { shrink: true }}
+                  InputLabelProps={this.state.cardSize && { shrink: true }}
                 >
                   <MenuItem value="NORMAL">Normal</MenuItem>
                   <MenuItem value="WIDE">Wide</MenuItem>

@@ -7,7 +7,7 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
 
-class ReadWriteBooleanTile extends Component {
+class ReadWriteBooleanCard extends Component {
   constructor(props) {
     super()
     this.state = {
@@ -60,7 +60,7 @@ class ReadWriteBooleanTile extends Component {
           {this.props.max}
         </div>
         <TextField
-          id="read.write-bounded-float-tile-value"
+          id="read.write-bounded-float-card-value"
           value={this.state.value}
           type="number"
           onChange={event =>
@@ -116,4 +116,4 @@ const updateFloatValue = gql`
   }
 `
 
-export default graphql(updateFloatValue)(ReadWriteBooleanTile)
+export default graphql(updateFloatValue)(ReadWriteBooleanCard)

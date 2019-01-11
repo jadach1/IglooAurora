@@ -1,13 +1,13 @@
 import React, { Component } from "react"
 
-class ReadOnlyBooleanTile extends Component {
+class ReadOnlyBooleanCard extends Component {
   render() {
     return (
       <div
         className={
           this.props.value
-            ? "readOnlyBooleanTile active"
-            : "readOnlyBooleanTile"
+            ? "readOnlyBooleanCard active"
+            : "readOnlyBooleanCard"
         }
       >
         <svg
@@ -29,4 +29,4 @@ class ReadOnlyBooleanTile extends Component {
   }
 }
 
-export default ReadOnlyBooleanTile
+export default ReadOnlyBooleanCard

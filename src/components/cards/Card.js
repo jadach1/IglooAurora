@@ -1,20 +1,20 @@
 import React, { Component } from "react"
 import Paper from "@material-ui/core/Paper"
-import ReadOnlyBooleanTile from "./Booleans/ReadOnlyBooleanTile"
-import ReadWriteBooleanTile from "./Booleans/ReadWriteBooleanTile"
-import ReadOnlyFloatTile from "./Floats/ReadOnlyFloatTile"
-import ReadOnlyStringTile from "./Strings/ReadOnlyStringTile"
-import ReadWriteAllowedStringTile from "./Strings/ReadWriteAllowedStringTile"
-import ReadWriteStringTile from "./Strings/ReadWriteStringTile"
-import ReadWriteBoundedStringTile from "./Strings/ReadWriteBoundedStringTile"
-import ReadWriteBoundedFloatTile from "./Floats/ReadWriteBoundedFloatTile"
-import ReadWriteFloatTile from "./Floats/ReadWriteFloatTile"
-import PlotTile from "./PlotTile"
-import FullScreenTile from "./FullScreenTile"
+import ReadOnlyBooleanCard from "./Booleans/ReadOnlyBooleanCard"
+import ReadWriteBooleanCard from "./Booleans/ReadWriteBooleanCard"
+import ReadOnlyFloatCard from "./Floats/ReadOnlyFloatCard"
+import ReadOnlyStringCard from "./Strings/ReadOnlyStringCard"
+import ReadWriteAllowedStringCard from "./Strings/ReadWriteAllowedStringCard"
+import ReadWriteStringCard from "./Strings/ReadWriteStringCard"
+import ReadWriteBoundedStringCard from "./Strings/ReadWriteBoundedStringCard"
+import ReadWriteBoundedFloatCard from "./Floats/ReadWriteBoundedFloatCard"
+import ReadWriteFloatCard from "./Floats/ReadWriteFloatCard"
+import PlotCard from "./PlotCard"
+import FullScreenCard from "./FullScreenCard"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Divider from "@material-ui/core/Divider"
-import RenameTileDialog from "./RenameTile"
+import RenameCardDialog from "./RenameCard"
 import DeleteValue from "./DeleteValue"
 import CardInfo from "./CardInfo.js"
 import Typography from "@material-ui/core/Typography"
@@ -25,21 +25,19 @@ import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
-import TileSize from "./TileSize"
-import DataSettings from "./DataSettings"
+import CardSize from "./CardSize"
 import ToggleIcon from "material-ui-toggle-icon"
 
-class Tile extends Component {
+class Card extends Component {
   state = {
-    isTileFullScreen: false,
+    isCardFullScreen: false,
     slideIndex: 0,
-    renameTileOpen: false,
-    deleteTileOpen: false,
+    renameCardOpen: false,
+    deleteCardOpen: false,
     dataVisualizationDialogOpen: false,
     infoOpen: false,
     anchorEl: null,
-    tileSizeOpen: false,
-    dataSettingsOpen: false,
+    cardSizeOpen: false,
     shareValueOpen: false,
     deleteOpen: false,
   }
@@ -60,16 +58,16 @@ class Tile extends Component {
     })
   }
 
-  handleRenameTileDialogClose = () => {
-    this.setState({ renameTileOpen: false })
+  handleRenameCardDialogClose = () => {
+    this.setState({ renameCardOpen: false })
   }
 
-  handleDeleteTileDialogClose = () => {
-    this.setState({ deleteTileOpen: false })
+  handleDeleteCardDialogClose = () => {
+    this.setState({ deleteCardOpen: false })
   }
 
   deleteClick = () => {
-    this.setState({ deleteTileOpen: true })
+    this.setState({ deleteCardOpen: true })
   }
 
   dataVisualizationDialogOpen = () => {
@@ -88,20 +86,20 @@ class Tile extends Component {
     const { value } = this.props
     const valueTitle = value.name
 
-    let specificTile
+    let specificCard
 
     if (value.__typename === "BooleanValue") {
       if (value.permission === "READ_ONLY" || value.myRole === "SPECTATOR") {
-        specificTile = <ReadOnlyBooleanTile value={value.boolValue} />
+        specificCard = <ReadOnlyBooleanCard value={value.boolValue} />
       } else {
-        specificTile = (
-          <ReadWriteBooleanTile value={value.boolValue} id={value.id} />
+        specificCard = (
+          <ReadWriteBooleanCard value={value.boolValue} id={value.id} />
         )
       }
     } else if (value.__typename === "FloatValue") {
       if (value.permission === "READ_ONLY" || value.myRole === "SPECTATOR") {
-        specificTile = (
-          <ReadOnlyFloatTile
+        specificCard = (
+          <ReadOnlyFloatCard
             value={value.floatValue}
             unitOfMeasurement={value.unitOfMeasurement}
             nightMode={
@@ -112,8 +110,8 @@ class Tile extends Component {
         )
       } else {
         if (value.min && value.max) {
-          specificTile = (
-            <ReadWriteBoundedFloatTile
+          specificCard = (
+            <ReadWriteBoundedFloatCard
               id={value.id}
               min={value.min}
               max={value.max}
@@ -123,8 +121,8 @@ class Tile extends Component {
             />
           )
         } else {
-          specificTile = (
-            <ReadWriteFloatTile
+          specificCard = (
+            <ReadWriteFloatCard
               id={value.id}
               defaultValue={value.floatValue}
               unitOfMeasurement={value.unitOfMeasurement}
@@ -136,21 +134,21 @@ class Tile extends Component {
       }
     } else if (value.__typename === "StringValue") {
       if (value.permission === "READ_ONLY" || value.myRole === "SPECTATOR") {
-        specificTile = (
-          <ReadOnlyStringTile value={value.stringValue} id={value.id} />
+        specificCard = (
+          <ReadOnlyStringCard value={value.stringValue} id={value.id} />
         )
       } else {
         if (!value.allowedValues && !value.maxChars) {
-          specificTile = (
-            <ReadWriteStringTile
+          specificCard = (
+            <ReadWriteStringCard
               value={value.stringValue}
               id={value.id}
               unitOfMeasurement={value.unitOfMeasurement}
             />
           )
         } else if (value.allowedValues) {
-          specificTile = (
-            <ReadWriteAllowedStringTile
+          specificCard = (
+            <ReadWriteAllowedStringCard
               name={value.name}
               values={value.allowedValues}
               id={value.id}
@@ -158,8 +156,8 @@ class Tile extends Component {
             />
           )
         } else if (value.maxChars) {
-          specificTile = (
-            <ReadWriteBoundedStringTile
+          specificCard = (
+            <ReadWriteBoundedStringCard
               name={value.name}
               id={value.id}
               stringValue={value.stringValue}
@@ -173,8 +171,8 @@ class Tile extends Component {
       value.permission === "READ_WRITE" &&
       !!value.maxChars
     ) {
-      specificTile = (
-        <ReadWriteBoundedStringTile
+      specificCard = (
+        <ReadWriteBoundedStringCard
           name={value.name}
           id={value.id}
           stringValue={value.stringValue}
@@ -182,11 +180,11 @@ class Tile extends Component {
         />
       )
     } else if (value.__typename === "PlotValue") {
-      specificTile = (
-        <PlotTile value={value.plotValue} threshold={value.threshold} />
+      specificCard = (
+        <PlotCard value={value.plotValue} threshold={value.threshold} />
       )
     } else {
-      specificTile = ""
+      specificCard = ""
     }
 
     const updateShown = visible =>
@@ -208,7 +206,7 @@ class Tile extends Component {
     return (
       <React.Fragment>
         <Paper
-          className={value.tileSize.toLowerCase()}
+          className={value.cardSize.toLowerCase()}
           zDepth={2}
           style={
             typeof Storage !== "undefined" &&
@@ -290,7 +288,7 @@ class Tile extends Component {
                 >
                   <IconButton
                     onClick={() => {
-                      this.setState({ isTileFullScreen: true })
+                      this.setState({ isCardFullScreen: true })
                     }}
                     style={
                       typeof Storage !== "undefined" &&
@@ -388,7 +386,7 @@ class Tile extends Component {
                 <MenuItem
                   primaryText="Resize"
                   onClick={() => {
-                    this.setState({ tileSizeOpen: true })
+                    this.setState({ cardSizeOpen: true })
                     this.handleMenuClose()
                   }}
                 >
@@ -397,27 +395,11 @@ class Tile extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Resize" disableTypography />
                 </MenuItem>
-                <MenuItem
-                  primaryText="Data settings"
-                  onClick={() => {
-                    this.handleMenuClose()
-                    this.setState({ dataSettingsOpen: true })
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon>settings</Icon>
-                  </ListItemIcon>
-                  <ListItemText
-                    inset
-                    primary="Data settings"
-                    disableTypography
-                  />
-                </MenuItem>
-                <Divider />
+               { value.myRole !== "SPECTATOR" && <React.Fragment><Divider />
                 <MenuItem
                   primaryText="Rename"
                   onClick={() => {
-                    this.setState({ renameTileOpen: true })
+                    this.setState({ renameCardOpen: true })
                     this.handleMenuClose()
                   }}
                 >
@@ -425,8 +407,9 @@ class Tile extends Component {
                     <Icon>create</Icon>
                   </ListItemIcon>
                   <ListItemText inset primary="Rename" disableTypography />
-                </MenuItem>
-                {typeof Storage !== "undefined" &&
+                </MenuItem></React.Fragment>}
+           {(value.myRole === "OWNER" ||
+            value.myRole === "ADMIN") &&    typeof Storage !== "undefined" &&
                   localStorage.getItem("devMode") === "true" && (
                     <MenuItem
                       onClick={() => {
@@ -441,24 +424,24 @@ class Tile extends Component {
                         <span style={{ color: "#f44336" }}>Delete</span>
                       </ListItemText>
                     </MenuItem>
-                  )}
+                  )}}
               </Menu>
             </div>
           </div>
-          {specificTile}
+          {specificCard}
         </Paper>
-        <FullScreenTile
-          fullScreen={this.state.isTileFullScreen}
+        <FullScreenCard
+          fullScreen={this.state.isCardFullScreen}
           handleClose={() => {
-            this.setState({ isTileFullScreen: false })
+            this.setState({ isCardFullScreen: false })
           }}
           value={value}
-          specificTile={specificTile}
+          specificCard={specificCard}
         />
-        <RenameTileDialog
-          renameTileOpen={this.state.renameTileOpen}
-          handleRenameTileDialogClose={this.handleRenameTileDialogClose}
-          tileName={valueTitle}
+        <RenameCardDialog
+          renameCardOpen={this.state.renameCardOpen}
+          handleRenameCardDialogClose={this.handleRenameCardDialogClose}
+          cardName={valueTitle}
           value={value}
         />
         <CardInfo
@@ -469,14 +452,10 @@ class Tile extends Component {
           id={value.id}
           devMode={this.props.devMode}
         />
-        <TileSize
-          open={this.state.tileSizeOpen}
-          close={() => this.setState({ tileSizeOpen: false })}
+        <CardSize
+          open={this.state.cardSizeOpen}
+          close={() => this.setState({ cardSizeOpen: false })}
           value={value}
-        />
-        <DataSettings
-          open={this.state.dataSettingsOpen}
-          close={() => this.setState({ dataSettingsOpen: false })}
         />
         <DeleteValue
           open={this.state.deleteOpen}
@@ -501,4 +480,4 @@ export default graphql(
   {
     name: "ChangeVisiility",
   }
-)(Tile)
+)(Card)

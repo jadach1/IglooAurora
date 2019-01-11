@@ -69,7 +69,7 @@ class InviteUser extends Component {
         })
       } else if (
         e.message ===
-        "GraphQL error: There is already a pending environmentShare"
+        "GraphQL error: There is already a pending pendingEnvironmentShare"
       ) {
         this.setState({
           emailError: "Environment alreay shared",

@@ -4,7 +4,7 @@ import gql from "graphql-tag"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import TextField from "@material-ui/core/TextField"
 
-class ReadWriteBoundedStringTile extends Component {
+class ReadWriteBoundedStringCard extends Component {
   state = { value: this.props.stringValue }
 
   componentWillReceiveProps(nextProps) {
@@ -33,7 +33,7 @@ class ReadWriteBoundedStringTile extends Component {
   render() {
     return (
        <TextField
-        id="read-write-string-tile"
+        id="read-write-string-card"
         value={this.state.value}
         variant="outlined"
         onChange={event => {
@@ -68,4 +68,4 @@ const updateStringValue = gql`
   }
 `
 
-export default graphql(updateStringValue)(ReadWriteBoundedStringTile)
+export default graphql(updateStringValue)(ReadWriteBoundedStringCard)

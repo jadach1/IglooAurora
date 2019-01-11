@@ -1,7 +1,7 @@
 import React from "react"
 import Typography from "@material-ui/core/Typography"
 
-export default function ReadOnlyFloatTile(props) {
+export default function ReadOnlyFloatCard(props) {
   return (
     <div
       style={{

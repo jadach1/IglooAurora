@@ -60,7 +60,7 @@ class CustomizeEnvironment extends React.Component {
       variables: {
         id: this.props.environment.id,
         name: this.state.name,
-        avatar: this.selectImage(this.state.slideIndex),
+        picture: this.selectImage(this.state.slideIndex),
       },
       optimisticResponse: {
         __typename: "Mutation",
@@ -68,7 +68,7 @@ class CustomizeEnvironment extends React.Component {
           __typename: this.props.environment.__typename,
           id: this.props.environment.id,
           name: this.state.name,
-          avatar: this.selectImage(this.state.slideIndex),
+          picture: this.selectImage(this.state.slideIndex),
         },
       },
     })
@@ -76,7 +76,7 @@ class CustomizeEnvironment extends React.Component {
   }
 
   componentDidMount() {
-    switch (this.props.environment.avatar) {
+    switch (this.props.environment.picture) {
       case "DENALI":
         this.setState({ slideIndex: 0, initialSlideIndex: 0 })
         break
@@ -287,11 +287,11 @@ class CustomizeEnvironment extends React.Component {
 
 export default graphql(
   gql`
-    mutation Rename($id: ID!, $name: String, $avatar: EnvironmentPicture) {
-      environment(id: $id, name: $name, avatar: $avatar) {
+    mutation Rename($id: ID!, $name: String, $picture: EnvironmentPicture) {
+      environment(id: $id, name: $name, picture: $picture) {
         id
         name
-        avatar
+        picture
       }
     }
   `,

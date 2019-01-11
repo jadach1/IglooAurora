@@ -4,7 +4,7 @@ import gql from "graphql-tag"
 import MenuItem from "@material-ui/core/MenuItem"
 import TextField from "@material-ui/core/TextField"
 
-class ReadWriteAllowedStringTile extends Component {
+class ReadWriteAllowedStringCard extends Component {
   constructor(props){
     super(props)
   this.state = { selectedValue: props.stringValue }
@@ -78,4 +78,4 @@ const updateStringValue = gql`
   }
 `
 
-export default graphql(updateStringValue)(ReadWriteAllowedStringTile)
+export default graphql(updateStringValue)(ReadWriteAllowedStringCard)

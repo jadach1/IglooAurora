@@ -20,13 +20,13 @@ function SlideTransition(props) {
   return <Slide direction="up" {...props} />
 }
 
-class TileSize extends Component {
+class CardSize extends Component {
   state = {
-    radioValue: this.props.value.tileSize,
+    radioValue: this.props.value.cardSize,
   }
 
   render() {
-    const updateTileMutation = size => {
+    const updateCardMutation = size => {
       this.props.ChangeSize({
         variables: {
           id: this.props.value.id,
@@ -37,7 +37,7 @@ class TileSize extends Component {
           value: {
             __typename: "Value",
             id: this.props.value.id,
-            tileSize: size,
+            cardSize: size,
           },
         },
       })
@@ -59,7 +59,7 @@ class TileSize extends Component {
         <div style={{ height: "100%" }}>
           <RadioGroup
             onChange={(event, value) => {this.setState({ radioValue: value })
-              updateTileMutation(value)
+              updateCardMutation(value)
           }}
             value={this.state.radioValue}
             style={{ paddingLeft: "24px", paddingRight: "24px" }}
@@ -100,17 +100,17 @@ export default graphql(
   gql`
     mutation ChangeSize(
       $id: ID!
-      $size: TileSize
+      $size: CardSize
       $visibility: ValueVisibility
     ) {
-      value(tileSize: $size, id: $id, visibility: $visibility) {
+      value(cardSize: $size, id: $id, visibility: $visibility) {
         id
         visibility
-        tileSize
+        cardSize
       }
     }
   `,
   {
     name: "ChangeSize",
   }
-)(withMobileDialog({ breakpoint: "xs" })(TileSize))
+)(withMobileDialog({ breakpoint: "xs" })(CardSize))

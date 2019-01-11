@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { line, curveNatural, area } from "d3-shape"
 import { scaleLinear, scaleTime } from "d3-scale"
 
-class PlotTile extends Component {
+class PlotCard extends Component {
   render() {
     const threshold = this.props.threshold
 
@@ -178,4 +178,4 @@ class PlotTile extends Component {
   }
 }
 
-export default PlotTile
+export default PlotCard

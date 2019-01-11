@@ -195,7 +195,7 @@ class EnvironmentCard extends Component {
                   </Tooltip>
                 </div>
               </Toolbar>
-              {this.props.environment.avatar === "DENALI" && (
+              {this.props.environment.picture === "DENALI" && (
                 <img
                   src={denali}
                   alt="Mt. Denali"
@@ -208,7 +208,7 @@ class EnvironmentCard extends Component {
                   }}
                 />
               )}
-              {this.props.environment.avatar === "FOX" && (
+              {this.props.environment.picture === "FOX" && (
                 <img
                   src={fox}
                   alt="Fox"
@@ -221,7 +221,7 @@ class EnvironmentCard extends Component {
                   }}
                 />
               )}
-              {this.props.environment.avatar === "TREETOPS" && (
+              {this.props.environment.picture === "TREETOPS" && (
                 <img
                   src={treetops}
                   alt="treetops"
@@ -234,7 +234,7 @@ class EnvironmentCard extends Component {
                   }}
                 />
               )}
-              {this.props.environment.avatar === "PUFFIN" && (
+              {this.props.environment.picture === "PUFFIN" && (
                 <img
                   src={puffin}
                   alt="Puffin"
@@ -247,7 +247,7 @@ class EnvironmentCard extends Component {
                   }}
                 />
               )}
-              {this.props.environment.avatar === "NORTHERN_LIGHTS" && (
+              {this.props.environment.picture === "NORTHERN_LIGHTS" && (
                 <img
                   src={northernLights}
                   alt="Northern lights"
@@ -266,7 +266,7 @@ class EnvironmentCard extends Component {
         <Menu
           id="simple-menu"
           anchorEl={this.state.anchorEl}
-          open={this.state.anchorEl}
+                    open={this.state.anchorEl}
           onClose={this.handleMenuClose}
           anchorOrigin={{
             vertical: "top",
@@ -354,6 +354,19 @@ class EnvironmentCard extends Component {
                 <ListItemText inset primary="Customize" disableTypography />
               </MenuItem>
             </React.Fragment>
+          )}
+          {(this.props.environment.myRole === "OWNER" ||
+            this.props.environment.myRole === "ADMIN") && (
+              <MenuItem
+                onClick={() => {
+                  this.handleMenuClose()
+                }}
+              >
+                <ListItemIcon>
+                  <Icon>ac_unit</Icon>
+                </ListItemIcon>
+                <ListItemText inset primary="Hibernate" disableTypography />
+              </MenuItem>
           )}
           {(this.props.environment.myRole === "OWNER" ||
             this.props.environment.myRole === "ADMIN") && (

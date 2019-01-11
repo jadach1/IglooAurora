@@ -67,7 +67,7 @@ class PendingShares extends Component {
       >
         <DialogTitle disableTypography>Pending share requests</DialogTitle>
         <List style={{ width: "100%", height: "100%" }}>
-          {this.props.pendingEnvironmentShares.map(environmentShare => (
+          {this.props.pendingEnvironmentShares.map(pendingEnvironmentShare => (
             <ListItem style={{ paddingLeft: "24px" }}>
               <ListItemText
                 primary={
@@ -79,7 +79,7 @@ class PendingShares extends Component {
                         : { color: "black" }
                     }
                   >
-                    {environmentShare.environment.name}
+                    {pendingEnvironmentShare.environment.name}
                   </font>
                 }
                 secondary={
@@ -91,7 +91,7 @@ class PendingShares extends Component {
                         : { color: "#7a7a7a" }
                     }
                   >
-                    {"Sent by " + environmentShare.sender.name}
+                    {"Sent by " + pendingEnvironmentShare.sender.name}
                   </font>
                 }
                 style={{
@@ -104,7 +104,7 @@ class PendingShares extends Component {
               <ListItemSecondaryAction>
                 <IconButton
                   onClick={() =>
-                    this.AcceptPendingEnvironmentShare(environmentShare.id)
+                    this.AcceptPendingEnvironmentShare(pendingEnvironmentShare.id)
                   }
                   style={
                     typeof Storage !== "undefined" &&
@@ -117,7 +117,7 @@ class PendingShares extends Component {
                 </IconButton>
                 <IconButton
                   onClick={() =>
-                    this.DeclinePendingEnvironmentShare(environmentShare.id)
+                    this.DeclinePendingEnvironmentShare(pendingEnvironmentShare.id)
                   }
                   style={
                     typeof Storage !== "undefined" &&

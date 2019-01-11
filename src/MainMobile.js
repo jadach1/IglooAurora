@@ -3,7 +3,7 @@ import Sidebar from "./components/Sidebar"
 import SidebarHeader from "./components/SidebarHeader"
 import MainBody from "./components/MainBody"
 import "./styles/App.css"
-import "./styles/Tiles.css"
+import "./styles/Cards.css"
 import "./styles/MobileApp.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import AppBar from "@material-ui/core/AppBar"
@@ -259,7 +259,7 @@ class MainMobile extends Component {
     this.state = {
       showHidden: false,
       areSettingsOpen: false,
-      isTileFullScreen: false,
+      isCardFullScreen: false,
       drawer: false,
       slideIndex: 0,
     }
