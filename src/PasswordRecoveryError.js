@@ -53,8 +53,9 @@ export default class PasswordRecoveryError extends React.Component {
         <img
           alt="Sleeping Polar Bear"
           src={polarBear}
-          className="notSelectable"
-          style={{ maxWidth: "300px" }}
+          className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{ maxWidth: "300px" }}
         />
         <Typography
           variant={this.state.isMobile ? "h6" : "h5"}

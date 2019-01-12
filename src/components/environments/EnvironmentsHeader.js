@@ -48,8 +48,9 @@ class EnvironmentsHeader extends Component {
           <img
             src={logo}
             alt="Igloo logo"
-            className="notSelectable"
-            style={{ width: "56px", marginLeft: "16px" }}
+            className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{ width: "56px", marginLeft: "16px" }}
           />
           <div
             style={{

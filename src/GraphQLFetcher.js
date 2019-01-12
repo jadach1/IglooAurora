@@ -684,7 +684,8 @@ class GraphQLFetcher extends Component {
 
         const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
           pendingOwnerChange =>
-            pendingOwnerChange.id !== subscriptionData.data.pendingOwnerChangeDeclined
+            pendingOwnerChange.id !==
+            subscriptionData.data.pendingOwnerChangeDeclined
         )
 
         return {
@@ -711,7 +712,8 @@ class GraphQLFetcher extends Component {
 
         const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
           pendingOwnerChange =>
-            pendingOwnerChange.id !== subscriptionData.data.pendingOwnerChangeRevoked
+            pendingOwnerChange.id !==
+            subscriptionData.data.pendingOwnerChangeRevoked
         )
 
         return {

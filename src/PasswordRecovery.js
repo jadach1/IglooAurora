@@ -182,7 +182,8 @@ export default class PasswordRecovery extends Component {
         <img
           src={logo}
           alt="Igloo logo"
-          className="notSelectable"
+          className="notSelectable nonDraggable"
+          draggable="false"
           style={{
             maxWidth: "192px",
             marginBottom: "72px",

@@ -246,6 +246,10 @@ div[menutype="notifications"] {
   cursor: default;
 }
 
+.nonDraggable {
+  -webkit-user-drag: none;
+}
+
 input[type="text"]::-ms-clear {
   display: none;
 }

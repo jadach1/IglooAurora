@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
 import Icon from "@material-ui/core/Icon"
 import IconButton from "@material-ui/core/IconButton"
 import Tooltip from "@material-ui/core/Tooltip"
@@ -24,6 +23,7 @@ import northernLights from "../../styles/assets/northernLights.jpg"
 import denali from "../../styles/assets/denali.jpg"
 import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
+import { Redirect } from "react-router-dom"
 
 class EnvironmentCard extends Component {
   state = { deleteOpen: false, renameOpen: false, shareOpen: false }
@@ -77,49 +77,59 @@ class EnvironmentCard extends Component {
 
     return (
       <React.Fragment>
-        <ButtonBase
-          focusRipple
-          style={{ borderRadius: "4px", textAlign: "left" }}
+        <Paper
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? {
+                  backgroundColor: "#2f333d",
+                  width: "256px",
+                  height: "192px",
+                }
+              : {
+                  backgroundColor: "#fff",
+                  width: "256px",
+                  height: "192px",
+                }
+          }
           tabIndex="-1"
         >
-          <Paper
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    backgroundColor: "#2f333d",
-                    width: "256px",
-                    height: "192px",
+          <div style={{ padding: "8px", textAlign: "right" }}>
+            <Tooltip id="tooltip-bottom" title="More" placement="bottom">
+              <IconButton onClick={this.handleMenuOpen} style={{ zIndex: 1 }}>
+                <Icon
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? {
+                          color: "white",
+                        }
+                      : {
+                          color: "black",
+                        }
                   }
-                : {
-                    backgroundColor: "#fff",
-                    width: "256px",
-                    height: "192px",
-                  }
-            }
+                >
+                  more_vert
+                </Icon>
+              </IconButton>
+            </Tooltip>
+          </div>
+          <ButtonBase
+            focusRipple
+            style={{
+              borderRadius: "4px",
+              textAlign: "left",
+              marginTop: "-64px",
+              zIndex: 0, //makes the ButtonBase appear under the IconButton, making it clickable
+            }}
             tabIndex="-1"
+            onClick={() =>
+              this.setState({
+                redirect: "/?environment=" + this.props.environment.id,
+              })
+            }
           >
-            <Link
-              to={"/?environment=" + this.props.environment.id}
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? {
-                      color: "white",
-                      textDecoration: "none",
-                      height: "64px",
-                      borderTopLeftRadius: "4px",
-                      borderTopRightRadius: "4px",
-                    }
-                  : {
-                      color: "black",
-                      textDecoration: "none",
-                      height: "64px",
-                      borderTopLeftRadius: "4px",
-                      borderTopRightRadius: "4px",
-                    }
-              }
-            >
+            <div style={{ borderRadius: "4px" }}>
               <Toolbar
                 style={{
                   height: "64px",
@@ -169,37 +179,13 @@ class EnvironmentCard extends Component {
                     {this.props.environment.name}
                   </Typography>
                 </div>
-                <div
-                  style={{
-                    marginLeft: "-56px",
-                    borderRadius: "50%",
-                  }}
-                >
-                  <Tooltip id="tooltip-bottom" title="More" placement="bottom">
-                    <IconButton onClick={this.handleMenuOpen}>
-                      <Icon
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? {
-                                color: "white",
-                              }
-                            : {
-                                color: "black",
-                              }
-                        }
-                      >
-                        more_vert
-                      </Icon>
-                    </IconButton>
-                  </Tooltip>
-                </div>
               </Toolbar>
               {this.props.environment.picture === "DENALI" && (
                 <img
                   src={denali}
                   alt="Mt. Denali"
-                  className="notSelectable"
+                  className="notSelectable nonDraggable"
+                  draggable="false"
                   style={{
                     width: "100%",
                     height: "128px",
@@ -212,7 +198,8 @@ class EnvironmentCard extends Component {
                 <img
                   src={fox}
                   alt="Fox"
-                  className="notSelectable"
+                  className="notSelectable nonDraggable"
+                  draggable="false"
                   style={{
                     width: "100%",
                     height: "128px",
@@ -225,7 +212,8 @@ class EnvironmentCard extends Component {
                 <img
                   src={treetops}
                   alt="treetops"
-                  className="notSelectable"
+                  className="notSelectable nonDraggable"
+                  draggable="false"
                   style={{
                     width: "100%",
                     height: "128px",
@@ -238,7 +226,8 @@ class EnvironmentCard extends Component {
                 <img
                   src={puffin}
                   alt="Puffin"
-                  className="notSelectable"
+                  className="notSelectable nonDraggable"
+                  draggable="false"
                   style={{
                     width: "100%",
                     height: "128px",
@@ -251,7 +240,8 @@ class EnvironmentCard extends Component {
                 <img
                   src={northernLights}
                   alt="Northern lights"
-                  className="notSelectable"
+                  className="notSelectable nonDraggable"
+                  draggable="false"
                   style={{
                     width: "100%",
                     height: "128px",
@@ -260,13 +250,13 @@ class EnvironmentCard extends Component {
                   }}
                 />
               )}
-            </Link>
-          </Paper>
-        </ButtonBase>
+            </div>
+          </ButtonBase>
+        </Paper>
         <Menu
-          id="simple-menu"
+          id="environment-card-menu"
           anchorEl={this.state.anchorEl}
-                    open={this.state.anchorEl}
+          open={this.state.anchorEl}
           onClose={this.handleMenuClose}
           anchorOrigin={{
             vertical: "top",
@@ -357,16 +347,16 @@ class EnvironmentCard extends Component {
           )}
           {(this.props.environment.myRole === "OWNER" ||
             this.props.environment.myRole === "ADMIN") && (
-              <MenuItem
-                onClick={() => {
-                  this.handleMenuClose()
-                }}
-              >
-                <ListItemIcon>
-                  <Icon>ac_unit</Icon>
-                </ListItemIcon>
-                <ListItemText inset primary="Hibernate" disableTypography />
-              </MenuItem>
+            <MenuItem
+              onClick={() => {
+                this.handleMenuClose()
+              }}
+            >
+              <ListItemIcon>
+                <Icon>ac_unit</Icon>
+              </ListItemIcon>
+              <ListItemText inset primary="Hibernate" disableTypography />
+            </MenuItem>
           )}
           {(this.props.environment.myRole === "OWNER" ||
             this.props.environment.myRole === "ADMIN") && (
@@ -422,6 +412,7 @@ class EnvironmentCard extends Component {
             localStorage.getItem("nightMode") === "true"
           }
         />
+        {this.state.redirect && <Redirect push to={this.state.redirect} />}
       </React.Fragment>
     )
   }

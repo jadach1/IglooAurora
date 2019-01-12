@@ -161,7 +161,8 @@ class CreateEnvironment extends React.Component {
             <img
               src={denali}
               alt="Mt. Denali"
-              className="notSelectable"
+              className="notSelectable nonDraggable"
+                  draggable="false"
               style={{
                 width: "100%",
               }}
@@ -169,7 +170,8 @@ class CreateEnvironment extends React.Component {
             <img
               src={fox}
               alt="Fox"
-              className="notSelectable"
+              className="notSelectable nonDraggable"
+                  draggable="false"
               style={{
                 width: "100%",
               }}
@@ -177,24 +179,27 @@ class CreateEnvironment extends React.Component {
             <img
               src={treetops}
               alt="treetops"
-              className="notSelectable"
-              style={{
+              className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{
                 width: "100%",
               }}
             />
             <img
               src={puffin}
               alt="Puffin"
-              className="notSelectable"
-              style={{
+              className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{
                 width: "100%",
               }}
             />
             <img
               src={northernLights}
               alt="Northern lights"
-              className="notSelectable"
-              style={{
+              className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{
                 width: "100%",
               }}
             />

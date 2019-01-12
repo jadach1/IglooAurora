@@ -191,31 +191,34 @@ class CustomizeEnvironment extends React.Component {
             <img
               src={denali}
               alt="Mt. Denali"
-              className="notSelectable"
-              style={{
+              className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{
                 width: "100%",
               }}
             />
             <img
               src={fox}
               alt="Fox"
-              className="notSelectable"
-              style={{
+              className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{
                 width: "100%",
               }}
             />
             <img
               src={treetops}
               alt="treetops"
-              className="notSelectable"
-              style={{
+              className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{
                 width: "100%",
               }}
             />
             <img
               src={puffin}
               alt="Puffin"
-              className="notSelectable"
+              className="notSelectable nonDraggable"
               style={{
                 width: "100%",
               }}
@@ -223,8 +226,9 @@ class CustomizeEnvironment extends React.Component {
             <img
               src={northernLights}
               alt="Northern lights"
-              className="notSelectable"
-              style={{
+              className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{
                 width: "100%",
               }}
             />

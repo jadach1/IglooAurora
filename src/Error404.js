@@ -63,8 +63,9 @@ export default class Error404 extends Component {
           <img
             alt="Sleeping Polar Bear"
             src={polarBearWithBucket}
-            className="notSelectable"
-            style={{ maxHeight: "300px" }}
+            className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{ maxHeight: "300px" }}
           />
           <Typography
             variant={this.state.isMobile ? "h6" : "h5"}

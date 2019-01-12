@@ -170,7 +170,8 @@ class SignupMobile extends Component {
         <img
           src={logo}
           alt="Igloo logo"
-          className="notSelectable"
+          className="notSelectable nonDraggable"
+          draggable="false"
           style={
             this.state.height >= 690
               ? {

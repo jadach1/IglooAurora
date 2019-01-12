@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import CenteredSpinner from "./CenteredSpinner"
 import FilterPopover from "./FilterPopover"
-import { Link } from "react-router-dom"
 import FormControl from "@material-ui/core/FormControl"
 import Input from "@material-ui/core/Input"
 import IconButton from "@material-ui/core/IconButton"
@@ -165,94 +164,92 @@ class Sidebar extends Component {
                   -1
               )
               .map(device => (
-                <Link
-                  to={
-                    this.props.selectedDevice !== device.id
-                      ? "/?environment=" +
-                        this.props.selectedEnvironment +
-                        "&device=" +
-                        device.id
-                      : "/?environment=" + this.props.selectedEnvironment
+                <ListItem
+                  button
+                  className="notSelectable"
+                  selected={this.props.selectedDevice === device.id}
+                  key={device.id}
+                  onClick={() =>
+                    this.setState({
+                      redirect:
+                        this.props.selectedDevice !== device.id
+                          ? "/?environment=" +
+                            this.props.selectedEnvironment +
+                            "&device=" +
+                            device.id
+                          : "/?environment=" + this.props.selectedEnvironment,
+                    })
                   }
-                  style={{ textDecoration: "none", color: "black" }}
                 >
-                  <ListItem
-                    button
-                    className="notSelectable"
-                    selected={this.props.selectedDevice === device.id}
-                    key={device.id}
-                  >
-                    <ListItemText
-                      primary={
-                        <span
-                          style={
-                            typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                              ? { color: "white" }
-                              : { color: "black" }
-                          }
-                        >
-                          {device.name}
-                        </span>
-                      }
-                      style={{
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        cursor: "pointer",
-                      }}
-                      secondary={
-                        <span
-                          style={
-                            typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                              ? { color: "#c1c2c5" }
-                              : { color: "#7a7a7a" }
-                          }
-                        >
-                          {device.notifications
-                            .filter(
-                              notification => notification.visualized === false
-                            )
-                            .map(notification => notification.content)
-                            .reverse()[0]
-                            ? device.notifications
-                                .filter(
-                                  notification =>
-                                    notification.visualized === false
-                                )
-                                .map(notification => notification.content)
-                                .reverse()[0]
-                            : device.notifications
-                                .filter(
-                                  notification =>
-                                    notification.visualized === true
-                                )
-                                .map(notification => notification.content)
-                                .reverse()[0]
-                            ? "No unread notifications"
-                            : "No notifications"}
-                        </span>
-                      }
-                    />
-                    <ListItemSecondaryAction>
-                      <Badge
-                        badgeContent={
-                          device.notificationCount > 99
-                            ? "99+"
-                            : device.notificationCount
+                  <ListItemText
+                    primary={
+                      <span
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
                         }
-                        invisible={!device.notificationCount}
-                        color="primary"
-                        className="notSelectable"
-                        style={{ marginRight: "24px", cursor: "pointer" }}
-                        onClick={() => {
-                          this.props.changeDrawerState()
-                        }}
-                      />
-                    </ListItemSecondaryAction>
-                  </ListItem>
-                </Link>
+                      >
+                        {device.name}
+                      </span>
+                    }
+                    style={{
+                      whiteSpace: "nowrap",
+                      overflow: "hidden",
+                      textOverflow: "ellipsis",
+                      cursor: "pointer",
+                    }}
+                    secondary={
+                      <span
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "#c1c2c5" }
+                            : { color: "#7a7a7a" }
+                        }
+                      >
+                        {device.notifications
+                          .filter(
+                            notification => notification.visualized === false
+                          )
+                          .map(notification => notification.content)
+                          .reverse()[0]
+                          ? device.notifications
+                              .filter(
+                                notification =>
+                                  notification.visualized === false
+                              )
+                              .map(notification => notification.content)
+                              .reverse()[0]
+                          : device.notifications
+                              .filter(
+                                notification => notification.visualized === true
+                              )
+                              .map(notification => notification.content)
+                              .reverse()[0]
+                          ? "No unread notifications"
+                          : "No notifications"}
+                      </span>
+                    }
+                  />
+                  <ListItemSecondaryAction>
+                    <Badge
+                      badgeContent={
+                        device.notificationCount > 99
+                          ? "99+"
+                          : device.notificationCount
+                      }
+                      invisible={!device.notificationCount}
+                      color="primary"
+                      className="notSelectable"
+                      style={{ marginRight: "24px", cursor: "pointer" }}
+                      onClick={() => {
+                        this.props.changeDrawerState()
+                      }}
+                    />
+                  </ListItemSecondaryAction>
+                </ListItem>
               ))}
           </List>
           <Zoom in={environment}>
@@ -445,6 +442,7 @@ class Sidebar extends Component {
           </Tooltip>
         </div>
         {sidebarContent}
+        {this.state.redirect && <Redirect push to={this.state.redirect} />}
       </React.Fragment>
     )
   }

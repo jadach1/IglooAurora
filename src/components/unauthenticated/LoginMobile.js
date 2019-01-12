@@ -154,8 +154,9 @@ export default class LoginMobile extends Component {
           <img
             src={logo}
             alt="Igloo logo"
-            className="notSelectable"
-            style={
+            className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={
               this.state.height >= 690
                 ? {
                     width: "192px",

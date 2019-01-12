@@ -56,8 +56,9 @@ export default class OfflineScreen extends React.Component {
           <img
             alt="Sleeping Polar Bear"
             src={polarBear}
-            className="notSelectable"
-            style={{ margin: "64px 0" }}
+            className="notSelectable nonDraggable"
+                  draggable="false"
+                  style={{ margin: "64px 0" }}
           />
           <Typography
             variant={this.state.isMobile ? "h6" : "h5"}

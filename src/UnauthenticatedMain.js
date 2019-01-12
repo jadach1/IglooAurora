@@ -56,7 +56,8 @@ export default class UnAuthenticatedMain extends Component {
                 <img
                   src={logo}
                   alt="Igloo logo"
-                  className="notSelectable"
+                  className="notSelectable nonDraggable"
+                  draggable="false"
                   style={{ width: "300px", marginBottom: "77px" }}
                   onClick={() =>
                     this.setState(oldState => ({
@@ -67,7 +68,8 @@ export default class UnAuthenticatedMain extends Component {
                 <img
                   src={iglooTitle}
                   alt="Igloo Aurora"
-                  className="notSelectable"
+                  className="notSelectable nonDraggable"
+                  draggable="false"
                   style={{ width: "300px" }}
                 />
               </div>
