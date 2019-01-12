@@ -17,7 +17,7 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
-import isUrl from "nice-is-url"
+import isUrl from "is-url"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -97,6 +97,8 @@ class ChangeServer extends React.Component {
   }
 
   render() {
+    console.log( this.state.url,   isUrl(this.state.url))
+
     const dialogList =
       typeof Storage !== "undefined" &&
       localStorage.getItem("serverList") &&
