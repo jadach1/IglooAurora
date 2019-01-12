@@ -97,8 +97,6 @@ class ChangeServer extends React.Component {
   }
 
   render() {
-    console.log( this.state.url,   isUrl(this.state.url))
-
     const dialogList =
       typeof Storage !== "undefined" &&
       localStorage.getItem("serverList") &&

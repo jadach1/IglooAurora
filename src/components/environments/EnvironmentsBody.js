@@ -109,8 +109,8 @@ export default class EnvironmentsBody extends Component {
                 >
                   <div
                     style={{
-                      paddingTop: "50px",
-                      paddingBottom: "50px",
+                      paddingTop: "47px",
+                      paddingBottom: "47px",
                     }}
                   >
                     <Icon style={{ fontSize: "64px" }}>people</Icon>
@@ -137,7 +137,11 @@ export default class EnvironmentsBody extends Component {
             </Grid>
           )}
           <Grid key="create" item>
-            <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
+            <ButtonBase
+              focusRipple
+              style={{ borderRadius: "4px" }}
+              onClick={() => this.setState({ createOpen: true })}
+            >
               <Paper
                 style={
                   typeof Storage !== "undefined" &&
@@ -149,6 +153,7 @@ export default class EnvironmentsBody extends Component {
                         cursor: "pointer",
                         textAlign: "center",
                         color: "white",
+                        borderRadius: "4px",
                       }
                     : {
                         backgroundColor: "#fff",
@@ -156,11 +161,17 @@ export default class EnvironmentsBody extends Component {
                         height: "192px",
                         cursor: "pointer",
                         textAlign: "center",
+                        borderRadius: "4px",
                       }
                 }
-                onClick={() => this.setState({ createOpen: true })}
               >
-                <div style={{ paddingTop: "50px", paddingBottom: "50px" }}>
+                <div
+                  style={{
+                    paddingTop: "47px",
+                    paddingBottom: "47px",
+                    borderRadius: "4px",
+                  }}
+                >
                   <Icon style={{ fontSize: "64px" }}>add</Icon>
                   <br />
                   <Typography
@@ -239,8 +250,8 @@ export default class EnvironmentsBody extends Component {
                 >
                   <div
                     style={{
-                      paddingTop: "50px",
-                      paddingBottom: "50px",
+                      paddingTop: "47px",
+                      paddingBottom: "47px",
                     }}
                   >
                     <Icon
@@ -433,7 +444,7 @@ export default class EnvironmentsBody extends Component {
                           width: "calc(100% - 16px)",
                           marginLeft: "8px",
                           marginRight: "8px",
-                          marginBottom:"8px"
+                          marginBottom: "8px",
                         }}
                       >
                         {yourEnvironmentsList}
@@ -461,7 +472,7 @@ export default class EnvironmentsBody extends Component {
                           width: "calc(100% - 16px)",
                           marginLeft: "8px",
                           marginRight: "8px",
-                          marginBottom:"8px"
+                          marginBottom: "8px",
                         }}
                       >
                         {sharedEnvironmentsList}
@@ -509,7 +520,7 @@ export default class EnvironmentsBody extends Component {
                         width: "calc(100% - 16px)",
                         marginLeft: "8px",
                         marginRight: "8px",
-                        marginBottom:"8px"
+                        marginBottom: "8px",
                       }}
                     >
                       {yourEnvironmentsList}

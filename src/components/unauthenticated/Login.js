@@ -135,7 +135,7 @@ class Login extends Component {
               <Grid item style={{ width: "calc(100% - 40px)" }}>
                 <FormControl style={{ width: "100%" }}>
                   <Input
-                    id="adornment-email-login"
+                    id="desktop-login-email"
                     placeholder="Email"
                     value={this.props.email}
                     style={{ color: "black" }}

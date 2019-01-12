@@ -258,13 +258,22 @@ class Sidebar extends Component {
               color="secondary"
               style={
                 this.props.isMobile
-                  ? {
-                      position: "absolute",
-                      right: "20px",
-                      bottom: "20px",
-                      transition:
-                        "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
-                    }
+                  ? this.props.snackbarOpen
+                    ? {
+                        position: "absolute",
+                        right: "20px",
+                        bottom: "20px",
+                        transform: "translate3d(0, -64px, 0)",
+                        transition:
+                          "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                      }
+                    : {
+                        position: "absolute",
+                        right: "20px",
+                        bottom: "20px",
+                        transition:
+                          "all 450ms cubic-bezier(0.23, 1, 0.32, 1) 0ms, left 0s linear, right 0s linear, top 0s linear, bottom 0s linear",
+                      }
                   : this.state.lessThan1080
                   ? {
                       position: "absolute",

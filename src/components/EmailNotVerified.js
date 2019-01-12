@@ -91,16 +91,7 @@ const styles2 = theme => ({
 
 class CustomizedSnackbars extends React.Component {
   state = {
-    open: false,
     dialogOpen: false,
-  }
-
-  componentDidMount() {
-    this.setState({ open: true })
-  }
-
-  closeSnackbar = () => {
-    this.setState({ open: false })
   }
 
   openDialog = () => {
@@ -115,7 +106,7 @@ class CustomizedSnackbars extends React.Component {
             vertical: "bottom",
             horizontal: "right",
           }}
-          open={this.state.open}
+          open={this.props.open}
           style={
             this.props.mobile
               ? { zIndex: "1" }
@@ -134,7 +125,7 @@ class CustomizedSnackbars extends React.Component {
         >
           <MySnackbarContentWrapper
             variant="warning"
-            closeSnackbar={this.closeSnackbar}
+            closeSnackbar={this.props.close}
             openDialog={this.openDialog}
             mobile={this.props.mobile}
           />

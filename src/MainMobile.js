@@ -447,6 +447,7 @@ class MainMobile extends Component {
                     }))
                   }
                   environments={this.props.environments}
+                  snackbarOpen={this.props.snackbarOpen}
                 />
               </AppBar>
               <div
@@ -471,6 +472,7 @@ class MainMobile extends Component {
                   selectedEnvironment={this.props.environmentId}
                   searchDevices={this.props.searchDevices}
                   searchText={this.props.devicesSearchText}
+                  snackbarOpen={this.props.snackbarOpen}
                 />
               </div>
             </React.Fragment>

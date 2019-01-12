@@ -858,6 +858,7 @@ class GraphQLFetcher extends Component {
     environmentsSearchText: "",
     devicesSearchText: "",
     areSettingsOpen: false,
+    snackbarOpen: true,
   }
 
   selectDevice = id => this.setState({ selectedDevice: id })
@@ -938,9 +939,11 @@ class GraphQLFetcher extends Component {
                 forceUpdate={this.props.forceUpdate}
                 client={this.props.client}
               />
-              {user && !emailIsVerified && (
-                <EmailNotVerified mobile={this.props.isMobile} />
-              )}
+              <EmailNotVerified
+                mobile={this.props.isMobile}
+                open={user && !emailIsVerified && this.state.snackbarOpen}
+                close={() => this.setState({ snackbarOpen: false })}
+              />
               <GenericDialog />
             </React.Fragment>
           )
@@ -977,9 +980,11 @@ class GraphQLFetcher extends Component {
                 forceUpdate={this.props.forceUpdate}
                 client={this.props.client}
               />
-              {user && !emailIsVerified && (
-                <EmailNotVerified mobile={this.props.isMobile} />
-              )}
+              <EmailNotVerified
+                mobile={this.props.isMobile}
+                open={user && !emailIsVerified && this.state.snackbarOpen}
+                close={() => this.setState({ snackbarOpen: false })}
+              />
               <GenericDialog />
             </React.Fragment>
           )
@@ -1005,9 +1010,11 @@ class GraphQLFetcher extends Component {
               client={this.props.client}
               mobile={this.props.isMobile}
             />
-            {user && !emailIsVerified && (
-              <EmailNotVerified mobile={this.props.isMobile} />
-            )}
+            <EmailNotVerified
+              mobile={this.props.isMobile}
+              open={user && !emailIsVerified && this.state.snackbarOpen}
+              close={() => this.setState({ snackbarOpen: false })}
+            />
             <GenericDialog />
           </React.Fragment>
         )
@@ -1057,10 +1064,15 @@ class GraphQLFetcher extends Component {
                 }
                 forceUpdate={this.props.forceUpdate}
                 client={this.props.client}
+                snackbarOpen={
+                  user && !emailIsVerified && this.state.snackbarOpen
+                }
               />
-              {user && !emailIsVerified && (
-                <EmailNotVerified mobile={this.props.isMobile} />
-              )}
+              <EmailNotVerified
+                mobile={this.props.isMobile}
+                open={user && !emailIsVerified && this.state.snackbarOpen}
+                close={() => this.setState({ snackbarOpen: false })}
+              />
               <GenericDialog />
             </React.Fragment>
           )
@@ -1096,10 +1108,15 @@ class GraphQLFetcher extends Component {
                 devicesSearchText={this.state.devicesSearchText}
                 forceUpdate={this.props.forceUpdate}
                 client={this.props.client}
+                snackbarOpen={
+                  user && !emailIsVerified && this.state.snackbarOpen
+                }
               />
-              {user && !emailIsVerified && (
-                <EmailNotVerified mobile={this.props.isMobile} />
-              )}
+              <EmailNotVerified
+                mobile={this.props.isMobile}
+                open={user && !emailIsVerified && this.state.snackbarOpen}
+                close={() => this.setState({ snackbarOpen: false })}
+              />
               <GenericDialog />
             </React.Fragment>
           )
@@ -1125,9 +1142,11 @@ class GraphQLFetcher extends Component {
               client={this.props.client}
               mobile={this.props.isMobile}
             />
-            {user && !emailIsVerified && (
-              <EmailNotVerified mobile={this.props.isMobile} />
-            )}
+            <EmailNotVerified
+              mobile={this.props.isMobile}
+              open={user && !emailIsVerified && this.state.snackbarOpen}
+              close={() => this.setState({ snackbarOpen: false })}
+            />
             <GenericDialog />
           </React.Fragment>
         )

@@ -122,14 +122,13 @@ class EnvironmentCard extends Component {
               marginTop: "-64px",
               zIndex: 0, //makes the ButtonBase appear under the IconButton, making it clickable
             }}
-            tabIndex="-1"
             onClick={() =>
               this.setState({
                 redirect: "/?environment=" + this.props.environment.id,
               })
             }
           >
-            <div style={{ borderRadius: "4px" }}>
+            <div style={{ height: "192px", borderRadius: "4px" }}>
               <Toolbar
                 style={{
                   height: "64px",
