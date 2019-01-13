@@ -14,6 +14,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import CenteredSpinner from "../CenteredSpinner"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -53,9 +54,83 @@ class PendingOwnerChanges extends Component {
     })
 
   render() {
+    let content = ""
+
+    if (this.props.ownerChangesData.error) content = "Unexpected error"
+
+    if (this.props.ownerChangesData.loading) content = <CenteredSpinner />
+
+    if (this.props.ownerChangesData.user)
+      content = (
+        <List style={{ width: "100%", height: "100%" }}>
+          {this.props.ownerChangesData.user.pendingOwnerChanges.map(
+            pendingOwnerChange => (
+              <ListItem style={{ paddingLeft: "24px" }}>
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      {pendingOwnerChange.environment.name}
+                    </font>
+                  }
+                  secondary={
+                    <font
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "#c1c2c5" }
+                          : { color: "#7a7a7a" }
+                      }
+                    >
+                      {"Sent by " + pendingOwnerChange.sender.name}
+                    </font>
+                  }
+                  style={{
+                    whiteSpace: "nowrap",
+                    overflow: "hidden",
+                    textOverflow: "ellipsis",
+                    marginRight: "72px",
+                  }}
+                />
+                <ListItemSecondaryAction>
+                  <IconButton
+                    onClick={() => this.AcceptOwnership(pendingOwnerChange.id)}
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "#c1c2c5" }
+                        : { color: "#7a7a7a" }
+                    }
+                  >
+                    <Icon>done</Icon>
+                  </IconButton>
+                  <IconButton
+                    onClick={() => this.DeclineOwnership(pendingOwnerChange.id)}
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "#c1c2c5" }
+                        : { color: "#7a7a7a" }
+                    }
+                  >
+                    <Icon>close</Icon>
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            )
+          )}
+        </List>
+      )
+
     return (
       <Dialog
-        open={this.props.open && this.props.pendingOwnerChanges.length}
+        open={this.props.open}
         onClose={this.props.close}
         fullScreen={this.props.fullScreen}
         disableBackdropClick={this.props.fullScreen}
@@ -66,68 +141,7 @@ class PendingOwnerChanges extends Component {
         maxWidth="xs"
       >
         <DialogTitle disableTypography>Pending transfer requests</DialogTitle>
-        <List style={{ width: "100%", height: "100%" }}>
-          {this.props.pendingOwnerChanges.map(pendingOwnerChange => (
-            <ListItem style={{ paddingLeft: "24px" }}>
-              <ListItemText
-                primary={
-                  <font
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    {pendingOwnerChange.environment.name}
-                  </font>
-                }
-                secondary={
-                  <font
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "#c1c2c5" }
-                        : { color: "#7a7a7a" }
-                    }
-                  >
-                    {"Sent by " + pendingOwnerChange.sender.name}
-                  </font>
-                }
-                style={{
-                  whiteSpace: "nowrap",
-                  overflow: "hidden",
-                  textOverflow: "ellipsis",
-                  marginRight: "72px",
-                }}
-              />
-              <ListItemSecondaryAction>
-                <IconButton
-                  onClick={() => this.AcceptOwnership(pendingOwnerChange.id)}
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "#c1c2c5" }
-                      : { color: "#7a7a7a" }
-                  }
-                >
-                  <Icon>done</Icon>
-                </IconButton>
-                <IconButton
-                  onClick={() => this.DeclineOwnership(pendingOwnerChange.id)}
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "#c1c2c5" }
-                      : { color: "#7a7a7a" }
-                  }
-                >
-                  <Icon>close</Icon>
-                </IconButton>
-              </ListItemSecondaryAction>
-            </ListItem>
-          ))}
-        </List>
+        {content}
         <DialogActions>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
@@ -157,5 +171,35 @@ export default graphql(
     {
       name: "DeclinePendingOwnerChange",
     }
-  )(withMobileDialog({ breakpoint: "xs" })(PendingOwnerChanges))
+  )(
+    withMobileDialog({ breakpoint: "xs" })(
+      graphql(
+        gql`
+          query {
+            user {
+              id
+              pendingOwnerChanges {
+                id
+                receiver {
+                  id
+                  profileIconColor
+                  name
+                  email
+                }
+                sender {
+                  id
+                  name
+                }
+                environment {
+                  id
+                  name
+                }
+              }
+            }
+          }
+        `,
+        { name: "ownerChangesData" }
+      )(PendingOwnerChanges)
+    )
+  )
 )

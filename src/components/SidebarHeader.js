@@ -4,7 +4,7 @@ import Icon from "@material-ui/core/Icon"
 import Typography from "@material-ui/core/Typography"
 import Tooltip from "@material-ui/core/Tooltip"
 import IconButton from "@material-ui/core/IconButton"
-import { Redirect } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 
 class SidebarHeader extends Component {
   hot_keys = {
@@ -58,16 +58,24 @@ class SidebarHeader extends Component {
           }
           placement="bottom"
         >
-          <IconButton
+          <Link
+            to="/"
             style={{
               marginLeft: "8px",
+              textDecoration: "none",
               color: "white",
             }}
-            onClick={() => this.setState({ goToEnvironments: true })}
           >
-            <Icon>arrow_back
-</Icon>
-          </IconButton>
+            <IconButton
+              style={{
+                color: "white",
+              }}
+              onClick={() => this.setState({ goToEnvironments: true })}
+              tabIndex="-1"
+            >
+              <Icon>arrow_back</Icon>
+            </IconButton>
+          </Link>
         </Tooltip>
         <Typography
           variant="h5"

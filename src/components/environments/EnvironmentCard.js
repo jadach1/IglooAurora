@@ -23,7 +23,7 @@ import northernLights from "../../styles/assets/northernLights.jpg"
 import denali from "../../styles/assets/denali.jpg"
 import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
-import { Redirect } from "react-router-dom"
+import { Link } from "react-router-dom"
 
 class EnvironmentCard extends Component {
   state = { deleteOpen: false, renameOpen: false, shareOpen: false }
@@ -122,13 +122,17 @@ class EnvironmentCard extends Component {
               marginTop: "-64px",
               zIndex: 0, //makes the ButtonBase appear under the IconButton, making it clickable
             }}
-            onClick={() =>
-              this.setState({
-                redirect: "/?environment=" + this.props.environment.id,
-              })
-            }
+            tabIndex="-1"
           >
-            <div style={{ height: "192px", borderRadius: "4px" }}>
+            <Link
+              to={"/?environment=" + this.props.environment.id}
+              style={{
+                height: "192px",
+                borderRadius: "4px",
+                textDecoration: "none",
+                color: "black",
+              }}
+            >
               <Toolbar
                 style={{
                   height: "64px",
@@ -249,7 +253,7 @@ class EnvironmentCard extends Component {
                   }}
                 />
               )}
-            </div>
+            </Link>
           </ButtonBase>
         </Paper>
         <Menu
@@ -411,7 +415,6 @@ class EnvironmentCard extends Component {
             localStorage.getItem("nightMode") === "true"
           }
         />
-        {this.state.redirect && <Redirect push to={this.state.redirect} />}
       </React.Fragment>
     )
   }

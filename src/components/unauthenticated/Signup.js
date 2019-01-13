@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import { Redirect } from "react-router-dom"
+import { Link } from "react-router-dom"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
 
@@ -473,11 +473,18 @@ class Signup extends Component {
                 }}
                 onClick={() => this.setState({ redirect: true })}
               >
-                Log in!
+                <Link
+                  to="/login"
+                  style={{
+                    color: "#0083ff",
+                    textDecoration: "none",
+                  }}
+                >
+                  Log in!
+                </Link>
               </font>
             </Typography>
           </div>
-          {this.state.redirect && <Redirect push to="/login" />}
         </div>
       </React.Fragment>
     )

@@ -14,9 +14,9 @@ import FormHelperText from "@material-ui/core/FormHelperText"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 import logo from "../../styles/assets/logo.svg"
-import { Redirect } from "react-router-dom"
 import CenteredSpinner from "../CenteredSpinner"
 import ToggleIcon from "material-ui-toggle-icon"
+import { Link } from "react-router-dom"
 
 export default class LoginMobile extends Component {
   constructor() {
@@ -155,8 +155,8 @@ export default class LoginMobile extends Component {
             src={logo}
             alt="Igloo logo"
             className="notSelectable nonDraggable"
-                  draggable="false"
-                  style={
+            draggable="false"
+            style={
               this.state.height >= 690
                 ? {
                     width: "192px",
@@ -412,7 +412,12 @@ export default class LoginMobile extends Component {
               !this.state.showLoading && this.setState({ redirect: true })
             }
           >
-            No account yet? Sign up!
+            <Link
+              to="/signup"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              No account yet? Sign up!
+            </Link>
           </Typography>
         </div>
         <ForgotPassword
@@ -421,7 +426,6 @@ export default class LoginMobile extends Component {
           close={() => this.setState({ forgotPasswordOpen: false })}
           email={this.props.email}
         />
-        {this.state.redirect && <Redirect push to="/signup" />}
       </React.Fragment>
     )
   }

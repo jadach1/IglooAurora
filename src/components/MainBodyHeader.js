@@ -3,7 +3,6 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import NotificationsDrawer from "./NotificationsDrawer"
 import DeviceInfo from "./devices/DeviceInfo"
-// import { CopyToClipenvironment } from "react-copy-to-clipenvironment"
 import Typography from "@material-ui/core/Typography"
 import Tooltip from "@material-ui/core/Tooltip"
 import Icon from "@material-ui/core/Icon"
@@ -16,9 +15,17 @@ import Menu from "@material-ui/core/Menu"
 import DeleteDevice from "./devices/DeleteDevice"
 import RenameDevice from "./devices/RenameDevice"
 import ChangeEnvironment from "./devices/ChangeEnvironment"
-import Redirect from "react-router-dom/Redirect"
+import { Link, Redirect } from "react-router-dom"
+import { hotkeys } from "react-keyboard-shortcuts"
 
 class MainBodyHeader extends Component {
+  hot_keys = {
+    "alt+backspace": {
+      priority: 1,
+      handler: event => this.setState({ goToDevices: true }),
+    },
+  }
+
   state = {
     open: false,
     infoOpen: false,
@@ -91,29 +98,37 @@ class MainBodyHeader extends Component {
           }
         >
           {this.props.isMobile && (
-            <Tooltip
-              id="tooltip-bottom"
-              title="Devices list"
-              placement="bottom"
-            >
-              <IconButton
-                style={
+            <Tooltip id="tooltip-bottom" title="Devices" placement="bottom">
+              <Link
+                to={
                   this.props.environmentData.environment
-                    ? {
-                        color: "white",
-                        margin: "0 8px",
-                      }
-                    : {
-                        color: "white",
-                        margin: "0 8px",
-                        opacity: 0.5,
-                      }
+                    ? "/?environment=" +
+                      this.props.environmentData.environment.id
+                    : ""
                 }
-                disabled={!this.props.environmentData.environment}
-                onClick={() => this.setState({ goToDevices: true })}
+                style={{
+                  textDecoration: "none",
+                  color: "white",
+                  margin: "0 8px",
+                }}
               >
-                <Icon>arrow_back</Icon>
-              </IconButton>
+                <IconButton
+                  style={
+                    this.props.environmentData.environment
+                      ? {
+                          color: "white",
+                        }
+                      : {
+                          color: "white",
+                          opacity: 0.5,
+                        }
+                  }
+                  disabled={!this.props.environmentData.environment}
+                  tabIndex="-1"
+                >
+                  <Icon>arrow_back</Icon>
+                </IconButton>
+              </Link>
             </Tooltip>
           )}
           <Typography
@@ -327,86 +342,6 @@ class MainBodyHeader extends Component {
               <ListItemText inset primary="Information" disableTypography />
             </MenuItem>
             <Divider />
-            {/* <MenuItem
-                    className="notSelectable"
-                    style={
-                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    <ListItemIcon>
-                      <Icon
-                        style={
-                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        place
-                      </Icon>
-                    </ListItemIcon>
-                    <ListItemText inset primary="See on the map" />
-                  </MenuItem> */}
-            {/* {navigator.share ? (
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                    onClick={() => {
-                      if (navigator.share) {
-                        navigator.share({
-                          title: device.name + " on Igloo Aurora",
-                          url: window.location.href,
-                        })
-                      }
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Icon
-                        style={
-                          typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        share
-                      </Icon>
-                    </ListItemIcon>
-                    <ListItemText inset primary="Share" />
-                  </MenuItem>
-                ) : (
-                  <CopyToClipenvironment text={window.location.href}>
-                    <MenuItem
-                      className="notSelectable"
-                      style={
-                        typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                      onClick={() => {
-                        this.setState({ anchorEl: null })
-                        this.props.openSnackBar()
-                      }}
-                    >
-                      <ListItemIcon>
-                        <Icon
-                          style={
-                            typeof Storage !== "undefined" &&             localStorage.getItem("nightMode") === "true"
-                              ? { color: "white" }
-                              : { color: "black" }
-                          }
-                        >
-                          link
-                        </Icon>
-                      </ListItemIcon>
-                      <ListItemText inset primary="Get Link" />
-                    </MenuItem>
-                  </CopyToClipenvironment>
-                        )} */}
             {(device && device.muted) ||
             ((device ||
               (this.props.environmentData.environment &&
@@ -462,72 +397,89 @@ class MainBodyHeader extends Component {
                 <ListItemText inset primary="Mute" disableTypography />
               </MenuItem>
             )}
-                  {device &&  device.myRole !== "SPECTATOR" &&   <React.Fragment>   <Divider />  <MenuItem
-              className="notSelectable"
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white" }
-                  : { color: "black" }
-              }
-              onClick={() => {
-                this.setState({ renameOpen: true })
-                this.handleMenuClose()
-              }}
-            >
-              <ListItemIcon>
-                <Icon>mode_edit</Icon>
-              </ListItemIcon>
-              <ListItemText inset primary="Rename" disableTypography />
-            </MenuItem></React.Fragment> }
-          { (device && (device.myRole === "OWNER" ||
-            device.myRole === "ADMIN")) && <React.Fragment>  <MenuItem
-              className="notSelectable"
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white" }
-                  : { color: "black" }
-              }
-              onClick={() => {
-                this.setState({ changeEnvironmentOpen: true })
-                this.handleMenuClose()
-              }}
-              disabled={
-                !(this.props.environments && this.props.environments.length > 1)
-              }
-            >
-              <ListItemIcon>
-                <Icon>swap_horiz</Icon>
-              </ListItemIcon>
-              <ListItemText inset primary="Move" disableTypography />
-            </MenuItem>
-           <MenuItem
-              className="notSelectable"
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white" }
-                  : { color: "black" }
-              }
-              onClick={() => {
-                this.setState({ deleteOpen: true })
-                this.handleMenuClose()
-              }}
-            >
-              <ListItemIcon>
-                <Icon style={{ color: "#f44336" }}>delete</Icon>
-              </ListItemIcon>
-              <ListItemText inset>
-                <span style={{ color: "#f44336" }}>Delete</span>
-              </ListItemText>
-            </MenuItem></React.Fragment>}
+            {device && device.myRole !== "SPECTATOR" && (
+              <React.Fragment>
+                <Divider />
+                <MenuItem
+                  className="notSelectable"
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                  onClick={() => {
+                    this.setState({ renameOpen: true })
+                    this.handleMenuClose()
+                  }}
+                >
+                  <ListItemIcon>
+                    <Icon>mode_edit</Icon>
+                  </ListItemIcon>
+                  <ListItemText inset primary="Rename" disableTypography />
+                </MenuItem>
+              </React.Fragment>
+            )}
+            {device &&
+              (device.myRole === "OWNER" || device.myRole === "ADMIN") && (
+                <React.Fragment>
+                  {" "}
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      this.setState({ changeEnvironmentOpen: true })
+                      this.handleMenuClose()
+                    }}
+                    disabled={
+                      !(
+                        this.props.environments &&
+                        this.props.environments.length > 1
+                      )
+                    }
+                  >
+                    <ListItemIcon>
+                      <Icon>swap_horiz</Icon>
+                    </ListItemIcon>
+                    <ListItemText inset primary="Move" disableTypography />
+                  </MenuItem>
+                  <MenuItem
+                    className="notSelectable"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                    onClick={() => {
+                      this.setState({ deleteOpen: true })
+                      this.handleMenuClose()
+                    }}
+                  >
+                    <ListItemIcon>
+                      <Icon style={{ color: "#f44336" }}>delete</Icon>
+                    </ListItemIcon>
+                    <ListItemText inset>
+                      <span style={{ color: "#f44336" }}>Delete</span>
+                    </ListItemText>
+                  </MenuItem>
+                </React.Fragment>
+              )}
           </Menu>
         )}
         {this.state.goToDevices && (
           <Redirect
             push
-            to={"/?environment=" + this.props.environmentData.environment.id}
+            to={
+              this.props.environmentData.environment
+                ? "/?environment=" + this.props.environmentData.environment.id
+                : ""
+            }
           />
         )}
       </React.Fragment>
@@ -578,5 +530,5 @@ export default graphql(
         },
       }),
     }
-  )(MainBodyHeader)
+  )(hotkeys(MainBodyHeader))
 )

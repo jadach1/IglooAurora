@@ -80,7 +80,7 @@ export default class EnvironmentsBody extends Component {
                 />
               </Grid>
             ))}
-          {user.pendingOwnerChanges[0] && (
+          {user.pendingOwnerChangeCount && (
             <Grid key="pendingEnvironmentShares" item>
               <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
                 <Paper
@@ -124,10 +124,10 @@ export default class EnvironmentsBody extends Component {
                           : {}
                       }
                     >
-                      {user.pendingOwnerChanges.length > 99
+                      {user.pendingOwnerChangeCount > 99
                         ? "99+ transfer requests"
-                        : user.pendingOwnerChanges.length +
-                          (user.pendingOwnerChanges.length === 1
+                        : user.pendingOwnerChangeCount +
+                          (user.pendingOwnerChangeCount === 1
                             ? " transfer request"
                             : " transfer requests")}
                     </Typography>
@@ -223,7 +223,7 @@ export default class EnvironmentsBody extends Component {
                 />
               </Grid>
             ))}
-          {user.pendingEnvironmentShares[0] && (
+          {user.pendingEnvironmentShareCount && (
             <Grid key="pendingEnvironmentShares" item>
               <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
                 <Paper
@@ -273,10 +273,10 @@ export default class EnvironmentsBody extends Component {
                           : {}
                       }
                     >
-                      {user.pendingEnvironmentShares.length > 99
+                      {user.pendingEnvironmentShareCount > 99
                         ? "99+ sharing requests"
-                        : user.pendingEnvironmentShares.length +
-                          (user.pendingEnvironmentShares.length === 1
+                        : user.pendingEnvironmentShareCount +
+                          (user.pendingEnvironmentShareCount === 1
                             ? " sharing request"
                             : " sharing requests")}
                     </Typography>
@@ -784,20 +784,14 @@ export default class EnvironmentsBody extends Component {
           open={this.state.createOpen}
           close={() => this.setState({ createOpen: false })}
         />
-        {user && user.pendingEnvironmentShares && (
-          <PendingShares
-            open={this.state.pendingSharesOpen}
-            close={() => this.setState({ pendingSharesOpen: false })}
-            pendingEnvironmentShares={user.pendingEnvironmentShares}
-          />
-        )}
-        {user && user.pendingOwnerChanges && (
-          <PendingOwnerChanges
-            open={this.state.pendingOwnerChangesOpen}
-            close={() => this.setState({ pendingOwnerChangesOpen: false })}
-            pendingOwnerChanges={user.pendingOwnerChanges}
-          />
-        )}
+        <PendingShares
+          open={this.state.pendingSharesOpen}
+          close={() => this.setState({ pendingSharesOpen: false })}
+        />
+        <PendingOwnerChanges
+          open={this.state.pendingOwnerChangesOpen}
+          close={() => this.setState({ pendingOwnerChangesOpen: false })}
+        />
       </React.Fragment>
     )
   }

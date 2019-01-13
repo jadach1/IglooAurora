@@ -13,9 +13,9 @@ import Icon from "@material-ui/core/Icon"
 import IconButton from "@material-ui/core/IconButton"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
-import { Redirect } from "react-router-dom"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
+import { Link } from "react-router-dom"
 
 class Login extends Component {
   constructor() {
@@ -347,12 +347,11 @@ class Login extends Component {
               <font
                 style={{
                   marginTop: "8px",
-                  color: "#0083ff",
                   cursor: "pointer",
                 }}
-                onClick={() => this.setState({ redirect: true })}
               >
-                Sign up!
+                <Link to="/signup" style={{
+                  color: "#0083ff",textDecoration:"none"}}>Sign up!</Link>
               </font>
             </Typography>
           </div>
@@ -363,7 +362,6 @@ class Login extends Component {
           close={() => this.setState({ forgotPasswordOpen: false })}
           email={this.props.email}
         />
-        {this.state.redirect && <Redirect push to="/signup" />}
       </React.Fragment>
     )
   }

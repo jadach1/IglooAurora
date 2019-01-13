@@ -15,6 +15,7 @@ import logo from "../../styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
+import { Link } from "react-router-dom"
 
 class SignupMobile extends Component {
   constructor() {
@@ -439,7 +440,9 @@ class SignupMobile extends Component {
             !this.state.showLoading && this.setState({ redirect: true })
           }
         >
-          Already have an account? Log in
+          <Link style={{ textDecoration: "none", color: "white" }}>
+            Already have an account? Log in
+          </Link>
         </Typography>
         {this.state.redirect && <Redirect push to="/login" />}
       </div>

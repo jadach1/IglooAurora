@@ -1177,40 +1177,8 @@ export default graphql(
         name
         profileIconColor
         email
-        pendingEnvironmentShares {
-          id
-          receiver {
-            id
-            profileIconColor
-            name
-            email
-          }
-          sender {
-            id
-            name
-          }
-          environment {
-            id
-            name
-          }
-        }
-        pendingOwnerChanges {
-          id
-          receiver {
-            id
-            profileIconColor
-            name
-            email
-          }
-          sender {
-            id
-            name
-          }
-          environment {
-            id
-            name
-          }
-        }
+        pendingEnvironmentShareCount
+        pendingOwnerChangeCount
         settings {
           timeFormat
           dateFormat
@@ -1226,22 +1194,6 @@ export default graphql(
           muted
           picture
           myRole
-          pendingEnvironmentShares {
-            id
-            role
-            receiver {
-              id
-              profileIconColor
-              name
-              email
-            }
-            sender {
-              id
-              profileIconColor
-              name
-              email
-            }
-          }
           pendingOwnerChanges {
             id
             receiver {
@@ -1255,6 +1207,23 @@ export default graphql(
               profileIconColor
               name
               email
+            }
+          }
+          pendingEnvironmentShares {
+            id
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+            sender {
+              id
+              name
+            }
+            environment {
+              id
+              name
             }
           }
           devices {
