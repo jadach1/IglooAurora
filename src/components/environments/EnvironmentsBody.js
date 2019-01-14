@@ -82,7 +82,11 @@ export default class EnvironmentsBody extends Component {
             ))}
           {user.pendingOwnerChangeCount && (
             <Grid key="pendingEnvironmentShares" item>
-              <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
+              <ButtonBase
+                focusRipple
+                style={{ borderRadius: "4px" }}
+                onClick={() => this.setState({ pendingOwnerChangesOpen: true })}
+              >
                 <Paper
                   style={
                     typeof Storage !== "undefined" &&
@@ -102,9 +106,6 @@ export default class EnvironmentsBody extends Component {
                           cursor: "pointer",
                           textAlign: "center",
                         }
-                  }
-                  onClick={() =>
-                    this.setState({ pendingOwnerChangesOpen: true })
                   }
                 >
                   <div
@@ -136,6 +137,57 @@ export default class EnvironmentsBody extends Component {
               </ButtonBase>
             </Grid>
           )}
+          <Grid key="hibernations" item>
+            <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
+              <Paper
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? {
+                        backgroundColor: "#2f333d",
+                        width: "256px",
+                        height: "192px",
+                        cursor: "pointer",
+                        textAlign: "center",
+                        color: "white",
+                        borderRadius: "4px",
+                      }
+                    : {
+                        backgroundColor: "#fff",
+                        width: "256px",
+                        height: "192px",
+                        cursor: "pointer",
+                        textAlign: "center",
+                        borderRadius: "4px",
+                      }
+                }
+              >
+                <div
+                  style={{
+                    paddingTop: "47px",
+                    paddingBottom: "47px",
+                    borderRadius: "4px",
+                  }}
+                >
+                  <Icon style={{ fontSize: "48px", margin: "8px 0" }}>
+                    ac_unit
+                  </Icon>
+                  <br />
+                  <Typography
+                    variant="h5"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    99+ hibernations
+                  </Typography>
+                </div>
+              </Paper>
+            </ButtonBase>
+          </Grid>
           <Grid key="create" item>
             <ButtonBase
               focusRipple
@@ -225,7 +277,11 @@ export default class EnvironmentsBody extends Component {
             ))}
           {user.pendingEnvironmentShareCount && (
             <Grid key="pendingEnvironmentShares" item>
-              <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
+              <ButtonBase
+                focusRipple
+                style={{ borderRadius: "4px" }}
+                onClick={() => this.setState({ pendingSharesOpen: true })}
+              >
                 <Paper
                   style={
                     typeof Storage !== "undefined" &&
@@ -246,7 +302,6 @@ export default class EnvironmentsBody extends Component {
                           textAlign: "center",
                         }
                   }
-                  onClick={() => this.setState({ pendingSharesOpen: true })}
                 >
                   <div
                     style={{

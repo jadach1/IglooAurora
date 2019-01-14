@@ -58,24 +58,17 @@ class SidebarHeader extends Component {
           }
           placement="bottom"
         >
-          <Link
-            to="/"
+          <IconButton
             style={{
-              marginLeft: "8px",
-              textDecoration: "none",
               color: "white",
+              marginLeft: "8px",
             }}
+            onClick={() => this.setState({ goToEnvironments: true })}
+            component={Link}
+            to="/"
           >
-            <IconButton
-              style={{
-                color: "white",
-              }}
-              onClick={() => this.setState({ goToEnvironments: true })}
-              tabIndex="-1"
-            >
-              <Icon>arrow_back</Icon>
-            </IconButton>
-          </Link>
+            <Icon>arrow_back</Icon>
+          </IconButton>
         </Tooltip>
         <Typography
           variant="h5"

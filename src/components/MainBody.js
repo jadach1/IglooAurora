@@ -121,6 +121,7 @@ class MainBody extends Component {
 
     this.props.deviceData.subscribeToMore({
       document: subscribeToValueUpdates,
+      updateQuery: console.log,
     })
 
     const subscribeToValuesDeletes = gql`

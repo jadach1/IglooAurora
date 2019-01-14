@@ -26,7 +26,6 @@ import MenuItem from "@material-ui/core/MenuItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import CardSize from "./CardSize"
-import ToggleIcon from "material-ui-toggle-icon"
 
 class Card extends Component {
   state = {
@@ -187,18 +186,18 @@ class Card extends Component {
       specificCard = ""
     }
 
-    const updateShown = visible =>
+    const updateShown = visibility =>
       this.props.ChangeVisiility({
         variables: {
           id: value.id,
-          visibility: visible ? "VISIBLE" : "HIDDEN",
+          visibility,
         },
         optimisticResponse: {
           __typename: "Mutation",
           value: {
-            __typename: "Value",
+            __typename: value.__typename,
             id: value.id,
-            visibility: visible ? "VISIBLE" : "HIDDEN",
+            visibility,
           },
         },
       })
@@ -353,27 +352,17 @@ class Card extends Component {
                 <MenuItem
                   onClick={() => {
                     value.visibility === "VISIBLE"
-                      ? updateShown(false)
-                      : updateShown(true)
+                      ? updateShown("HIDDEN")
+                      : updateShown("VISIBLE")
                     this.handleMenuClose()
                   }}
                 >
                   <ListItemIcon>
                     <Icon>
-                      {/* fix for ToggleIcon glitch on Edge */}
-                      {document.documentMode ||
-                      /Edge/.test(navigator.userAgent) ? (
-                        this.state.showPassword ? (
-                          <Icon>visibility_off</Icon>
-                        ) : (
-                          <Icon>visibility</Icon>
-                        )
+                      {value.visibility === "VISIBLE" ? (
+                        <Icon>visibility_off</Icon>
                       ) : (
-                        <ToggleIcon
-                          on={this.state.showPassword || false}
-                          onIcon={<Icon>visibility_off</Icon>}
-                          offIcon={<Icon>visibility</Icon>}
-                        />
+                        <Icon>visibility</Icon>
                       )}
                     </Icon>
                   </ListItemIcon>
@@ -395,21 +384,25 @@ class Card extends Component {
                   </ListItemIcon>
                   <ListItemText inset primary="Resize" disableTypography />
                 </MenuItem>
-               { value.myRole !== "SPECTATOR" && <React.Fragment><Divider />
-                <MenuItem
-                  primaryText="Rename"
-                  onClick={() => {
-                    this.setState({ renameCardOpen: true })
-                    this.handleMenuClose()
-                  }}
-                >
-                  <ListItemIcon>
-                    <Icon>create</Icon>
-                  </ListItemIcon>
-                  <ListItemText inset primary="Rename" disableTypography />
-                </MenuItem></React.Fragment>}
-           {(value.myRole === "OWNER" ||
-            value.myRole === "ADMIN") &&    typeof Storage !== "undefined" &&
+                {value.myRole !== "SPECTATOR" && (
+                  <React.Fragment>
+                    <Divider />
+                    <MenuItem
+                      primaryText="Rename"
+                      onClick={() => {
+                        this.setState({ renameCardOpen: true })
+                        this.handleMenuClose()
+                      }}
+                    >
+                      <ListItemIcon>
+                        <Icon>create</Icon>
+                      </ListItemIcon>
+                      <ListItemText inset primary="Rename" disableTypography />
+                    </MenuItem>
+                  </React.Fragment>
+                )}
+                {(value.myRole === "OWNER" || value.myRole === "ADMIN") &&
+                  typeof Storage !== "undefined" &&
                   localStorage.getItem("devMode") === "true" && (
                     <MenuItem
                       onClick={() => {
@@ -424,7 +417,8 @@ class Card extends Component {
                         <span style={{ color: "#f44336" }}>Delete</span>
                       </ListItemText>
                     </MenuItem>
-                  )}}
+                  )}
+                }
               </Menu>
             </div>
           </div>

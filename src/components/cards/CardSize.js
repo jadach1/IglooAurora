@@ -35,7 +35,7 @@ class CardSize extends Component {
         optimisticResponse: {
           __typename: "Mutation",
           value: {
-            __typename: "Value",
+            __typename: this.props.value.__typename,
             id: this.props.value.id,
             cardSize: size,
           },
@@ -58,9 +58,10 @@ class CardSize extends Component {
         <DialogTitle disableTypography>Change card size</DialogTitle>
         <div style={{ height: "100%" }}>
           <RadioGroup
-            onChange={(event, value) => {this.setState({ radioValue: value })
+            onChange={(event, value) => {
+              this.setState({ radioValue: value })
               updateCardMutation(value)
-          }}
+            }}
             value={this.state.radioValue}
             style={{ paddingLeft: "24px", paddingRight: "24px" }}
           >
@@ -87,9 +88,7 @@ class CardSize extends Component {
           </RadioGroup>
         </div>
         <DialogActions>
-          <Button onClick={this.props.close} >
-            Close
-          </Button>
+          <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
       </Dialog>
     )

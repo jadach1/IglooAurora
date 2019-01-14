@@ -122,17 +122,10 @@ class EnvironmentCard extends Component {
               marginTop: "-64px",
               zIndex: 0, //makes the ButtonBase appear under the IconButton, making it clickable
             }}
-            tabIndex="-1"
+            component={Link}
+            to={"/?environment=" + this.props.environment.id}
           >
-            <Link
-              to={"/?environment=" + this.props.environment.id}
-              style={{
-                height: "192px",
-                borderRadius: "4px",
-                textDecoration: "none",
-                color: "black",
-              }}
-            >
+            <div style={{ height: "192px" }}>
               <Toolbar
                 style={{
                   height: "64px",
@@ -253,7 +246,7 @@ class EnvironmentCard extends Component {
                   }}
                 />
               )}
-            </Link>
+            </div>
           </ButtonBase>
         </Paper>
         <Menu
@@ -348,8 +341,7 @@ class EnvironmentCard extends Component {
               </MenuItem>
             </React.Fragment>
           )}
-          {(this.props.environment.myRole === "OWNER" ||
-            this.props.environment.myRole === "ADMIN") && (
+          {this.props.environment.myRole === "OWNER"  && (
             <MenuItem
               onClick={() => {
                 this.handleMenuClose()

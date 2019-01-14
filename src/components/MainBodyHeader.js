@@ -99,36 +99,30 @@ class MainBodyHeader extends Component {
         >
           {this.props.isMobile && (
             <Tooltip id="tooltip-bottom" title="Devices" placement="bottom">
-              <Link
+              <IconButton
+                style={
+                  this.props.environmentData.environment
+                    ? {
+                        color: "white",
+                        margin: "0 8px",
+                      }
+                    : {
+                        color: "white",
+                        opacity: 0.5,
+                        margin: "0 8px",
+                      }
+                }
+                component={Link}
                 to={
                   this.props.environmentData.environment
                     ? "/?environment=" +
                       this.props.environmentData.environment.id
                     : ""
                 }
-                style={{
-                  textDecoration: "none",
-                  color: "white",
-                  margin: "0 8px",
-                }}
+                disabled={!this.props.environmentData.environment}
               >
-                <IconButton
-                  style={
-                    this.props.environmentData.environment
-                      ? {
-                          color: "white",
-                        }
-                      : {
-                          color: "white",
-                          opacity: 0.5,
-                        }
-                  }
-                  disabled={!this.props.environmentData.environment}
-                  tabIndex="-1"
-                >
-                  <Icon>arrow_back</Icon>
-                </IconButton>
-              </Link>
+                <Icon>arrow_back</Icon>
+              </IconButton>
             </Tooltip>
           )}
           <Typography

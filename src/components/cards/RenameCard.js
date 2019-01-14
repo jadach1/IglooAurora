@@ -35,7 +35,7 @@ class RenameCardDialog extends React.Component {
       optimisticResponse: {
         __typename: "Mutation",
         value: {
-          __typename: "Value",
+          __typename: this.props.value.__typename,
           id: this.props.value.id,
           name: this.state.name,
         },
