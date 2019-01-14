@@ -102,21 +102,25 @@ class TimeFormatDialog extends React.Component {
               value="DMY"
               control={<Radio color="primary" />}
               label="DD/MM/YYYY"
+              className="notSelectable"
             />
             <FormControlLabel
               value="MDY"
               control={<Radio color="primary" />}
               label="MM/DD/YYYY"
+              className="notSelectable"
             />
             <FormControlLabel
               value="YMD"
               control={<Radio color="primary" />}
               label="YYYY/MM/DD"
+              className="notSelectable"
             />
             <FormControlLabel
               value="YDM"
               control={<Radio color="primary" />}
               label="YYYY/DD/MM"
+              className="notSelectable"
             />
           </RadioGroup>
           Time
@@ -131,11 +135,13 @@ class TimeFormatDialog extends React.Component {
               value="H24"
               control={<Radio color="primary" />}
               label="24-hour clock"
+              className="notSelectable"
             />
             <FormControlLabel
               value="H12"
               control={<Radio color="primary" />}
               label="12-hour clock"
+              className="notSelectable"
             />
           </RadioGroup>
         </div>

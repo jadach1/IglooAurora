@@ -302,6 +302,7 @@ class Login extends Component {
                   Keep me logged in
                 </Typography>
               }
+              className="notSelectable"
             />
           </div>
           <div style={{ marginTop: "176px" }}>
@@ -350,8 +351,15 @@ class Login extends Component {
                   cursor: "pointer",
                 }}
               >
-                <Link to="/signup" style={{
-                  color: "#0083ff",textDecoration:"none"}}>Sign up!</Link>
+                <Link
+                  to="/signup"
+                  style={{
+                    color: "#0083ff",
+                    textDecoration: "none",
+                  }}
+                >
+                  Sign up!
+                </Link>
               </font>
             </Typography>
           </div>

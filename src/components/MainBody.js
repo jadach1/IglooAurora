@@ -121,7 +121,6 @@ class MainBody extends Component {
 
     this.props.deviceData.subscribeToMore({
       document: subscribeToValueUpdates,
-      updateQuery: console.log,
     })
 
     const subscribeToValuesDeletes = gql`
@@ -364,7 +363,7 @@ class MainBody extends Component {
               ? "mainBody mobileMainBodyBG"
               : "mainBody mainBodyBG"
           }
-          style={{ width: "100%", height: "100%" }}
+          style={{ width: "100%", height: "100%", overflowX: "hidden" }}
         >
           {noItemsUI}
           <div className="itemsList" key="visibleCardsContainer">

@@ -154,6 +154,7 @@ class Sidebar extends Component {
               padding: "0",
               height: "calc(100vh - 128px)",
               overflow: "auto",
+              overscrollBehaviorY: "contain",
             }}
           >
             {devicesArray

@@ -440,7 +440,7 @@ class SignupMobile extends Component {
             !this.state.showLoading && this.setState({ redirect: true })
           }
         >
-          <Link style={{ textDecoration: "none", color: "white" }}>
+          <Link style={{ textDecoration: "none", color: "white" }} to="/login">
             Already have an account? Log in
           </Link>
         </Typography>

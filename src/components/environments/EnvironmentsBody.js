@@ -646,7 +646,7 @@ export default class EnvironmentsBody extends Component {
               )}
           </div>
         ) : (
-          <React.Fragment>
+          <div style={{ backgroundColor: "#f2f2f2" }}>
             <div
               style={
                 nightMode
@@ -741,6 +741,7 @@ export default class EnvironmentsBody extends Component {
                       height: "calc(100vh - 128px)",
                       backgroundColor: "#f2f2f2",
                       overflowY: "auto",
+                      overscrollBehaviorY: "none",
                     }
               }
             >
@@ -751,8 +752,8 @@ export default class EnvironmentsBody extends Component {
                       <ListSubheader
                         style={
                           nightMode
-                            ? { backgroundColor: "#21252b" }
-                            : { backgroundColor: "#f2f2f2" }
+                            ? { backgroundColor: "#21252b", zIndex: "2" }
+                            : { backgroundColor: "#f2f2f2", zIndex: "2" }
                         }
                       >
                         <Typography
@@ -799,8 +800,8 @@ export default class EnvironmentsBody extends Component {
                             <ListSubheader
                               style={
                                 nightMode
-                                  ? { backgroundColor: "#21252b" }
-                                  : { backgroundColor: "#f2f2f2" }
+                                  ? { backgroundColor: "#21252b", zIndex: "2"  }
+                                  : { backgroundColor: "#f2f2f2", zIndex: "2"  }
                               }
                             >
                               <Typography
@@ -833,7 +834,7 @@ export default class EnvironmentsBody extends Component {
                 </List>
               )}
             </div>
-          </React.Fragment>
+          </div>
         )}
         <CreateEnvironment
           open={this.state.createOpen}

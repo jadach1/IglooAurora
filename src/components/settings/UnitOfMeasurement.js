@@ -103,11 +103,13 @@ class UnitOfMeasumentDialog extends React.Component {
               value="SI"
               control={<Radio color="primary" />}
               label="SI units"
+              className="notSelectable"
             />
             <FormControlLabel
               value="IMPERIAL"
               control={<Radio color="primary" />}
               label="Imperial units"
+              className="notSelectable"
             />
           </RadioGroup>
           Temperature
@@ -122,16 +124,19 @@ class UnitOfMeasumentDialog extends React.Component {
               value="CELSIUS"
               control={<Radio color="primary" />}
               label="Celsius"
+              className="notSelectable"
             />
             <FormControlLabel
               value="FAHRENHEIT"
               control={<Radio color="primary" />}
               label="Fahrenheit"
+              className="notSelectable"
             />
             <FormControlLabel
               value="KELVIN"
               control={<Radio color="primary" />}
               label="Kelvin"
+              className="notSelectable"
             />
           </RadioGroup>
         </div>

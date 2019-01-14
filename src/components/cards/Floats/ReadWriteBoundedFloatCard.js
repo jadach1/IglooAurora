@@ -27,81 +27,91 @@ class ReadWriteBooleanCard extends Component {
     return (
       <div
         className="notSelectable"
-        style={{ paddingLeft: "24px", paddingRight: "24px" }}
+        style={{
+          paddingLeft: "24px",
+          paddingRight: "24px",
+          height: "calc(100% - 64px)",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          textAlign: "center",
+        }}
       >
-        <div style={{ display: "flex", marginBottom: "16px" }}>
-          {this.props.min}
-          <Slider
-            min={this.props.min}
-            max={this.props.max}
-            step={this.props.step}
-            value={this.state.value}
-            className="slider"
-            sliderStyle={{ marginTop: "0", marginBottom: "0" }}
-            onChange={(e, newValue) => this.setState({ value: newValue })}
-            onDragStop={e => {
-              this.props.mutate({
-                variables: {
-                  id: this.props.id,
-                  value: this.state.value,
-                },
-                optimisticResponse: {
-                  __typename: "Mutation",
-                  floatValue: {
-                    __typename: "FloatValue",
+        <div style={{ width: "100%" }}>
+          <div style={{ display: "flex", marginBottom: "16px" }}>
+            {this.props.min}
+            <Slider
+              min={this.props.min}
+              max={this.props.max}
+              step={this.props.step}
+              value={this.state.value}
+              className="slider"
+              sliderStyle={{ marginTop: "0", marginBottom: "0" }}
+              onChange={(e, newValue) => this.setState({ value: newValue })}
+              onDragStop={e => {
+                this.props.mutate({
+                  variables: {
                     id: this.props.id,
                     value: this.state.value,
                   },
-                },
+                  optimisticResponse: {
+                    __typename: "Mutation",
+                    floatValue: {
+                      __typename: "FloatValue",
+                      id: this.props.id,
+                      value: this.state.value,
+                    },
+                  },
+                })
+              }}
+              disabled={this.props.disabled}
+            />
+            {this.props.max}
+          </div>
+          <TextField
+            id="read.write-bounded-float-card-value"
+            value={this.state.value}
+            type="number"
+            onChange={event =>
+              this.setState({
+                value: event.target.value,
               })
-            }}
+            }
             disabled={this.props.disabled}
-          />
-          {this.props.max}
-        </div>
-        <TextField
-          id="read.write-bounded-float-card-value"
-          value={this.state.value}
-          type="number"
-          onChange={event =>
-            this.setState({
-              value: event.target.value,
-            })
-          }
-          disabled={this.props.disabled}
-          InputLabelProps={this.state.value && { shrink: true }}
-          InputProps={{
-            inputProps: { min: this.props.min, max: this.props.max },
-            endAdornment: this.props.unitOfMeasurement ? (
-              <InputAdornment
-                position="end"
-                className="notSelectable defaultCursor"
-              >
-                {this.props.unitOfMeasurement}
-              </InputAdornment>
-            ) : (
-              this.state.value &&
-              this.state.value !== 0 && (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => this.setState({ value: "" })}
-                    tabIndex="-1"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "rgba(0, 0, 0, 0.46)" }
-                        : { color: "rgba(0, 0, 0, 0.46)" }
-                    }
-                  >
-                    <Icon>clear</Icon>
-                  </IconButton>
+            InputLabelProps={this.state.value && { shrink: true }}
+            InputProps={{
+              inputProps: { min: this.props.min, max: this.props.max },
+              endAdornment: this.props.unitOfMeasurement ? (
+                <InputAdornment
+                  position="end"
+                  className="notSelectable defaultCursor"
+                >
+                  {this.props.unitOfMeasurement}
                 </InputAdornment>
-              )
-            ),
-          }}
-          style={{ width: "100%", marginBottom: "16px" }}
-          variant="outlined"
-        />
+              ) : (
+                this.state.value &&
+                this.state.value !== 0 && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => this.setState({ value: "" })}
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
+                      }
+                    >
+                      <Icon>clear</Icon>
+                    </IconButton>
+                  </InputAdornment>
+                )
+              ),
+            }}
+            style={{ width: "100%",maxWidth:"208px" }}
+            variant="outlined"
+          />
+        </div>
       </div>
     )
   }

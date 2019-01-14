@@ -52,16 +52,19 @@ class ChangeRole extends Component {
             value="admin"
             control={<Radio color="primary" />}
             label="Admin"
+            className="notSelectable"
           />
           <FormControlLabel
             value="editor"
             control={<Radio color="primary" />}
             label="Editor"
+            className="notSelectable"
           />
           <FormControlLabel
             value="spectator"
             control={<Radio color="primary" />}
             label="Spectator"
+            className="notSelectable"
           />
         </RadioGroup>
         <DialogActions>

@@ -353,6 +353,7 @@ export default class LoginMobile extends Component {
                 Keep me logged in
               </Typography>
             }
+            className="notSelectable"
           />
           <br />
           <div style={{ textAlign: "right", marginBottom: "16px" }}>

@@ -69,11 +69,13 @@ class CardSize extends Component {
               value="NORMAL"
               control={<Radio color="primary" />}
               label="Normal"
+              className="notSelectable"
             />
             <FormControlLabel
               value="WIDE"
               control={<Radio color="primary" />}
               label="Wide"
+              className="notSelectable"
             />
             {!(
               this.props.value.__typename === "FloatValue" &&
@@ -83,6 +85,7 @@ class CardSize extends Component {
                 value="LARGE"
                 control={<Radio color="primary" />}
                 label="Large"
+                className="notSelectable"
               />
             )}
           </RadioGroup>

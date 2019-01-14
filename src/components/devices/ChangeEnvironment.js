@@ -108,6 +108,7 @@ class ChangeEnvironment extends React.Component {
                   value={environment.id}
                   label={environment.name}
                   disabled={environment.myRole !== "OWNER"}
+                  className="notSelectable"
                 />
               ))}
         </RadioGroup>
