@@ -234,11 +234,7 @@ class Sidebar extends Component {
                   />
                   <ListItemSecondaryAction>
                     <Badge
-                      badgeContent={
-                        device.notificationCount > 99
-                          ? "99+"
-                          : device.notificationCount
-                      }
+                      badgeContent={device.notificationCount}
                       invisible={!device.notificationCount}
                       color="primary"
                       className="notSelectable"

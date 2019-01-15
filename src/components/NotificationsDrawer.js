@@ -333,9 +333,11 @@ class NotificationsDrawer extends React.Component {
       let cleanedNotificationsSections = removeDuplicates(notificationsSections)
 
       notifications = (
-        <List style={{
-          padding: "0",
-        }}>
+        <List
+          style={{
+            padding: "0",
+          }}
+        >
           {cleanedNotificationsSections.map(section => (
             <li>
               <ListSubheader
@@ -433,9 +435,11 @@ class NotificationsDrawer extends React.Component {
       )
 
       readNotifications = (
-        <List style={{
-              padding: "0",
-            }}>
+        <List
+          style={{
+            padding: "0",
+          }}
+        >
           {cleanedReadNotificationsSections.map(section => (
             <li>
               <ListSubheader
@@ -666,7 +670,7 @@ class NotificationsDrawer extends React.Component {
             }
           >
             <Badge
-              badgeContent={notificationCount > 99 ? "99+" : notificationCount}
+              badgeContent={notificationCount}
               color="primary"
               invisible={!notificationCount}
             >

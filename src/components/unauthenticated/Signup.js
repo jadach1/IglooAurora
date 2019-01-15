@@ -16,6 +16,7 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import { Link } from "react-router-dom"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
+import MUILink from "@material-ui/core/Link"
 
 const theme = createMuiTheme({
   palette: {
@@ -473,15 +474,15 @@ class Signup extends Component {
                 }}
                 onClick={() => this.setState({ redirect: true })}
               >
-                <Link
+                <MUILink
+                  component={Link}
                   to="/login"
                   style={{
                     color: "#0083ff",
-                    textDecoration: "none",
                   }}
                 >
                   Log in!
-                </Link>
+                </MUILink>
               </font>
             </Typography>
           </div>

@@ -16,6 +16,7 @@ import { Redirect } from "react-router-dom"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
 import { Link } from "react-router-dom"
+import MUILink from "@material-ui/core/Link"
 
 class SignupMobile extends Component {
   constructor() {
@@ -440,9 +441,9 @@ class SignupMobile extends Component {
             !this.state.showLoading && this.setState({ redirect: true })
           }
         >
-          <Link style={{ textDecoration: "none", color: "white" }} to="/login">
+          <MUILink component={Link} style={{ color: "white" }} to="/login">
             Already have an account? Log in
-          </Link>
+          </MUILink>
         </Typography>
         {this.state.redirect && <Redirect push to="/login" />}
       </div>

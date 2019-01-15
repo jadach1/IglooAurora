@@ -17,6 +17,7 @@ import logo from "../../styles/assets/logo.svg"
 import CenteredSpinner from "../CenteredSpinner"
 import ToggleIcon from "material-ui-toggle-icon"
 import { Link } from "react-router-dom"
+import MUILink from "@material-ui/core/Link"
 
 export default class LoginMobile extends Component {
   constructor() {
@@ -357,7 +358,8 @@ export default class LoginMobile extends Component {
           />
           <br />
           <div style={{ textAlign: "right", marginBottom: "16px" }}>
-            <Typography
+            <MUILink
+              component="button"
               variant="subtitle1"
               style={{
                 cursor: "pointer",
@@ -371,7 +373,7 @@ export default class LoginMobile extends Component {
               }}
             >
               Forgot password?
-            </Typography>
+            </MUILink>
           </div>
           <Button
             variant="contained"
@@ -413,12 +415,9 @@ export default class LoginMobile extends Component {
               !this.state.showLoading && this.setState({ redirect: true })
             }
           >
-            <Link
-              to="/signup"
-              style={{ textDecoration: "none", color: "white" }}
-            >
+            <MUILink component={Link} to="/signup" style={{ color: "white" }}>
               No account yet? Sign up!
-            </Link>
+            </MUILink>
           </Typography>
         </div>
         <ForgotPassword

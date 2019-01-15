@@ -251,6 +251,10 @@ div[menutype="notifications"] {
   -webkit-user-drag: none;
 }
 
+.containOverscrollY {
+  overscroll-behavior-y: contain;
+}
+
 input[type="text"]::-ms-clear {
   display: none;
 }

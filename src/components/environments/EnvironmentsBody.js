@@ -80,7 +80,7 @@ export default class EnvironmentsBody extends Component {
                 />
               </Grid>
             ))}
-          {user.pendingOwnerChangeCount && (
+          {!!user.pendingOwnerChangeCount && (
             <Grid key="pendingEnvironmentShares" item>
               <ButtonBase
                 focusRipple
@@ -354,10 +354,13 @@ export default class EnvironmentsBody extends Component {
             style={
               nightMode
                 ? user &&
+                  user.environments[0] &&
                   (user.environments.filter(
                     environment => environment.myRole !== "OWNER"
                   )[0] ||
-                    user.pendingEnvironmentShares[0])
+                    (user &&
+                      user.pendingEnvironmentShares &&
+                      user.pendingEnvironmentShares[0]))
                   ? {
                       width: "100vw",
                       height: "calc(100vh - 128px)",
@@ -369,10 +372,13 @@ export default class EnvironmentsBody extends Component {
                       backgroundColor: "#21252b",
                     }
                 : user &&
+                  user.environments[0] &&
                   (user.environments.filter(
                     environment => environment.myRole !== "OWNER"
                   )[0] ||
-                    user.pendingEnvironmentShares[0])
+                    (user &&
+                      user.pendingEnvironmentShares &&
+                      user.pendingEnvironmentShares[0]))
                 ? {
                     width: "100vw",
                     height: "calc(100vh - 128px)",
@@ -462,9 +468,13 @@ export default class EnvironmentsBody extends Component {
               </div>
             )}
             {user &&
+              (user.environments[0] &&
               (user.environments.filter(
                 environment => environment.myRole !== "OWNER"
-              )[0] || user.pendingEnvironmentShares[0] ? (
+              )[0] ||
+                (user &&
+                  user.pendingEnvironmentShares &&
+                  user.pendingEnvironmentShares[0])) ? (
                 <SwipeableViews
                   index={this.state.slideIndex}
                   onChangeIndex={slideIndex => this.setState({ slideIndex })}
@@ -489,6 +499,7 @@ export default class EnvironmentsBody extends Component {
                         height: "100%",
                         overflowY: "auto",
                       }}
+                      className="containOverscrollY"
                     >
                       <Grid
                         container
@@ -536,35 +547,8 @@ export default class EnvironmentsBody extends Component {
                   </div>
                 </SwipeableViews>
               ) : (
-                <div
-                  style={{
-                    overflowY: "auto",
-                    height: "calc(100vh - 128px)",
-                  }}
-                >
-                  <Typography
-                    variant="h4"
-                    className="notSelectable defaultCursor"
-                    style={
-                      nightMode
-                        ? {
-                            textAlign: "center",
-                            lineHeight: "64px",
-                            height: "64px",
-                            color: "white",
-                          }
-                        : {
-                            textAlign: "center",
-                            lineHeight: "64px",
-                            height: "64px",
-                            color: "black",
-                          }
-                    }
-                  >
-                    Your environments
-                  </Typography>
                   <div
-                    style={{ height: "calc(100vh - 192px)", overflowY: "auto" }}
+                    style={{ height: "calc(100vh - 128px)", overflowY: "auto" }}
                   >
                     <Grid
                       container
@@ -581,13 +565,15 @@ export default class EnvironmentsBody extends Component {
                       {yourEnvironmentsList}
                     </Grid>
                   </div>
-                </div>
               ))}
             {user &&
+              user.environments[0] &&
               (user.environments.filter(
                 environment => environment.myRole !== "OWNER"
               )[0] ||
-                user.pendingEnvironmentShares[0]) && (
+                (user &&
+                  user.pendingEnvironmentShares &&
+                  user.pendingEnvironmentShares[0])) && (
                 <AppBar
                   position="static"
                   style={{
@@ -782,10 +768,13 @@ export default class EnvironmentsBody extends Component {
                     </ul>
                   </li>
                   {user &&
+                    user.environments[0] &&
                     (user.environments.filter(
                       environment => environment.myRole !== "OWNER"
                     )[0] ||
-                      user.pendingEnvironmentShares[0]) && (
+                      (user &&
+                        user.pendingEnvironmentShares &&
+                        user.pendingEnvironmentShares[0])) && (
                       <li key="yourEnvironments">
                         <ul style={{ padding: "0" }}>
                           {user.environments
@@ -800,8 +789,8 @@ export default class EnvironmentsBody extends Component {
                             <ListSubheader
                               style={
                                 nightMode
-                                  ? { backgroundColor: "#21252b", zIndex: "2"  }
-                                  : { backgroundColor: "#f2f2f2", zIndex: "2"  }
+                                  ? { backgroundColor: "#21252b", zIndex: "2" }
+                                  : { backgroundColor: "#f2f2f2", zIndex: "2" }
                               }
                             >
                               <Typography

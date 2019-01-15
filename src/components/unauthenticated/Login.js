@@ -16,6 +16,7 @@ import * as EmailValidator from "email-validator"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
 import { Link } from "react-router-dom"
+import MUILink from "@material-ui/core/Link"
 
 class Login extends Component {
   constructor() {
@@ -307,7 +308,8 @@ class Login extends Component {
           </div>
           <div style={{ marginTop: "176px" }}>
             <div style={{ textAlign: "right" }}>
-              <Typography
+              <MUILink
+                component="button"
                 variant="subtitle1"
                 style={{
                   color: "#0083ff",
@@ -322,7 +324,7 @@ class Login extends Component {
                 }}
               >
                 Forgot password?
-              </Typography>
+              </MUILink>
             </div>
             <Button
               variant="contained"
@@ -348,18 +350,17 @@ class Login extends Component {
               <font
                 style={{
                   marginTop: "8px",
-                  cursor: "pointer",
                 }}
               >
-                <Link
+                <MUILink
+                  component={Link}
                   to="/signup"
                   style={{
                     color: "#0083ff",
-                    textDecoration: "none",
                   }}
                 >
                   Sign up!
-                </Link>
+                </MUILink>
               </font>
             </Typography>
           </div>
