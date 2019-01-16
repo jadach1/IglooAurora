@@ -11,36 +11,37 @@ export default function ReadOnlyFloatCard(props) {
         justifyContent: "center",
         alignItems: "center",
         textAlign: "center",
+        overflowX: "auto",
       }}
     >
-      <Typography
-        variant="h3"
-        style={
-          typeof Storage !== "undefined" &&
-          localStorage.getItem("nightMode") === "true"
-            ? {
-                color: "white",
-                paddingLeft: "8px",
-                paddingRight: "8px",
-              }
-            : {
-                paddingLeft: "8px",
-                paddingRight: "8px",
-              }
-        }
-      >
-        {props.value}{" "}
-        <font
+      <div style={{ width: "100%" }}>
+        <Typography
+          variant="h3"
           style={
             typeof Storage !== "undefined" &&
             localStorage.getItem("nightMode") === "true"
-              ? { color: "#c1c2c5" }
-              : { color: "#7a7a7a" }
+              ? {
+                  color: "white",
+                  height: "100%",
+                }
+              : {
+                  height: "100%",
+                }
           }
         >
-          {props.unitOfMeasurement}
-        </font>
-      </Typography>
+          {props.value}{" "}
+          <font
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? { color: "#c1c2c5" }
+                : { color: "#7a7a7a" }
+            }
+          >
+            {props.unitOfMeasurement}
+          </font>
+        </Typography>
+      </div>
     </div>
   )
 }

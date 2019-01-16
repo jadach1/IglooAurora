@@ -16,6 +16,7 @@ import CustomizeEnvironment from "./CustomizeEnvironment"
 import EnvironmentInfo from "./EnvironmentInfo"
 import ShareEnvironment from "./ShareEnvironment"
 import LeaveEnvironment from "./LeaveEnvironment"
+import HibernateEnvironment from "./HibernateEnvironment"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import fox from "../../styles/assets/fox.jpg"
@@ -341,9 +342,10 @@ class EnvironmentCard extends Component {
               </MenuItem>
             </React.Fragment>
           )}
-          {this.props.environment.myRole === "OWNER"  && (
+          {this.props.environment.myRole === "OWNER" && (
             <MenuItem
               onClick={() => {
+                this.setState({ hibernateOpen: true })
                 this.handleMenuClose()
               }}
             >
@@ -384,6 +386,11 @@ class EnvironmentCard extends Component {
         <DeleteEnvironment
           open={this.state.deleteOpen}
           close={() => this.setState({ deleteOpen: false })}
+          environment={this.props.environment}
+        />
+        <HibernateEnvironment
+          open={this.state.hibernateOpen}
+          close={() => this.setState({ hibernateOpen: false })}
           environment={this.props.environment}
         />
         <ShareEnvironment

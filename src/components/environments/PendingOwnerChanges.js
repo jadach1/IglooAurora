@@ -104,8 +104,8 @@ class PendingOwnerChanges extends Component {
                     style={
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
-                        ? { color: "#c1c2c5" }
-                        : { color: "#7a7a7a" }
+                        ? { color: "white" }
+                        : { color: "black" }
                     }
                   >
                     <Icon>done</Icon>
@@ -115,8 +115,8 @@ class PendingOwnerChanges extends Component {
                     style={
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
-                        ? { color: "#c1c2c5" }
-                        : { color: "#7a7a7a" }
+                        ? { color: "white" }
+                        : { color: "black" }
                     }
                   >
                     <Icon>close</Icon>

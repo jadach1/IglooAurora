@@ -349,6 +349,7 @@ export default class LoginMobile extends Component {
                   width: "134px",
                   marginRight: "0px",
                   marginLeft: "auto",
+                  paddingLeft: "4px",
                 }}
               >
                 Keep me logged in

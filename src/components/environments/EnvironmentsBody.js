@@ -20,6 +20,7 @@ import CreateEnvironment from "./CreateEnvironment"
 import Helmet from "react-helmet"
 import PendingShares from "./PendingShares"
 import PendingOwnerChanges from "./PendingOwnerChanges"
+import Hibernations from "./Hibernations"
 
 export default class EnvironmentsBody extends Component {
   state = {
@@ -138,7 +139,11 @@ export default class EnvironmentsBody extends Component {
             </Grid>
           )}
           <Grid key="hibernations" item>
-            <ButtonBase focusRipple style={{ borderRadius: "4px" }}>
+            <ButtonBase
+              focusRipple
+              style={{ borderRadius: "4px" }}
+              onClick={() => this.setState({ hibernationsOpen: true })}
+            >
               <Paper
                 style={
                   typeof Storage !== "undefined" &&
@@ -547,24 +552,24 @@ export default class EnvironmentsBody extends Component {
                   </div>
                 </SwipeableViews>
               ) : (
-                  <div
-                    style={{ height: "calc(100vh - 128px)", overflowY: "auto" }}
+                <div
+                  style={{ height: "calc(100vh - 128px)", overflowY: "auto" }}
+                >
+                  <Grid
+                    container
+                    justify="center"
+                    spacing={16}
+                    className="notSelectable defaultCursor"
+                    style={{
+                      width: "calc(100% - 16px)",
+                      marginLeft: "8px",
+                      marginRight: "8px",
+                      marginBottom: "8px",
+                    }}
                   >
-                    <Grid
-                      container
-                      justify="center"
-                      spacing={16}
-                      className="notSelectable defaultCursor"
-                      style={{
-                        width: "calc(100% - 16px)",
-                        marginLeft: "8px",
-                        marginRight: "8px",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      {yourEnvironmentsList}
-                    </Grid>
-                  </div>
+                    {yourEnvironmentsList}
+                  </Grid>
+                </div>
               ))}
             {user &&
               user.environments[0] &&
@@ -836,6 +841,10 @@ export default class EnvironmentsBody extends Component {
         <PendingOwnerChanges
           open={this.state.pendingOwnerChangesOpen}
           close={() => this.setState({ pendingOwnerChangesOpen: false })}
+        />
+        <Hibernations
+          open={this.state.hibernationsOpen}
+          close={() => this.setState({ hibernationsOpen: false })}
         />
       </React.Fragment>
     )

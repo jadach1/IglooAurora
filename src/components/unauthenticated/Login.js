@@ -285,7 +285,7 @@ class Login extends Component {
             </Grid>
             <FormControlLabel
               style={{
-                marginLeft: "-94px",
+                marginLeft: "-92px",
                 textAlign: "left",
                 marginRight: "0px",
               }}

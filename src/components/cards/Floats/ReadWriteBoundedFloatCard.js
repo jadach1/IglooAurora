@@ -6,6 +6,7 @@ import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Icon from "@material-ui/core/Icon"
+import Typography from "@material-ui/core/Typography"
 
 class ReadWriteBooleanCard extends Component {
   constructor(props) {
@@ -38,8 +39,15 @@ class ReadWriteBooleanCard extends Component {
         }}
       >
         <div style={{ width: "100%" }}>
-          <div style={{ display: "flex", marginBottom: "16px" }}>
-            {this.props.min}
+          <div
+            style={{ display: "flex", marginBottom: "24px", marginTop: "8px" }}
+          >
+            <Typography
+              variant="h6"
+              style={{ marginTop: "-16px", marginRight: "16px" }}
+            >
+              {this.props.min}
+            </Typography>
             <Slider
               min={this.props.min}
               max={this.props.max}
@@ -66,7 +74,12 @@ class ReadWriteBooleanCard extends Component {
               }}
               disabled={this.props.disabled}
             />
-            {this.props.max}
+            <Typography
+              variant="h6"
+              style={{ marginTop: "-16px", marginLeft: "16px" }}
+            >
+              {this.props.max}
+            </Typography>
           </div>
           <TextField
             id="read.write-bounded-float-card-value"
@@ -108,7 +121,7 @@ class ReadWriteBooleanCard extends Component {
                 )
               ),
             }}
-            style={{ width: "100%",maxWidth:"208px" }}
+            style={{ width: "100%", maxWidth: "208px" }}
             variant="outlined"
           />
         </div>
