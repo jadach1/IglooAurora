@@ -23,9 +23,11 @@ export default function ReadOnlyFloatCard(props) {
               ? {
                   color: "white",
                   height: "100%",
+                  whiteSpace: "nowrap",
                 }
               : {
                   height: "100%",
+                  whiteSpace: "nowrap",
                 }
           }
         >

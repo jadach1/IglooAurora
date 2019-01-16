@@ -12,26 +12,28 @@ class ReadOnlyStringCard extends Component {
           justifyContent: "center",
           alignItems: "center",
           textAlign: "center",
+          overflowX: "auto",
+          overflowY: "hidden",
         }}
       >
-        <Typography
-          variant="h3"
-          style={
-            typeof Storage !== "undefined" &&
-            localStorage.getItem("nightMode") === "true"
-              ? {
-                  color: "white",
-                  paddingLeft: "8px",
-                  paddingRight: "8px",
-                }
-              : {
-                  paddingLeft: "8px",
-                  paddingRight: "8px",
-                }
-          }
-        >
-          {this.props.value}
-        </Typography>
+        <div style={{ width: "100%" }}>
+          <Typography
+            variant="h3"
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    color: "white",
+                    whiteSpace: "nowrap",
+                  }
+                : {
+                    whiteSpace: "nowrap",
+                  }
+            }
+          >
+            {this.props.value}
+          </Typography>
+        </div>
       </div>
     )
   }
