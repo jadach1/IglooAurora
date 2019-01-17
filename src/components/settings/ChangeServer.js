@@ -214,7 +214,19 @@ class ChangeServer extends React.Component {
                       Default server
                     </font>
                   }
-                  secondary={<font>https://bering.igloo.ooo</font>}
+                  secondary={
+                    <font
+                      style={
+                        !this.props.unauthenticated &&
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "#c1c2c5" }
+                          : { color: "#7a7a7a" }
+                      }
+                    >
+                      https://bering.igloo.ooo
+                    </font>
+                  }
                 />
               </ListItem>
               {dialogList}
