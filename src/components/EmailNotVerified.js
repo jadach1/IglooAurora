@@ -4,7 +4,10 @@ import IconButton from "@material-ui/core/IconButton"
 import Snackbar from "@material-ui/core/Snackbar"
 import SnackbarContent from "@material-ui/core/SnackbarContent"
 import withStyles from "@material-ui/core/styles/withStyles"
-import Icon from "@material-ui/core/Icon"
+import Warning from "@material-ui/icons/Warning"
+import Notes from "@material-ui/icons/Notes"
+import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
+import ChevronRight from "@material-ui/icons/ChevronRight"
 import Slide from "@material-ui/core/Slide"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
@@ -49,7 +52,7 @@ function MySnackbarContent(props) {
           className={classes.message}
           style={{ marginLeft: "-4px" }}
         >
-          <Icon style={{ fontSize: 24, marginRight: "16px" }}>warning</Icon>
+          <Warning style={{ fontSize: 24, marginRight: "16px" }} />
           Your account isn't verified!
         </span>
       }
@@ -61,7 +64,7 @@ function MySnackbarContent(props) {
           }}
           color="primary"
         >
-          <Icon>notes</Icon>
+          <Notes />
         </IconButton>,
         <IconButton
           style={{ marginRight: "-8px", color: "white" }}
@@ -70,11 +73,7 @@ function MySnackbarContent(props) {
           }}
           color="primary"
         >
-          {mobile ? (
-            <Icon>keyboard_arrow_down</Icon>
-          ) : (
-            <Icon>chevron_right</Icon>
-          )}
+          {mobile ? <KeyboardArrowDown /> : <ChevronRight />}
         </IconButton>,
       ]}
     />

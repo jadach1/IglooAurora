@@ -6,7 +6,6 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import FormControl from "@material-ui/core/FormControl"
 import FormHelperText from "@material-ui/core/FormHelperText"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 import zxcvbn from "zxcvbn"
@@ -17,6 +16,12 @@ import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
 import { Link } from "react-router-dom"
 import MUILink from "@material-ui/core/Link"
+import Email from "@material-ui/icons/Email"
+import Clear from "@material-ui/icons/Clear"
+import VpnKey from "@material-ui/icons/VpnKey"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import AccountCircle from "@material-ui/icons/AccountCircle"
 
 class SignupMobile extends Component {
   constructor() {
@@ -216,9 +221,7 @@ class SignupMobile extends Component {
           style={{ width: "100%" }}
         >
           <Grid item style={{ marginRight: "16px" }}>
-            <Icon style={{ color: "white", marginBottom: "20px" }}>
-              account_circle
-            </Icon>
+            <AccountCircle style={{ color: "white", marginBottom: "20px" }} />
           </Grid>
           <Grid item style={{ width: "calc(100% - 40px)" }}>
             <FormControl style={{ width: "100%" }}>
@@ -250,7 +253,7 @@ class SignupMobile extends Component {
                         }}
                         style={{ color: "white" }}
                       >
-                        <Icon>clear</Icon>
+                        <Clear />
                       </IconButton>
                     </InputAdornment>
                   ) : null
@@ -273,7 +276,7 @@ class SignupMobile extends Component {
           style={{ width: "100%" }}
         >
           <Grid item style={{ marginRight: "16px" }}>
-            <Icon style={{ color: "white", marginBottom: "20px" }}>email</Icon>
+            <Email style={{ color: "white", marginBottom: "20px" }} />
           </Grid>
           <Grid item style={{ width: "calc(100% - 40px)" }}>
             <FormControl style={{ width: "100%" }}>
@@ -304,7 +307,7 @@ class SignupMobile extends Component {
                         onClick={this.handleClickCancelEmail}
                         style={{ color: "white" }}
                       >
-                        <Icon>clear</Icon>
+                        <Clear />
                       </IconButton>
                     </InputAdornment>
                   ) : null
@@ -332,9 +335,7 @@ class SignupMobile extends Component {
           style={{ width: "100%" }}
         >
           <Grid item style={{ marginRight: "16px" }}>
-            <Icon style={{ color: "white", marginBottom: "20px" }}>
-              vpn_key
-            </Icon>
+            <VpnKey style={{ color: "white", marginBottom: "20px" }} />
           </Grid>
           <Grid item style={{ width: "calc(100% - 40px)" }}>
             <FormControl style={{ width: "100%" }}>
@@ -370,15 +371,15 @@ class SignupMobile extends Component {
                         {document.documentMode ||
                         /Edge/.test(navigator.userAgent) ? (
                           this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
+                            <VisibilityOff />
                           ) : (
-                            <Icon>visibility</Icon>
+                            <Visibility />
                           )
                         ) : (
                           <ToggleIcon
                             on={this.state.showPassword || false}
-                            onIcon={<Icon>visibility_off</Icon>}
-                            offIcon={<Icon>visibility</Icon>}
+                            onIcon={<VisibilityOff />}
+                            offIcon={<Visibility />}
                           />
                         )}
                       </IconButton>

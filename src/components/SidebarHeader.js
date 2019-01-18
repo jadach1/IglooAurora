@@ -1,10 +1,10 @@
 import React, { Component } from "react"
 import { hotkeys } from "react-keyboard-shortcuts"
-import Icon from "@material-ui/core/Icon"
 import Typography from "@material-ui/core/Typography"
 import Tooltip from "@material-ui/core/Tooltip"
 import IconButton from "@material-ui/core/IconButton"
 import { Link, Redirect } from "react-router-dom"
+import ArrowBack from "@material-ui/icons/ArrowBack"
 
 class SidebarHeader extends Component {
   hot_keys = {
@@ -67,7 +67,7 @@ class SidebarHeader extends Component {
             component={Link}
             to="/"
           >
-            <Icon>arrow_back</Icon>
+            <ArrowBack />
           </IconButton>
         </Tooltip>
         <Typography

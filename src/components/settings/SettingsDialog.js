@@ -5,7 +5,6 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import Slide from "@material-ui/core/Slide"
 import Grow from "@material-ui/core/Grow"
-import Icon from "@material-ui/core/Icon"
 import AppBar from "@material-ui/core/AppBar"
 import Tabs from "@material-ui/core/Tabs"
 import Tab from "@material-ui/core/Tab"
@@ -41,6 +40,10 @@ import Tooltip from "@material-ui/core/Tooltip"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Code from "@material-ui/icons/Code"
+import Close from "@material-ui/icons/Close"
+import AccountBox from "@material-ui/icons/AccountBox"
+import Language from "@material-ui/icons/Language"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -1266,7 +1269,7 @@ class SettingsDialog extends React.Component {
                     fullWidth
                   >
                     <Tab
-                      icon={<Icon>language</Icon>}
+                      icon={<Language />}
                       label="General"
                       value={0}
                       style={
@@ -1277,7 +1280,7 @@ class SettingsDialog extends React.Component {
                       }
                     />
                     <Tab
-                      icon={<Icon>account_box</Icon>}
+                      icon={<AccountBox />}
                       label="Account"
                       value={1}
                       style={
@@ -1290,7 +1293,7 @@ class SettingsDialog extends React.Component {
                     {typeof Storage !== "undefined" &&
                       localStorage.getItem("devMode") === "true" && (
                         <Tab
-                          icon={<Icon>code</Icon>}
+                          icon={<Code />}
                           label="Development"
                           value={2}
                           style={{ width: "33%" }}
@@ -1343,7 +1346,7 @@ class SettingsDialog extends React.Component {
                         color: "white",
                       }}
                     >
-                      <Icon>close</Icon>
+                      <Close />
                     </IconButton>
                   </Tooltip>
                 </Toolbar>
@@ -1376,7 +1379,7 @@ class SettingsDialog extends React.Component {
                   }
                 >
                   <BottomNavigationAction
-                    icon={<Icon>language</Icon>}
+                    icon={<Language />}
                     label="General"
                     style={
                       typeof Storage !== "undefined" &&
@@ -1390,7 +1393,7 @@ class SettingsDialog extends React.Component {
                     }
                   />
                   <BottomNavigationAction
-                    icon={<Icon>account_box</Icon>}
+                    icon={<AccountBox />}
                     label="Account"
                     style={
                       typeof Storage !== "undefined" &&
@@ -1406,7 +1409,7 @@ class SettingsDialog extends React.Component {
                   {typeof Storage !== "undefined" &&
                     localStorage.getItem("devMode") === "true" && (
                       <BottomNavigationAction
-                        icon={<Icon>code</Icon>}
+                        icon={<Code />}
                         label="Development"
                         style={
                           typeof Storage !== "undefined" &&

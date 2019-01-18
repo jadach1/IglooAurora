@@ -1,7 +1,6 @@
 import React from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -18,6 +17,8 @@ import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
 import SwipeableViews from "react-swipeable-views"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Clear from "@material-ui/icons/Clear"
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -135,7 +136,7 @@ class CreateEnvironment extends React.Component {
                         : { color: "rgba(0, 0, 0, 0.46)" }
                     }
                   >
-                    <Icon>clear</Icon>
+                    <Clear />
                   </IconButton>
                 </InputAdornment>
               ),
@@ -162,7 +163,7 @@ class CreateEnvironment extends React.Component {
               src={denali}
               alt="Mt. Denali"
               className="notSelectable nonDraggable"
-                  draggable="false"
+              draggable="false"
               style={{
                 width: "100%",
               }}
@@ -171,7 +172,7 @@ class CreateEnvironment extends React.Component {
               src={fox}
               alt="Fox"
               className="notSelectable nonDraggable"
-                  draggable="false"
+              draggable="false"
               style={{
                 width: "100%",
               }}
@@ -180,8 +181,8 @@ class CreateEnvironment extends React.Component {
               src={treetops}
               alt="treetops"
               className="notSelectable nonDraggable"
-                  draggable="false"
-                  style={{
+              draggable="false"
+              style={{
                 width: "100%",
               }}
             />
@@ -189,8 +190,8 @@ class CreateEnvironment extends React.Component {
               src={puffin}
               alt="Puffin"
               className="notSelectable nonDraggable"
-                  draggable="false"
-                  style={{
+              draggable="false"
+              style={{
                 width: "100%",
               }}
             />
@@ -198,8 +199,8 @@ class CreateEnvironment extends React.Component {
               src={northernLights}
               alt="Northern lights"
               className="notSelectable nonDraggable"
-                  draggable="false"
-                  style={{
+              draggable="false"
+              style={{
                 width: "100%",
               }}
             />
@@ -215,7 +216,7 @@ class CreateEnvironment extends React.Component {
               disabled={this.state.slideIndex === 0}
               style={{ width: "73px", marginLeft: "24px" }}
             >
-              <Icon>keyboard_arrow_left</Icon>
+              <KeyboardArrowLeft />
               Back
             </Button>
             <Button
@@ -234,7 +235,7 @@ class CreateEnvironment extends React.Component {
               }}
             >
               Next
-              <Icon>keyboard_arrow_right</Icon>
+              <KeyboardArrowLeft />
             </Button>
           </div>
         </div>

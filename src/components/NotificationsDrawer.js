@@ -6,7 +6,6 @@ import ListItemText from "@material-ui/core/ListItemText"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import AppBar from "@material-ui/core/AppBar"
 import Typography from "@material-ui/core/Typography"
-import Icon from "@material-ui/core/Icon"
 import Badge from "@material-ui/core/Badge"
 import Tooltip from "@material-ui/core/Tooltip"
 import SwipeableDrawer from "@material-ui/core/SwipeableDrawer"
@@ -21,6 +20,14 @@ import Button from "@material-ui/core/Button"
 import { hotkeys } from "react-keyboard-shortcuts"
 import moment from "moment"
 import Moment from "react-moment"
+import NotificationsNone from "@material-ui/icons/NotificationsNone"
+import Notifications from "@material-ui/icons/Notifications"
+import Delete from "@material-ui/icons/Delete"
+import MoreVert from "@material-ui/icons/MoreVert"
+import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp"
+import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
+import Markunread from "@material-ui/icons/Markunread"
+import ChevronRight from "@material-ui/icons/ChevronRight"
 
 let device
 
@@ -413,7 +420,7 @@ class NotificationsDrawer extends React.Component {
                                 : { color: "black" }
                             }
                           >
-                            <Icon>delete</Icon>
+                            <Delete />
                           </IconButton>
                         </Tooltip>
                       </ListItemSecondaryAction>
@@ -520,7 +527,7 @@ class NotificationsDrawer extends React.Component {
                                 : { color: "black" }
                             }
                           >
-                            <Icon>more_vert</Icon>
+                            <MoreVert />
                           </IconButton>
                         </Tooltip>
                       </ListItemSecondaryAction>
@@ -589,9 +596,9 @@ class NotificationsDrawer extends React.Component {
             }
           >
             {this.props.hiddenNotifications ? (
-              <Icon>keyboard_arrow_up</Icon>
+              <KeyboardArrowUp />
             ) : (
-              <Icon>keyboard_arrow_down</Icon>
+              <KeyboardArrowDown />
             )}
             {this.props.hiddenNotifications
               ? "Hide read notifications"
@@ -626,7 +633,7 @@ class NotificationsDrawer extends React.Component {
             }}
           >
             <ListItemIcon>
-              <Icon>markunread</Icon>
+              <Markunread />
             </ListItemIcon>
             <ListItemText>
               <font
@@ -648,7 +655,7 @@ class NotificationsDrawer extends React.Component {
             }}
           >
             <ListItemIcon>
-              <Icon style={{ color: "#f44336" }}>delete</Icon>
+              <Delete style={{ color: "#f44336" }} />
             </ListItemIcon>
             <ListItemText inset>
               <font style={{ color: "#f44336" }}>Delete</font>
@@ -674,9 +681,7 @@ class NotificationsDrawer extends React.Component {
               color="primary"
               invisible={!notificationCount}
             >
-              <Icon>
-                {notificationCount ? "notifications" : "notifications_none"}
-              </Icon>
+              {notificationCount ? <Notifications /> : <NotificationsNone />}
             </Badge>
           </IconButton>
         </Tooltip>
@@ -737,7 +742,7 @@ class NotificationsDrawer extends React.Component {
                         marginLeft: "8px",
                       }}
                     >
-                      <Icon>chevron_right</Icon>
+                      <ChevronRight />
                     </IconButton>
                   </Tooltip>
                 </div>

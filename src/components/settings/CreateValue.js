@@ -3,7 +3,6 @@ import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
-import Icon from "@material-ui/core/Icon"
 import MenuItem from "@material-ui/core/MenuItem"
 import CenteredSpinner from "../CenteredSpinner"
 import Grow from "@material-ui/core/Grow"
@@ -23,6 +22,8 @@ import Typography from "@material-ui/core/Typography"
 import ExpansionPanel from "@material-ui/core/ExpansionPanel"
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails"
 import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary"
+import ExpandMore from "@material-ui/icons/ExpandMore"
+import Clear from "@material-ui/icons/Clear"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -478,7 +479,7 @@ class CreateValue extends React.Component {
                 this.setState({ expanded: expanded ? "general" : null })
               }
             >
-              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+              <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                 <Typography>General</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -528,7 +529,7 @@ class CreateValue extends React.Component {
                           onClick={() => this.setState({ name: "" })}
                           tabIndex="-1"
                         >
-                          <Icon>clear</Icon>
+                          <Clear />
                         </IconButton>
                       </InputAdornment>
                     )
@@ -567,7 +568,7 @@ class CreateValue extends React.Component {
                   this.setState({ expanded: expanded ? "string" : null })
                 }
               >
-                <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+                <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                   <Typography>String options</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
@@ -610,7 +611,7 @@ class CreateValue extends React.Component {
                   this.setState({ expanded: expanded ? "float" : null })
                 }
               >
-                <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+                <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                   <Typography>Float options</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
@@ -741,7 +742,7 @@ class CreateValue extends React.Component {
                             onClick={() => this.setState({ unit: "" })}
                             tabIndex="-1"
                           >
-                            <Icon>clear</Icon>
+                            <Clear />
                           </IconButton>
                         </InputAdornment>
                       )
@@ -756,7 +757,7 @@ class CreateValue extends React.Component {
                 this.setState({ expanded: expanded ? "advanced" : null })
               }
             >
-              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+              <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                 <Typography>Advanced</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>

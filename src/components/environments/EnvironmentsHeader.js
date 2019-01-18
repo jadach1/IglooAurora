@@ -1,10 +1,11 @@
 import React, { Component } from "react"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import Tooltip from "@material-ui/core/Tooltip"
 import AppBar from "@material-ui/core/AppBar"
 import { hotkeys } from "react-keyboard-shortcuts"
 import logo from "../../styles/assets/logo.svg"
+import ExitToApp from "@material-ui/icons/ExitToApp"
+import Settings from "@material-ui/icons/Settings"
 
 class EnvironmentsHeader extends Component {
   hot_keys = {
@@ -65,7 +66,7 @@ class EnvironmentsHeader extends Component {
                 onClick={this.props.openSettings}
                 style={{ color: "white" }}
               >
-                <Icon>settings</Icon>
+                <Settings/>
               </IconButton>
             </Tooltip>
             <Tooltip id="tooltip-bottom" title="Log out" placement="bottom">
@@ -74,7 +75,7 @@ class EnvironmentsHeader extends Component {
                 className="sidebarHeaderButton"
                 style={{ color: "white" }}
               >
-                <Icon>exit_to_app</Icon>
+                <ExitToApp/>
               </IconButton>
             </Tooltip>
           </div>

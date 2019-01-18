@@ -4,7 +4,6 @@ import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import Button from "@material-ui/core/Button"
 import Avatar from "@material-ui/core/Avatar"
-import Icon from "@material-ui/core/Icon"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
@@ -13,6 +12,7 @@ import Slide from "@material-ui/core/Slide"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Clear from "@material-ui/icons/Clear"
 
 let oldName = ""
 
@@ -174,7 +174,7 @@ class ChangeNameDialog extends React.Component {
                       }
                       tabIndex="-1"
                     >
-                      <Icon>clear</Icon>
+                      <Clear />
                     </IconButton>
                   </InputAdornment>
                 ),

@@ -11,13 +11,16 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import ListItemText from "@material-ui/core/ListItemText"
 import List from "@material-ui/core/List"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import Icon from "@material-ui/core/Icon"
 import Button from "@material-ui/core/Button"
 import Zoom from "@material-ui/core/Zoom"
 import AddDevice from "./AddDevice"
 import { hotkeys } from "react-keyboard-shortcuts"
 import { Link, Redirect } from "react-router-dom"
 import queryString from "query-string"
+import FilterList from "@material-ui/icons/FilterList"
+import Add from "@material-ui/icons/Add"
+import Search from "@material-ui/icons/Search"
+import Clear from "@material-ui/icons/Clear"
 
 class Sidebar extends Component {
   state = {
@@ -298,7 +301,7 @@ class Sidebar extends Component {
               }
               onClick={() => this.setState({ addDeviceOpen: true })}
             >
-              <Icon>add</Icon>
+              <Add />
             </Button>
           </Zoom>
           <AddDevice
@@ -344,7 +347,7 @@ class Sidebar extends Component {
               onChange={event => this.props.searchDevices(event.target.value)}
               startAdornment={
                 <InputAdornment position="start" style={{ cursor: "default" }}>
-                  <Icon
+                  <Search
                     style={
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
@@ -371,9 +374,7 @@ class Sidebar extends Component {
                         ? { color: "black", opacity: "0.5" }
                         : { color: "black" }
                     }
-                  >
-                    search
-                  </Icon>
+                  />
                 </InputAdornment>
               }
               endAdornment={
@@ -389,7 +390,7 @@ class Sidebar extends Component {
                           : { color: "black" }
                       }
                     >
-                      <Icon>clear</Icon>
+                      <Clear />
                     </IconButton>
                   </InputAdornment>
                 ) : null
@@ -423,7 +424,7 @@ class Sidebar extends Component {
                   : { color: "black", marginTop: "8px" }
               }
             >
-              <Icon
+              <FilterList
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
@@ -450,9 +451,7 @@ class Sidebar extends Component {
                     ? { color: "black" }
                     : { color: "black", opacity: "0.5" }
                 }
-              >
-                filter_list
-              </Icon>
+              />
             </IconButton>
           </Tooltip>
         </div>

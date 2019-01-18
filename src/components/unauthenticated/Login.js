@@ -9,7 +9,6 @@ import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
-import Icon from "@material-ui/core/Icon"
 import IconButton from "@material-ui/core/IconButton"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
@@ -17,6 +16,11 @@ import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
 import { Link } from "react-router-dom"
 import MUILink from "@material-ui/core/Link"
+import Email from "@material-ui/icons/Email"
+import Clear from "@material-ui/icons/Clear"
+import VpnKey from "@material-ui/icons/VpnKey"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import Visibility from "@material-ui/icons/Visibility"
 
 class Login extends Component {
   constructor() {
@@ -131,7 +135,7 @@ class Login extends Component {
               style={{ width: "100%" }}
             >
               <Grid item style={{ marginRight: "16px" }}>
-                <Icon style={{ marginBottom: "20px" }}>email</Icon>
+                <Email style={{ marginBottom: "20px" }} />
               </Grid>
               <Grid item style={{ width: "calc(100% - 40px)" }}>
                 <FormControl style={{ width: "100%" }}>
@@ -173,7 +177,7 @@ class Login extends Component {
                             tabIndex="-1"
                             style={{ color: "black" }}
                           >
-                            <Icon>clear</Icon>
+                            <Clear />
                           </IconButton>
                         </InputAdornment>
                       ) : null
@@ -202,7 +206,7 @@ class Login extends Component {
               style={{ width: "100%" }}
             >
               <Grid item style={{ marginRight: "16px" }}>
-                <Icon style={{ marginBottom: "20px" }}>vpn_key</Icon>
+                <VpnKey style={{ marginBottom: "20px" }} />
               </Grid>
               <Grid item style={{ width: "calc(100% - 40px)" }}>
                 <FormControl style={{ width: "100%" }}>
@@ -252,15 +256,15 @@ class Login extends Component {
                             {document.documentMode ||
                             /Edge/.test(navigator.userAgent) ? (
                               this.state.showPassword ? (
-                                <Icon>visibility_off</Icon>
+                                <VisibilityOff />
                               ) : (
-                                <Icon>visibility</Icon>
+                                <Visibility />
                               )
                             ) : (
                               <ToggleIcon
                                 on={this.state.showPassword || false}
-                                onIcon={<Icon>visibility_off</Icon>}
-                                offIcon={<Icon>visibility</Icon>}
+                                onIcon={<VisibilityOff />}
+                                offIcon={<Visibility />}
                               />
                             )}
                           </IconButton>

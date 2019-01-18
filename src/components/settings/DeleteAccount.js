@@ -11,7 +11,6 @@ import FormHelperText from "@material-ui/core/FormHelperText"
 import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import ToggleIcon from "material-ui-toggle-icon"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
@@ -27,6 +26,8 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import CenteredSpinner from "../CenteredSpinner"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -244,15 +245,15 @@ class DeleteAccountDialog extends React.Component {
                         {document.documentMode ||
                         /Edge/.test(navigator.userAgent) ? (
                           this.state.showPassword ? (
-                            <Icon>visibility_off</Icon>
+                            <VisibilityOff />
                           ) : (
-                            <Icon>visibility</Icon>
+                            <Visibility />
                           )
                         ) : (
                           <ToggleIcon
                             on={this.state.showPassword || false}
-                            onIcon={<Icon>visibility_off</Icon>}
-                            offIcon={<Icon>visibility</Icon>}
+                            onIcon={<VisibilityOff />}
+                            offIcon={<Visibility />}
                           />
                         )}
                       </IconButton>

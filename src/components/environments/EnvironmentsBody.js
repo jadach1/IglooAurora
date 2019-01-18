@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import Typography from "@material-ui/core/Typography"
-import Icon from "@material-ui/core/Icon"
 import Grid from "@material-ui/core/Grid"
 import IconButton from "@material-ui/core/IconButton"
 import FormControl from "@material-ui/core/FormControl"
@@ -21,6 +20,14 @@ import Helmet from "react-helmet"
 import PendingShares from "./PendingShares"
 import PendingOwnerChanges from "./PendingOwnerChanges"
 import Hibernations from "./Hibernations"
+import People from "@material-ui/icons/People"
+import AcUnit from "@material-ui/icons/AcUnit"
+import Add from "@material-ui/icons/Add"
+import Share from "@material-ui/icons/Share"
+import Search from "@material-ui/icons/Search"
+import Clear from "@material-ui/icons/Clear"
+import Person from "@material-ui/icons/Person"
+import Group from "@material-ui/icons/Group"
 
 export default class EnvironmentsBody extends Component {
   state = {
@@ -115,7 +122,7 @@ export default class EnvironmentsBody extends Component {
                       paddingBottom: "47px",
                     }}
                   >
-                    <Icon style={{ fontSize: "64px" }}>people</Icon>
+                    <People style={{ fontSize: "64px" }}/>
                     <br />
                     <Typography
                       variant="h5"
@@ -174,9 +181,8 @@ export default class EnvironmentsBody extends Component {
                     borderRadius: "4px",
                   }}
                 >
-                  <Icon style={{ fontSize: "48px", margin: "8px 0" }}>
-                    ac_unit
-                  </Icon>
+                  <AcUnit style={{ fontSize: "48px", margin: "8px 0" }}
+                                      />
                   <br />
                   <Typography
                     variant="h5"
@@ -229,7 +235,7 @@ export default class EnvironmentsBody extends Component {
                     borderRadius: "4px",
                   }}
                 >
-                  <Icon style={{ fontSize: "64px" }}>add</Icon>
+                  <Add style={{ fontSize: "64px" }}/>
                   <br />
                   <Typography
                     variant="h5"
@@ -314,15 +320,12 @@ export default class EnvironmentsBody extends Component {
                       paddingBottom: "47px",
                     }}
                   >
-                    <Icon
+                    <Share
                       style={{
                         fontSize: "48px",
                         marginBottom: "8px",
                         marginTop: "8px",
-                      }}
-                    >
-                      share
-                    </Icon>
+                      }}/>
                     <br />
                     <Typography
                       variant="h5"
@@ -427,7 +430,7 @@ export default class EnvironmentsBody extends Component {
                       position="start"
                       style={{ cursor: "default" }}
                     >
-                      <Icon
+                      <Search
                         style={
                           nightMode
                             ? user && user.environments[0]
@@ -436,10 +439,7 @@ export default class EnvironmentsBody extends Component {
                             : user && user.environments[0]
                             ? { color: "black" }
                             : { color: "black", opacity: "0.5" }
-                        }
-                      >
-                        search
-                      </Icon>
+                        }/>
                     </InputAdornment>
                   }
                   endAdornment={
@@ -453,7 +453,7 @@ export default class EnvironmentsBody extends Component {
                           }
                           tabIndex="-1"
                         >
-                          <Icon>clear</Icon>
+                          <Clear/>
                         </IconButton>
                       </InputAdornment>
                     ) : null
@@ -607,7 +607,7 @@ export default class EnvironmentsBody extends Component {
                     }
                   >
                     <BottomNavigationAction
-                      icon={<Icon>person</Icon>}
+                      icon={<Person/>}
                       label="Your environments"
                       style={
                         nightMode
@@ -620,7 +620,7 @@ export default class EnvironmentsBody extends Component {
                       }
                     />
                     <BottomNavigationAction
-                      icon={<Icon>group</Icon>}
+                      icon={<Group/>}
                       label="Shared with you"
                       style={
                         nightMode
@@ -681,7 +681,7 @@ export default class EnvironmentsBody extends Component {
                       position="start"
                       style={{ cursor: "default" }}
                     >
-                      <Icon
+                      <Search
                         style={
                           typeof Storage !== "undefined" &&
                           localStorage.getItem("nightMode") === "true"
@@ -691,10 +691,7 @@ export default class EnvironmentsBody extends Component {
                             : user && user.environments[0]
                             ? { color: "black" }
                             : { color: "black", opacity: "0.5" }
-                        }
-                      >
-                        search
-                      </Icon>
+                        }/>
                     </InputAdornment>
                   }
                   endAdornment={
@@ -710,7 +707,7 @@ export default class EnvironmentsBody extends Component {
                           }
                           tabIndex="-1"
                         >
-                          <Icon>clear</Icon>
+                          <Clear/>
                         </IconButton>
                       </InputAdornment>
                     ) : null

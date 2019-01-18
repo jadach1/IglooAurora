@@ -8,10 +8,10 @@ import Slide from "@material-ui/core/Slide"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import CenteredSpinner from "../CenteredSpinner"
 import gql from "graphql-tag"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Clear from "@material-ui/icons/Clear"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -167,7 +167,7 @@ class InviteUser extends Component {
                         : { color: "rgba(0, 0, 0, 0.46)" }
                     }
                   >
-                    <Icon>clear</Icon>
+                    <Clear />
                   </IconButton>
                 </InputAdornment>
               ),

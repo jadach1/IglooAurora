@@ -5,7 +5,6 @@ import Grid from "@material-ui/core/Grid"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 import Checkbox from "@material-ui/core/Checkbox"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import Icon from "@material-ui/core/Icon"
 import Input from "@material-ui/core/Input"
 import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
@@ -18,6 +17,11 @@ import CenteredSpinner from "../CenteredSpinner"
 import ToggleIcon from "material-ui-toggle-icon"
 import { Link } from "react-router-dom"
 import MUILink from "@material-ui/core/Link"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import Email from "@material-ui/icons/Email"
+import Clear from "@material-ui/icons/Clear"
+import VpnKey from "@material-ui/icons/VpnKey"
 
 export default class LoginMobile extends Component {
   constructor() {
@@ -198,9 +202,7 @@ export default class LoginMobile extends Component {
             style={{ width: "100%" }}
           >
             <Grid item style={{ marginRight: "16px" }}>
-              <Icon style={{ color: "white", marginBottom: "20px" }}>
-                email
-              </Icon>
+              <Email style={{ color: "white", marginBottom: "20px" }} />
             </Grid>
             <Grid item style={{ width: "calc(100% - 40px)" }}>
               <FormControl style={{ width: "100%" }}>
@@ -236,7 +238,7 @@ export default class LoginMobile extends Component {
                           tabIndex="-1"
                           style={{ color: "white" }}
                         >
-                          <Icon>clear</Icon>
+                          <Clear />
                         </IconButton>
                       </InputAdornment>
                     ) : null
@@ -261,9 +263,7 @@ export default class LoginMobile extends Component {
             style={{ width: "100%" }}
           >
             <Grid item style={{ marginRight: "16px" }}>
-              <Icon style={{ color: "white", marginBottom: "20px" }}>
-                vpn_key
-              </Icon>
+              <VpnKey style={{ color: "white", marginBottom: "20px" }} />
             </Grid>
             <Grid item style={{ width: "calc(100% - 40px)" }}>
               <FormControl style={{ width: "100%" }}>
@@ -303,15 +303,15 @@ export default class LoginMobile extends Component {
                           {document.documentMode ||
                           /Edge/.test(navigator.userAgent) ? (
                             this.state.showPassword ? (
-                              <Icon>visibility_off</Icon>
+                              <VisibilityOff />
                             ) : (
-                              <Icon>visibility</Icon>
+                              <Visibility />
                             )
                           ) : (
                             <ToggleIcon
                               on={this.state.showPassword || false}
-                              onIcon={<Icon>visibility_off</Icon>}
-                              offIcon={<Icon>visibility</Icon>}
+                              onIcon={<VisibilityOff />}
+                              offIcon={<Visibility />}
                             />
                           )}
                         </IconButton>

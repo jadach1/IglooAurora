@@ -5,7 +5,7 @@ import gql from "graphql-tag"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
+import Clear from "@material-ui/icons/Clear"
 import Typography from "@material-ui/core/Typography"
 
 class ReadWriteBooleanCard extends Component {
@@ -115,7 +115,7 @@ class ReadWriteBooleanCard extends Component {
                           : { color: "rgba(0, 0, 0, 0.46)" }
                       }
                     >
-                      <Icon>clear</Icon>
+                      <Clear />
                     </IconButton>
                   </InputAdornment>
                 )

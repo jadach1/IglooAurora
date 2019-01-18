@@ -9,7 +9,6 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Icon from "@material-ui/core/Icon"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import TextField from "@material-ui/core/TextField"
@@ -24,6 +23,8 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import Switch from "@material-ui/core/Switch"
+import ExpandMore from "@material-ui/icons/ExpandMore"
+import Clear from "@material-ui/icons/Clear"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -152,7 +153,7 @@ class CreateDevice extends React.Component {
                 this.setState({ expanded: expanded ? "general" : null })
               }
             >
-              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+              <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                 <Typography>General</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>
@@ -196,7 +197,7 @@ class CreateDevice extends React.Component {
                               : { color: "black" }
                           }
                         >
-                          <Icon>clear</Icon>
+                          <Clear />
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -242,7 +243,7 @@ class CreateDevice extends React.Component {
                               : { color: "black" }
                           }
                         >
-                          <Icon>clear</Icon>
+                          <Clear />
                         </IconButton>
                       </InputAdornment>
                     ),
@@ -257,7 +258,7 @@ class CreateDevice extends React.Component {
                 this.setState({ expanded: expanded ? "advanced" : null })
               }
             >
-              <ExpansionPanelSummary expandIcon={<Icon>expand_more</Icon>}>
+              <ExpansionPanelSummary expandIcon={<ExpandMore />}>
                 <Typography>Advanced</Typography>
               </ExpansionPanelSummary>
               <ExpansionPanelDetails>

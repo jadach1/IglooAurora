@@ -17,7 +17,6 @@ import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import TextField from "@material-ui/core/TextField"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
@@ -36,6 +35,14 @@ import MenuItem from "@material-ui/core/MenuItem"
 import clipboardCopy from "clipboard-copy"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import Clear from "@material-ui/icons/Clear"
+import Icon from "@material-ui/core/Icon"
+import Delete from "@material-ui/icons/Delete"
+import Add from "@material-ui/icons/Add"
+import MoreVert from "@material-ui/icons/MoreVert"
+import VpnKey from "@material-ui/icons/VpnKey"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -423,7 +430,7 @@ class AuthDialog extends React.Component {
           {this.props.tokenData.user.permanentTokens.map(token => (
             <ListItem>
               <ListItemIcon>
-                <Icon>vpn_key</Icon>
+                <VpnKey />
               </ListItemIcon>
               <ListItemText
                 primary={
@@ -482,7 +489,7 @@ class AuthDialog extends React.Component {
                       : { color: "black" }
                   }
                 >
-                  <Icon>more_vert</Icon>
+                  <MoreVert />
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>
@@ -494,7 +501,7 @@ class AuthDialog extends React.Component {
             }
           >
             <ListItemIcon>
-              <Icon>add</Icon>
+              <Add />
             </ListItemIcon>
             <ListItemText
               primary={
@@ -589,15 +596,15 @@ class AuthDialog extends React.Component {
                       {document.documentMode ||
                       /Edge/.test(navigator.userAgent) ? (
                         this.state.showPassword ? (
-                          <Icon>visibility_off</Icon>
+                          <VisibilityOff />
                         ) : (
-                          <Icon>visibility</Icon>
+                          <Visibility />
                         )
                       ) : (
                         <ToggleIcon
                           on={this.state.showPassword || false}
-                          onIcon={<Icon>visibility_off</Icon>}
-                          offIcon={<Icon>visibility</Icon>}
+                          onIcon={<VisibilityOff />}
+                          offIcon={<Visibility />}
                         />
                       )}
                     </IconButton>
@@ -715,7 +722,7 @@ class AuthDialog extends React.Component {
                       }
                       tabIndex="-1"
                     >
-                      <Icon>clear</Icon>
+                      <Clear />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -835,7 +842,7 @@ class AuthDialog extends React.Component {
             }}
           >
             <ListItemIcon>
-              <Icon style={{ color: "#f44336" }}>delete</Icon>
+              <Delete style={{ color: "#f44336" }} />
             </ListItemIcon>
             <ListItemText inset>
               <span style={{ color: "#f44336" }}>Delete</span>

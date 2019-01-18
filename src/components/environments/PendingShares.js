@@ -12,9 +12,10 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 import CenteredSpinner from "../CenteredSpinner"
+import Done from "@material-ui/icons/Done"
+import Close from "@material-ui/icons/Close"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -112,7 +113,7 @@ class PendingShares extends Component {
                         : { color: "black" }
                     }
                   >
-                    <Icon>done</Icon>
+                    <Done />
                   </IconButton>
                   <IconButton
                     onClick={() =>
@@ -127,7 +128,7 @@ class PendingShares extends Component {
                         : { color: "black" }
                     }
                   >
-                    <Icon>close</Icon>
+                    <Close />
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>

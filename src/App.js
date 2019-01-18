@@ -409,7 +409,6 @@ class App extends Component {
           "",
           "New environment"
         )
-        item1.groupName = "Tasks"
 
         jumpList.items.append(item1)
       })

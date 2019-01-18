@@ -6,7 +6,6 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
@@ -27,6 +26,12 @@ import RevokeInvite from "./RevokeInvite"
 import ChangePendingRole from "./ChangePendingRole"
 import RevokeOwnerChange from "./RevokeOwnerChange"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import SwapHoriz from "@material-ui/icons/SwapHoriz"
+import RemoveCircleOutline from "@material-ui/icons/RemoveCircleOutline"
+import MoreVert from "@material-ui/icons/MoreVert"
+import PersonAdd from "@material-ui/icons/PersonAdd"
+import Edit from "@material-ui/icons/Edit"
+import RemoveCircle from "@material-ui/icons/RemoveCircle"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -215,7 +220,7 @@ class ShareEnvironment extends React.Component {
                             : { color: "black" }
                         }
                       >
-                        <Icon>swap_horiz</Icon>
+                        <SwapHoriz />
                       </IconButton>
                     </ListItemSecondaryAction>
                   )}
@@ -280,7 +285,7 @@ class ShareEnvironment extends React.Component {
                               : { color: "black" }
                           }
                         >
-                          <Icon>remove_circle_outline</Icon>
+                          <RemoveCircleOutline />
                         </IconButton>
                       </ListItemSecondaryAction>
                     </ListItem>
@@ -292,7 +297,8 @@ class ShareEnvironment extends React.Component {
               this.props.environment.admins[0] ||
               (this.props.environment.pendingEnvironmentShares &&
                 this.props.environment.pendingEnvironmentShares.filter(
-                  pendingEnvironmentShare => pendingEnvironmentShare.role === "ADMIN"
+                  pendingEnvironmentShare =>
+                    pendingEnvironmentShare.role === "ADMIN"
                 ))) && (
               <li key="Admins">
                 <ul style={{ padding: "0" }}>
@@ -379,7 +385,7 @@ class ShareEnvironment extends React.Component {
                                 : { color: "black" }
                             }
                           >
-                            <Icon>more_vert</Icon>
+                            <MoreVert />
                           </IconButton>
                         </ListItemSecondaryAction>
                       )}
@@ -389,7 +395,8 @@ class ShareEnvironment extends React.Component {
                     this.props.environment.myRole === "OWNER") &&
                     this.props.environment.pendingEnvironmentShares
                       .filter(
-                        pendingEnvironmentShare => pendingEnvironmentShare.role === "ADMIN"
+                        pendingEnvironmentShare =>
+                          pendingEnvironmentShare.role === "ADMIN"
                       )
                       .map(item => (
                         <ListItem key={item.id}>
@@ -452,7 +459,7 @@ class ShareEnvironment extends React.Component {
                                   : { color: "black" }
                               }
                             >
-                              <Icon>more_vert</Icon>
+                              <MoreVert />
                             </IconButton>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -474,7 +481,7 @@ class ShareEnvironment extends React.Component {
                             backgroundColor: "transparent",
                           }}
                         >
-                          <Icon
+                          <PersonAdd
                             style={
                               typeof Storage !== "undefined" &&
                               localStorage.getItem("nightMode") === "true"
@@ -485,9 +492,7 @@ class ShareEnvironment extends React.Component {
                                     color: "black",
                                   }
                             }
-                          >
-                            person_add
-                          </Icon>
+                          />
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
@@ -518,7 +523,8 @@ class ShareEnvironment extends React.Component {
               this.props.environment.editors[0] ||
               (this.props.environment.pendingEnvironmentShares &&
                 this.props.environment.pendingEnvironmentShares.filter(
-                  pendingEnvironmentShare => pendingEnvironmentShare.role === "EDITOR"
+                  pendingEnvironmentShare =>
+                    pendingEnvironmentShare.role === "EDITOR"
                 ))) && (
               <li key="Editors">
                 <ul style={{ padding: "0" }}>
@@ -606,7 +612,7 @@ class ShareEnvironment extends React.Component {
                                 : { color: "black" }
                             }
                           >
-                            <Icon>more_vert</Icon>
+                            <MoreVert />
                           </IconButton>
                         </ListItemSecondaryAction>
                       )}
@@ -616,7 +622,8 @@ class ShareEnvironment extends React.Component {
                     this.props.environment.myRole === "OWNER") &&
                     this.props.environment.pendingEnvironmentShares
                       .filter(
-                        pendingEnvironmentShare => pendingEnvironmentShare.role === "EDITOR"
+                        pendingEnvironmentShare =>
+                          pendingEnvironmentShare.role === "EDITOR"
                       )
                       .map(item => (
                         <ListItem key={item.id}>
@@ -679,7 +686,7 @@ class ShareEnvironment extends React.Component {
                                   : { color: "black" }
                               }
                             >
-                              <Icon>more_vert</Icon>
+                              <MoreVert />
                             </IconButton>
                           </ListItemSecondaryAction>
                         </ListItem>
@@ -701,7 +708,7 @@ class ShareEnvironment extends React.Component {
                             backgroundColor: "transparent",
                           }}
                         >
-                          <Icon
+                          <PersonAdd
                             style={
                               typeof Storage !== "undefined" &&
                               localStorage.getItem("nightMode") === "true"
@@ -712,9 +719,7 @@ class ShareEnvironment extends React.Component {
                                     color: "black",
                                   }
                             }
-                          >
-                            person_add
-                          </Icon>
+                          />
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
@@ -745,7 +750,8 @@ class ShareEnvironment extends React.Component {
               this.props.environment.spectators[0] ||
               (this.props.environment.pendingEnvironmentShares &&
                 this.props.environment.pendingEnvironmentShares.filter(
-                  pendingEnvironmentShare => pendingEnvironmentShare.role === "SPECTATOR"
+                  pendingEnvironmentShare =>
+                    pendingEnvironmentShare.role === "SPECTATOR"
                 ))) && (
               <li key="Spectators">
                 <ul style={{ padding: "0" }}>
@@ -833,7 +839,7 @@ class ShareEnvironment extends React.Component {
                                 : { color: "black" }
                             }
                           >
-                            <Icon>more_vert</Icon>
+                            <MoreVert />
                           </IconButton>
                         </ListItemSecondaryAction>
                       )}
@@ -856,7 +862,7 @@ class ShareEnvironment extends React.Component {
                             backgroundColor: "transparent",
                           }}
                         >
-                          <Icon
+                          <PersonAdd
                             style={
                               typeof Storage !== "undefined" &&
                               localStorage.getItem("nightMode") === "true"
@@ -867,9 +873,7 @@ class ShareEnvironment extends React.Component {
                                     color: "black",
                                   }
                             }
-                          >
-                            person_add
-                          </Icon>
+                          />
                         </Avatar>
                       </ListItemAvatar>
                       <ListItemText
@@ -915,7 +919,7 @@ class ShareEnvironment extends React.Component {
               }
             >
               <ListItemIcon>
-                <Icon>edit</Icon>
+                <Edit />
               </ListItemIcon>
               <ListItemText
                 inset
@@ -943,7 +947,7 @@ class ShareEnvironment extends React.Component {
               }
             >
               <ListItemIcon>
-                <Icon style={{ color: "#f44336" }}>remove_circle</Icon>
+                <RemoveCircle style={{ color: "#f44336" }} />
               </ListItemIcon>
               <ListItemText inset>
                 <span style={{ color: "#f44336" }}>Stop sharing</span>
@@ -969,7 +973,7 @@ class ShareEnvironment extends React.Component {
               }
             >
               <ListItemIcon>
-                <Icon>edit</Icon>
+                <Edit />
               </ListItemIcon>
               <ListItemText
                 inset
@@ -997,7 +1001,7 @@ class ShareEnvironment extends React.Component {
               }
             >
               <ListItemIcon>
-                <Icon style={{ color: "#f44336" }}>remove_circle</Icon>
+                <RemoveCircle style={{ color: "#f44336" }} />
               </ListItemIcon>
               <ListItemText inset>
                 <span style={{ color: "#f44336" }}>Revoke invite</span>

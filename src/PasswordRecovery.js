@@ -6,7 +6,6 @@ import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
-import Icon from "@material-ui/core/Icon"
 import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import CircularProgress from "@material-ui/core/CircularProgress"
@@ -16,6 +15,9 @@ import gql from "graphql-tag"
 import logo from "./styles/assets/logo.svg"
 import { Redirect } from "react-router-dom"
 import CenteredSpinner from "./components/CenteredSpinner"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import VpnKey from "@material-ui/icons/VpnKey"
 
 export default class PasswordRecovery extends Component {
   state = {
@@ -204,9 +206,7 @@ export default class PasswordRecovery extends Component {
           style={{ width: "100%", marginBottom: "12px" }}
         >
           <Grid item style={{ marginRight: "16px" }}>
-            <Icon style={{ color: "white", marginBottom: "20px" }}>
-              vpn_key
-            </Icon>
+            <VpnKey style={{ color: "white", marginBottom: "20px" }} />
           </Grid>
           <Grid item style={{ width: "calc(100% - 48px)" }}>
             <FormControl style={{ width: "100%" }}>
@@ -250,9 +250,9 @@ export default class PasswordRecovery extends Component {
                         style={{ color: "white" }}
                       >
                         {this.state.showPassword ? (
-                          <Icon>visibility_off</Icon>
+                          <VisibilityOff />
                         ) : (
-                          <Icon>visibility</Icon>
+                          <Visibility />
                         )}
                       </IconButton>
                     </InputAdornment>

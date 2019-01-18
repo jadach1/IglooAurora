@@ -4,7 +4,6 @@ import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
@@ -13,6 +12,7 @@ import withMobileDialog from "@material-ui/core/withMobileDialog"
 import TextField from "@material-ui/core/TextField"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import Clear from "@material-ui/icons/Clear"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -118,8 +118,8 @@ class ForgotPassword extends React.Component {
                 width: "100%",
                 marginTop: "16px",
               }}
-        InputLabelProps={this.state.email && { shrink: true }}
-        InputProps={{
+              InputLabelProps={this.state.email && { shrink: true }}
+              InputProps={{
                 endAdornment: this.state.email && (
                   <InputAdornment position="end">
                     <IconButton
@@ -128,7 +128,7 @@ class ForgotPassword extends React.Component {
                       }
                       tabIndex="-1"
                     >
-                      <Icon>clear</Icon>
+                      <Clear />
                     </IconButton>
                   </InputAdornment>
                 ),

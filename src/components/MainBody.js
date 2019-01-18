@@ -4,9 +4,10 @@ import CenteredSpinner from "./CenteredSpinner"
 import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import Icon from "@material-ui/core/Icon"
 import { Redirect } from "react-router-dom"
 import queryString from "query-string"
+import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp"
+import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
 
 class MainBody extends Component {
   componentDidMount() {
@@ -270,11 +271,7 @@ class MainBody extends Component {
               : { backgroundColor: "transparent", color: "black" }
           }
         >
-          {this.props.showHidden ? (
-            <Icon>keyboard_arrow_up</Icon>
-          ) : (
-            <Icon>keyboard_arrow_down</Icon>
-          )}
+          {this.props.showHidden ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
           {this.props.showHidden ? "Show less" : "Show more"}
         </Button>,
         this.props.showHidden ? (

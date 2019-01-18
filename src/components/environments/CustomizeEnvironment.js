@@ -5,7 +5,6 @@ import Button from "@material-ui/core/Button"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import Dialog from "@material-ui/core/Dialog"
 import DialogActions from "@material-ui/core/DialogActions"
 import DialogTitle from "@material-ui/core/DialogTitle"
@@ -18,6 +17,9 @@ import denali from "../../styles/assets/denali.jpg"
 import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Clear from "@material-ui/icons/Clear"
+import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft"
+import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -161,7 +163,7 @@ class CustomizeEnvironment extends React.Component {
                         : { color: "rgba(0, 0, 0, 0.46)" }
                     }
                   >
-                    <Icon>clear</Icon>
+                    <Clear />
                   </IconButton>
                 </InputAdornment>
               ),
@@ -192,8 +194,8 @@ class CustomizeEnvironment extends React.Component {
               src={denali}
               alt="Mt. Denali"
               className="notSelectable nonDraggable"
-                  draggable="false"
-                  style={{
+              draggable="false"
+              style={{
                 width: "100%",
               }}
             />
@@ -201,8 +203,8 @@ class CustomizeEnvironment extends React.Component {
               src={fox}
               alt="Fox"
               className="notSelectable nonDraggable"
-                  draggable="false"
-                  style={{
+              draggable="false"
+              style={{
                 width: "100%",
               }}
             />
@@ -210,8 +212,8 @@ class CustomizeEnvironment extends React.Component {
               src={treetops}
               alt="treetops"
               className="notSelectable nonDraggable"
-                  draggable="false"
-                  style={{
+              draggable="false"
+              style={{
                 width: "100%",
               }}
             />
@@ -227,8 +229,8 @@ class CustomizeEnvironment extends React.Component {
               src={northernLights}
               alt="Northern lights"
               className="notSelectable nonDraggable"
-                  draggable="false"
-                  style={{
+              draggable="false"
+              style={{
                 width: "100%",
               }}
             />
@@ -244,7 +246,7 @@ class CustomizeEnvironment extends React.Component {
               disabled={this.state.slideIndex === 0}
               style={{ width: "73px", marginLeft: "24px" }}
             >
-              <Icon>keyboard_arrow_left</Icon>
+              <KeyboardArrowLeft />
               Back
             </Button>
             <Button
@@ -263,7 +265,7 @@ class CustomizeEnvironment extends React.Component {
               }}
             >
               Next
-              <Icon>keyboard_arrow_right</Icon>
+              <KeyboardArrowRight />
             </Button>
           </div>
         </div>

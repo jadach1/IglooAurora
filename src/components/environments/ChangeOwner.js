@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import Icon from "@material-ui/core/Icon"
 import Dialog from "@material-ui/core/Dialog"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
@@ -12,6 +11,7 @@ import Slide from "@material-ui/core/Slide"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Clear from "@material-ui/icons/Clear"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -148,7 +148,7 @@ class ChangeOwner extends Component {
                         : { color: "rgba(0, 0, 0, 0.46)" }
                     }
                   >
-                    <Icon>clear</Icon>
+                    <Clear />
                   </IconButton>
                 </InputAdornment>
               ),

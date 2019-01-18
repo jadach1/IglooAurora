@@ -18,7 +18,7 @@ import RenameCardDialog from "./RenameCard"
 import DeleteValue from "./DeleteValue"
 import CardInfo from "./CardInfo.js"
 import Typography from "@material-ui/core/Typography"
-import Icon from "@material-ui/core/Icon"
+import Fullscreen from "@material-ui/icons/Fullscreen"
 import Tooltip from "@material-ui/core/Tooltip"
 import IconButton from "@material-ui/core/IconButton"
 import Menu from "@material-ui/core/Menu"
@@ -26,6 +26,13 @@ import MenuItem from "@material-ui/core/MenuItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import CardSize from "./CardSize"
+import MoreVert from "@material-ui/icons/MoreVert"
+import Info from "@material-ui/icons/Info"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import Visibility from "@material-ui/icons/Visibility"
+import AspectRatio from "@material-ui/icons/AspectRatio"
+import Create from "@material-ui/icons/Create"
+import Delete from "@material-ui/icons/Delete"
 
 class Card extends Component {
   state = {
@@ -300,7 +307,7 @@ class Card extends Component {
                           }
                     }
                   >
-                    <Icon>fullscreen</Icon>
+                    <Fullscreen />
                   </IconButton>
                 </Tooltip>
               ) : null}
@@ -320,7 +327,7 @@ class Card extends Component {
                     this.setState({ anchorEl: event.currentTarget })
                   }
                 >
-                  <Icon>more_vert</Icon>
+                  <MoreVert />
                 </IconButton>
               </Tooltip>
               <Menu
@@ -344,7 +351,7 @@ class Card extends Component {
                   }}
                 >
                   <ListItemIcon>
-                    <Icon>info</Icon>
+                    <Info />
                   </ListItemIcon>
                   <ListItemText inset primary="Information" disableTypography />
                 </MenuItem>
@@ -358,13 +365,11 @@ class Card extends Component {
                   }}
                 >
                   <ListItemIcon>
-                    <Icon>
-                      {value.visibility === "VISIBLE" ? (
-                        <Icon>visibility_off</Icon>
-                      ) : (
-                        <Icon>visibility</Icon>
-                      )}
-                    </Icon>
+                    {value.visibility === "VISIBLE" ? (
+                      <VisibilityOff />
+                    ) : (
+                      <Visibility />
+                    )}
                   </ListItemIcon>
                   <ListItemText
                     inset
@@ -380,7 +385,7 @@ class Card extends Component {
                   }}
                 >
                   <ListItemIcon>
-                    <Icon>aspect_ratio</Icon>
+                    <AspectRatio />
                   </ListItemIcon>
                   <ListItemText inset primary="Resize" disableTypography />
                 </MenuItem>
@@ -395,7 +400,7 @@ class Card extends Component {
                       }}
                     >
                       <ListItemIcon>
-                        <Icon>create</Icon>
+                        <Create />
                       </ListItemIcon>
                       <ListItemText inset primary="Rename" disableTypography />
                     </MenuItem>
@@ -411,7 +416,7 @@ class Card extends Component {
                       }}
                     >
                       <ListItemIcon>
-                        <Icon style={{ color: "#f44336" }}>delete</Icon>
+                        <Delete style={{ color: "#f44336" }} />
                       </ListItemIcon>
                       <ListItemText inset>
                         <span style={{ color: "#f44336" }}>Delete</span>

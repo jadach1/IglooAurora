@@ -3,7 +3,6 @@ import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
-import Icon from "@material-ui/core/Icon"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import Grow from "@material-ui/core/Grow"
@@ -18,6 +17,11 @@ import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import isUrl from "is-url"
+import Cloud from "@material-ui/icons/Cloud"
+import Delete from "@material-ui/icons/Delete"
+import CloudDone from "@material-ui/icons/CloudDone"
+import Add from "@material-ui/icons/Add"
+import Clear from "@material-ui/icons/Clear"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -111,7 +115,7 @@ class ChangeServer extends React.Component {
           }
         >
           <ListItemIcon>
-            <Icon>cloud</Icon>
+            <Cloud />
           </ListItemIcon>
           <ListItemText
             primary={
@@ -152,7 +156,7 @@ class ChangeServer extends React.Component {
                   : { color: "black" }
               }
             >
-              <Icon>delete</Icon>
+              <Delete />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
@@ -198,7 +202,7 @@ class ChangeServer extends React.Component {
                 }
               >
                 <ListItemIcon>
-                  <Icon>cloud_done</Icon>
+                  <CloudDone />
                 </ListItemIcon>
                 <ListItemText
                   primary={
@@ -239,7 +243,7 @@ class ChangeServer extends React.Component {
                 }
               >
                 <ListItemIcon>
-                  <Icon>add</Icon>
+                  <Add />
                 </ListItemIcon>
                 <ListItemText
                   primary={
@@ -352,7 +356,7 @@ class ChangeServer extends React.Component {
                       }
                       tabIndex="-1"
                     >
-                      <Icon>clear</Icon>
+                      <Clear />
                     </IconButton>
                   </InputAdornment>
                 ),
@@ -419,7 +423,7 @@ class ChangeServer extends React.Component {
                       }
                       tabIndex="-1"
                     >
-                      <Icon>clear</Icon>
+                      <Clear />
                     </IconButton>
                   </InputAdornment>
                 ),

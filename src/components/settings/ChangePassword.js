@@ -3,7 +3,6 @@ import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
-import Icon from "@material-ui/core/Icon"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import Grow from "@material-ui/core/Grow"
@@ -23,6 +22,8 @@ import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
 import CenteredSpinner from "../CenteredSpinner"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -253,15 +254,15 @@ class ChangePasswordDialog extends React.Component {
                       {document.documentMode ||
                       /Edge/.test(navigator.userAgent) ? (
                         this.state.showPassword ? (
-                          <Icon>visibility_off</Icon>
+                          <VisibilityOff />
                         ) : (
-                          <Icon>visibility</Icon>
+                          <Visibility />
                         )
                       ) : (
                         <ToggleIcon
                           on={this.state.showPassword || false}
-                          onIcon={<Icon>visibility_off</Icon>}
-                          offIcon={<Icon>visibility</Icon>}
+                          onIcon={<VisibilityOff />}
+                          offIcon={<Visibility />}
                         />
                       )}
                     </IconButton>
@@ -358,15 +359,15 @@ class ChangePasswordDialog extends React.Component {
                       {document.documentMode ||
                       /Edge/.test(navigator.userAgent) ? (
                         this.state.showNewPassword ? (
-                          <Icon>visibility_off</Icon>
+                          <VisibilityOff />
                         ) : (
-                          <Icon>visibility</Icon>
+                          <Visibility />
                         )
                       ) : (
                         <ToggleIcon
                           on={this.state.showNewPassword || false}
-                          onIcon={<Icon>visibility_off</Icon>}
-                          offIcon={<Icon>visibility</Icon>}
+                          onIcon={<VisibilityOff />}
+                          offIcon={<Visibility />}
                         />
                       )}
                     </IconButton>

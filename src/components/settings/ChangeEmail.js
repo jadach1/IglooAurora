@@ -4,7 +4,6 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import IconButton from "@material-ui/core/IconButton"
-import Icon from "@material-ui/core/Icon"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import TextField from "@material-ui/core/TextField"
 import Grow from "@material-ui/core/Grow"
@@ -23,6 +22,9 @@ import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
 import CenteredSpinner from "../CenteredSpinner"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import Visibility from "@material-ui/icons/Visibility"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import Clear from "@material-ui/icons/Clear"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -257,15 +259,15 @@ class ChangeMailDialog extends React.Component {
                       {document.documentMode ||
                       /Edge/.test(navigator.userAgent) ? (
                         this.state.showPassword ? (
-                          <Icon>visibility_off</Icon>
+                          <VisibilityOff />
                         ) : (
-                          <Icon>visibility</Icon>
+                          <Visibility />
                         )
                       ) : (
                         <ToggleIcon
                           on={this.state.showPassword || false}
-                          onIcon={<Icon>visibility_off</Icon>}
-                          offIcon={<Icon>visibility</Icon>}
+                          onIcon={<VisibilityOff />}
+                          offIcon={<Visibility />}
                         />
                       )}
                     </IconButton>
@@ -350,7 +352,7 @@ class ChangeMailDialog extends React.Component {
                           : { color: "rgba(0, 0, 0, 0.46)" }
                       }
                     >
-                      <Icon>clear</Icon>
+                      <Clear />
                     </IconButton>
                   </InputAdornment>
                 ),

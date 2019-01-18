@@ -1,5 +1,4 @@
 import React, { Component } from "react"
-import Icon from "@material-ui/core/Icon"
 import IconButton from "@material-ui/core/IconButton"
 import Tooltip from "@material-ui/core/Tooltip"
 import Menu from "@material-ui/core/Menu"
@@ -25,6 +24,17 @@ import denali from "../../styles/assets/denali.jpg"
 import puffin from "../../styles/assets/puffin.jpg"
 import treetops from "../../styles/assets/treetops.jpg"
 import { Link } from "react-router-dom"
+import MoreVert from "@material-ui/icons/MoreVert"
+import Group from "@material-ui/icons/Group"
+import Info from "@material-ui/icons/Info"
+import Share from "@material-ui/icons/Share"
+import RemoveCircle from "@material-ui/icons/RemoveCircle"
+import Notifications from "@material-ui/icons/Notifications"
+import NotificationsOff from "@material-ui/icons/NotificationsOff"
+import Dashboard from "@material-ui/icons/Dashboard"
+import Create from "@material-ui/icons/Create"
+import AcUnit from "@material-ui/icons/AcUnit"
+import Delete from "@material-ui/icons/Delete"
 
 class EnvironmentCard extends Component {
   state = { deleteOpen: false, renameOpen: false, shareOpen: false }
@@ -166,7 +176,7 @@ class EnvironmentCard extends Component {
           <div style={{ padding: "8px", textAlign: "right" }}>
             <Tooltip id="tooltip-bottom" title="More" placement="bottom">
               <IconButton onClick={this.handleMenuOpen} style={{ zIndex: 1 }}>
-                <Icon
+                <MoreVert
                   style={
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
@@ -177,9 +187,7 @@ class EnvironmentCard extends Component {
                           color: "black",
                         }
                   }
-                >
-                  more_vert
-                </Icon>
+                />
               </IconButton>
             </Tooltip>
           </div>
@@ -235,11 +243,9 @@ class EnvironmentCard extends Component {
                     }
                   >
                     {isShared && (
-                      <Icon
+                      <Group
                         style={{ marginRight: "8px", marginBottom: "-5px" }}
-                      >
-                        group
-                      </Icon>
+                      />
                     )}
                     {this.props.environment.name}
                   </Typography>
@@ -339,7 +345,7 @@ class EnvironmentCard extends Component {
             }}
           >
             <ListItemIcon>
-              <Icon>info</Icon>
+              <Info />
             </ListItemIcon>
             <ListItemText inset primary="Information" disableTypography />
           </MenuItem>
@@ -351,7 +357,7 @@ class EnvironmentCard extends Component {
             }}
           >
             <ListItemIcon>
-              <Icon>share</Icon>
+              <Share />
             </ListItemIcon>
             <ListItemText inset primary="Share" disableTypography />
           </MenuItem>
@@ -366,7 +372,7 @@ class EnvironmentCard extends Component {
               }}
             >
               <ListItemIcon>
-                <Icon>remove_circle</Icon>
+                <RemoveCircle />
               </ListItemIcon>
               <ListItemText inset primary="Leave" disableTypography />
             </MenuItem>
@@ -382,11 +388,11 @@ class EnvironmentCard extends Component {
             }
           >
             <ListItemIcon>
-              <Icon>
-                {this.props.environment.muted
-                  ? "notifications"
-                  : "notifications_off"}
-              </Icon>
+              {this.props.environment.muted ? (
+                <Notifications />
+              ) : (
+                <NotificationsOff />
+              )}
             </ListItemIcon>
             <ListItemText
               inset
@@ -411,7 +417,7 @@ class EnvironmentCard extends Component {
                 }}
               >
                 <ListItemIcon>
-                  <Icon>dashboard</Icon>
+                  <Dashboard />
                 </ListItemIcon>
                 <ListItemText inset primary="Pin to start" disableTypography />
               </MenuItem>
@@ -426,7 +432,7 @@ class EnvironmentCard extends Component {
                 }}
               >
                 <ListItemIcon>
-                  <Icon>mode_edit</Icon>
+                  <Create />
                 </ListItemIcon>
                 <ListItemText inset primary="Customize" disableTypography />
               </MenuItem>
@@ -440,7 +446,7 @@ class EnvironmentCard extends Component {
               }}
             >
               <ListItemIcon>
-                <Icon>ac_unit</Icon>
+                <AcUnit />
               </ListItemIcon>
               <ListItemText inset primary="Hibernate" disableTypography />
             </MenuItem>
@@ -454,7 +460,7 @@ class EnvironmentCard extends Component {
               }}
             >
               <ListItemIcon>
-                <Icon style={{ color: "#f44336" }}>delete</Icon>
+                <Delete style={{ color: "#f44336" }} />
               </ListItemIcon>
               <ListItemText inset>
                 <span style={{ color: "#f44336" }}>Delete</span>

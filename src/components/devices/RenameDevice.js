@@ -4,7 +4,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import Icon from "@material-ui/core/Icon"
+import Clear from "@material-ui/icons/Clear"
 import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
@@ -101,7 +101,7 @@ class RenameDevice extends React.Component {
                         : { color: "rgba(0, 0, 0, 0.46)" }
                     }
                   >
-                    <Icon>clear</Icon>
+                    <Clear />
                   </IconButton>
                 </InputAdornment>
               ),

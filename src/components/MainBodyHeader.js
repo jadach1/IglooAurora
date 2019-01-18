@@ -5,7 +5,6 @@ import NotificationsDrawer from "./NotificationsDrawer"
 import DeviceInfo from "./devices/DeviceInfo"
 import Typography from "@material-ui/core/Typography"
 import Tooltip from "@material-ui/core/Tooltip"
-import Icon from "@material-ui/core/Icon"
 import IconButton from "@material-ui/core/IconButton"
 import ListItemText from "@material-ui/core/ListItemText"
 import MenuItem from "@material-ui/core/MenuItem"
@@ -17,6 +16,15 @@ import RenameDevice from "./devices/RenameDevice"
 import ChangeEnvironment from "./devices/ChangeEnvironment"
 import { Link } from "react-router-dom"
 import { hotkeys } from "react-keyboard-shortcuts"
+import ArrowBack from "@material-ui/icons/ArrowBack"
+import MoreVert from "@material-ui/icons/MoreVert"
+import Info from "@material-ui/icons/Info"
+import Notifications from "@material-ui/icons/Notifications"
+import NotificationsOff from "@material-ui/icons/NotificationsOff"
+import Dashboard from "@material-ui/icons/Dashboard"
+import Create from "@material-ui/icons/Create"
+import SwapHoriz from "@material-ui/icons/SwapHoriz"
+import Delete from "@material-ui/icons/Delete"
 
 class MainBodyHeader extends Component {
   hot_keys = {
@@ -58,63 +66,66 @@ class MainBodyHeader extends Component {
     logoUri = null,
     uriSmallLogo = null
   ) => {
-    if (window.Windows){
-    logoUri =
-      logoUri ||
-      new window.Windows.Foundation.Uri(
-        "ms-appx:///images/Square150x150Logo.png"
-      )
-    uriSmallLogo =
-      uriSmallLogo ||
-      new window.Windows.Foundation.Uri("ms-appx:///images/Square44x44Logo.png")
-    var newTileDesiredSize =
-      window.Windows.UI.StartScreen.TileOptions.showNameOnLogo
-    tileId = tileId || activationArguments
+    if (window.Windows) {
+      logoUri =
+        logoUri ||
+        new window.Windows.Foundation.Uri(
+          "ms-appx:///images/Square150x150Logo.png"
+        )
+      uriSmallLogo =
+        uriSmallLogo ||
+        new window.Windows.Foundation.Uri(
+          "ms-appx:///images/Square44x44Logo.png"
+        )
+      var newTileDesiredSize =
+        window.Windows.UI.StartScreen.TileOptions.showNameOnLogo
+      tileId = tileId || activationArguments
 
-    var tile
-    try {
-      tile = new window.Windows.UI.StartScreen.SecondaryTile(
-        tileId,
-        text,
-        text,
-        activationArguments,
-        newTileDesiredSize,
-        logoUri
-      )
-    } catch (e) {
-      return
-    }
-    var element = document.body
-    if (element) {
-      var selectionRect = element.getBoundingClientRect()
-      var buttonCoordinates = {
-        x: selectionRect.left,
-        y: selectionRect.top,
-        width: selectionRect.width,
-        height: selectionRect.height,
+      var tile
+      try {
+        tile = new window.Windows.UI.StartScreen.SecondaryTile(
+          tileId,
+          text,
+          text,
+          activationArguments,
+          newTileDesiredSize,
+          logoUri
+        )
+      } catch (e) {
+        return
       }
-      var placement = window.Windows.UI.Popups.Placement.above
-      return new Promise((resolve, reject) => {
-        try {
-          tile
-            .requestCreateForSelectionAsync(buttonCoordinates, placement)
-            .done(isCreated => {
-              if (isCreated) {
-                resolve(true)
-              } else {
-                reject(false)
-              }
-            })
-        } catch (e) {
-          reject(false)
+      var element = document.body
+      if (element) {
+        var selectionRect = element.getBoundingClientRect()
+        var buttonCoordinates = {
+          x: selectionRect.left,
+          y: selectionRect.top,
+          width: selectionRect.width,
+          height: selectionRect.height,
         }
-      })
-    } else {
-      return new Promise(async (resolve, reject) => {
-        reject(false)
-      })
+        var placement = window.Windows.UI.Popups.Placement.above
+        return new Promise((resolve, reject) => {
+          try {
+            tile
+              .requestCreateForSelectionAsync(buttonCoordinates, placement)
+              .done(isCreated => {
+                if (isCreated) {
+                  resolve(true)
+                } else {
+                  reject(false)
+                }
+              })
+          } catch (e) {
+            reject(false)
+          }
+        })
+      } else {
+        return new Promise(async (resolve, reject) => {
+          reject(false)
+        })
+      }
     }
-  }}
+  }
 
   render() {
     const { device } = this.props.data
@@ -186,7 +197,7 @@ class MainBodyHeader extends Component {
                 }
                 disabled={!this.props.environmentData.environment}
               >
-                <Icon>arrow_back</Icon>
+                <ArrowBack />
               </IconButton>
             </Tooltip>
           )}
@@ -284,7 +295,7 @@ class MainBodyHeader extends Component {
                     : { color: "white", opacity: 0.5 }
                 }
               >
-                <Icon>more_vert</Icon>
+                <MoreVert />
               </IconButton>
             </Tooltip>
           </div>
@@ -396,7 +407,7 @@ class MainBodyHeader extends Component {
               }
             >
               <ListItemIcon>
-                <Icon>info</Icon>
+                <Info />
               </ListItemIcon>
               <ListItemText inset primary="Information" disableTypography />
             </MenuItem>
@@ -429,7 +440,7 @@ class MainBodyHeader extends Component {
                 }
               >
                 <ListItemIcon>
-                  <Icon>notifications</Icon>
+                  <Notifications />
                 </ListItemIcon>
                 <ListItemText inset primary="Unmute" disableTypography />
               </MenuItem>
@@ -451,30 +462,30 @@ class MainBodyHeader extends Component {
                 }
               >
                 <ListItemIcon>
-                  <Icon>notifications_off</Icon>
+                  <NotificationsOff />
                 </ListItemIcon>
                 <ListItemText inset primary="Mute" disableTypography />
               </MenuItem>
             )}
-          {window.Windows && (
-            <MenuItem
-              onClick={() => {
-                this.createTile(
-                  this.props.environment.name,
-                  "device="+this.props.device.id,
-                  this.props.environment.id,
-                  null,
-                  null
-                )
-                this.handleMenuClose()
-              }}
-            >
-              <ListItemIcon>
-                <Icon>dashboard</Icon>
-              </ListItemIcon>
-              <ListItemText inset primary="Pin to start" disableTypography />
-            </MenuItem>
-          )}
+            {window.Windows && (
+              <MenuItem
+                onClick={() => {
+                  this.createTile(
+                    this.props.environment.name,
+                    "device=" + this.props.device.id,
+                    this.props.environment.id,
+                    null,
+                    null
+                  )
+                  this.handleMenuClose()
+                }}
+              >
+                <ListItemIcon>
+                  <Dashboard />
+                </ListItemIcon>
+                <ListItemText inset primary="Pin to start" disableTypography />
+              </MenuItem>
+            )}
             {device && device.myRole !== "SPECTATOR" && (
               <React.Fragment>
                 <Divider />
@@ -492,7 +503,7 @@ class MainBodyHeader extends Component {
                   }}
                 >
                   <ListItemIcon>
-                    <Icon>mode_edit</Icon>
+                    <Create />
                   </ListItemIcon>
                   <ListItemText inset primary="Rename" disableTypography />
                 </MenuItem>
@@ -521,7 +532,7 @@ class MainBodyHeader extends Component {
                     }
                   >
                     <ListItemIcon>
-                      <Icon>swap_horiz</Icon>
+                      <SwapHoriz />
                     </ListItemIcon>
                     <ListItemText inset primary="Move" disableTypography />
                   </MenuItem>
@@ -539,7 +550,7 @@ class MainBodyHeader extends Component {
                     }}
                   >
                     <ListItemIcon>
-                      <Icon style={{ color: "#f44336" }}>delete</Icon>
+                      <Delete style={{ color: "#f44336" }} />
                     </ListItemIcon>
                     <ListItemText inset>
                       <span style={{ color: "#f44336" }}>Delete</span>
