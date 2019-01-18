@@ -282,7 +282,6 @@ class MainMobile extends Component {
           id
           index
           name
-          icon
           online
           batteryStatus
           batteryCharging

@@ -157,7 +157,6 @@ class Main extends Component {
           id
           index
           name
-          icon
           online
           batteryStatus
           batteryCharging
@@ -201,7 +200,6 @@ class Main extends Component {
           id
           index
           name
-          icon
           online
           batteryStatus
           batteryCharging

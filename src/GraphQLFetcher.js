@@ -776,7 +776,6 @@ class GraphQLFetcher extends Component {
           id
           index
           name
-          icon
           online
           batteryStatus
           batteryCharging

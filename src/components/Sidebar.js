@@ -46,6 +46,17 @@ class Sidebar extends Component {
     }
   }
 
+  componentWillMount() {
+    if (
+      window.Windows &&
+      window.Windows.UI.Core.SystemNavigationManager &&
+      window.Windows.UI.Core.SystemNavigationManager.getForCurrentView()
+        .appViewBackButtonVisibility !== 2
+    ) {
+      window.Windows.UI.Core.SystemNavigationManager.getForCurrentView().appViewBackButtonVisibility = 2
+    }
+  }
+
   componentDidMount() {
     this.updateDimensions()
     window.addEventListener("resize", this.updateDimensions.bind(this))

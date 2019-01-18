@@ -69,70 +69,73 @@ class EnvironmentCard extends Component {
       },
     })
 
- createTile = (
+  createTile = (
     text,
     activationArguments,
     tileId = null,
     logoUri = null,
     uriSmallLogo = null
   ) => {
-    if (window.Windows){
-    logoUri =
-      logoUri ||
-      new window.Windows.Foundation.Uri(
-        "ms-appx:///images/Square150x150Logo.png"
-      )
-    uriSmallLogo =
-      uriSmallLogo ||
-      new window.Windows.Foundation.Uri("ms-appx:///images/Square44x44Logo.png")
-    var newTileDesiredSize =
-      window.Windows.UI.StartScreen.TileOptions.showNameOnLogo
-    tileId = tileId || activationArguments
+    if (window.Windows) {
+      logoUri =
+        logoUri ||
+        new window.Windows.Foundation.Uri(
+          "ms-appx:///images/Square150x150Logo.png"
+        )
+      uriSmallLogo =
+        uriSmallLogo ||
+        new window.Windows.Foundation.Uri(
+          "ms-appx:///images/Square44x44Logo.png"
+        )
+      var newTileDesiredSize =
+        window.Windows.UI.StartScreen.TileOptions.showNameOnLogo
+      tileId = tileId || activationArguments
 
-    var tile
-    try {
-      tile = new window.Windows.UI.StartScreen.SecondaryTile(
-        tileId,
-        text,
-        text,
-        activationArguments,
-        newTileDesiredSize,
-        logoUri
-      )
-    } catch (e) {
-      return
-    }
-    var element = document.body
-    if (element) {
-      var selectionRect = element.getBoundingClientRect()
-      var buttonCoordinates = {
-        x: selectionRect.left,
-        y: selectionRect.top,
-        width: selectionRect.width,
-        height: selectionRect.height,
+      var tile
+      try {
+        tile = new window.Windows.UI.StartScreen.SecondaryTile(
+          tileId,
+          text,
+          text,
+          activationArguments,
+          newTileDesiredSize,
+          logoUri
+        )
+      } catch (e) {
+        return
       }
-      var placement = window.Windows.UI.Popups.Placement.above
-      return new Promise((resolve, reject) => {
-        try {
-          tile
-            .requestCreateForSelectionAsync(buttonCoordinates, placement)
-            .done(isCreated => {
-              if (isCreated) {
-                resolve(true)
-              } else {
-                reject(false)
-              }
-            })
-        } catch (e) {
-          reject(false)
+      var element = document.body
+      if (element) {
+        var selectionRect = element.getBoundingClientRect()
+        var buttonCoordinates = {
+          x: selectionRect.left,
+          y: selectionRect.top,
+          width: selectionRect.width,
+          height: selectionRect.height,
         }
-      })
-    } else {
-      return new Promise(async (resolve, reject) => {
-        reject(false)
-      })
+        var placement = window.Windows.UI.Popups.Placement.above
+        return new Promise((resolve, reject) => {
+          try {
+            tile
+              .requestCreateForSelectionAsync(buttonCoordinates, placement)
+              .done(isCreated => {
+                if (isCreated) {
+                  resolve(true)
+                } else {
+                  reject(false)
+                }
+              })
+          } catch (e) {
+            reject(false)
+          }
+        })
+      } else {
+        return new Promise(async (resolve, reject) => {
+          reject(false)
+        })
+      }
     }
-  }}
+  }
 
   render() {
     let isShared =
@@ -391,25 +394,28 @@ class EnvironmentCard extends Component {
               disableTypography
             />
           </MenuItem>
-          {window.Windows && (
-            <MenuItem
-              onClick={() => {
-                this.createTile(
-                  this.props.environment.name,
-                  "environment="+this.props.environment.id,
-                  this.props.environment.id,
-                  null,
-                  null
-                )
-                this.handleMenuClose()
-              }}
-            >
-              <ListItemIcon>
-                <Icon>dashboard</Icon>
-              </ListItemIcon>
-              <ListItemText inset primary="Pin to start" disableTypography />
-            </MenuItem>
-          )}
+          {window.Windows &&
+            !window.Windows.UI.StartScreen.SecondaryTile.exists(
+              this.props.environment.id
+            ) && (
+              <MenuItem
+                onClick={() => {
+                  this.createTile(
+                    this.props.environment.name,
+                    "environment=" + this.props.environment.id,
+                    this.props.environment.id,
+                    null,
+                    null
+                  )
+                  this.handleMenuClose()
+                }}
+              >
+                <ListItemIcon>
+                  <Icon>dashboard</Icon>
+                </ListItemIcon>
+                <ListItemText inset primary="Pin to start" disableTypography />
+              </MenuItem>
+            )}
           {this.props.environment.myRole !== "SPECTATOR" && (
             <React.Fragment>
               <Divider />

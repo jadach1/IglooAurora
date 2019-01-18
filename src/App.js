@@ -349,6 +349,15 @@ class App extends Component {
           setupWebPush(bearer)
         }
       }
+
+      if (localStorage.getItem("nightMode") === null && window.Windows) {
+        var uiSettings = new window.Windows.UI.ViewManagement.UISettings()
+        var color = uiSettings.getColorValue(
+          window.Windows.UI.ViewManagement.UIColorType.background
+        )
+
+        localStorage.setItem("nightMode", color.b === 0 ? "true" : "false")
+      }
     }
 
     // names of CSS classes for each of the unauthenticated screen backgrounds
@@ -388,12 +397,116 @@ class App extends Component {
       localStorage.setItem("keepLoggedIn", "true")
   }
 
+  createJumpList = () => {
+    if (window.Windows && window.Windows.UI.StartScreen.JumpList.isSupported) {
+      window.Windows.UI.StartScreen.JumpList.loadCurrentAsync().done(function(
+        jumpList
+      ) {
+        jumpList.systemGroupKind =
+          window.Windows.UI.StartScreen.JumpListSystemGroupKind.none
+
+        let item1 = window.Windows.UI.StartScreen.JumpListItem.createWithArguments(
+          "",
+          "New environment"
+        )
+        item1.groupName = "Tasks"
+
+        jumpList.items.append(item1)
+      })
+    }
+  }
+
+  changeAppTitleBarColor = (
+    backgroundColor,
+    foregroundColor,
+    buttonBackgroundColor,
+    buttonForegroundColor,
+    buttonHoverBackgroundColor,
+    buttonHoverForegroundColor,
+    buttonPressedBackgroundColor,
+    buttonPressedForegroundColor,
+    inactiveBackgroundColor,
+    inactiveForegroundColor,
+    buttonInactiveBackgroundColor,
+    buttonInactiveForegroundColor
+  ) => {
+    if (window.Windows && window.Windows.UI.ViewManagement.ApplicationView) {
+      var customColors = {
+        backgroundColor: backgroundColor,
+        foregroundColor: foregroundColor,
+        buttonBackgroundColor: buttonBackgroundColor,
+        buttonForegroundColor: buttonForegroundColor,
+        buttonHoverBackgroundColor: buttonHoverBackgroundColor,
+        buttonHoverForegroundColor: buttonHoverForegroundColor,
+        buttonPressedBackgroundColor: buttonPressedBackgroundColor,
+        buttonPressedForegroundColor: buttonPressedForegroundColor,
+        inactiveBackgroundColor: inactiveBackgroundColor,
+        inactiveForegroundColor: inactiveForegroundColor,
+        buttonInactiveBackgroundColor: buttonInactiveBackgroundColor,
+        buttonInactiveForegroundColor: buttonInactiveForegroundColor,
+      }
+
+      var titleBar = window.Windows.UI.ViewManagement.ApplicationView.getForCurrentView()
+        .titleBar
+      titleBar.backgroundColor = customColors.backgroundColor
+      titleBar.foregroundColor = customColors.foregroundColor
+      titleBar.inactiveBackgroundColor = customColors.inactiveBackgroundColor
+      titleBar.inactiveForegroundColor = customColors.inactiveForegroundColor
+      titleBar.buttonBackgroundColor = customColors.buttonBackgroundColor
+      titleBar.buttonForegroundColor = customColors.buttonForegroundColor
+      titleBar.buttonHoverBackgroundColor =
+        customColors.buttonHoverBackgroundColor
+      titleBar.buttonHoverForegroundColor =
+        customColors.buttonHoverForegroundColor
+      titleBar.buttonPressedBackgroundColor =
+        customColors.buttonPressedBackgroundColor
+      titleBar.buttonPressedForegroundColor =
+        customColors.buttonPressedForegroundColor
+      titleBar.buttonInactiveBackgroundColor =
+        customColors.buttonInactiveBackgroundColor
+      titleBar.buttonInactiveForegroundColor =
+        customColors.buttonInactiveForegroundColor
+    }
+  }
+
   updateDimensions() {
     if (window.innerWidth < 900) {
       !this.state.isMobile && this.setState({ isMobile: true })
     } else {
       this.state.isMobile && this.setState({ isMobile: false })
     }
+  }
+
+  componentWillMount() {
+    var backgroundColor = { a: 255, r: 0, g: 87, b: 203 }
+    var foregroundColor = { a: 255, r: 255, g: 255, b: 255 }
+    var buttonBackgroundColor = { a: 255, r: 0, g: 87, b: 203 }
+    var buttonForegroundColor = { a: 255, r: 255, g: 255, b: 255 }
+    var buttonHoverBackgroundColor = { a: 255, r: 26, g: 104, b: 208 }
+    var buttonHoverForegroundColor = { a: 255, r: 255, g: 255, b: 255 }
+    var buttonPressedBackgroundColor = { a: 255, r: 51, g: 121, b: 213 }
+    var buttonPressedForegroundColor = { a: 255, r: 255, g: 255, b: 255 }
+    var inactiveBackgroundColor = { a: 255, r: 0, g: 87, b: 203 }
+    var inactiveForegroundColor = { a: 255, r: 153, g: 188, b: 234 }
+    var buttonInactiveBackgroundColor = { a: 255, r: 0, g: 87, b: 203 }
+    var buttonInactiveForegroundColor = { a: 255, r: 102, g: 154, b: 224 }
+
+    this.changeAppTitleBarColor(
+      backgroundColor,
+      foregroundColor,
+      buttonBackgroundColor,
+      buttonForegroundColor,
+      buttonHoverBackgroundColor,
+      buttonHoverForegroundColor,
+      buttonPressedBackgroundColor,
+      buttonPressedForegroundColor,
+      inactiveBackgroundColor,
+      inactiveForegroundColor,
+      buttonInactiveBackgroundColor,
+      buttonInactiveForegroundColor
+    )
+
+    this.createJumpList()
   }
 
   componentDidMount() {
