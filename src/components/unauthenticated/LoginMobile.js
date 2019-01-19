@@ -2,8 +2,6 @@ import React, { Component } from "react"
 import gql from "graphql-tag"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
-import Checkbox from "@material-ui/core/Checkbox"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import Input from "@material-ui/core/Input"
 import IconButton from "@material-ui/core/IconButton"
@@ -32,10 +30,6 @@ export default class LoginMobile extends Component {
       isPasswordEmpty: false,
       showLoading: false,
       height: 0,
-      keepLoggedIn:
-        typeof Storage !== "undefined"
-          ? localStorage.getItem("keepLoggedIn") === "true"
-          : true,
       redirect: false,
       changeServerOpen: false,
       tapCounter: 0,
@@ -68,6 +62,12 @@ export default class LoginMobile extends Component {
           mutation($email: String!, $password: String!) {
             logIn(email: $email, password: $password) {
               token
+              user {
+                id
+                email
+                name
+                profileIconColor
+              }
             }
           }
         `,
@@ -81,7 +81,7 @@ export default class LoginMobile extends Component {
         localStorage.setItem("email", this.props.email)
       }
 
-      this.props.signIn(loginMutation.data.logIn.token, this.state.keepLoggedIn)
+      this.props.signIn(loginMutation.data.logIn.token,loginMutation.data.logIn.user)
 
       this.props.changePassword("")
     } catch (e) {
@@ -329,34 +329,6 @@ export default class LoginMobile extends Component {
               </FormControl>
             </Grid>
           </Grid>
-          <FormControlLabel
-            style={{ marginLeft: "-12px" }}
-            control={
-              <Checkbox
-                onChange={event =>
-                  this.setState({ keepLoggedIn: event.target.checked })
-                }
-                checked={this.state.keepLoggedIn}
-                style={{ color: "white" }}
-              />
-            }
-            label={
-              <Typography
-                variant="subtitle1"
-                style={{
-                  cursor: "pointer",
-                  color: "white",
-                  width: "134px",
-                  marginRight: "0px",
-                  marginLeft: "auto",
-                  paddingLeft: "4px",
-                }}
-              >
-                Keep me logged in
-              </Typography>
-            }
-            className="notSelectable"
-          />
           <br />
           <div style={{ textAlign: "right", marginBottom: "16px" }}>
             <MUILink

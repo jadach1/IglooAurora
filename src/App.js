@@ -331,11 +331,7 @@ class App extends Component {
       // gets the email of the last user that logged in
       email = localStorage.getItem("email") || ""
 
-      // looks for the bearer in both localStorage and sessionStorage:
-      // - localStorage is used if the user prefers to be automatically logged in
-      // - sessionStorage is used if they prefer to log out at the end of every session
-      bearer =
-        localStorage.getItem("bearer") || sessionStorage.getItem("bearer") || ""
+      bearer = localStorage.getItem("bearer") || ""
 
       // asks for a new token 1 day before the expiration date
       if (bearer !== "") {
@@ -344,7 +340,6 @@ class App extends Component {
         if (expirationDate < tomorrow) {
           bearer = ""
           localStorage.setItem("bearer", "")
-          sessionStorage.setItem("bearer", "")
         } else {
           setupWebPush(bearer)
         }
@@ -389,12 +384,6 @@ class App extends Component {
         unauthenticatedPictures[Math.floor(Math.random() * 2)] ||
         "auroraLoginBackground",
     }
-
-    // keepLoggedIn is the parameter that determines whether the user is automatically logged back in every time
-    // if keepLoggedIn wasn't assigned a value, it is set to true
-    typeof Storage !== "undefined" &&
-      !localStorage.getItem("keepLoggedIn") &&
-      localStorage.setItem("keepLoggedIn", "true")
   }
 
   createJumpList = () => {
@@ -523,22 +512,38 @@ class App extends Component {
   }
 
   render() {
-    const signIn = (bearer, keepLoggedIn) => {
+    const signIn = (bearer, user) => {
       this.setState({ bearer })
 
-      // the bearer is saved to either localStorage or sessionStorage depending on the keepLoggedIn paramter
-      // localStorage is kept even when the user closes the web app, sessionStorage is cleared when the session ends
-      if (keepLoggedIn) {
-        if (typeof Storage !== "undefined") {
-          localStorage.setItem("bearer", bearer)
-        }
-      } else {
-        if (typeof Storage !== "undefined") {
-          sessionStorage.setItem("bearer", bearer)
-        }
-      }
+      if (typeof Storage !== "undefined") {
+        localStorage.setItem("bearer", bearer)
 
-      localStorage.setItem("keepLoggedIn", keepLoggedIn)
+        localStorage.setItem("userId", user.id)
+
+        !JSON.parse(localStorage.getItem("accountList")).some(
+          account => account.id === user.id
+        ) &&
+          (localStorage.getItem("accountList")
+            ? localStorage.setItem(
+                "accountList",
+                JSON.stringify([
+                  {
+                    token: bearer,
+                    ...user,
+                  },
+                  ...JSON.parse(localStorage.getItem("accountList")),
+                ])
+              )
+            : localStorage.setItem(
+                "accountList",
+                JSON.stringify([
+                  {
+                    token: bearer,
+                    ...user,
+                  },
+                ])
+              ))
+      }
 
       setupWebPush(bearer)
 
@@ -550,7 +555,6 @@ class App extends Component {
       this.setState({ bearer: "", loggedOut: true })
       if (typeof Storage !== "undefined") {
         localStorage.setItem("bearer", "")
-        sessionStorage.setItem("bearer", "")
       }
     }
 

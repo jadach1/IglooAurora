@@ -51,7 +51,8 @@ class ChangeServer extends React.Component {
     }
 
     typeof Storage !== "undefined" &&
-      (localStorage.getItem("serverList") && isUrl(url)
+      isUrl(url) &&
+      (localStorage.getItem("serverList")
         ? localStorage.setItem(
             "serverList",
             JSON.stringify([

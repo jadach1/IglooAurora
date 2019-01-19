@@ -7,8 +7,6 @@ import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Grid from "@material-ui/core/Grid"
-import FormControlLabel from "@material-ui/core/FormControlLabel"
-import Checkbox from "@material-ui/core/Checkbox"
 import IconButton from "@material-ui/core/IconButton"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
@@ -31,10 +29,6 @@ class Login extends Component {
       forgotPasswordOpen: false,
       isMailEmpty: false,
       isPasswordEmpty: false,
-      keepLoggedIn:
-        typeof Storage !== "undefined"
-          ? localStorage.getItem("keepLoggedIn") === "true"
-          : true,
       showLoading: false,
       redirect: false,
     }
@@ -52,6 +46,12 @@ class Login extends Component {
           mutation($email: String!, $password: String!) {
             logIn(email: $email, password: $password) {
               token
+              user {
+                id
+                email
+                name
+                profileIconColor
+              }
             }
           }
         `,
@@ -65,7 +65,10 @@ class Login extends Component {
         localStorage.setItem("email", this.props.email)
       }
 
-      this.props.signIn(loginMutation.data.logIn.token, this.state.keepLoggedIn)
+      this.props.signIn(
+        loginMutation.data.logIn.token,
+        loginMutation.data.logIn.user
+      )
 
       this.props.changePassword("")
     } catch (e) {
@@ -287,30 +290,8 @@ class Login extends Component {
                 </FormControl>
               </Grid>
             </Grid>
-            <FormControlLabel
-              style={{
-                marginLeft: "-92px",
-                textAlign: "left",
-                marginRight: "0px",
-              }}
-              control={
-                <Checkbox
-                  onChange={event =>
-                    this.setState({ keepLoggedIn: event.target.checked })
-                  }
-                  checked={this.state.keepLoggedIn}
-                  color="primary"
-                />
-              }
-              label={
-                <Typography variant="subtitle1" style={{ paddingLeft: "4px" }}>
-                  Keep me logged in
-                </Typography>
-              }
-              className="notSelectable"
-            />
           </div>
-          <div style={{ marginTop: "176px" }}>
+          <div style={{ marginTop: "224px" }}>
             <div style={{ textAlign: "right" }}>
               <MUILink
                 component="button"

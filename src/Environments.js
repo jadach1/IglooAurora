@@ -45,7 +45,7 @@ class Environments extends Component {
           openSettings={this.props.openSettings}
           closeSettings={this.props.closeSettings}
           areSettingsOpen={this.props.areSettingsOpen}
-          user={this.props.userData.user}
+          user={this.props.userData}
         />
         <EnvironmentsBody
           userData={this.props.userData}

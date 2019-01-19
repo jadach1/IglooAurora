@@ -122,7 +122,7 @@ export default class EnvironmentsBody extends Component {
                       paddingBottom: "47px",
                     }}
                   >
-                    <People style={{ fontSize: "64px" }}/>
+                    <People style={{ fontSize: "64px" }} />
                     <br />
                     <Typography
                       variant="h5"
@@ -181,8 +181,7 @@ export default class EnvironmentsBody extends Component {
                     borderRadius: "4px",
                   }}
                 >
-                  <AcUnit style={{ fontSize: "48px", margin: "8px 0" }}
-                                      />
+                  <AcUnit style={{ fontSize: "48px", margin: "8px 0" }} />
                   <br />
                   <Typography
                     variant="h5"
@@ -235,7 +234,7 @@ export default class EnvironmentsBody extends Component {
                     borderRadius: "4px",
                   }}
                 >
-                  <Add style={{ fontSize: "64px" }}/>
+                  <Add style={{ fontSize: "64px" }} />
                   <br />
                   <Typography
                     variant="h5"
@@ -286,7 +285,7 @@ export default class EnvironmentsBody extends Component {
                 />
               </Grid>
             ))}
-          {user.pendingEnvironmentShareCount && (
+          {!!user.pendingEnvironmentShareCount && (
             <Grid key="pendingEnvironmentShares" item>
               <ButtonBase
                 focusRipple
@@ -325,7 +324,8 @@ export default class EnvironmentsBody extends Component {
                         fontSize: "48px",
                         marginBottom: "8px",
                         marginTop: "8px",
-                      }}/>
+                      }}
+                    />
                     <br />
                     <Typography
                       variant="h5"
@@ -439,7 +439,8 @@ export default class EnvironmentsBody extends Component {
                             : user && user.environments[0]
                             ? { color: "black" }
                             : { color: "black", opacity: "0.5" }
-                        }/>
+                        }
+                      />
                     </InputAdornment>
                   }
                   endAdornment={
@@ -453,7 +454,7 @@ export default class EnvironmentsBody extends Component {
                           }
                           tabIndex="-1"
                         >
-                          <Clear/>
+                          <Clear />
                         </IconButton>
                       </InputAdornment>
                     ) : null
@@ -607,7 +608,7 @@ export default class EnvironmentsBody extends Component {
                     }
                   >
                     <BottomNavigationAction
-                      icon={<Person/>}
+                      icon={<Person />}
                       label="Your environments"
                       style={
                         nightMode
@@ -620,7 +621,7 @@ export default class EnvironmentsBody extends Component {
                       }
                     />
                     <BottomNavigationAction
-                      icon={<Group/>}
+                      icon={<Group />}
                       label="Shared with you"
                       style={
                         nightMode
@@ -691,7 +692,8 @@ export default class EnvironmentsBody extends Component {
                             : user && user.environments[0]
                             ? { color: "black" }
                             : { color: "black", opacity: "0.5" }
-                        }/>
+                        }
+                      />
                     </InputAdornment>
                   }
                   endAdornment={
@@ -707,7 +709,7 @@ export default class EnvironmentsBody extends Component {
                           }
                           tabIndex="-1"
                         >
-                          <Clear/>
+                          <Clear />
                         </IconButton>
                       </InputAdornment>
                     ) : null
