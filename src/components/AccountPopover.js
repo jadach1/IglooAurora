@@ -9,7 +9,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar"
 import Divider from "@material-ui/core/Divider"
 import ExitToApp from "@material-ui/icons/ExitToApp"
 import Settings from "@material-ui/icons/Settings"
-import Add from "@material-ui/icons/Add"
+import PersonAdd from "@material-ui/icons/PersonAdd"
 
 export default class AccountPopover extends React.Component {
   state = { popoverOpen: false }
@@ -27,6 +27,13 @@ export default class AccountPopover extends React.Component {
   }
 
   render() {
+    let currentUser =
+      typeof Storage !== undefined &&
+      localStorage.getItem("accountList") &&
+      JSON.parse(localStorage.getItem("accountList")).filter(
+        account => account.id === localStorage.getItem("userId")
+      )[0]
+
     return (
       <React.Fragment>
         <IconButton
@@ -36,13 +43,21 @@ export default class AccountPopover extends React.Component {
           }}
           style={{ width: "40px", height: "40px", padding: "0" }}
         >
-          <Avatar style={{ backgroundColor: "red" }}>SD</Avatar>
+          <Avatar
+            style={
+              currentUser && {
+                backgroundColor: currentUser.profileIconColor,
+              }
+            }
+          >
+            {this.getInitials(currentUser && currentUser.name)}
+          </Avatar>
         </IconButton>
         <Popover
           open={this.state.popoverOpen}
           onClose={() => this.setState({ popoverOpen: false })}
           anchorEl={this.anchorEl}
-          marginThreshold={8}
+          marginThreshold={12}
           anchorOrigin={{
             vertical: "top",
             horizontal: "right",
@@ -68,20 +83,26 @@ export default class AccountPopover extends React.Component {
                     {this.getInitials(account.name)}
                   </Avatar>
                   <ListItemText
-                    primary={account.name}
+                    style={{ cursor: "pointer" }}
+                    primary={
+                      account.name + (account.token ? "" : " (disconnected)")
+                    }
                     secondary={account.email}
                   />
                 </ListItem>
               ))}
-            <ListItem button>
+            <ListItem button onClick={this.props.changeAccount}>
               <ListItemAvatar>
                 <Avatar
                   style={{ backgroundColor: "transparent", color: "black" }}
                 >
-                  <Add />
+                  <PersonAdd />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Add account" />
+              <ListItemText
+                primary="Add account"
+                style={{ cursor: "pointer" }}
+              />
             </ListItem>
             <Divider />
             <ListItem
@@ -98,7 +119,7 @@ export default class AccountPopover extends React.Component {
                   <Settings />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Settings" />
+              <ListItemText primary="Settings" style={{ cursor: "pointer" }} />
             </ListItem>
             <ListItem
               button
@@ -114,7 +135,7 @@ export default class AccountPopover extends React.Component {
                   <ExitToApp />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Log out" />
+              <ListItemText primary="Log out" style={{ cursor: "pointer" }} />
             </ListItem>
           </List>
         </Popover>

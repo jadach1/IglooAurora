@@ -81,7 +81,10 @@ export default class LoginMobile extends Component {
         localStorage.setItem("email", this.props.email)
       }
 
-      this.props.signIn(loginMutation.data.logIn.token,loginMutation.data.logIn.user)
+      this.props.signIn(
+        loginMutation.data.logIn.token,
+        loginMutation.data.logIn.user
+      )
 
       this.props.changePassword("")
     } catch (e) {
@@ -330,16 +333,13 @@ export default class LoginMobile extends Component {
             </Grid>
           </Grid>
           <br />
-          <div style={{ textAlign: "right", marginBottom: "16px" }}>
+          <div style={{ textAlign: "center", marginBottom: "8px" }}>
             <MUILink
               component="button"
               variant="subtitle1"
               style={{
-                cursor: "pointer",
                 color: "white",
-                width: "130px",
-                marginRight: "0px",
-                marginLeft: "auto",
+                textAlign: "center",
               }}
               onClick={() => {
                 this.setState({ forgotPasswordOpen: true })
@@ -365,33 +365,33 @@ export default class LoginMobile extends Component {
             Log in
             {this.state.showLoading && <CenteredSpinner isInButton secondary />}
           </Button>
-          <Typography
-            variant="subtitle1"
-            style={
-              this.state.showLoading
-                ? {
-                    marginTop: "16px",
-                    marginBottom: "16px",
-                    color: "white",
-                    opacity: 0.5,
-                    textAlign: "center",
-                  }
-                : {
-                    marginTop: "16px",
-                    marginBottom: "16px",
-                    color: "white",
-                    cursor: "pointer",
-                    textAlign: "center",
-                  }
-            }
-            onClick={() =>
-              !this.state.showLoading && this.setState({ redirect: true })
-            }
-          >
-            <MUILink component={Link} to="/signup" style={{ color: "white" }}>
-              No account yet? Sign up!
+          <div style={{ textAlign: "center", marginTop: "8px" }}>
+            <MUILink
+              component={Link}
+              variant="subtitle1"
+              to="/signup"
+              style={
+                this.state.showLoading
+                  ? {
+                      marginTop: "16px",
+                      marginBottom: "16px",
+                      color: "white",
+                      opacity: 0.5,
+                    }
+                  : {
+                      marginTop: "16px",
+                      marginBottom: "16px",
+                      color: "white",
+                      cursor: "pointer",
+                    }
+              }
+              onClick={() =>
+                !this.state.showLoading && this.setState({ redirect: true })
+              }
+            >
+              Sign up instead
             </MUILink>
-          </Typography>
+          </div>
         </div>
         <ForgotPassword
           recover={email => this.recover(email)}

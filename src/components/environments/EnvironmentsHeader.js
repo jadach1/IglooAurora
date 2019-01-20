@@ -54,12 +54,13 @@ class EnvironmentsHeader extends Component {
             style={{
               padding: "0",
               marginLeft: "auto",
-              marginRight: "8px",
+              marginRight: "12px",
               float: "right",
             }}
           >
             <AccountPopover
               logOut={this.props.logOut}
+              changeAccount={this.props.changeAccount}
               openSettings={this.props.openSettings}
               user={this.props.userData}
             />

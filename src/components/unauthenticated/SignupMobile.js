@@ -422,33 +422,33 @@ class SignupMobile extends Component {
           Sign up
           {this.state.showLoading && <CenteredSpinner isInButton secondary />}
         </Button>
-        <Typography
-          variant="subtitle1"
-          style={
-            this.state.showLoading
-              ? {
-                  marginTop: "16px",
-                  marginBottom: "16px",
-                  color: "white",
-                  opacity: 0.5,
-                  textAlign: "center",
-                }
-              : {
-                  marginTop: "16px",
-                  marginBottom: "16px",
-                  color: "white",
-                  cursor: "pointer",
-                  textAlign: "center",
-                }
-          }
-          onClick={() =>
-            !this.state.showLoading && this.setState({ redirect: true })
-          }
-        >
-          <MUILink component={Link} style={{ color: "white" }} to="/login">
-            Already have an account? Log in
+        <div style={{ textAlign: "center", marginTop: "8px" }}>
+          <MUILink
+            component={Link}
+            variant="subtitle1"
+            onClick={() =>
+              !this.state.showLoading && this.setState({ redirect: true })
+            }
+            style={
+              this.state.showLoading
+                ? {
+                    marginTop: "16px",
+                    marginBottom: "16px",
+                    color: "white",
+                    opacity: 0.5,
+                  }
+                : {
+                    marginTop: "16px",
+                    marginBottom: "16px",
+                    color: "white",
+                    cursor: "pointer",
+                  }
+            }
+            to="/login"
+          >
+            Log in instead
           </MUILink>
-        </Typography>
+        </div>
         {this.state.redirect && <Redirect push to="/login" />}
       </div>
     )

@@ -292,17 +292,12 @@ class Login extends Component {
             </Grid>
           </div>
           <div style={{ marginTop: "224px" }}>
-            <div style={{ textAlign: "right" }}>
               <MUILink
                 component="button"
                 variant="subtitle1"
                 style={{
                   color: "#0083ff",
-                  cursor: "pointer",
-                  marginBottom: "8px",
-                  width: "130px",
-                  marginRight: "0px",
-                  marginLeft: "auto",
+                  textAlign: "center",
                 }}
                 onClick={() => {
                   this.setState({ forgotPasswordOpen: true })
@@ -310,7 +305,6 @@ class Login extends Component {
               >
                 Forgot password?
               </MUILink>
-            </div>
             <Button
               variant="contained"
               primary={true}
@@ -319,6 +313,7 @@ class Login extends Component {
                 this.setState({ showLoading: true })
                 this.signIn()
               }}
+              style={{ margin: "8px 0" }}
               color="primary"
               disabled={
                 !(
@@ -330,24 +325,16 @@ class Login extends Component {
               Log in
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
-            <Typography variant="subtitle1" style={{ marginTop: "8px" }}>
-              No account yet?{" "}
-              <font
-                style={{
-                  marginTop: "8px",
-                }}
-              >
-                <MUILink
-                  component={Link}
-                  to="/signup"
-                  style={{
-                    color: "#0083ff",
-                  }}
-                >
-                  Sign up!
-                </MUILink>
-              </font>
-            </Typography>
+            <MUILink
+              component={Link}
+              variant="subtitle1"
+              to="/signup"
+              style={{
+                color: "#0083ff",
+              }}
+            >
+              Sign up instead
+            </MUILink>
           </div>
         </div>
         <ForgotPassword

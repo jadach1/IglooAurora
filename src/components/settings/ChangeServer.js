@@ -37,7 +37,7 @@ class ChangeServer extends React.Component {
   selectUrl = url => {
     if (typeof Storage !== "undefined") {
       localStorage.setItem("server", url)
-      localStorage.setItem("bearer", "")
+      localStorage.setItem("accountList", "[]")
       this.props.forceUpdate()
     }
 

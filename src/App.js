@@ -321,17 +321,25 @@ function setupWebPush(token) {
 
 class App extends Component {
   constructor() {
-    let email = ""
-
     super()
 
     let bearer = ""
     // reuses previous session's bearer if present
     if (typeof Storage !== "undefined") {
-      // gets the email of the last user that logged in
-      email = localStorage.getItem("email") || ""
+      if (!localStorage.getItem("accountList")) {
+        localStorage.setItem("accountList", "[]")
+      }
 
-      bearer = localStorage.getItem("bearer") || ""
+      bearer =
+        localStorage.getItem("accountList") &&
+        localStorage.getItem("userId") &&
+        JSON.parse(localStorage.getItem("accountList")).filter(
+          account => account.id === localStorage.getItem("userId")
+        )[0]
+          ? JSON.parse(localStorage.getItem("accountList")).filter(
+              account => account.id === localStorage.getItem("userId")
+            )[0].token
+          : ""
 
       // asks for a new token 1 day before the expiration date
       if (bearer !== "") {
@@ -339,7 +347,19 @@ class App extends Component {
         const tomorrow = Math.floor(new Date() / 1000) + 86400
         if (expirationDate < tomorrow) {
           bearer = ""
-          localStorage.setItem("bearer", "")
+
+          let currentAccountList = JSON.parse(
+            localStorage.getItem("accountList")
+          )
+
+          currentAccountList.filter(
+            account => account.id === localStorage.getItem("userId")
+          )[0] = ""
+
+          localStorage.setItem(
+            "accountList",
+            JSON.stringify(currentAccountList)
+          )
         } else {
           setupWebPush(bearer)
         }
@@ -368,7 +388,7 @@ class App extends Component {
       redirectToReferrer: false,
       environmentId: "",
       loggedOut: false,
-      loginEmail: email,
+      loginEmail: "",
       loginEmailError: "",
       loginPassword: "",
       loginPasswordError: "",
@@ -516,33 +536,45 @@ class App extends Component {
       this.setState({ bearer })
 
       if (typeof Storage !== "undefined") {
-        localStorage.setItem("bearer", bearer)
-
         localStorage.setItem("userId", user.id)
 
-        !JSON.parse(localStorage.getItem("accountList")).some(
-          account => account.id === user.id
-        ) &&
-          (localStorage.getItem("accountList")
-            ? localStorage.setItem(
-                "accountList",
-                JSON.stringify([
-                  {
-                    token: bearer,
-                    ...user,
-                  },
-                  ...JSON.parse(localStorage.getItem("accountList")),
-                ])
-              )
-            : localStorage.setItem(
-                "accountList",
-                JSON.stringify([
-                  {
-                    token: bearer,
-                    ...user,
-                  },
-                ])
-              ))
+        let accountList = JSON.parse(localStorage.getItem("accountList"))
+
+        if (accountList[0]) {
+          if (!accountList.some(account => account.id === user.id)) {
+            localStorage.setItem(
+              "accountList",
+              JSON.stringify([
+                {
+                  token: bearer,
+                  ...user,
+                },
+                ...accountList,
+              ])
+            )
+          } else {
+            if (
+              accountList.filter(account => account.id === user.id)[0].token ===
+              ""
+            ) {
+              accountList.filter(
+                account => account.id === user.id
+              )[0].token = bearer
+
+              localStorage.setItem("accountList", JSON.stringify(accountList))
+            }
+          }
+        } else {
+          localStorage.setItem(
+            "accountList",
+            JSON.stringify([
+              {
+                token: bearer,
+                ...user,
+              },
+            ])
+          )
+        }
       }
 
       setupWebPush(bearer)
@@ -554,8 +586,21 @@ class App extends Component {
     const logOut = () => {
       this.setState({ bearer: "", loggedOut: true })
       if (typeof Storage !== "undefined") {
-        localStorage.setItem("bearer", "")
+        let currentAccountList = JSON.parse(localStorage.getItem("accountList"))
+
+        currentAccountList.filter(
+          account => account.id === localStorage.getItem("userId")
+        )[0].token = ""
+
+        localStorage.setItem("accountList", JSON.stringify(currentAccountList))
+
+        localStorage.setItem("userId", "")
       }
+    }
+
+    const changeAccount = () => {
+      this.setState({ bearer: "", loggedOut: true })
+      localStorage.setItem("userId", "")
     }
 
     const { redirectToReferrer } = this.state
@@ -593,6 +638,7 @@ class App extends Component {
                     <AuthenticatedApp
                       bearer={this.state.bearer}
                       logOut={logOut}
+                      changeAccount={changeAccount}
                       isMobile={this.state.isMobile}
                       forceUpdate={() => this.forceUpdate()}
                     />

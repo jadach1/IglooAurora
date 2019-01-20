@@ -104,7 +104,10 @@ class Signup extends Component {
         localStorage.setItem("email", this.props.email)
       }
 
-      this.props.signIn(loginMutation.data.signUp.token,loginMutation.data.signUp.user)
+      this.props.signIn(
+        loginMutation.data.signUp.token,
+        loginMutation.data.signUp.user
+      )
 
       this.props.changeName("")
       this.props.changeEmail("")
@@ -470,25 +473,16 @@ class Signup extends Component {
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
             <Typography variant="subtitle1" style={{ marginTop: "8px" }}>
-              Already have an account?{" "}
-              <font
+              <MUILink
+                component={Link}
+                variant="subtitle1"
+                to="/login"
                 style={{
-                  marginTop: "8px",
                   color: "#0083ff",
-                  cursor: "pointer",
                 }}
-                onClick={() => this.setState({ redirect: true })}
               >
-                <MUILink
-                  component={Link}
-                  to="/login"
-                  style={{
-                    color: "#0083ff",
-                  }}
-                >
-                  Log in!
-                </MUILink>
-              </font>
+                Log in instead
+              </MUILink>
             </Typography>
           </div>
         </div>

@@ -907,6 +907,7 @@ class GraphQLFetcher extends Component {
             <React.Fragment>
               <Main
                 logOut={this.props.logOut}
+                changeAccount={this.props.changeAccount}
                 userData={this.props.userData}
                 selectDevice={id => this.setState({ selectedDevice: id })}
                 selectedDevice={
@@ -951,6 +952,7 @@ class GraphQLFetcher extends Component {
             <React.Fragment>
               <Main
                 logOut={this.props.logOut}
+                changeAccount={this.props.changeAccount}
                 userData={this.props.userData}
                 openSettings={() => this.setState({ areSettingsOpen: true })}
                 closeSettings={() => this.setState({ areSettingsOpen: false })}
@@ -994,6 +996,7 @@ class GraphQLFetcher extends Component {
             <Environments
               userData={this.props.userData}
               logOut={this.props.logOut}
+              changeAccount={this.props.changeAccount}
               selectEnvironment={id =>
                 this.setState({ selectedEnvironment: id })
               }
@@ -1033,6 +1036,7 @@ class GraphQLFetcher extends Component {
             <React.Fragment>
               <MainMobile
                 logOut={this.props.logOut}
+                changeAccount={this.props.changeAccount}
                 userData={this.props.userData}
                 openSettings={() => this.setState({ areSettingsOpen: true })}
                 closeSettings={() => this.setState({ areSettingsOpen: false })}
@@ -1080,6 +1084,7 @@ class GraphQLFetcher extends Component {
             <React.Fragment>
               <MainMobile
                 logOut={this.props.logOut}
+                changeAccount={this.props.changeAccount}
                 openSettings={() => this.setState({ areSettingsOpen: true })}
                 closeSettings={() => this.setState({ areSettingsOpen: false })}
                 areSettingsOpen={this.state.areSettingsOpen}
@@ -1126,6 +1131,7 @@ class GraphQLFetcher extends Component {
             <Environments
               userData={this.props.userData}
               logOut={this.props.logOut}
+              changeAccount={this.props.changeAccount}
               selectEnvironment={id =>
                 this.setState({ selectedEnvironment: id })
               }

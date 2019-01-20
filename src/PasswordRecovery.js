@@ -36,6 +36,12 @@ export default class PasswordRecovery extends Component {
           mutation($newPassword: String!) {
             changePassword(newPassword: $newPassword) {
               token
+              user {
+                id
+                email
+                name
+                profileIconColor
+              }
             }
           }
         `,
@@ -44,12 +50,37 @@ export default class PasswordRecovery extends Component {
         },
       })
 
-      this.setState({
-        token: changePassword.data.changePassword.token,
-      })
+      if (typeof Storage !== "undefined") {
+        localStorage.setItem(
+          "userId",
+          changePassword.data.changePassword.user.id
+        )
 
-      typeof Storage !== "undefined" &&
-        localStorage.setItem("bearer", this.state.token)
+        localStorage.getItem("accountList")
+          ? !JSON.parse(localStorage.getItem("accountList")).some(
+              account =>
+                account.id === changePassword.data.changePassword.user.id
+            ) &&
+            localStorage.setItem(
+              "accountList",
+              JSON.stringify([
+                {
+                  token: changePassword.data.changePassword.token,
+                  ...changePassword.data.changePassword.user,
+                },
+                ...JSON.parse(localStorage.getItem("accountList")),
+              ])
+            )
+          : localStorage.setItem(
+              "accountList",
+              JSON.stringify([
+                {
+                  token: changePassword.data.changePassword.token,
+                  ...changePassword.data.changePassword.user,
+                },
+              ])
+            )
+      }
 
       this.props.userData.user.email !== "undefined" &&
         typeof Storage !== "undefined" &&

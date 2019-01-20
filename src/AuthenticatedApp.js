@@ -73,6 +73,7 @@ class AuthenticatedApp extends Component {
         <GraphQLFetcher
           isMobile={this.props.isMobile}
           logOut={this.props.logOut}
+          changeAccount={this.props.changeAccount}
           forceUpdate={this.props.forceUpdate}
           client={this.client}
         />
