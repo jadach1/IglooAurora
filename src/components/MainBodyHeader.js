@@ -596,7 +596,7 @@ export default graphql(
             id
             content
             date
-            visualized
+            read
           }
         }
       }

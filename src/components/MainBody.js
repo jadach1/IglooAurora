@@ -16,7 +16,6 @@ class MainBody extends Component {
         valueCreated {
           id
           visibility
-          unitOfMeasurement
           cardSize
           name
           updatedAt
@@ -31,6 +30,7 @@ class MainBody extends Component {
             min
             max
             permission
+            unitOfMeasurement
           }
           ... on StringValue {
             stringValue: value
@@ -48,6 +48,7 @@ class MainBody extends Component {
               value
               timestamp
             }
+            unitOfMeasurement
             threshold
           }
         }
@@ -97,6 +98,7 @@ class MainBody extends Component {
             min
             max
             permission
+            unitOfMeasurement
           }
           ... on StringValue {
             stringValue: value
@@ -114,6 +116,7 @@ class MainBody extends Component {
               value
               timestamp
             }
+            unitOfMeasurement
             threshold
           }
         }
@@ -384,7 +387,6 @@ export default graphql(
         values {
           id
           visibility
-          unitOfMeasurement
           cardSize
           name
           updatedAt
@@ -399,6 +401,7 @@ export default graphql(
             min
             max
             permission
+            unitOfMeasurement
           }
           ... on StringValue {
             stringValue: value
@@ -416,6 +419,7 @@ export default graphql(
               value
               timestamp
             }
+            unitOfMeasurement
             threshold
           }
         }

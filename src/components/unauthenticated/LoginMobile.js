@@ -20,6 +20,8 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import Email from "@material-ui/icons/Email"
 import Clear from "@material-ui/icons/Clear"
 import VpnKey from "@material-ui/icons/VpnKey"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 export default class LoginMobile extends Component {
   constructor() {
@@ -333,7 +335,7 @@ export default class LoginMobile extends Component {
             </Grid>
           </Grid>
           <br />
-          <div style={{ textAlign: "center", marginBottom: "8px" }}>
+          <div style={{ textAlign: "right", marginBottom: "8px" }}>
             <MUILink
               component="button"
               variant="subtitle1"
@@ -366,31 +368,23 @@ export default class LoginMobile extends Component {
             {this.state.showLoading && <CenteredSpinner isInButton secondary />}
           </Button>
           <div style={{ textAlign: "center", marginTop: "8px" }}>
-            <MUILink
-              component={Link}
-              variant="subtitle1"
-              to="/signup"
-              style={
-                this.state.showLoading
-                  ? {
-                      marginTop: "16px",
-                      marginBottom: "16px",
-                      color: "white",
-                      opacity: 0.5,
-                    }
-                  : {
-                      marginTop: "16px",
-                      marginBottom: "16px",
-                      color: "white",
-                      cursor: "pointer",
-                    }
-              }
-              onClick={() =>
-                !this.state.showLoading && this.setState({ redirect: true })
-              }
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#fff" },
+                },
+              })}
             >
-              Sign up instead
-            </MUILink>
+              <Button
+                fullWidth={true}
+                color="primary"
+                disabled={this.state.showLoading}
+                component={Link}
+                to="/signup"
+              >
+                Sign up instead
+              </Button>
+            </MuiThemeProvider>
           </div>
         </div>
         <ForgotPassword

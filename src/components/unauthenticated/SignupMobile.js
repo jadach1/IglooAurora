@@ -15,13 +15,14 @@ import { Redirect } from "react-router-dom"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
 import { Link } from "react-router-dom"
-import MUILink from "@material-ui/core/Link"
 import Email from "@material-ui/icons/Email"
 import Clear from "@material-ui/icons/Clear"
 import VpnKey from "@material-ui/icons/VpnKey"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import AccountCircle from "@material-ui/icons/AccountCircle"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 
 class SignupMobile extends Component {
   constructor() {
@@ -422,33 +423,24 @@ class SignupMobile extends Component {
           Sign up
           {this.state.showLoading && <CenteredSpinner isInButton secondary />}
         </Button>
-        <div style={{ textAlign: "center", marginTop: "8px" }}>
-          <MUILink
-            component={Link}
-            variant="subtitle1"
-            onClick={() =>
-              !this.state.showLoading && this.setState({ redirect: true })
-            }
-            style={
-              this.state.showLoading
-                ? {
-                    marginTop: "16px",
-                    marginBottom: "16px",
-                    color: "white",
-                    opacity: 0.5,
-                  }
-                : {
-                    marginTop: "16px",
-                    marginBottom: "16px",
-                    color: "white",
-                    cursor: "pointer",
-                  }
-            }
-            to="/login"
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#fff" },
+              },
+            })}
           >
-            Log in instead
-          </MUILink>
-        </div>
+            <Button
+              style={{ marginTop: "8px" }}
+              fullWidth={true}
+              color="primary"
+              disabled={this.state.showLoading}
+              component={Link}
+              to="/login"
+            >
+              Log in instead
+            </Button>
+          </MuiThemeProvider>
         {this.state.redirect && <Redirect push to="/login" />}
       </div>
     )

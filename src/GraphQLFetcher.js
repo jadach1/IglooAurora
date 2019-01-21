@@ -787,7 +787,7 @@ class GraphQLFetcher extends Component {
           notifications {
             id
             content
-            visualized
+            read
           }
         }
       }
@@ -1216,6 +1216,7 @@ export default graphql(
           }
           pendingEnvironmentShares {
             id
+            role
             receiver {
               id
               profileIconColor

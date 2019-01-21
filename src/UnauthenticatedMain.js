@@ -43,10 +43,15 @@ export default class UnAuthenticatedMain extends Component {
           </title>
         </Helmet>
         <div className={this.props.unauthenticatedPicture}>
-          <Paper className="loginForm" style={{ margin: "32px 0" }}>
+          <Paper
+            className="loginForm"
+            style={{ margin: "32px 0", borderRadius: "8px" }}
+          >
             <div
               className="leftSide notSelectable"
               style={{
+                borderTopLeftRadius: "8px",
+                borderBottomLeftRadius: "8px",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",

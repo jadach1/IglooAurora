@@ -22,6 +22,18 @@ import Add from "@material-ui/icons/Add"
 import Search from "@material-ui/icons/Search"
 import Clear from "@material-ui/icons/Clear"
 
+let removeDuplicates = inputArray => {
+  var obj = {}
+  var returnArray = []
+  for (var i = 0; i < inputArray.length; i++) {
+    obj[inputArray[i]] = true
+  }
+  for (var key in obj) {
+    returnArray.push(key)
+  }
+  return returnArray
+}
+
 class Sidebar extends Component {
   state = {
     popoverOpen: false,
@@ -125,6 +137,10 @@ class Sidebar extends Component {
 
     let devicesArray = []
 
+    let deviceTypeList = []
+
+    let uniqueDeviceTypeList = []
+
     if (environment) {
       devicesArray = this.props.searchText
         ? environment.devices
@@ -141,6 +157,10 @@ class Sidebar extends Component {
             device =>
               this.state.visibleDeviceTypes.indexOf(device.deviceType) !== -1
           )
+
+      deviceTypeList = environment.devices.map(device => device.deviceType)
+
+      uniqueDeviceTypeList = removeDuplicates(deviceTypeList)
 
       sidebarContent = (
         <React.Fragment>
@@ -223,21 +243,18 @@ class Sidebar extends Component {
                         }
                       >
                         {device.notifications
-                          .filter(
-                            notification => notification.visualized === false
-                          )
+                          .filter(notification => notification.read === false)
                           .map(notification => notification.content)
                           .reverse()[0]
                           ? device.notifications
                               .filter(
-                                notification =>
-                                  notification.visualized === false
+                                notification => notification.read === false
                               )
                               .map(notification => notification.content)
                               .reverse()[0]
                           : device.notifications
                               .filter(
-                                notification => notification.visualized === true
+                                notification => notification.read === true
                               )
                               .map(notification => notification.content)
                               .reverse()[0]
@@ -340,7 +357,7 @@ class Sidebar extends Component {
                       this.state.visibleDeviceTypes.indexOf(
                         device.deviceType
                       ) !== -1
-                  )[0]
+                  )[1]
                 )
               }
               value={this.props.searchText}
@@ -358,7 +375,7 @@ class Sidebar extends Component {
                                 this.state.visibleDeviceTypes.indexOf(
                                   device.deviceType
                                 ) !== -1
-                            )[0]
+                            )[1]
                           )
                           ? { color: "white", opacity: "0.5" }
                           : { color: "white" }
@@ -369,7 +386,7 @@ class Sidebar extends Component {
                                 this.state.visibleDeviceTypes.indexOf(
                                   device.deviceType
                                 ) !== -1
-                            )[0]
+                            )[1]
                           )
                         ? { color: "black", opacity: "0.5" }
                         : { color: "black" }
@@ -415,7 +432,7 @@ class Sidebar extends Component {
                           .includes(this.props.searchText.toLowerCase())
                       : true
                   )[0]
-                )
+                ) || !uniqueDeviceTypeList[1]
               }
               style={
                 typeof Storage !== "undefined" &&
@@ -436,7 +453,8 @@ class Sidebar extends Component {
                               .toLowerCase()
                               .includes(this.props.searchText.toLowerCase())
                           : true
-                      )[0]
+                      )[0] &&
+                      uniqueDeviceTypeList[1]
                       ? { color: "white" }
                       : { color: "white", opacity: "0.5" }
                     : environment &&
@@ -447,7 +465,8 @@ class Sidebar extends Component {
                           : device.name
                               .toLowerCase()
                               .includes(this.props.searchText.toLowerCase())
-                      )[0]
+                      )[0] &&
+                      uniqueDeviceTypeList[1]
                     ? { color: "black" }
                     : { color: "black", opacity: "0.5" }
                 }

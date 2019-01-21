@@ -40,7 +40,7 @@ let unreadNotifications = []
 let notificationsToFlush = []
 
 class NotificationsDrawer extends React.Component {
-  state = { showVisualized: false }
+  state = { showread: false }
   hot_keys = {
     "alt+n": {
       priority: 1,
@@ -57,7 +57,7 @@ class NotificationsDrawer extends React.Component {
           id
           content
           date
-          visualized
+          read
           device {
             id
           }
@@ -158,7 +158,7 @@ class NotificationsDrawer extends React.Component {
       notificationsToFlush = device.notifications
         .filter(
           notification =>
-            notification.visualized === false &&
+            notification.read === false &&
             unreadNotifications.indexOf(notification.id) === -1
         )
         .map(notification => notification.id)
@@ -174,7 +174,7 @@ class NotificationsDrawer extends React.Component {
       device.notifications
         .filter(notification => !unreadNotifications.includes(notification.id))
         .forEach(notification =>
-          Object.defineProperty(notification, "visualized", {
+          Object.defineProperty(notification, "read", {
             value: true,
             writable: true,
             configurable: true,
@@ -213,7 +213,7 @@ class NotificationsDrawer extends React.Component {
           __typename: "Mutation",
           notification: {
             id: id,
-            visualized: false,
+            read: false,
             __typename: "Notification",
           },
         },
@@ -333,7 +333,7 @@ class NotificationsDrawer extends React.Component {
       }
 
       let notificationsSections = device.notifications
-        .filter(notification => !notification.visualized)
+        .filter(notification => !notification.read)
         .map(notification => determineDiff(notification))
         .reverse()
 
@@ -371,7 +371,7 @@ class NotificationsDrawer extends React.Component {
                   .filter(
                     notification => determineDiff(notification) === section
                   )
-                  .filter(notification => !notification.visualized)
+                  .filter(notification => !notification.read)
                   .map(notification => (
                     <ListItem
                       className="notSelectable"
@@ -433,7 +433,7 @@ class NotificationsDrawer extends React.Component {
       )
 
       let readNotificationsSections = device.notifications
-        .filter(notification => notification.visualized)
+        .filter(notification => notification.read)
         .map(notification => determineDiff(notification))
         .reverse()
 
@@ -473,7 +473,7 @@ class NotificationsDrawer extends React.Component {
                   .filter(
                     notification => determineDiff(notification) === section
                   )
-                  .filter(notification => notification.visualized)
+                  .filter(notification => notification.read)
                   .map(notification => (
                     <ListItem
                       key={notification.id}
@@ -542,13 +542,13 @@ class NotificationsDrawer extends React.Component {
       notificationCount =
         device.notifications &&
         device.notifications.filter(
-          notification => notification.visualized === false
+          notification => notification.read === false
         ).length
 
       const readNotificationCount =
         device.notifications &&
         device.notifications.filter(
-          notification => notification.visualized === true
+          notification => notification.read === true
         ).length
 
       if (!notificationCount) {
@@ -789,7 +789,7 @@ export default graphql(
           id
           content
           date
-          visualized
+          read
           device {
             id
           }
@@ -805,7 +805,7 @@ export default graphql(
   graphql(
     gql`
       mutation ClearNotification($id: ID!) {
-        notification(id: $id, visualized: true) {
+        notification(id: $id, read: true) {
           id
         }
       }
@@ -817,9 +817,9 @@ export default graphql(
     graphql(
       gql`
         mutation MarkAsUnread($id: ID!) {
-          notification(id: $id, visualized: false) {
+          notification(id: $id, read: false) {
             id
-            visualized
+            read
           }
         }
       `,

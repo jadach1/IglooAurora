@@ -15,7 +15,6 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import { Link } from "react-router-dom"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
-import MUILink from "@material-ui/core/Link"
 import Email from "@material-ui/icons/Email"
 import Clear from "@material-ui/icons/Clear"
 import VpnKey from "@material-ui/icons/VpnKey"
@@ -450,7 +449,7 @@ class Signup extends Component {
               </Grid>
             </MuiThemeProvider>
           </div>
-          <div style={{ marginTop: "189px" }}>
+          <div style={{ marginTop: "192px" }}>
             <Button
               variant="contained"
               color="primary"
@@ -472,18 +471,24 @@ class Signup extends Component {
               Sign up
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
-            <Typography variant="subtitle1" style={{ marginTop: "8px" }}>
-              <MUILink
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#0083ff" },
+                },
+              })}
+            >
+              <Button
+                style={{ marginTop: "8px" }}
+                fullWidth={true}
+                color="primary"
+                disabled={this.state.showLoading}
                 component={Link}
-                variant="subtitle1"
                 to="/login"
-                style={{
-                  color: "#0083ff",
-                }}
               >
                 Log in instead
-              </MUILink>
-            </Typography>
+              </Button>
+            </MuiThemeProvider>
           </div>
         </div>
       </React.Fragment>

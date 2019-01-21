@@ -168,7 +168,7 @@ class Main extends Component {
           notifications {
             id
             content
-            visualized
+            read
           }
         }
       }
@@ -211,7 +211,7 @@ class Main extends Component {
           notifications {
             id
             content
-            visualized
+            read
           }
         }
       }
@@ -455,13 +455,14 @@ export default graphql(
           batteryCharging
           signalStatus
           deviceType
+          firmware
           createdAt
           updatedAt
           notificationCount
           notifications {
             id
             content
-            visualized
+            read
           }
         }
       }

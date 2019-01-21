@@ -19,6 +19,8 @@ import Clear from "@material-ui/icons/Clear"
 import VpnKey from "@material-ui/icons/VpnKey"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import Visibility from "@material-ui/icons/Visibility"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 class Login extends Component {
   constructor() {
@@ -291,20 +293,19 @@ class Login extends Component {
               </Grid>
             </Grid>
           </div>
-          <div style={{ marginTop: "224px" }}>
-              <MUILink
-                component="button"
-                variant="subtitle1"
-                style={{
-                  color: "#0083ff",
-                  textAlign: "center",
-                }}
-                onClick={() => {
-                  this.setState({ forgotPasswordOpen: true })
-                }}
-              >
-                Forgot password?
-              </MUILink>
+          <div style={{ marginTop: "227px", textAlign: "right" }}>
+            <MUILink
+              component="button"
+              variant="subtitle1"
+              style={{
+                color: "#0083ff",
+              }}
+              onClick={() => {
+                this.setState({ forgotPasswordOpen: true })
+              }}
+            >
+              Forgot password?
+            </MUILink>
             <Button
               variant="contained"
               primary={true}
@@ -325,16 +326,23 @@ class Login extends Component {
               Log in
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
-            <MUILink
-              component={Link}
-              variant="subtitle1"
-              to="/signup"
-              style={{
-                color: "#0083ff",
-              }}
+            <MuiThemeProvider
+              theme={createMuiTheme({
+                palette: {
+                  primary: { main: "#0083ff" },
+                },
+              })}
             >
-              Sign up instead
-            </MUILink>
+              <Button
+                fullWidth={true}
+                color="primary"
+                disabled={this.state.showLoading}
+                component={Link}
+                to="/signup"
+              >
+                Sign up instead
+              </Button>
+            </MuiThemeProvider>
           </div>
         </div>
         <ForgotPassword

@@ -3,10 +3,15 @@ import Popover from "@material-ui/core/Popover"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import IconButton from "@material-ui/core/IconButton"
 import Checkbox from "@material-ui/core/Checkbox"
 import Typography from "@material-ui/core/Typography"
 import Toolbar from "@material-ui/core/Toolbar"
+import Collapse from "@material-ui/core/Collapse"
 import { Redirect } from "react-router-dom"
+import ExpandLess from "@material-ui/icons/ExpandLess"
+import ExpandMore from "@material-ui/icons/ExpandMore"
 
 let removeDuplicates = inputArray => {
   var obj = {}
@@ -20,11 +25,17 @@ let removeDuplicates = inputArray => {
   return returnArray
 }
 
+let deviceTypeFirmwares = []
+
 export default class FilterPopover extends Component {
   state = {
     checked: removeDuplicates(
       this.props.devices.map(device => device.deviceType)
     ),
+    firmwareChecked: removeDuplicates(
+      this.props.devices.map(device => device.deviceType + device.firmware)
+    ),
+    open: [],
   }
 
   handleToggle = value => () => {
@@ -52,6 +63,40 @@ export default class FilterPopover extends Component {
     })
   }
 
+  handleFirmwareToggle = value => () => {
+    const { firmwareChecked } = this.state
+    const currentIndex = firmwareChecked.indexOf(value)
+    const newFirmwareChecked = [...firmwareChecked]
+
+    if (currentIndex === -1) {
+      newFirmwareChecked.push(value)
+    } else {
+      newFirmwareChecked.splice(currentIndex, 1)
+    }
+
+    this.setState({
+      firmwareChecked: newFirmwareChecked,
+    })
+  }
+
+  handleOpen = value => () => {
+    const { open } = this.state
+    const currentIndex = open.indexOf(value)
+    const newOpen = [...open]
+
+    if (currentIndex === -1) {
+      newOpen.push(value)
+    } else {
+      newOpen.splice(currentIndex, 1)
+    }
+
+    this.props.setVisibleTypes(newOpen)
+
+    this.setState({
+      open: newOpen,
+    })
+  }
+
   //fix for .lenght returning undefined
   getLenght = array => {
     let count = 0
@@ -65,6 +110,48 @@ export default class FilterPopover extends Component {
 
   componentDidMount() {
     this.props.setVisibleTypes(this.state.checked)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    deviceTypeFirmwares = []
+
+    nextProps.devices.forEach(device => {
+      if (
+        deviceTypeFirmwares.some(
+          deviceTypeFirmware =>
+            deviceTypeFirmware.deviceType === device.deviceType
+        )
+      ) {
+        let currentDeviceType = deviceTypeFirmwares.filter(
+          deviceTypeFirmware =>
+            deviceTypeFirmware.deviceType === device.deviceType
+        )[0]
+        if (
+          currentDeviceType.firmwares.some(
+            firmware => firmware.name === device.firmware
+          )
+        ) {
+          currentDeviceType.firmwares
+            .filter(firmware => firmware.name === device.firmware)[0]
+            .devices.push(device.id)
+        } else {
+          currentDeviceType.firmwares.push({
+            name: device.firmware,
+            devices: [device.id],
+          })
+        }
+      } else {
+        deviceTypeFirmwares.push({
+          deviceType: device.deviceType,
+          firmwares: [
+            {
+              name: device.firmware,
+              devices: [device.id],
+            },
+          ],
+        })
+      }
+    })
   }
 
   render() {
@@ -84,12 +171,12 @@ export default class FilterPopover extends Component {
           onClose={this.props.close}
           anchorEl={this.props.anchorEl}
           anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "center",
+            vertical: "top",
+            horizontal: "right",
           }}
           transformOrigin={{
             vertical: "top",
-            horizontal: "center",
+            horizontal: "right",
           }}
           className="notSelectable"
         >
@@ -110,7 +197,7 @@ export default class FilterPopover extends Component {
                     }
               }
             >
-              Filter by device type
+              Filters
             </Typography>
           </Toolbar>
           <div
@@ -127,55 +214,182 @@ export default class FilterPopover extends Component {
           >
             <List style={{ width: "256px" }}>
               {uniqueDeviceTypeList.map(deviceType => (
-                <ListItem
-                  key={deviceType}
-                  role={undefined}
-                  button
-                  onClick={this.handleToggle(deviceType)}
-                >
-                  <Checkbox
-                    checked={this.state.checked.indexOf(deviceType) !== -1}
-                    color="secondary"
-                    tabIndex={-1}
-                    disableRipple
-                    onChange={this.handleToggle(deviceType)}
-                  />
-                  <ListItemText
-                    primary={
-                      <span
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
+                <React.Fragment>
+                  <ListItem
+                    key={deviceType}
+                    role={undefined}
+                    button
+                    onClick={this.handleToggle(deviceType)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    <Checkbox
+                      checked={this.state.checked.indexOf(deviceType) !== -1}
+                      color="secondary"
+                      tabIndex={-1}
+                      disableRipple
+                      onChange={this.handleToggle(deviceType)}
+                      indeterminate={
+                        this.state.firmwareChecked
+                          .filter(firmware => firmware.startsWith(deviceType))
+                          .map(firmware =>
+                            firmware.substring(deviceType.length)
+                          )
+                          .some(firmware =>
+                            this.props.devices
+                              .filter(
+                                device => device.deviceType === deviceType
+                              )
+                              .map(device => device.firmware)
+                              .includes(firmware)
+                          )
+                      }
+                    />
+                    <ListItemText
+                      primary={
+                        <span
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          {deviceType}
+                        </span>
+                      }
+                      secondary={
+                        <span
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "#c1c2c5" }
+                              : { color: "#7a7a7a" }
+                          }
+                        >
+                          {occurrences[deviceType] +
+                            (occurrences[deviceType] === 1
+                              ? " device"
+                              : " devices")}
+                        </span>
+                      }
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        cursor: "pointer",
+                      }}
+                    />
+                    {deviceTypeFirmwares.filter(
+                      deviceTypeFirmware =>
+                        deviceTypeFirmware.deviceType === deviceType
+                    )[0] &&
+                      deviceTypeFirmwares.filter(
+                        deviceTypeFirmware =>
+                          deviceTypeFirmware.deviceType === deviceType
+                      )[0].firmwares[1] && (
+                        <ListItemSecondaryAction>
+                          <IconButton onClick={this.handleOpen(deviceType)}>
+                            {this.state.open.indexOf(deviceType) !== -1 ? (
+                              <ExpandLess />
+                            ) : (
+                              <ExpandMore />
+                            )}
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      )}
+                  </ListItem>
+                  {deviceTypeFirmwares.filter(
+                    deviceTypeFirmware =>
+                      deviceTypeFirmware.deviceType === deviceType
+                  )[0] &&
+                    deviceTypeFirmwares.filter(
+                      deviceTypeFirmware =>
+                        deviceTypeFirmware.deviceType === deviceType
+                    )[0].firmwares[1] && (
+                      <Collapse
+                        in={this.state.open.indexOf(deviceType) !== -1}
+                        timeout="auto"
+                        unmountOnExit
                       >
-                        {deviceType}
-                      </span>
-                    }
-                    secondary={
-                      <span
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "#c1c2c5" }
-                            : { color: "#7a7a7a" }
-                        }
-                      >
-                        {occurrences[deviceType] +
-                          (occurrences[deviceType] === 1
-                            ? " device"
-                            : " devices")}
-                      </span>
-                    }
-                    style={{
-                      cursor: "default",
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                    }}
-                  />
-                </ListItem>
+                        <List component="div" disablePadding>
+                          {deviceTypeFirmwares
+                            .filter(
+                              deviceTypeFirmware =>
+                                deviceTypeFirmware.deviceType === deviceType
+                            )[0]
+                            .firmwares.map(firmware => (
+                              <ListItem
+                                key={deviceType + firmware.name}
+                                role={undefined}
+                                button
+                                onClick={this.handleFirmwareToggle(
+                                  deviceType + firmware.name
+                                )}
+                                style={{
+                                  cursor: "pointer",
+                                  paddingLeft: "32px",
+                                }}
+                              >
+                                <Checkbox
+                                  checked={
+                                    this.state.firmwareChecked.indexOf(
+                                      deviceType + firmware.name
+                                    ) !== -1
+                                  }
+                                  color="secondary"
+                                  tabIndex={-1}
+                                  disableRipple
+                                  onChange={this.handleFirmwareToggle(
+                                    deviceType + firmware.name
+                                  )}
+                                />
+                                <ListItemText
+                                  primary={
+                                    <span
+                                      style={
+                                        typeof Storage !== "undefined" &&
+                                        localStorage.getItem("nightMode") ===
+                                          "true"
+                                          ? { color: "white" }
+                                          : { color: "black" }
+                                      }
+                                    >
+                                      {firmware.name
+                                        ? firmware.name
+                                        : "No firmware"}
+                                    </span>
+                                  }
+                                  secondary={
+                                    <span
+                                      style={
+                                        typeof Storage !== "undefined" &&
+                                        localStorage.getItem("nightMode") ===
+                                          "true"
+                                          ? { color: "#c1c2c5" }
+                                          : { color: "#7a7a7a" }
+                                      }
+                                    >
+                                      {removeDuplicates(firmware.devices)
+                                        .length +
+                                        (removeDuplicates(firmware.devices)
+                                          .length === 1
+                                          ? " device"
+                                          : " devices")}
+                                    </span>
+                                  }
+                                  style={{
+                                    whiteSpace: "nowrap",
+                                    overflow: "hidden",
+                                    textOverflow: "ellipsis",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                              </ListItem>
+                            ))}
+                        </List>
+                      </Collapse>
+                    )}
+                </React.Fragment>
               ))}
             </List>
           </div>
