@@ -21,6 +21,8 @@ import FilterList from "@material-ui/icons/FilterList"
 import Add from "@material-ui/icons/Add"
 import Search from "@material-ui/icons/Search"
 import Clear from "@material-ui/icons/Clear"
+import Avatar from "@material-ui/core/Avatar"
+import ListItemAvatar from "@material-ui/core/ListItemAvatar"
 
 let removeDuplicates = inputArray => {
   var obj = {}
@@ -158,6 +160,24 @@ class Sidebar extends Component {
               this.state.visibleDeviceTypes.indexOf(device.deviceType) !== -1
           )
 
+      let alphabeticalArray = []
+
+      devicesArray.forEach(device =>
+        alphabeticalArray
+          .map(item => item.letter)
+          .includes(device.name[0].toUpperCase())
+          ? alphabeticalArray
+              .filter(
+                filterDevice =>
+                  filterDevice.letter === device.name[0].toUpperCase()
+              )[0]
+              .devices.push(device)
+          : alphabeticalArray.push({
+              letter: device.name[0].toUpperCase(),
+              devices: [device],
+            })
+      )
+
       deviceTypeList = environment.devices.map(device => device.deviceType)
 
       uniqueDeviceTypeList = removeDuplicates(deviceTypeList)
@@ -190,93 +210,111 @@ class Sidebar extends Component {
               overflow: "auto",
               overscrollBehaviorY: "contain",
             }}
+            subheader={<li />}
           >
-            {devicesArray
-              .filter(device => device.name.toLowerCase())
-              .filter(
-                device =>
-                  this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
-                  -1
-              )
-              .map(device => (
-                <ListItem
-                  button
-                  component={Link}
-                  to={
-                    this.props.selectedDevice !== device.id
-                      ? "/?environment=" +
-                        this.props.selectedEnvironment +
-                        "&device=" +
-                        device.id
-                      : "/?environment=" + this.props.selectedEnvironment
-                  }
-                  className="notSelectable"
-                  selected={this.props.selectedDevice === device.id}
-                  key={device.id}
-                >
-                  <ListItemText
-                    primary={
-                      <span
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                      >
-                        {device.name}
-                      </span>
+            {alphabeticalArray.map(item =>
+              item.devices
+                .filter(device => device.name.toLowerCase())
+                .filter(
+                  device =>
+                    this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
+                    -1
+                )
+                .map(device => (
+                  <ListItem
+                    button
+                    component={Link}
+                    to={
+                      this.props.selectedDevice !== device.id
+                        ? "/?environment=" +
+                          this.props.selectedEnvironment +
+                          "&device=" +
+                          device.id
+                        : "/?environment=" + this.props.selectedEnvironment
                     }
-                    style={{
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      cursor: "pointer",
-                    }}
-                    secondary={
-                      <span
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "#c1c2c5" }
-                            : { color: "#7a7a7a" }
-                        }
-                      >
-                        {device.notifications
-                          .filter(notification => notification.read === false)
-                          .map(notification => notification.content)
-                          .reverse()[0]
-                          ? device.notifications
-                              .filter(
-                                notification => notification.read === false
-                              )
-                              .map(notification => notification.content)
-                              .reverse()[0]
-                          : device.notifications
-                              .filter(
-                                notification => notification.read === true
-                              )
-                              .map(notification => notification.content)
-                              .reverse()[0]
-                          ? "No unread notifications"
-                          : "No notifications"}
-                      </span>
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <Badge
-                      badgeContent={device.notificationCount}
-                      invisible={!device.notificationCount}
-                      color="primary"
-                      className="notSelectable"
-                      style={{ marginRight: "24px", cursor: "pointer" }}
-                      onClick={() => {
-                        this.props.changeDrawerState()
+                    className="notSelectable"
+                    selected={this.props.selectedDevice === device.id}
+                    key={device.id}
+                  >
+                    {!item.devices
+                      .map(device => device.id)
+                      .indexOf(device.id) && (
+                      <ListItemAvatar>
+                        <Avatar
+                          style={{
+                            backgroundColor: "transparent",
+                            color: "#0057cb",
+                          }}
+                        >
+                          {item.letter}
+                        </Avatar>
+                      </ListItemAvatar>
+                    )}
+                    <ListItemText
+                      inset
+                      primary={
+                        <span
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          {device.name}
+                        </span>
+                      }
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        cursor: "pointer",
                       }}
+                      secondary={
+                        <span
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "#c1c2c5" }
+                              : { color: "#7a7a7a" }
+                          }
+                        >
+                          {device.notifications
+                            .filter(notification => notification.read === false)
+                            .map(notification => notification.content)
+                            .reverse()[0]
+                            ? device.notifications
+                                .filter(
+                                  notification => notification.read === false
+                                )
+                                .map(notification => notification.content)
+                                .reverse()[0]
+                            : device.notifications
+                                .filter(
+                                  notification => notification.read === true
+                                )
+                                .map(notification => notification.content)
+                                .reverse()[0]
+                            ? "No unread notifications"
+                            : "No notifications"}
+                        </span>
+                      }
                     />
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
+                    <ListItemSecondaryAction>
+                      <Badge
+                        badgeContent={device.notificationCount}
+                        invisible={!device.notificationCount}
+                        color="primary"
+                        className="notSelectable"
+                        style={{ marginRight: "24px", cursor: "pointer" }}
+                        onClick={() => {
+                          this.props.changeDrawerState()
+                        }}
+                      />
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))
+            )}
           </List>
           <Zoom in={environment}>
             <Button

@@ -3,7 +3,9 @@ import Popover from "@material-ui/core/Popover"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
+import ListItemAvatar from "@material-ui/core/ListItemAvatar"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import SvgIcon from "@material-ui/core/SvgIcon"
 import IconButton from "@material-ui/core/IconButton"
 import Checkbox from "@material-ui/core/Checkbox"
 import Typography from "@material-ui/core/Typography"
@@ -12,6 +14,9 @@ import Collapse from "@material-ui/core/Collapse"
 import { Redirect } from "react-router-dom"
 import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
+import AccessTime from "@material-ui/icons/AccessTime"
+import SortByAlpha from "@material-ui/icons/SortByAlpha"
+import DeveloperBoard from "@material-ui/icons/DeveloperBoard"
 
 let removeDuplicates = inputArray => {
   var obj = {}
@@ -180,6 +185,105 @@ export default class FilterPopover extends Component {
           }}
           className="notSelectable"
         >
+          <Toolbar
+            style={{ height: "64px", paddingLeft: "24px", paddingRight: "8px" }}
+          >
+            <Typography
+              variant="h6"
+              className="defaultCursor"
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? {
+                      marginLeft: "-8px",
+                      color: "white",
+                    }
+                  : {
+                      marginLeft: "-8px",
+                      color: "black",
+                    }
+              }
+            >
+              Sorting
+            </Typography>
+            {localStorage.getItem("sortDirection") === "descending" ? (
+              <IconButton
+                style={{ marginRight: 0, marginLeft: "auto" }}
+                onClick={() => {
+                  typeof Storage !== "undefined" &&
+                    localStorage.setItem("sortDirection", "ascending")
+                  this.forceUpdate()
+                }}
+              >
+                <SvgIcon>
+                  <svg
+                    style={{ width: "24px", height: "24px" }}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="#000000"
+                      d="M10,11V13H18V11H10M10,5V7H14V5H10M10,17V19H22V17H10M6,7H8.5L5,3.5L1.5,7H4V20H6V7Z"
+                    />
+                  </svg>
+                </SvgIcon>
+              </IconButton>
+            ) : (
+              <IconButton
+                style={{ marginRight: 0, marginLeft: "auto" }}
+                onClick={() => {
+                  typeof Storage !== "undefined" &&
+                    localStorage.setItem("sortDirection", "descending")
+                  this.forceUpdate()
+                }}
+              >
+                <SvgIcon>
+                  <svg
+                    style={{ width: "24px", height: "24px" }}
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="#000000"
+                      d="M10,13V11H18V13H10M10,19V17H14V19H10M10,7V5H22V7H10M6,17H8.5L5,20.5L1.5,17H4V4H6V17Z"
+                    />
+                  </svg>
+                </SvgIcon>
+              </IconButton>
+            )}
+          </Toolbar>
+          <List>
+            <ListItem button selected>
+              <ListItemAvatar
+                style={{ backgroundColor: "transparent", color: "black" }}
+              >
+                <SortByAlpha />
+              </ListItemAvatar>
+              <ListItemText primary="Alphabetical" />
+            </ListItem>
+            <ListItem button>
+              <ListItemAvatar
+                style={{ backgroundColor: "transparent", color: "black" }}
+              >
+                <AccessTime />
+              </ListItemAvatar>
+              <ListItemText primary="Chronological" />
+            </ListItem>
+            <ListItem button>
+              <ListItemAvatar
+                style={{ backgroundColor: "transparent", color: "black" }}
+              >
+                <AccessTime />
+              </ListItemAvatar>
+              <ListItemText primary="Custom" />
+            </ListItem>
+            <ListItem button>
+              <ListItemAvatar
+                style={{ backgroundColor: "transparent", color: "black" }}
+              >
+                <DeveloperBoard />
+              </ListItemAvatar>
+              <ListItemText primary="Device type" />
+            </ListItem>
+          </List>
           <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
             <Typography
               variant="h6"
@@ -227,21 +331,23 @@ export default class FilterPopover extends Component {
                       color="secondary"
                       tabIndex={-1}
                       disableRipple
-                      onChange={this.handleToggle(deviceType)}
+                      onChange={(event, checked) => {
+                        this.handleToggle(deviceType)
+                      }}
                       indeterminate={
-                        this.state.firmwareChecked
-                          .filter(firmware => firmware.startsWith(deviceType))
-                          .map(firmware =>
-                            firmware.substring(deviceType.length)
-                          )
-                          .some(firmware =>
+                        this.state.firmwareChecked.filter(firmware =>
+                          firmware.startsWith(deviceType)
+                        ).length <
+                          removeDuplicates(
                             this.props.devices
                               .filter(
                                 device => device.deviceType === deviceType
                               )
                               .map(device => device.firmware)
-                              .includes(firmware)
-                          )
+                          ).length &&
+                        this.state.firmwareChecked.filter(firmware =>
+                          firmware.startsWith(deviceType)
+                        ).length !== 0
                       }
                     />
                     <ListItemText
