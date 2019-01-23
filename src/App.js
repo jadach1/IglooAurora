@@ -326,6 +326,14 @@ class App extends Component {
     let bearer = ""
     // reuses previous session's bearer if present
     if (typeof Storage !== "undefined") {
+      if (!localStorage.getItem("sortDirection")) {
+        localStorage.setItem("sortDirection", "descending")
+      }
+
+      if (!localStorage.getItem("sortBy")) {
+        localStorage.setItem("sortBy", "name")
+      }
+
       if (!localStorage.getItem("accountList")) {
         localStorage.setItem("accountList", "[]")
       }

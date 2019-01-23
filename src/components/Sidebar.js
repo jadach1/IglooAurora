@@ -17,24 +17,12 @@ import AddDevice from "./AddDevice"
 import { hotkeys } from "react-keyboard-shortcuts"
 import { Link, Redirect } from "react-router-dom"
 import queryString from "query-string"
-import FilterList from "@material-ui/icons/FilterList"
+import Tune from "@material-ui/icons/Tune"
 import Add from "@material-ui/icons/Add"
 import Search from "@material-ui/icons/Search"
 import Clear from "@material-ui/icons/Clear"
 import Avatar from "@material-ui/core/Avatar"
 import ListItemAvatar from "@material-ui/core/ListItemAvatar"
-
-let removeDuplicates = inputArray => {
-  var obj = {}
-  var returnArray = []
-  for (var i = 0; i < inputArray.length; i++) {
-    obj[inputArray[i]] = true
-  }
-  for (var key in obj) {
-    returnArray.push(key)
-  }
-  return returnArray
-}
 
 class Sidebar extends Component {
   state = {
@@ -139,10 +127,6 @@ class Sidebar extends Component {
 
     let devicesArray = []
 
-    let deviceTypeList = []
-
-    let uniqueDeviceTypeList = []
-
     if (environment) {
       devicesArray = this.props.searchText
         ? environment.devices
@@ -160,27 +144,73 @@ class Sidebar extends Component {
               this.state.visibleDeviceTypes.indexOf(device.deviceType) !== -1
           )
 
-      let alphabeticalArray = []
+      let sortedArray = []
 
-      devicesArray.forEach(device =>
-        alphabeticalArray
-          .map(item => item.letter)
-          .includes(device.name[0].toUpperCase())
-          ? alphabeticalArray
-              .filter(
-                filterDevice =>
-                  filterDevice.letter === device.name[0].toUpperCase()
-              )[0]
-              .devices.push(device)
-          : alphabeticalArray.push({
-              letter: device.name[0].toUpperCase(),
-              devices: [device],
-            })
-      )
+      if (
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("sortBy") === "name" &&
+        localStorage.getItem("sortDirection") === "descending"
+      ) {
+        devicesArray.forEach(device =>
+          sortedArray
+            .map(item => item.letter)
+            .includes(device.name[0].toUpperCase())
+            ? sortedArray
+                .filter(
+                  filterDevice =>
+                    filterDevice.letter === device.name[0].toUpperCase()
+                )[0]
+                .devices.push(device)
+            : sortedArray.push({
+                letter: device.name[0].toUpperCase(),
+                devices: [device],
+              })
+        )
 
-      deviceTypeList = environment.devices.map(device => device.deviceType)
+        sortedArray.forEach(item =>
+          item.devices.sort((a, b) => {
+            let nameA = a.name.toLowerCase(),
+              nameB = b.name.toLowerCase()
+            if (nameA < nameB) return -1
+            if (nameA > nameB) return 1
+            return 0
+          })
+        )
 
-      uniqueDeviceTypeList = removeDuplicates(deviceTypeList)
+        sortedArray.reverse()
+      }
+
+      if (
+        typeof Storage !== "undefined" &&
+        localStorage.getItem("sortBy") === "name" &&
+        localStorage.getItem("sortDirection") === "ascending"
+      ) {
+        devicesArray.forEach(device =>
+          sortedArray
+            .map(item => item.letter)
+            .includes(device.name[0].toUpperCase())
+            ? sortedArray
+                .filter(
+                  filterDevice =>
+                    filterDevice.letter === device.name[0].toUpperCase()
+                )[0]
+                .devices.push(device)
+            : sortedArray.push({
+                letter: device.name[0].toUpperCase(),
+                devices: [device],
+              })
+        )
+
+        sortedArray.forEach(item =>
+          item.devices.sort((a, b) => {
+            let nameA = a.name.toLowerCase(),
+              nameB = b.name.toLowerCase()
+            if (nameA > nameB) return -1
+            if (nameA < nameB) return 1
+            return 0
+          })
+        )
+      }
 
       sidebarContent = (
         <React.Fragment>
@@ -192,6 +222,7 @@ class Sidebar extends Component {
                 device => device.id === this.props.selectedDevice
               )[0]
             }
+            forceUpdate={() => this.forceUpdate()}
             close={() => this.setState({ popoverOpen: false })}
             anchorEl={this.anchorEl}
             devices={environment.devices}
@@ -212,7 +243,7 @@ class Sidebar extends Component {
             }}
             subheader={<li />}
           >
-            {alphabeticalArray.map(item =>
+            {sortedArray.map(item =>
               item.devices
                 .filter(device => device.name.toLowerCase())
                 .filter(
@@ -452,7 +483,11 @@ class Sidebar extends Component {
               }
             />
           </FormControl>
-          <Tooltip id="tooltip-bottom" title="Filters" placement="bottom">
+          <Tooltip
+            id="tooltip-bottom"
+            title="Sort and filter"
+            placement="bottom"
+          >
             <IconButton
               buttonRef={node => {
                 this.anchorEl = node
@@ -470,7 +505,7 @@ class Sidebar extends Component {
                           .includes(this.props.searchText.toLowerCase())
                       : true
                   )[0]
-                ) || !uniqueDeviceTypeList[1]
+                )
               }
               style={
                 typeof Storage !== "undefined" &&
@@ -479,34 +514,32 @@ class Sidebar extends Component {
                   : { color: "black", marginTop: "8px" }
               }
             >
-              <FilterList
+              <Tune
                 style={
                   typeof Storage !== "undefined" &&
                   localStorage.getItem("nightMode") === "true"
-                    ? environment &&
-                      environment.devices &&
-                      environment.devices.filter(device =>
-                        this.props.searchText
-                          ? device.name
-                              .toLowerCase()
-                              .includes(this.props.searchText.toLowerCase())
-                          : true
-                      )[0] &&
-                      uniqueDeviceTypeList[1]
-                      ? { color: "white" }
-                      : { color: "white", opacity: "0.5" }
-                    : environment &&
-                      environment.devices &&
-                      environment.devices.filter(device =>
-                        this.props.searchText
-                          ? true
-                          : device.name
-                              .toLowerCase()
-                              .includes(this.props.searchText.toLowerCase())
-                      )[0] &&
-                      uniqueDeviceTypeList[1]
-                    ? { color: "black" }
-                    : { color: "black", opacity: "0.5" }
+                    ? !(
+                        environment &&
+                        environment.devices.filter(
+                          device =>
+                            this.state.visibleDeviceTypes.indexOf(
+                              device.deviceType
+                            ) !== -1
+                        )[0]
+                      )
+                      ? { color: "white", opacity: "0.5" }
+                      : { color: "white" }
+                    : !(
+                        environment &&
+                        environment.devices.filter(
+                          device =>
+                            this.state.visibleDeviceTypes.indexOf(
+                              device.deviceType
+                            ) !== -1
+                        )[0]
+                      )
+                    ? { color: "black", opacity: "0.5" }
+                    : { color: "black" }
                 }
               />
             </IconButton>

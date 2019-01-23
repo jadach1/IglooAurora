@@ -3,8 +3,9 @@ import Popover from "@material-ui/core/Popover"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
-import ListItemAvatar from "@material-ui/core/ListItemAvatar"
+import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
+import ListSubheader from "@material-ui/core/ListSubheader"
 import SvgIcon from "@material-ui/core/SvgIcon"
 import IconButton from "@material-ui/core/IconButton"
 import Checkbox from "@material-ui/core/Checkbox"
@@ -16,7 +17,6 @@ import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
 import AccessTime from "@material-ui/icons/AccessTime"
 import SortByAlpha from "@material-ui/icons/SortByAlpha"
-import DeveloperBoard from "@material-ui/icons/DeveloperBoard"
 
 let removeDuplicates = inputArray => {
   var obj = {}
@@ -185,206 +185,340 @@ export default class FilterPopover extends Component {
           }}
           className="notSelectable"
         >
-          <Toolbar
-            style={{ height: "64px", paddingLeft: "24px", paddingRight: "8px" }}
-          >
-            <Typography
-              variant="h6"
-              className="defaultCursor"
+          <ul style={{ padding: 0, margin: 0 }}>
+            <ListSubheader
               style={
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
-                  ? {
-                      marginLeft: "-8px",
-                      color: "white",
-                    }
-                  : {
-                      marginLeft: "-8px",
-                      color: "black",
-                    }
+                  ? { backgroundColor: "#2f333d", padding: 0 }
+                  : { backgroundColor: "white", padding: 0 }
               }
             >
-              Sorting
-            </Typography>
-            {localStorage.getItem("sortDirection") === "descending" ? (
-              <IconButton
-                style={{ marginRight: 0, marginLeft: "auto" }}
-                onClick={() => {
-                  typeof Storage !== "undefined" &&
-                    localStorage.setItem("sortDirection", "ascending")
-                  this.forceUpdate()
+              <Toolbar
+                style={{
+                  height: "64px",
+                  paddingLeft: "24px",
+                  paddingRight: "8px",
                 }}
               >
-                <SvgIcon>
-                  <svg
-                    style={{ width: "24px", height: "24px" }}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="#000000"
-                      d="M10,11V13H18V11H10M10,5V7H14V5H10M10,17V19H22V17H10M6,7H8.5L5,3.5L1.5,7H4V20H6V7Z"
-                    />
-                  </svg>
-                </SvgIcon>
-              </IconButton>
-            ) : (
-              <IconButton
-                style={{ marginRight: 0, marginLeft: "auto" }}
-                onClick={() => {
-                  typeof Storage !== "undefined" &&
-                    localStorage.setItem("sortDirection", "descending")
-                  this.forceUpdate()
-                }}
-              >
-                <SvgIcon>
-                  <svg
-                    style={{ width: "24px", height: "24px" }}
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      fill="#000000"
-                      d="M10,13V11H18V13H10M10,19V17H14V19H10M10,7V5H22V7H10M6,17H8.5L5,20.5L1.5,17H4V4H6V17Z"
-                    />
-                  </svg>
-                </SvgIcon>
-              </IconButton>
-            )}
-          </Toolbar>
-          <List>
-            <ListItem button selected>
-              <ListItemAvatar
-                style={{ backgroundColor: "transparent", color: "black" }}
-              >
-                <SortByAlpha />
-              </ListItemAvatar>
-              <ListItemText primary="Alphabetical" />
-            </ListItem>
-            <ListItem button>
-              <ListItemAvatar
-                style={{ backgroundColor: "transparent", color: "black" }}
-              >
-                <AccessTime />
-              </ListItemAvatar>
-              <ListItemText primary="Chronological" />
-            </ListItem>
-            <ListItem button>
-              <ListItemAvatar
-                style={{ backgroundColor: "transparent", color: "black" }}
-              >
-                <AccessTime />
-              </ListItemAvatar>
-              <ListItemText primary="Custom" />
-            </ListItem>
-            <ListItem button>
-              <ListItemAvatar
-                style={{ backgroundColor: "transparent", color: "black" }}
-              >
-                <DeveloperBoard />
-              </ListItemAvatar>
-              <ListItemText primary="Device type" />
-            </ListItem>
-          </List>
-          <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
-            <Typography
-              variant="h6"
-              className="defaultCursor"
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? {
-                      marginLeft: "-8px",
-                      color: "white",
-                    }
-                  : {
-                      marginLeft: "-8px",
-                      color: "black",
-                    }
-              }
-            >
-              Filters
-            </Typography>
-          </Toolbar>
-          <div
-            style={
-              96 + this.getLenght(uniqueDeviceTypeList) * 72 >
-              window.innerHeight
-                ? {
-                    height: "calc(100vh - 96px)",
-                    overflow: "auto",
-                    overflowX: "hidden",
+                <Typography
+                  variant="h6"
+                  className="defaultCursor"
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? {
+                          marginLeft: "-8px",
+                          color: "white",
+                        }
+                      : {
+                          marginLeft: "-8px",
+                          color: "black",
+                        }
                   }
-                : { overflowX: "hidden" }
-            }
-          >
-            <List style={{ width: "256px" }}>
-              {uniqueDeviceTypeList.map(deviceType => (
-                <React.Fragment>
-                  <ListItem
-                    key={deviceType}
-                    role={undefined}
-                    button
-                    onClick={this.handleToggle(deviceType)}
-                    style={{ cursor: "pointer" }}
+                >
+                  Sorting
+                </Typography>
+                {localStorage.getItem("sortDirection") === "descending" ? (
+                  <IconButton
+                    onClick={() => {
+                      typeof Storage !== "undefined" &&
+                        localStorage.setItem("sortDirection", "ascending")
+                      this.props.forceUpdate()
+                    }}
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { marginRight: 0, marginLeft: "auto", color: "white" }
+                        : { marginRight: 0, marginLeft: "auto", color: "black" }
+                    }
                   >
-                    <Checkbox
-                      checked={this.state.checked.indexOf(deviceType) !== -1}
-                      color="secondary"
-                      tabIndex={-1}
-                      disableRipple
-                      onChange={(event, checked) => {
-                        this.handleToggle(deviceType)
-                      }}
-                      indeterminate={
-                        this.state.firmwareChecked.filter(firmware =>
-                          firmware.startsWith(deviceType)
-                        ).length <
-                          removeDuplicates(
-                            this.props.devices
-                              .filter(
-                                device => device.deviceType === deviceType
-                              )
-                              .map(device => device.firmware)
-                          ).length &&
-                        this.state.firmwareChecked.filter(firmware =>
-                          firmware.startsWith(deviceType)
-                        ).length !== 0
+                    <SvgIcon>
+                      <svg
+                        style={{ width: "24px", height: "24px" }}
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M10,11V13H18V11H10M10,5V7H14V5H10M10,17V19H22V17H10M6,7H8.5L5,3.5L1.5,7H4V20H6V7Z" />
+                      </svg>
+                    </SvgIcon>
+                  </IconButton>
+                ) : (
+                  <IconButton
+                    onClick={() => {
+                      typeof Storage !== "undefined" &&
+                        localStorage.setItem("sortDirection", "descending")
+                      this.props.forceUpdate()
+                    }}
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { marginRight: 0, marginLeft: "auto", color: "white" }
+                        : { marginRight: 0, marginLeft: "auto", color: "black" }
+                    }
+                  >
+                    <SvgIcon>
+                      <svg
+                        style={{ width: "24px", height: "24px" }}
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M10,13V11H18V13H10M10,19V17H14V19H10M10,7V5H22V7H10M6,17H8.5L5,20.5L1.5,17H4V4H6V17Z" />
+                      </svg>
+                    </SvgIcon>
+                  </IconButton>
+                )}
+              </Toolbar>
+            </ListSubheader>
+            <List>
+              <ListItem
+                button
+                selected={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("sortBy") === "name"
+                }
+                onClick={() => {
+                  typeof Storage !== "undefined" &&
+                    localStorage.setItem("sortBy", "name")
+                  this.props.forceUpdate()
+                }}
+              >
+                <ListItemIcon
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
+                  <SortByAlpha />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <span
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
                       }
-                    />
-                    <ListItemText
-                      primary={
-                        <span
-                          style={
-                            typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                              ? { color: "white" }
-                              : { color: "black" }
-                          }
-                        >
-                          {deviceType}
-                        </span>
+                    >
+                      Alphabetical
+                    </span>
+                  }
+                />
+              </ListItem>
+              <ListItem
+                button
+                selected={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("sortBy") === "time"
+                }
+                onClick={() => {
+                  typeof Storage !== "undefined" &&
+                    localStorage.setItem("sortBy", "time")
+                  this.props.forceUpdate()
+                }}
+              >
+                <ListItemIcon
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
+                  <AccessTime />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <span
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
                       }
-                      secondary={
-                        <span
-                          style={
-                            typeof Storage !== "undefined" &&
-                            localStorage.getItem("nightMode") === "true"
-                              ? { color: "#c1c2c5" }
-                              : { color: "#7a7a7a" }
-                          }
-                        >
-                          {occurrences[deviceType] +
-                            (occurrences[deviceType] === 1
-                              ? " device"
-                              : " devices")}
-                        </span>
+                    >
+                      Chronological
+                    </span>
+                  }
+                />
+              </ListItem>
+              <ListItem
+                button
+                selected={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("sortBy") === "index"
+                }
+                onClick={() => {
+                  typeof Storage !== "undefined" &&
+                    localStorage.setItem("sortBy", "index")
+                  this.props.forceUpdate()
+                }}
+              >
+                <ListItemIcon
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
+                  <SvgIcon>
+                    <svg
+                      style={{ width: "24px", height: "24px" }}
+                      viewBox="0 0 24 24"
+                    >
+                      <path d="M10,13V11H18V13H10M10,19V17H14V19H10M10,7V5H22V7H10M6,17H8.5L5,20.5L1.5,17H4V7H1.5L5,3.5L8.5,7H6V17Z" />
+                    </svg>
+                  </SvgIcon>
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <span
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
                       }
-                      style={{
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        cursor: "pointer",
-                      }}
-                    />
+                    >
+                      Custom
+                    </span>
+                  }
+                />
+              </ListItem>
+            </List>
+          </ul>
+          <ul style={{ padding: 0, margin: 0 }}>
+            <ListSubheader
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { backgroundColor: "#2f333d", padding: 0 }
+                  : { backgroundColor: "white", padding: 0 }
+              }
+            >
+              <Toolbar style={{ height: "64px", paddingLeft: "24px" }}>
+                <Typography
+                  variant="h6"
+                  className="defaultCursor"
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? {
+                          marginLeft: "-8px",
+                          color: "white",
+                        }
+                      : {
+                          marginLeft: "-8px",
+                          color: "black",
+                        }
+                  }
+                >
+                  Filters
+                </Typography>
+              </Toolbar>
+            </ListSubheader>
+            <div
+              style={
+                96 + this.getLenght(uniqueDeviceTypeList) * 72 >
+                window.innerHeight
+                  ? {
+                      height: "calc(100vh - 96px)",
+                      overflow: "auto",
+                      overflowX: "hidden",
+                    }
+                  : { overflowX: "hidden" }
+              }
+            >
+              <List style={{ width: "256px" }}>
+                {uniqueDeviceTypeList.map(deviceType => (
+                  <React.Fragment>
+                    <ListItem
+                      key={deviceType}
+                      role={undefined}
+                      button
+                      onClick={this.handleToggle(deviceType)}
+                      style={{ cursor: "pointer" }}
+                    >
+                      <Checkbox
+                        checked={this.state.checked.indexOf(deviceType) !== -1}
+                        color="secondary"
+                        tabIndex={-1}
+                        disableRipple
+                        onChange={(event, checked) => {
+                          this.handleToggle(deviceType)
+                        }}
+                        indeterminate={
+                          this.state.firmwareChecked.filter(firmware =>
+                            firmware.startsWith(deviceType)
+                          ).length <
+                            removeDuplicates(
+                              this.props.devices
+                                .filter(
+                                  device => device.deviceType === deviceType
+                                )
+                                .map(device => device.firmware)
+                            ).length &&
+                          this.state.firmwareChecked.filter(firmware =>
+                            firmware.startsWith(deviceType)
+                          ).length !== 0
+                        }
+                      />
+                      <ListItemText
+                        primary={
+                          <span
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white" }
+                                : { color: "black" }
+                            }
+                          >
+                            {deviceType}
+                          </span>
+                        }
+                        secondary={
+                          <span
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "#c1c2c5" }
+                                : { color: "#7a7a7a" }
+                            }
+                          >
+                            {occurrences[deviceType] +
+                              (occurrences[deviceType] === 1
+                                ? " device"
+                                : " devices")}
+                          </span>
+                        }
+                        style={{
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                          cursor: "pointer",
+                        }}
+                      />
+                      {deviceTypeFirmwares.filter(
+                        deviceTypeFirmware =>
+                          deviceTypeFirmware.deviceType === deviceType
+                      )[0] &&
+                        deviceTypeFirmwares.filter(
+                          deviceTypeFirmware =>
+                            deviceTypeFirmware.deviceType === deviceType
+                        )[0].firmwares[1] && (
+                          <ListItemSecondaryAction>
+                            <IconButton onClick={this.handleOpen(deviceType)}>
+                              {this.state.open.indexOf(deviceType) !== -1 ? (
+                                <ExpandLess />
+                              ) : (
+                                <ExpandMore />
+                              )}
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        )}
+                    </ListItem>
                     {deviceTypeFirmwares.filter(
                       deviceTypeFirmware =>
                         deviceTypeFirmware.deviceType === deviceType
@@ -393,112 +527,94 @@ export default class FilterPopover extends Component {
                         deviceTypeFirmware =>
                           deviceTypeFirmware.deviceType === deviceType
                       )[0].firmwares[1] && (
-                        <ListItemSecondaryAction>
-                          <IconButton onClick={this.handleOpen(deviceType)}>
-                            {this.state.open.indexOf(deviceType) !== -1 ? (
-                              <ExpandLess />
-                            ) : (
-                              <ExpandMore />
-                            )}
-                          </IconButton>
-                        </ListItemSecondaryAction>
-                      )}
-                  </ListItem>
-                  {deviceTypeFirmwares.filter(
-                    deviceTypeFirmware =>
-                      deviceTypeFirmware.deviceType === deviceType
-                  )[0] &&
-                    deviceTypeFirmwares.filter(
-                      deviceTypeFirmware =>
-                        deviceTypeFirmware.deviceType === deviceType
-                    )[0].firmwares[1] && (
-                      <Collapse
-                        in={this.state.open.indexOf(deviceType) !== -1}
-                        timeout="auto"
-                        unmountOnExit
-                      >
-                        <List component="div" disablePadding>
-                          {deviceTypeFirmwares
-                            .filter(
-                              deviceTypeFirmware =>
-                                deviceTypeFirmware.deviceType === deviceType
-                            )[0]
-                            .firmwares.map(firmware => (
-                              <ListItem
-                                key={deviceType + firmware.name}
-                                role={undefined}
-                                button
-                                onClick={this.handleFirmwareToggle(
-                                  deviceType + firmware.name
-                                )}
-                                style={{
-                                  cursor: "pointer",
-                                  paddingLeft: "32px",
-                                }}
-                              >
-                                <Checkbox
-                                  checked={
-                                    this.state.firmwareChecked.indexOf(
-                                      deviceType + firmware.name
-                                    ) !== -1
-                                  }
-                                  color="secondary"
-                                  tabIndex={-1}
-                                  disableRipple
-                                  onChange={this.handleFirmwareToggle(
+                        <Collapse
+                          in={this.state.open.indexOf(deviceType) !== -1}
+                          timeout="auto"
+                          unmountOnExit
+                        >
+                          <List component="div" disablePadding>
+                            {deviceTypeFirmwares
+                              .filter(
+                                deviceTypeFirmware =>
+                                  deviceTypeFirmware.deviceType === deviceType
+                              )[0]
+                              .firmwares.map(firmware => (
+                                <ListItem
+                                  key={deviceType + firmware.name}
+                                  role={undefined}
+                                  button
+                                  onClick={this.handleFirmwareToggle(
                                     deviceType + firmware.name
                                   )}
-                                />
-                                <ListItemText
-                                  primary={
-                                    <span
-                                      style={
-                                        typeof Storage !== "undefined" &&
-                                        localStorage.getItem("nightMode") ===
-                                          "true"
-                                          ? { color: "white" }
-                                          : { color: "black" }
-                                      }
-                                    >
-                                      {firmware.name
-                                        ? firmware.name
-                                        : "No firmware"}
-                                    </span>
-                                  }
-                                  secondary={
-                                    <span
-                                      style={
-                                        typeof Storage !== "undefined" &&
-                                        localStorage.getItem("nightMode") ===
-                                          "true"
-                                          ? { color: "#c1c2c5" }
-                                          : { color: "#7a7a7a" }
-                                      }
-                                    >
-                                      {removeDuplicates(firmware.devices)
-                                        .length +
-                                        (removeDuplicates(firmware.devices)
-                                          .length === 1
-                                          ? " device"
-                                          : " devices")}
-                                    </span>
-                                  }
                                   style={{
-                                    whiteSpace: "nowrap",
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
                                     cursor: "pointer",
+                                    paddingLeft: "32px",
                                   }}
-                                />
-                              </ListItem>
-                            ))}
-                        </List>
-                      </Collapse>
-                    )}
-                </React.Fragment>
-              ))}
-            </List>
-          </div>
+                                >
+                                  <Checkbox
+                                    checked={
+                                      this.state.firmwareChecked.indexOf(
+                                        deviceType + firmware.name
+                                      ) !== -1
+                                    }
+                                    color="secondary"
+                                    tabIndex={-1}
+                                    disableRipple
+                                    onChange={this.handleFirmwareToggle(
+                                      deviceType + firmware.name
+                                    )}
+                                  />
+                                  <ListItemText
+                                    primary={
+                                      <span
+                                        style={
+                                          typeof Storage !== "undefined" &&
+                                          localStorage.getItem("nightMode") ===
+                                            "true"
+                                            ? { color: "white" }
+                                            : { color: "black" }
+                                        }
+                                      >
+                                        {firmware.name
+                                          ? firmware.name
+                                          : "No firmware"}
+                                      </span>
+                                    }
+                                    secondary={
+                                      <span
+                                        style={
+                                          typeof Storage !== "undefined" &&
+                                          localStorage.getItem("nightMode") ===
+                                            "true"
+                                            ? { color: "#c1c2c5" }
+                                            : { color: "#7a7a7a" }
+                                        }
+                                      >
+                                        {removeDuplicates(firmware.devices)
+                                          .length +
+                                          (removeDuplicates(firmware.devices)
+                                            .length === 1
+                                            ? " device"
+                                            : " devices")}
+                                      </span>
+                                    }
+                                    style={{
+                                      whiteSpace: "nowrap",
+                                      overflow: "hidden",
+                                      textOverflow: "ellipsis",
+                                      cursor: "pointer",
+                                    }}
+                                  />
+                                </ListItem>
+                              ))}
+                          </List>
+                        </Collapse>
+                      )}
+                  </React.Fragment>
+                ))}
+              </List>
+            </div>
+          </ul>
         </Popover>
         {this.state.redirect && (
           <Redirect to={"/?environment=" + this.props.environmentId} />
