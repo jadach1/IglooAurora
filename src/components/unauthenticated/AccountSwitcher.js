@@ -12,6 +12,7 @@ import ListItemText from "@material-ui/core/ListItemText"
 import { Link } from "react-router-dom"
 import Person from "@material-ui/icons/Person"
 import RemoveCircleOutline from "@material-ui/icons/RemoveCircleOutline"
+import { Redirect } from "react-router-dom"
 
 export default class AccountSwitcher extends Component {
   constructor() {
@@ -142,7 +143,10 @@ export default class AccountSwitcher extends Component {
                       ? () => {
                           this.props.signIn(account.token, account)
                         }
-                      : () => {}
+                      : () => {
+                          this.props.changeEmail(account.email)
+                          this.setState({ redirect: true })
+                        }
                   }
                 >
                   <Avatar style={{ backgroundColor: account.profileIconColor }}>
@@ -219,6 +223,7 @@ export default class AccountSwitcher extends Component {
             </ListItem>
           </List>
         </div>
+        {this.state.redirect && <Redirect push to="/login?from=accounts" />}
       </React.Fragment>
     )
   }

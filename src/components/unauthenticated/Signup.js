@@ -456,6 +456,7 @@ class Signup extends Component {
                 this.setState({ showLoading: true })
                 this.signUp()
               }}
+              style={{ marginBottom: "8px" }}
               buttonStyle={{ backgroundColor: "#0083ff" }}
               disabled={
                 !(
@@ -501,7 +502,7 @@ class Signup extends Component {
                   color="primary"
                   disabled={this.state.showLoading}
                   component={Link}
-                  to="/signup"
+                  to="/login"
                 >
                   Log in instead
                 </Button>

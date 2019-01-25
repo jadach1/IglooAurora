@@ -103,6 +103,7 @@ export default class UnAuthenticatedMain extends Component {
             ) : this.props.isAccountSwitcher ? (
               <AccountSwitcher
                 signIn={this.props.signIn}
+                changeEmail={this.props.changeEmail}
                 forceUpdate={() => this.props.forceUpdate()}
               />
             ) : (
