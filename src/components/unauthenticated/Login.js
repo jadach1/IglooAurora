@@ -21,6 +21,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import Visibility from "@material-ui/icons/Visibility"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import queryString from "query-string"
 
 class Login extends Component {
   constructor() {
@@ -62,10 +63,6 @@ class Login extends Component {
           password: this.props.password,
         },
       })
-
-      if (this.props.email !== "undefined" && typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.props.email)
-      }
 
       this.props.signIn(
         loginMutation.data.logIn.token,
@@ -117,11 +114,14 @@ class Login extends Component {
   }
 
   render() {
+    console.log(
+      queryString.parse("?" + window.location.href.split("?")[1]).from
+    )
     return (
       <React.Fragment>
         <div
           className="rightSide notSelectable"
-          style={{ overflowY: "hidden" }}
+          style={{ overflowY: "hidden", padding: "32px 32px 32px 32px" }}
         >
           <div>
             <Typography
@@ -326,23 +326,45 @@ class Login extends Component {
               Log in
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
-            <MuiThemeProvider
-              theme={createMuiTheme({
-                palette: {
-                  primary: { main: "#0083ff" },
-                },
-              })}
-            >
-              <Button
-                fullWidth={true}
-                color="primary"
-                disabled={this.state.showLoading}
-                component={Link}
-                to="/signup"
+            {queryString.parse("?" + window.location.href.split("?")[1])
+              .from === "accounts" &&
+            JSON.parse(localStorage.getItem("accountList"))[0] ? (
+              <MuiThemeProvider
+                theme={createMuiTheme({
+                  palette: {
+                    primary: { main: "#0083ff" },
+                  },
+                })}
               >
-                Sign up instead
-              </Button>
-            </MuiThemeProvider>
+                <Button
+                  fullWidth={true}
+                  color="primary"
+                  disabled={this.state.showLoading}
+                  component={Link}
+                  to="/accounts"
+                >
+                  Go back
+                </Button>
+              </MuiThemeProvider>
+            ) : (
+              <MuiThemeProvider
+                theme={createMuiTheme({
+                  palette: {
+                    primary: { main: "#0083ff" },
+                  },
+                })}
+              >
+                <Button
+                  fullWidth={true}
+                  color="primary"
+                  disabled={this.state.showLoading}
+                  component={Link}
+                  to="/signup"
+                >
+                  Sign up instead
+                </Button>
+              </MuiThemeProvider>
+            )}
           </div>
         </div>
         <ForgotPassword

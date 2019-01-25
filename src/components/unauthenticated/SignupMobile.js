@@ -94,10 +94,6 @@ class SignupMobile extends Component {
         },
       })
 
-      if (this.props.email !== "undefined" && typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.props.email)
-      }
-
       this.props.signIn(
         loginMutation.data.signUp.token,
         loginMutation.data.signUp.user

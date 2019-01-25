@@ -22,6 +22,10 @@ import Delete from "@material-ui/icons/Delete"
 import CloudDone from "@material-ui/icons/CloudDone"
 import Add from "@material-ui/icons/Add"
 import Clear from "@material-ui/icons/Clear"
+import MoreVert from "@material-ui/icons/MoreVert"
+import Create from "@material-ui/icons/Create"
+import Menu from "@material-ui/core/Menu"
+import MenuItem from "@material-ui/core/MenuItem"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -50,20 +54,46 @@ class ChangeServer extends React.Component {
       url = "https://" + url
     }
 
-    typeof Storage !== "undefined" &&
+    if (typeof Storage !== "undefined") {
+      localStorage.setItem("server", url)
+
       isUrl(url) &&
-      (localStorage.getItem("serverList")
-        ? localStorage.setItem(
-            "serverList",
-            JSON.stringify([
-              { name: this.state.name, url },
-              ...JSON.parse(localStorage.getItem("serverList")),
-            ])
-          )
-        : localStorage.setItem(
-            "serverList",
-            JSON.stringify([{ name: this.state.name, url }])
-          ))
+        (localStorage.getItem("serverList")
+          ? localStorage.setItem(
+              "serverList",
+              JSON.stringify([
+                { name: this.state.name, url },
+                ...JSON.parse(localStorage.getItem("serverList")),
+              ])
+            )
+          : localStorage.setItem(
+              "serverList",
+              JSON.stringify([{ name: this.state.name, url }])
+            ))
+    }
+  }
+
+  editServer = () => {
+    let url = this.state.editUrl
+    if (url.substring(0, 4) && url.substring(0, 4) !== "http") {
+      url = "https://" + url
+    }
+
+    if (typeof Storage !== "undefined") {
+      localStorage.setItem("server", url)
+
+      if (isUrl(url) && localStorage.getItem("serverList")) {
+        let tempList = JSON.parse(localStorage.getItem("serverList"))
+        tempList.forEach(server => {
+          if (server.url === this.state.menuTarget.url) {
+            server.url = this.state.editUrl
+            server.name = this.state.editName
+          }
+        })
+
+        localStorage.setItem("serverList", JSON.stringify(tempList))
+      }
+    }
   }
 
   deleteServer = url => {
@@ -148,16 +178,20 @@ class ChangeServer extends React.Component {
           />
           <ListItemSecondaryAction>
             <IconButton
-              onClick={() => this.deleteServer(server.url)}
+              onClick={event =>
+                this.setState({
+                  menuTarget: server,
+                  anchorEl: event.currentTarget,
+                })
+              }
               style={
-                !this.props.unauthenticated &&
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
                   ? { color: "white" }
                   : { color: "black" }
               }
             >
-              <Delete />
+              <MoreVert />
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
@@ -169,7 +203,8 @@ class ChangeServer extends React.Component {
           open={
             typeof Storage !== "undefined" &&
             this.props.open &&
-            !this.state.newServerOpen
+            !this.state.newServerOpen &&
+            !this.state.editServerOpen
           }
           onClose={this.props.close}
           className="notSelectable"
@@ -291,7 +326,7 @@ class ChangeServer extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle disableTypography>Change connected server</DialogTitle>
+          <DialogTitle disableTypography>Add server</DialogTitle>
           <div style={{ height: "100%", padding: "0 24px" }}>
             <TextField
               id="custom-server-name"
@@ -474,6 +509,264 @@ class ChangeServer extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+        <Dialog
+          open={this.state.editServerOpen}
+          onClose={() =>
+            this.setState({
+              editServerOpen: false,
+              editUrl: "",
+              editUrlEmpty: false,
+              editName: "",
+              editNameEmpty: false,
+            })
+          }
+          className="notSelectable"
+          titleClassName="notSelectable defaultCursor"
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle disableTypography>Edit server</DialogTitle>
+          <div style={{ height: "100%", padding: "0 24px" }}>
+            <TextField
+              id="edit-custom-server-name"
+              label="Server name"
+              value={this.state.editName}
+              variant="outlined"
+              error={this.state.editNameEmpty || this.state.editNameError}
+              helperText={
+                this.state.editNameEmpty
+                  ? "This field is required"
+                  : this.state.editNameError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  editName: event.target.value,
+                  editNameEmpty: event.target.value === "",
+                  editNameError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (
+                  event.key === "Enter" &&
+                  this.state.editName &&
+                  this.state.editUrl &&
+                  typeof Storage !== "undefined" &&
+                  isUrl(this.state.editUrl) &&
+                  this.state.editUrl !== "https://bering.igloo.ooo" &&
+                  this.state.editUrl !== "bering.igloo.ooo" &&
+                  this.state.editUrl !== "http://bering.igloo.ooo" &&
+                  this.state.editUrl !== "http://bering.igloo.ooo/" &&
+                  this.state.editUrl !== "bering.igloo.ooo/" &&
+                  this.state.editUrl !== "https://bering.igloo.ooo/"
+                ) {
+                  this.editServer()
+                  this.setState({
+                    editServerOpen: false,
+                    editUrl: "",
+                    editUrlEmpty: false,
+                    editName: "",
+                    editNameEmpty: false,
+                  })
+                }
+              }}
+              style={{
+                marginTop: "16px",
+                width: "100%",
+              }}
+              InputLabelProps={this.state.editName && { shrink: true }}
+              InputProps={{
+                endAdornment: this.state.editName && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        this.setState({ editName: "" })
+                      }}
+                      style={
+                        !this.props.unauthenticated &&
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(255, 255, 255, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
+                      }
+                      tabIndex="-1"
+                    >
+                      <Clear />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              id="edit-custom-server-url"
+              label="Server URL"
+              value={this.state.editUrl}
+              variant="outlined"
+              error={this.state.editUrlEmpty || this.state.editUrlError}
+              helperText={
+                this.state.editUrlEmpty
+                  ? "This field is required"
+                  : this.state.editUrlError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  editUrl: event.target.value,
+                  editUrlEmpty: event.target.value === "",
+                  editUrlError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (
+                  event.key === "Enter" &&
+                  this.state.editName &&
+                  this.state.editUrl &&
+                  typeof Storage !== "undefined" &&
+                  isUrl(this.state.editUrl) &&
+                  this.state.editUrl !== "https://bering.igloo.ooo" &&
+                  this.state.editUrl !== "bering.igloo.ooo" &&
+                  this.state.editUrl !== "http://bering.igloo.ooo"
+                ) {
+                  this.editServer()
+                  this.setState({
+                    editServerOpen: false,
+                    editUrl: "",
+                    editUrlEmpty: false,
+                    editName: "",
+                    editNameEmpty: false,
+                  })
+                }
+              }}
+              style={{
+                marginTop: "16px",
+                width: "100%",
+              }}
+              InputLabelProps={this.state.editUrl && { shrink: true }}
+              InputProps={{
+                endAdornment: this.state.editUrl && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        this.setState({ editUrl: "" })
+                      }}
+                      style={
+                        !this.props.unauthenticated &&
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(255, 255, 255, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
+                      }
+                      tabIndex="-1"
+                    >
+                      <Clear />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <DialogActions>
+            <Button
+              onClick={() =>
+                this.setState({
+                  editServerOpen: false,
+                  editUrl: "",
+                  editUrlEmpty: false,
+                  editName: "",
+                  editameEmpty: false,
+                })
+              }
+              style={{ marginRight: "4px" }}
+            >
+              Never mind
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                this.editServer()
+                this.setState({
+                  editServerOpen: false,
+                  editUrl: "",
+                  editUrlEmpty: false,
+                  editName: "",
+                  editNameEmpty: false,
+                })
+              }}
+              disabled={
+                !this.state.editName ||
+                !this.state.editUrl ||
+                typeof Storage === "undefined" ||
+                !isUrl(this.state.editUrl) ||
+                this.state.editUrl === "https://bering.igloo.ooo" ||
+                this.state.editUrl === "bering.igloo.ooo" ||
+                this.state.editUrl === "http://bering.igloo.ooo"
+              }
+            >
+              Edit
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Menu
+          id="server-menu-target"
+          anchorEl={this.state.anchorEl}
+          open={this.state.anchorEl}
+          onClose={() => this.setState({ anchorEl: null })}
+          anchorOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+          transformOrigin={{
+            vertical: "top",
+            horizontal: "right",
+          }}
+        >
+          <MenuItem
+            onClick={() =>
+              this.setState({
+                editServerOpen: true,
+                anchorEl: false,
+                editName: this.state.menuTarget.name,
+                editUrl: this.state.menuTarget.url,
+              })
+            }
+          >
+            <ListItemIcon>
+              <Create />
+            </ListItemIcon>
+            <ListItemText
+              inset
+              primary={
+                <span
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { color: "white" }
+                      : { color: "black" }
+                  }
+                >
+                  Edit
+                </span>
+              }
+            />
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.deleteServer(this.state.menuTarget.url)
+              this.setState({ anchorEl: false })
+            }}
+          >
+            <ListItemIcon>
+              <Delete style={{ color: "#f44336" }} />
+            </ListItemIcon>
+            <ListItemText inset>
+              <span style={{ color: "#f44336" }}>Delete</span>
+            </ListItemText>
+          </MenuItem>
+        </Menu>
       </React.Fragment>
     )
 
@@ -514,6 +807,12 @@ class ChangeServer extends React.Component {
             MuiDialogActions: {
               action: {
                 marginRight: "4px",
+              },
+            },
+            MuiList: {
+              padding: {
+                paddingTop: 0,
+                paddingBottom: 0,
               },
             },
           },

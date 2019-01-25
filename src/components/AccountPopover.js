@@ -9,7 +9,7 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar"
 import Divider from "@material-ui/core/Divider"
 import ExitToApp from "@material-ui/icons/ExitToApp"
 import Settings from "@material-ui/icons/Settings"
-import PersonAdd from "@material-ui/icons/PersonAdd"
+import People from "@material-ui/icons/People"
 
 export default class AccountPopover extends React.Component {
   state = { popoverOpen: false }
@@ -85,7 +85,15 @@ export default class AccountPopover extends React.Component {
                   <ListItemText
                     style={{ cursor: "pointer" }}
                     primary={
-                      account.name + (account.token ? "" : " (disconnected)")
+                      <font>
+                        {account.name}
+                        {!account.token && (
+                          <font style={{ color: "black", opacity: "0.54" }}>
+                            {" "}
+                            (signed out)
+                          </font>
+                        )}
+                      </font>
                     }
                     secondary={account.email}
                   />
@@ -96,11 +104,11 @@ export default class AccountPopover extends React.Component {
                 <Avatar
                   style={{ backgroundColor: "transparent", color: "black" }}
                 >
-                  <PersonAdd />
+                  <People />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="Add account"
+                primary="Manage accounts"
                 style={{ cursor: "pointer" }}
               />
             </ListItem>

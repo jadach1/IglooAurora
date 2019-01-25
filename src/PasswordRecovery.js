@@ -82,10 +82,6 @@ export default class PasswordRecovery extends Component {
             )
       }
 
-      this.props.userData.user.email !== "undefined" &&
-        typeof Storage !== "undefined" &&
-        this.props.userData.user &&
-        localStorage.setItem("email", this.props.userData.user.email)
       this.forceUpdate()
 
       this.setState({ redirect: true })

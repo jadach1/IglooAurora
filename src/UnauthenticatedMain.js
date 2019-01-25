@@ -5,6 +5,7 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import Paper from "@material-ui/core/Paper"
 import Login from "./components/unauthenticated/Login"
 import Signup from "./components/unauthenticated/Signup"
+import AccountSwitcher from "./components/unauthenticated/AccountSwitcher"
 import logo from "./styles/assets/logo.svg"
 import iglooTitle from "./styles/assets/iglooTitle.svg"
 import { Redirect } from "react-router-dom"
@@ -12,7 +13,12 @@ import Helmet from "react-helmet"
 import ChangeServer from "./components/settings/ChangeServer"
 
 export default class UnAuthenticatedMain extends Component {
-  state = { redirect: false, tapCounter: 0, changeServerOpen: false }
+  state = {
+    redirect: false,
+    tapCounter: 0,
+    changeServerOpen: false,
+    showAccountSwitcher: true,
+  }
 
   render() {
     if (this.state.tapCounter === 7) {
@@ -37,7 +43,7 @@ export default class UnAuthenticatedMain extends Component {
       <React.Fragment>
         <Helmet>
           <title>
-            {this.props.isLogin
+            {this.props.isLogin || this.props.isAccountSwitcher
               ? "Igloo Aurora - Log in"
               : "Igloo Aurora - Sign up"}
           </title>
@@ -93,6 +99,11 @@ export default class UnAuthenticatedMain extends Component {
                 emailError={this.props.emailError}
                 changeEmailError={this.props.changeEmailError}
                 changeSignupEmail={this.props.changeSignupEmail}
+              />
+            ) : this.props.isAccountSwitcher ? (
+              <AccountSwitcher
+                signIn={this.props.signIn}
+                forceUpdate={() => this.props.forceUpdate()}
               />
             ) : (
               <Signup

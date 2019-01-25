@@ -592,13 +592,21 @@ class App extends Component {
     }
 
     const logOut = () => {
-      this.setState({ bearer: "", loggedOut: true })
+      this.setState({
+        bearer: "",
+        loggedOut: true,
+        loginEmail: "",
+        signupEmail: "",
+      })
       if (typeof Storage !== "undefined") {
         let currentAccountList = JSON.parse(localStorage.getItem("accountList"))
 
         currentAccountList.filter(
           account => account.id === localStorage.getItem("userId")
-        )[0].token = ""
+        )[0] &&
+          (currentAccountList.filter(
+            account => account.id === localStorage.getItem("userId")
+          )[0].token = "")
 
         localStorage.setItem("accountList", JSON.stringify(currentAccountList))
 
@@ -607,7 +615,12 @@ class App extends Component {
     }
 
     const changeAccount = () => {
-      this.setState({ bearer: "", loggedOut: true })
+      this.setState({
+        bearer: "",
+        loggedOut: true,
+        loginEmail: "",
+        signupEmail: "",
+      })
       localStorage.setItem("userId", "")
     }
 
@@ -665,13 +678,70 @@ class App extends Component {
                   }
                   // the user is redirected to the log in screen if someone already logged in on their machine
                   return typeof Storage !== "undefined" &&
-                    localStorage.getItem("email") ? (
-                    <Redirect to="/login" />
+                    localStorage.getItem("accountList") ? (
+                    <Redirect to="/accounts" />
                   ) : (
                     <Redirect to="/signup" />
                   )
                 }
               }}
+            />
+            <Route
+              path="/accounts"
+              render={() =>
+                this.state.bearer ? (
+                  <Redirect to="/" />
+                ) : typeof Storage !== "undefined" &&
+                  !JSON.parse(localStorage.getItem("accountList"))[0] ? (
+                  <Redirect to="/login" />
+                ) : this.state.isMobile ? (
+                  <UnauthenticatedMainMobile
+                    isAccountSwitcher
+                    signIn={signIn}
+                    password={this.state.loginPassword}
+                    changePassword={loginPassword =>
+                      this.setState({ loginPassword })
+                    }
+                    passwordError={this.state.loginPasswordError}
+                    changePasswordError={loginPasswordError =>
+                      this.setState({ loginPasswordError })
+                    }
+                    email={this.state.loginEmail}
+                    changeEmail={loginEmail => this.setState({ loginEmail })}
+                    emailError={this.state.loginEmailError}
+                    changeEmailError={loginEmailError =>
+                      this.setState({ loginEmailError })
+                    }
+                    changeSignupEmail={signupEmail =>
+                      this.setState({ signupEmail })
+                    }
+                  />
+                ) : (
+                  <UnauthenticatedMain
+                    isAccountSwitcher
+                    signIn={signIn}
+                    password={this.state.loginPassword}
+                    changePassword={loginPassword =>
+                      this.setState({ loginPassword: loginPassword })
+                    }
+                    passwordError={this.state.loginPasswordError}
+                    changePasswordError={loginPasswordError =>
+                      this.setState({ loginPasswordError })
+                    }
+                    email={this.state.loginEmail}
+                    changeEmail={loginEmail => this.setState({ loginEmail })}
+                    emailError={this.state.loginEmailError}
+                    changeEmailError={loginEmailError =>
+                      this.setState({ loginEmailError })
+                    }
+                    changeSignupEmail={signupEmail =>
+                      this.setState({ signupEmail })
+                    }
+                    unauthenticatedPicture={this.state.unauthenticatedPicture}
+                    forceUpdate={() => this.forceUpdate()}
+                  />
+                )
+              }
             />
             <Route
               path="/login"

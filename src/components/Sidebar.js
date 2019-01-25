@@ -446,7 +446,7 @@ class Sidebar extends Component {
                                 ) !== -1
                             )[1]
                           )
-                          ? { color: "white", opacity: "0.5" }
+                          ? { color: "white", opacity: "0.54" }
                           : { color: "white" }
                         : !(
                             environment &&
@@ -457,7 +457,7 @@ class Sidebar extends Component {
                                 ) !== -1
                             )[1]
                           )
-                        ? { color: "black", opacity: "0.5" }
+                        ? { color: "black", opacity: "0.54" }
                         : { color: "black" }
                     }
                   />
@@ -527,7 +527,7 @@ class Sidebar extends Component {
                             ) !== -1
                         )[0]
                       )
-                      ? { color: "white", opacity: "0.5" }
+                      ? { color: "white", opacity: "0.54" }
                       : { color: "white" }
                     : !(
                         environment &&
@@ -538,7 +538,7 @@ class Sidebar extends Component {
                             ) !== -1
                         )[0]
                       )
-                    ? { color: "black", opacity: "0.5" }
+                    ? { color: "black", opacity: "0.54" }
                     : { color: "black" }
                 }
               />

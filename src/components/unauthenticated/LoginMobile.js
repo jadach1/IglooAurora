@@ -79,10 +79,6 @@ export default class LoginMobile extends Component {
         },
       })
 
-      if (this.props.email !== "undefined" && typeof Storage !== "undefined") {
-        localStorage.setItem("email", this.props.email)
-      }
-
       this.props.signIn(
         loginMutation.data.logIn.token,
         loginMutation.data.logIn.user

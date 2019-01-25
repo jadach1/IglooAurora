@@ -250,7 +250,11 @@ class ShareEnvironment extends React.Component {
                                   }
                             }
                           >
-                            {item.receiver.name + " (pending)"}
+                            {item.receiver.name}
+                            <font style={{ color: "black", opacity: "0.54" }}>
+                              {" "}
+                              (pending)
+                            </font>
                           </font>
                         }
                         secondary={
@@ -423,7 +427,13 @@ class ShareEnvironment extends React.Component {
                                       }
                                 }
                               >
-                                {item.receiver.name + " (pending)"}
+                                {item.receiver.name}
+                                <font
+                                  style={{ color: "black", opacity: "0.54" }}
+                                >
+                                  {" "}
+                                  (pending)
+                                </font>
                               </font>
                             }
                             secondary={
@@ -650,7 +660,13 @@ class ShareEnvironment extends React.Component {
                                       }
                                 }
                               >
-                                {item.receiver.name + " (pending)"}
+                                {item.receiver.name}
+                                <font
+                                  style={{ color: "black", opacity: "0.54" }}
+                                >
+                                  {" "}
+                                  (pending)
+                                </font>
                               </font>
                             }
                             secondary={
@@ -845,6 +861,85 @@ class ShareEnvironment extends React.Component {
                       )}
                     </ListItem>
                   ))}
+                  {(this.props.environment.myRole === "ADMIN" ||
+                    this.props.environment.myRole === "OWNER") &&
+                    this.props.environment.pendingEnvironmentShares
+                      .filter(
+                        pendingEnvironmentShare =>
+                          pendingEnvironmentShare.role === "SPECTATOR"
+                      )
+                      .map(item => (
+                        <ListItem key={item.id}>
+                          <ListItemAvatar
+                            style={{
+                              backgroundColor: item.receiver.profileIconColor,
+                            }}
+                          >
+                            <Avatar>
+                              {this.getInitials(item.receiver.name)}
+                            </Avatar>
+                          </ListItemAvatar>
+                          <ListItemText
+                            primary={
+                              <font
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? {
+                                        color: "white",
+                                      }
+                                    : {
+                                        color: "black",
+                                      }
+                                }
+                              >
+                                {item.receiver.name}
+                                <font
+                                  style={{ color: "black", opacity: "0.54" }}
+                                >
+                                  {" "}
+                                  (pending)
+                                </font>
+                              </font>
+                            }
+                            secondary={
+                              <font
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? {
+                                        color: "#c1c2c5",
+                                      }
+                                    : {
+                                        color: "#7a7a7a",
+                                      }
+                                }
+                              >
+                                {item.receiver.email}
+                              </font>
+                            }
+                          />
+                          <ListItemSecondaryAction>
+                            <IconButton
+                              onClick={event =>
+                                this.setState({
+                                  anchorEl2: event.currentTarget,
+                                  menuTarget: item,
+                                  selectedUserForChangeRoleDialog: "spectator",
+                                })
+                              }
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
+                            >
+                              <MoreVert />
+                            </IconButton>
+                          </ListItemSecondaryAction>
+                        </ListItem>
+                      ))}
                   {(this.props.environment.myRole === "ADMIN" ||
                     this.props.environment.myRole === "OWNER") && (
                     <ListItem

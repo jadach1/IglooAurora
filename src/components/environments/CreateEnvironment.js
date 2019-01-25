@@ -19,6 +19,7 @@ import SwipeableViews from "react-swipeable-views"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 import Clear from "@material-ui/icons/Clear"
 import KeyboardArrowLeft from "@material-ui/icons/KeyboardArrowLeft"
+import KeyboardArrowRight from "@material-ui/icons/KeyboardArrowRight"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -235,7 +236,7 @@ class CreateEnvironment extends React.Component {
               }}
             >
               Next
-              <KeyboardArrowLeft />
+              <KeyboardArrowRight />
             </Button>
           </div>
         </div>
