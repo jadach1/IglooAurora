@@ -78,6 +78,16 @@ export default class AccountPopover extends React.Component {
                     typeof Storage !== undefined &&
                     localStorage.getItem("userId") === account.id
                   }
+                  onClick={
+                    account.token
+                      ? () => {
+                          localStorage.setItem("userId", account.id)
+                        }
+                      : () => {
+                          this.props.changeAccount(account.email, true)
+                          localStorage.setItem("userId", "")
+                        }
+                  }
                 >
                   <Avatar style={{ backgroundColor: account.profileIconColor }}>
                     {this.getInitials(account.name)}
@@ -85,30 +95,82 @@ export default class AccountPopover extends React.Component {
                   <ListItemText
                     style={{ cursor: "pointer" }}
                     primary={
-                      <font>
+                      <font
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { backgroundColor: "transparent", color: "white" }
+                            : { backgroundColor: "transparent", color: "black" }
+                        }
+                      >
                         {account.name}
                         {!account.token && (
-                          <font style={{ color: "black", opacity: "0.54" }}>
+                          <font
+                            style={
+                              typeof Storage !== "undefined" &&
+                              localStorage.getItem("nightMode") === "true"
+                                ? { color: "white", opacity: 0.72 }
+                                : { color: "black", opacity: 0.72 }
+                            }
+                          >
                             {" "}
                             (signed out)
                           </font>
                         )}
                       </font>
                     }
-                    secondary={account.email}
+                    secondary={
+                      <font
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? {
+                                backgroundColor: "transparent",
+                                color: "white",
+                                opacity: 0.54,
+                              }
+                            : {
+                                backgroundColor: "transparent",
+                                color: "black",
+                                opacity: 0.54,
+                              }
+                        }
+                      >
+                        {account.email}
+                      </font>
+                    }
                   />
                 </ListItem>
               ))}
-            <ListItem button onClick={this.props.changeAccount}>
+            <ListItem
+              button
+              onClick={() => this.props.changeAccount("", false)}
+            >
               <ListItemAvatar>
                 <Avatar
-                  style={{ backgroundColor: "transparent", color: "black" }}
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { backgroundColor: "transparent", color: "white" }
+                      : { backgroundColor: "transparent", color: "black" }
+                  }
                 >
                   <People />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="Manage accounts"
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { backgroundColor: "transparent", color: "white" }
+                        : { backgroundColor: "transparent", color: "black" }
+                    }
+                  >
+                    Manage accounts
+                  </font>
+                }
                 style={{ cursor: "pointer" }}
               />
             </ListItem>
@@ -122,12 +184,31 @@ export default class AccountPopover extends React.Component {
             >
               <ListItemAvatar>
                 <Avatar
-                  style={{ backgroundColor: "transparent", color: "black" }}
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { backgroundColor: "transparent", color: "white" }
+                      : { backgroundColor: "transparent", color: "black" }
+                  }
                 >
                   <Settings />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Settings" style={{ cursor: "pointer" }} />
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { backgroundColor: "transparent", color: "white" }
+                        : { backgroundColor: "transparent", color: "black" }
+                    }
+                  >
+                    Settings
+                  </font>
+                }
+                style={{ cursor: "pointer" }}
+              />
             </ListItem>
             <ListItem
               button
@@ -138,12 +219,31 @@ export default class AccountPopover extends React.Component {
             >
               <ListItemAvatar>
                 <Avatar
-                  style={{ backgroundColor: "transparent", color: "black" }}
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? { backgroundColor: "transparent", color: "white" }
+                      : { backgroundColor: "transparent", color: "black" }
+                  }
                 >
                   <ExitToApp />
                 </Avatar>
               </ListItemAvatar>
-              <ListItemText primary="Log out" style={{ cursor: "pointer" }} />
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { backgroundColor: "transparent", color: "white" }
+                        : { backgroundColor: "transparent", color: "black" }
+                    }
+                  >
+                    Log out
+                  </font>
+                }
+                style={{ cursor: "pointer" }}
+              />
             </ListItem>
           </List>
         </Popover>

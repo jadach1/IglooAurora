@@ -996,6 +996,7 @@ class GraphQLFetcher extends Component {
               forceUpdate={this.props.forceUpdate}
               client={this.props.client}
               mobile={this.props.isMobile}
+              changeEmail={this.props.changeEmail}
             />
             <EmailNotVerified
               mobile={this.props.isMobile}
@@ -1131,6 +1132,7 @@ class GraphQLFetcher extends Component {
               forceUpdate={this.props.forceUpdate}
               client={this.props.client}
               mobile={this.props.isMobile}
+              changeEmail={this.props.changeEmail}
             />
             <EmailNotVerified
               mobile={this.props.isMobile}

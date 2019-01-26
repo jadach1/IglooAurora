@@ -13,8 +13,6 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-let oldName = ""
-
 function GrowTransition(props) {
   return <Grow {...props} />
 }
@@ -46,7 +44,6 @@ class RenameDevice extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.open && !this.props.open) {
-      oldName = this.props.device.name
       this.setState({ name: this.props.device.name, nameEmpty: "" })
     }
   }
@@ -116,7 +113,7 @@ class RenameDevice extends React.Component {
             variant="contained"
             color="primary"
             onClick={this.rename}
-            disabled={!this.state.name || oldName === this.state.name}
+            disabled={!this.state.name}
           >
             Rename
           </Button>

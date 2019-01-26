@@ -175,6 +175,7 @@ export default class FilterPopover extends Component {
           open={this.props.open}
           onClose={this.props.close}
           anchorEl={this.props.anchorEl}
+          marginThreshold={8}
           anchorOrigin={{
             vertical: "top",
             horizontal: "right",

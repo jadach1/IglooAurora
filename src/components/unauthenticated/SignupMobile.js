@@ -23,6 +23,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import queryString from "query-string"
 
 class SignupMobile extends Component {
   constructor() {
@@ -172,7 +173,7 @@ class SignupMobile extends Component {
     return (
       <div
         className="rightSide notSelectable"
-        style={{ maxWidth: "400px", marginLeft: "auto", marginRight: "auto" }}
+        style={{ maxWidth: "448px", marginLeft: "auto", marginRight: "auto" }}
       >
         <img
           src={logo}
@@ -419,6 +420,8 @@ class SignupMobile extends Component {
           Sign up
           {this.state.showLoading && <CenteredSpinner isInButton secondary />}
         </Button>
+        {queryString.parse("?" + window.location.href.split("?")[1]).from ===
+          "accounts" && JSON.parse(localStorage.getItem("accountList"))[0] ? (
           <MuiThemeProvider
             theme={createMuiTheme({
               palette: {
@@ -427,7 +430,24 @@ class SignupMobile extends Component {
             })}
           >
             <Button
-              style={{ marginTop: "8px" }}
+              fullWidth={true}
+              color="primary"
+              disabled={this.state.showLoading}
+              component={Link}
+              to="/accounts"
+            >
+              Go back
+            </Button>
+          </MuiThemeProvider>
+        ) : (
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#fff" },
+              },
+            })}
+          >
+            <Button
               fullWidth={true}
               color="primary"
               disabled={this.state.showLoading}
@@ -437,6 +457,7 @@ class SignupMobile extends Component {
               Log in instead
             </Button>
           </MuiThemeProvider>
+        )}
         {this.state.redirect && <Redirect push to="/login" />}
       </div>
     )

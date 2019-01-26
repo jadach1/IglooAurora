@@ -64,11 +64,11 @@ export default class PasswordRecovery extends Component {
             localStorage.setItem(
               "accountList",
               JSON.stringify([
+                ...JSON.parse(localStorage.getItem("accountList")),
                 {
                   token: changePassword.data.changePassword.token,
                   ...changePassword.data.changePassword.user,
                 },
-                ...JSON.parse(localStorage.getItem("accountList")),
               ])
             )
           : localStorage.setItem(

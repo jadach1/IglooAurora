@@ -33,7 +33,6 @@ class CustomizeEnvironment extends React.Component {
   state = {
     nameEmpty: false,
     slideIndex: 0,
-    initialSlideIndex: 0,
   }
 
   selectImage = index => {
@@ -80,22 +79,22 @@ class CustomizeEnvironment extends React.Component {
   componentDidMount() {
     switch (this.props.environment.picture) {
       case "DENALI":
-        this.setState({ slideIndex: 0, initialSlideIndex: 0 })
+        this.setState({ slideIndex: 0 })
         break
       case "FOX":
-        this.setState({ slideIndex: 1, initialSlideIndex: 1 })
+        this.setState({ slideIndex: 1 })
         break
       case "TREETOPS":
-        this.setState({ slideIndex: 2, initialSlideIndex: 2 })
+        this.setState({ slideIndex: 2 })
         break
       case "PUFFIN":
-        this.setState({ slideIndex: 3, initialSlideIndex: 3 })
+        this.setState({ slideIndex: 3 })
         break
       case "NORTHERN_LIGHTS":
-        this.setState({ slideIndex: 4, initialSlideIndex: 4 })
+        this.setState({ slideIndex: 4 })
         break
       default:
-        this.setState({ slideIndex: 0, initialSlideIndex: 0 })
+        this.setState({ slideIndex: 0 })
         break
     }
   }
@@ -137,13 +136,7 @@ class CustomizeEnvironment extends React.Component {
               })
             }
             onKeyPress={event => {
-              if (
-                event.key === "Enter" &&
-                !this.state.nameEmpty &&
-                (this.state.initialSlideIndex !== this.state.slideIndex ||
-                  this.props.environment.name !== this.state.name)
-              )
-                this.rename()
+              if (event.key === "Enter" && !this.state.nameEmpty) this.rename()
             }}
             style={{
               width: "calc(100% - 48px)",
@@ -277,11 +270,7 @@ class CustomizeEnvironment extends React.Component {
             primary={true}
             buttonStyle={{ backgroundColor: "#0083ff" }}
             onClick={this.rename}
-            disabled={
-              !this.state.name ||
-              (this.state.initialSlideIndex === this.state.slideIndex &&
-                this.props.environment.name === this.state.name)
-            }
+            disabled={!this.state.name}
           >
             Customize
           </Button>

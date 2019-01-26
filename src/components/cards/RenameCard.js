@@ -13,8 +13,6 @@ import IconButton from "@material-ui/core/IconButton"
 import Clear from "@material-ui/icons/Clear"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 
-let oldName = ""
-
 function GrowTransition(props) {
   return <Grow {...props} />
 }
@@ -46,7 +44,6 @@ class RenameCardDialog extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.renameCardOpen && !this.props.renameCardOpen) {
-      oldName = this.props.cardName
       this.setState({ name: this.props.cardName, nameEmpty: "" })
     }
   }
@@ -119,7 +116,7 @@ class RenameCardDialog extends React.Component {
             variant="contained"
             color="primary"
             onClick={this.rename}
-            disabled={!this.state.name || oldName === this.state.name}
+            disabled={!this.state.name}
           >
             Rename
           </Button>

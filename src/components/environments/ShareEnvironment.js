@@ -251,7 +251,20 @@ class ShareEnvironment extends React.Component {
                             }
                           >
                             {item.receiver.name}
-                            <font style={{ color: "black", opacity: "0.54" }}>
+                            <font
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? {
+                                      color: "white",
+                                      opacity: 0.72,
+                                    }
+                                  : {
+                                      color: "black",
+                                      opacity: 0.72,
+                                    }
+                              }
+                            >
                               {" "}
                               (pending)
                             </font>
@@ -429,7 +442,18 @@ class ShareEnvironment extends React.Component {
                               >
                                 {item.receiver.name}
                                 <font
-                                  style={{ color: "black", opacity: "0.54" }}
+                                                                style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? {
+                                      color: "white",
+                                      opacity: 0.72,
+                                    }
+                                  : {
+                                      color: "black",
+                                      opacity: 0.72,
+                                    }
+                              }
                                 >
                                   {" "}
                                   (pending)
@@ -662,7 +686,18 @@ class ShareEnvironment extends React.Component {
                               >
                                 {item.receiver.name}
                                 <font
-                                  style={{ color: "black", opacity: "0.54" }}
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? {
+                                      color: "white",
+                                      opacity: 0.72,
+                                    }
+                                  : {
+                                      color: "black",
+                                      opacity: 0.72,
+                                    }
+                              }
                                 >
                                   {" "}
                                   (pending)
@@ -895,7 +930,18 @@ class ShareEnvironment extends React.Component {
                               >
                                 {item.receiver.name}
                                 <font
-                                  style={{ color: "black", opacity: "0.54" }}
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? {
+                                      color: "white",
+                                      opacity: 0.72,
+                                    }
+                                  : {
+                                      color: "black",
+                                      opacity: 0.72,
+                                    }
+                              }
                                 >
                                   {" "}
                                   (pending)

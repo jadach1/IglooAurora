@@ -13,6 +13,7 @@ import { Link } from "react-router-dom"
 import Person from "@material-ui/icons/Person"
 import RemoveCircleOutline from "@material-ui/icons/RemoveCircleOutline"
 import { Redirect } from "react-router-dom"
+import logo from "../../styles/assets/logo.svg"
 
 export default class AccountSwitcher extends Component {
   constructor() {
@@ -25,10 +26,28 @@ export default class AccountSwitcher extends Component {
       isPasswordEmpty: false,
       showLoading: false,
       redirect: false,
+      tapCounter: 0,
     }
 
     this.signIn = this.signIn.bind(this)
     this.recover = this.recover.bind(this)
+
+    this.signIn = this.signIn.bind(this)
+    this.recover = this.recover.bind(this)
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+  }
+
+  componentDidMount() {
+    this.updateWindowDimensions()
+    window.addEventListener("resize", this.updateWindowDimensions)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWindowDimensions)
+  }
+
+  updateWindowDimensions() {
+    this.setState({ height: window.innerHeight })
   }
 
   async signIn() {
@@ -121,13 +140,53 @@ export default class AccountSwitcher extends Component {
       <React.Fragment>
         <div
           className="rightSide notSelectable"
-          style={{ overflowY: "hidden", padding: "32px 0" }}
+          style={
+            this.props.mobile
+              ? { maxWidth: "448px", marginLeft: "auto", marginRight: "auto" }
+              : { overflowY: "hidden", padding: "32px 0" }
+          }
         >
+          {this.props.mobile && (
+            <img
+              src={logo}
+              alt="Igloo logo"
+              className="notSelectable nonDraggable"
+              draggable="false"
+              style={
+                this.state.height >= 690
+                  ? {
+                      width: "192px",
+                      paddingTop: "72px",
+                      marginBottom: "72px",
+                      display: "block",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }
+                  : {
+                      width: "144px",
+                      paddingTop: "48px",
+                      marginBottom: "48px",
+                      display: "block",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }
+              }
+              onClick={() =>
+                this.setState(oldState => ({
+                  tapCounter: oldState.tapCounter + 1,
+                }))
+              }
+            />
+          )}
           <Typography
             variant="h3"
             gutterBottom
             className="defaultCursor"
-            style={{ color: "#0083ff", textAlign: "center" }}
+            style={
+              this.props.mobile
+                ? { color: "white", textAlign: "center" }
+                : { color: "#0083ff", textAlign: "center" }
+            }
           >
             Log in
           </Typography>
@@ -155,23 +214,42 @@ export default class AccountSwitcher extends Component {
                   <ListItemText
                     style={{ cursor: "pointer" }}
                     primary={
-                      <font>
+                      <font
+                        style={
+                          this.props.mobile
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
                         {account.name}
                         {!account.token && (
-                          <font style={{ color: "black", opacity: "0.54" }}>
+                          <font
+                            style={
+                              this.props.mobile
+                                ? { color: "white", opacity: 0.72 }
+                                : { color: "black", opacity: 0.72 }
+                            }
+                          >
                             {" "}
                             (signed out)
                           </font>
                         )}
                       </font>
                     }
-                    secondary={account.email}
+                    secondary={
+                      this.props.mobile ? (
+                        <font style={{ color: "white", opacity: 0.7 }}>
+                          {account.email}
+                        </font>
+                      ) : (
+                        account.email
+                      )
+                    }
                   />
                   <ListItemSecondaryAction>
                     <IconButton
                       style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
+                        this.props.mobile
                           ? { color: "white" }
                           : { color: "black" }
                       }
@@ -200,11 +278,27 @@ export default class AccountSwitcher extends Component {
                 <Avatar
                   style={{ backgroundColor: "transparent", color: "black" }}
                 >
-                  <Person />
+                  <Person
+                    style={
+                      this.props.mobile
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="Use existing account"
+                primary={
+                  <span
+                    style={
+                      this.props.mobile
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  >
+                    Use existing account
+                  </span>
+                }
                 style={{ cursor: "pointer" }}
               />
             </ListItem>
@@ -213,11 +307,27 @@ export default class AccountSwitcher extends Component {
                 <Avatar
                   style={{ backgroundColor: "transparent", color: "black" }}
                 >
-                  <PersonAdd />
+                  <PersonAdd
+                    style={
+                      this.props.mobile
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  />
                 </Avatar>
               </ListItemAvatar>
               <ListItemText
-                primary="Create new account"
+                primary={
+                  <span
+                    style={
+                      this.props.mobile
+                        ? { color: "white" }
+                        : { color: "black" }
+                    }
+                  >
+                    Create new account
+                  </span>
+                }
                 style={{ cursor: "pointer" }}
               />
             </ListItem>

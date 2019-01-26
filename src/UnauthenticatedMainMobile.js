@@ -6,6 +6,7 @@ import LoginMobile from "./components/unauthenticated/LoginMobile"
 import SignupMobile from "./components/unauthenticated/SignupMobile"
 import ChangeServer from "./components/settings/ChangeServer"
 import Helmet from "react-helmet"
+import AccountSwitcher from "./components/unauthenticated/AccountSwitcher"
 
 export default class UnAuthenticatedMainMobile extends Component {
   state = { redirect: false, tapCounter: 0, changeServerOpen: false }
@@ -29,7 +30,7 @@ export default class UnAuthenticatedMainMobile extends Component {
       <React.Fragment>
         <Helmet>
           <title>
-            {this.props.isLogin
+            {this.props.isLogin || this.props.isAccountSwitcher
               ? "Igloo Aurora - Log in"
               : "Igloo Aurora - Sign up"}
           </title>
@@ -42,7 +43,13 @@ export default class UnAuthenticatedMainMobile extends Component {
             overflowX: "hidden",
           }}
         >
-          <div style={{ marginRight: "32px", marginLeft: "32px" }}>
+          <div
+            style={
+              this.props.isAccountSwitcher
+                ? {}
+                : { marginRight: "32px", marginLeft: "32px" }
+            }
+          >
             {this.props.isLogin ? (
               <LoginMobile
                 client={this.client}
@@ -60,6 +67,13 @@ export default class UnAuthenticatedMainMobile extends Component {
                 openChangeServer={() =>
                   this.setState({ changeServerOpen: true })
                 }
+              />
+            ) : this.props.isAccountSwitcher ? (
+              <AccountSwitcher
+                mobile
+                signIn={this.props.signIn}
+                changeEmail={this.props.changeEmail}
+                forceUpdate={() => this.props.forceUpdate()}
               />
             ) : (
               <SignupMobile

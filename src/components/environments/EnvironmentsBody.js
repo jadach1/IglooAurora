@@ -411,7 +411,7 @@ export default class EnvironmentsBody extends Component {
               <FormControl
                 style={{
                   width: "calc(100% - 32px)",
-                  maxWidth: "400px",
+                  maxWidth: "448px",
                 }}
               >
                 <Input
@@ -663,7 +663,7 @@ export default class EnvironmentsBody extends Component {
               <FormControl
                 style={{
                   width: "calc(100% - 32px)",
-                  maxWidth: "400px",
+                  maxWidth: "448px",
                 }}
               >
                 <Input

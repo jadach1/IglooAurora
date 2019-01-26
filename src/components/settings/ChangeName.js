@@ -14,8 +14,6 @@ import gql from "graphql-tag"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 import Clear from "@material-ui/icons/Clear"
 
-let oldName = ""
-
 function GrowTransition(props) {
   return <Grow {...props} />
 }
@@ -57,13 +55,7 @@ class ChangeNameDialog extends React.Component {
       this.setState({
         confirmationDialogOpen: this.props.confirmationDialogOpen,
       })
-
-      oldName = this.props.name
     }
-  }
-
-  componentDidMount() {
-    oldName = this.props.name
   }
 
   render() {
@@ -147,8 +139,7 @@ class ChangeNameDialog extends React.Component {
               onKeyPress={event => {
                 if (
                   event.key === "Enter" &&
-                  this.state.name !== "" &&
-                  this.state.name !== oldName
+                  this.state.name !== ""
                 ) {
                   changeName(this.state.name)
                   this.props.handleNameDialogClose()
@@ -193,7 +184,7 @@ class ChangeNameDialog extends React.Component {
               color="primary"
               label="Change"
               primary={true}
-              disabled={!this.state.name || oldName === this.state.name}
+              disabled={!this.state.name}
               onClick={() => {
                 changeName(this.state.name)
                 this.props.handleNameDialogClose()

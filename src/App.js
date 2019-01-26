@@ -553,11 +553,11 @@ class App extends Component {
             localStorage.setItem(
               "accountList",
               JSON.stringify([
+                ...accountList,
                 {
                   token: bearer,
                   ...user,
                 },
-                ...accountList,
               ])
             )
           } else {
@@ -614,11 +614,12 @@ class App extends Component {
       }
     }
 
-    const changeAccount = () => {
+    const changeAccount = (loginEmail,redirect) => {
       this.setState({
         bearer: "",
         loggedOut: true,
-        loginEmail: "",
+        loginEmail,
+        redirect,
         signupEmail: "",
       })
       localStorage.setItem("userId", "")
@@ -662,6 +663,7 @@ class App extends Component {
                       changeAccount={changeAccount}
                       isMobile={this.state.isMobile}
                       forceUpdate={() => this.forceUpdate()}
+                      changeEmail={loginEmail => this.setState({ loginEmail })}
                     />
                   )
                 } else {
@@ -857,6 +859,7 @@ class App extends Component {
         <Offline>
           <OfflineScreen isMobile={this.state.isMobile} />
         </Offline>
+        {this.state.redirect && <Redirect push to="/login?from=accounts" />}
       </MuiThemeProvider>
     )
   }
