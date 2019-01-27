@@ -206,8 +206,6 @@ const darkTheme = createMuiTheme({
     MuiCheckbox: {
       colorPrimary: {
         "&$checked": { color: "#0083ff" },
-      },
-      colorSecondary: {
         color: "white",
       },
     },
@@ -614,7 +612,7 @@ class App extends Component {
       }
     }
 
-    const changeAccount = (loginEmail,redirect) => {
+    const changeAccount = (loginEmail, redirect) => {
       this.setState({
         bearer: "",
         loggedOut: true,

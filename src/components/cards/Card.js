@@ -187,7 +187,11 @@ class Card extends Component {
       )
     } else if (value.__typename === "PlotValue") {
       specificCard = (
-        <PlotCard value={value.plotValue} threshold={value.threshold} />
+        <PlotCard
+          value={value.plotValue}
+          threshold={value.threshold}
+          unitOfMeasurement={value.unitOfMeasurement}
+        />
       )
     } else {
       specificCard = ""
@@ -430,7 +434,7 @@ class Card extends Component {
           {specificCard}
         </Paper>
         <FullScreenCard
-          fullScreen={this.state.isCardFullScreen}
+          open={this.state.isCardFullScreen}
           handleClose={() => {
             this.setState({ isCardFullScreen: false })
           }}

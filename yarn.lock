@@ -20,6 +20,41 @@
   dependencies:
     regenerator-runtime "^0.12.0"
 
+"@devexpress/dx-chart-core@1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@devexpress/dx-chart-core/-/dx-chart-core-1.10.0.tgz#a973371d0429f57fa443a7ba5db02dfa18ab328e"
+  dependencies:
+    d3-array "^2.0.2"
+    d3-scale "^2.1.2"
+    d3-shape "^1.2.2"
+
+"@devexpress/dx-core@1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@devexpress/dx-core/-/dx-core-1.10.0.tgz#3fe39d57211aecdf54eed093611e74bf6d1fd1be"
+
+"@devexpress/dx-react-chart-material-ui@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@devexpress/dx-react-chart-material-ui/-/dx-react-chart-material-ui-1.10.0.tgz#b88fefd617beb6416b5621885285bba31636d2ec"
+  dependencies:
+    classnames "^2.2.6"
+    prop-types "^15.6.2"
+
+"@devexpress/dx-react-chart@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@devexpress/dx-react-chart/-/dx-react-chart-1.10.0.tgz#1d8e8a0c855026aab9671349c2d388774cbc3317"
+  dependencies:
+    "@devexpress/dx-chart-core" "1.10.0"
+    d3-scale "^2.1.2"
+    d3-shape "^1.2.2"
+    prop-types "^15.6.2"
+
+"@devexpress/dx-react-core@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@devexpress/dx-react-core/-/dx-react-core-1.10.0.tgz#decee512278268edc9d0ea9eb21ec0edbf33f0f9"
+  dependencies:
+    "@devexpress/dx-core" "1.10.0"
+    prop-types "^15.6.2"
+
 "@hint/configuration-development@^1.1.1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@hint/configuration-development/-/configuration-development-1.1.2.tgz#ffbd432d82e452910019b65e4ed3bcdb3e7c9d93"
@@ -2252,7 +2287,7 @@ class-utils@^0.3.5:
     isobject "^3.0.0"
     static-extend "^0.1.1"
 
-classnames@^2.2.5:
+classnames@^2.2.5, classnames@^2.2.6:
   version "2.2.6"
   resolved "https://registry.yarnpkg.com/classnames/-/classnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
 
@@ -2748,6 +2783,10 @@ d3-array@^1.2.0:
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-1.2.4.tgz#635ce4d5eea759f6f605863dbcfc30edc737f71f"
 
+d3-array@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/d3-array/-/d3-array-2.0.3.tgz#9c0531eda701e416f28a030e3d4e6179ba74f19f"
+
 d3-collection@1:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/d3-collection/-/d3-collection-1.0.7.tgz#349bd2aa9977db071091c13144d5e4f16b5b310e"
@@ -2770,7 +2809,7 @@ d3-path@1:
   version "1.0.7"
   resolved "https://registry.yarnpkg.com/d3-path/-/d3-path-1.0.7.tgz#8de7cd693a75ac0b5480d3abaccd94793e58aae8"
 
-d3-scale@^2.0.0:
+d3-scale@^2.0.0, d3-scale@^2.1.2:
   version "2.1.2"
   resolved "https://registry.yarnpkg.com/d3-scale/-/d3-scale-2.1.2.tgz#4e932b7b60182aee9073ede8764c98423e5f9a94"
   dependencies:
@@ -2784,6 +2823,12 @@ d3-scale@^2.0.0:
 d3-shape@^1.2.0:
   version "1.2.2"
   resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.2.2.tgz#f9dba3777a5825f9a8ce8bc928da08c17679e9a7"
+  dependencies:
+    d3-path "1"
+
+d3-shape@^1.2.2:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/d3-shape/-/d3-shape-1.3.3.tgz#b136e6caa9374034b5946bbd414aaa54a39087c3"
   dependencies:
     d3-path "1"
 

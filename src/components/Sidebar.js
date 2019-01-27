@@ -274,7 +274,7 @@ class Sidebar extends Component {
                         <Avatar
                           style={{
                             backgroundColor: "transparent",
-                            color: "#0057cb",
+                            color: "#0083ff",
                           }}
                         >
                           {item.letter}

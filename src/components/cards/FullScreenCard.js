@@ -22,7 +22,7 @@ class FullScreenCard extends React.Component {
 
     return (
       <Dialog
-        open={this.props.fullScreen}
+        open={this.props.open}
         onClose={this.props.handleClose}
         TransitionComponent={
           this.props.fullScreen ? SlideTransition : GrowTransition
@@ -30,7 +30,7 @@ class FullScreenCard extends React.Component {
         fullScreen={this.props.fullScreen}
         disableBackdropClick={this.props.fullScreen}
         fullWidth
-        maxWidth="xs"
+        maxWidth="md"
       >
         <DialogTitle disableTypography>{valueTitle}</DialogTitle>
         <div style={{ height: "100%" }}>{this.props.specificCard}</div>
@@ -41,4 +41,4 @@ class FullScreenCard extends React.Component {
     )
   }
 }
-export default withMobileDialog({ breakpoint: "xs" })(FullScreenCard)
+export default withMobileDialog({ breakpoint: "md" })(FullScreenCard)
