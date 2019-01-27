@@ -108,19 +108,6 @@ body {
   user-select: none;
 }
 
-.woodsLoginBackground {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 100vh;
-  width: 100%;
-  margin: 0;
-  box-sizing: border-box;
-  background-color: #f2f2f2;
-  background-size: cover;
-  background-image: url("./assets/woodsLoginBsckground.jpg");
-}
-
 .auroraLoginBackground {
   display: flex;
   justify-content: center;

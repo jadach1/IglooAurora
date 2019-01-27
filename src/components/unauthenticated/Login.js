@@ -114,9 +114,6 @@ class Login extends Component {
   }
 
   render() {
-    console.log(
-      queryString.parse("?" + window.location.href.split("?")[1]).from
-    )
     return (
       <React.Fragment>
         <div

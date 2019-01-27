@@ -381,12 +381,6 @@ class App extends Component {
       }
     }
 
-    // names of CSS classes for each of the unauthenticated screen backgrounds
-    let unauthenticatedPictures = [
-      "auroraLoginBackground",
-      "woodsLoginBackground",
-    ]
-
     this.state = {
       bearer,
       isMobile: null,
@@ -404,11 +398,6 @@ class App extends Component {
       signupPasswordError: "",
       name: "",
       nameError: "",
-      // chooses a background for the unauthenticated screen at random
-      // in case of error, the one with the aurora is displayed
-      unauthenticatedPicture:
-        unauthenticatedPictures[Math.floor(Math.random() * 2)] ||
-        "auroraLoginBackground",
     }
   }
 
@@ -737,7 +726,6 @@ class App extends Component {
                     changeSignupEmail={signupEmail =>
                       this.setState({ signupEmail })
                     }
-                    unauthenticatedPicture={this.state.unauthenticatedPicture}
                     forceUpdate={() => this.forceUpdate()}
                   />
                 )
@@ -792,7 +780,6 @@ class App extends Component {
                     changeSignupEmail={signupEmail =>
                       this.setState({ signupEmail })
                     }
-                    unauthenticatedPicture={this.state.unauthenticatedPicture}
                     forceUpdate={() => this.forceUpdate()}
                   />
                 )
@@ -841,7 +828,6 @@ class App extends Component {
                     changeLoginEmail={loginEmail =>
                       this.setState({ loginEmail })
                     }
-                    unauthenticatedPicture={this.state.unauthenticatedPicture}
                     forceUpdate={() => this.forceUpdate()}
                   />
                 )

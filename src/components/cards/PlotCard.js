@@ -1,4 +1,4 @@
-import React, { Component } from "react"
+import { Component } from "react" /*
 import {
   Chart,
   ArgumentAxis,
@@ -7,7 +7,7 @@ import {
 } from "@devexpress/dx-react-chart-material-ui"
 import { Animation } from "@devexpress/dx-react-chart"
 
-const format = () => tick => tick
+const format = () => tick => tick*/
 
 class PlotCard extends Component {
   constructor(props) {
@@ -38,7 +38,7 @@ class PlotCard extends Component {
 
   render() {
     if (this.props.value[0])
-      return (
+      return "This plot isn't empty" /*
         <Chart data={this.state.chartData}>
           <ArgumentAxis tickFormat={format} />
           <ValueAxis
@@ -63,8 +63,7 @@ class PlotCard extends Component {
             color="#0083ff"
           />
           <Animation />
-        </Chart>
-      )
+        </Chart> */
 
     return "This plot is empty"
   }

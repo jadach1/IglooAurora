@@ -48,7 +48,7 @@ export default class UnAuthenticatedMain extends Component {
               : "Igloo Aurora - Sign up"}
           </title>
         </Helmet>
-        <div className={this.props.unauthenticatedPicture}>
+        <div className="auroraLoginBackground">
           <Paper
             className="loginForm"
             style={{ margin: "32px 0", borderRadius: "8px" }}
