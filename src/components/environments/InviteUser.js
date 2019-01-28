@@ -180,7 +180,11 @@ class InviteUser extends Component {
             variant="contained"
             color="primary"
             onClick={() => this.inviteUser()}
-            disabled={this.state.email === "" || this.state.emailError}
+            disabled={
+              this.state.email === "" ||
+              this.state.emailError ||
+              this.state.showLoading
+            }
           >
             Invite
             {this.state.showLoading && <CenteredSpinner isInButton />}

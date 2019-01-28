@@ -339,6 +339,7 @@ class Main extends Component {
               selectedEnvironment={this.props.environmentId}
               searchDevices={this.props.searchDevices}
               searchText={this.props.devicesSearchText}
+              userData={this.props.userData}
             />
           </div>
           {this.props.selectedDevice !== null ? (

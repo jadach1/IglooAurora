@@ -393,6 +393,7 @@ class Sidebar extends Component {
           <AddDevice
             open={this.state.addDeviceOpen}
             close={() => this.setState({ addDeviceOpen: false })}
+            userData={this.props.userData}
           />
         </React.Fragment>
       )

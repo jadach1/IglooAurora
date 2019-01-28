@@ -16,6 +16,11 @@ import TextField from "@material-ui/core/TextField"
 import IconButton from "@material-ui/core/IconButton"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import Clear from "@material-ui/icons/Clear"
+import isUUID from "is-uuid"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
+import MenuItem from "@material-ui/core/MenuItem"
+import SwitchCamera from "@material-ui/icons/SwitchCamera"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -26,15 +31,50 @@ function SlideTransition(props) {
 }
 
 class AddDevice extends Component {
-  state = { authDialogOpen: false }
+  state = { authDialogOpen: false, camera: "environment" }
+
+  claimDevice(unclaimedDeviceId, name, environmentId) {
+    this.props.ClaimDevice({
+      variables: {
+        unclaimedDeviceId,
+        name,
+        environmentId,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        claimDevice: {
+          unclaimedDeviceId,
+          name,
+          environmentId,
+        },
+      },
+    })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      !this.state.environment &&
+      nextProps.userData.user &&
+      nextProps.userData.user.environments.length
+    ) {
+      this.setState({ environment: nextProps.userData.user.environments[0].id })
+    }
+
+    if (this.props.open !== nextProps.open && nextProps.open === true) {
+      this.setState({
+        name: "",
+        nameEmpty: "",
+        code: "",
+        codeEmpty: "",
+      })
+    }
+  }
 
   render() {
     return (
       <React.Fragment>
         <Dialog
-          open={
-            this.props.open && !this.state.qrOpen && !this.state.manualCodeOpen
-          }
+          open={this.props.open}
           onClose={this.props.close}
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition
@@ -63,7 +103,10 @@ class AddDevice extends Component {
               <ListItem
                 button
                 style={{ paddingLeft: "24px" }}
-                onClick={() => this.setState({ qrOpen: true, qrErrpr: false })}
+                onClick={() => {
+                  this.props.close()
+                  this.setState({ qrOpen: true, qrErrpr: false })
+                }}
               >
                 <ListItemIcon>
                   <SvgIcon>
@@ -80,9 +123,10 @@ class AddDevice extends Component {
               <ListItem
                 button
                 style={{ paddingLeft: "24px" }}
-                onClick={() =>
+                onClick={() => {
+                  this.props.close()
                   this.setState({ manualCodeOpen: true, qrErrpr: false })
-                }
+                }}
               >
                 <ListItemIcon>
                   <SvgIcon>
@@ -114,19 +158,44 @@ class AddDevice extends Component {
           maxWidth="xs"
           className="notSelectable defaultCursor"
         >
-          <DialogTitle disableTypography>Scan QR code</DialogTitle>
+          <DialogTitle disableTypography>
+            Scan QR code
+            <IconButton
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white" }
+                  : { color: "black" }
+              }
+              onClick={() =>
+                this.setState(oldState => ({
+                  camera: oldState.camera === "user" ? "environment" : "user",
+                }))
+              }
+            >
+              <SwitchCamera />
+            </IconButton>
+          </DialogTitle>
           <div style={{ height: "100%" }}>
             {this.state.qrErrpr && "Unexpected error"}
             <QrReader
               delay={1000}
               showViewFinder={false}
+              facingMode={this.state.camera}
               onError={() => this.setState({ qrErrpr: true })}
-              onScan={() => {}}
+              onScan={unclaimedDeviceId =>
+                isUUID.v4(unclaimedDeviceId) &&
+                this.setState({
+                  qrOpen: false,
+                  authDialogOpen: true,
+                  unclaimedDeviceId,
+                })
+              }
             />
           </div>
           <DialogActions>
             <Button onClick={() => this.setState({ qrOpen: false })}>
-              Go back
+              Close
             </Button>
           </DialogActions>
         </Dialog>
@@ -145,33 +214,39 @@ class AddDevice extends Component {
           <DialogTitle disableTypography>Insert code manually</DialogTitle>
           <div style={{ height: "100%" }}>
             <TextField
-              id="rename-device"
-              label="Name"
-              value={this.state.name}
+              id="add-device-code"
+              label="Code"
+              value={this.state.code}
               variant="outlined"
-              error={this.state.nameEmpty}
-              helperText={this.state.nameEmpty ? "This field is required" : " "}
+              error={this.state.codeEmpty || this.state.codeError}
+              helperText={
+                this.state.codeEmpty
+                  ? "This field is required"
+                  : this.state.codeError
+                  ? this.state.codeError
+                  : " "
+              }
               onChange={event =>
                 this.setState({
-                  name: event.target.value,
-                  nameEmpty: event.target.value === "",
+                  code: event.target.value,
+                  codeEmpty: event.target.value === "",
                 })
               }
               onKeyPress={event => {
-                if (event.key === "Enter" && !this.state.nameEmpty)
-                  this.rename()
+                if (event.key === "Enter" && !this.state.codeEmpty)
+                  this.setState({ manualCodeOpen: false })
               }}
               style={{
                 width: "calc(100% - 48px)",
                 margin: "0 24px",
               }}
-              InputLabelProps={this.state.name && { shrink: true }}
+              InputLabelProps={this.state.cpde && { shrink: true }}
               InputProps={{
-                endAdornment: this.state.name && (
+                endAdornment: this.state.code && (
                   <InputAdornment position="end">
                     <IconButton
                       onClick={() =>
-                        this.setState({ name: "", nameEmpty: true })
+                        this.setState({ code: "", codeEmpty: true })
                       }
                       tabIndex="-1"
                       style={
@@ -190,16 +265,23 @@ class AddDevice extends Component {
           </div>
           <DialogActions>
             <Button onClick={() => this.setState({ manualCodeOpen: false })}>
-              Go back
+              Never mind
             </Button>
             <Button
               variant="contained"
               onClick={() => {
-                this.setState({ manualCodeOpen: false })
+                isUUID.v4(this.state.code)
+                  ? this.setState({
+                      manualCodeOpen: false,
+                      authDialogOpen: true,
+                      unclaimedDeviceId: this.state.code,
+                    })
+                  : this.setState({ codeError: "This isn't a valid code" })
               }}
               color="primary"
+              disabled={!this.state.code}
             >
-              Authorize
+              Proceed
             </Button>
           </DialogActions>
         </Dialog>
@@ -247,13 +329,140 @@ class AddDevice extends Component {
             </List>
           </div>
           <DialogActions>
-            <Button onClick={this.props.close}>Never mind</Button>
+            <Button onClick={() => this.setState({ authDialogOpen: false })}>
+              Decline
+            </Button>
             <Button
               variant="contained"
-              onClick={() => this.props.close()}
+              onClick={() =>
+                this.setState({
+                  authDialogOpen: false,
+                  deviceDetailsOpen: true,
+                })
+              }
               color="primary"
             >
-              Authorize
+              Accept
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.state.deviceDetailsOpen}
+          onClose={() => this.setState({ deviceDetailsOpen: false })}
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
+          fullWidth
+          maxWidth="xs"
+          className="notSelectable defaultCursor"
+        >
+          <DialogTitle disableTypography>Add device details</DialogTitle>
+          <div style={{ height: "100%" }}>
+            <TextField
+              id="claim-device-name"
+              label="Name"
+              value={this.state.name}
+              variant="outlined"
+              error={this.state.nameEmpty}
+              helperText={this.state.nameEmpty ? "This field is required" : " "}
+              onChange={event =>
+                this.setState({
+                  name: event.target.value,
+                  nameEmpty: event.target.value === "",
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter" && !this.state.nameEmpty) {
+                  this.claimDevice(
+                    this.state.unclaimedDeviceId,
+                    this.state.name,
+                    this.state.environment
+                  )
+                  this.setState({ deviceDetailsOpen: false })
+                }
+              }}
+              style={{
+                width: "calc(100% - 48px)",
+                margin: "0 24px",
+              }}
+              InputLabelProps={this.state.name && { shrink: true }}
+              InputProps={{
+                endAdornment: this.state.name && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState({ name: "", nameEmpty: true })
+                      }
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
+                      }
+                    >
+                      <Clear />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              value={this.state.environment}
+              onChange={event => {
+                this.setState({
+                  environment: event.target.value,
+                })
+              }}
+              label="Environment"
+              variant="outlined"
+              select
+              required
+              style={{
+                width: "calc(100% - 48px)",
+                margin: "0 24px",
+                marginBottom: "16px",
+              }}
+              InputLabelProps={this.state.environment && { shrink: true }}
+              disabled={
+                this.props.userData.user &&
+                this.props.userData.user.environments.length < 2
+              }
+            >
+              {this.props.userData.user &&
+                this.props.userData.user.environments
+                  .filter(
+                    environment =>
+                      environment.myRole === "ADMIN" ||
+                      environment.myRole === "OWNER"
+                  )
+                  .map(environment => (
+                    <MenuItem value={environment.id}>
+                      {environment.name}
+                    </MenuItem>
+                  ))}
+            </TextField>
+          </div>
+          <DialogActions>
+            <Button onClick={() => this.setState({ deviceDetailsOpen: false })}>
+              Go back
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                this.claimDevice(
+                  this.state.unclaimedDeviceId,
+                  this.state.name,
+                  this.state.environment
+                )
+                this.setState({ deviceDetailsOpen: false })
+              }}
+              color="primary"
+              disabled={!this.state.name || !this.state.environment}
+            >
+              Proceed
             </Button>
           </DialogActions>
         </Dialog>
@@ -262,4 +471,24 @@ class AddDevice extends Component {
   }
 }
 
-export default withMobileDialog({ breakpoint: "xs" })(AddDevice)
+export default graphql(
+  gql`
+    mutation ClaimDevice(
+      $unclaimedDeviceId: ID!
+      $name: String!
+      $environmentId: ID!
+    ) {
+      claimDevice(
+        unclaimedDeviceId: $unclaimedDeviceId
+        name: $name
+        environmentId: $environmentId
+      ) {
+        id
+        name
+      }
+    }
+  `,
+  {
+    name: "ClaimDevice",
+  }
+)(withMobileDialog({ breakpoint: "xs" })(AddDevice))

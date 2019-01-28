@@ -473,6 +473,7 @@ class MainMobile extends Component {
                   searchDevices={this.props.searchDevices}
                   searchText={this.props.devicesSearchText}
                   snackbarOpen={this.props.snackbarOpen}
+                  userData={this.props.userData}
                 />
               </div>
             </React.Fragment>
