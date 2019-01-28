@@ -867,16 +867,10 @@ class GraphQLFetcher extends Component {
       userData: { error, user },
     } = this.props
 
-    let emailIsVerified = true
-
     if (error) {
       if (error.message === "GraphQL error: This user doesn't exist anymore") {
         this.props.logOut()
       }
-    }
-
-    if (user) {
-      emailIsVerified = user.emailIsVerified
     }
 
     const MainSelected = () => {
@@ -926,7 +920,7 @@ class GraphQLFetcher extends Component {
               />
               <EmailNotVerified
                 mobile={this.props.isMobile}
-                open={user && !emailIsVerified && this.state.snackbarOpen}
+                open={user && !user.emailIsVerified && this.state.snackbarOpen}
                 close={() => this.setState({ snackbarOpen: false })}
               />
               <GenericDialog />
@@ -968,7 +962,7 @@ class GraphQLFetcher extends Component {
               />
               <EmailNotVerified
                 mobile={this.props.isMobile}
-                open={user && !emailIsVerified && this.state.snackbarOpen}
+                open={user && !user.emailIsVerified && this.state.snackbarOpen}
                 close={() => this.setState({ snackbarOpen: false })}
               />
               <GenericDialog />
@@ -982,6 +976,7 @@ class GraphQLFetcher extends Component {
               userData={this.props.userData}
               logOut={this.props.logOut}
               changeAccount={this.props.changeAccount}
+              changeBearer={this.props.changeBearer}
               selectEnvironment={id =>
                 this.setState({ selectedEnvironment: id })
               }
@@ -1000,7 +995,7 @@ class GraphQLFetcher extends Component {
             />
             <EmailNotVerified
               mobile={this.props.isMobile}
-              open={user && !emailIsVerified && this.state.snackbarOpen}
+              open={user && !user.emailIsVerified && this.state.snackbarOpen}
               close={() => this.setState({ snackbarOpen: false })}
             />
             <GenericDialog />
@@ -1054,12 +1049,12 @@ class GraphQLFetcher extends Component {
                 forceUpdate={this.props.forceUpdate}
                 client={this.props.client}
                 snackbarOpen={
-                  user && !emailIsVerified && this.state.snackbarOpen
+                  user && !user.emailIsVerified && this.state.snackbarOpen
                 }
               />
               <EmailNotVerified
                 mobile={this.props.isMobile}
-                open={user && !emailIsVerified && this.state.snackbarOpen}
+                open={user && !user.emailIsVerified && this.state.snackbarOpen}
                 close={() => this.setState({ snackbarOpen: false })}
               />
               <GenericDialog />
@@ -1099,12 +1094,12 @@ class GraphQLFetcher extends Component {
                 forceUpdate={this.props.forceUpdate}
                 client={this.props.client}
                 snackbarOpen={
-                  user && !emailIsVerified && this.state.snackbarOpen
+                  user && !user.emailIsVerified && this.state.snackbarOpen
                 }
               />
               <EmailNotVerified
                 mobile={this.props.isMobile}
-                open={user && !emailIsVerified && this.state.snackbarOpen}
+                open={user && !user.emailIsVerified && this.state.snackbarOpen}
                 close={() => this.setState({ snackbarOpen: false })}
               />
               <GenericDialog />
@@ -1118,6 +1113,7 @@ class GraphQLFetcher extends Component {
               userData={this.props.userData}
               logOut={this.props.logOut}
               changeAccount={this.props.changeAccount}
+              changeBearer={this.props.changeBearer}
               selectEnvironment={id =>
                 this.setState({ selectedEnvironment: id })
               }
@@ -1136,7 +1132,7 @@ class GraphQLFetcher extends Component {
             />
             <EmailNotVerified
               mobile={this.props.isMobile}
-              open={user && !emailIsVerified && this.state.snackbarOpen}
+              open={user && !user.emailIsVerified && this.state.snackbarOpen}
               close={() => this.setState({ snackbarOpen: false })}
             />
             <GenericDialog />

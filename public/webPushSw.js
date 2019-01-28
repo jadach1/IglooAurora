@@ -1,6 +1,9 @@
+import { auto } from "async"
+
 self.addEventListener("push", function(event) {
   const pushData = JSON.parse(event.data.text())
   let title
+  let actions
 
   switch (pushData.type) {
     case "DEVICE_NOTIFICATION":
@@ -9,6 +12,18 @@ self.addEventListener("push", function(event) {
 
     case "SHARE_RECEIVED_NOTIFICATION":
       title = "Environment shared with you"
+      actions = [
+        {
+          action: "accept",
+          title: "Accept",
+          icon: "/images/demos/action-1-128x128.png",
+        },
+        {
+          action: "decline",
+          title: "Decline",
+          icon: "/images/demos/action-2-128x128.png",
+        },
+      ]
       break
 
     case "SHARE_ACCEPTED_NOTIFICATION":
@@ -17,6 +32,18 @@ self.addEventListener("push", function(event) {
 
     case "CHANGE_OWNER_RECEIVED_NOTIFICATION":
       title = "Ownership transfer requested"
+      actions = [
+        {
+          action: "accept",
+          title: "Accept",
+          icon: "/images/demos/action-1-128x128.png",
+        },
+        {
+          action: "decline",
+          title: "Decline",
+          icon: "/images/demos/action-2-128x128.png",
+        },
+      ]
       break
 
     case "OWNER_CHANGE_ACCEPTED_NOTIFICATION":
@@ -27,8 +54,19 @@ self.addEventListener("push", function(event) {
       break
   }
 
-  const options = {
-    body: pushData.content,
+  if ("actions" in Notification.prototype) {
+    const options = {
+      body: pushData.content,
+      dir: "auto",
+      actions,
+      timestamp: Date.parse(pushData.date),
+    }
+  } else {
+    const options = {
+      body: pushData.content,
+      dir: "auto",
+      timestamp: Date.parse(pushData.date),
+    }
   }
 
   const notification = self.registration.showNotification(title, options)

@@ -79,14 +79,17 @@ export default class AccountPopover extends React.Component {
                     localStorage.getItem("userId") === account.id
                   }
                   onClick={
-                    account.token
+                    typeof Storage !== undefined &&
+                    localStorage.getItem("userId") !== account.id &&
+                    (account.token
                       ? () => {
                           localStorage.setItem("userId", account.id)
+                          this.props.changeBearer(account.token)
                         }
                       : () => {
                           this.props.changeAccount(account.email, true)
                           localStorage.setItem("userId", "")
-                        }
+                        })
                   }
                 >
                   <Avatar style={{ backgroundColor: account.profileIconColor }}>

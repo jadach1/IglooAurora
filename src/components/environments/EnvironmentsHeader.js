@@ -61,6 +61,7 @@ class EnvironmentsHeader extends Component {
             <AccountPopover
               logOut={this.props.logOut}
               changeAccount={this.props.changeAccount}
+              changeBearer={this.props.changeBearer}
               openSettings={this.props.openSettings}
               user={this.props.userData}
             />

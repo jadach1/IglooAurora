@@ -42,6 +42,7 @@ class Environments extends Component {
       <React.Fragment>
         <EnvironmentsHeader
           logOut={this.props.logOut}
+          changeBearer={this.props.changeBearer}
           changeAccount={this.props.changeAccount}
           openSettings={this.props.openSettings}
           closeSettings={this.props.closeSettings}

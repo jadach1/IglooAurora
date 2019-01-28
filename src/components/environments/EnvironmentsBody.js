@@ -742,8 +742,8 @@ export default class EnvironmentsBody extends Component {
                       <ListSubheader
                         style={
                           nightMode
-                            ? { backgroundColor: "#21252b", zIndex: "2" }
-                            : { backgroundColor: "#f2f2f2", zIndex: "2" }
+                            ? { backgroundColor: "#21252b", zindex: 0 }
+                            : { backgroundColor: "#f2f2f2", zindex: 0 }
                         }
                       >
                         <Typography
@@ -776,12 +776,10 @@ export default class EnvironmentsBody extends Component {
                     (user.environments.filter(
                       environment => environment.myRole !== "OWNER"
                     )[0] ||
-                      (user &&
-                        user.pendingEnvironmentShares &&
-                        user.pendingEnvironmentShares[0])) && (
+                      (user && user.pendingEnvironmentShareCount)) && (
                       <li key="yourEnvironments">
                         <ul style={{ padding: "0" }}>
-                          {user.environments
+                          {(user.environments
                             .filter(
                               environment => environment.myRole !== "OWNER"
                             )
@@ -789,12 +787,12 @@ export default class EnvironmentsBody extends Component {
                               environment.name
                                 .toLowerCase()
                                 .includes(this.props.searchText.toLowerCase())
-                            )[0] && (
+                            )[0] || user.pendingEnvironmentShareCount) && (
                             <ListSubheader
                               style={
                                 nightMode
-                                  ? { backgroundColor: "#21252b", zIndex: "2" }
-                                  : { backgroundColor: "#f2f2f2", zIndex: "2" }
+                                  ? { backgroundColor: "#21252b", zindex: 0 }
+                                  : { backgroundColor: "#f2f2f2", zindex: 0 }
                               }
                             >
                               <Typography

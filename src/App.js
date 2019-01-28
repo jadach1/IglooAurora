@@ -647,6 +647,7 @@ class App extends Component {
                     <AuthenticatedApp
                       bearer={this.state.bearer}
                       logOut={logOut}
+              changeBearer={bearer=>this.setState({bearer})}
                       changeAccount={changeAccount}
                       isMobile={this.state.isMobile}
                       forceUpdate={() => this.forceUpdate()}

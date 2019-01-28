@@ -74,6 +74,9 @@ export default class UnAuthenticatedMainMobile extends Component {
                 signIn={this.props.signIn}
                 changeEmail={this.props.changeEmail}
                 forceUpdate={() => this.props.forceUpdate()}
+                openChangeServer={() =>
+                  this.setState({ changeServerOpen: true })
+                }
               />
             ) : (
               <SignupMobile

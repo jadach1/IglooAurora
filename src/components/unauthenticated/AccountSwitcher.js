@@ -136,6 +136,11 @@ export default class AccountSwitcher extends Component {
   }
 
   render() {
+    if (this.props.mobile && this.state.tapCounter === 7) {
+      this.setState({ tapCounter: 0 })
+      this.props.openChangeServer()
+    }
+
     return (
       <React.Fragment>
         <div
@@ -188,7 +193,7 @@ export default class AccountSwitcher extends Component {
                 : { color: "#0083ff", textAlign: "center" }
             }
           >
-            Log in
+            Accounts
           </Typography>
           <br />
           <List>
