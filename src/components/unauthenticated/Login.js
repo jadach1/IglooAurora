@@ -21,7 +21,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import Visibility from "@material-ui/icons/Visibility"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import queryString from "query-string"
+import queryString from "querystring"
 
 class Login extends Component {
   constructor() {

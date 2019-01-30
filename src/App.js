@@ -72,6 +72,7 @@ const sharedStyles = {
   MuiExpansionPanelDetails: {
     root: { display: null },
   },
+  MuiListSubheader: {sticky:{zIndex:20}}
 }
 
 const lightTheme = createMuiTheme({

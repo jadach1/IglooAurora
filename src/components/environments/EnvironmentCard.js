@@ -175,7 +175,8 @@ class EnvironmentCard extends Component {
         >
           <div style={{ padding: "8px", textAlign: "right" }}>
             <Tooltip id="tooltip-bottom" title="More" placement="bottom">
-              <IconButton onClick={this.handleMenuOpen} style={{ zIndex: 1 }}>
+              <IconButton onClick={this.handleMenuOpen} style={{ zIndex: 10 }}>
+                {/*makes the IconButton appear over the ButtonBase*/}
                 <MoreVert
                   style={
                     typeof Storage !== "undefined" &&

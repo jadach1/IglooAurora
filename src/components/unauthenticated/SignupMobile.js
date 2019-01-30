@@ -23,7 +23,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import queryString from "query-string"
+import queryString from "querystring"
 
 class SignupMobile extends Component {
   constructor() {

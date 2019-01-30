@@ -74,7 +74,7 @@ class AddDevice extends Component {
     return (
       <React.Fragment>
         <Dialog
-          open={this.props.open}
+          open={this.props.open && !this.state.qrOpen && !this.state.manualCodeOpen}
           onClose={this.props.close}
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition
@@ -104,7 +104,6 @@ class AddDevice extends Component {
                 button
                 style={{ paddingLeft: "24px" }}
                 onClick={() => {
-                  this.props.close()
                   this.setState({ qrOpen: true, qrErrpr: false })
                 }}
               >
@@ -124,7 +123,6 @@ class AddDevice extends Component {
                 button
                 style={{ paddingLeft: "24px" }}
                 onClick={() => {
-                  this.props.close()
                   this.setState({ manualCodeOpen: true, qrErrpr: false })
                 }}
               >
@@ -182,20 +180,22 @@ class AddDevice extends Component {
               delay={1000}
               showViewFinder={false}
               facingMode={this.state.camera}
-              onError={() => this.setState({ qrErrpr: true })}
-              onScan={unclaimedDeviceId =>
+              onError={() => this.setState({ qrError: true })}
+              onScan={unclaimedDeviceId => {
                 isUUID.v4(unclaimedDeviceId) &&
                 this.setState({
                   qrOpen: false,
                   authDialogOpen: true,
                   unclaimedDeviceId,
                 })
+                this.props.close()
+              }
               }
             />
           </div>
           <DialogActions>
             <Button onClick={() => this.setState({ qrOpen: false })}>
-              Close
+              Never mind
             </Button>
           </DialogActions>
         </Dialog>
@@ -264,20 +264,22 @@ class AddDevice extends Component {
             />
           </div>
           <DialogActions>
-            <Button onClick={() => this.setState({ manualCodeOpen: false })}>
+            <Button onClick={() => {this.setState({ manualCodeOpen: false })}}>
               Never mind
             </Button>
             <Button
               variant="contained"
-              onClick={() => {
+              onClick={
                 isUUID.v4(this.state.code)
-                  ? this.setState({
+                  ? () =>{this.setState({
                       manualCodeOpen: false,
                       authDialogOpen: true,
                       unclaimedDeviceId: this.state.code,
                     })
-                  : this.setState({ codeError: "This isn't a valid code" })
-              }}
+                    this.props.close()}
+                  :() =>{ this.setState({ codeError: "This isn't a valid code" })
+                  this.props.close()}
+              }
               color="primary"
               disabled={!this.state.code}
             >
@@ -447,7 +449,7 @@ class AddDevice extends Component {
           </div>
           <DialogActions>
             <Button onClick={() => this.setState({ deviceDetailsOpen: false })}>
-              Go back
+              Never mind
             </Button>
             <Button
               variant="contained"

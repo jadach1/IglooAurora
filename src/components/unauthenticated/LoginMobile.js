@@ -22,7 +22,7 @@ import Clear from "@material-ui/icons/Clear"
 import VpnKey from "@material-ui/icons/VpnKey"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import queryString from "query-string"
+import queryString from "querystring"
 
 export default class LoginMobile extends Component {
   constructor() {

@@ -21,7 +21,7 @@ import VpnKey from "@material-ui/icons/VpnKey"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import AccountCircle from "@material-ui/icons/AccountCircle"
-import queryString from "query-string"
+import queryString from "querystring"
 
 const theme = createMuiTheme({
   palette: {

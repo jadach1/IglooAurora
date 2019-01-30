@@ -347,6 +347,7 @@ class MainBodyHeader extends Component {
                     device => device.id === this.props.deviceId
                   )[0])
               }
+              deviceEnvironment={device && device.environment.id}
               environments={this.props.environments}
             />
           )}
@@ -592,11 +593,9 @@ export default graphql(
           muted
           deviceType
           firmware
-          notifications {
+          notificationCount
+          environment {
             id
-            content
-            date
-            read
           }
         }
       }

@@ -41,7 +41,7 @@
     "react-qr-reader": "^2.1.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.3.0-rc.3",
-    "react-scripts": "1.0.17",
+    "react-scripts": "2.0.0",
     "react-swipeable-views": "^0.12.12",
     "subscriptions-transport-ws": "^0.9.4",
     "zxcvbn": "^4.4.2"
@@ -56,5 +56,11 @@
   "devDependencies": {
     "@hint/configuration-development": "^1.1.1",
     "hint": "^3.4.3"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

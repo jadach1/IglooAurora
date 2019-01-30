@@ -12,7 +12,7 @@ import StatusBar from "./components/devices/StatusBar"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Helmet from "react-helmet"
-import queryString from "query-string"
+import queryString from "querystring"
 
 class MainMobile extends Component {
   state = {

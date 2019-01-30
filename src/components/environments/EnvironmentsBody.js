@@ -742,8 +742,10 @@ export default class EnvironmentsBody extends Component {
                       <ListSubheader
                         style={
                           nightMode
-                            ? { backgroundColor: "#21252b", zindex: 0 }
-                            : { backgroundColor: "#f2f2f2", zindex: 0 }
+                            ? {
+                                backgroundColor: "#21252b",
+                              }
+                            : { backgroundColor: "#f2f2f2" }
                         }
                       >
                         <Typography
@@ -787,12 +789,16 @@ export default class EnvironmentsBody extends Component {
                               environment.name
                                 .toLowerCase()
                                 .includes(this.props.searchText.toLowerCase())
-                            )[0] || user.pendingEnvironmentShareCount) && (
+                            )[0] ||
+                            user.pendingEnvironmentShareCount) && (
                             <ListSubheader
                               style={
                                 nightMode
-                                  ? { backgroundColor: "#21252b", zindex: 0 }
-                                  : { backgroundColor: "#f2f2f2", zindex: 0 }
+                                  ? {
+                                      backgroundColor: "#21252b",
+                                      zindex: 20, //makes the header appear over cards, but under snackbars
+                                    }
+                                  : { backgroundColor: "#f2f2f2", zindex: 20 }
                               }
                             >
                               <Typography

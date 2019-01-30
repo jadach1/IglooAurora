@@ -119,7 +119,7 @@ class GenericDialog extends Component {
               }
               style={{ marginRight: "4px" }}
             >
-              Go back
+              Never mind
             </Button>
             <Button
               onClick={() => {

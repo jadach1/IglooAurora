@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { Redirect } from "react-router-dom"
-import queryString from "query-string"
+import queryString from "querystring"
 import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp"
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
 
@@ -304,43 +304,16 @@ class MainBody extends Component {
       )
     }
 
-    if (this.props.userData.user) {
-      //returns the id of the environemnt that contains the device
-      let deviceEnvironmentId =
-        this.props.userData.user.environments.filter(
-          environment =>
-            environment.devices.filter(
-              environmentDevice =>
-                environmentDevice.id === this.props.deviceData.device.id
-            ) &&
-            environment.devices.filter(
-              environmentDevice =>
-                environmentDevice.id === this.props.deviceData.device.id
-            )[0]
-        )[0] &&
-        this.props.userData.user.environments.filter(
-          environment =>
-            environment.devices.filter(
-              environmentDevice =>
-                environmentDevice.id === this.props.deviceData.device.id
-            ) &&
-            environment.devices.filter(
-              environmentDevice =>
-                environmentDevice.id === this.props.deviceData.device.id
-            )[0]
-        )[0].id
-
-      //changes the environment id in the url so that it is the correct one for the device
-      if (
-        deviceEnvironmentId !==
-        queryString.parse("?" + window.location.href.split("?")[1]).environment
-      ) {
-        return (
-          <Redirect
-            to={"/?environment=" + deviceEnvironmentId + "&device=" + device.id}
-          />
-        )
-      }
+    //changes the environment id in the url so that it is the correct one for the device
+    if (
+      device.environment.id !==
+      queryString.parse("?" + window.location.href.split("?")[1]).environment
+    ) {
+      return (
+        <Redirect
+          to={"/?environment=" + device.environment.id + "&device=" + device.id}
+        />
+      )
     }
 
     return (
@@ -384,6 +357,9 @@ export default graphql(
         batteryStatus
         batteryCharging
         signalStatus
+        environment {
+          id
+        }
         values {
           id
           visibility

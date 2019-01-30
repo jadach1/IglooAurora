@@ -44,6 +44,7 @@ import Code from "@material-ui/icons/Code"
 import Close from "@material-ui/icons/Close"
 import AccountBox from "@material-ui/icons/AccountBox"
 import Language from "@material-ui/icons/Language"
+import MailingOptions from "./MailingOptions"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -52,8 +53,6 @@ function GrowTransition(props) {
 function SlideTransition(props) {
   return <Slide direction="up" {...props} />
 }
-
-let allDevices = []
 
 const listStyles = {
   root: {
@@ -84,6 +83,7 @@ const allDialogsClosed = {
   gdprOpen: false,
   serverOpen: false,
   verifyOpen: false,
+  mailingOpen: false,
 }
 
 class SettingsDialog extends React.Component {
@@ -260,16 +260,6 @@ class SettingsDialog extends React.Component {
     let profileIconColor = ""
 
     if (user) {
-      if (user.environments) {
-        allDevices = []
-
-        for (let i = 0; i < user.environments.length; i++) {
-          for (let j = 0; j < user.environments[i].devices.length; j++) {
-            allDevices.push(user.environments[i].devices[j])
-          }
-        }
-      }
-
       toggleQuietMode = quietMode => {
         this.props["ToggleQuietMode"]({
           variables: {
@@ -778,6 +768,25 @@ class SettingsDialog extends React.Component {
                 </ListItem>
               )}
               <ListItem
+                button
+                onClick={() => this.setState({ mailingOpen: true })}
+              >
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      Mailing options
+                    </font>
+                  }
+                />
+              </ListItem>
+              <ListItem
                 disabled={!user}
                 button
                 onClick={this.handleNameDialogOpen}
@@ -998,16 +1007,6 @@ class SettingsDialog extends React.Component {
                     />
                   </ListItem>
                   <ListItem
-                    disabled={
-                      !(
-                        allDevices &&
-                        allDevices.filter(
-                          device =>
-                            device.environment &&
-                            device.environment.myRole !== "SPECTATOR"
-                        )[0]
-                      )
-                    }
                     button
                     onClick={() => this.setState({ createValueOpen: true })}
                   >
@@ -1027,16 +1026,6 @@ class SettingsDialog extends React.Component {
                     />
                   </ListItem>
                   <ListItem
-                    disabled={
-                      !(
-                        allDevices &&
-                        allDevices.filter(
-                          device =>
-                            device.environment &&
-                            device.environment.myRole !== "SPECTATOR"
-                        )[0]
-                      )
-                    }
                     button
                     onClick={() =>
                       this.setState({ createNotificationOpen: true })
@@ -1180,7 +1169,8 @@ class SettingsDialog extends React.Component {
             !this.state.createNodeOpen &&
             !this.state.gdprOpen &&
             !this.state.serverOpen &&
-            !this.state.verifyOpen
+            !this.state.verifyOpen &&
+            !this.state.mailingOpen
           }
           onClose={this.props.closeSettingsDialog}
           TransitionComponent={
@@ -1428,7 +1418,6 @@ class SettingsDialog extends React.Component {
           openDialog={() => this.setState({ createvalueOpen: true })}
           close={() => this.setState({ createValueOpen: false })}
           userData={this.props.userData}
-          allDevices={allDevices}
         />
         <CreateDevice
           open={this.props.isOpen && this.state.createDeviceOpen}
@@ -1439,7 +1428,6 @@ class SettingsDialog extends React.Component {
           open={this.props.isOpen && this.state.createNotificationOpen}
           close={() => this.setState({ createNotificationOpen: false })}
           userData={this.props.userData}
-          allDevices={allDevices}
         />
         <CreatePlotNode
           open={this.props.isOpen && this.state.createNodeOpen}
@@ -1466,6 +1454,10 @@ class SettingsDialog extends React.Component {
         <VerifyEmailDialog
           open={this.props.isOpen && this.state.verifyOpen}
           close={() => this.setState({ verifyOpen: false })}
+        />
+        <MailingOptions
+          open={this.props.isOpen && this.state.mailingOpen}
+          close={() => this.setState({ mailingOpen: false })}
         />
       </React.Fragment>
     )

@@ -41,29 +41,9 @@ class ChangeEnvironment extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.userData.user) {
+    if (nextProps.deviceEnvironment) {
       this.setState({
-        newEnvironment:
-          nextProps.userData.user.environments.filter(environment =>
-            environment.devices.filter(
-              device =>
-                device &&
-                device.id &&
-                this.props.device &&
-                this.props.device.id &&
-                device.id === this.props.device.id
-            )
-          )[0] &&
-          nextProps.userData.user.environments.filter(environment =>
-            environment.devices.filter(
-              device =>
-                device &&
-                device.id &&
-                this.props.device &&
-                this.props.device.id &&
-                device.id === this.props.device.id
-            )
-          )[0].id,
+        newEnvironment:this.props.deviceEnvironment,
       })
     }
   }

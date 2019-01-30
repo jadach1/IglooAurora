@@ -8,7 +8,7 @@ import "./styles/Cards.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import StatusBar from "./components/devices/StatusBar"
 import { Redirect } from "react-router-dom"
-import queryString from "query-string"
+import queryString from "querystring"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Helmet from "react-helmet"
@@ -151,7 +151,7 @@ class Main extends Component {
     }))
 
   componentDidMount() {
-    const deviceSubscriptionQuery = gql`
+    const deviceCreatedSubscription = gql`
       subscription {
         deviceCreated {
           id
@@ -162,6 +162,7 @@ class Main extends Component {
           batteryCharging
           signalStatus
           deviceType
+          firmware
           createdAt
           updatedAt
           notificationCount
@@ -175,7 +176,7 @@ class Main extends Component {
     `
 
     this.props.environmentData.subscribeToMore({
-      document: deviceSubscriptionQuery,
+      document: deviceCreatedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -194,7 +195,7 @@ class Main extends Component {
       },
     })
 
-    const subscribeToDevicesUpdates = gql`
+    const deviceUpdatedSubscription = gql`
       subscription {
         deviceUpdated {
           id
@@ -208,6 +209,9 @@ class Main extends Component {
           createdAt
           updatedAt
           notificationCount
+          environment {
+            id
+          }
           notifications {
             id
             content
@@ -218,17 +222,17 @@ class Main extends Component {
     `
 
     this.props.environmentData.subscribeToMore({
-      document: subscribeToDevicesUpdates,
+      document: deviceUpdatedSubscription,
     })
 
-    const subscribeToDevicesDeletes = gql`
+    const deviceDeletedSubscription = gql`
       subscription {
         deviceDeleted
       }
     `
 
     this.props.environmentData.subscribeToMore({
-      document: subscribeToDevicesDeletes,
+      document: deviceDeletedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -245,6 +249,36 @@ class Main extends Component {
           },
         }
       },
+    })
+
+    const deviceMovedSubscription = gql`
+      subscription {
+        deviceMoved {
+          id
+          index
+          name
+          online
+          batteryStatus
+          batteryCharging
+          signalStatus
+          deviceType
+          createdAt
+          updatedAt
+          notificationCount
+          environment {
+            id
+          }
+          notifications {
+            id
+            content
+            read
+          }
+        }
+      }
+    `
+
+    this.props.environmentData.subscribeToMore({
+      document: deviceMovedSubscription,
     })
   }
 
@@ -460,6 +494,9 @@ export default graphql(
           createdAt
           updatedAt
           notificationCount
+          environment {
+            id
+          }
           notifications {
             id
             content

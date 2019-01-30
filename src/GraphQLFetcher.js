@@ -6,13 +6,13 @@ import gql from "graphql-tag"
 import { Switch, Route } from "react-router-dom"
 import Error404 from "./Error404"
 import Environments from "./Environments"
-import queryString from "query-string"
+import queryString from "querystring"
 import EmailNotVerified from "./components/EmailNotVerified"
 import GenericDialog from "./components/GenericDialog"
 
 class GraphQLFetcher extends Component {
   componentDidMount() {
-    const environmentSubscriptionQuery = gql`
+    const environmentCreatedSubscription = gql`
       subscription {
         environmentCreated {
           id
@@ -79,7 +79,7 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: environmentSubscriptionQuery,
+      document: environmentCreatedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -99,7 +99,7 @@ class GraphQLFetcher extends Component {
       },
     })
 
-    const subscribeToEnvironmentsUpdates = gql`
+    const environmentUpdatedSubscription = gql`
       subscription {
         environmentUpdated {
           id
@@ -179,17 +179,17 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToEnvironmentsUpdates,
+      document: environmentUpdatedSubscription,
     })
 
-    const subscribeToEnvironmentsDeletes = gql`
+    const environmentDeletedSubscription = gql`
       subscription {
         environmentDeleted
       }
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToEnvironmentsDeletes,
+      document: environmentDeletedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -209,53 +209,9 @@ class GraphQLFetcher extends Component {
       },
     })
 
-    const pendingEnvironmentSharedWithYouSubscriptionQuery = gql`
-      subscription {
-        pendingEnvironmentShareReceived {
-          id
-          receiver {
-            id
-            profileIconColor
-            name
-            email
-          }
-          sender {
-            id
-            name
-          }
-          environment {
-            id
-            name
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: pendingEnvironmentSharedWithYouSubscriptionQuery,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newEnvironmentsShares = [
-          ...prev.user.pendingEnvironmentShares,
-          subscriptionData.data.pendingEnvironmentShareReceived,
-        ]
-
-        return {
-          user: {
-            ...prev.user,
-            pendingEnvironmentShares: newEnvironmentsShares,
-          },
-        }
-      },
-    })
-
-    const subscribeToEnvironmentShareAccepted = gql`
+    const pendingEnvironmentShareAcceptedSubscription = gql`
       subscription {
         pendingEnvironmentShareAccepted {
-          id
           environment {
             id
             index
@@ -335,7 +291,7 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToEnvironmentShareAccepted,
+      document: pendingEnvironmentShareAcceptedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -346,17 +302,10 @@ class GraphQLFetcher extends Component {
           subscriptionData.data.pendingEnvironmentShareAccepted.environment,
         ]
 
-        const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
-          pendingEnvironmentShare =>
-            pendingEnvironmentShare.id !==
-            subscriptionData.data.pendingEnvironmentShareAccepted.id
-        )
-
         return {
           user: {
             ...prev.user,
             environments: newEnvironments,
-            pendingEnvironmentShares: newEnvironmentShares,
           },
         }
       },
@@ -1213,16 +1162,6 @@ export default graphql(
             environment {
               id
               name
-            }
-          }
-          devices {
-            id
-            index
-            muted
-            name
-            deviceType
-            environment {
-              myRole
             }
           }
           owner {

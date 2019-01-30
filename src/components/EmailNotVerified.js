@@ -108,13 +108,13 @@ class CustomizedSnackbars extends React.Component {
           open={this.props.open}
           style={
             this.props.mobile
-              ? { zIndex: "1" }
+              ? { zIndex: 30 } // makes the snackbar appear over cards and subheaders, but under dialogs
               : {
                   bottom: "64px",
                   right: "16px",
                   width: "351px",
                   left: "auto",
-                  zIndex: "1",
+                  zIndex: 30,
                 }
           }
           TransitionComponent={
