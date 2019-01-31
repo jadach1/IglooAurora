@@ -8,7 +8,7 @@ import "./styles/Cards.css"
 import { hotkeys } from "react-keyboard-shortcuts"
 import StatusBar from "./components/devices/StatusBar"
 import { Redirect } from "react-router-dom"
-import queryString from "querystring"
+import querystringify from "querystringify"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Helmet from "react-helmet"
@@ -50,7 +50,7 @@ class Main extends Component {
           if (this.props.devicesSearchText === "") {
             if (
               this.props.environmentData.environment.devices[index].id ===
-              queryString.parse("?" + window.location.href.split("?")[1]).device
+              querystringify.parse("?" + window.location.href.split("?")[1]).device
             ) {
               this.setState({ deselectDevice: true })
             } else {
@@ -320,16 +320,16 @@ class Main extends Component {
             environment.devices.filter(
               device =>
                 device.id ===
-                queryString.parse("?" + window.location.href.split("?")[1])
+                querystringify.parse("?" + window.location.href.split("?")[1])
                   .device
             )[0]
-              ? queryString.parse("?" + window.location.href.split("?")[1])
+              ? querystringify.parse("?" + window.location.href.split("?")[1])
                   .device
                 ? "Igloo Aurora - " +
                   environment.devices.filter(
                     device =>
                       device.id ===
-                      queryString.parse(
+                      querystringify.parse(
                         "?" + window.location.href.split("?")[1]
                       ).device
                   )[0].name

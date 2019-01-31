@@ -6,7 +6,7 @@ import gql from "graphql-tag"
 import { Switch, Route } from "react-router-dom"
 import Error404 from "./Error404"
 import Environments from "./Environments"
-import queryString from "querystring"
+import querystringify from "querystringify"
 import EmailNotVerified from "./components/EmailNotVerified"
 import GenericDialog from "./components/GenericDialog"
 
@@ -824,12 +824,12 @@ class GraphQLFetcher extends Component {
 
     const MainSelected = () => {
       if (
-        queryString.parse("?" + window.location.href.split("?")[1])
+        querystringify.parse("?" + window.location.href.split("?")[1])
           .environment ||
-        queryString.parse("?" + window.location.href.split("?")[1]).device
+        querystringify.parse("?" + window.location.href.split("?")[1]).device
       ) {
         if (
-          queryString.parse("?" + window.location.href.split("?")[1]).device
+          querystringify.parse("?" + window.location.href.split("?")[1]).device
         ) {
           return (
             <React.Fragment>
@@ -839,7 +839,7 @@ class GraphQLFetcher extends Component {
                 userData={this.props.userData}
                 selectDevice={id => this.setState({ selectedDevice: id })}
                 selectedDevice={
-                  queryString.parse("?" + window.location.href.split("?")[1])
+                  querystringify.parse("?" + window.location.href.split("?")[1])
                     .device
                 }
                 openSettings={() => this.setState({ areSettingsOpen: true })}
@@ -849,7 +849,7 @@ class GraphQLFetcher extends Component {
                   this.setState({ selectedEnvironment: id })
                 }
                 environmentId={
-                  queryString.parse("?" + window.location.href.split("?")[1])
+                  querystringify.parse("?" + window.location.href.split("?")[1])
                     .environment
                 }
                 devMode={
@@ -891,7 +891,7 @@ class GraphQLFetcher extends Component {
                   this.setState({ selectedEnvironment: id })
                 }
                 environmentId={
-                  queryString.parse("?" + window.location.href.split("?")[1])
+                  querystringify.parse("?" + window.location.href.split("?")[1])
                     .environment
                 }
                 devMode={
@@ -955,12 +955,12 @@ class GraphQLFetcher extends Component {
 
     const MainMobileSelected = () => {
       if (
-        queryString.parse("?" + window.location.href.split("?")[1])
+        querystringify.parse("?" + window.location.href.split("?")[1])
           .environment ||
-        queryString.parse("?" + window.location.href.split("?")[1]).device
+        querystringify.parse("?" + window.location.href.split("?")[1]).device
       ) {
         if (
-          queryString.parse("?" + window.location.href.split("?")[1]).device
+          querystringify.parse("?" + window.location.href.split("?")[1]).device
         ) {
           return (
             <React.Fragment>
@@ -973,7 +973,7 @@ class GraphQLFetcher extends Component {
                 areSettingsOpen={this.state.areSettingsOpen}
                 selectDevice={id => this.setState({ selectedDevice: id })}
                 selectedDevice={
-                  queryString.parse("?" + window.location.href.split("?")[1])
+                  querystringify.parse("?" + window.location.href.split("?")[1])
                     .device
                 }
                 environments={
@@ -984,7 +984,7 @@ class GraphQLFetcher extends Component {
                   this.setState({ selectedEnvironment: id })
                 }
                 environmentId={
-                  queryString.parse("?" + window.location.href.split("?")[1])
+                  querystringify.parse("?" + window.location.href.split("?")[1])
                     .environment
                 }
                 searchDevices={text => {
@@ -1025,7 +1025,7 @@ class GraphQLFetcher extends Component {
                   this.setState({ selectedEnvironment: id })
                 }
                 environmentId={
-                  queryString.parse("?" + window.location.href.split("?")[1])
+                  querystringify.parse("?" + window.location.href.split("?")[1])
                     .environment
                 }
                 environments={

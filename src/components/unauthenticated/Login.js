@@ -21,7 +21,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import Visibility from "@material-ui/icons/Visibility"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import queryString from "querystring"
+import querystringify from "querystringify"
 
 class Login extends Component {
   constructor() {
@@ -323,7 +323,7 @@ class Login extends Component {
               Log in
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
-            {queryString.parse("?" + window.location.href.split("?")[1])
+            {querystringify.parse("?" + window.location.href.split("?")[1])
               .from === "accounts" &&
             JSON.parse(localStorage.getItem("accountList"))[0] ? (
               <MuiThemeProvider

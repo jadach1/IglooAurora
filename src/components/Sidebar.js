@@ -16,7 +16,7 @@ import Zoom from "@material-ui/core/Zoom"
 import AddDevice from "./AddDevice"
 import { hotkeys } from "react-keyboard-shortcuts"
 import { Link, Redirect } from "react-router-dom"
-import queryString from "querystring"
+import querystringify from "querystringify"
 import Tune from "@material-ui/icons/Tune"
 import Add from "@material-ui/icons/Add"
 import Search from "@material-ui/icons/Search"
@@ -102,7 +102,7 @@ class Sidebar extends Component {
         error.message === "GraphQL error: The requested resource does not exist"
       ) {
         if (
-          queryString.parse("?" + window.location.href.split("?")[1]).device
+          querystringify.parse("?" + window.location.href.split("?")[1]).device
         ) {
           // if a device is selected the sidebar keeps loading, waiting for the device to redirect the user
           sidebarContent = (

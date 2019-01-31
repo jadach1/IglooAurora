@@ -21,7 +21,7 @@ import VpnKey from "@material-ui/icons/VpnKey"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import AccountCircle from "@material-ui/icons/AccountCircle"
-import queryString from "querystring"
+import querystringify from "querystringify"
 
 const theme = createMuiTheme({
   palette: {
@@ -469,7 +469,7 @@ class Signup extends Component {
               Sign up
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
-            {queryString.parse("?" + window.location.href.split("?")[1])
+            {querystringify.parse("?" + window.location.href.split("?")[1])
               .from === "accounts" &&
             JSON.parse(localStorage.getItem("accountList"))[0] ? (
               <MuiThemeProvider

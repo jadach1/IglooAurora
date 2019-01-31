@@ -12,7 +12,7 @@ import StatusBar from "./components/devices/StatusBar"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import Helmet from "react-helmet"
-import queryString from "querystring"
+import querystringify from "querystringify"
 
 class MainMobile extends Component {
   state = {
@@ -409,19 +409,19 @@ class MainMobile extends Component {
         <Helmet>
           <title>
             {environment
-              ? queryString.parse("?" + window.location.href.split("?")[1])
+              ? querystringify.parse("?" + window.location.href.split("?")[1])
                   .device &&
                 environment.devices.filter(
                   device =>
                     device.id ===
-                    queryString.parse("?" + window.location.href.split("?")[1])
+                    querystringify.parse("?" + window.location.href.split("?")[1])
                       .device
                 )[0]
                 ? "Igloo Aurora - " +
                   environment.devices.filter(
                     device =>
                       device.id ===
-                      queryString.parse(
+                      querystringify.parse(
                         "?" + window.location.href.split("?")[1]
                       ).device
                   )[0].name

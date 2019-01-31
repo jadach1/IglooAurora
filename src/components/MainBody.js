@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { Redirect } from "react-router-dom"
-import queryString from "querystring"
+import querystringify from "querystringify"
 import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp"
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
 
@@ -203,7 +203,7 @@ class MainBody extends Component {
           <Redirect
             to={
               "/?environment=" +
-              queryString.parse("?" + window.location.href.split("?")[1])
+              querystringify.parse("?" + window.location.href.split("?")[1])
                 .environment
             }
           />
@@ -307,7 +307,7 @@ class MainBody extends Component {
     //changes the environment id in the url so that it is the correct one for the device
     if (
       device.environment.id !==
-      queryString.parse("?" + window.location.href.split("?")[1]).environment
+      querystringify.parse("?" + window.location.href.split("?")[1]).environment
     ) {
       return (
         <Redirect

@@ -23,7 +23,7 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
-import queryString from "querystring"
+import querystringify from "querystringify"
 
 class SignupMobile extends Component {
   constructor() {
@@ -420,7 +420,7 @@ class SignupMobile extends Component {
           Sign up
           {this.state.showLoading && <CenteredSpinner isInButton secondary />}
         </Button>
-        {queryString.parse("?" + window.location.href.split("?")[1]).from ===
+        {querystringify.parse("?" + window.location.href.split("?")[1]).from ===
           "accounts" && JSON.parse(localStorage.getItem("accountList"))[0] ? (
           <MuiThemeProvider
             theme={createMuiTheme({

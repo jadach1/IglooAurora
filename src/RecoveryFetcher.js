@@ -10,7 +10,7 @@ import { HttpLink } from "apollo-link-http"
 import introspectionQueryResultData from "./fragmentTypes.json"
 import { getMainDefinition } from "apollo-utilities"
 import { ApolloProvider } from "react-apollo"
-import queryString from "querystring"
+import querystringify from "querystringify"
 import { Redirect } from "react-router-dom"
 import RecoveryMain from "./RecoveryMain"
 import Helmet from "react-helmet"
@@ -20,10 +20,10 @@ export default class RecoveryFetcher extends Component {
     super(props)
 
     this.state = {
-      token: queryString.parse("?" + window.location.href.split("?")[1]).token,
+      token: querystringify.parse("?" + window.location.href.split("?")[1]).token,
     }
 
-    if (queryString.parse("?" + window.location.href.split("?")[1]).token) {
+    if (querystringify.parse("?" + window.location.href.split("?")[1]).token) {
       const wsLink = new WebSocketLink({
         uri:
           typeof Storage !== "undefined" &&
@@ -83,7 +83,7 @@ export default class RecoveryFetcher extends Component {
         <Helmet>
           <title>Igloo Aurora - Recovery</title>
         </Helmet>
-        {queryString.parse("?" + window.location.href.split("?")[1]).token ? (
+        {querystringify.parse("?" + window.location.href.split("?")[1]).token ? (
           <ApolloProvider client={this.client}>
             <RecoveryMain
               mobile={this.props.mobile}

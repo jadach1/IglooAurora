@@ -22,7 +22,7 @@ import Clear from "@material-ui/icons/Clear"
 import VpnKey from "@material-ui/icons/VpnKey"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import queryString from "querystring"
+import querystringify from "querystringify"
 
 export default class LoginMobile extends Component {
   constructor() {
@@ -365,7 +365,7 @@ export default class LoginMobile extends Component {
             {this.state.showLoading && <CenteredSpinner isInButton secondary />}
           </Button>
           <div style={{ textAlign: "center", marginTop: "8px" }}>
-            {queryString.parse("?" + window.location.href.split("?")[1])
+            {querystringify.parse("?" + window.location.href.split("?")[1])
               .from === "accounts" &&
             JSON.parse(localStorage.getItem("accountList"))[0] ? (
               <MuiThemeProvider
