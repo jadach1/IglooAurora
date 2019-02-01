@@ -261,7 +261,7 @@ class SettingsDialog extends React.Component {
 
     if (user) {
       toggleQuietMode = quietMode => {
-        this.props["ToggleQuietMode"]({
+        this.props.ToggleQuietMode({
           variables: {
             quietMode,
           },

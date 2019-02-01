@@ -290,6 +290,7 @@ class MainMobile extends Component {
           firmware
           createdAt
           updatedAt
+          starred
           notificationCount
           notifications {
             id
@@ -414,8 +415,9 @@ class MainMobile extends Component {
                 environment.devices.filter(
                   device =>
                     device.id ===
-                    querystringify.parse("?" + window.location.href.split("?")[1])
-                      .device
+                    querystringify.parse(
+                      "?" + window.location.href.split("?")[1]
+                    ).device
                 )[0]
                 ? "Igloo Aurora - " +
                   environment.devices.filter(
@@ -532,33 +534,119 @@ class MainMobile extends Component {
 }
 
 export default graphql(
-  gql`
-    query($id: ID!) {
-      environment(id: $id) {
-        id
-        name
-        devices {
-          id
-          index
-          name
-          online
-          batteryStatus
-          batteryCharging
-          signalStatus
-          deviceType
-          firmware
-          createdAt
-          updatedAt
-          notificationCount
-          notifications {
+  localStorage.getItem("sortDirection") === "ascending"
+    ? gql`
+        query($id: ID!) {
+          environment(id: $id) {
             id
-            content
-            read
+            name
+            starredDevices: devices(
+              filter: { starred: true }
+              sortBy: name
+              sortDirection: ASC
+            ) {
+              id
+              index
+              name
+              online
+              batteryStatus
+              batteryCharging
+              signalStatus
+              deviceType
+              firmware
+              createdAt
+              updatedAt
+              starred
+              notificationCount
+              notifications {
+                id
+                content
+                read
+              }
+            }
+            devices(
+              filter: { starred: false }
+              sortBy: name
+              sortDirection: ASC
+            ) {
+              id
+              index
+              name
+              online
+              batteryStatus
+              batteryCharging
+              signalStatus
+              deviceType
+              firmware
+              createdAt
+              updatedAt
+              starred
+              notificationCount
+              notifications {
+                id
+                content
+                read
+              }
+            }
           }
         }
-      }
-    }
-  `,
+      `
+    : gql`
+        query($id: ID!) {
+          environment(id: $id) {
+            id
+            name
+            starredDevices: devices(
+              filter: { starred: true }
+              sortBy: name
+              sortDirection: ASC
+            ) {
+              id
+              index
+              name
+              online
+              batteryStatus
+              batteryCharging
+              signalStatus
+              deviceType
+              firmware
+              createdAt
+              updatedAt
+              starred
+              notificationCount
+              notifications {
+                id
+                content
+                read
+              }
+            }
+            devices(
+              filter: { starred: false }
+              sortBy: name
+              sortDirection: ASC
+            ) {
+              id
+              index
+              name
+              online
+              batteryStatus
+              batteryCharging
+              signalStatus
+              deviceType
+              firmware
+              createdAt
+              updatedAt
+              starred
+              notificationCount
+              notifications {
+                id
+                content
+                read
+              }
+            }
+          }
+        }
+      `,
   {
     name: "environmentData",
     options: ({ environmentId }) => ({ variables: { id: environmentId } }),

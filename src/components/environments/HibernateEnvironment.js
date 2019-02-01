@@ -19,7 +19,7 @@ function SlideTransition(props) {
 
 class HibernateEnvironment extends React.Component {
   hibernateEnvironmentMutation = () => {
-    this.props["HibernateEnvironment"]({
+    this.props.HibernateEnvironment({
       variables: {
         id: this.props.environment.id,
       },

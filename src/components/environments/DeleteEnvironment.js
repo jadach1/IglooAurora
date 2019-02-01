@@ -21,7 +21,7 @@ function SlideTransition(props) {
 
 class DeleteEnvironment extends React.Component {
   deleteEnvironmentMutation = () => {
-    this.props["DeleteEnvironment"]({
+    this.props.DeleteEnvironment({
       variables: {
         id: this.props.environment.id,
       },
@@ -52,9 +52,8 @@ class DeleteEnvironment extends React.Component {
         <font
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          Be careful,{" "}
-            {this.props.environment &&
-              this.props.environment.name}{" "}will be deleted permanently.
+          Be careful, {this.props.environment && this.props.environment.name}{" "}
+          will be deleted permanently.
           <br />
           <br />
           Note that by deleting an environment, you will delete all of its

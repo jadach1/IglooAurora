@@ -205,7 +205,7 @@ class NotificationsDrawer extends React.Component {
 
   render() {
     let markAsUnread = id => {
-      this.props["MarkAsUnread"]({
+      this.props.MarkAsUnread({
         variables: {
           id: id,
         },
@@ -221,7 +221,7 @@ class NotificationsDrawer extends React.Component {
     }
 
     let deleteNotification = id => {
-      this.props["DeleteNotification"]({
+      this.props.DeleteNotification({
         variables: {
           id: id,
         },
@@ -541,15 +541,13 @@ class NotificationsDrawer extends React.Component {
 
       notificationCount =
         device.notifications &&
-        device.notifications.filter(
-          notification => notification.read === false
-        ).length
+        device.notifications.filter(notification => notification.read === false)
+          .length
 
       const readNotificationCount =
         device.notifications &&
-        device.notifications.filter(
-          notification => notification.read === true
-        ).length
+        device.notifications.filter(notification => notification.read === true)
+          .length
 
       if (!notificationCount) {
         noNotificationsUI = (

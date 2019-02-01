@@ -21,10 +21,12 @@ import MoreVert from "@material-ui/icons/MoreVert"
 import Info from "@material-ui/icons/Info"
 import Notifications from "@material-ui/icons/Notifications"
 import NotificationsOff from "@material-ui/icons/NotificationsOff"
-import Dashboard from "@material-ui/icons/Dashboard"
+import SvgIcon from "@material-ui/core/SvgIcon"
 import Create from "@material-ui/icons/Create"
 import SwapHoriz from "@material-ui/icons/SwapHoriz"
 import Delete from "@material-ui/icons/Delete"
+import Star from "@material-ui/icons/Star"
+import StarBorder from "@material-ui/icons/StarBorder"
 
 class MainBodyHeader extends Component {
   hot_keys = {
@@ -131,7 +133,7 @@ class MainBodyHeader extends Component {
     const { device } = this.props.data
 
     const toggleQuietMode = muted => {
-      this.props["ToggleQuietMode"]({
+      this.props.ToggleQuietMode({
         variables: {
           id: device.id,
           muted,
@@ -141,6 +143,23 @@ class MainBodyHeader extends Component {
           device: {
             id: device.id,
             muted,
+            __typename: "Device",
+          },
+        },
+      })
+    }
+
+    const toggleStarred = starred => {
+      this.props.ToggleStarred({
+        variables: {
+          id: device.id,
+          starred,
+        },
+        optimisticResponse: {
+          __typename: "Mutation",
+          device: {
+            id: device.id,
+            starred,
             __typename: "Device",
           },
         },
@@ -468,6 +487,28 @@ class MainBodyHeader extends Component {
                 <ListItemText inset primary="Mute" disableTypography />
               </MenuItem>
             )}
+            <MenuItem
+              className="notSelectable"
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white" }
+                  : { color: "black" }
+              }
+              onClick={() => {
+                toggleStarred(!device.starred)
+                this.handleMenuClose()
+              }}
+            >
+              <ListItemIcon>
+                {device && device.starred ? <StarBorder /> : <Star />}
+              </ListItemIcon>
+              <ListItemText
+                inset
+                primary={device && device.starred ? "Unstar" : "Star"}
+                disableTypography
+              />
+            </MenuItem>
             {window.Windows && (
               <MenuItem
                 onClick={() => {
@@ -482,14 +523,70 @@ class MainBodyHeader extends Component {
                 }}
               >
                 <ListItemIcon>
-                  <Dashboard />
+                  <SvgIcon>
+                    <svg
+                      style={{ width: "24px", height: "24px" }}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#000000"
+                        d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"
+                      />
+                    </svg>
+                  </SvgIcon>
                 </ListItemIcon>
                 <ListItemText inset primary="Pin to start" disableTypography />
               </MenuItem>
             )}
+            {device && device.myRole !== "SPECTATOR" && <Divider />}
+            {device && device.myRole === "OWNER" && (
+              <MenuItem
+                className="notSelectable"
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }
+                onClick={() => {
+                  this.setState({ changeEnvironmentOpen: true })
+                  this.handleMenuClose()
+                }}
+                disabled={
+                  !(
+                    this.props.environments &&
+                    this.props.environments.length > 1
+                  )
+                }
+              >
+                <ListItemIcon>
+                  <SwapHoriz />
+                </ListItemIcon>
+                <ListItemText inset primary="Move" disableTypography />
+              </MenuItem>
+            )}
             {device && device.myRole !== "SPECTATOR" && (
-              <React.Fragment>
-                <Divider />
+              <MenuItem
+                className="notSelectable"
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }
+                onClick={() => {
+                  this.setState({ renameOpen: true })
+                  this.handleMenuClose()
+                }}
+              >
+                <ListItemIcon>
+                  <Create />
+                </ListItemIcon>
+                <ListItemText inset primary="Rename" disableTypography />
+              </MenuItem>
+            )}
+            {device &&
+              (device.myRole === "OWNER" || device.myRole === "ADMIN") && (
                 <MenuItem
                   className="notSelectable"
                   style={
@@ -499,65 +596,17 @@ class MainBodyHeader extends Component {
                       : { color: "black" }
                   }
                   onClick={() => {
-                    this.setState({ renameOpen: true })
+                    this.setState({ deleteOpen: true })
                     this.handleMenuClose()
                   }}
                 >
                   <ListItemIcon>
-                    <Create />
+                    <Delete style={{ color: "#f44336" }} />
                   </ListItemIcon>
-                  <ListItemText inset primary="Rename" disableTypography />
+                  <ListItemText inset>
+                    <span style={{ color: "#f44336" }}>Delete</span>
+                  </ListItemText>
                 </MenuItem>
-              </React.Fragment>
-            )}
-            {device &&
-              (device.myRole === "OWNER" || device.myRole === "ADMIN") && (
-                <React.Fragment>
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                    onClick={() => {
-                      this.setState({ changeEnvironmentOpen: true })
-                      this.handleMenuClose()
-                    }}
-                    disabled={
-                      !(
-                        this.props.environments &&
-                        this.props.environments.length > 1
-                      )
-                    }
-                  >
-                    <ListItemIcon>
-                      <SwapHoriz />
-                    </ListItemIcon>
-                    <ListItemText inset primary="Move" disableTypography />
-                  </MenuItem>
-                  <MenuItem
-                    className="notSelectable"
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                    onClick={() => {
-                      this.setState({ deleteOpen: true })
-                      this.handleMenuClose()
-                    }}
-                  >
-                    <ListItemIcon>
-                      <Delete style={{ color: "#f44336" }} />
-                    </ListItemIcon>
-                    <ListItemText inset>
-                      <span style={{ color: "#f44336" }}>Delete</span>
-                    </ListItemText>
-                  </MenuItem>
-                </React.Fragment>
               )}
           </Menu>
         )}
@@ -571,6 +620,7 @@ export default graphql(
     mutation ToggleQuietMode($id: ID!, $muted: Boolean) {
       device(id: $id, muted: $muted) {
         id
+        muted
       }
     }
   `,
@@ -580,32 +630,47 @@ export default graphql(
 )(
   graphql(
     gql`
-      query($id: ID!) {
-        device(id: $id) {
+      mutation ToggleStarred($id: ID!, $starred: Boolean) {
+        device(id: $id, starred: $starred) {
           id
-          values {
-            id
-          }
-          myRole
-          name
-          updatedAt
-          createdAt
-          muted
-          deviceType
-          firmware
-          notificationCount
-          environment {
-            id
-          }
+          starred
         }
       }
     `,
     {
-      options: ({ deviceId }) => ({
-        variables: {
-          id: deviceId,
-        },
-      }),
+      name: "ToggleStarred",
     }
-  )(hotkeys(MainBodyHeader))
+  )(
+    graphql(
+      gql`
+        query($id: ID!) {
+          device(id: $id) {
+            id
+            values {
+              id
+            }
+            myRole
+            name
+            updatedAt
+            createdAt
+            muted
+            deviceType
+            firmware
+            starred
+            notificationCount
+            environment {
+              id
+            }
+          }
+        }
+      `,
+      {
+        options: ({ deviceId }) => ({
+          variables: {
+            id: deviceId,
+          },
+        }),
+      }
+    )(hotkeys(MainBodyHeader))
+  )
 )

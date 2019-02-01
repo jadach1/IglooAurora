@@ -30,6 +30,7 @@ class CardInfo extends React.Component {
         }
         fullScreen={this.props.fullScreen}
         disableBackdropClick={this.props.fullScreen}
+        maxWidth="xs"
       >
         <DialogTitle disableTypography>Card information</DialogTitle>
         <div

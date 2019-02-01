@@ -30,6 +30,7 @@ class EnvironmentInfo extends React.Component {
         TransitionComponent={
           this.props.fullScreen ? SlideTransition : GrowTransition
         }
+        maxWidth="xs"
       >
         <DialogTitle disableTypography>Environment information</DialogTitle>
         <div

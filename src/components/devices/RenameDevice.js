@@ -25,7 +25,7 @@ class RenameDevice extends React.Component {
   state = { name: "", nameEmpty: false }
 
   rename = () => {
-    this.props["Rename"]({
+    this.props.Rename({
       variables: {
         id: this.props.device.id,
         name: this.state.name,

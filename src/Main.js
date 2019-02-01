@@ -50,7 +50,8 @@ class Main extends Component {
           if (this.props.devicesSearchText === "") {
             if (
               this.props.environmentData.environment.devices[index].id ===
-              querystringify.parse("?" + window.location.href.split("?")[1]).device
+              querystringify.parse("?" + window.location.href.split("?")[1])
+                .device
             ) {
               this.setState({ deselectDevice: true })
             } else {
@@ -476,36 +477,119 @@ class Main extends Component {
 }
 
 export default graphql(
-  gql`
-    query($id: ID!) {
-      environment(id: $id) {
-        id
-        name
-        devices {
-          id
-          index
-          name
-          online
-          batteryStatus
-          batteryCharging
-          signalStatus
-          deviceType
-          firmware
-          createdAt
-          updatedAt
-          notificationCount
-          environment {
+  localStorage.getItem("sortDirection") === "ascending"
+    ? gql`
+        query($id: ID!) {
+          environment(id: $id) {
             id
-          }
-          notifications {
-            id
-            content
-            read
+            name
+            starredDevices: devices(
+              filter: { starred: true }
+              sortBy: name
+              sortDirection: ASC
+            ) {
+              id
+              index
+              name
+              online
+              batteryStatus
+              batteryCharging
+              signalStatus
+              deviceType
+              firmware
+              createdAt
+              updatedAt
+              starred
+              notificationCount
+              notifications {
+                id
+                content
+                read
+              }
+            }
+            devices(
+              filter: { starred: false }
+              sortBy: name
+              sortDirection: ASC
+            ) {
+              id
+              index
+              name
+              online
+              batteryStatus
+              batteryCharging
+              signalStatus
+              deviceType
+              firmware
+              createdAt
+              updatedAt
+              starred
+              notificationCount
+              notifications {
+                id
+                content
+                read
+              }
+            }
           }
         }
-      }
-    }
-  `,
+      `
+    : gql`
+        query($id: ID!) {
+          environment(id: $id) {
+            id
+            name
+            starredDevices: devices(
+              filter: { starred: true }
+              sortBy: name
+              sortDirection: ASC
+            ) {
+              id
+              index
+              name
+              online
+              batteryStatus
+              batteryCharging
+              signalStatus
+              deviceType
+              firmware
+              createdAt
+              updatedAt
+              starred
+              notificationCount
+              notifications {
+                id
+                content
+                read
+              }
+            }
+            devices(
+              filter: { starred: false }
+              sortBy: name
+              sortDirection: ASC
+            ) {
+              id
+              index
+              name
+              online
+              batteryStatus
+              batteryCharging
+              signalStatus
+              deviceType
+              firmware
+              createdAt
+              updatedAt
+              starred
+              notificationCount
+              notifications {
+                id
+                content
+                read
+              }
+            }
+          }
+        }
+      `,
   {
     name: "environmentData",
     options: ({ environmentId }) => ({ variables: { id: environmentId } }),

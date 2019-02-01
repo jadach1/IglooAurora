@@ -67,7 +67,7 @@ class ChangeNameDialog extends React.Component {
 
     if (user) {
       changeName = name => {
-        this.props["ChangeName"]({
+        this.props.ChangeName({
           variables: {
             name: name,
           },
@@ -137,10 +137,7 @@ class ChangeNameDialog extends React.Component {
                 })
               }
               onKeyPress={event => {
-                if (
-                  event.key === "Enter" &&
-                  this.state.name !== ""
-                ) {
+                if (event.key === "Enter" && this.state.name !== "") {
                   changeName(this.state.name)
                   this.props.handleNameDialogClose()
                 }

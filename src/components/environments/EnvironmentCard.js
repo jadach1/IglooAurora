@@ -31,7 +31,7 @@ import Share from "@material-ui/icons/Share"
 import RemoveCircle from "@material-ui/icons/RemoveCircle"
 import Notifications from "@material-ui/icons/Notifications"
 import NotificationsOff from "@material-ui/icons/NotificationsOff"
-import Dashboard from "@material-ui/icons/Dashboard"
+import SvgIcon from "@material-ui/core/SvgIcon"
 import Create from "@material-ui/icons/Create"
 import AcUnit from "@material-ui/icons/AcUnit"
 import Delete from "@material-ui/icons/Delete"
@@ -418,7 +418,17 @@ class EnvironmentCard extends Component {
                 }}
               >
                 <ListItemIcon>
-                  <Dashboard />
+                  <SvgIcon>
+                    <svg
+                      style={{ width: "24px", height: "24px" }}
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        fill="#000000"
+                        d="M16,12V4H17V2H7V4H8V12L6,14V16H11.2V22H12.8V16H18V14L16,12Z"
+                      />
+                    </svg>
+                  </SvgIcon>
                 </ListItemIcon>
                 <ListItemText inset primary="Pin to start" disableTypography />
               </MenuItem>

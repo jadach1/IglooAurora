@@ -30,6 +30,7 @@ class DeviceInfo extends React.Component {
         }
         fullScreen={this.props.fullScreen}
         disableBackdropClick={this.props.fullScreen}
+        maxWidth="xs"
       >
         <DialogTitle disableTypography>Device information</DialogTitle>
         <div
@@ -53,19 +54,19 @@ class DeviceInfo extends React.Component {
           <br /> <br className="notSelectable" />
           <b>Device type: </b>
           {this.props.device.deviceType}
+          {this.props.device.firmware && (
+            <React.Fragment>
+              <br />
+              <br />
+              <b>Firmware: </b>
+              {this.props.device.firmware}
+            </React.Fragment>
+          )}
           {typeof Storage !== "undefined" &&
             localStorage.getItem("devMode") === "true" && (
               <React.Fragment>
                 <br /> <br className="notSelectable" />
                 <b>ID: </b> {this.props.device.id}
-                {this.props.device.firmware && (
-                  <React.Fragment>
-                    <br />
-                    <br />
-                    <b>Firmware: </b>
-                    {this.props.device.firmware}
-                  </React.Fragment>
-                )}
               </React.Fragment>
             )}
         </div>

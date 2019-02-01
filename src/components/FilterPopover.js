@@ -163,7 +163,7 @@ export default class FilterPopover extends Component {
           deviceType: device.deviceType,
           firmwares: [
             {
-              name: device.firmware,
+              name: device.firmware ? device.firmware : "noFirmware",
               devices: [device.id],
             },
           ],

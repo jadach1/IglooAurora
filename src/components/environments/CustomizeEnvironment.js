@@ -57,7 +57,7 @@ class CustomizeEnvironment extends React.Component {
   }
 
   rename = () => {
-    this.props["Rename"]({
+    this.props.Rename({
       variables: {
         id: this.props.environment.id,
         name: this.state.name,

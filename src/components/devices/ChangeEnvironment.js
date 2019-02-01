@@ -62,7 +62,7 @@ class ChangeEnvironment extends React.Component {
         fullWidth
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Move device</DialogTitle>
+        <DialogTitle disableTypography>Move device</DialogTitle><div style={{height:"100%"}}>
         <RadioGroup
           onChange={(event, value) => {
             this.setState({ newEnvironment: value })
@@ -72,26 +72,16 @@ class ChangeEnvironment extends React.Component {
           style={{ paddingLeft: "24px", paddingRight: "24px" }}
         >
           {this.props.environments &&
-            this.props.environments
-              .sort(function(a, b) {
-                return a.myRole === "ONWER"
-                  ? b.myRole === "OWNER"
-                    ? 0
-                    : -1
-                  : b.myRole === "OWNER"
-                  ? 1
-                  : 0
-              })
+            this.props.environments.filter(environment=>environment.myRole==="OWNER")
               .map(environment => (
                 <FormControlLabel
                   control={<Radio color="primary" />}
                   value={environment.id}
                   label={environment.name}
-                  disabled={environment.myRole !== "OWNER"}
                   className="notSelectable"
                 />
               ))}
-        </RadioGroup>
+        </RadioGroup></div>
         <DialogActions>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
