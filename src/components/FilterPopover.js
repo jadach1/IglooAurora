@@ -243,16 +243,35 @@ export default class FilterPopover extends Component {
                     style={
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
-                        ? { marginRight: 0, marginLeft: "auto", color: "white" }
+                        ? localStorage.getItem("sortBy") === "index"
+                          ? {
+                              marginRight: 0,
+                              marginLeft: "auto",
+                              color: "white",
+                              opacity: 0.54,
+                            }
+                          : {
+                              marginRight: 0,
+                              marginLeft: "auto",
+                              color: "white",
+                            }
+                        : localStorage.getItem("sortBy") === "index"
+                        ? {
+                            marginRight: 0,
+                            marginLeft: "auto",
+                            color: "black",
+                            opacity: 0.54,
+                          }
                         : { marginRight: 0, marginLeft: "auto", color: "black" }
                     }
+                    disabled={localStorage.getItem("sortBy") === "index"}
                   >
                     <SvgIcon>
                       <svg
                         style={{ width: "24px", height: "24px" }}
                         viewBox="0 0 24 24"
                       >
-                        <path d="M10,11V13H18V11H10M10,5V7H14V5H10M10,17V19H22V17H10M6,7H8.5L5,3.5L1.5,7H4V20H6V7Z" />
+                        <path d="M10,13V11H18V13H10M10,19V17H14V19H10M10,7V5H22V7H10M6,17H8.5L5,20.5L1.5,17H4V4H6V17Z" />
                       </svg>
                     </SvgIcon>
                   </IconButton>
@@ -266,16 +285,35 @@ export default class FilterPopover extends Component {
                     style={
                       typeof Storage !== "undefined" &&
                       localStorage.getItem("nightMode") === "true"
-                        ? { marginRight: 0, marginLeft: "auto", color: "white" }
+                        ? localStorage.getItem("sortBy") === "index"
+                          ? {
+                              marginRight: 0,
+                              marginLeft: "auto",
+                              color: "white",
+                              opacity: 0.54,
+                            }
+                          : {
+                              marginRight: 0,
+                              marginLeft: "auto",
+                              color: "white",
+                            }
+                        : localStorage.getItem("sortBy") === "index"
+                        ? {
+                            marginRight: 0,
+                            marginLeft: "auto",
+                            color: "black",
+                            opacity: 0.54,
+                          }
                         : { marginRight: 0, marginLeft: "auto", color: "black" }
                     }
+                    disabled={localStorage.getItem("sortBy") === "index"}
                   >
                     <SvgIcon>
                       <svg
                         style={{ width: "24px", height: "24px" }}
                         viewBox="0 0 24 24"
                       >
-                        <path d="M10,13V11H18V13H10M10,19V17H14V19H10M10,7V5H22V7H10M6,17H8.5L5,20.5L1.5,17H4V4H6V17Z" />
+                        <path d="M10,11V13H18V11H10M10,5V7H14V5H10M10,17V19H22V17H10M6,7H8.5L5,3.5L1.5,7H4V20H6V7Z" />
                       </svg>
                     </SvgIcon>
                   </IconButton>

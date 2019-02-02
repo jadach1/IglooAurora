@@ -26,6 +26,9 @@ import MoreVert from "@material-ui/icons/MoreVert"
 import Create from "@material-ui/icons/Create"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
+import Switch from "@material-ui/core/Switch"
+import SvgIcon from "@material-ui/core/SvgIcon"
+import normalizeUrl from "normalize-url"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -49,45 +52,49 @@ class ChangeServer extends React.Component {
   }
 
   addServer = () => {
-    let url = this.state.url
-    if (url.substring(0, 4) && url.substring(0, 4) !== "http") {
-      url = "https://" + url
-    }
+    let url = normalizeUrl(this.state.url, {
+      stripProtocol: true,
+      removeTrailingSlash: false,
+    })
+    let unsecure = this.state.unsecure
 
     if (typeof Storage !== "undefined") {
       localStorage.setItem("server", url)
 
-      isUrl(url) &&
+      isUrl(normalizeUrl(url, { forceHttp: true })) &&
         (localStorage.getItem("serverList")
           ? localStorage.setItem(
               "serverList",
               JSON.stringify([
-                { name: this.state.name, url },
+                { name: this.state.name, url, unsecure },
                 ...JSON.parse(localStorage.getItem("serverList")),
               ])
             )
           : localStorage.setItem(
               "serverList",
-              JSON.stringify([{ name: this.state.name, url }])
+              JSON.stringify([{ name: this.state.name, url, unsecure }])
             ))
     }
   }
 
   editServer = () => {
-    let url = this.state.editUrl
-    if (url.substring(0, 4) && url.substring(0, 4) !== "http") {
-      url = "https://" + url
-    }
-
+    let url = normalizeUrl(this.state.url, {
+      stripProtocol: true,
+      removeTrailingSlash: false,
+    })
     if (typeof Storage !== "undefined") {
       localStorage.setItem("server", url)
 
-      if (isUrl(url) && localStorage.getItem("serverList")) {
+      if (
+        isUrl(normalizeUrl(url, { forceHttp: true })) &&
+        localStorage.getItem("serverList")
+      ) {
         let tempList = JSON.parse(localStorage.getItem("serverList"))
         tempList.forEach(server => {
           if (server.url === this.state.menuTarget.url) {
             server.url = this.state.editUrl
             server.name = this.state.editName
+            server.unsecure = this.state.editUnsecure
           }
         })
 
@@ -118,16 +125,13 @@ class ChangeServer extends React.Component {
 
   serverListContainsItem = () => {
     return (
-      (typeof Storage !== "undefined" &&
-        JSON.parse(localStorage.getItem("serverList")) &&
-        JSON.parse(localStorage.getItem("serverList")).some(
-          server => server.url === this.state.url
-        )) ||
-      (typeof Storage !== "undefined" &&
-        JSON.parse(localStorage.getItem("serverList")) &&
-        JSON.parse(localStorage.getItem("serverList")).some(
-          server => server.url === "https://" + this.state.url
-        ))
+      typeof Storage !== "undefined" &&
+      JSON.parse(localStorage.getItem("serverList")) &&
+      JSON.parse(localStorage.getItem("serverList")).some(
+        server =>
+          isUrl(normalizeUrl(server.url, { forceHttp: true })) ===
+          isUrl(normalizeUrl(this.state.url, { forceHttp: true }))
+      )
     )
   }
 
@@ -146,7 +150,21 @@ class ChangeServer extends React.Component {
           }
         >
           <ListItemIcon>
-            <Cloud />
+            {server.unsecure ? (
+              <SvgIcon>
+                <svg
+                  style={{ width: "24px", height: "24px" }}
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    fill="#000000"
+                    d="M19,20H6C2.71,20 0,17.29 0,14C0,10.9 2.34,8.36 5.35,8.03C6.6,5.64 9.11,4 12,4C15.64,4 18.67,6.59 19.35,10.03C21.95,10.22 24,12.36 24,15C24,17.74 21.74,20 19,20M11,15V17H13V15H11M11,13H13V8H11V13Z"
+                  />
+                </svg>
+              </SvgIcon>
+            ) : (
+              <Cloud />
+            )}
           </ListItemIcon>
           <ListItemText
             primary={
@@ -353,7 +371,7 @@ class ChangeServer extends React.Component {
                   this.state.url &&
                   typeof Storage !== "undefined" &&
                   !this.serverListContainsItem() &&
-                  isUrl(this.state.url) &&
+                  isUrl(normalizeUrl(this.state.url, { forceHttp: true })) &&
                   this.state.url !== "https://bering.igloo.ooo" &&
                   this.state.url !== "bering.igloo.ooo" &&
                   this.state.url !== "http://bering.igloo.ooo" &&
@@ -423,7 +441,7 @@ class ChangeServer extends React.Component {
                   this.state.url &&
                   typeof Storage !== "undefined" &&
                   !this.serverListContainsItem() &&
-                  isUrl(this.state.url) &&
+                  isUrl(normalizeUrl(this.state.url, { forceHttp: true })) &&
                   this.state.url !== "https://bering.igloo.ooo" &&
                   this.state.url !== "bering.igloo.ooo" &&
                   this.state.url !== "http://bering.igloo.ooo"
@@ -466,6 +484,44 @@ class ChangeServer extends React.Component {
               }}
             />
           </div>
+          <List
+            style={{
+              padding: 0,
+              marginRight: "8px",
+            }}
+          >
+            <ListItem
+              style={{
+                marginTop: "-3px",
+                marginBottom: "13px",
+                paddingLeft: "24px",
+              }}
+            >
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    Use unsecure connection
+                  </font>
+                }
+              />
+              <ListItemSecondaryAction>
+                <Switch
+                  checked={this.state.unsecure}
+                  onChange={event =>
+                    this.setState({ unsecure: event.target.checked })
+                  }
+                  style={{ marginRight: "8px" }}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
           <DialogActions>
             <Button
               onClick={() =>
@@ -499,7 +555,7 @@ class ChangeServer extends React.Component {
                 !this.state.url ||
                 typeof Storage === "undefined" ||
                 this.serverListContainsItem() ||
-                !isUrl(this.state.url) ||
+                !isUrl(normalizeUrl(this.state.url, { forceHttp: true })) ||
                 this.state.url === "https://bering.igloo.ooo" ||
                 this.state.url === "bering.igloo.ooo" ||
                 this.state.url === "http://bering.igloo.ooo"
@@ -556,7 +612,9 @@ class ChangeServer extends React.Component {
                   this.state.editName &&
                   this.state.editUrl &&
                   typeof Storage !== "undefined" &&
-                  isUrl(this.state.editUrl) &&
+                  isUrl(
+                    normalizeUrl(this.state.editUrl, { forceHttp: true })
+                  ) &&
                   this.state.editUrl !== "https://bering.igloo.ooo" &&
                   this.state.editUrl !== "bering.igloo.ooo" &&
                   this.state.editUrl !== "http://bering.igloo.ooo" &&
@@ -625,7 +683,9 @@ class ChangeServer extends React.Component {
                   this.state.editName &&
                   this.state.editUrl &&
                   typeof Storage !== "undefined" &&
-                  isUrl(this.state.editUrl) &&
+                  isUrl(
+                    normalizeUrl(this.state.editUrl, { forceHttp: true })
+                  ) &&
                   this.state.editUrl !== "https://bering.igloo.ooo" &&
                   this.state.editUrl !== "bering.igloo.ooo" &&
                   this.state.editUrl !== "http://bering.igloo.ooo"
@@ -668,6 +728,44 @@ class ChangeServer extends React.Component {
               }}
             />
           </div>
+          <List
+            style={{
+              padding: 0,
+              marginRight: "8px",
+            }}
+          >
+            <ListItem
+              style={{
+                marginTop: "-3px",
+                marginBottom: "13px",
+                paddingLeft: "24px",
+              }}
+            >
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    Use unsecure connection
+                  </font>
+                }
+              />
+              <ListItemSecondaryAction>
+                <Switch
+                  checked={this.state.unsecure}
+                  onChange={event =>
+                    this.setState({ unsecure: event.target.checked })
+                  }
+                  style={{ marginRight: "8px" }}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
           <DialogActions>
             <Button
               onClick={() =>
@@ -700,7 +798,7 @@ class ChangeServer extends React.Component {
                 !this.state.editName ||
                 !this.state.editUrl ||
                 typeof Storage === "undefined" ||
-                !isUrl(this.state.editUrl) ||
+                !isUrl(normalizeUrl(this.state.editUrl, { forceHttp: true })) ||
                 this.state.editUrl === "https://bering.igloo.ooo" ||
                 this.state.editUrl === "bering.igloo.ooo" ||
                 this.state.editUrl === "http://bering.igloo.ooo"
@@ -731,6 +829,7 @@ class ChangeServer extends React.Component {
                 anchorEl: false,
                 editName: this.state.menuTarget.name,
                 editUrl: this.state.menuTarget.url,
+                editUnsecure: this.state.menuTarget.unsecure,
               })
             }
           >

@@ -149,7 +149,13 @@ class CreateValue extends React.Component {
               padding: "0",
             }}
           >
-            <ListItem style={{ marginTop: "-3px", marginBottom: "13px" }}>
+            <ListItem
+              style={{
+                marginTop: "-3px",
+                marginBottom: "13px",
+                paddingLeft: 0,
+              }}
+            >
               <ListItemText
                 primary={
                   <font
@@ -170,6 +176,7 @@ class CreateValue extends React.Component {
                   onChange={event =>
                     this.setState(oldState => ({ value: !oldState.value }))
                   }
+                  style={{ marginRight: "-16px" }}
                 />
               </ListItemSecondaryAction>
             </ListItem>
@@ -463,8 +470,8 @@ class CreateValue extends React.Component {
                       allDevices.push(device)
                     )
                   )
-if (!this.state.device)
-                  this.setState({ device: allDevices[0].id })
+                  if (!this.state.device)
+                    this.setState({ device: allDevices[0].id })
                 }
 
                 return (

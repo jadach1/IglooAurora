@@ -477,7 +477,235 @@ class Main extends Component {
 }
 
 export default graphql(
-  localStorage.getItem("sortDirection") === "ascending"
+  localStorage.getItem("sortBy") === "name"
+    ? localStorage.getItem("sortDirection") === "ascending"
+      ? gql`
+          query($id: ID!) {
+            environment(id: $id) {
+              id
+              name
+              starredDevices: devices(
+                filter: { starred: true }
+                sortBy: name
+                sortDirection: ASC
+              ) {
+                id
+                index
+                name
+                online
+                batteryStatus
+                batteryCharging
+                signalStatus
+                deviceType
+                firmware
+                createdAt
+                updatedAt
+                starred
+                notificationCount
+                notifications {
+                  id
+                  content
+                  read
+                }
+              }
+              devices(
+                filter: { starred: false }
+                sortBy: name
+                sortDirection: ASC
+              ) {
+                id
+                index
+                name
+                online
+                batteryStatus
+                batteryCharging
+                signalStatus
+                deviceType
+                firmware
+                createdAt
+                updatedAt
+                starred
+                notificationCount
+                notifications {
+                  id
+                  content
+                  read
+                }
+              }
+            }
+          }
+        `
+      : gql`
+          query($id: ID!) {
+            environment(id: $id) {
+              id
+              name
+              starredDevices: devices(
+                filter: { starred: true }
+                sortBy: name
+                sortDirection: DESC
+              ) {
+                id
+                index
+                name
+                online
+                batteryStatus
+                batteryCharging
+                signalStatus
+                deviceType
+                firmware
+                createdAt
+                updatedAt
+                starred
+                notificationCount
+                notifications {
+                  id
+                  content
+                  read
+                }
+              }
+              devices(
+                filter: { starred: false }
+                sortBy: name
+                sortDirection: DESC
+              ) {
+                id
+                index
+                name
+                online
+                batteryStatus
+                batteryCharging
+                signalStatus
+                deviceType
+                firmware
+                createdAt
+                updatedAt
+                starred
+                notificationCount
+                notifications {
+                  id
+                  content
+                  read
+                }
+              }
+            }
+          }
+        `
+    : localStorage.getItem("sortBy") === "time"
+    ? localStorage.getItem("sortDirection") === "ascending"
+      ? gql`
+          query($id: ID!) {
+            environment(id: $id) {
+              id
+              name
+              starredDevices: devices(
+                filter: { starred: true }
+                sortBy: updatedAt
+                sortDirection: ASC
+              ) {
+                id
+                index
+                name
+                online
+                batteryStatus
+                batteryCharging
+                signalStatus
+                deviceType
+                firmware
+                createdAt
+                updatedAt
+                starred
+                notificationCount
+                notifications {
+                  id
+                  content
+                  read
+                }
+              }
+              devices(
+                filter: { starred: false }
+                sortBy: updatedAt
+                sortDirection: ASC
+              ) {
+                id
+                index
+                name
+                online
+                batteryStatus
+                batteryCharging
+                signalStatus
+                deviceType
+                firmware
+                createdAt
+                updatedAt
+                starred
+                notificationCount
+                notifications {
+                  id
+                  content
+                  read
+                }
+              }
+            }
+          }
+        `
+      : gql`
+          query($id: ID!) {
+            environment(id: $id) {
+              id
+              name
+              starredDevices: devices(
+                filter: { starred: true }
+                sortBy: updatedAt
+                sortDirection: DESC
+              ) {
+                id
+                index
+                name
+                online
+                batteryStatus
+                batteryCharging
+                signalStatus
+                deviceType
+                firmware
+                createdAt
+                updatedAt
+                starred
+                notificationCount
+                notifications {
+                  id
+                  content
+                  read
+                }
+              }
+              devices(
+                filter: { starred: false }
+                sortBy: updatedAt
+                sortDirection: DESC
+              ) {
+                id
+                index
+                name
+                online
+                batteryStatus
+                batteryCharging
+                signalStatus
+                deviceType
+                firmware
+                createdAt
+                updatedAt
+                starred
+                notificationCount
+                notifications {
+                  id
+                  content
+                  read
+                }
+              }
+            }
+          }
+        `
+    : localStorage.getItem("sortDirection") === "ascending"
     ? gql`
         query($id: ID!) {
           environment(id: $id) {
@@ -485,7 +713,7 @@ export default graphql(
             name
             starredDevices: devices(
               filter: { starred: true }
-              sortBy: name
+              sortBy: index
               sortDirection: ASC
             ) {
               id
@@ -509,7 +737,7 @@ export default graphql(
             }
             devices(
               filter: { starred: false }
-              sortBy: name
+              sortBy: index
               sortDirection: ASC
             ) {
               id
@@ -541,8 +769,8 @@ export default graphql(
             name
             starredDevices: devices(
               filter: { starred: true }
-              sortBy: name
-              sortDirection: ASC
+              sortBy: index
+              sortDirection: DESC
             ) {
               id
               index
@@ -565,8 +793,8 @@ export default graphql(
             }
             devices(
               filter: { starred: false }
-              sortBy: name
-              sortDirection: ASC
+              sortBy: index
+              sortDirection: DESC
             ) {
               id
               index

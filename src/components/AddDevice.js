@@ -195,7 +195,7 @@ class AddDevice extends Component {
           </div>
           <DialogActions>
             <Button onClick={() => this.setState({ qrOpen: false })}>
-              Never mind
+              Close
             </Button>
           </DialogActions>
         </Dialog>
