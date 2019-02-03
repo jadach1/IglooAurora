@@ -1,5 +1,3 @@
-import { auto } from "async"
-
 self.addEventListener("push", function(event) {
   const pushData = JSON.parse(event.data.text())
   let title
