@@ -315,15 +315,6 @@ class GraphQLFetcher extends Component {
       subscription {
         pendingEnvironmentShareUpdated {
           id
-          index
-          name
-          createdAt
-          updatedAt
-          muted
-          picture
-          myRole
-          pendingEnvironmentShares {
-            id
             role
             receiver {
               id
@@ -331,48 +322,14 @@ class GraphQLFetcher extends Component {
               name
               email
             }
-          }
-          pendingOwnerChanges {
-            id
-            receiver {
+            sender {
               id
-              profileIconColor
               name
-              email
             }
-          }
-          devices {
-            id
-            muted
-            name
             environment {
-              myRole
+              id
+              name
             }
-          }
-          owner {
-            id
-            email
-            name
-            profileIconColor
-          }
-          admins {
-            id
-            email
-            name
-            profileIconColor
-          }
-          editors {
-            id
-            email
-            name
-            profileIconColor
-          }
-          spectators {
-            id
-            email
-            name
-            profileIconColor
-          }
         }
       }
     `

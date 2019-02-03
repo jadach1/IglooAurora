@@ -16,7 +16,6 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
-import isUrl from "is-url"
 import Cloud from "@material-ui/icons/Cloud"
 import Delete from "@material-ui/icons/Delete"
 import CloudDone from "@material-ui/icons/CloudDone"
@@ -29,6 +28,7 @@ import MenuItem from "@material-ui/core/MenuItem"
 import Switch from "@material-ui/core/Switch"
 import SvgIcon from "@material-ui/core/SvgIcon"
 import normalizeUrl from "normalize-url"
+import compareUrls from "compare-urls"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -39,11 +39,17 @@ function SlideTransition(props) {
 }
 
 class ChangeServer extends React.Component {
-  state = { url: "", newServerOpen: false }
+  state = {
+    url: "",
+    newServerOpen: false,
+    unsecure: false,
+    editUnsecure: false,
+  }
 
-  selectUrl = url => {
+  selectUrl = (url, unsecure) => {
     if (typeof Storage !== "undefined") {
       localStorage.setItem("server", url)
+      localStorage.setItem("serverUnsecure", unsecure)
       localStorage.setItem("accountList", "[]")
       this.props.forceUpdate()
     }
@@ -51,17 +57,35 @@ class ChangeServer extends React.Component {
     !this.props.isUnauthenticated && this.props.logOut()
   }
 
+  isUrl = url => {
+    const urlStructure = new RegExp(
+      "^" +
+        "(((ws(s)?)|(http(s)?))\\:\\/\\/)?([a-zA-Z0-9_-]+" +
+        "(\\." +
+        '([a-zA-Z/0-9$-/:-?{#-~!"^_`\\[\\]]+)?' +
+        ")" +
+        "|localhost|" +
+        "([a-zA-Z0-9]{4}:)+[a-zA-Z0-9]" +
+        ")" +
+        "(\\:[0-9]+)?" +
+        '([a-zA-Z/0-9$-/:-?{#-~!"^_`\\[\\]]+)?' +
+        "$"
+    )
+    return urlStructure.test(url)
+  }
+
   addServer = () => {
     let url = normalizeUrl(this.state.url, {
-      stripProtocol: true,
+      forceHttps: true,
       removeTrailingSlash: false,
-    })
+    }).substr(8)
     let unsecure = this.state.unsecure
 
     if (typeof Storage !== "undefined") {
       localStorage.setItem("server", url)
+      localStorage.setItem("serverUnsecure", unsecure)
 
-      isUrl(normalizeUrl(url, { forceHttp: true })) &&
+      this.isUrl(url) &&
         (localStorage.getItem("serverList")
           ? localStorage.setItem(
               "serverList",
@@ -78,17 +102,12 @@ class ChangeServer extends React.Component {
   }
 
   editServer = () => {
-    let url = normalizeUrl(this.state.url, {
+    let url = normalizeUrl(this.state.editUrl, {
       stripProtocol: true,
       removeTrailingSlash: false,
     })
     if (typeof Storage !== "undefined") {
-      localStorage.setItem("server", url)
-
-      if (
-        isUrl(normalizeUrl(url, { forceHttp: true })) &&
-        localStorage.getItem("serverList")
-      ) {
+      if (this.isUrl(url) && localStorage.getItem("serverList")) {
         let tempList = JSON.parse(localStorage.getItem("serverList"))
         tempList.forEach(server => {
           if (server.url === this.state.menuTarget.url) {
@@ -97,6 +116,10 @@ class ChangeServer extends React.Component {
             server.unsecure = this.state.editUnsecure
           }
         })
+
+        if (this.state.menuTarget.url === localStorage.getItem("server")) {
+          localStorage.setItem("server", this.state.editUrl)
+        }
 
         localStorage.setItem("serverList", JSON.stringify(tempList))
       }
@@ -118,7 +141,7 @@ class ChangeServer extends React.Component {
       typeof Storage !== "undefined" &&
       localStorage.getItem("server") !== "https://bering.igloo.ooo"
     )
-      this.selectUrl("https://bering.igloo.ooo")
+      this.selectUrl("https://bering.igloo.ooo", false)
 
     this.forceUpdate()
   }
@@ -129,13 +152,15 @@ class ChangeServer extends React.Component {
       JSON.parse(localStorage.getItem("serverList")) &&
       JSON.parse(localStorage.getItem("serverList")).some(
         server =>
-          isUrl(normalizeUrl(server.url, { forceHttp: true })) ===
-          isUrl(normalizeUrl(this.state.url, { forceHttp: true }))
+          this.isUrl(server.url) &&
+          this.isUrl(this.state.url) &&
+          compareUrls(server.url, this.state.url)
       )
     )
   }
 
   render() {
+    console.log(JSON.parse(localStorage.getItem("serverList")))
     const dialogList =
       typeof Storage !== "undefined" &&
       localStorage.getItem("serverList") &&
@@ -146,11 +171,11 @@ class ChangeServer extends React.Component {
           onClick={() =>
             typeof Storage !== "undefined" &&
             localStorage.getItem("server") !== server.url &&
-            this.selectUrl(server.url)
+            this.selectUrl(server.url, server.unsecure)
           }
         >
           <ListItemIcon>
-            {server.unsecure ? (
+            {server.unsecure === true ? (
               <SvgIcon>
                 <svg
                   style={{ width: "24px", height: "24px" }}
@@ -246,13 +271,12 @@ class ChangeServer extends React.Component {
                 button
                 selected={
                   typeof Storage !== "undefined" &&
-                  localStorage.getItem("server") === "https://bering.igloo.ooo"
+                  localStorage.getItem("server") === "bering.igloo.ooo"
                 }
                 onClick={() =>
                   typeof Storage !== "undefined" &&
-                  localStorage.getItem("server") !==
-                    "https://bering.igloo.ooo" &&
-                  this.selectUrl("https://bering.igloo.ooo")
+                  localStorage.getItem("server") !== "bering.igloo.ooo" &&
+                  this.selectUrl("bering.igloo.ooo", false)
                 }
               >
                 <ListItemIcon>
@@ -282,7 +306,7 @@ class ChangeServer extends React.Component {
                           : { color: "#7a7a7a" }
                       }
                     >
-                      https://bering.igloo.ooo
+                      bering.igloo.ooo
                     </font>
                   }
                 />
@@ -332,6 +356,7 @@ class ChangeServer extends React.Component {
               urlEmpty: false,
               name: "",
               nameEmpty: false,
+              unsecure: false,
             })
           }
           className="notSelectable"
@@ -371,7 +396,7 @@ class ChangeServer extends React.Component {
                   this.state.url &&
                   typeof Storage !== "undefined" &&
                   !this.serverListContainsItem() &&
-                  isUrl(normalizeUrl(this.state.url, { forceHttp: true })) &&
+                  this.isUrl(this.state.url) &&
                   this.state.url !== "https://bering.igloo.ooo" &&
                   this.state.url !== "bering.igloo.ooo" &&
                   this.state.url !== "http://bering.igloo.ooo" &&
@@ -386,6 +411,7 @@ class ChangeServer extends React.Component {
                     urlEmpty: false,
                     name: "",
                     nameEmpty: false,
+                    unsecure: false,
                   })
                 }
               }}
@@ -441,7 +467,7 @@ class ChangeServer extends React.Component {
                   this.state.url &&
                   typeof Storage !== "undefined" &&
                   !this.serverListContainsItem() &&
-                  isUrl(normalizeUrl(this.state.url, { forceHttp: true })) &&
+                  this.isUrl(this.state.url) &&
                   this.state.url !== "https://bering.igloo.ooo" &&
                   this.state.url !== "bering.igloo.ooo" &&
                   this.state.url !== "http://bering.igloo.ooo"
@@ -453,6 +479,7 @@ class ChangeServer extends React.Component {
                     urlEmpty: false,
                     name: "",
                     nameEmpty: false,
+                    unsecure: false,
                   })
                 }
               }}
@@ -531,6 +558,7 @@ class ChangeServer extends React.Component {
                   urlEmpty: false,
                   name: "",
                   nameEmpty: false,
+                  unsecure: false,
                 })
               }
               style={{ marginRight: "4px" }}
@@ -548,6 +576,7 @@ class ChangeServer extends React.Component {
                   urlEmpty: false,
                   name: "",
                   nameEmpty: false,
+                  unsecure: false,
                 })
               }}
               disabled={
@@ -555,7 +584,7 @@ class ChangeServer extends React.Component {
                 !this.state.url ||
                 typeof Storage === "undefined" ||
                 this.serverListContainsItem() ||
-                !isUrl(normalizeUrl(this.state.url, { forceHttp: true })) ||
+                !this.isUrl(this.state.url) ||
                 this.state.url === "https://bering.igloo.ooo" ||
                 this.state.url === "bering.igloo.ooo" ||
                 this.state.url === "http://bering.igloo.ooo"
@@ -574,6 +603,7 @@ class ChangeServer extends React.Component {
               editUrlEmpty: false,
               editName: "",
               editNameEmpty: false,
+              editUnsecure: false,
             })
           }
           className="notSelectable"
@@ -612,9 +642,7 @@ class ChangeServer extends React.Component {
                   this.state.editName &&
                   this.state.editUrl &&
                   typeof Storage !== "undefined" &&
-                  isUrl(
-                    normalizeUrl(this.state.editUrl, { forceHttp: true })
-                  ) &&
+                  this.isUrl(this.state.editUrl) &&
                   this.state.editUrl !== "https://bering.igloo.ooo" &&
                   this.state.editUrl !== "bering.igloo.ooo" &&
                   this.state.editUrl !== "http://bering.igloo.ooo" &&
@@ -629,6 +657,7 @@ class ChangeServer extends React.Component {
                     editUrlEmpty: false,
                     editName: "",
                     editNameEmpty: false,
+                    editUnsecure: false,
                   })
                 }
               }}
@@ -683,9 +712,7 @@ class ChangeServer extends React.Component {
                   this.state.editName &&
                   this.state.editUrl &&
                   typeof Storage !== "undefined" &&
-                  isUrl(
-                    normalizeUrl(this.state.editUrl, { forceHttp: true })
-                  ) &&
+                  this.isUrl(this.state.editUrl) &&
                   this.state.editUrl !== "https://bering.igloo.ooo" &&
                   this.state.editUrl !== "bering.igloo.ooo" &&
                   this.state.editUrl !== "http://bering.igloo.ooo"
@@ -697,6 +724,7 @@ class ChangeServer extends React.Component {
                     editUrlEmpty: false,
                     editName: "",
                     editNameEmpty: false,
+                    editUnsecure: false,
                   })
                 }
               }}
@@ -757,9 +785,9 @@ class ChangeServer extends React.Component {
               />
               <ListItemSecondaryAction>
                 <Switch
-                  checked={this.state.unsecure}
+                  checked={this.state.editUnsecure}
                   onChange={event =>
-                    this.setState({ unsecure: event.target.checked })
+                    this.setState({ editUnsecure: event.target.checked })
                   }
                   style={{ marginRight: "8px" }}
                 />
@@ -775,6 +803,7 @@ class ChangeServer extends React.Component {
                   editUrlEmpty: false,
                   editName: "",
                   editameEmpty: false,
+                  editUnsecure: false,
                 })
               }
               style={{ marginRight: "4px" }}
@@ -792,13 +821,14 @@ class ChangeServer extends React.Component {
                   editUrlEmpty: false,
                   editName: "",
                   editNameEmpty: false,
+                  editUnsecure: false,
                 })
               }}
               disabled={
                 !this.state.editName ||
                 !this.state.editUrl ||
                 typeof Storage === "undefined" ||
-                !isUrl(normalizeUrl(this.state.editUrl, { forceHttp: true })) ||
+                !this.isUrl(this.state.editUrl) ||
                 this.state.editUrl === "https://bering.igloo.ooo" ||
                 this.state.editUrl === "bering.igloo.ooo" ||
                 this.state.editUrl === "http://bering.igloo.ooo"
@@ -912,6 +942,16 @@ class ChangeServer extends React.Component {
               padding: {
                 paddingTop: 0,
                 paddingBottom: 0,
+              },
+            },
+            MuiSwitch: {
+              colorSecondary: {
+                "&$checked": {
+                  color: "#0083ff",
+                  "& + $bar": {
+                    backgroundColor: "#0083ff",
+                  },
+                },
               },
             },
           },

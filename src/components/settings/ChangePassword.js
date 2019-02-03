@@ -84,12 +84,11 @@ class ChangePasswordDialog extends React.Component {
   async changePassword() {
     const wsLink = new WebSocketLink({
       uri:
-        typeof Storage !== "undefined" && localStorage.getItem("server")
-          ? "wss://" +
-            localStorage
-              .getItem("server")
-              .replace("https://", "")
-              .replace("http://", "") +
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "ws://"
+              : "wss://") +
+            localStorage.getItem("server") +
             "/subscriptions"
           : `wss://bering.igloo.ooo/subscriptions`,
       options: {
@@ -102,9 +101,13 @@ class ChangePasswordDialog extends React.Component {
 
     const httpLink = new HttpLink({
       uri:
-        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-          ? localStorage.getItem("server") + "/graphql"
-          : `https://bering.igloo.ooo/graphql`,
+      typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+        ? (localStorage.getItem("serverUnsecure") === "true"
+            ? "http://"
+            : "https://") +
+          localStorage.getItem("server") +
+          "/graphql"
+        : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },

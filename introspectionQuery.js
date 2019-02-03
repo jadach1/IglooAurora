@@ -2,8 +2,12 @@ const fetch = require("node-fetch")
 const fs = require("fs")
 
 const serverUrl =
-typeof Storage !== "undefined" && localStorage.getItem("server")!==""
-    ? localStorage.getItem("server") + "/graphql"
+  typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+    ? (localStorage.getItem("serverUnsecure") === "true"
+        ? "http://"
+        : "https://") +
+      localStorage.getItem("server") +
+      "/graphql"
     : `https://bering.igloo.ooo/graphql`
 
 fetch(serverUrl, {

@@ -20,7 +20,8 @@ export default class RecoveryFetcher extends Component {
     super(props)
 
     this.state = {
-      token: querystringify.parse("?" + window.location.href.split("?")[1]).token,
+      token: querystringify.parse("?" + window.location.href.split("?")[1])
+        .token,
     }
 
     if (querystringify.parse("?" + window.location.href.split("?")[1]).token) {
@@ -28,11 +29,10 @@ export default class RecoveryFetcher extends Component {
         uri:
           typeof Storage !== "undefined" &&
           localStorage.getItem("server") !== ""
-            ? "wss://" +
-              localStorage
-                .getItem("server")
-                .replace("https://", "")
-                .replace("http://", "") +
+            ? (localStorage.getItem("serverUnsecure") === "true"
+                ? "ws://"
+                : "wss://") +
+              localStorage.getItem("server") +
               "/subscriptions"
             : `wss://bering.igloo.ooo/subscriptions`,
         options: {
@@ -47,7 +47,11 @@ export default class RecoveryFetcher extends Component {
         uri:
           typeof Storage !== "undefined" &&
           localStorage.getItem("server") !== ""
-            ? localStorage.getItem("server") + "/graphql"
+            ? (localStorage.getItem("serverUnsecure") === "true"
+                ? "http://"
+                : "https://") +
+              localStorage.getItem("server") +
+              "/graphql"
             : `https://bering.igloo.ooo/graphql`,
         headers: {
           Authorization: "Bearer " + this.state.token,
@@ -83,7 +87,8 @@ export default class RecoveryFetcher extends Component {
         <Helmet>
           <title>Igloo Aurora - Recovery</title>
         </Helmet>
-        {querystringify.parse("?" + window.location.href.split("?")[1]).token ? (
+        {querystringify.parse("?" + window.location.href.split("?")[1])
+          .token ? (
           <ApolloProvider client={this.client}>
             <RecoveryMain
               mobile={this.props.mobile}

@@ -72,7 +72,7 @@ const sharedStyles = {
   MuiExpansionPanelDetails: {
     root: { display: null },
   },
-  MuiListSubheader: {sticky:{zIndex:20}}
+  MuiListSubheader: { sticky: { zIndex: 20 } },
 }
 
 const lightTheme = createMuiTheme({
@@ -295,10 +295,14 @@ function setupWebPush(token) {
   }
 
   function sendSubscriptionToServer(subscription) {
-    // the server URL changes based on whether the server setting is set to "auto" or "manual"
+    // the server URL changes based on whether the server setting is set to auto or manual
     const serverUrl =
       typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-        ? localStorage.getItem("server") + "/webPushSubscribe"
+        ? (localStorage.getItem("serverUnsecure") === "true"
+            ? "http://"
+            : "https://") +
+          localStorage.getItem("server") +
+          "/webPushSubscribe"
         : `https://bering.igloo.ooo/webPushSubscribe`
 
     fetch(serverUrl, {
@@ -625,6 +629,10 @@ class App extends Component {
       if (localStorage.getItem("server") === null) {
         localStorage.setItem("server", "https://bering.igloo.ooo")
       }
+
+      if (localStorage.getItem("serverUnsecure") === null) {
+        localStorage.setItem("serverUnsecure", false)
+      }
     }
 
     return (
@@ -648,7 +656,7 @@ class App extends Component {
                     <AuthenticatedApp
                       bearer={this.state.bearer}
                       logOut={logOut}
-              changeBearer={bearer=>this.setState({bearer})}
+                      changeBearer={bearer => this.setState({ bearer })}
                       changeAccount={changeAccount}
                       isMobile={this.state.isMobile}
                       forceUpdate={() => this.forceUpdate()}

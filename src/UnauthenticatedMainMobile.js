@@ -14,9 +14,13 @@ export default class UnAuthenticatedMainMobile extends Component {
   render() {
     let link = new HttpLink({
       uri:
-        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-          ? localStorage.getItem("server") + "/graphql"
-          : `https://bering.igloo.ooo/graphql`,
+      typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+        ? (localStorage.getItem("serverUnsecure") === "true"
+            ? "http://"
+            : "https://") +
+          localStorage.getItem("server") +
+          "/graphql"
+        : `https://bering.igloo.ooo/graphql`,
     })
 
     this.client = new ApolloClient({
