@@ -12,7 +12,7 @@ If you plan to use a custom version of Igloo Aurora, you will need to host the w
 
 ### Public web app
 
-Visit the [Igloo Aurora web app](igloo.ooo).
+Visit the [Igloo Aurora web app](https://aurora.igloo.ooo).
 
 ### Self hosting
 
