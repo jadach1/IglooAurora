@@ -160,7 +160,6 @@ class ChangeServer extends React.Component {
   }
 
   render() {
-    console.log(JSON.parse(localStorage.getItem("serverList")))
     const dialogList =
       typeof Storage !== "undefined" &&
       localStorage.getItem("serverList") &&

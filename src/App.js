@@ -627,7 +627,7 @@ class App extends Component {
 
     if (typeof Storage !== "undefined") {
       if (localStorage.getItem("server") === null) {
-        localStorage.setItem("server", "https://bering.igloo.ooo")
+        localStorage.setItem("server", "bering.igloo.ooo")
       }
 
       if (localStorage.getItem("serverUnsecure") === null) {

@@ -74,7 +74,9 @@ class AddDevice extends Component {
     return (
       <React.Fragment>
         <Dialog
-          open={this.props.open && !this.state.qrOpen && !this.state.manualCodeOpen}
+          open={
+            this.props.open && !this.state.qrOpen && !this.state.manualCodeOpen
+          }
           onClose={this.props.close}
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition
@@ -86,19 +88,7 @@ class AddDevice extends Component {
           className="notSelectable defaultCursor"
         >
           <DialogTitle disableTypography>Pair a device</DialogTitle>
-          <div
-            style={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? {
-                    height: "100%",
-                    background: "#2f333d",
-                  }
-                : {
-                    height: "100%",
-                  }
-            }
-          >
+          <div style={this.props.fullScreen ? { height: "100%" } : {}}>
             <List>
               <ListItem
                 button
@@ -156,24 +146,36 @@ class AddDevice extends Component {
           maxWidth="xs"
           className="notSelectable defaultCursor"
         >
-          <DialogTitle disableTypography>
-            Scan QR code
-            <IconButton
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white" }
-                  : { color: "black" }
-              }
-              onClick={() =>
-                this.setState(oldState => ({
-                  camera: oldState.camera === "user" ? "environment" : "user",
-                }))
-              }
-            >
-              <SwitchCamera />
-            </IconButton>
-          </DialogTitle>
+          <DialogTitle disableTypography>Scan QR code</DialogTitle>
+          <IconButton
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    color: "white",
+                    marginTop: "-54px",
+                    width: "48px",
+                    marginBottom: "8px",
+                    marginLeft: "calc(100% - 56px)",
+                    marginRight: "auto",
+                  }
+                : {
+                    color: "black",
+                    marginTop: "-54px",
+                    width: "48px",
+                    marginBottom: "8px",
+                    marginLeft: "calc(100% - 56px)",
+                    marginRight: "auto",
+                  }
+            }
+            onClick={() =>
+              this.setState(oldState => ({
+                camera: oldState.camera === "user" ? "environment" : "user",
+              }))
+            }
+          >
+            <SwitchCamera />
+          </IconButton>
           <div style={{ height: "100%" }}>
             {this.state.qrErrpr && "Unexpected error"}
             <QrReader
@@ -183,14 +185,13 @@ class AddDevice extends Component {
               onError={() => this.setState({ qrError: true })}
               onScan={unclaimedDeviceId => {
                 isUUID.v4(unclaimedDeviceId) &&
-                this.setState({
-                  qrOpen: false,
-                  authDialogOpen: true,
-                  unclaimedDeviceId,
-                })
+                  this.setState({
+                    qrOpen: false,
+                    authDialogOpen: true,
+                    unclaimedDeviceId,
+                  })
                 this.props.close()
-              }
-              }
+              }}
             />
           </div>
           <DialogActions>
@@ -264,21 +265,29 @@ class AddDevice extends Component {
             />
           </div>
           <DialogActions>
-            <Button onClick={() => {this.setState({ manualCodeOpen: false })}}>
+            <Button
+              onClick={() => {
+                this.setState({ manualCodeOpen: false })
+              }}
+            >
               Never mind
             </Button>
             <Button
               variant="contained"
               onClick={
                 isUUID.v4(this.state.code)
-                  ? () =>{this.setState({
-                      manualCodeOpen: false,
-                      authDialogOpen: true,
-                      unclaimedDeviceId: this.state.code,
-                    })
-                    this.props.close()}
-                  :() =>{ this.setState({ codeError: "This isn't a valid code" })
-                  this.props.close()}
+                  ? () => {
+                      this.setState({
+                        manualCodeOpen: false,
+                        authDialogOpen: true,
+                        unclaimedDeviceId: this.state.code,
+                      })
+                      this.props.close()
+                    }
+                  : () => {
+                      this.setState({ codeError: "This isn't a valid code" })
+                      this.props.close()
+                    }
               }
               color="primary"
               disabled={!this.state.code}

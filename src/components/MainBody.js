@@ -10,8 +10,56 @@ import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp"
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
 
 class MainBody extends Component {
+  state = {
+    redirect: false,
+  }
+
   componentDidMount() {
-    const subscribeToNewValues = gql`
+    this.props.deviceData.refetch()
+
+    const deviceUpdatedSubscription = gql`
+      subscription {
+        deviceUpdated {
+          id
+          index
+          name
+          online
+          batteryStatus
+          batteryCharging
+          signalStatus
+          deviceType
+          firmware
+          createdAt
+          updatedAt
+          starred
+          notificationCount
+          notifications {
+            id
+            content
+            read
+          }
+        }
+      }
+    `
+
+    this.props.deviceData.subscribeToMore({
+      document: deviceUpdatedSubscription,
+    })
+
+    const deviceDeletedSubscription = gql`
+      subscription {
+        deviceDeleted
+      }
+    `
+
+    this.props.environmentData.subscribeToMore({
+      document: deviceDeletedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        this.setState({ redirect: true })
+      },
+    })
+
+    const valueCreatedSubscription = gql`
       subscription {
         valueCreated {
           id
@@ -56,7 +104,7 @@ class MainBody extends Component {
     `
 
     this.props.deviceData.subscribeToMore({
-      document: subscribeToNewValues,
+      document: valueCreatedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -83,7 +131,6 @@ class MainBody extends Component {
         valueUpdated {
           id
           visibility
-          unitOfMeasurement
           cardSize
           name
           updatedAt
@@ -157,36 +204,11 @@ class MainBody extends Component {
   render() {
     const { loading, error, device } = this.props.deviceData
 
+    let content = ""
+
     if (loading) {
-      return (
-        <div
-          style={
-            typeof Storage !== "undefined" &&
-            localStorage.getItem("nightMode") === "true"
-              ? { background: "#2f333d", height: "100%" }
-              : { background: "white", height: "100%" }
-          }
-        >
-          <div
-            className={
-              typeof Storage !== "undefined" &&
-              localStorage.getItem("nightMode") === "true"
-                ? this.props.isMobile
-                  ? "mainBody mobileDarkMainBodyBG"
-                  : "mainBody darkMainBodyBG"
-                : this.props.isMobile
-                ? "mainBody mobileMainBodyBG"
-                : "mainBody mainBodyBG"
-            }
-            style={{
-              width: "100%",
-              height: "100%",
-              paddingTop: "96px",
-            }}
-          >
-            <CenteredSpinner large />
-          </div>
-        </div>
+      content = (
+            <CenteredSpinner large style={{paddingTop:"96px"}}/>
       )
     }
 
@@ -210,109 +232,113 @@ class MainBody extends Component {
         )
       }
 
-      return (
-        <div
-          className={
+      content = "An unexpected error occurred"
+    }
+
+    if (device) {
+      const values = device.values
+      let visibleCards = values.filter(value => value.visibility === "VISIBLE")
+
+      let hiddenCards = values.filter(value => value.visibility === "HIDDEN")
+
+      const renderCard = value => (
+        <Card
+          value={value}
+          key={value.id}
+          nightMode={
             typeof Storage !== "undefined" &&
             localStorage.getItem("nightMode") === "true"
-              ? this.props.isMobile
-                ? "mainBody darkMobileMainBodyBG"
-                : "mainBody darkMainBodyBG"
-              : this.props.isMobile
-              ? "mainBody mobileMainBodyBG"
-              : "mainBody mainBodyBG"
           }
-        >
-          An unexpected error occurred
-        </div>
-      )
-    }
-
-    const values = device.values
-    let visibleCards = values.filter(value => value.visibility === "VISIBLE")
-
-    let hiddenCards = values.filter(value => value.visibility === "HIDDEN")
-
-    const renderCard = value => (
-      <Card
-        value={value}
-        key={value.id}
-        nightMode={
-          typeof Storage !== "undefined" &&
-          localStorage.getItem("nightMode") === "true"
-        }
-        devMode={this.props.devMode}
-        environmentData={this.props.environmentData}
-        userData={this.props.userData}
-        environments={this.props.environments}
-      />
-    )
-
-    visibleCards = visibleCards.map(renderCard)
-    hiddenCards = hiddenCards.map(renderCard)
-
-    let hiddenCardsUI = ""
-
-    if (hiddenCards.length !== 0) {
-      hiddenCardsUI = [
-        <Button
-          onClick={() => {
-            this.props.changeShowHiddenState()
-          }}
-          fullWidth
-          className="divider notSelectable"
-          key="showMoreLessButton"
-          style={
-            this.props.showHidden
-              ? typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                ? { backgroundColor: "#282c34", color: "white" }
-                : { backgroundColor: "#d4d4d4", color: "black" }
-              : typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-              ? { backgroundColor: "transparent", color: "white" }
-              : { backgroundColor: "transparent", color: "black" }
-          }
-        >
-          {this.props.showHidden ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
-          {this.props.showHidden ? "Show less" : "Show more"}
-        </Button>,
-        this.props.showHidden ? (
-          <div className="itemsList hiddenItems" key="hiddenCardsContainer">
-            {hiddenCards}
-          </div>
-        ) : (
-          ""
-        ),
-      ]
-    }
-
-    let noItemsUI = ""
-    if (hiddenCards.length + visibleCards.length === 0) {
-      noItemsUI = (
-        <div
-          style={{
-            width: "100%",
-            textAlign: "center",
-            marginTop: "32px",
-          }}
-          key="noCardsUI"
-          className="notSelectable"
-        >
-          This device has no values
-        </div>
-      )
-    }
-
-    //changes the environment id in the url so that it is the correct one for the device
-    if (
-      device.environment.id !==
-      querystringify.parse("?" + window.location.href.split("?")[1]).environment
-    ) {
-      return (
-        <Redirect
-          to={"/?environment=" + device.environment.id + "&device=" + device.id}
+          devMode={this.props.devMode}
+          environmentData={this.props.environmentData}
+          userData={this.props.userData}
+          environments={this.props.environments}
         />
+      )
+
+      visibleCards = visibleCards.map(renderCard)
+      hiddenCards = hiddenCards.map(renderCard)
+
+      let hiddenCardsUI = ""
+
+      if (hiddenCards.length !== 0) {
+        hiddenCardsUI = [
+          <Button
+            onClick={() => {
+              this.props.changeShowHiddenState()
+            }}
+            fullWidth
+            className="divider notSelectable"
+            key="showMoreLessButton"
+            style={
+              this.props.showHidden
+                ? typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? { backgroundColor: "#282c34", color: "white" }
+                  : { backgroundColor: "#d4d4d4", color: "black" }
+                : typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                ? { backgroundColor: "transparent", color: "white" }
+                : { backgroundColor: "transparent", color: "black" }
+            }
+          >
+            {this.props.showHidden ? (
+              <KeyboardArrowUp />
+            ) : (
+              <KeyboardArrowDown />
+            )}
+            {this.props.showHidden ? "Show less" : "Show more"}
+          </Button>,
+          this.props.showHidden ? (
+            <div className="itemsList hiddenItems" key="hiddenCardsContainer">
+              {hiddenCards}
+            </div>
+          ) : (
+            ""
+          ),
+        ]
+      }
+
+      let noItemsUI = ""
+      if (hiddenCards.length + visibleCards.length === 0) {
+        noItemsUI = (
+          <div
+            style={{
+              width: "100%",
+              textAlign: "center",
+              marginTop: "32px",
+            }}
+            key="noCardsUI"
+            className="notSelectable"
+          >
+            This device has no values
+          </div>
+        )
+      }
+
+      //changes the environment id in the url so that it is the correct one for the device
+      if (
+        device.environment.id !==
+        querystringify.parse("?" + window.location.href.split("?")[1])
+          .environment
+      ) {
+        return (
+          <Redirect
+            to={
+              "/?environment=" + device.environment.id + "&device=" + device.id
+            }
+          />
+        )
+      }
+
+      content = (
+        <React.Fragment>
+          {noItemsUI}
+          <div className="itemsList" key="visibleCardsContainer">
+            {visibleCards}
+          </div>
+          {hiddenCardsUI}
+        </React.Fragment>
       )
     }
 
@@ -321,8 +347,8 @@ class MainBody extends Component {
         style={
           typeof Storage !== "undefined" &&
           localStorage.getItem("nightMode") === "true"
-            ? { background: "#2f333d", height: "calc(100vh - 112px)" }
-            : { background: "white", height: "calc(100vh - 112px)" }
+            ? { background: "#2f333d" }
+            : { background: "white" }
         }
       >
         <div
@@ -336,14 +362,23 @@ class MainBody extends Component {
               ? "mainBody mobileMainBodyBG"
               : "mainBody mainBodyBG"
           }
-          style={{ width: "100%", height: "100%", overflowX: "hidden" }}
+          style={{
+            width: "100%",
+            overflowX: "hidden",
+            height: "calc(100vh - 112px)",
+          }}
         >
-          {noItemsUI}
-          <div className="itemsList" key="visibleCardsContainer">
-            {visibleCards}
-          </div>
-          {hiddenCardsUI}
+          {content}
         </div>
+        {this.state.redirect && (
+          <Redirect
+            to={
+              "/?environment=" +
+              querystringify.parse("?" + window.location.href.split("?")[1])
+                .environment
+            }
+          />
+        )}
       </div>
     )
   }

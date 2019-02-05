@@ -84,18 +84,16 @@ class MainBodyHeader extends Component {
       tileId = tileId || activationArguments
 
       var tile
-      try {
-        tile = new window.Windows.UI.StartScreen.SecondaryTile(
-          tileId,
-          text,
-          text,
-          activationArguments,
-          newTileDesiredSize,
-          logoUri
-        )
-      } catch (e) {
-        return
-      }
+
+      tile = new window.Windows.UI.StartScreen.SecondaryTile(
+        tileId,
+        text,
+        text,
+        activationArguments,
+        newTileDesiredSize,
+        logoUri
+      )
+
       var element = document.body
       if (element) {
         var selectionRect = element.getBoundingClientRect()
@@ -127,6 +125,39 @@ class MainBodyHeader extends Component {
         })
       }
     }
+  }
+
+  componentDidMount() {
+    this.props.data.refetch()
+
+    const deviceUpdatedSubscription = gql`
+      subscription {
+        deviceUpdated {
+           id
+              index
+              name
+              online
+              batteryStatus
+              batteryCharging
+              signalStatus
+              deviceType
+              firmware
+              createdAt
+              updatedAt
+              starred
+              notificationCount
+              notifications {
+                id
+                content
+                read
+              }
+        }
+      }
+    `
+
+    this.props.data.subscribeToMore({
+      document: deviceUpdatedSubscription,
+    })
   }
 
   render() {
@@ -487,28 +518,30 @@ class MainBodyHeader extends Component {
                 <ListItemText inset primary="Mute" disableTypography />
               </MenuItem>
             )}
-            <MenuItem
-              className="notSelectable"
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "white" }
-                  : { color: "black" }
-              }
-              onClick={() => {
-                toggleStarred(!device.starred)
-                this.handleMenuClose()
-              }}
-            >
-              <ListItemIcon>
-                {device && device.starred ? <StarBorder /> : <Star />}
-              </ListItemIcon>
-              <ListItemText
-                inset
-                primary={device && device.starred ? "Unstar" : "Star"}
-                disableTypography
-              />
-            </MenuItem>
+            {localStorage.getItem("sortBy") === "name" && (
+              <MenuItem
+                className="notSelectable"
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }
+                onClick={() => {
+                  toggleStarred(!device.starred)
+                  this.handleMenuClose()
+                }}
+              >
+                <ListItemIcon>
+                  {device && device.starred ? <StarBorder /> : <Star />}
+                </ListItemIcon>
+                <ListItemText
+                  inset
+                  primary={device && device.starred ? "Unstar" : "Star"}
+                  disableTypography
+                />
+              </MenuItem>
+            )}
             {window.Windows && (
               <MenuItem
                 onClick={() => {

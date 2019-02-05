@@ -129,7 +129,9 @@ class Sidebar extends Component {
     let mergedArray = []
 
     if (environment) {
-      mergedArray = environment.starredDevices.concat(environment.devices)
+      if ( localStorage.getItem("sortBy") === "name"){
+      mergedArray = environment.starredDevices.concat(environment.devices)}else{
+        mergedArray = environment.devices}
 
       sidebarContent = (
         <React.Fragment>
@@ -185,33 +187,11 @@ class Sidebar extends Component {
                   selected={this.props.selectedDevice === device.id}
                   key={device.id}
                 >
-                  {//checks that device is the first starred one to be displayed
-                  !mergedArray
-                    .filter(environmentDevice => environmentDevice.starred)
-                    .map(environmentDevice => environmentDevice.id)
-                    .indexOf(device.id) ? (
-                    <ListItemAvatar>
-                      <Avatar
-                        style={{
-                          backgroundColor: "transparent",
-                          color: "#0083ff",
-                        }}
-                      >
-                        <Star />
-                      </Avatar>
-                    </ListItemAvatar>
-                  ) : (
-                    //checks if device is the first to start with its initial
-                    !mergedArray
-                      .filter(
-                        environmentDevice =>
-                          !environmentDevice.starred &&
-                          environmentDevice.name
-                            .toLowerCase()
-                            .startsWith(device.name[0].toLowerCase())
-                      )
+                  {localStorage.getItem("sortBy") === "name" &&
+                    (!mergedArray
+                      .filter(environmentDevice => environmentDevice.starred)
                       .map(environmentDevice => environmentDevice.id)
-                      .indexOf(device.id) && (
+                      .indexOf(device.id) ? (
                       <ListItemAvatar>
                         <Avatar
                           style={{
@@ -219,13 +199,51 @@ class Sidebar extends Component {
                             color: "#0083ff",
                           }}
                         >
-                          {device.name[0].toUpperCase()}
+                          <Star />
                         </Avatar>
                       </ListItemAvatar>
-                    )
-                  )}
+                    ) : (
+                      //checks if device is the first to start with its initial
+                      !mergedArray
+                        .filter(
+                          environmentDevice =>
+                            !environmentDevice.starred &&
+                            environmentDevice.name
+                              .toLowerCase()
+                              .startsWith(device.name[0].toLowerCase())
+                        )
+                        .map(environmentDevice => environmentDevice.id)
+                        .indexOf(device.id) && (
+                        <ListItemAvatar>
+                          <Avatar
+                            style={{
+                              backgroundColor: "transparent",
+                              color: "#0083ff",
+                            }}
+                          >
+                            {device.name[0].toUpperCase()}
+                          </Avatar>
+                        </ListItemAvatar>
+                      )
+                    ))}
                   <ListItemText
                     inset
+                    style={
+                      localStorage.getItem("sortBy") === "name"
+                        ? {
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            cursor: "pointer",
+                          }
+                        : {
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                            textOverflow: "ellipsis",
+                            cursor: "pointer",
+                            paddingLeft: 0,
+                          }
+                    }
                     primary={
                       <span
                         style={
@@ -238,12 +256,6 @@ class Sidebar extends Component {
                         {device.name}
                       </span>
                     }
-                    style={{
-                      whiteSpace: "nowrap",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      cursor: "pointer",
-                    }}
                     secondary={
                       <span
                         style={
@@ -284,6 +296,15 @@ class Sidebar extends Component {
                       onClick={() => {
                         this.props.changeDrawerState()
                       }}
+                                        component={Link}
+                  to={
+                    this.props.selectedDevice !== device.id
+                      ? "/?environment=" +
+                        this.props.selectedEnvironment +
+                        "&device=" +
+                        device.id
+                      : "/?environment=" + this.props.selectedEnvironment
+                  }
                     />
                   </ListItemSecondaryAction>
                 </ListItem>

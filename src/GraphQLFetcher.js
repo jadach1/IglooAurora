@@ -1,6 +1,5 @@
 import React, { Component } from "react"
 import Main from "./Main"
-import MainMobile from "./MainMobile"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { Switch, Route } from "react-router-dom"
@@ -315,21 +314,21 @@ class GraphQLFetcher extends Component {
       subscription {
         pendingEnvironmentShareUpdated {
           id
-            role
-            receiver {
-              id
-              profileIconColor
-              name
-              email
-            }
-            sender {
-              id
-              name
-            }
-            environment {
-              id
-              name
-            }
+          role
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+          sender {
+            id
+            name
+          }
+          environment {
+            id
+            name
+          }
         }
       }
     `
@@ -747,6 +746,7 @@ class GraphQLFetcher extends Component {
           return (
             <React.Fragment>
               <Main
+                mobile={this.props.isMobile}
                 logOut={this.props.logOut}
                 changeAccount={this.props.changeAccount}
                 userData={this.props.userData}
@@ -792,6 +792,7 @@ class GraphQLFetcher extends Component {
           return (
             <React.Fragment>
               <Main
+                mobile={this.props.isMobile}
                 logOut={this.props.logOut}
                 changeAccount={this.props.changeAccount}
                 userData={this.props.userData}
@@ -821,143 +822,6 @@ class GraphQLFetcher extends Component {
                 devicesSearchText={this.state.devicesSearchText}
                 forceUpdate={this.props.forceUpdate}
                 client={this.props.client}
-              />
-              <EmailNotVerified
-                mobile={this.props.isMobile}
-                open={user && !user.emailIsVerified && this.state.snackbarOpen}
-                close={() => this.setState({ snackbarOpen: false })}
-              />
-              <GenericDialog />
-            </React.Fragment>
-          )
-        }
-      } else {
-        return (
-          <React.Fragment>
-            <Environments
-              userData={this.props.userData}
-              logOut={this.props.logOut}
-              changeAccount={this.props.changeAccount}
-              changeBearer={this.props.changeBearer}
-              selectEnvironment={id =>
-                this.setState({ selectedEnvironment: id })
-              }
-              searchEnvironments={text => {
-                this.setState({ environmentsSearchText: text })
-              }}
-              settingsOpen={this.state.areSettingsOpen}
-              openSettings={() => this.setState({ areSettingsOpen: true })}
-              closeSettings={() => this.setState({ areSettingsOpen: false })}
-              areSettingsOpen={this.state.areSettingsOpen}
-              environmentsSearchText={this.state.environmentsSearchText}
-              forceUpdate={this.props.forceUpdate}
-              client={this.props.client}
-              mobile={this.props.isMobile}
-              changeEmail={this.props.changeEmail}
-            />
-            <EmailNotVerified
-              mobile={this.props.isMobile}
-              open={user && !user.emailIsVerified && this.state.snackbarOpen}
-              close={() => this.setState({ snackbarOpen: false })}
-            />
-            <GenericDialog />
-          </React.Fragment>
-        )
-      }
-    }
-
-    const MainMobileSelected = () => {
-      if (
-        querystringify.parse("?" + window.location.href.split("?")[1])
-          .environment ||
-        querystringify.parse("?" + window.location.href.split("?")[1]).device
-      ) {
-        if (
-          querystringify.parse("?" + window.location.href.split("?")[1]).device
-        ) {
-          return (
-            <React.Fragment>
-              <MainMobile
-                logOut={this.props.logOut}
-                changeAccount={this.props.changeAccount}
-                userData={this.props.userData}
-                openSettings={() => this.setState({ areSettingsOpen: true })}
-                closeSettings={() => this.setState({ areSettingsOpen: false })}
-                areSettingsOpen={this.state.areSettingsOpen}
-                selectDevice={id => this.setState({ selectedDevice: id })}
-                selectedDevice={
-                  querystringify.parse("?" + window.location.href.split("?")[1])
-                    .device
-                }
-                environments={
-                  this.props.userData.user &&
-                  this.props.userData.user.environments
-                }
-                selectEnvironment={id =>
-                  this.setState({ selectedEnvironment: id })
-                }
-                environmentId={
-                  querystringify.parse("?" + window.location.href.split("?")[1])
-                    .environment
-                }
-                searchDevices={text => {
-                  this.setState({ devicesSearchText: text })
-                }}
-                devicesSearchText={this.state.devicesSearchText}
-                devMode={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("devMode") === "true"
-                }
-                forceUpdate={this.props.forceUpdate}
-                client={this.props.client}
-                snackbarOpen={
-                  user && !user.emailIsVerified && this.state.snackbarOpen
-                }
-              />
-              <EmailNotVerified
-                mobile={this.props.isMobile}
-                open={user && !user.emailIsVerified && this.state.snackbarOpen}
-                close={() => this.setState({ snackbarOpen: false })}
-              />
-              <GenericDialog />
-            </React.Fragment>
-          )
-        } else {
-          return (
-            <React.Fragment>
-              <MainMobile
-                logOut={this.props.logOut}
-                changeAccount={this.props.changeAccount}
-                openSettings={() => this.setState({ areSettingsOpen: true })}
-                closeSettings={() => this.setState({ areSettingsOpen: false })}
-                areSettingsOpen={this.state.areSettingsOpen}
-                userData={this.props.userData}
-                selectDevice={id => this.setState({ selectedDevice: id })}
-                selectedDevice={null}
-                selectEnvironment={id =>
-                  this.setState({ selectedEnvironment: id })
-                }
-                environmentId={
-                  querystringify.parse("?" + window.location.href.split("?")[1])
-                    .environment
-                }
-                environments={
-                  this.props.userData.user &&
-                  this.props.userData.user.environments
-                }
-                devMode={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("devMode") === "true"
-                }
-                searchDevices={text => {
-                  this.setState({ devicesSearchText: text })
-                }}
-                devicesSearchText={this.state.devicesSearchText}
-                forceUpdate={this.props.forceUpdate}
-                client={this.props.client}
-                snackbarOpen={
-                  user && !user.emailIsVerified && this.state.snackbarOpen
-                }
               />
               <EmailNotVerified
                 mobile={this.props.isMobile}
@@ -1005,12 +869,7 @@ class GraphQLFetcher extends Component {
 
     return (
       <Switch>
-        <Route
-          exact
-          strict
-          path="/"
-          render={this.props.isMobile ? MainMobileSelected : MainSelected}
-        />
+        <Route exact strict path="/" render={MainSelected} />
         <Route render={() => <Error404 isMobile={this.props.isMobile} />} />
       </Switch>
     )

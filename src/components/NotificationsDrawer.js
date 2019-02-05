@@ -51,6 +51,8 @@ class NotificationsDrawer extends React.Component {
   }
 
   componentDidMount() {
+    this.props.notifications.refetch()
+
     const subscriptionQuery = gql`
       subscription {
         notificationCreated {

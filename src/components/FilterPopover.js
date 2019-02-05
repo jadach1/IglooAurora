@@ -15,7 +15,6 @@ import Collapse from "@material-ui/core/Collapse"
 import { Redirect } from "react-router-dom"
 import ExpandLess from "@material-ui/icons/ExpandLess"
 import ExpandMore from "@material-ui/icons/ExpandMore"
-import AccessTime from "@material-ui/icons/AccessTime"
 import SortByAlpha from "@material-ui/icons/SortByAlpha"
 
 let removeDuplicates = inputArray => {
@@ -354,43 +353,6 @@ export default class FilterPopover extends Component {
                       }
                     >
                       Alphabetical
-                    </span>
-                  }
-                />
-              </ListItem>
-              <ListItem
-                button
-                selected={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("sortBy") === "time"
-                }
-                onClick={() => {
-                  typeof Storage !== "undefined" &&
-                    localStorage.setItem("sortBy", "time")
-                  this.props.forceUpdate()
-                }}
-              >
-                <ListItemIcon
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? { color: "white" }
-                      : { color: "black" }
-                  }
-                >
-                  <AccessTime />
-                </ListItemIcon>
-                <ListItemText
-                  primary={
-                    <span
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      Chronological
                     </span>
                   }
                 />

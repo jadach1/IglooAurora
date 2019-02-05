@@ -1,77 +1,6 @@
 .mobileMain {
   width: 100%;
   height: 100vh;
-  display: grid;
-  grid-template-columns: auto;
-  grid-template-rows: [start] 64px [mid] auto [end];
-  grid-template-areas: "header" "body";
-}
-
-.mobileSidebar {
-  grid-area: body;
-  box-sizing: border-box;
-  overflow-y: auto;
-}
-
-.mobileSidebarHeader {
-  grid-area: header;
-  vertical-align: middle;
-  line-height: 64px;
-  background: #0057cb;
-  z-index: 1000;
-}
-
-.mobileMainBody {
-  grid-area: body;
-  overflow-y: auto;
-  box-sizing: border-box;
-}
-
-.mobileSidebarHeader {
-  grid-area: header;
-  vertical-align: middle;
-  line-height: 64px;
-  background: #0057cb;
-  z-index: 1000;
-}
-
-.mobileSidebarHeader .rightSide {
-  color: white;
-  display: inline-block;
-  float: right;
-  margin-right: 16px;
-}
-
-.mobileSidebarHeader .rightSide .icon {
-  color: white !important;
-  margin: 0 5px 0 5px;
-  vertical-align: middle;
-}
-
-.mobileSidebarHeaderButton {
-  vertical-align: middle;
-}
-
-.mobileSidebarHeaderButton svg {
-  color: white !important;
-}
-
-.mobileDeviceIconBig {
-  grid-area: icon;
-  font-size: 35px;
-  vertical-align: middle;
-  line-height: 64px;
-  text-align: center;
-}
-
-.mobileBackIcon {
-  grid-area: backIcon;
-}
-
-.offlineLoginMobilePaper {
-  width: 400px;
-  height: 527px;
-  margin: auto auto auto auto;
 }
 
 .mobileMainBodyBG {
@@ -79,7 +8,7 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: contain;
-  background-position: 50% calc(50% - 32px);
+  background-position: 50% calc(50% + 32px);
 }
 
 .mobileDarkMainBodyBG {
@@ -87,5 +16,5 @@
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-size: contain;
-  background-position: 50% calc(50% - 32px);
+  background-position: 50% calc(50% + 32px);
 }
