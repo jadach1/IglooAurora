@@ -1,4 +1,8 @@
-![Igloo Aurora](https://github.com/IglooCloud/IglooAurora/blob/master/iglooAurora.png?raw=true "Igloo Aurora")
+<p align="center">
+  <img src="https://github.com/IglooCloud/IglooBering/blob/master/IglooLogo.png" alt="Igloo logo" width="128"/>
+</p>
+
+<h1 align="center">Igloo Aurora</h1>
 
 # Igloo Aurora
 
