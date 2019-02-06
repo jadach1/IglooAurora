@@ -24,7 +24,7 @@ class SidebarHeader extends Component {
     },
     "alt+q": {
       priority: 1,
-      handler: event => this.props.logOut(),
+      handler: event => this.props.logOut(false),
     },
     "alt+backspace": {
       priority: 1,

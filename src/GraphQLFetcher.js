@@ -634,20 +634,13 @@ class GraphQLFetcher extends Component {
       subscription {
         userUpdated {
           id
+          quietMode
           emailIsVerified
           name
           profileIconColor
-          pendingEnvironmentShares {
-            id
-            sender {
-              id
-              name
-            }
-            environment {
-              id
-              name
-            }
-          }
+          email
+          pendingEnvironmentShareCount
+          pendingOwnerChangeCount
           settings {
             timeFormat
             dateFormat
@@ -662,16 +655,16 @@ class GraphQLFetcher extends Component {
       document: subscribeToUserUpdates,
     })
 
-    const subscribeToUserDeleted = gql`
+    const userDeletedSubscription = gql`
       subscription {
         userDeleted
       }
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToUserDeleted,
+      document: userDeletedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
-        this.props.logOut()
+        this.props.logOut(true)
       },
     })
 
@@ -730,7 +723,7 @@ class GraphQLFetcher extends Component {
 
     if (error) {
       if (error.message === "GraphQL error: This user doesn't exist anymore") {
-        this.props.logOut()
+        this.props.logOut(true)
       }
     }
 

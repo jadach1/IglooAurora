@@ -86,11 +86,12 @@ class Signup extends Component {
             signUp(email: $email, password: $password, name: $name) {
               token
               user {
-                environments {
-                  id
-                }
+                id
+                email
+                name
+                profileIconColor
               }
-            }
+                          }
           }
         `,
         variables: {

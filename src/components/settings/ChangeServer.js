@@ -54,7 +54,7 @@ class ChangeServer extends React.Component {
       this.props.forceUpdate()
     }
 
-    !this.props.isUnauthenticated && this.props.logOut()
+    !this.props.isUnauthenticated && this.props.logOut(false)
   }
 
   isUrl = url => {
@@ -227,6 +227,7 @@ class ChangeServer extends React.Component {
                 })
               }
               style={
+                !this.props.unauthenticated &&
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
                   ? { color: "white" }
@@ -369,7 +370,7 @@ class ChangeServer extends React.Component {
           maxWidth="xs"
         >
           <DialogTitle disableTypography>Add server</DialogTitle>
-          <div style={{ height: "100%", padding: "0 24px" }}>
+          <div style={{ height: "100%" }}>
             <TextField
               id="custom-server-name"
               label="Server name"
@@ -415,8 +416,10 @@ class ChangeServer extends React.Component {
                 }
               }}
               style={{
+                width: "calc(100% - 48px)",
                 marginTop: "16px",
-                width: "100%",
+                marginLeft: "24px",
+                marginRight: "24px",
               }}
               InputLabelProps={this.state.name && { shrink: true }}
               InputProps={{
@@ -484,7 +487,9 @@ class ChangeServer extends React.Component {
               }}
               style={{
                 marginTop: "16px",
-                width: "100%",
+                width: "calc(100% - 48px)",
+                marginLeft: "24px",
+                marginRight: "24px",
               }}
               InputLabelProps={this.state.url && { shrink: true }}
               InputProps={{
@@ -509,45 +514,46 @@ class ChangeServer extends React.Component {
                 ),
               }}
             />
-          </div>
-          <List
-            style={{
-              padding: 0,
-              marginRight: "8px",
-            }}
-          >
-            <ListItem
+            <List
               style={{
-                marginTop: "-3px",
-                marginBottom: "13px",
-                paddingLeft: "24px",
+                padding: 0,
+                marginRight: "8px",
               }}
             >
-              <ListItemText
-                primary={
-                  <font
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : {}
-                    }
-                  >
-                    Use unsecure connection
-                  </font>
-                }
-              />
-              <ListItemSecondaryAction>
-                <Switch
-                  checked={this.state.unsecure}
-                  onChange={event =>
-                    this.setState({ unsecure: event.target.checked })
+              <ListItem
+                style={{
+                  marginTop: "-3px",
+                  marginBottom: "13px",
+                  paddingLeft: "24px",
+                }}
+              >
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        !this.props.unauthenticated &&
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : {}
+                      }
+                    >
+                      Use unsecure connection
+                    </font>
                   }
-                  style={{ marginRight: "8px" }}
                 />
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
+                <ListItemSecondaryAction>
+                  <Switch
+                    checked={this.state.unsecure}
+                    onChange={event =>
+                      this.setState({ unsecure: event.target.checked })
+                    }
+                    style={{ marginRight: "8px" }}
+                  />
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </div>
           <DialogActions>
             <Button
               onClick={() =>
@@ -616,7 +622,7 @@ class ChangeServer extends React.Component {
           maxWidth="xs"
         >
           <DialogTitle disableTypography>Edit server</DialogTitle>
-          <div style={{ height: "100%", padding: "0 24px" }}>
+          <div style={{ height: "100%" }}>
             <TextField
               id="edit-custom-server-name"
               label="Server name"
@@ -661,8 +667,10 @@ class ChangeServer extends React.Component {
                 }
               }}
               style={{
+                width: "calc(100% - 48px)",
                 marginTop: "16px",
-                width: "100%",
+                marginLeft: "24px",
+                marginRight: "24px",
               }}
               InputLabelProps={this.state.editName && { shrink: true }}
               InputProps={{
@@ -728,8 +736,10 @@ class ChangeServer extends React.Component {
                 }
               }}
               style={{
+                width: "calc(100% - 48px)",
                 marginTop: "16px",
-                width: "100%",
+                marginLeft: "24px",
+                marginRight: "24px",
               }}
               InputLabelProps={this.state.editUrl && { shrink: true }}
               InputProps={{
@@ -754,45 +764,46 @@ class ChangeServer extends React.Component {
                 ),
               }}
             />
-          </div>
-          <List
-            style={{
-              padding: 0,
-              marginRight: "8px",
-            }}
-          >
-            <ListItem
+            <List
               style={{
-                marginTop: "-3px",
-                marginBottom: "13px",
-                paddingLeft: "24px",
+                padding: 0,
+                marginRight: "8px",
               }}
             >
-              <ListItemText
-                primary={
-                  <font
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : {}
-                    }
-                  >
-                    Use unsecure connection
-                  </font>
-                }
-              />
-              <ListItemSecondaryAction>
-                <Switch
-                  checked={this.state.editUnsecure}
-                  onChange={event =>
-                    this.setState({ editUnsecure: event.target.checked })
+              <ListItem
+                style={{
+                  marginTop: "-3px",
+                  marginBottom: "13px",
+                  paddingLeft: "24px",
+                }}
+              >
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        !this.props.unauthenticated &&
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : {}
+                      }
+                    >
+                      Use unsecure connection
+                    </font>
                   }
-                  style={{ marginRight: "8px" }}
                 />
-              </ListItemSecondaryAction>
-            </ListItem>
-          </List>
+                <ListItemSecondaryAction>
+                  <Switch
+                    checked={this.state.editUnsecure}
+                    onChange={event =>
+                      this.setState({ editUnsecure: event.target.checked })
+                    }
+                    style={{ marginRight: "8px" }}
+                  />
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </div>
           <DialogActions>
             <Button
               onClick={() =>
@@ -870,6 +881,7 @@ class ChangeServer extends React.Component {
               primary={
                 <span
                   style={
+                    !this.props.unauthenticated &&
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
                       ? { color: "white" }

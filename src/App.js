@@ -583,7 +583,7 @@ class App extends Component {
       this.setState({ redirectToReferrer: true, loginPassword: "" })
     }
 
-    const logOut = () => {
+    const logOut = deleted => {
       this.setState({
         bearer: "",
         loggedOut: true,
@@ -592,14 +592,17 @@ class App extends Component {
       })
       if (typeof Storage !== "undefined") {
         let currentAccountList = JSON.parse(localStorage.getItem("accountList"))
-
-        currentAccountList.filter(
-          account => account.id === localStorage.getItem("userId")
-        )[0] &&
-          (currentAccountList.filter(
-            account => account.id === localStorage.getItem("userId")
-          )[0].token = "")
-
+        
+        deleted
+          ? (currentAccountList = currentAccountList.filter(
+              account => account.id !== localStorage.getItem("userId")
+            ))
+          : currentAccountList.filter(
+              account => account.id === localStorage.getItem("userId")
+            )[0] &&
+            (currentAccountList.filter(
+              account => account.id === localStorage.getItem("userId")
+            )[0].token = "")
         localStorage.setItem("accountList", JSON.stringify(currentAccountList))
 
         localStorage.setItem("userId", "")
@@ -714,6 +717,7 @@ class App extends Component {
                     changeSignupEmail={signupEmail =>
                       this.setState({ signupEmail })
                     }
+                    forceUpdate={() => this.forceUpdate()}
                   />
                 ) : (
                   <UnauthenticatedMain

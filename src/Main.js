@@ -370,6 +370,19 @@ class Main extends Component {
         }
       },
     })
+
+    const environmentDeletedSubscription = gql`
+      subscription {
+        environmentDeleted
+      }
+    `
+
+    this.props.environmentData.subscribeToMore({
+      document: environmentDeletedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        this.setState({ redirectToEnvironments: true })
+      },
+    })
   }
 
   render() {
@@ -379,7 +392,7 @@ class Main extends Component {
 
     if (error) {
       if (error.message === "GraphQL error: This user doesn't exist anymore") {
-        this.props.logOut()
+        this.props.logOut(true)
       }
     }
 
@@ -466,22 +479,22 @@ class Main extends Component {
                           overflowY: "hidden",
                         }
                   }
-                ><Sidebar
-                  selectDevice=
-                  {id => {
-                    this.props.selectDevice(id)
-                    this.setState({ drawer: false })
-                  }}
-                  selectedDevice={this.props.selectedDevice}
-                  changeDrawerState={this.changeDrawerState}
-                  isMobile={true}
-                  environmentData={this.props.environmentData}
-                  nightMode={nightMode}
-                  selectedEnvironment={this.props.environmentId}
-                  searchDevices={this.props.searchDevices}
-                  searchText={this.props.devicesSearchText}
-                  snackbarOpen={this.props.snackbarOpen}
-                  userData={this.props.userData}
+                >
+                  <Sidebar
+                    selectDevice={id => {
+                      this.props.selectDevice(id)
+                      this.setState({ drawer: false })
+                    }}
+                    selectedDevice={this.props.selectedDevice}
+                    changeDrawerState={this.changeDrawerState}
+                    isMobile={true}
+                    environmentData={this.props.environmentData}
+                    nightMode={nightMode}
+                    selectedEnvironment={this.props.environmentId}
+                    searchDevices={this.props.searchDevices}
+                    searchText={this.props.devicesSearchText}
+                    snackbarOpen={this.props.snackbarOpen}
+                    userData={this.props.userData}
                   />
                 </div>
               </React.Fragment>
@@ -676,6 +689,8 @@ class Main extends Component {
         {this.state.deselectDevice && environment && (
           <Redirect push to={"/?environment=" + environment.id} />
         )}
+
+        {this.state.redirectToEnvironments && <Redirect push to="/" />}
       </React.Fragment>
     )
   }

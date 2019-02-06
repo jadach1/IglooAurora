@@ -5,8 +5,6 @@ import DialogActions from "@material-ui/core/DialogActions"
 import Button from "@material-ui/core/Button"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import { graphql } from "react-apollo"
-import gql from "graphql-tag"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 import Checkbox from "@material-ui/core/Checkbox"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
@@ -30,16 +28,6 @@ class MailingOptions extends React.Component {
   }
 
   render() {
-    /* const {
-      userData: { error, user },
-    } = this.props
-
-    if (error) {
-      if (error.message === "GraphQL error: This user doesn't exist anymore") {
-        this.props.logOut()
-      }
-    } */
-
     return (
       <React.Fragment>
         <Dialog
@@ -145,16 +133,4 @@ class MailingOptions extends React.Component {
   }
 }
 
-export default graphql(
-  gql`
-    query {
-      settings {
-        passwordChangeEmail
-
-        ADD
-        OTHERS
-      }
-    }
-  `,
-  { name: "userData" }
-)(withMobileDialog({ breakpoint: "xs" })(MailingOptions))
+export default withMobileDialog({ breakpoint: "xs" })(MailingOptions)

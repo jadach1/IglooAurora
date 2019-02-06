@@ -114,13 +114,13 @@ class DeleteAccountDialog extends React.Component {
 
     const httpLink = new HttpLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-        ? (localStorage.getItem("serverUnsecure") === "true"
-            ? "http://"
-            : "https://") +
-          localStorage.getItem("server") +
-          "/graphql"
-        : `https://bering.igloo.ooo/graphql`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "http://"
+              : "https://") +
+            localStorage.getItem("server") +
+            "/graphql"
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -155,7 +155,7 @@ class DeleteAccountDialog extends React.Component {
       `,
     })
 
-    this.props.logOut()
+    this.props.logOut(true)
   }
 
   secondsTimer = () => {

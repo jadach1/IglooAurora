@@ -216,7 +216,7 @@ export default class AccountPopover extends React.Component {
             <ListItem
               button
               onClick={() => {
-                this.props.logOut()
+                this.props.logOut(false)
                 this.setState({ popoverOpen: false })
               }}
             >

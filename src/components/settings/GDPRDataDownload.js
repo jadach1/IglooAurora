@@ -25,7 +25,7 @@ class GDPRDataDownload extends React.Component {
 
     if (error) {
       if (error.message === "GraphQL error: This user doesn't exist anymore") {
-        this.props.logOut()
+        this.props.logOut(true)
       }
     }
 
@@ -36,8 +36,8 @@ class GDPRDataDownload extends React.Component {
           onClose={this.props.close}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
           fullWidth

@@ -107,7 +107,7 @@ class AuthDialog extends React.Component {
       } else if (
         (e.message = "GraphQL error: This user doesn't exist anymore")
       ) {
-        this.props.logOut()
+        this.props.logOut(true)
       } else {
         this.setState({
           passwordError: "Unexpected error",
@@ -353,7 +353,7 @@ class AuthDialog extends React.Component {
   componentDidMount() {
     this.props.tokenData.refetch()
 
-    const tokenSubscriptionQuery = gql`
+    const permanentTokenCreatedSubscription = gql`
       subscription {
         permanentTokenCreated {
           id
@@ -364,7 +364,7 @@ class AuthDialog extends React.Component {
     `
 
     this.props.tokenData.subscribeToMore({
-      document: tokenSubscriptionQuery,
+      document: permanentTokenCreatedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -384,14 +384,14 @@ class AuthDialog extends React.Component {
       },
     })
 
-    const subscribeToTokensDeletes = gql`
+    const permanentTokenDeletedSubscription = gql`
       subscription {
         permanentTokenDeleted
       }
     `
 
     this.props.tokenData.subscribeToMore({
-      document: subscribeToTokensDeletes,
+      document: permanentTokenDeletedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -421,7 +421,7 @@ class AuthDialog extends React.Component {
         this.props.tokenData.error.message ===
         "GraphQL error: This user doesn't exist anymore"
       ) {
-        this.props.logOut()
+        this.props.logOut(true)
       }
     }
 

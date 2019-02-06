@@ -14,7 +14,7 @@ class RecoveryMain extends Component {
         this.props.userData.error.message ===
         "GraphQL error: This user doesn't exist anymore"
       ) {
-        this.props.logOut()
+        this.props.logOut(true)
       }
     }
 

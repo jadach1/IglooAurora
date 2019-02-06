@@ -92,6 +92,7 @@ class NotificationsDrawer extends React.Component {
           id
           content
           date
+          read
           device {
             id
           }
@@ -249,7 +250,7 @@ class NotificationsDrawer extends React.Component {
       notifications = "Unexpected error"
 
       if (error.message === "GraphQL error: This user doesn't exist anymore") {
-        this.props.logOut()
+        this.props.logOut(true)
       }
     }
 
