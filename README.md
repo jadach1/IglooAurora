@@ -4,7 +4,7 @@
 
 <h1 align="center">Igloo Aurora</h1>
 
-Igloo Aurora is a client for Igloo Cloud Framework that allows you to view the individual values of every device. If you need a more comprehensive summary of your data stored on Igloo Cloud Framework, please check [Igloo Drekar](https://github.com/IglooCloud/IglooDrekar).
+Aurora is the official Igloo app. It is a Progressive Web App available on every major operating system.
 
 This service is still in development, some features may be missing. If your Igloo-based project needs a missing feature in order to work, please check for future updates or help us by contributing.
 
