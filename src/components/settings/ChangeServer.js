@@ -90,8 +90,8 @@ class ChangeServer extends React.Component {
           ? localStorage.setItem(
               "serverList",
               JSON.stringify([
-                { name: this.state.name, url, unsecure },
                 ...JSON.parse(localStorage.getItem("serverList")),
+                { name: this.state.name, url, unsecure },
               ])
             )
           : localStorage.setItem(
@@ -139,9 +139,10 @@ class ChangeServer extends React.Component {
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("server") !== "https://bering.igloo.ooo"
+      localStorage.getItem("server") !== "bering.igloo.ooo" &&
+      localStorage.getItem("server") === url
     )
-      this.selectUrl("https://bering.igloo.ooo", false)
+      this.selectUrl("bering.igloo.ooo", false)
 
     this.forceUpdate()
   }

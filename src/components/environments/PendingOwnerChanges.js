@@ -54,6 +54,161 @@ class PendingOwnerChanges extends Component {
       },
     })
 
+  componentDidMount() {
+    const pendingOwnerChangeReceivedSubscription = gql`
+      subscription {
+        pendingOwnerChangeReceived {
+          id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+          sender {
+            id
+            name
+          }
+          environment {
+            id
+            name
+          }
+        }
+      }
+    `
+
+    this.props.ownerChangesData.subscribeToMore({
+      document: pendingOwnerChangeReceivedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newPendingOwnerChanges = [
+          ...prev.user.pendingOwnerChanges,
+          subscriptionData.data.pendingOwnerChangeReceived,
+        ]
+
+        return {
+          user: {
+            ...prev.user,
+            pendingOwnerChanges: newPendingOwnerChanges,
+          },
+        }
+      },
+    })
+
+    const pendingOwnerChangeUpdatedSubscription = gql`
+      subscription {
+        pendingOwnerChangeUpdated {
+          id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+          sender {
+            id
+            name
+          }
+          environment {
+            id
+            name
+          }
+        }
+      }
+    `
+
+    this.props.ownerChangesData.subscribeToMore({
+      document: pendingOwnerChangeUpdatedSubscription,
+    })
+
+    const pendingOwnerChangeAcceptedSubscription = gql`
+      subscription {
+        pendingOwnerChangeAccepted {id}
+              }
+    `
+
+    this.props.ownerChangesData.subscribeToMore({
+      document: pendingOwnerChangeAcceptedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newPendingOwnerChanges = prev.user.pendingOwnerChanges.filter(
+          pendingOwnerChange =>
+            pendingOwnerChange.id !==
+            subscriptionData.data.pendingOwnerChangeAccepted.id
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingOwnerChanges: newPendingOwnerChanges,
+          },
+        }
+      },
+    })
+
+    const pendingOwnerChangeDeclinedSubscription = gql`
+      subscription {
+        pendingOwnerChangeDeclined
+              }
+    `
+
+    this.props.ownerChangesData.subscribeToMore({
+      document: pendingOwnerChangeDeclinedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newPendingOwnerChanges = prev.user.pendingOwnerChanges.filter(
+          pendingOwnerChange =>
+            pendingOwnerChange.id !==
+            subscriptionData.data.pendingOwnerChangeDeclined
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingOwnerChanges: newPendingOwnerChanges,
+          },
+        }
+      },
+    })
+
+    const pendingOwnerChangeRevokedSubscription = gql`
+      subscription {
+        pendingOwnerChangeRevoked
+      }
+    `
+
+    this.props.ownerChangesData.subscribeToMore({
+      document: pendingOwnerChangeRevokedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newPendingOwnerChanges = prev.user.pendingOwnerChanges.filter(
+          pendingOwnerChange =>
+            pendingOwnerChange.id !==
+            subscriptionData.data.pendingOwnerChangeRevoked
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingOwnerChanges: newPendingOwnerChanges,
+          },
+        }
+      },
+    })
+  }
+
   render() {
     let content = ""
 

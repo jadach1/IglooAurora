@@ -40,6 +40,18 @@ export default class EnvironmentsBody extends Component {
     slideIndex: 0,
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (this.props.userData.user && nextProps.userData.user){
+    if (nextProps.userData.user.pendingEnvironmentShareCount !== this.props.userData.user.pendingEnvironmentShareCount && !nextProps.userData.user.pendingEnvironmentShareCount ){
+      this.setState({pendingSharesOpen:false})
+    }
+
+    if (nextProps.userData.user.pendingOwnerChangeCount !== this.props.userData.user.pendingOwnerChangeCount && !nextProps.userData.user.pendingOwnerChangeCount ){
+      this.setState({pendingOwnerChangesOpen:false})
+    }
+  }
+  }
+
   render() {
     const {
       userData: { error, loading, user },

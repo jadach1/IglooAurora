@@ -54,6 +54,163 @@ class PendingShares extends Component {
       },
     })
 
+  componentDidMount() {
+    const pendingEnvironmentShareReceivedSubscription = gql`
+      subscription {
+        pendingEnvironmentShareReceived {
+          id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+          sender {
+            id
+            name
+          }
+          environment {
+            id
+            name
+          }
+        }
+      }
+    `
+
+    this.props.environmentSharesData.subscribeToMore({
+      document: pendingEnvironmentShareReceivedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newPendingEnvironmentShares = [
+          ...prev.user.pendingEnvironmentShares,
+          subscriptionData.data.pendingEnvironmentShareReceived,
+        ]
+
+        return {
+          user: {
+            ...prev.user,
+            pendingEnvironmentShares: newPendingEnvironmentShares,
+          },
+        }
+      },
+    })
+
+    const pendingEnvironmentShareUpdatedSubscription = gql`
+      subscription {
+        pendingEnvironmentShareUpdated {
+          id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+          sender {
+            id
+            name
+          }
+          environment {
+            id
+            name
+          }
+        }
+      }
+    `
+
+    this.props.environmentSharesData.subscribeToMore({
+      document: pendingEnvironmentShareUpdatedSubscription,
+    })
+
+    const pendingEnvironmentShareDeclinedSubscription = gql`
+      subscription {
+        pendingEnvironmentShareDeclined
+      }
+    `
+
+    this.props.environmentSharesData.subscribeToMore({
+      document: pendingEnvironmentShareDeclinedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newPendingEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
+          pendingEnvironmentShare =>
+            pendingEnvironmentShare.id !==
+            subscriptionData.data.pendingEnvironmentShareDeclined
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingEnvironmentShares: newPendingEnvironmentShares,
+          },
+        }
+      },
+    })
+
+    const pendingEnvironmentShareRevokedSubscription = gql`
+      subscription {
+        pendingEnvironmentShareRevoked
+      }
+    `
+
+    this.props.environmentSharesData.subscribeToMore({
+      document: pendingEnvironmentShareRevokedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newPendingEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
+          pendingEnvironmentShare =>
+            pendingEnvironmentShare.id !==
+            subscriptionData.data.pendingEnvironmentShareRevoked
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingEnvironmentShares: newPendingEnvironmentShares,
+          },
+        }
+      },
+    })
+
+    const pendingEnvironmentShareAcceptedSubscription = gql`
+      subscription {
+        pendingEnvironmentShareAccepted {
+          id
+        }
+      }
+    `
+
+    this.props.environmentSharesData.subscribeToMore({
+      document: pendingEnvironmentShareAcceptedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newPendingEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
+          pendingEnvironmentShare =>
+            pendingEnvironmentShare.id !==
+            subscriptionData.data.pendingEnvironmentShareAccepted.id
+        )
+
+        return {
+          user: {
+            ...prev.user,
+            pendingEnvironmentShares: newPendingEnvironmentShares,
+          },
+        }
+      },
+    })
+  }
+
   render() {
     let content = ""
 

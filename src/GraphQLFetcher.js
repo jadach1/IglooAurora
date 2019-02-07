@@ -109,22 +109,6 @@ class GraphQLFetcher extends Component {
           muted
           picture
           myRole
-          pendingEnvironmentShares {
-            id
-            role
-            receiver {
-              id
-              profileIconColor
-              name
-              email
-            }
-            sender {
-              id
-              profileIconColor
-              name
-              email
-            }
-          }
           pendingOwnerChanges {
             id
             receiver {
@@ -140,13 +124,22 @@ class GraphQLFetcher extends Component {
               email
             }
           }
-          devices {
+          pendingEnvironmentShares {
             id
-            index
-            muted
-            name
+            role
+            receiver {
+              id
+              profileIconColor
+              name
+              email
+            }
+            sender {
+              id
+              name
+            }
             environment {
-              myRole
+              id
+              name
             }
           }
           owner {
@@ -208,171 +201,14 @@ class GraphQLFetcher extends Component {
       },
     })
 
-    const pendingEnvironmentShareAcceptedSubscription = gql`
-      subscription {
-        pendingEnvironmentShareAccepted {
-          environment {
-            id
-            index
-            name
-            createdAt
-            updatedAt
-            muted
-            picture
-            myRole
-            pendingEnvironmentShares {
-              id
-              role
-              receiver {
-                id
-                profileIconColor
-                name
-                email
-              }
-              sender {
-                id
-                profileIconColor
-                name
-                email
-              }
-            }
-            pendingOwnerChanges {
-              id
-              receiver {
-                id
-                profileIconColor
-                name
-                email
-              }
-              sender {
-                id
-                profileIconColor
-                name
-                email
-              }
-            }
-            devices {
-              id
-              index
-              muted
-              name
-              environment {
-                myRole
-              }
-            }
-            owner {
-              id
-              email
-              name
-              profileIconColor
-            }
-            admins {
-              id
-              email
-              name
-              profileIconColor
-            }
-            editors {
-              id
-              email
-              name
-              profileIconColor
-            }
-            spectators {
-              id
-              email
-              name
-              profileIconColor
-            }
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: pendingEnvironmentShareAcceptedSubscription,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newEnvironments = [
-          ...prev.user.environments,
-          subscriptionData.data.pendingEnvironmentShareAccepted.environment,
-        ]
-
-        return {
-          user: {
-            ...prev.user,
-            environments: newEnvironments,
-          },
-        }
-      },
-    })
-
-    const subscribeToEnvironmentShareUpdated = gql`
-      subscription {
-        pendingEnvironmentShareUpdated {
-          id
-          role
-          receiver {
-            id
-            profileIconColor
-            name
-            email
-          }
-          sender {
-            id
-            name
-          }
-          environment {
-            id
-            name
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToEnvironmentShareUpdated,
-    })
-
-    const subscribeToEnvironmentShareDeclined = gql`
-      subscription {
-        pendingEnvironmentShareDeclined
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToEnvironmentShareDeclined,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
-          pendingEnvironmentShare =>
-            pendingEnvironmentShare.id !==
-            subscriptionData.data.pendingEnvironmentShareDeclined
-        )
-
-        return {
-          user: {
-            ...prev.user,
-            pendingEnvironmentShares: newEnvironmentShares,
-          },
-        }
-      },
-    })
-
-    const subscribeToEnvironmentStoppedSharing = gql`
+    const environmentStoppedSharingWithYouSubscription = gql`
       subscription {
         environmentStoppedSharingWithYou
       }
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToEnvironmentStoppedSharing,
+      document: environmentStoppedSharingWithYouSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
@@ -393,244 +229,7 @@ class GraphQLFetcher extends Component {
       },
     })
 
-    const subscribeToOwnerChangeReceived = gql`
-      subscription {
-        pendingOwnerChangeReceived {
-          id
-          receiver {
-            id
-            profileIconColor
-            name
-            email
-          }
-          sender {
-            id
-            name
-          }
-          environment {
-            id
-            name
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToOwnerChangeReceived,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newOwnerChange = [
-          ...prev.user.pendingOwnerChanges,
-          subscriptionData.data.pendingOwnerChangeReceived,
-        ]
-
-        return {
-          user: {
-            ...prev.user,
-            pendingOwnerChanges: newOwnerChange,
-          },
-        }
-      },
-    })
-
-    const subscribeToOwnerChangeAccepted = gql`
-      subscription {
-        pendingOwnerChangeAccepted {
-          id
-          environment {
-            id
-            index
-            name
-            createdAt
-            updatedAt
-            muted
-            picture
-            myRole
-            pendingEnvironmentShares {
-              id
-              role
-              receiver {
-                id
-                profileIconColor
-                name
-                email
-              }
-              sender {
-                id
-                profileIconColor
-                name
-                email
-              }
-            }
-            pendingOwnerChanges {
-              id
-              receiver {
-                id
-                profileIconColor
-                name
-                email
-              }
-              sender {
-                id
-                profileIconColor
-                name
-                email
-              }
-            }
-            devices {
-              id
-              index
-              muted
-              name
-              environment {
-                myRole
-              }
-            }
-            owner {
-              id
-              email
-              name
-              profileIconColor
-            }
-            admins {
-              id
-              email
-              name
-              profileIconColor
-            }
-            editors {
-              id
-              email
-              name
-              profileIconColor
-            }
-            spectators {
-              id
-              email
-              name
-              profileIconColor
-            }
-          }
-        }
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToOwnerChangeAccepted,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newEnvironments = [
-          ...prev.user.environments,
-          subscriptionData.data.pendingOwnerChangeAccepted.environment,
-        ]
-
-        const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
-          pendingOwnerChange =>
-            pendingOwnerChange.id !==
-            subscriptionData.data.pendingOwnerChangeAccepted.id
-        )
-
-        return {
-          user: {
-            ...prev.user,
-            environments: newEnvironments,
-            pendingOwnerChanges: newOwnerChanges,
-          },
-        }
-      },
-    })
-
-    const subscribeToEnvironmentShareRevoked = gql`
-      subscription {
-        pendingEnvironmentShareRevoked
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToEnvironmentShareRevoked,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newEnvironmentShares = prev.user.pendingEnvironmentShares.filter(
-          pendingEnvironmentShare =>
-            pendingEnvironmentShare.id !==
-            subscriptionData.data.pendingEnvironmentShareRevoked
-        )
-
-        return {
-          user: {
-            ...prev.user,
-            pendingEnvironmentShares: newEnvironmentShares,
-          },
-        }
-      },
-    })
-
-    const subscribeToOwnerChangeDeclined = gql`
-      subscription {
-        pendingOwnerChangeDeclined
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToOwnerChangeDeclined,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
-          pendingOwnerChange =>
-            pendingOwnerChange.id !==
-            subscriptionData.data.pendingOwnerChangeDeclined
-        )
-
-        return {
-          user: {
-            ...prev.user,
-            pendingOwnerChanges: newOwnerChanges,
-          },
-        }
-      },
-    })
-
-    const subscribeToOwnerChangeRevoked = gql`
-      subscription {
-        pendingOwnerChangeRevoked
-      }
-    `
-
-    this.props.userData.subscribeToMore({
-      document: subscribeToOwnerChangeRevoked,
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) {
-          return prev
-        }
-
-        const newOwnerChanges = prev.user.pendingOwnerChanges.filter(
-          pendingOwnerChange =>
-            pendingOwnerChange.id !==
-            subscriptionData.data.pendingOwnerChangeRevoked
-        )
-
-        return {
-          user: {
-            ...prev.user,
-            pendingOwnerChanges: newOwnerChanges,
-          },
-        }
-      },
-    })
-
-    const subscribeToUserUpdates = gql`
+    const userUpdatedSubscription = gql`
       subscription {
         userUpdated {
           id
@@ -652,7 +251,7 @@ class GraphQLFetcher extends Component {
     `
 
     this.props.userData.subscribeToMore({
-      document: subscribeToUserUpdates,
+      document: userUpdatedSubscription,
     })
 
     const userDeletedSubscription = gql`
