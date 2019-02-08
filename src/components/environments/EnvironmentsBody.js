@@ -41,15 +41,23 @@ export default class EnvironmentsBody extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.userData.user && nextProps.userData.user){
-    if (nextProps.userData.user.pendingEnvironmentShareCount !== this.props.userData.user.pendingEnvironmentShareCount && !nextProps.userData.user.pendingEnvironmentShareCount ){
-      this.setState({pendingSharesOpen:false})
-    }
+    if (this.props.userData.user && nextProps.userData.user) {
+      if (
+        nextProps.userData.user.pendingEnvironmentShareCount !==
+          this.props.userData.user.pendingEnvironmentShareCount &&
+        !nextProps.userData.user.pendingEnvironmentShareCount
+      ) {
+        this.setState({ pendingSharesOpen: false })
+      }
 
-    if (nextProps.userData.user.pendingOwnerChangeCount !== this.props.userData.user.pendingOwnerChangeCount && !nextProps.userData.user.pendingOwnerChangeCount ){
-      this.setState({pendingOwnerChangesOpen:false})
+      if (
+        nextProps.userData.user.pendingOwnerChangeCount !==
+          this.props.userData.user.pendingOwnerChangeCount &&
+        !nextProps.userData.user.pendingOwnerChangeCount
+      ) {
+        this.setState({ pendingOwnerChangesOpen: false })
+      }
     }
-  }
   }
 
   render() {
@@ -80,26 +88,19 @@ export default class EnvironmentsBody extends Component {
             margin: "0",
           }}
         >
-          {user.environments
-            .filter(environment => environment.myRole === "OWNER")
-            .filter(environment =>
-              environment.name
-                .toLowerCase()
-                .includes(this.props.searchText.toLowerCase())
-            )
-            .map(environment => (
-              <Grid key={environment.id} item>
-                <EnvironmentCard
-                  userData={this.props.userData}
-                  environment={environment}
-                  nightMode={nightMode}
-                  devMode={devMode}
-                  showMessage={() => this.setState({ copyMessageOpen: true })}
-                  lastEnvironment={!user.environments[1]}
-                  client={this.props.client}
-                />
-              </Grid>
-            ))}
+          {user.environments.map(environment => (
+            <Grid key={environment.id} item>
+              <EnvironmentCard
+                userData={this.props.userData}
+                environment={environment}
+                nightMode={nightMode}
+                devMode={devMode}
+                showMessage={() => this.setState({ copyMessageOpen: true })}
+                lastEnvironment={!user.environments[1]}
+                client={this.props.client}
+              />
+            </Grid>
+          ))}
           {!!user.pendingOwnerChangeCount && (
             <Grid key="pendingEnvironmentShares" item>
               <ButtonBase
@@ -277,26 +278,19 @@ export default class EnvironmentsBody extends Component {
             margin: "0",
           }}
         >
-          {user.environments
-            .filter(environment => environment.myRole !== "OWNER")
-            .filter(environment =>
-              environment.name
-                .toLowerCase()
-                .includes(this.props.searchText.toLowerCase())
-            )
-            .map(environment => (
-              <Grid key={environment.id} item>
-                <EnvironmentCard
-                  userData={this.props.userData}
-                  environment={environment}
-                  nightMode={nightMode}
-                  devMode={devMode}
-                  showMessage={() => this.setState({ copyMessageOpen: true })}
-                  lastEnvironment={!user.environments[1]}
-                  client={this.props.client}
-                />
-              </Grid>
-            ))}
+          {user.environments.map(environment => (
+            <Grid key={environment.id} item>
+              <EnvironmentCard
+                userData={this.props.userData}
+                environment={environment}
+                nightMode={nightMode}
+                devMode={devMode}
+                showMessage={() => this.setState({ copyMessageOpen: true })}
+                lastEnvironment={!user.environments[1]}
+                client={this.props.client}
+              />
+            </Grid>
+          ))}
           {!!user.pendingEnvironmentShareCount && (
             <Grid key="pendingEnvironmentShares" item>
               <ButtonBase
@@ -486,112 +480,106 @@ export default class EnvironmentsBody extends Component {
               </div>
             )}
             {user &&
-              (user.environments[0] &&
-              (user.environments.filter(
+            ((user.environments[0] &&
+              user.environments.filter(
                 environment => environment.myRole !== "OWNER"
-              )[0] ||
-                (user &&
-                  user.pendingEnvironmentShares &&
-                  user.pendingEnvironmentShares[0])) ? (
-                <SwipeableViews
-                  index={this.state.slideIndex}
-                  onChangeIndex={slideIndex => this.setState({ slideIndex })}
-                >
-                  <div
-                    style={
-                      nightMode
-                        ? {
-                            overflowY: "auto",
-                            height: "calc(100vh - 192px)",
-                            background: "#21252b",
-                          }
-                        : {
-                            overflowY: "auto",
-                            height: "calc(100vh - 192px)",
-                            background: "#f2f2f2",
-                          }
-                    }
-                  >
-                    <div
-                      style={{
-                        height: "100%",
-                        overflowY: "auto",
-                      }}
-                      className="containOverscrollY"
-                    >
-                      <Grid
-                        container
-                        justify="center"
-                        spacing={16}
-                        className="notSelectable defaultCursor"
-                        style={{
-                          width: "calc(100% - 16px)",
-                          marginLeft: "8px",
-                          marginRight: "8px",
-                          marginBottom: "8px",
-                        }}
-                      >
-                        {yourEnvironmentsList}
-                      </Grid>
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      overflowY: "auto",
-                      height: "calc(100vh - 192px)",
-                    }}
-                  >
-                    <div
-                      style={{
-                        height: "100%",
-                        overflowY: "auto",
-                      }}
-                    >
-                      <Grid
-                        container
-                        justify="center"
-                        spacing={16}
-                        className="notSelectable defaultCursor"
-                        style={{
-                          width: "calc(100% - 16px)",
-                          marginLeft: "8px",
-                          marginRight: "8px",
-                          marginBottom: "8px",
-                        }}
-                      >
-                        {sharedEnvironmentsList}
-                      </Grid>
-                    </div>
-                  </div>
-                </SwipeableViews>
-              ) : (
+              )[0]) ||
+              (user && user.pendingEnvironmentShareCount)) ? (
+              <SwipeableViews
+                index={this.state.slideIndex}
+                onChangeIndex={slideIndex => this.setState({ slideIndex })}
+              >
                 <div
-                  style={{ height: "calc(100vh - 128px)", overflowY: "auto" }}
+                  style={
+                    nightMode
+                      ? {
+                          overflowY: "auto",
+                          height: "calc(100vh - 192px)",
+                          background: "#21252b",
+                        }
+                      : {
+                          overflowY: "auto",
+                          height: "calc(100vh - 192px)",
+                          background: "#f2f2f2",
+                        }
+                  }
                 >
-                  <Grid
-                    container
-                    justify="center"
-                    spacing={16}
-                    className="notSelectable defaultCursor"
+                  <div
                     style={{
-                      width: "calc(100% - 16px)",
-                      marginLeft: "8px",
-                      marginRight: "8px",
-                      marginBottom: "8px",
+                      height: "100%",
+                      overflowY: "auto",
+                    }}
+                    className="containOverscrollY"
+                  >
+                    <Grid
+                      container
+                      justify="center"
+                      spacing={16}
+                      className="notSelectable defaultCursor"
+                      style={{
+                        width: "calc(100% - 16px)",
+                        marginLeft: "8px",
+                        marginRight: "8px",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      {yourEnvironmentsList}
+                    </Grid>
+                  </div>
+                </div>
+                <div
+                  style={{
+                    overflowY: "auto",
+                    height: "calc(100vh - 192px)",
+                  }}
+                >
+                  <div
+                    style={{
+                      height: "100%",
+                      overflowY: "auto",
                     }}
                   >
-                    {yourEnvironmentsList}
-                  </Grid>
+                    <Grid
+                      container
+                      justify="center"
+                      spacing={16}
+                      className="notSelectable defaultCursor"
+                      style={{
+                        width: "calc(100% - 16px)",
+                        marginLeft: "8px",
+                        marginRight: "8px",
+                        marginBottom: "8px",
+                      }}
+                    >
+                      {sharedEnvironmentsList}
+                    </Grid>
+                  </div>
                 </div>
-              ))}
+              </SwipeableViews>
+            ) : (
+              <div style={{ height: "calc(100vh - 128px)", overflowY: "auto" }}>
+                <Grid
+                  container
+                  justify="center"
+                  spacing={16}
+                  className="notSelectable defaultCursor"
+                  style={{
+                    width: "calc(100% - 16px)",
+                    marginLeft: "8px",
+                    marginRight: "8px",
+                    marginBottom: "8px",
+                  }}
+                >
+                  {yourEnvironmentsList}
+                </Grid>
+              </div>
+            )}
             {user &&
-              user.environments[0] &&
-              (user.environments.filter(
-                environment => environment.myRole !== "OWNER"
-              )[0] ||
-                (user &&
-                  user.pendingEnvironmentShares &&
-                  user.pendingEnvironmentShares[0])) && (
+              ((user.environments[0] &&
+                user.environments.filter(
+                  environment => environment.myRole !== "OWNER"
+                )[0]) ||
+                (user && user.pendingEnvironmentShareCount)) && (
                 <AppBar
                   position="static"
                   style={{
@@ -785,61 +773,49 @@ export default class EnvironmentsBody extends Component {
                       {yourEnvironmentsList}
                     </ul>
                   </li>
-                  {user &&
-                    user.environments[0] &&
-                    (user.environments.filter(
+                  {((user.environments[0] &&
+                    user.environments.filter(
                       environment => environment.myRole !== "OWNER"
-                    )[0] ||
-                      (user && user.pendingEnvironmentShareCount)) && (
-                      <li key="yourEnvironments">
-                        <ul style={{ padding: "0" }}>
-                          {(user.environments
-                            .filter(
-                              environment => environment.myRole !== "OWNER"
-                            )
-                            .filter(environment =>
-                              environment.name
-                                .toLowerCase()
-                                .includes(this.props.searchText.toLowerCase())
-                            )[0] ||
-                            user.pendingEnvironmentShareCount) && (
-                            <ListSubheader
-                              style={
-                                nightMode
-                                  ? {
-                                      backgroundColor: "#21252b",
-                                      zindex: 20, //makes the header appear over cards, but under snackbars
-                                    }
-                                  : { backgroundColor: "#f2f2f2", zindex: 20 }
-                              }
-                            >
-                              <Typography
-                                variant="h4"
-                                className="notSelectable defaultCursor"
-                                style={
-                                  nightMode
-                                    ? {
-                                        textAlign: "center",
-                                        lineHeight: "64px",
-                                        height: "64px",
-                                        color: "white",
-                                      }
-                                    : {
-                                        textAlign: "center",
-                                        lineHeight: "64px",
-                                        height: "64px",
-                                        color: "black",
-                                      }
+                    )[0]) ||
+                    (user && user.pendingEnvironmentShareCount)) && (
+                    <li key="yourEnvironments">
+                      <ul style={{ padding: "0" }}>
+                        <ListSubheader
+                          style={
+                            nightMode
+                              ? {
+                                  backgroundColor: "#21252b",
+                                  zindex: 20, //makes the header appear over cards, but under snackbars
                                 }
-                              >
-                                Shared with you
-                              </Typography>
-                            </ListSubheader>
-                          )}
-                          {sharedEnvironmentsList}
-                        </ul>
-                      </li>
-                    )}
+                              : { backgroundColor: "#f2f2f2", zindex: 20 }
+                          }
+                        >
+                          <Typography
+                            variant="h4"
+                            className="notSelectable defaultCursor"
+                            style={
+                              nightMode
+                                ? {
+                                    textAlign: "center",
+                                    lineHeight: "64px",
+                                    height: "64px",
+                                    color: "white",
+                                  }
+                                : {
+                                    textAlign: "center",
+                                    lineHeight: "64px",
+                                    height: "64px",
+                                    color: "black",
+                                  }
+                            }
+                          >
+                            Shared with you
+                          </Typography>
+                        </ListSubheader>
+                        }{sharedEnvironmentsList}
+                      </ul>
+                    </li>
+                  )}
                 </List>
               )}
             </div>

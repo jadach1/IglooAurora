@@ -267,36 +267,213 @@ class GraphQLFetcher extends Component {
       },
     })
 
-    const deviceMovedSubscriptionQuery = gql`
+    const pendingEnvironmentShareAcceptedSubscription = gql`
       subscription {
-        deviceMoved {
+        pendingEnvironmentShareAccepted {
           id
-          index
-          muted
-          name
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+          sender {
+            id
+            name
+          }
           environment {
+            id
+            index
+            name
+            createdAt
+            updatedAt
+            muted
+            picture
             myRole
+            pendingOwnerChanges {
+              id
+              receiver {
+                id
+                profileIconColor
+                name
+                email
+              }
+              sender {
+                id
+                profileIconColor
+                name
+                email
+              }
+            }
+            pendingEnvironmentShares {
+              id
+              role
+              receiver {
+                id
+                profileIconColor
+                name
+                email
+              }
+              sender {
+                id
+                name
+              }
+              environment {
+                id
+                name
+              }
+            }
+            owner {
+              id
+              email
+              name
+              profileIconColor
+            }
+            admins {
+              id
+              email
+              name
+              profileIconColor
+            }
+            editors {
+              id
+              email
+              name
+              profileIconColor
+            }
+            spectators {
+              id
+              email
+              name
+              profileIconColor
+            }
           }
         }
       }
     `
 
     this.props.userData.subscribeToMore({
-      document: deviceMovedSubscriptionQuery,
+      document: pendingEnvironmentShareAcceptedSubscription,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
 
-        const newDevices = [
-          ...prev.user.devices,
-          subscriptionData.data.deviceMoved,
+        const newEnvironments = [
+          ...prev.user.environments,
+          subscriptionData.data.pendingEnvironmentShareAccepted.environment,
         ]
 
         return {
           user: {
             ...prev.user,
-            devices: newDevices,
+            environments: newEnvironments,
+          },
+        }
+      },
+    })
+
+    const pendingOwnerChangeAcceptedSubscription = gql`
+      subscription {
+        pendingOwnerChangeAccepted {
+          id
+          receiver {
+            id
+            profileIconColor
+            name
+            email
+          }
+          sender {
+            id
+            name
+          }
+          environment {
+            id
+            index
+            name
+            createdAt
+            updatedAt
+            muted
+            picture
+            myRole
+            pendingOwnerChanges {
+              id
+              receiver {
+                id
+                profileIconColor
+                name
+                email
+              }
+              sender {
+                id
+                profileIconColor
+                name
+                email
+              }
+            }
+            pendingEnvironmentShares {
+              id
+              role
+              receiver {
+                id
+                profileIconColor
+                name
+                email
+              }
+              sender {
+                id
+                name
+              }
+              environment {
+                id
+                name
+              }
+            }
+            owner {
+              id
+              email
+              name
+              profileIconColor
+            }
+            admins {
+              id
+              email
+              name
+              profileIconColor
+            }
+            editors {
+              id
+              email
+              name
+              profileIconColor
+            }
+            spectators {
+              id
+              email
+              name
+              profileIconColor
+            }
+          }
+        }
+      }
+    `
+
+    this.props.userData.subscribeToMore({
+      document: pendingOwnerChangeAcceptedSubscription,
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) {
+          return prev
+        }
+
+        const newEnvironments = [
+          ...prev.user.environments,
+          subscriptionData.data.pendingOwnerChangeAccepted.environment,
+        ]
+
+        return {
+          user: {
+            ...prev.user,
+            environments: newEnvironments,
           },
         }
       },

@@ -106,9 +106,23 @@ class CreateNotification extends React.Component {
 
                 if (data && data.user) {
                   data.user.environments.forEach(environment =>
-                    environment.devices.forEach(device =>
-                      allDevices.push(device)
-                    )
+                    environment.devices.forEach(device => {
+                      if (
+                        !allDevices.map(device => device.id).includes(device.id)
+                      ) {
+                        allDevices.push(device)
+                      }
+
+                      allDevices.sort(function(a, b) {
+                        if (a.name.toLowerCase() < b.name.toLowerCase()) {
+                          return -1
+                        }
+                        if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                          return 1
+                        }
+                        return 0
+                      })
+                    })
                   )
 
                   if (!this.state.device)

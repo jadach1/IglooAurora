@@ -129,9 +129,11 @@ class Sidebar extends Component {
     let mergedArray = []
 
     if (environment) {
-      if ( localStorage.getItem("sortBy") === "name"){
-      mergedArray = environment.starredDevices.concat(environment.devices)}else{
-        mergedArray = environment.devices}
+      if (localStorage.getItem("sortBy") === "name" && false) {
+        mergedArray = environment.starredDevices.concat(environment.devices)
+      } else {
+        mergedArray = environment.devices
+      }
 
       sidebarContent = (
         <React.Fragment>
@@ -165,7 +167,6 @@ class Sidebar extends Component {
             subheader={<li />}
           >
             {mergedArray
-              .filter(device => device.name.toLowerCase())
               .filter(
                 device =>
                   this.state.visibleDeviceTypes.indexOf(device.deviceType) !==
@@ -296,15 +297,15 @@ class Sidebar extends Component {
                       onClick={() => {
                         this.props.changeDrawerState()
                       }}
-                                        component={Link}
-                  to={
-                    this.props.selectedDevice !== device.id
-                      ? "/?environment=" +
-                        this.props.selectedEnvironment +
-                        "&device=" +
-                        device.id
-                      : "/?environment=" + this.props.selectedEnvironment
-                  }
+                      component={Link}
+                      to={
+                        this.props.selectedDevice !== device.id
+                          ? "/?environment=" +
+                            this.props.selectedEnvironment +
+                            "&device=" +
+                            device.id
+                          : "/?environment=" + this.props.selectedEnvironment
+                      }
                     />
                   </ListItemSecondaryAction>
                 </ListItem>

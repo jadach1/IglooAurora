@@ -105,6 +105,15 @@ class CreateDevice extends React.Component {
           disabled={user.environments.length < 2}
         >
           {user.environments
+            .sort(function(a, b) {
+              if (a.name.toLowerCase() < b.name.toLowerCase()) {
+                return -1
+              }
+              if (a.name.toLowerCase() > b.name.toLowerCase()) {
+                return 1
+              }
+              return 0
+            })
             .filter(
               environment =>
                 environment.myRole === "ADMIN" || environment.myRole === "OWNER"

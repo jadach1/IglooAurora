@@ -185,158 +185,172 @@ export default class AccountSwitcher extends Component {
           )}
           <Typography
             variant="h3"
-            gutterBottom
             className="defaultCursor"
             style={
               this.props.mobile
-                ? { color: "white", textAlign: "center" }
-                : { color: "#0083ff", textAlign: "center" }
+                ? { color: "white", textAlign: "center", marginBottom: "32px" }
+                : {
+                    color: "#0083ff",
+                    textAlign: "center",
+                    marginBottom: "32px",
+                  }
             }
           >
             Accounts
           </Typography>
-          <br />
-          <List>
-            {typeof Storage !== undefined &&
-              localStorage.getItem("accountList") &&
-              JSON.parse(localStorage.getItem("accountList")).map(account => (
-                <ListItem
-                  button
-                  onClick={
-                    account.token
-                      ? () => {
-                          this.props.signIn(account.token, account)
-                        }
-                      : () => {
-                          this.props.changeEmail(account.email)
-                          this.setState({ redirect: true })
-                        }
-                  }
-                >
-                  <Avatar style={{ backgroundColor: account.profileIconColor }}>
-                    {this.getInitials(account.name)}
-                  </Avatar>
-                  <ListItemText
-                    style={{ cursor: "pointer" }}
-                    primary={
-                      <font
+          <div
+            style={
+              this.props.mobile
+                ? this.state.height >= 690
+                  ? { maxHeight: "calc(100vh - 339px)", overflowY: "auto" }
+                  : { maxHeight: "calc(100vh - 262px)", overflowY: "auto" }
+                : { maxHeight: "487px", overflowY: "auto" }
+            }
+          >
+            <List>
+              {typeof Storage !== undefined &&
+                localStorage.getItem("accountList") &&
+                JSON.parse(localStorage.getItem("accountList")).map(account => (
+                  <ListItem
+                    button
+                    onClick={
+                      account.token
+                        ? () => {
+                            this.props.signIn(account.token, account)
+                          }
+                        : () => {
+                            this.props.changeEmail(account.email)
+                            this.setState({ redirect: true })
+                          }
+                    }
+                  >
+                    <Avatar
+                      style={{ backgroundColor: account.profileIconColor }}
+                    >
+                      {this.getInitials(account.name)}
+                    </Avatar>
+                    <ListItemText
+                      style={{ cursor: "pointer" }}
+                      primary={
+                        <font
+                          style={
+                            this.props.mobile
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          {account.name}
+                          {!account.token && (
+                            <font
+                              style={
+                                this.props.mobile
+                                  ? { color: "white", opacity: 0.72 }
+                                  : { color: "black", opacity: 0.72 }
+                              }
+                            >
+                              {" "}
+                              (signed out)
+                            </font>
+                          )}
+                        </font>
+                      }
+                      secondary={
+                        this.props.mobile ? (
+                          <font style={{ color: "white", opacity: 0.7 }}>
+                            {account.email}
+                          </font>
+                        ) : (
+                          account.email
+                        )
+                      }
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton
                         style={
                           this.props.mobile
                             ? { color: "white" }
                             : { color: "black" }
                         }
                       >
-                        {account.name}
-                        {!account.token && (
-                          <font
-                            style={
-                              this.props.mobile
-                                ? { color: "white", opacity: 0.72 }
-                                : { color: "black", opacity: 0.72 }
-                            }
-                          >
-                            {" "}
-                            (signed out)
-                          </font>
-                        )}
-                      </font>
-                    }
-                    secondary={
-                      this.props.mobile ? (
-                        <font style={{ color: "white", opacity: 0.7 }}>
-                          {account.email}
-                        </font>
-                      ) : (
-                        account.email
-                      )
-                    }
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton
+                        <RemoveCircleOutline
+                          onClick={() => {
+                            localStorage.setItem(
+                              "accountList",
+                              JSON.stringify(
+                                JSON.parse(
+                                  localStorage.getItem("accountList")
+                                ).filter(
+                                  listAccount => listAccount.id !== account.id
+                                )
+                              )
+                            )
+                            this.props.forceUpdate()
+                          }}
+                        />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+              <ListItem button component={Link} to="/login?from=accounts">
+                <ListItemAvatar>
+                  <Avatar
+                    style={{ backgroundColor: "transparent", color: "black" }}
+                  >
+                    <Person
+                      style={
+                        this.props.mobile
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <span
                       style={
                         this.props.mobile
                           ? { color: "white" }
                           : { color: "black" }
                       }
                     >
-                      <RemoveCircleOutline
-                        onClick={() => {
-                          localStorage.setItem(
-                            "accountList",
-                            JSON.stringify(
-                              JSON.parse(
-                                localStorage.getItem("accountList")
-                              ).filter(
-                                listAccount => listAccount.id !== account.id
-                              )
-                            )
-                          )
-                          this.props.forceUpdate()
-                        }}
-                      />
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>
-              ))}
-            <ListItem button component={Link} to="/login?from=accounts">
-              <ListItemAvatar>
-                <Avatar
-                  style={{ backgroundColor: "transparent", color: "black" }}
-                >
-                  <Person
-                    style={
-                      this.props.mobile
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={
-                  <span
-                    style={
-                      this.props.mobile
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
+                      Use existing account
+                    </span>
+                  }
+                  style={{ cursor: "pointer" }}
+                />
+              </ListItem>
+              <ListItem button component={Link} to="/signup?from=accounts">
+                <ListItemAvatar>
+                  <Avatar
+                    style={{ backgroundColor: "transparent", color: "black" }}
                   >
-                    Use existing account
-                  </span>
-                }
-                style={{ cursor: "pointer" }}
-              />
-            </ListItem>
-            <ListItem button component={Link} to="/signup?from=accounts">
-              <ListItemAvatar>
-                <Avatar
-                  style={{ backgroundColor: "transparent", color: "black" }}
-                >
-                  <PersonAdd
-                    style={
-                      this.props.mobile
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  />
-                </Avatar>
-              </ListItemAvatar>
-              <ListItemText
-                primary={
-                  <span
-                    style={
-                      this.props.mobile
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    Create new account
-                  </span>
-                }
-                style={{ cursor: "pointer" }}
-              />
-            </ListItem>
-          </List>
+                    <PersonAdd
+                      style={
+                        this.props.mobile
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    />
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={
+                    <span
+                      style={
+                        this.props.mobile
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      Create new account
+                    </span>
+                  }
+                  style={{ cursor: "pointer" }}
+                />
+              </ListItem>
+            </List>
+          </div>
         </div>
         {this.state.redirect && <Redirect push to="/login?from=accounts" />}
       </React.Fragment>

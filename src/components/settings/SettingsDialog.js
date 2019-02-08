@@ -977,7 +977,7 @@ class SettingsDialog extends React.Component {
                     }
                     className="notSelectable defaultCursor"
                   >
-                    Devices and values
+                    Devices, values and notifications
                   </ListSubheader>
                   <ListItem
                     disabled={
