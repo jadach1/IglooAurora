@@ -663,7 +663,10 @@ export default graphql(
           lengthAndMass
           temperature
         }
-        environments {
+        environments(
+                sortBy: name
+                sortDirection: ASC
+              ) {
           id
           index
           name

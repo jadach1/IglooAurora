@@ -347,20 +347,9 @@ class Main extends Component {
         }
 
         let newDevices
-
-        if (
-          subscriptionData.data.deviceMoved.environment.id ===
-          this.props.environmentData.environment.id
-        ) {
-          newDevices = [
-            ...prev.environment.devices,
-            subscriptionData.data.deviceMoved,
-          ]
-        } else {
-          newDevices = prev.environment.devices.filter(
-            device => device.id !== subscriptionData.data.deviceMoved
-          )
-        }
+        newDevices = prev.environment.devices.filter(
+          device => device.id !== subscriptionData.data.deviceMoved
+        )
 
         return {
           environment: {

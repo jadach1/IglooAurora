@@ -87,7 +87,11 @@ class CreateDevice extends React.Component {
       this.props.close()
     }
 
-    if (user)
+    let environmentList
+
+    if (user) {
+      environmentList = [...user.environments] //avoids sorting user.environments in the whole app
+
       environments = (
         <TextField
           value={this.state.environment}
@@ -104,7 +108,7 @@ class CreateDevice extends React.Component {
           InputLabelProps={this.state.environment && { shrink: true }}
           disabled={user.environments.length < 2}
         >
-          {user.environments
+          {environmentList
             .sort(function(a, b) {
               if (a.name.toLowerCase() < b.name.toLowerCase()) {
                 return -1
@@ -123,6 +127,7 @@ class CreateDevice extends React.Component {
             ))}
         </TextField>
       )
+    }
 
     return (
       <React.Fragment>

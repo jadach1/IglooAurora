@@ -367,39 +367,31 @@ export default class EnvironmentsBody extends Component {
           <div
             style={
               nightMode
-                ? user &&
-                  user.environments[0] &&
-                  (user.environments.filter(
-                    environment => environment.myRole !== "OWNER"
-                  )[0] ||
-                    (user &&
-                      user.pendingEnvironmentShares &&
-                      user.pendingEnvironmentShares[0]))
+                ? (user &&
+                    (user.environments[0] &&
+                      user.environments.filter(
+                        environment => environment.myRole !== "OWNER"
+                      )[0])) ||
+                  (user && user.pendingEnvironmentShareCount)
                   ? {
-                      width: "100vw",
                       height: "calc(100vh - 128px)",
                       backgroundColor: "#21252b",
                     }
                   : {
-                      width: "100vw",
                       height: "calc(100vh - 64px)",
                       backgroundColor: "#21252b",
                     }
-                : user &&
-                  user.environments[0] &&
-                  (user.environments.filter(
-                    environment => environment.myRole !== "OWNER"
-                  )[0] ||
-                    (user &&
-                      user.pendingEnvironmentShares &&
-                      user.pendingEnvironmentShares[0]))
+                : (user &&
+                    (user.environments[0] &&
+                      user.environments.filter(
+                        environment => environment.myRole !== "OWNER"
+                      )[0])) ||
+                  (user && user.pendingEnvironmentShareCount)
                 ? {
-                    width: "100vw",
                     height: "calc(100vh - 128px)",
                     backgroundColor: "#f2f2f2",
                   }
                 : {
-                    width: "100vw",
                     height: "calc(100vh - 64px)",
                     backgroundColor: "#f2f2f2",
                   }
@@ -480,106 +472,110 @@ export default class EnvironmentsBody extends Component {
               </div>
             )}
             {user &&
-            ((user.environments[0] &&
-              user.environments.filter(
-                environment => environment.myRole !== "OWNER"
-              )[0]) ||
-              (user && user.pendingEnvironmentShareCount)) ? (
-              <SwipeableViews
-                index={this.state.slideIndex}
-                onChangeIndex={slideIndex => this.setState({ slideIndex })}
-              >
-                <div
-                  style={
-                    nightMode
-                      ? {
-                          overflowY: "auto",
-                          height: "calc(100vh - 192px)",
-                          background: "#21252b",
-                        }
-                      : {
-                          overflowY: "auto",
-                          height: "calc(100vh - 192px)",
-                          background: "#f2f2f2",
-                        }
-                  }
-                >
-                  <div
-                    style={{
-                      height: "100%",
-                      overflowY: "auto",
-                    }}
-                    className="containOverscrollY"
-                  >
-                    <Grid
-                      container
-                      justify="center"
-                      spacing={16}
-                      className="notSelectable defaultCursor"
-                      style={{
-                        width: "calc(100% - 16px)",
-                        marginLeft: "8px",
-                        marginRight: "8px",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      {yourEnvironmentsList}
-                    </Grid>
-                  </div>
-                </div>
-                <div
-                  style={{
-                    overflowY: "auto",
-                    height: "calc(100vh - 192px)",
-                  }}
-                >
-                  <div
-                    style={{
-                      height: "100%",
-                      overflowY: "auto",
-                    }}
-                  >
-                    <Grid
-                      container
-                      justify="center"
-                      spacing={16}
-                      className="notSelectable defaultCursor"
-                      style={{
-                        width: "calc(100% - 16px)",
-                        marginLeft: "8px",
-                        marginRight: "8px",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      {sharedEnvironmentsList}
-                    </Grid>
-                  </div>
-                </div>
-              </SwipeableViews>
-            ) : (
-              <div style={{ height: "calc(100vh - 128px)", overflowY: "auto" }}>
-                <Grid
-                  container
-                  justify="center"
-                  spacing={16}
-                  className="notSelectable defaultCursor"
-                  style={{
-                    width: "calc(100% - 16px)",
-                    marginLeft: "8px",
-                    marginRight: "8px",
-                    marginBottom: "8px",
-                  }}
-                >
-                  {yourEnvironmentsList}
-                </Grid>
-              </div>
-            )}
-            {user &&
               ((user.environments[0] &&
                 user.environments.filter(
                   environment => environment.myRole !== "OWNER"
                 )[0]) ||
-                (user && user.pendingEnvironmentShareCount)) && (
+              (user && user.pendingEnvironmentShareCount) ? (
+                <SwipeableViews
+                  index={this.state.slideIndex}
+                  onChangeIndex={slideIndex => this.setState({ slideIndex })}
+                >
+                  <div
+                    style={
+                      nightMode
+                        ? {
+                            overflowY: "auto",
+                            height: "calc(100vh - 192px)",
+                            background: "#21252b",
+                          }
+                        : {
+                            overflowY: "auto",
+                            height: "calc(100vh - 192px)",
+                            background: "#f2f2f2",
+                          }
+                    }
+                  >
+                    <div
+                      style={{
+                        height: "100%",
+                        overflowY: "auto",
+                      }}
+                      className="containOverscrollY"
+                    >
+                      <Grid
+                        container
+                        justify="center"
+                        spacing={16}
+                        className="notSelectable defaultCursor"
+                        style={{
+                          width: "calc(100% - 16px)",
+                          marginLeft: "8px",
+                          marginRight: "8px",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        {yourEnvironmentsList}
+                      </Grid>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      overflowY: "auto",
+                      height: "calc(100vh - 192px)",
+                    }}
+                  >
+                    <div
+                      style={{
+                        height: "100%",
+                        overflowY: "auto",
+                      }}
+                    >
+                      <Grid
+                        container
+                        justify="center"
+                        spacing={16}
+                        className="notSelectable defaultCursor"
+                        style={{
+                          width: "calc(100% - 16px)",
+                          marginLeft: "8px",
+                          marginRight: "8px",
+                          marginBottom: "8px",
+                        }}
+                      >
+                        {sharedEnvironmentsList}
+                      </Grid>
+                    </div>
+                  </div>
+                </SwipeableViews>
+              ) : (
+                <div
+                  style={{ height: "calc(100vh - 128px)", overflowY: "auto" }}
+                >
+                  <Grid
+                    container
+                    justify="center"
+                    spacing={16}
+                    className="notSelectable defaultCursor"
+                    style={{
+                      width: "calc(100% - 16px)",
+                      marginLeft: "8px",
+                      marginRight: "8px",
+                      marginBottom: "8px",
+                    }}
+                  >
+                    {yourEnvironmentsList}
+                  </Grid>
+                </div>
+              ))}
+            {user &&
+              !!(
+                (user.environments[0] &&
+                  user.environments.filter(
+                    environment => environment.myRole !== "OWNER"
+                  )[0]) ||
+                (user && user.pendingEnvironmentShareCount)
+              ) && (
                 <AppBar
                   position="static"
                   style={{
