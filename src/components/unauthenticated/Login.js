@@ -23,6 +23,14 @@ import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import querystringify from "querystringify"
 
+function str2ab(str) {
+  return Uint8Array.from(str, c => c.charCodeAt(0))
+}
+
+function ab2str(ab) {
+  return Array.from(new Int8Array(ab))
+}
+
 class Login extends Component {
   constructor() {
     super()
@@ -87,6 +95,91 @@ class Login extends Component {
     }
   }
 
+  async signInWebauthn() {
+    try {
+      this.props.changePasswordError("")
+      this.props.changeEmailError("")
+
+      const {
+        data: { getWebauthnLoginChallenge },
+      } = await this.props.client.query({
+        query: gql`
+          query getWebauthnLoginChallenge($email: String!) {
+            getWebauthnLoginChallenge(email: $email) {
+              publicKeyOptions
+              jwtChallenge
+            }
+          }
+        `,
+        variables: {
+          email: this.props.email,
+        },
+      })
+
+      const publicKeyOptions = JSON.parse(
+        getWebauthnLoginChallenge.publicKeyOptions
+      )
+
+      publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
+      publicKeyOptions.user.id = new TextEncoder("utf-8").encode(
+        publicKeyOptions.user.id
+      )
+      publicKeyOptions.allowCredentials = publicKeyOptions.allowCredentials.map(
+        cred => ({
+          ...cred,
+          id: str2ab(cred.id),
+        })
+      )
+
+      async function sendResponse(res) {
+        let payload = { response: {} }
+        payload.rawId = ab2str(res.rawId)
+        payload.response.authenticatorData = ab2str(
+          res.response.authenticatorData
+        )
+        payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
+        payload.response.signature = ab2str(res.response.signature)
+
+        const loginMutation = await this.props.client.mutate({
+          mutation: gql`
+            mutation($jwtChallenge: String!, $challengeResponse: String!) {
+              logInWithWebauthn(
+                jwtChallenge: $jwtChallenge
+                challengeResponse: $challengeResponse
+              ) {
+                token
+                user {
+                  id
+                  email
+                  name
+                  profileIconColor
+                }
+              }
+            }
+          `,
+          variables: {
+            challengeResponse: JSON.stringify(payload),
+            jwtChallenge: this.props.jwtChallenge,
+          },
+        })
+
+        this.props.signIn(
+          loginMutation.data.logIn.token,
+          loginMutation.data.logIn.user
+        )
+
+        this.props.changePassword("")
+      }
+
+      navigator.credentials
+        .get({ publicKey: publicKeyOptions })
+        .then(sendResponse)
+        .catch(e => console.log(e))
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   async recover(recoveryEmail) {
     try {
       this.setState({ recoveryError: "" })
@@ -130,6 +223,10 @@ class Login extends Component {
               Log in
             </Typography>
             <br />
+
+            <button onClick={() => this.signInWebauthn()}>
+              webauthn login
+            </button>
             <Grid
               container
               spacing={0}
