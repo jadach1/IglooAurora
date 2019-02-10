@@ -696,7 +696,7 @@ export default graphql(
               starredDevices: devices(
                 filter: { starred: true }
                 sortBy: name
-                sortDirection: ASC
+                sortDirection: ASCENDING
               ) {
                 id
                 index
@@ -720,7 +720,7 @@ export default graphql(
               devices(
                 filter: { starred: false }
                 sortBy: name
-                sortDirection: ASC
+                sortDirection: ASCENDING
               ) {
                 id
                 index
@@ -752,7 +752,7 @@ export default graphql(
               starredDevices: devices(
                 filter: { starred: true }
                 sortBy: name
-                sortDirection: DESC
+                sortDirection: DESCENDING
               ) {
                 id
                 index
@@ -776,7 +776,7 @@ export default graphql(
               devices(
                 filter: { starred: false }
                 sortBy: name
-                sortDirection: DESC
+                sortDirection: DESCENDING
               ) {
                 id
                 index

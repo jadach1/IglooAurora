@@ -16,6 +16,7 @@ import withMobileDialog from "@material-ui/core/withMobileDialog"
 import CenteredSpinner from "../CenteredSpinner"
 import Done from "@material-ui/icons/Done"
 import Close from "@material-ui/icons/Close"
+import { Query } from "react-apollo"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -24,6 +25,8 @@ function GrowTransition(props) {
 function SlideTransition(props) {
   return <Slide direction="up" {...props} />
 }
+
+let environmentShares = []
 
 class PendingShares extends Component {
   AcceptPendingEnvironmentShare = id =>
@@ -53,7 +56,7 @@ class PendingShares extends Component {
         },
       },
     })
-
+  /*
   componentDidMount() {
     const pendingEnvironmentShareReceivedSubscription = gql`
       subscription {
@@ -209,91 +212,9 @@ class PendingShares extends Component {
         }
       },
     })
-  }
+  } */
 
   render() {
-    let content = ""
-
-    if (this.props.environmentSharesData.error) content = "Unexpected error"
-
-    if (this.props.environmentSharesData.loading) content = <CenteredSpinner />
-
-    if (this.props.environmentSharesData.user)
-      content = (
-        <List style={{ width: "100%", height: "100%" }}>
-          {this.props.environmentSharesData.user.pendingEnvironmentShares.map(
-            pendingEnvironmentShare => (
-              <ListItem style={{ paddingLeft: "24px" }}>
-                <ListItemText
-                  primary={
-                    <font
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      {pendingEnvironmentShare.environment.name}
-                    </font>
-                  }
-                  secondary={
-                    <font
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "#c1c2c5" }
-                          : { color: "#7a7a7a" }
-                      }
-                    >
-                      {"Sent by " + pendingEnvironmentShare.sender.name}
-                    </font>
-                  }
-                  style={{
-                    whiteSpace: "nowrap",
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    marginRight: "72px",
-                  }}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton
-                    onClick={() =>
-                      this.AcceptPendingEnvironmentShare(
-                        pendingEnvironmentShare.id
-                      )
-                    }
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    <Done />
-                  </IconButton>
-                  <IconButton
-                    onClick={() =>
-                      this.DeclinePendingEnvironmentShare(
-                        pendingEnvironmentShare.id
-                      )
-                    }
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : { color: "black" }
-                    }
-                  >
-                    <Close />
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>
-            )
-          )}
-        </List>
-      )
-
     return (
       <Dialog
         open={this.props.open}
@@ -307,7 +228,115 @@ class PendingShares extends Component {
         maxWidth="xs"
       >
         <DialogTitle disableTypography>Pending share requests</DialogTitle>
-        {content}
+        <Query
+          query={gql`
+            query {
+              user {
+                id
+                pendingEnvironmentShares {
+                  id
+                  receiver {
+                    id
+                    profileIconColor
+                    name
+                    email
+                  }
+                  sender {
+                    id
+                    name
+                  }
+                  environment {
+                    id
+                    name
+                  }
+                }
+              }
+            }
+          `}
+          skip={!this.props.open}
+        >
+          {({ loading, error, data }) => {
+            if (loading) return <CenteredSpinner />
+            if (error) return "Unexpected error"
+
+            if (data) {
+              environmentShares = data.user.pendingEnvironmentShares
+            }
+
+            return (
+              <List style={{ width: "100%", height: "100%" }}>
+                {environmentShares.map(pendingEnvironmentShare => (
+                  <ListItem style={{ paddingLeft: "24px" }}>
+                    <ListItemText
+                      primary={
+                        <font
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : { color: "black" }
+                          }
+                        >
+                          {pendingEnvironmentShare.environment.name}
+                        </font>
+                      }
+                      secondary={
+                        <font
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "#c1c2c5" }
+                              : { color: "#7a7a7a" }
+                          }
+                        >
+                          {"Sent by " + pendingEnvironmentShare.sender.name}
+                        </font>
+                      }
+                      style={{
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        marginRight: "72px",
+                      }}
+                    />
+                    <ListItemSecondaryAction>
+                      <IconButton
+                        onClick={() =>
+                          this.AcceptPendingEnvironmentShare(
+                            pendingEnvironmentShare.id
+                          )
+                        }
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        <Done />
+                      </IconButton>
+                      <IconButton
+                        onClick={() =>
+                          this.DeclinePendingEnvironmentShare(
+                            pendingEnvironmentShare.id
+                          )
+                        }
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        <Close />
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>
+                ))}
+              </List>
+            )
+          }}
+        </Query>
         <DialogActions>
           <Button onClick={this.props.close}>Close</Button>
         </DialogActions>
@@ -341,35 +370,5 @@ export default graphql(
     {
       name: "DeclinePendingEnvironmentShare",
     }
-  )(
-    withMobileDialog({ breakpoint: "xs" })(
-      graphql(
-        gql`
-          query {
-            user {
-              id
-              pendingEnvironmentShares {
-                id
-                receiver {
-                  id
-                  profileIconColor
-                  name
-                  email
-                }
-                sender {
-                  id
-                  name
-                }
-                environment {
-                  id
-                  name
-                }
-              }
-            }
-          }
-        `,
-        { name: "environmentSharesData" }
-      )(PendingShares)
-    )
-  )
+  )(withMobileDialog({ breakpoint: "xs" })(PendingShares))
 )
