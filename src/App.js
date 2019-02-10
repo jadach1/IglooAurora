@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import AuthenticatedApp from "./AuthenticatedApp"
 import UnauthenticatedMain from "./UnauthenticatedMain"
-import UnauthenticatedMainMobile from "./UnauthenticatedMainMobile"
 import jwt from "jsonwebtoken"
 import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
@@ -592,7 +591,7 @@ class App extends Component {
       })
       if (typeof Storage !== "undefined") {
         let currentAccountList = JSON.parse(localStorage.getItem("accountList"))
-        
+
         deleted
           ? (currentAccountList = currentAccountList.filter(
               account => account.id !== localStorage.getItem("userId")
@@ -696,36 +695,14 @@ class App extends Component {
                 ) : typeof Storage !== "undefined" &&
                   !JSON.parse(localStorage.getItem("accountList"))[0] ? (
                   <Redirect to="/login" />
-                ) : this.state.isMobile ? (
-                  <UnauthenticatedMainMobile
-                    isAccountSwitcher
-                    signIn={signIn}
-                    password={this.state.loginPassword}
-                    changePassword={loginPassword =>
-                      this.setState({ loginPassword })
-                    }
-                    passwordError={this.state.loginPasswordError}
-                    changePasswordError={loginPasswordError =>
-                      this.setState({ loginPasswordError })
-                    }
-                    email={this.state.loginEmail}
-                    changeEmail={loginEmail => this.setState({ loginEmail })}
-                    emailError={this.state.loginEmailError}
-                    changeEmailError={loginEmailError =>
-                      this.setState({ loginEmailError })
-                    }
-                    changeSignupEmail={signupEmail =>
-                      this.setState({ signupEmail })
-                    }
-                    forceUpdate={() => this.forceUpdate()}
-                  />
                 ) : (
                   <UnauthenticatedMain
                     isAccountSwitcher
                     signIn={signIn}
+                    mobile={this.state.isMobile}
                     password={this.state.loginPassword}
                     changePassword={loginPassword =>
-                      this.setState({ loginPassword: loginPassword })
+                      this.setState({ loginPassword })
                     }
                     passwordError={this.state.loginPasswordError}
                     changePasswordError={loginPasswordError =>
@@ -750,36 +727,14 @@ class App extends Component {
               render={() =>
                 this.state.bearer ? (
                   <Redirect to="/" />
-                ) : this.state.isMobile ? (
-                  <UnauthenticatedMainMobile
+                ) : (
+                  <UnauthenticatedMain
                     isLogin
+                    mobile={this.state.isMobile}
                     signIn={signIn}
                     password={this.state.loginPassword}
                     changePassword={loginPassword =>
                       this.setState({ loginPassword })
-                    }
-                    passwordError={this.state.loginPasswordError}
-                    changePasswordError={loginPasswordError =>
-                      this.setState({ loginPasswordError })
-                    }
-                    email={this.state.loginEmail}
-                    changeEmail={loginEmail => this.setState({ loginEmail })}
-                    emailError={this.state.loginEmailError}
-                    changeEmailError={loginEmailError =>
-                      this.setState({ loginEmailError })
-                    }
-                    changeSignupEmail={signupEmail =>
-                      this.setState({ signupEmail })
-                    }
-                    forceUpdate={() => this.forceUpdate()}
-                  />
-                ) : (
-                  <UnauthenticatedMain
-                    isLogin
-                    signIn={signIn}
-                    password={this.state.loginPassword}
-                    changePassword={loginPassword =>
-                      this.setState({ loginPassword: loginPassword })
                     }
                     passwordError={this.state.loginPasswordError}
                     changePasswordError={loginPasswordError =>
@@ -804,29 +759,10 @@ class App extends Component {
               render={() =>
                 this.state.bearer ? (
                   <Redirect to="/" />
-                ) : this.state.isMobile ? (
-                  <UnauthenticatedMainMobile
-                    signIn={signIn}
-                    name={this.state.name}
-                    changeName={name => this.setState({ name })}
-                    password={this.state.signupPassword}
-                    changePassword={signupPassword =>
-                      this.setState({ signupPassword })
-                    }
-                    email={this.state.signupEmail}
-                    changeEmail={signupEmail => this.setState({ signupEmail })}
-                    emailError={this.state.signupEmailError}
-                    changeEmailError={signupEmailError =>
-                      this.setState({ signupEmailError })
-                    }
-                    changeLoginEmail={loginEmail =>
-                      this.setState({ loginEmail })
-                    }
-                    forceUpdate={() => this.forceUpdate()}
-                  />
                 ) : (
                   <UnauthenticatedMain
                     signIn={signIn}
+                    mobile={this.state.isMobile}
                     name={this.state.name}
                     changeName={name => this.setState({ name })}
                     password={this.state.signupPassword}

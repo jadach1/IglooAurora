@@ -22,6 +22,8 @@ import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import AccountCircle from "@material-ui/icons/AccountCircle"
 import querystringify from "querystringify"
+import logo from "../../styles/assets/logo.svg"
+import { Redirect } from "react-router-dom"
 
 const theme = createMuiTheme({
   palette: {
@@ -75,6 +77,15 @@ class Signup extends Component {
     }
 
     this.signUp = this.signUp.bind(this)
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener("resize", this.updateWindowDimensions)
+  }
+
+  updateWindowDimensions() {
+    this.setState({ height: window.innerHeight })
   }
 
   async signUp() {
@@ -91,7 +102,7 @@ class Signup extends Component {
                 name
                 profileIconColor
               }
-                          }
+            }
           }
         `,
         variables: {
@@ -148,6 +159,9 @@ class Signup extends Component {
         isEmailValid: EmailValidator.validate(this.props.email),
         isMailEmpty: this.props.email === "",
       })
+
+    this.updateWindowDimensions()
+    window.addEventListener("resize", this.updateWindowDimensions)
   }
 
   render() {
@@ -203,7 +217,297 @@ class Signup extends Component {
       "aurora",
     ]
 
-    return (
+    return this.props.mobile ? (
+      <div
+        className="rightSide notSelectable"
+        style={{ maxWidth: "448px", marginLeft: "auto", marginRight: "auto" }}
+      >
+        <img
+          src={logo}
+          alt="Igloo logo"
+          className="notSelectable nonDraggable"
+          draggable="false"
+          style={
+            this.state.height >= 690
+              ? {
+                  width: "192px",
+                  paddingTop: "72px",
+                  marginBottom: "72px",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }
+              : {
+                  width: "144px",
+                  paddingTop: "48px",
+                  marginBottom: "48px",
+                  display: "block",
+                  marginLeft: "auto",
+                  marginRight: "auto",
+                }
+          }
+          onClick={() =>
+            this.setState(oldState => ({
+              tapCounter: oldState.tapCounter + 1,
+            }))
+          }
+        />
+        <Typography
+          variant="h3"
+          gutterBottom
+          className="defaultCursor"
+          style={{ color: "white", textAlign: "center" }}
+        >
+          Sign up
+        </Typography>
+        <br />
+        <Grid
+          container
+          spacing={0}
+          alignItems="flex-end"
+          style={{ width: "100%" }}
+        >
+          <Grid item style={{ marginRight: "16px" }}>
+            <AccountCircle style={{ color: "white", marginBottom: "20px" }} />
+          </Grid>
+          <Grid item style={{ width: "calc(100% - 40px)" }}>
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="signup-name-mobile"
+                placeholder="Name"
+                style={{ color: "white" }}
+                value={this.props.name}
+                onChange={event => {
+                  this.props.changeName(event.target.value)
+                  this.setState({
+                    isNameValid: event.target.value !== "",
+                  })
+                }}
+                onKeyPress={event => {
+                  if (event.key === "Enter") {
+                    this.setState({ showLoading: true })
+                    this.signUp()
+                  }
+                }}
+                endAdornment={
+                  this.props.name ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        tabIndex="-1"
+                        onClick={() => {
+                          this.props.changeName("")
+                          this.setState({ isNameValid: false })
+                        }}
+                        style={{ color: "white" }}
+                      >
+                        <Clear />
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+              <FormHelperText
+                id="name-error-text-signup"
+                style={{ color: "white" }}
+              >
+                {!this.state.isNameValid ? "This field is required" : ""}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+        </Grid>
+        <br />
+        <Grid
+          container
+          spacing={0}
+          alignItems="flex-end"
+          style={{ width: "100%" }}
+        >
+          <Grid item style={{ marginRight: "16px" }}>
+            <Email style={{ color: "white", marginBottom: "20px" }} />
+          </Grid>
+          <Grid item style={{ width: "calc(100% - 40px)" }}>
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="adornment-email-signup"
+                placeholder="Email"
+                style={{ color: "white" }}
+                value={this.props.email}
+                onChange={event => {
+                  this.props.changeEmail(event.target.value)
+                  this.props.changeEmailError("")
+                  this.setState({
+                    isEmailValid: EmailValidator.validate(event.target.value),
+                    isMailEmpty: event.target.value === "",
+                  })
+                }}
+                onKeyPress={event => {
+                  if (event.key === "Enter") {
+                    this.setState({ showLoading: true })
+                    this.signUp()
+                  }
+                }}
+                endAdornment={
+                  this.props.email ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        tabIndex="-1"
+                        onClick={this.handleClickCancelEmail}
+                        style={{ color: "white" }}
+                      >
+                        <Clear />
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+              <FormHelperText
+                id="name-error-text-signup"
+                style={{ color: "white" }}
+              >
+                {this.state.isMailEmpty
+                  ? "This field is required"
+                  : this.props.emailError ||
+                    (!this.state.isEmailValid && this.props.email
+                      ? "Enter a valid email"
+                      : "")}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+        </Grid>
+        <br />
+        <Grid
+          container
+          spacing={0}
+          alignItems="flex-end"
+          style={{ width: "100%" }}
+        >
+          <Grid item style={{ marginRight: "16px" }}>
+            <VpnKey style={{ color: "white", marginBottom: "20px" }} />
+          </Grid>
+          <Grid item style={{ width: "calc(100% - 40px)" }}>
+            <FormControl style={{ width: "100%" }}>
+              <Input
+                id="adornment-password-signup"
+                placeholder="Password"
+                style={{ color: "white" }}
+                type={this.state.showPassword ? "text" : "password"}
+                value={this.props.password}
+                onChange={event => {
+                  this.props.changePassword(event.target.value)
+                  this.setState({
+                    passwordScore: zxcvbn(event.target.value, customDictionary)
+                      .score,
+                    isPasswordEmpty: event.target.value === "",
+                  })
+                }}
+                onKeyPress={event => {
+                  if (event.key === "Enter") {
+                    this.setState({ showLoading: true })
+                    this.signUp()
+                  }
+                }}
+                endAdornment={
+                  this.props.password ? (
+                    <InputAdornment position="end">
+                      <IconButton
+                        tabIndex="-1"
+                        onClick={this.handleClickShowPassword}
+                        style={{ color: "white" }}
+                      >
+                        {/* fix for ToggleIcon glitch on Edge */}
+                        {document.documentMode ||
+                        /Edge/.test(navigator.userAgent) ? (
+                          this.state.showPassword ? (
+                            <VisibilityOff />
+                          ) : (
+                            <Visibility />
+                          )
+                        ) : (
+                          <ToggleIcon
+                            on={this.state.showPassword || false}
+                            onIcon={<VisibilityOff />}
+                            offIcon={<Visibility />}
+                          />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ) : null
+                }
+              />
+              <FormHelperText
+                id="password-error-text-signup"
+                style={{ color: "white" }}
+              >
+                {this.state.isPasswordEmpty
+                  ? "This field is required"
+                  : scoreText}
+              </FormHelperText>
+            </FormControl>
+          </Grid>
+        </Grid>
+        <br />
+        <br />
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth={true}
+          onClick={() => {
+            this.setState({ showLoading: true })
+            this.signUp()
+          }}
+          style={{ marginBottom: "8px" }}
+          disabled={
+            !(
+              this.props.name &&
+              this.state.isEmailValid &&
+              this.state.passwordScore >= 2
+            ) || this.state.showLoading
+          }
+        >
+          Sign up
+          {this.state.showLoading && <CenteredSpinner isInButton secondary />}
+        </Button>
+        {querystringify.parse("?" + window.location.href.split("?")[1]).from ===
+          "accounts" && JSON.parse(localStorage.getItem("accountList"))[0] ? (
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#fff" },
+              },
+            })}
+          >
+            <Button
+              fullWidth={true}
+              color="primary"
+              disabled={this.state.showLoading}
+              component={Link}
+              to="/accounts"
+            >
+              Go back
+            </Button>
+          </MuiThemeProvider>
+        ) : (
+          <MuiThemeProvider
+            theme={createMuiTheme({
+              palette: {
+                primary: { main: "#fff" },
+              },
+            })}
+          >
+            <Button
+              fullWidth={true}
+              color="primary"
+              disabled={this.state.showLoading}
+              component={Link}
+              to="/login"
+            >
+              Log in instead
+            </Button>
+          </MuiThemeProvider>
+        )}
+        {this.state.redirect && <Redirect push to="/login" />}
+      </div>
+    ) : (
       <React.Fragment>
         <div
           className="rightSide notSelectable"
@@ -231,8 +535,8 @@ class Signup extends Component {
               <Grid item style={{ width: "calc(100% - 40px)" }}>
                 <FormControl style={{ width: "100%" }}>
                   <Input
-                    id="adornment-email-signup"
-                    placeholder="Full name"
+                    id="signup-name"
+                    placeholder="Name"
                     value={this.props.name}
                     style={{ color: "black" }}
                     onChange={event => {
