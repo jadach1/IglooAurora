@@ -1,12 +1,8 @@
 import React, { Component } from "react"
 import gql from "graphql-tag"
-import FormControl from "@material-ui/core/FormControl"
-import FormHelperText from "@material-ui/core/FormHelperText"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import Input from "@material-ui/core/Input"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
-import Grid from "@material-ui/core/Grid"
 import IconButton from "@material-ui/core/IconButton"
 import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
@@ -14,15 +10,14 @@ import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
 import { Link } from "react-router-dom"
 import MUILink from "@material-ui/core/Link"
-import Email from "@material-ui/icons/Email"
 import Clear from "@material-ui/icons/Clear"
-import VpnKey from "@material-ui/icons/VpnKey"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import Visibility from "@material-ui/icons/Visibility"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import querystringify from "querystringify"
 import logo from "../../styles/assets/logo.svg"
+import TextField from "@material-ui/core/TextField"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -221,8 +216,7 @@ class Login extends Component {
             maxWidth: "448px",
             marginLeft: "auto",
             marginRight: "auto",
-            paddingLeft: "32px",
-            paddingRight: "32px",
+            padding: "0 32px",
           }}
         >
           <img
@@ -264,140 +258,109 @@ class Login extends Component {
             Log in
           </Typography>
           <br />
-          <Grid
-            container
-            spacing={0}
-            alignItems="flex-end"
-            style={{ width: "100%" }}
-          >
-            <Grid item style={{ marginRight: "16px" }}>
-              <Email style={{ color: "white", marginBottom: "20px" }} />
-            </Grid>
-            <Grid item style={{ width: "calc(100% - 40px)" }}>
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  id="login-email-desktop"
-                  placeholder="Email"
-                  style={{ color: "white" }}
-                  value={this.props.email}
-                  onChange={event => {
-                    this.props.changeEmail(event.target.value)
-                    this.setState({
-                      isMailEmpty: event.target.value === "",
-                    })
-                  }}
-                  onKeyPress={event => {
-                    if (event.key === "Enter") {
-                      this.setState({ showLoading: true })
-                      if (
-                        EmailValidator.validate(this.props.email) &&
-                        this.props.password
-                      )
-                        this.signIn()
-                    }
-                  }}
-                  endAdornment={
-                    this.props.email ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() => {
-                            this.props.changeEmail("")
-                            this.setState({ isMailEmpty: true })
-                          }}
-                          tabIndex="-1"
-                          style={{ color: "white" }}
-                        >
-                          <Clear />
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-                <FormHelperText
-                  id="name-error-text-login"
-                  style={{ color: "white" }}
-                >
-                  {this.state.isMailEmpty
-                    ? "This field is required"
-                    : this.props.emailError}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-          </Grid>
+          <TextField
+            variant="outlined"
+            id="login-email-desktop"
+            label="Email"
+            style={{ color: "white", width: "100%", marginBottom: "16px" }}
+            value={this.props.email}
+            onChange={event => {
+              this.props.changeEmail(event.target.value)
+              this.setState({
+                isMailEmpty: event.target.value === "",
+              })
+            }}
+            onKeyPress={event => {
+              if (event.key === "Enter") {
+                this.setState({ showLoading: true })
+                if (
+                  EmailValidator.validate(this.props.email) &&
+                  this.props.password
+                )
+                  this.signIn()
+              }
+            }}
+            helperText={
+              (this.state.isMailEmpty
+                ? "This field is required"
+                : this.props.emailError) || " "
+            }
+            endAdornment={
+              this.props.email ? (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() => {
+                      this.props.changeEmail("")
+                      this.setState({ isMailEmpty: true })
+                    }}
+                    tabIndex="-1"
+                    style={{ color: "white" }}
+                  >
+                    <Clear />
+                  </IconButton>
+                </InputAdornment>
+              ) : null
+            }
+          />
           <br />
-          <Grid
-            container
-            spacing={0}
-            alignItems="flex-end"
-            style={{ width: "100%" }}
-          >
-            <Grid item style={{ marginRight: "16px" }}>
-              <VpnKey style={{ color: "white", marginBottom: "20px" }} />
-            </Grid>
-            <Grid item style={{ width: "calc(100% - 40px)" }}>
-              <FormControl style={{ width: "100%" }}>
-                <Input
-                  id="adornment-password-login"
-                  type={this.state.showPassword ? "text" : "password"}
-                  value={this.props.password}
-                  placeholder="Password"
-                  style={{ color: "white" }}
-                  onChange={event => {
-                    this.props.changePassword(event.target.value)
-                    this.props.changePasswordError("")
-                    this.setState({
-                      isPasswordEmpty: event.target.value === "",
-                    })
-                  }}
-                  onKeyPress={event => {
-                    if (event.key === "Enter") {
-                      this.setState({ showLoading: true })
-                      if (
-                        EmailValidator.validate(this.props.email) &&
-                        this.props.password
+          <TextField
+            variant="outlined"
+            id="mobile-password-login"
+            type={this.state.showPassword ? "text" : "password"}
+            value={this.props.password}
+            label="Password"
+            style={{ color: "white", width: "100%", marginBottom: "16px" }}
+            onChange={event => {
+              this.props.changePassword(event.target.value)
+              this.props.changePasswordError("")
+              this.setState({
+                isPasswordEmpty: event.target.value === "",
+              })
+            }}
+            onKeyPress={event => {
+              if (event.key === "Enter") {
+                this.setState({ showLoading: true })
+                if (
+                  EmailValidator.validate(this.props.email) &&
+                  this.props.password
+                )
+                  this.signIn()
+              }
+            }}
+            helperText={
+              this.props.passwordError +
+                (this.state.isPasswordEmpty ? "This field is required" : "") ||
+              " "
+            }
+            endAdornment={
+              this.props.password ? (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={this.handleClickShowPassword}
+                    onMouseDown={this.handleMouseDownPassword}
+                    tabIndex="-1"
+                    style={{ color: "white" }}
+                  >
+                    {/* fix for ToggleIcon glitch on Edge */}
+                    {document.documentMode ||
+                    /Edge/.test(navigator.userAgent) ? (
+                      this.state.showPassword ? (
+                        <VisibilityOff />
+                      ) : (
+                        <Visibility />
                       )
-                        this.signIn()
-                    }
-                  }}
-                  endAdornment={
-                    this.props.password ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={this.handleClickShowPassword}
-                          onMouseDown={this.handleMouseDownPassword}
-                          tabIndex="-1"
-                          style={{ color: "white" }}
-                        >
-                          {/* fix for ToggleIcon glitch on Edge */}
-                          {document.documentMode ||
-                          /Edge/.test(navigator.userAgent) ? (
-                            this.state.showPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )
-                          ) : (
-                            <ToggleIcon
-                              on={this.state.showPassword || false}
-                              onIcon={<VisibilityOff />}
-                              offIcon={<Visibility />}
-                            />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null
-                  }
-                />
-                <FormHelperText
-                  id="passowrd-error-text-login"
-                  style={{ color: "white" }}
-                >
-                  {this.props.passwordError}
-                  {this.state.isPasswordEmpty ? "This field is required" : ""}
-                </FormHelperText>
-              </FormControl>
-            </Grid>
-          </Grid>
+                    ) : (
+                      <ToggleIcon
+                        on={this.state.showPassword || false}
+                        onIcon={<VisibilityOff />}
+                        offIcon={<Visibility />}
+                      />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ) : null
+            }
+          />
           <br />
           <div style={{ textAlign: "right", marginBottom: "8px" }}>
             <MUILink
@@ -500,167 +463,125 @@ class Login extends Component {
               Log in
             </Typography>
             <br />
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <Email style={{ marginBottom: "20px" }} />
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="desktop-login-email"
-                    placeholder="Email"
-                    value={this.props.email}
-                    style={{ color: "black" }}
-                    onChange={event => {
-                      this.props.changeEmail(event.target.value)
-                      this.setState({
-                        isMailEmpty: event.target.value === "",
-                      })
-                    }}
-                    onKeyPress={event => {
-                      if (event.key === "Enter") {
-                        if (
-                          EmailValidator.validate(this.props.email) &&
-                          this.props.password
-                        ) {
-                          this.signIn()
-                          this.setState({ showLoading: true })
-                        }
-                      }
-                    }}
-                    error={
-                      this.props.emailError || this.state.isMailEmpty
-                        ? true
-                        : false
-                    }
-                    endAdornment={
-                      this.props.email ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() => {
-                              this.props.changeEmail("")
-                              this.setState({ isMailEmpty: true })
-                            }}
-                            tabIndex="-1"
-                            style={{ color: "black" }}
-                          >
-                            <Clear />
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                  <FormHelperText
-                    id="name-error-text-login"
-                    style={
-                      this.props.emailError || this.state.isMailEmpty
-                        ? { color: "#f44336" }
-                        : {}
-                    }
-                  >
-                    {this.state.isMailEmpty
-                      ? "This field is required"
-                      : this.props.emailError}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
-            </Grid>
+            <TextField
+              variant="outlined"
+              id="desktop-login-email"
+              label="Email"
+              value={this.props.email}
+              helperText={
+                (this.state.isMailEmpty
+                  ? "This field is required"
+                  : this.props.emailError) || " "
+              }
+              style={{ color: "black", width: "100%", marginBottom: "16px" }}
+              onChange={event => {
+                this.props.changeEmail(event.target.value)
+                this.setState({
+                  isMailEmpty: event.target.value === "",
+                })
+              }}
+              onKeyPress={event => {
+                if (event.key === "Enter") {
+                  if (
+                    EmailValidator.validate(this.props.email) &&
+                    this.props.password
+                  ) {
+                    this.signIn()
+                    this.setState({ showLoading: true })
+                  }
+                }
+              }}
+              error={
+                this.props.emailError || this.state.isMailEmpty ? true : false
+              }
+              endAdornment={
+                this.props.email ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => {
+                        this.props.changeEmail("")
+                        this.setState({ isMailEmpty: true })
+                      }}
+                      tabIndex="-1"
+                      style={{ color: "black" }}
+                    >
+                      <Clear />
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
             <br />
-            <Grid
-              container
-              spacing={0}
-              alignItems="flex-end"
-              style={{ width: "100%" }}
-            >
-              <Grid item style={{ marginRight: "16px" }}>
-                <VpnKey style={{ marginBottom: "20px" }} />
-              </Grid>
-              <Grid item style={{ width: "calc(100% - 40px)" }}>
-                <FormControl style={{ width: "100%" }}>
-                  <Input
-                    id="adornment-password-login"
-                    type={this.state.showPassword ? "text" : "password"}
-                    value={this.props.password}
-                    placeholder="Password"
-                    style={{ color: "black" }}
-                    onChange={event => {
-                      this.props.changePassword(event.target.value)
-                      this.props.changePasswordError("")
-                      this.setState({
-                        isPasswordEmpty: event.target.value === "",
-                      })
-                    }}
-                    error={
-                      this.props.passwordError || this.state.isPasswordEmpty
-                        ? true
-                        : false
-                    }
-                    onKeyPress={event => {
-                      if (event.key === "Enter") {
-                        if (
-                          EmailValidator.validate(this.props.email) &&
-                          this.props.password
-                        ) {
-                          this.signIn()
-                          this.setState({ showLoading: true })
-                        }
+            <TextField
+              variant="outlined"
+              id="desktop-password-login"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.props.password}
+              label="Password"
+              style={{ color: "black", width: "100%", marginBottom: "16px" }}
+              onChange={event => {
+                this.props.changePassword(event.target.value)
+                this.props.changePasswordError("")
+                this.setState({
+                  isPasswordEmpty: event.target.value === "",
+                })
+              }}
+              error={
+                this.props.passwordError || this.state.isPasswordEmpty
+                  ? true
+                  : false
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter") {
+                  if (
+                    EmailValidator.validate(this.props.email) &&
+                    this.props.password
+                  ) {
+                    this.signIn()
+                    this.setState({ showLoading: true })
+                  }
+                }
+              }}
+              helperText={
+                (this.state.isPasswordEmpty
+                  ? "This field is required"
+                  : this.props.passwordError) || " "
+              }
+              endAdornment={
+                this.props.password ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState({
+                          showPassword: !this.state.showPassword,
+                        })
                       }
-                    }}
-                    endAdornment={
-                      this.props.password ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            onClick={() =>
-                              this.setState({
-                                showPassword: !this.state.showPassword,
-                              })
-                            }
-                            onMouseDown={this.handleMouseDownPassword}
-                            tabIndex="-1"
-                            style={{ color: "black" }}
-                          >
-                            {/* fix for ToggleIcon glitch on Edge */}
-                            {document.documentMode ||
-                            /Edge/.test(navigator.userAgent) ? (
-                              this.state.showPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )
-                            ) : (
-                              <ToggleIcon
-                                on={this.state.showPassword || false}
-                                onIcon={<VisibilityOff />}
-                                offIcon={<Visibility />}
-                              />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null
-                    }
-                  />
-                  <FormHelperText
-                    id="password-error-text-login"
-                    style={
-                      this.props.passwordError || this.state.isPasswordEmpty
-                        ? { color: "#f44336" }
-                        : {}
-                    }
-                  >
-                    {this.state.isPasswordEmpty
-                      ? "This field is required"
-                      : this.props.passwordError}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
-            </Grid>
+                      onMouseDown={this.handleMouseDownPassword}
+                      tabIndex="-1"
+                      style={{ color: "black" }}
+                    >
+                      {/* fix for ToggleIcon glitch on Edge */}
+                      {document.documentMode ||
+                      /Edge/.test(navigator.userAgent) ? (
+                        this.state.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )
+                      ) : (
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<VisibilityOff />}
+                          offIcon={<Visibility />}
+                        />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ) : null
+              }
+            />
           </div>
-          <div style={{ marginTop: "227px", textAlign: "right" }}>
+          <div style={{ marginTop: "167px", textAlign: "right" }}>
             <MUILink
               component="button"
               variant="subtitle1"

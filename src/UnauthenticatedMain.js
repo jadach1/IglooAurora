@@ -46,9 +46,9 @@ export default class UnAuthenticatedMain extends Component {
       <React.Fragment>
         <Helmet>
           <title>
-            {this.props.isLogin || this.props.isAccountSwitcher
+            {this.props.isLogin
               ? "Igloo Aurora - Log in"
-              : "Igloo Aurora - Sign up"}
+              : this.props.isAccountSwitcher ? "Igloo Aurora - Accounts" : "Igloo Aurora - Sign up"}
           </title>
         </Helmet>
         {this.props.mobile ? (
