@@ -12,7 +12,6 @@ import ListItemText from "@material-ui/core/ListItemText"
 import { Link } from "react-router-dom"
 import Person from "@material-ui/icons/Person"
 import RemoveCircleOutline from "@material-ui/icons/RemoveCircleOutline"
-import { Redirect } from "react-router-dom"
 import logo from "../../styles/assets/logo.svg"
 
 export default class AccountSwitcher extends Component {
@@ -220,9 +219,10 @@ export default class AccountSwitcher extends Component {
                           }
                         : () => {
                             this.props.changeEmail(account.email)
-                            this.setState({ redirect: true })
                           }
                     }
+                    component={Link}
+                    to={account.token ? "/" : "/login?from=accounts&user="+ account.id}
                   >
                     <Avatar
                       style={{ backgroundColor: account.profileIconColor }}
@@ -352,7 +352,6 @@ export default class AccountSwitcher extends Component {
             </List>
           </div>
         </div>
-        {this.state.redirect && <Redirect push to="/login?from=accounts" />}
       </React.Fragment>
     )
   }

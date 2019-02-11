@@ -220,7 +220,13 @@ class Signup extends Component {
     return this.props.mobile ? (
       <div
         className="rightSide notSelectable"
-        style={{ maxWidth: "448px", marginLeft: "auto", marginRight: "auto" }}
+              style={{
+          maxWidth: "448px",
+          marginLeft: "auto",
+          marginRight: "auto",
+          paddingLeft: "32px",
+          paddingRight: "32px",
+        }}
       >
         <img
           src={logo}
@@ -511,14 +517,14 @@ class Signup extends Component {
       <React.Fragment>
         <div
           className="rightSide notSelectable"
-          style={{ overflowY: "hidden", padding: "32px 32px 32px 32px" }}
+          style={{ overflowY: "hidden", padding: "0 32px" }}
         >
           <div>
             <Typography
               variant="h3"
               gutterBottom
               className="defaultCursor"
-              style={{ color: "#0083ff", textAlign: "center" }}
+              style={{ color: "#0083ff", textAlign: "center",marginTop:"32px" }}
             >
               Sign up
             </Typography>

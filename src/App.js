@@ -769,6 +769,10 @@ class App extends Component {
                     changePassword={signupPassword =>
                       this.setState({ signupPassword })
                     }
+                    passwordError={this.state.loginPasswordError}
+                    changePasswordError={loginPasswordError =>
+                      this.setState({ loginPasswordError })
+                    }
                     email={this.state.signupEmail}
                     changeEmail={signupEmail => this.setState({ signupEmail })}
                     emailError={this.state.signupEmailError}

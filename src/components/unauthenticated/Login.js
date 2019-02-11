@@ -221,6 +221,8 @@ class Login extends Component {
             maxWidth: "448px",
             marginLeft: "auto",
             marginRight: "auto",
+            paddingLeft: "32px",
+            paddingRight: "32px",
           }}
         >
           <img
@@ -274,7 +276,7 @@ class Login extends Component {
             <Grid item style={{ width: "calc(100% - 40px)" }}>
               <FormControl style={{ width: "100%" }}>
                 <Input
-                  id="adornment-email-login"
+                  id="login-email-desktop"
                   placeholder="Email"
                   style={{ color: "white" }}
                   value={this.props.email}
@@ -482,14 +484,18 @@ class Login extends Component {
       <React.Fragment>
         <div
           className="rightSide notSelectable"
-          style={{ overflowY: "hidden", padding: "32px 32px 32px 32px" }}
+          style={{ overflowY: "hidden", padding: "0 32px" }}
         >
           <div>
             <Typography
               variant="h3"
               gutterBottom
               className="defaultCursor"
-              style={{ color: "#0083ff", textAlign: "center" }}
+              style={{
+                color: "#0083ff",
+                textAlign: "center",
+                marginTop: "32px",
+              }}
             >
               Log in
             </Typography>

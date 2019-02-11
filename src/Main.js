@@ -711,7 +711,7 @@ export default graphql(
                 updatedAt
                 starred
                 notificationCount
-                notifications {
+                getLastNotification {
                   id
                   content
                   read
@@ -735,7 +735,7 @@ export default graphql(
                 updatedAt
                 starred
                 notificationCount
-                notifications {
+                getLastNotification {
                   id
                   content
                   read
@@ -767,7 +767,7 @@ export default graphql(
                 updatedAt
                 starred
                 notificationCount
-                notifications {
+                getLastNotification {
                   id
                   content
                   read
@@ -791,7 +791,7 @@ export default graphql(
                 updatedAt
                 starred
                 notificationCount
-                notifications {
+                getLastNotification {
                   id
                   content
                   read
@@ -819,7 +819,7 @@ export default graphql(
               updatedAt
               starred
               notificationCount
-              notifications {
+              getLastNotification {
                 id
                 content
                 read
