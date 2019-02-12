@@ -18,6 +18,7 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import querystringify from "querystringify"
 import logo from "../../styles/assets/logo.svg"
 import TextField from "@material-ui/core/TextField"
+import Fingerprint from "@material-ui/icons/Fingerprint"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -41,6 +42,7 @@ class Login extends Component {
     }
 
     this.signIn = this.signIn.bind(this)
+    this.signInWebauthn = this.signInWebauthn.bind(this)
     this.recover = this.recover.bind(this)
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
   }
@@ -106,80 +108,79 @@ class Login extends Component {
   }
 
   async signInWebauthn() {
-    this.props.changePasswordError("")
-    this.props.changeEmailError("")
-    const {
-      data: { getWebauthnLoginChallenge },
-    } = await this.props.client.query({
-      query: gql`
-        query getWebauthnLoginChallenge($email: String!) {
-          getWebauthnLoginChallenge(email: $email) {
-            publicKeyOptions
-            jwtChallenge
-          }
-        }
-      `,
-      variables: {
-        email: this.props.email,
-      },
-    })
-
-    const publicKeyOptions = JSON.parse(
-      getWebauthnLoginChallenge.publicKeyOptions
-    )
-
-    publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
-    publicKeyOptions.user.id = unescape(publicKeyOptions.user.id)
-    publicKeyOptions.allowCredentials = publicKeyOptions.allowCredentials.map(
-      cred => ({
-        ...cred,
-        id: str2ab(cred.id),
-      })
-    )
-
-    async function sendResponse(res) {
-      let payload = { response: {} }
-      payload.rawId = ab2str(res.rawId)
-      payload.response.authenticatorData = ab2str(
-        res.response.authenticatorData
-      )
-      payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
-      payload.response.signature = ab2str(res.response.signature)
-
-      const loginMutation = await this.props.client.mutate({
-        mutation: gql`
-          mutation($jwtChallenge: String!, $challengeResponse: String!) {
-            logInWithWebauthn(
-              jwtChallenge: $jwtChallenge
-              challengeResponse: $challengeResponse
-            ) {
-              token
-              user {
-                id
-                email
-                name
-                profileIconColor
-              }
+    try {
+      const {
+        data: { getWebauthnLoginChallenge },
+      } = await this.props.client.query({
+        query: gql`
+          query getWebauthnLoginChallenge($email: String!) {
+            getWebauthnLoginChallenge(email: $email) {
+              publicKeyOptions
+              jwtChallenge
             }
           }
         `,
         variables: {
-          challengeResponse: JSON.stringify(payload),
-          jwtChallenge: this.props.jwtChallenge,
+          email: this.props.email,
         },
       })
 
-      this.props.signIn(
-        loginMutation.data.logIn.token,
-        loginMutation.data.logIn.user
+      const publicKeyOptions = JSON.parse(
+        getWebauthnLoginChallenge.publicKeyOptions
       )
 
-      this.props.changePassword("")
-    }
+      publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
+      publicKeyOptions.allowCredentials = publicKeyOptions.allowCredentials.map(
+        cred => ({
+          ...cred,
+          id: str2ab(cred.id),
+        })
+      )
 
-    navigator.credentials
-      .get({ publicKey: publicKeyOptions })
-      .then(sendResponse)
+      async function sendResponse(res) {
+        let payload = { response: {} }
+        payload.rawId = ab2str(res.rawId)
+        payload.response.authenticatorData = ab2str(
+          res.response.authenticatorData
+        )
+        payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
+        payload.response.signature = ab2str(res.response.signature)
+
+        const loginMutation = await this.props.client.mutate({
+          mutation: gql`
+            mutation($jwtChallenge: String!, $challengeResponse: String!) {
+              logInWithWebauthn(
+                jwtChallenge: $jwtChallenge
+                challengeResponse: $challengeResponse
+              ) {
+                token
+                user {
+                  id
+                  email
+                  name
+                  profileIconColor
+                }
+              }
+            }
+          `,
+          variables: {
+            challengeResponse: JSON.stringify(payload),
+            jwtChallenge: this.props.jwtChallenge,
+          },
+        })
+
+        this.props.signIn(
+          loginMutation.data.logIn.token,
+          loginMutation.data.logIn.user
+        )
+      }
+
+      navigator.credentials
+        .get({ publicKey: publicKeyOptions })
+        .then(sendResponse)
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async recover(recoveryEmail) {
@@ -208,261 +209,70 @@ class Login extends Component {
   }
 
   render() {
-    return this.props.mobile ? (
-      <React.Fragment>
-        <div
-          className="rightSide notSelectable"
-          style={{
-            maxWidth: "448px",
-            marginLeft: "auto",
-            marginRight: "auto",
-            padding: "0 32px",
-          }}
-        >
-          <img
-            src={logo}
-            alt="Igloo logo"
-            className="notSelectable nonDraggable"
-            draggable="false"
-            style={
-              this.state.height >= 690
-                ? {
-                    width: "192px",
-                    paddingTop: "72px",
-                    marginBottom: "72px",
-                    display: "block",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                  }
-                : {
-                    width: "144px",
-                    paddingTop: "48px",
-                    marginBottom: "48px",
-                    display: "block",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                  }
-            }
-            onClick={() =>
-              this.setState(oldState => ({
-                tapCounter: oldState.tapCounter + 1,
-              }))
-            }
-          />
-          <Typography
-            variant="h3"
-            gutterBottom
-            className="defaultCursor"
-            style={{ color: "white", textAlign: "center" }}
-          >
-            Log in
-          </Typography>
-          <br />
-          <TextField
-            variant="outlined"
-            id="login-email-desktop"
-            label="Email"
-            style={{ color: "white", width: "100%", marginBottom: "16px" }}
-            value={this.props.email}
-            onChange={event => {
-              this.props.changeEmail(event.target.value)
-              this.setState({
-                isMailEmpty: event.target.value === "",
-              })
-            }}
-            onKeyPress={event => {
-              if (event.key === "Enter") {
-                this.setState({ showLoading: true })
-                if (
-                  EmailValidator.validate(this.props.email) &&
-                  this.props.password
-                )
-                  this.signIn()
-              }
-            }}
-            helperText={
-              (this.state.isMailEmpty
-                ? "This field is required"
-                : this.props.emailError) || " "
-            }
-            endAdornment={
-              this.props.email ? (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={() => {
-                      this.props.changeEmail("")
-                      this.setState({ isMailEmpty: true })
-                    }}
-                    tabIndex="-1"
-                    style={{ color: "white" }}
-                  >
-                    <Clear />
-                  </IconButton>
-                </InputAdornment>
-              ) : null
-            }
-          />
-          <br />
-          <TextField
-            variant="outlined"
-            id="mobile-password-login"
-            type={this.state.showPassword ? "text" : "password"}
-            value={this.props.password}
-            label="Password"
-            style={{ color: "white", width: "100%", marginBottom: "16px" }}
-            onChange={event => {
-              this.props.changePassword(event.target.value)
-              this.props.changePasswordError("")
-              this.setState({
-                isPasswordEmpty: event.target.value === "",
-              })
-            }}
-            onKeyPress={event => {
-              if (event.key === "Enter") {
-                this.setState({ showLoading: true })
-                if (
-                  EmailValidator.validate(this.props.email) &&
-                  this.props.password
-                )
-                  this.signIn()
-              }
-            }}
-            helperText={
-              this.props.passwordError +
-                (this.state.isPasswordEmpty ? "This field is required" : "") ||
-              " "
-            }
-            endAdornment={
-              this.props.password ? (
-                <InputAdornment position="end">
-                  <IconButton
-                    onClick={this.handleClickShowPassword}
-                    onMouseDown={this.handleMouseDownPassword}
-                    tabIndex="-1"
-                    style={{ color: "white" }}
-                  >
-                    {/* fix for ToggleIcon glitch on Edge */}
-                    {document.documentMode ||
-                    /Edge/.test(navigator.userAgent) ? (
-                      this.state.showPassword ? (
-                        <VisibilityOff />
-                      ) : (
-                        <Visibility />
-                      )
-                    ) : (
-                      <ToggleIcon
-                        on={this.state.showPassword || false}
-                        onIcon={<VisibilityOff />}
-                        offIcon={<Visibility />}
-                      />
-                    )}
-                  </IconButton>
-                </InputAdornment>
-              ) : null
-            }
-          />
-          <br />
-          <div style={{ textAlign: "right", marginBottom: "8px" }}>
-            <MUILink
-              component="button"
-              variant="subtitle1"
-              style={{
-                color: "white",
-                textAlign: "center",
-              }}
-              onClick={() => {
-                this.setState({ forgotPasswordOpen: true })
-              }}
-            >
-              Forgot password?
-            </MUILink>
-          </div>
-          <Button
-            variant="contained"
-            fullWidth
-            onClick={() => {
-              this.setState({ showLoading: true })
-              this.signIn()
-            }}
-            color="primary"
-            disabled={
-              !(
-                EmailValidator.validate(this.props.email) && this.props.password
-              ) || this.state.showLoading
-            }
-          >
-            Log in
-            {this.state.showLoading && <CenteredSpinner isInButton secondary />}
-          </Button>
-          <div style={{ textAlign: "center", marginTop: "8px" }}>
-            {querystringify.parse("?" + window.location.href.split("?")[1])
-              .from === "accounts" &&
-            JSON.parse(localStorage.getItem("accountList"))[0] ? (
-              <MuiThemeProvider
-                theme={createMuiTheme({
-                  palette: {
-                    primary: { main: "#fff" },
-                  },
-                })}
-              >
-                <Button
-                  fullWidth={true}
-                  color="primary"
-                  disabled={this.state.showLoading}
-                  component={Link}
-                  to="/accounts"
-                >
-                  Go back
-                </Button>
-              </MuiThemeProvider>
-            ) : (
-              <MuiThemeProvider
-                theme={createMuiTheme({
-                  palette: {
-                    primary: { main: "#fff" },
-                  },
-                })}
-              >
-                <Button
-                  fullWidth={true}
-                  color="primary"
-                  disabled={this.state.showLoading}
-                  component={Link}
-                  to="/signup"
-                >
-                  Sign up instead
-                </Button>
-              </MuiThemeProvider>
-            )}
-          </div>
-        </div>
-        <ForgotPassword
-          recover={email => this.recover(email)}
-          open={this.state.forgotPasswordOpen}
-          close={() => this.setState({ forgotPasswordOpen: false })}
-          email={this.props.email}
-        />
-      </React.Fragment>
-    ) : (
+    return (
       <React.Fragment>
         <div
           className="rightSide notSelectable"
           style={{ overflowY: "hidden", padding: "0 32px" }}
         >
-          <div>
+          {this.props.mobile && (
+            <img
+              src={logo}
+              alt="Igloo logo"
+              className="notSelectable nonDraggable"
+              draggable="false"
+              style={
+                this.state.height >= 690
+                  ? {
+                      width: "192px",
+                      paddingTop: "72px",
+                      marginBottom: "72px",
+                      display: "block",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }
+                  : {
+                      width: "144px",
+                      paddingTop: "48px",
+                      marginBottom: "48px",
+                      display: "block",
+                      marginLeft: "auto",
+                      marginRight: "auto",
+                    }
+              }
+              onClick={() =>
+                this.setState(oldState => ({
+                  tapCounter: oldState.tapCounter + 1,
+                }))
+              }
+            />
+          )}
+          <div
+            style={{
+              textAlign: "center",
+              height: "436px",
+            }}
+          >
             <Typography
               variant="h3"
               gutterBottom
               className="defaultCursor"
-              style={{
-                color: "#0083ff",
-                textAlign: "center",
-                marginTop: "32px",
-              }}
+              style={
+                this.props.mobile
+                  ? {
+                      color: "white",
+                      marginTop: "32px",
+                      marginBottom: "32px",
+                    }
+                  : {
+                      color: "#0083ff",
+                      marginTop: "32px",
+                      marginBottom: "32px",
+                    }
+              }
             >
               Log in
             </Typography>
-            <br />
             <TextField
               variant="outlined"
               id="desktop-login-email"
@@ -580,14 +390,44 @@ class Login extends Component {
                 ) : null
               }
             />
+            <IconButton
+              onClick={this.signInWebauthn}
+              disabled={!this.props.email}
+            >
+              <Fingerprint
+                style={
+                  this.props.email
+                    ? this.props.mobile
+                      ? { height: "48px", width: "48px", color: "white" }
+                      : { height: "48px", width: "48px", color: "black" }
+                    : this.props.mobile
+                    ? {
+                        height: "48px",
+                        width: "48px",
+                        color: "white",
+                        opacity: 0.54,
+                      }
+                    : {
+                        height: "48px",
+                        width: "48px",
+                        color: "black",
+                        opacity: 0.54,
+                      }
+                }
+              />
+            </IconButton>
           </div>
-          <div style={{ marginTop: "167px", textAlign: "right" }}>
+          <div style={{ textAlign: "right" }}>
             <MUILink
               component="button"
               variant="subtitle1"
-              style={{
-                color: "#0083ff",
-              }}
+              style={
+                this.props.mobile
+                  ? { color: "white" }
+                  : {
+                      color: "#0083ff",
+                    }
+              }
               onClick={() => {
                 this.setState({ forgotPasswordOpen: true })
               }}
@@ -618,11 +458,19 @@ class Login extends Component {
               .from === "accounts" &&
             JSON.parse(localStorage.getItem("accountList"))[0] ? (
               <MuiThemeProvider
-                theme={createMuiTheme({
-                  palette: {
-                    primary: { main: "#0083ff" },
-                  },
-                })}
+                theme={createMuiTheme(
+                  this.props.mobile
+                    ? {
+                        palette: {
+                          primary: { main: "#fff" },
+                        },
+                      }
+                    : {
+                        palette: {
+                          primary: { main: "#0083ff" },
+                        },
+                      }
+                )}
               >
                 <Button
                   fullWidth={true}
@@ -636,11 +484,19 @@ class Login extends Component {
               </MuiThemeProvider>
             ) : (
               <MuiThemeProvider
-                theme={createMuiTheme({
-                  palette: {
-                    primary: { main: "#0083ff" },
-                  },
-                })}
+                theme={createMuiTheme(
+                  this.props.mobile
+                    ? {
+                        palette: {
+                          primary: { main: "#fff" },
+                        },
+                      }
+                    : {
+                        palette: {
+                          primary: { main: "#0083ff" },
+                        },
+                      }
+                )}
               >
                 <Button
                   fullWidth={true}

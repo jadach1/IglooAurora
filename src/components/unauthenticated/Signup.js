@@ -420,11 +420,19 @@ export default class Signup extends Component {
                   ).from === "accounts" &&
                   JSON.parse(localStorage.getItem("accountList"))[0] ? (
                     <MuiThemeProvider
-                      theme={createMuiTheme({
-                        palette: {
-                          primary: { main: "#0083ff" },
-                        },
-                      })}
+                      theme={createMuiTheme(
+                        this.props.mobile
+                          ? {
+                              palette: {
+                                primary: { main: "#fff" },
+                              },
+                            }
+                          : {
+                              palette: {
+                                primary: { main: "#0083ff" },
+                              },
+                            }
+                      )}
                     >
                       <Button
                         fullWidth={true}
@@ -472,7 +480,7 @@ export default class Signup extends Component {
                     color: "#0083ff",
                     textAlign: "center",
                     marginTop: "32px",
-                    marginBottom: "16px",
+                    marginBottom: "32px",
                   }}
                 >
                   Sign up
@@ -539,11 +547,19 @@ export default class Signup extends Component {
                   </ListItem>
                 </List>
                 <MuiThemeProvider
-                  theme={createMuiTheme({
-                    palette: {
-                      primary: { main: "#0083ff" },
-                    },
-                  })}
+                  theme={createMuiTheme(
+                    this.props.mobile
+                      ? {
+                          palette: {
+                            primary: { main: "#fff" },
+                          },
+                        }
+                      : {
+                          palette: {
+                            primary: { main: "#0083ff" },
+                          },
+                        }
+                  )}
                 >
                   <Button
                     fullWidth={true}
@@ -557,8 +573,8 @@ export default class Signup extends Component {
                     }
                     style={
                       window.PublicKeyCredential
-                        ? { marginTop: "253px" }
-                        : { marginTop: "187px" }
+                        ? { marginTop: "237px" }
+                        : { marginTop: "171px" }
                     }
                   >
                     Go back
@@ -774,49 +790,35 @@ export default class Signup extends Component {
                   Sign up
                   {this.state.showLoading && <CenteredSpinner isInButton />}
                 </Button>
-                {querystringify.parse("?" + window.location.href.split("?")[1])
-                  .from === "accounts" &&
-                JSON.parse(localStorage.getItem("accountList"))[0] ? (
-                  <MuiThemeProvider
-                    theme={createMuiTheme({
-                      palette: {
-                        primary: { main: "#0083ff" },
-                      },
-                    })}
+                <MuiThemeProvider
+                  theme={createMuiTheme(
+                    this.props.mobile
+                      ? {
+                          palette: {
+                            primary: { main: "#fff" },
+                          },
+                        }
+                      : {
+                          palette: {
+                            primary: { main: "#0083ff" },
+                          },
+                        }
+                  )}
+                >
+                  <Button
+                    fullWidth={true}
+                    color="primary"
+                    disabled={this.state.showLoading}
+                    onClick={() =>
+                      this.setState({
+                        showSignupPassword: false,
+                        showPasswordLess: true,
+                      })
+                    }
                   >
-                    <Button
-                      fullWidth={true}
-                      color="primary"
-                      disabled={this.state.showLoading}
-                      onClick={() =>
-                        this.setState({
-                          showSignupPassword: false,
-                          showPasswordLess: true,
-                        })
-                      }
-                    >
-                      Go back
-                    </Button>
-                  </MuiThemeProvider>
-                ) : (
-                  <MuiThemeProvider
-                    theme={createMuiTheme({
-                      palette: {
-                        primary: { main: "#0083ff" },
-                      },
-                    })}
-                  >
-                    <Button
-                      fullWidth={true}
-                      color="primary"
-                      disabled={this.state.showLoading}
-                      component={Link}
-                      to="/login"
-                    >
-                      Log in instead
-                    </Button>
-                  </MuiThemeProvider>
-                )}
+                    Go back
+                  </Button>
+                </MuiThemeProvider>
               </div>
             </div>
           </React.Fragment>
