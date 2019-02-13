@@ -21,7 +21,7 @@ import PendingShares from "./PendingShares"
 import PendingOwnerChanges from "./PendingOwnerChanges"
 import Hibernations from "./Hibernations"
 import People from "@material-ui/icons/People"
-import AcUnit from "@material-ui/icons/AcUnit"
+//import AcUnit from "@material-ui/icons/AcUnit"
 import Add from "@material-ui/icons/Add"
 import Share from "@material-ui/icons/Share"
 import Search from "@material-ui/icons/Search"
@@ -81,7 +81,6 @@ export default class EnvironmentsBody extends Component {
         <Grid
           container
           justify="center"
-          spacing={16}
           className="notSelectable defaultCursor"
           style={{
             width: "100%",
@@ -89,7 +88,7 @@ export default class EnvironmentsBody extends Component {
           }}
         >
           {user.environments.map(environment => (
-            <Grid key={environment.id} item>
+            <Grid key={environment.id} item style={{ margin: 8 }}>
               <EnvironmentCard
                 userData={this.props.userData}
                 environment={environment}
@@ -102,7 +101,7 @@ export default class EnvironmentsBody extends Component {
             </Grid>
           ))}
           {!!user.pendingOwnerChangeCount && (
-            <Grid key="pendingEnvironmentShares" item>
+            <Grid key="pendingEnvironmentShares" item style={{ margin: 8 }}>
               <ButtonBase
                 focusRipple
                 style={{ borderRadius: "4px" }}
@@ -158,7 +157,7 @@ export default class EnvironmentsBody extends Component {
               </ButtonBase>
             </Grid>
           )}
-          <Grid key="hibernations" item>
+          {/*   <Grid key="hibernations" item  style={{ margin: 8 }}>
             <ButtonBase
               focusRipple
               style={{ borderRadius: "4px" }}
@@ -210,8 +209,8 @@ export default class EnvironmentsBody extends Component {
                 </div>
               </Paper>
             </ButtonBase>
-          </Grid>
-          <Grid key="create" item>
+          </Grid> */}
+          <Grid key="create" item style={{ margin: 8 }}>
             <ButtonBase
               focusRipple
               style={{ borderRadius: "4px" }}
@@ -279,7 +278,7 @@ export default class EnvironmentsBody extends Component {
           }}
         >
           {user.environments.map(environment => (
-            <Grid key={environment.id} item>
+            <Grid key={environment.id} item style={{ margin: 8 }}>
               <EnvironmentCard
                 userData={this.props.userData}
                 environment={environment}
@@ -292,7 +291,7 @@ export default class EnvironmentsBody extends Component {
             </Grid>
           ))}
           {!!user.pendingEnvironmentShareCount && (
-            <Grid key="pendingEnvironmentShares" item>
+            <Grid key="pendingEnvironmentShares" item style={{ margin: 8 }}>
               <ButtonBase
                 focusRipple
                 style={{ borderRadius: "4px" }}

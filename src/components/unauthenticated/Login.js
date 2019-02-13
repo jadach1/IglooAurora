@@ -28,6 +28,91 @@ function ab2str(ab) {
   return Array.from(new Int8Array(ab))
 }
 
+const sharedStyles = {
+  MuiButton: {
+    containedPrimary: {
+      backgroundColor: "#0083ff",
+    },
+  },
+  MuiInputLabel: {
+    cursor: "default",
+    webkitTouchCallout: "none",
+    webkitUserSelect: "none",
+    khtmlUserSelect: "none",
+    mozUserSelect: "none",
+    msUserSelect: "none",
+    userSelect: "none",
+  },
+}
+
+const desktopTheme = createMuiTheme({
+  palette: {
+    default: { main: "#fff" },
+    primary: { light: "#0083ff", main: "#0057cb" },
+    secondary: { main: "#ff4081" },
+    error: { main: "#f44336" },
+  },
+  overrides: {
+    MuiInput: {
+      root: {
+        color: "black",
+      },
+    },
+    MuiListItemIcon: {
+      root: {
+        color: "black",
+      },
+    },
+    MuiCheckbox: {
+      colorPrimary: {
+        "&$checked": { color: "#0083ff" },
+      },
+    },
+    ...sharedStyles,
+  },
+})
+
+const mobileTheme = createMuiTheme({
+  palette: {
+    default: { main: "#fff" },
+    primary: { light: "#0083ff", main: "#0057cb" },
+    secondary: { main: "#ff4081" },
+    error: { main: "#f44336" },
+  },
+  overrides: {
+    MuiInput: {
+      root: {
+        color: "white",
+      },
+    },
+    MuiCheckbox: {
+      colorPrimary: { color: "white", "&$checked": { color: "white" } },
+    },
+    MuiFormControlLabel: {
+      label: {
+        color: "white",
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        color: "white",
+        opacity: 0.8,
+        "&$focused": {
+          color: "white",
+          opacity: 0.8,
+        },
+      },
+    },
+    MuiListItemIcon: {
+      root: {
+        color: "white",
+      },
+    },
+    MuiInputBase: { root: { color: "white" } },
+    ...sharedStyles,
+  },
+})
+
 class Login extends Component {
   constructor() {
     super()
@@ -108,79 +193,75 @@ class Login extends Component {
   }
 
   async signInWebauthn() {
-    try {
-      const {
-        data: { getWebauthnLoginChallenge },
-      } = await this.props.client.query({
-        query: gql`
-          query getWebauthnLoginChallenge($email: String!) {
-            getWebauthnLoginChallenge(email: $email) {
-              publicKeyOptions
-              jwtChallenge
+    const {
+      data: { getWebauthnLoginChallenge },
+    } = await this.props.client.query({
+      query: gql`
+        query getWebauthnLoginChallenge($email: String!) {
+          getWebauthnLoginChallenge(email: $email) {
+            publicKeyOptions
+            jwtChallenge
+          }
+        }
+      `,
+      variables: {
+        email: this.props.email,
+      },
+    })
+
+    const publicKeyOptions = JSON.parse(
+      getWebauthnLoginChallenge.publicKeyOptions
+    )
+
+    publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
+    publicKeyOptions.allowCredentials = publicKeyOptions.allowCredentials.map(
+      cred => ({
+        ...cred,
+        id: str2ab(cred.id),
+      })
+    )
+
+    async function sendResponse(res) {
+      let payload = { response: {} }
+      payload.rawId = ab2str(res.rawId)
+      payload.response.authenticatorData = ab2str(
+        res.response.authenticatorData
+      )
+      payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
+      payload.response.signature = ab2str(res.response.signature)
+
+      const loginMutation = await this.props.client.mutate({
+        mutation: gql`
+          mutation($jwtChallenge: String!, $challengeResponse: String!) {
+            logInWithWebauthn(
+              jwtChallenge: $jwtChallenge
+              challengeResponse: $challengeResponse
+            ) {
+              token
+              user {
+                id
+                email
+                name
+                profileIconColor
+              }
             }
           }
         `,
         variables: {
-          email: this.props.email,
+          challengeResponse: JSON.stringify(payload),
+          jwtChallenge: this.props.jwtChallenge,
         },
       })
 
-      const publicKeyOptions = JSON.parse(
-        getWebauthnLoginChallenge.publicKeyOptions
+      this.props.signIn(
+        loginMutation.data.logIn.token,
+        loginMutation.data.logIn.user
       )
-
-      publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
-      publicKeyOptions.allowCredentials = publicKeyOptions.allowCredentials.map(
-        cred => ({
-          ...cred,
-          id: str2ab(cred.id),
-        })
-      )
-
-      async function sendResponse(res) {
-        let payload = { response: {} }
-        payload.rawId = ab2str(res.rawId)
-        payload.response.authenticatorData = ab2str(
-          res.response.authenticatorData
-        )
-        payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
-        payload.response.signature = ab2str(res.response.signature)
-
-        const loginMutation = await this.props.client.mutate({
-          mutation: gql`
-            mutation($jwtChallenge: String!, $challengeResponse: String!) {
-              logInWithWebauthn(
-                jwtChallenge: $jwtChallenge
-                challengeResponse: $challengeResponse
-              ) {
-                token
-                user {
-                  id
-                  email
-                  name
-                  profileIconColor
-                }
-              }
-            }
-          `,
-          variables: {
-            challengeResponse: JSON.stringify(payload),
-            jwtChallenge: this.props.jwtChallenge,
-          },
-        })
-
-        this.props.signIn(
-          loginMutation.data.logIn.token,
-          loginMutation.data.logIn.user
-        )
-      }
-
-      navigator.credentials
-        .get({ publicKey: publicKeyOptions })
-        .then(sendResponse)
-    } catch (e) {
-      console.log(e)
     }
+
+    navigator.credentials
+      .get({ publicKey: publicKeyOptions })
+      .then(sendResponse)
   }
 
   async recover(recoveryEmail) {
@@ -210,10 +291,20 @@ class Login extends Component {
 
   render() {
     return (
-      <React.Fragment>
+      <MuiThemeProvider theme={this.props.mobile ? mobileTheme : desktopTheme}>
+        {" "}
         <div
           className="rightSide notSelectable"
-          style={{ overflowY: "hidden", padding: "0 32px" }}
+          style={
+            this.props.mobile
+              ? {
+                  overflowY: "hidden",
+                  maxWidth: "400px",
+                  margin: "0 auto",
+                  padding: "0 32px",
+                }
+              : { overflowY: "hidden", margin: "0 32px" }
+          }
         >
           {this.props.mobile && (
             <img
@@ -248,10 +339,14 @@ class Login extends Component {
             />
           )}
           <div
-            style={{
-              textAlign: "center",
-              height: "436px",
-            }}
+            style={
+              this.props.mobile
+                ? { textAlign: "center" }
+                : {
+                    textAlign: "center",
+                    height: "436px",
+                  }
+            }
           >
             <Typography
               variant="h3"
@@ -517,7 +612,7 @@ class Login extends Component {
           close={() => this.setState({ forgotPasswordOpen: false })}
           email={this.props.email}
         />
-      </React.Fragment>
+      </MuiThemeProvider>
     )
   }
 }

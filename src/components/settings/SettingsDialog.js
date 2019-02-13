@@ -770,6 +770,7 @@ class SettingsDialog extends React.Component {
               <ListItem
                 button
                 onClick={() => this.setState({ mailingOpen: true })}
+                disabled={!user}
               >
                 <ListItemText
                   primary={

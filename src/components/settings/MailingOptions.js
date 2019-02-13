@@ -51,6 +51,7 @@ class MailingOptions extends React.Component {
             }}
           >
             You'll receive an email when:
+            <br />
             <FormControlLabel
               control={
                 <Checkbox
@@ -59,10 +60,13 @@ class MailingOptions extends React.Component {
                     this.setState({ passwordChange: event.target.checked })
                   }
                   color="primary"
+                  style={{ marginRight: "8px" }}
                 />
               }
+              style={{ marginTop: "8px" }}
               label="You change your password"
             />
+            <br />
             <FormControlLabel
               control={
                 <Checkbox
@@ -71,10 +75,12 @@ class MailingOptions extends React.Component {
                     this.setState({ tokenGenerated: event.target.checked })
                   }
                   color="primary"
+                  style={{ marginRight: "8px" }}
                 />
               }
               label="You generate a token"
             />
+            <br />
             <FormControlLabel
               control={
                 <Checkbox
@@ -83,10 +89,12 @@ class MailingOptions extends React.Component {
                     this.setState({ transferReceived: event.target.checked })
                   }
                   color="primary"
+                  style={{ marginRight: "8px" }}
                 />
               }
               label="You receive a transfer request"
             />
+            <br />
             <FormControlLabel
               control={
                 <Checkbox
@@ -95,10 +103,12 @@ class MailingOptions extends React.Component {
                     this.setState({ transferAccepted: event.target.checked })
                   }
                   color="primary"
+                  style={{ marginRight: "8px" }}
                 />
               }
               label="Someone accepts your transfer request"
             />
+            <br />
             <FormControlLabel
               control={
                 <Checkbox
@@ -107,10 +117,12 @@ class MailingOptions extends React.Component {
                     this.setState({ sharingAccepted: event.target.checked })
                   }
                   color="primary"
+                  style={{ marginRight: "8px" }}
                 />
               }
               label="You receive a sharing request"
             />
+            <br />
             <FormControlLabel
               control={
                 <Checkbox
@@ -119,6 +131,7 @@ class MailingOptions extends React.Component {
                     this.setState({ sharingReceived: event.target.checked })
                   }
                   color="primary"
+                  style={{ marginRight: "8px" }}
                 />
               }
               label="Someone accepts your sharing request"

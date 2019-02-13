@@ -1,23 +1,53 @@
 import React, { Component } from "react"
 import PasswordRecoveryError from "./PasswordRecoveryError"
-import FormControl from "@material-ui/core/FormControl"
-import FormHelperText from "@material-ui/core/FormHelperText"
-import Input from "@material-ui/core/Input"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import Button from "@material-ui/core/Button"
-import Grid from "@material-ui/core/Grid"
 import Typography from "@material-ui/core/Typography"
 import CircularProgress from "@material-ui/core/CircularProgress"
 import Fade from "@material-ui/core/Fade"
 import zxcvbn from "zxcvbn"
 import gql from "graphql-tag"
 import logo from "./styles/assets/logo.svg"
-import { Redirect } from "react-router-dom"
+import { Redirect, Link } from "react-router-dom"
 import CenteredSpinner from "./components/CenteredSpinner"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
-import VpnKey from "@material-ui/icons/VpnKey"
+import TextField from "@material-ui/core/TextField"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+
+const theme = createMuiTheme({
+  palette: {
+    default: { main: "#fff" },
+    primary: { light: "#0083ff", main: "#0057cb" },
+    secondary: { main: "#ff4081" },
+    error: { main: "#f44336" },
+  },
+  overrides: {
+    MuiInput: {
+      root: {
+        color: "white",
+      },
+    },
+    MuiFormControlLabel: {
+      label: {
+        color: "white",
+      },
+    },
+    MuiFormLabel: {
+      root: {
+        color: "white",
+        opacity: 0.8,
+        "&$focused": {
+          color: "white",
+          opacity: 0.8,
+        },
+      },
+    },
+    MuiInputBase: { root: { color: "white" } },
+  },
+})
 
 export default class PasswordRecovery extends Component {
   state = {
@@ -226,84 +256,67 @@ export default class PasswordRecovery extends Component {
         >
           Recover your account
         </Typography>
-        <Grid
-          container
-          spacing={0}
-          alignItems="flex-end"
-          style={{ width: "100%", marginBottom: "12px" }}
-        >
-          <Grid item style={{ marginRight: "16px" }}>
-            <VpnKey style={{ color: "white", marginBottom: "20px" }} />
-          </Grid>
-          <Grid item style={{ width: "calc(100% - 48px)" }}>
-            <FormControl style={{ width: "100%" }}>
-              <Input
-                id="password"
-                placeholder="New password"
-                style={{
-                  color: "white",
-                }}
-                value={this.props.password}
-                type={this.state.showPassword ? "text" : "password"}
-                onChange={event => {
-                  this.setState({
-                    passwordScore: zxcvbn(event.target.value, [
-                      user.email,
-                      user.email.split("@")[0],
-                      user.name,
-                      "igloo",
-                      "igloo aurora",
-                      "aurora",
-                    ]).score,
-                    isPasswordEmpty: event.target.value === "",
-                  })
-                  this.props.updatePassword(event.target.value)
-                }}
-                onKeyPress={event => {
-                  if (event.key === "Enter") {
-                    this.updatePassword(this.props.password)
-                  }
-                }}
-                endAdornment={
-                  this.props.password ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        onClick={() =>
-                          this.setState(oldState => ({
-                            showPassword: !oldState.showPassword,
-                          }))
-                        }
-                        tabIndex="-1"
-                        style={{ color: "white" }}
-                      >
-                        {this.state.showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
-              <FormHelperText
-                id="password-error-text-signup"
-                style={{ color: "white" }}
-              >
-                {scoreText}
-                {this.state.isPasswordEmpty
+        <MuiThemeProvider theme={theme}>
+          <TextField
+            variant="outlined"
+            id="recovery-new-password"
+            label="New password"
+            style={{
+              color: "white",
+              width: "100%",
+              marginBottom: "16px",
+            }}
+            value={this.props.password}
+            type={this.state.showPassword ? "text" : "password"}
+            onChange={event => {
+              this.setState({
+                passwordScore: zxcvbn(event.target.value, [
+                  user.email,
+                  user.email.split("@")[0],
+                  user.name,
+                  "igloo",
+                  "igloo aurora",
+                  "aurora",
+                ]).score,
+                isPasswordEmpty: event.target.value === "",
+              })
+              this.props.updatePassword(event.target.value)
+            }}
+            onKeyPress={event => {
+              if (event.key === "Enter") {
+                this.updatePassword(this.props.password)
+              }
+            }}
+            helperText={
+              <font style={{ color: "white" }}>
+                {(this.state.isPasswordEmpty
                   ? "This field is required"
-                  : this.state.passwordError}
-              </FormHelperText>
-            </FormControl>
-          </Grid>
-        </Grid>
-        <Button
-          style={{ marginRight: "4px" }}
-          onClick={() => this.setState({ redirect: true })}
-        >
-          Never mind
-        </Button>
+                  : this.state.passwordError) || scoreText}
+              </font>
+            }
+            endAdornment={
+              this.props.password ? (
+                <InputAdornment position="end">
+                  <IconButton
+                    onClick={() =>
+                      this.setState(oldState => ({
+                        showPassword: !oldState.showPassword,
+                      }))
+                    }
+                    tabIndex="-1"
+                    style={{ color: "white" }}
+                  >
+                    {this.state.showPassword ? (
+                      <VisibilityOff />
+                    ) : (
+                      <Visibility />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              ) : null
+            }
+          />
+        </MuiThemeProvider>
         <Button
           variant="contained"
           color="primary"
@@ -311,9 +324,14 @@ export default class PasswordRecovery extends Component {
           onClick={() => {
             this.updatePassword(this.props.password)
           }}
+          fullWidth
+          style={{ marginBottom: "8px" }}
         >
           Change password
           {this.state.showLoading && <CenteredSpinner isInButton noDelay />}
+        </Button>
+        <Button style={{ marginRight: "4px" }} fullWidth component={Link} to="/">
+          Never mind
         </Button>
       </div>
     )

@@ -48,7 +48,9 @@ export default class UnAuthenticatedMain extends Component {
           <title>
             {this.props.isLogin
               ? "Igloo Aurora - Log in"
-              : this.props.isAccountSwitcher ? "Igloo Aurora - Accounts" : "Igloo Aurora - Sign up"}
+              : this.props.isAccountSwitcher
+              ? "Igloo Aurora - Accounts"
+              : "Igloo Aurora - Sign up"}
           </title>
         </Helmet>
         {this.props.mobile ? (
@@ -60,13 +62,7 @@ export default class UnAuthenticatedMain extends Component {
               overflowX: "hidden",
             }}
           >
-            <div
-              style={
-                this.props.isAccountSwitcher
-                  ? {}
-                  : { marginRight: "32px", marginLeft: "32px" }
-              }
-            >
+            <div>
               {this.props.isLogin ? (
                 <Login
                   mobile
