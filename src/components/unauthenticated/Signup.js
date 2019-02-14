@@ -28,14 +28,6 @@ import MUILink from "@material-ui/core/Link"
 import Checkbox from "@material-ui/core/Checkbox"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
 
-function str2ab(str) {
-  return Uint8Array.from(str, c => c.charCodeAt(0))
-}
-
-function ab2str(ab) {
-  return Array.from(new Int8Array(ab))
-}
-
 const sharedStyles = {
   MuiButton: {
     containedPrimary: {
@@ -255,70 +247,6 @@ export default class Signup extends Component {
 
     this.updateWindowDimensions()
     window.addEventListener("resize", this.updateWindowDimensions)
-  }
-
-  async signInWebauthn() {
-    const {
-      data: { getWebauthnLoginChallenge },
-    } = await this.props.client.query({
-      query: gql`
-        query getWebauthnLoginChallenge($email: String!) {
-          getWebauthnLoginChallenge(email: $email) {
-            publicKeyOptions
-            jwtChallenge
-          }
-        }
-      `,
-      variables: {
-        email: this.props.email,
-      },
-    })
-
-    const publicKeyOptions = JSON.parse(
-      getWebauthnLoginChallenge.publicKeyOptions
-    )
-
-    publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
-    publicKeyOptions.allowCredentials = publicKeyOptions.allowCredentials.map(
-      cred => ({
-        ...cred,
-        id: str2ab(cred.id),
-      })
-    )
-
-    async function sendResponse(res) {
-      let payload = { response: {} }
-      payload.rawId = ab2str(res.rawId)
-      payload.response.authenticatorData = ab2str(
-        res.response.authenticatorData
-      )
-      payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
-      payload.response.signature = ab2str(res.response.signature)
-
-      const loginMutation = await this.props.client.mutate({
-        mutation: gql`
-          mutation($jwtChallenge: String!, $challengeResponse: String!) {
-            enableWebauthn(
-              jwtChallenge: $jwtChallenge
-              challengeResponse: $challengeResponse
-            )
-          }
-        `,
-        variables: {
-          challengeResponse: JSON.stringify(payload),
-          jwtChallenge: this.props.jwtChallenge,
-        },
-      })
-
-      this.props.signIn(
-        loginMutation.data.logIn.token,
-        loginMutation.data.logIn.user
-      )
-    }
-
-    navigator.credentials
-      .get({ publicKey: publicKeyOptions })
-      .then(sendResponse)
   }
 
   render() {

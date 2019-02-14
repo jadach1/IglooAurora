@@ -45,6 +45,7 @@ import Close from "@material-ui/icons/Close"
 import AccountBox from "@material-ui/icons/AccountBox"
 import Language from "@material-ui/icons/Language"
 import MailingOptions from "./MailingOptions"
+import AuthenticationOptions from "./AuthenticationOptions"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -84,6 +85,7 @@ const allDialogsClosed = {
   serverOpen: false,
   verifyOpen: false,
   mailingOpen: false,
+  authenticationOpen: false
 }
 
 class SettingsDialog extends React.Component {
@@ -722,6 +724,25 @@ class SettingsDialog extends React.Component {
                   }
                 />
               </ListItem>
+              <ListItem
+                button
+                onClick={() => this.setState({ authenticationOpen: true })}
+              >
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      Passwordless authentication
+                    </font>
+                  }
+                />
+              </ListItem>
               <Divider />
             </ul>
           </li>
@@ -1171,7 +1192,8 @@ class SettingsDialog extends React.Component {
             !this.state.gdprOpen &&
             !this.state.serverOpen &&
             !this.state.verifyOpen &&
-            !this.state.mailingOpen
+            !this.state.mailingOpen &&
+            !this.state.authenticationOpen
           }
           onClose={this.props.closeSettingsDialog}
           TransitionComponent={
@@ -1460,6 +1482,7 @@ class SettingsDialog extends React.Component {
           open={this.props.isOpen && this.state.mailingOpen}
           close={() => this.setState({ mailingOpen: false })}
         />
+        <AuthenticationOptions open={this.state.authenticationOpen} close={()=>this.setState({authenticationOpen:false})} client={this.props.client} />
       </React.Fragment>
     )
   }

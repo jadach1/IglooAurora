@@ -172,11 +172,11 @@ class Main extends Component {
           updatedAt
           starred
           notificationCount
-          notifications {
-            id
-            content
-            read
-          }
+                getLastNotification {
+                  id
+                  content
+                  read
+                }
         }
       }
     `
@@ -230,11 +230,11 @@ class Main extends Component {
           updatedAt
           starred
           notificationCount
-          notifications {
-            id
-            content
-            read
-          }
+          getLastNotification {
+                  id
+                  content
+                  read
+                }
         }
       }
     `
@@ -330,11 +330,11 @@ class Main extends Component {
           environment {
             id
           }
-          notifications {
-            id
-            content
-            read
-          }
+                getLastNotification {
+                  id
+                  content
+                  read
+                }
         }
       }
     `

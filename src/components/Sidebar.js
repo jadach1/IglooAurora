@@ -11,7 +11,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction"
 import ListItemText from "@material-ui/core/ListItemText"
 import List from "@material-ui/core/List"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import Button from "@material-ui/core/Button"
+import Fab from "@material-ui/core/Fab"
 import Zoom from "@material-ui/core/Zoom"
 import AddDevice from "./AddDevice"
 import { hotkeys } from "react-keyboard-shortcuts"
@@ -129,7 +129,7 @@ class Sidebar extends Component {
     let mergedArray = []
 
     if (environment) {
-      if (localStorage.getItem("sortBy") === "name" && false) {
+      if (localStorage.getItem("sortBy") === "name") {
         mergedArray = environment.starredDevices.concat(environment.devices)
       } else {
         mergedArray = environment.devices
@@ -266,24 +266,12 @@ class Sidebar extends Component {
                             : { color: "#7a7a7a" }
                         }
                       >
-                        {device.notifications
-                          .filter(notification => notification.read === false)
-                          .map(notification => notification.content)
-                          .reverse()[0]
-                          ? device.notifications
-                              .filter(
-                                notification => notification.read === false
-                              )
-                              .map(notification => notification.content)
-                              .reverse()[0]
-                          : device.notifications
-                              .filter(
-                                notification => notification.read === true
-                              )
-                              .map(notification => notification.content)
-                              .reverse()[0]
+                        {/*device.lastUnreadNotification || (device.lastNotification
                           ? "No unread notifications"
-                          : "No notifications"}
+                        : "No notifications")*/}
+                        {device.getLastNotification
+                          ? "No unread notifications"
+                        : "No notifications"}
                       </span>
                     }
                   />
@@ -312,8 +300,7 @@ class Sidebar extends Component {
               ))}
           </List>
           <Zoom in={environment}>
-            <Button
-              variant="fab"
+            <Fab
               color="secondary"
               style={
                 this.props.isMobile
@@ -352,7 +339,7 @@ class Sidebar extends Component {
               onClick={() => this.setState({ addDeviceOpen: true })}
             >
               <Add />
-            </Button>
+            </Fab>
           </Zoom>
           <AddDevice
             open={this.state.addDeviceOpen}

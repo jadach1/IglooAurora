@@ -30,8 +30,8 @@ class ShortcutDialog extends React.Component {
           onClose={this.props.handleShortcutDialogClose}
           className="notSelectable"
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           titleClassName="defaultCursor"
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
@@ -59,7 +59,7 @@ class ShortcutDialog extends React.Component {
                   : {}
               }
             >
-              Keyenvironment shortcuts
+              Keyboard shortcuts
             </font>
           </DialogTitle>
           <div
@@ -273,4 +273,4 @@ class ShortcutDialog extends React.Component {
   }
 }
 
-export default withMobileDialog({ breakpoint: "xs" })(ShortcutDialog)
+export default withMobileDialog({ breakpoint: "sm" })(ShortcutDialog)

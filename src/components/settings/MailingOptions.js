@@ -8,6 +8,10 @@ import Slide from "@material-ui/core/Slide"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 import Checkbox from "@material-ui/core/Checkbox"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
+import { Query } from "react-apollo"
+import gql from "graphql-tag"
+import CenteredSpinner from "../CenteredSpinner"
+import { graphql } from "react-apollo"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -17,14 +21,21 @@ function SlideTransition(props) {
   return <Slide direction="up" {...props} />
 }
 
+let settings = []
+
 class MailingOptions extends React.Component {
-  state = {
-    passwordChange: false,
-    tokenGenerated: false,
-    transferReceived: false,
-    transferAccepted: false,
-    sharingAccepted: false,
-    sharingReceived: false,
+  settingsMutation(passwordChangeEmail) {
+    this.props.MutateSettings({
+      variables: {
+        passwordChangeEmail,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        settings: {
+          passwordChangeEmail,
+        },
+      },
+    })
   }
 
   render() {
@@ -43,100 +54,150 @@ class MailingOptions extends React.Component {
           maxWidth="xs"
         >
           <DialogTitle disableTypography>Mailing options</DialogTitle>
-          <div
-            style={{
-              paddingRight: "24px",
-              paddingLeft: "24px",
-              height: "100%",
-            }}
+          <Query
+            query={gql`
+              {
+                user {
+                  id
+                  settings {
+                    passwordChangeEmail
+                    pendingOwnerChangeReceivedEmail
+                    pendingEnvironmentShareReceivedEmail
+                    pendingOwnerChangeAcceptedEmail
+                    pendingEnvironmentShareAcceptedEmail
+                    permanentTokenCreatedEmail
+                  }
+                }
+              }
+            `}
+            skip={!this.props.open}
           >
-            You'll receive an email when:
-            <br />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.passwordChange}
-                  onChange={event =>
-                    this.setState({ passwordChange: event.target.checked })
-                  }
-                  color="primary"
-                  style={{ marginRight: "8px" }}
-                />
+            {({ loading, error, data }) => {
+              if (loading)
+                return (
+                  <div
+                    style={{
+                      height: "100%",
+                    }}
+                  >
+                    <CenteredSpinner />
+                  </div>
+                )
+
+              if (error) return "Unexpected error"
+
+              if (data) {
+                settings = data.user.settings
               }
-              style={{ marginTop: "8px" }}
-              label="You change your password"
-            />
-            <br />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.tokenGenerated}
-                  onChange={event =>
-                    this.setState({ tokenGenerated: event.target.checked })
-                  }
-                  color="primary"
-                  style={{ marginRight: "8px" }}
-                />
-              }
-              label="You generate a token"
-            />
-            <br />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.transferReceived}
-                  onChange={event =>
-                    this.setState({ transferReceived: event.target.checked })
-                  }
-                  color="primary"
-                  style={{ marginRight: "8px" }}
-                />
-              }
-              label="You receive a transfer request"
-            />
-            <br />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.transferAccepted}
-                  onChange={event =>
-                    this.setState({ transferAccepted: event.target.checked })
-                  }
-                  color="primary"
-                  style={{ marginRight: "8px" }}
-                />
-              }
-              label="Someone accepts your transfer request"
-            />
-            <br />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.sharingAccepted}
-                  onChange={event =>
-                    this.setState({ sharingAccepted: event.target.checked })
-                  }
-                  color="primary"
-                  style={{ marginRight: "8px" }}
-                />
-              }
-              label="You receive a sharing request"
-            />
-            <br />
-            <FormControlLabel
-              control={
-                <Checkbox
-                  checked={this.state.sharingReceived}
-                  onChange={event =>
-                    this.setState({ sharingReceived: event.target.checked })
-                  }
-                  color="primary"
-                  style={{ marginRight: "8px" }}
-                />
-              }
-              label="Someone accepts your sharing request"
-            />
-          </div>
+
+              return (
+                <div
+                  style={{
+                    paddingRight: "24px",
+                    paddingLeft: "24px",
+                    height: "100%",
+                  }}
+                >
+                  You'll receive an email when:
+                  <br />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={settings.passwordChangeEmail}
+                        onChange={event =>
+                          this.settingsMutation(event.target.checked)
+                        }
+                        color="primary"
+                        style={{ marginRight: "8px" }}
+                      />
+                    }
+                    style={{ marginTop: "8px" }}
+                    label="You change your password"
+                  />
+                  <br />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={settings.pendingOwnerChangeReceivedEmail}
+                        onChange={event =>
+                          this.setState({
+                            tokenGenerated: event.target.checked,
+                          })
+                        }
+                        color="primary"
+                        style={{ marginRight: "8px" }}
+                      />
+                    }
+                    label="You generate a token"
+                  />
+                  <br />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={settings.pendingEnvironmentShareReceivedEmail}
+                        onChange={event =>
+                          this.setState({
+                            transferReceived: event.target.checked,
+                          })
+                        }
+                        color="primary"
+                        style={{ marginRight: "8px" }}
+                      />
+                    }
+                    label="You receive a transfer request"
+                  />
+                  <br />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={settings.pendingOwnerChangeAcceptedEmail}
+                        onChange={event =>
+                          this.setState({
+                            transferAccepted: event.target.checked,
+                          })
+                        }
+                        color="primary"
+                        style={{ marginRight: "8px" }}
+                      />
+                    }
+                    label="Someone accepts your transfer request"
+                  />
+                  <br />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={settings.pendingEnvironmentShareAcceptedEmail}
+                        onChange={event =>
+                          this.setState({
+                            sharingAccepted: event.target.checked,
+                          })
+                        }
+                        color="primary"
+                        style={{ marginRight: "8px" }}
+                      />
+                    }
+                    label="You receive a sharing request"
+                  />
+                  <br />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={settings.permanentTokenCreatedEmail}
+                        onChange={event =>
+                          this.setState({
+                            sharingReceived: event.target.checked,
+                          })
+                        }
+                        color="primary"
+                        style={{ marginRight: "8px" }}
+                      />
+                    }
+                    label="Someone accepts your sharing request"
+                  />
+                </div>
+              )
+            }}
+          </Query>
           <DialogActions>
             <Button onClick={this.props.close}>Close</Button>
           </DialogActions>
@@ -146,4 +207,16 @@ class MailingOptions extends React.Component {
   }
 }
 
-export default withMobileDialog({ breakpoint: "xs" })(MailingOptions)
+export default graphql(
+  gql`
+    mutation settings($passwordChangeEmail: Boolean) {
+      claimDevice(passwordChangeEmail: $passwordChangeEmail) {
+        id
+        passwordChangeEmail
+      }
+    }
+  `,
+  {
+    name: "MutateSettings",
+  }
+)(withMobileDialog({ breakpoint: "xs" })(MailingOptions))

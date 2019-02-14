@@ -254,8 +254,8 @@ class Login extends Component {
       })
 
       this.props.signIn(
-        loginMutation.data.logIn.token,
-        loginMutation.data.logIn.user
+        loginMutation.data.logInWithWebauthn.token,
+        loginMutation.data.logInWithWebauthn.user
       )
     }
 
