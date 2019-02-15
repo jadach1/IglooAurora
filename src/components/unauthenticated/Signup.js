@@ -158,10 +158,10 @@ export default class Signup extends Component {
       height: 0,
       confirmPassword: "",
       coppaCheckbox: false,
+      counter: 0,
     }
 
     this.signUp = this.signUp.bind(this)
-    this.signInWebauthn = this.signInWebauthn.bind(this)
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
   }
 
@@ -254,6 +254,11 @@ export default class Signup extends Component {
     let passwordColor = ""
     let passwordTheme = this.props.mobile ? mobileTheme : desktopTheme
 
+    if (this.props.mobile && this.state.counter === 7) {
+      this.setState({ counter: 0 })
+      this.props.openChangeServer()
+    }
+
     switch (this.state.passwordScore) {
       case 0:
         scoreText = "Very weak"
@@ -343,7 +348,7 @@ export default class Signup extends Component {
               }
               onClick={() =>
                 this.setState(oldState => ({
-                  tapCounter: oldState.tapCounter + 1,
+                  counter: oldState.counter + 1,
                 }))
               }
             />
@@ -603,14 +608,22 @@ export default class Signup extends Component {
                       </MuiThemeProvider>
                     ) : (
                       <MuiThemeProvider
-                        theme={createMuiTheme({
-                          palette: {
-                            primary: { main: "#0083ff" },
-                          },
-                        })}
+                        theme={
+                          this.props.mobile
+                            ? createMuiTheme({
+                                palette: {
+                                  primary: { main: "#fff" },
+                                },
+                              })
+                            : createMuiTheme({
+                                palette: {
+                                  primary: { main: "#0083ff" },
+                                },
+                              })
+                        }
                       >
                         <Button
-                          fullWidth={true}
+                          fullWidth
                           color="primary"
                           disabled={this.state.showLoading}
                           component={Link}
@@ -1034,7 +1047,29 @@ export default class Signup extends Component {
                     }
                   >
                     Sign up
-                    {this.state.showLoading && <CenteredSpinner isInButton />}
+                    {this.state.showLoading && (
+                      <MuiThemeProvider
+                        theme={createMuiTheme(
+                          this.props.mobile
+                            ? {
+                                overrides: {
+                                  MuiCircularProgress: {
+                                    root: { color: "#fff" },
+                                  },
+                                },
+                              }
+                            : {
+                                overrides: {
+                                  MuiCircularProgress: {
+                                    root: { color: "#0083ff" },
+                                  },
+                                },
+                              }
+                        )}
+                      >
+                        <CenteredSpinner isInButton />
+                      </MuiThemeProvider>
+                    )}
                   </Button>
                   <MuiThemeProvider
                     theme={createMuiTheme(
@@ -1052,8 +1087,8 @@ export default class Signup extends Component {
                     )}
                   >
                     <Button
-                      fullWidth={true}
-                      color="primary"
+                      fullWidth
+                      color="default"
                       disabled={this.state.showLoading}
                       onClick={() =>
                         this.setState({

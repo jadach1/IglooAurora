@@ -12,6 +12,15 @@ import ListItemText from "@material-ui/core/ListItemText"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import Fingerprint from "@material-ui/icons/Fingerprint"
 import MailOutline from "@material-ui/icons/MailOutline"
+import TextField from "@material-ui/core/TextField"
+import IconButton from "@material-ui/core/IconButton"
+import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import Visibility from "@material-ui/icons/Visibility"
+import CenteredSpinner from "../CenteredSpinner"
+import InputAdornment from "@material-ui/core/InputAdornment"
+import ToggleIcon from "material-ui-toggle-icon"
+import List from "@material-ui/core/List"
+import ListSubheader from "@material-ui/core/ListSubheader"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -30,6 +39,42 @@ function SlideTransition(props) {
 }
 
 class AuthenticationOptions extends React.Component {
+  state = { selectAuthTypeOpen: false }
+
+  async createToken() {
+    try {
+      this.setState({ showLoading: true })
+
+      let createTokenMutation = await this.props.client.mutate({
+        mutation: gql`
+          mutation($tokenType: TokenType!, $password: String!) {
+            createToken(tokenType: $tokenType, password: $password)
+          }
+        `,
+        variables: {
+          tokenType: "ENABLE_WEBAUTHN",
+          password: this.state.password,
+        },
+      })
+
+      this.setState({
+        token: createTokenMutation.data.createToken,
+        mailDialogOpen: true,
+        showDeleteLoading: false,
+      })
+    } catch (e) {
+      if (e.message === "GraphQL error: Wrong password") {
+        this.setState({ passwordError: "Wrong password" })
+      } else {
+        this.setState({
+          passwordError: "Unexpected error",
+        })
+      }
+    }
+
+    this.setState({ showLoading: false })
+  }
+
   enableddWebAuthn = async () => {
     const {
       data: { getWebauthnSubscribeChallenge },
@@ -43,7 +88,7 @@ class AuthenticationOptions extends React.Component {
         }
       `,
       variables: {
-        email: "andrea@igloo.ooo",
+        email: this.props.email,
       },
     })
 
@@ -87,8 +132,106 @@ class AuthenticationOptions extends React.Component {
     return (
       <React.Fragment>
         <Dialog
-          open={this.props.open}
-          onClose={this.props.close}
+          open={this.props.open && !this.state.selectAuthTypeOpen}
+          onClose={() => this.props.close()}
+          className="notSelectable"
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle disableTypography>Type your password</DialogTitle>
+          <div
+            style={{
+              height: "100%",
+              paddingRight: "24px",
+              paddingLeft: "24px",
+            }}
+          >
+            <TextField
+              id="passwordless-authentication-password"
+              label="Password"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password}
+              variant="outlined"
+              error={this.state.passwordEmpty || this.state.passwordError}
+              helperText={
+                this.state.passwordEmpty
+                  ? "This field is required"
+                  : this.state.passwordError || " "
+              }
+              onChange={event =>
+                this.setState({
+                  password: event.target.value,
+                  passwordEmpty: event.target.value === "",
+                  passwordError: "",
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter" && this.state.password !== "")
+                  this.createToken()
+              }}
+              style={{
+                width: "100%",
+              }}
+              InputLabelProps={this.state.password && { shrink: true }}
+              InputProps={{
+                endAdornment: this.state.password && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState(oldState => ({
+                          showPassword: !oldState.showPassword,
+                        }))
+                      }
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
+                      }
+                    >
+                      {/* fix for ToggleIcon glitch on Edge */}
+                      {document.documentMode ||
+                      /Edge/.test(navigator.userAgent) ? (
+                        this.state.showPassword ? (
+                          <VisibilityOff />
+                        ) : (
+                          <Visibility />
+                        )
+                      ) : (
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<VisibilityOff />}
+                          offIcon={<Visibility />}
+                        />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <DialogActions>
+            <Button onClick={this.props.close}>Never mind</Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => this.setState({ selectAuthTypeOpen: true })}
+              disabled={!this.state.password || this.state.showLoading}
+            >
+              Proceed
+              {this.state.showLoading && <CenteredSpinner isInButton />}
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={this.state.selectAuthTypeOpen}
+          onClose={() => this.setState({ selectAuthTypeOpen: false })}
           className="notSelectable"
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition
@@ -136,44 +279,56 @@ class AuthenticationOptions extends React.Component {
                   }
             }
           >
-            <ListItem onClick={this.enableddWebAuthn} button>
-              <ListItemIcon>
-                <Fingerprint />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  <font
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : {}
-                    }
-                  >
-                    Fingerprint, face or security key
-                  </font>
-                }
-              />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <MailOutline />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  <font
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : {}
-                    }
-                  >
-                    Email authentication
-                  </font>
-                }
-              />
-            </ListItem>
+            <List>
+              <li key="yourEnvironments">
+                <ul style={{ padding: "0" }}>
+                  <ListSubheader>Enabled</ListSubheader>
+                  <ListItem onClick={this.enableddWebAuthn} button>
+                    <ListItemIcon>
+                      <Fingerprint />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={
+                        <font
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : {}
+                          }
+                        >
+                          Fingerprint, face or security key
+                        </font>
+                      }
+                    />
+                  </ListItem>
+                  <ListItem button>
+                    <ListItemIcon>
+                      <MailOutline />
+                    </ListItemIcon>
+                    <ListItemText
+                      primary={
+                        <font
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? { color: "white" }
+                              : {}
+                          }
+                        >
+                          Email authentication
+                        </font>
+                      }
+                    />
+                  </ListItem>
+                </ul>
+              </li>
+              <li key="yourEnvironments">
+                <ul style={{ padding: "0" }}>
+                  <ListSubheader>Disabled</ListSubheader>
+                </ul>
+              </li>
+            </List>
           </div>
           <DialogActions>
             <Button onClick={this.props.close}>

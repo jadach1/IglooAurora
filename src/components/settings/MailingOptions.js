@@ -24,8 +24,8 @@ function SlideTransition(props) {
 let settings = []
 
 class MailingOptions extends React.Component {
-  settingsMutation(passwordChangeEmail) {
-    this.props.MutateSettings({
+  passwordChangeEmailMutation = passwordChangeEmail => {
+    this.props.PasswordChangeEmail({
       variables: {
         passwordChangeEmail,
       },
@@ -33,6 +33,76 @@ class MailingOptions extends React.Component {
         __typename: "Mutation",
         settings: {
           passwordChangeEmail,
+        },
+      },
+    })
+  }
+
+  pendingOwnerChangeReceivedEmailMutation = pendingOwnerChangeReceivedEmail => {
+    this.props.PendingOwnerChangeReceivedEmail({
+      variables: {
+        pendingOwnerChangeReceivedEmail,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        settings: {
+          pendingOwnerChangeReceivedEmail,
+        },
+      },
+    })
+  }
+
+  pendingEnvironmentShareReceivedEmailMutation = pendingEnvironmentShareReceivedEmail => {
+    this.props.PendingEnvironmentShareReceivedEmail({
+      variables: {
+        pendingEnvironmentShareReceivedEmail,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        settings: {
+          pendingEnvironmentShareReceivedEmail,
+        },
+      },
+    })
+  }
+
+  pendingOwnerChangeAcceptedEmailMutation = pendingOwnerChangeAcceptedEmail => {
+    this.props.PendingOwnerChangeAcceptedEmail({
+      variables: {
+        pendingOwnerChangeAcceptedEmail,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        settings: {
+          pendingOwnerChangeAcceptedEmail,
+        },
+      },
+    })
+  }
+
+  pendingEnvironmentShareAcceptedEmailMutation = pendingEnvironmentShareAcceptedEmail => {
+    this.props.PendingEnvironmentShareAcceptedEmail({
+      variables: {
+        pendingEnvironmentShareAcceptedEmail,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        settings: {
+          pendingEnvironmentShareAcceptedEmail,
+        },
+      },
+    })
+  }
+
+  permanentTokenCreatedEmailMutation = permanentTokenCreatedEmail => {
+    this.props.PermanentTokenCreatedEmail({
+      variables: {
+        permanentTokenCreatedEmail,
+      },
+      optimisticResponse: {
+        __typename: "Mutation",
+        settings: {
+          permanentTokenCreatedEmail,
         },
       },
     })
@@ -105,7 +175,7 @@ class MailingOptions extends React.Component {
                       <Checkbox
                         checked={settings.passwordChangeEmail}
                         onChange={event =>
-                          this.settingsMutation(event.target.checked)
+                          this.passwordChangeEmailMutation(event.target.checked)
                         }
                         color="primary"
                         style={{ marginRight: "8px" }}
@@ -118,11 +188,11 @@ class MailingOptions extends React.Component {
                   <FormControlLabel
                     control={
                       <Checkbox
-                        checked={settings.pendingOwnerChangeReceivedEmail}
+                        checked={settings.permanentTokenCreatedEmail}
                         onChange={event =>
-                          this.setState({
-                            tokenGenerated: event.target.checked,
-                          })
+                          this.permanentTokenCreatedEmailMutation(
+                            event.target.checked
+                          )
                         }
                         color="primary"
                         style={{ marginRight: "8px" }}
@@ -136,9 +206,9 @@ class MailingOptions extends React.Component {
                       <Checkbox
                         checked={settings.pendingEnvironmentShareReceivedEmail}
                         onChange={event =>
-                          this.setState({
-                            transferReceived: event.target.checked,
-                          })
+                          this.pendingEnvironmentShareReceivedEmailMutation(
+                            event.target.checked
+                          )
                         }
                         color="primary"
                         style={{ marginRight: "8px" }}
@@ -152,9 +222,9 @@ class MailingOptions extends React.Component {
                       <Checkbox
                         checked={settings.pendingOwnerChangeAcceptedEmail}
                         onChange={event =>
-                          this.setState({
-                            transferAccepted: event.target.checked,
-                          })
+                          this.pendingOwnerChangeAcceptedEmailMutation(
+                            event.target.checked
+                          )
                         }
                         color="primary"
                         style={{ marginRight: "8px" }}
@@ -168,9 +238,9 @@ class MailingOptions extends React.Component {
                       <Checkbox
                         checked={settings.pendingEnvironmentShareAcceptedEmail}
                         onChange={event =>
-                          this.setState({
-                            sharingAccepted: event.target.checked,
-                          })
+                          this.pendingEnvironmentShareAcceptedEmailMutation(
+                            event.target.checked
+                          )
                         }
                         color="primary"
                         style={{ marginRight: "8px" }}
@@ -184,9 +254,9 @@ class MailingOptions extends React.Component {
                       <Checkbox
                         checked={settings.permanentTokenCreatedEmail}
                         onChange={event =>
-                          this.setState({
-                            sharingReceived: event.target.checked,
-                          })
+                          this.permanentTokenCreatedEmailMutation(
+                            event.target.checked
+                          )
                         }
                         color="primary"
                         style={{ marginRight: "8px" }}
@@ -209,14 +279,60 @@ class MailingOptions extends React.Component {
 
 export default graphql(
   gql`
+    mutation settings($pendingOwnerChangeAcceptedEmail: Boolean) {
+      settings(pendingOwnerChangeAcceptedEmail: $pendingOwnerChangeAcceptedEmail) {
+        pendingOwnerChangeAcceptedEmail
+      }
+    }
+  `,
+  {
+    name: "PendingOwnerChangeAcceptedEmail",
+  }
+)(graphql(
+  gql`
+    mutation settings($pendingEnvironmentShareReceivedEmail: Boolean) {
+      settings(pendingEnvironmentShareReceivedEmail: $pendingEnvironmentShareReceivedEmail) {
+        pendingEnvironmentShareReceivedEmail
+      }
+    }
+  `,
+  {
+    name: "PendingEnvironmentShareReceivedEmail",
+  }
+)(graphql(
+  gql`
+    mutation settings($pendingOwnerChangeReceivedEmail: Boolean) {
+      settings(pendingOwnerChangeReceivedEmail: $pendingOwnerChangeReceivedEmail) {
+        pendingOwnerChangeReceivedEmail
+      }
+    }
+  `,
+  {
+    name: "PendingOwnerChangeReceivedEmail",
+  }
+)(graphql(
+  gql`
     mutation settings($passwordChangeEmail: Boolean) {
-      claimDevice(passwordChangeEmail: $passwordChangeEmail) {
-        id
+      settings(passwordChangeEmail: $passwordChangeEmail) {
         passwordChangeEmail
       }
     }
   `,
   {
-    name: "MutateSettings",
+    name: "PasswordChangeEmail",
   }
-)(withMobileDialog({ breakpoint: "xs" })(MailingOptions))
+)(
+  graphql(
+    gql`
+      mutation settings($permanentTokenCreatedEmail: Boolean) {
+        settings(permanentTokenCreatedEmail: $permanentTokenCreatedEmail) {
+          permanentTokenCreatedEmail
+        }
+      }
+    `,
+    {
+      name: "PermanentTokenCreatedEmail",
+    }
+  )(withMobileDialog({ breakpoint: "xs" })(MailingOptions))
+))
+))

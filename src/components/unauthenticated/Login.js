@@ -124,6 +124,7 @@ class Login extends Component {
       isPasswordEmpty: false,
       showLoading: false,
       redirect: false,
+      counter: 0,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -213,6 +214,8 @@ class Login extends Component {
       getWebauthnLoginChallenge.publicKeyOptions
     )
 
+    const jwtChallenge = getWebauthnLoginChallenge.jwtChallenge
+
     publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
     publicKeyOptions.allowCredentials = publicKeyOptions.allowCredentials.map(
       cred => ({
@@ -221,7 +224,7 @@ class Login extends Component {
       })
     )
 
-    async function sendResponse(res) {
+    let sendResponse = async res => {
       let payload = { response: {} }
       payload.rawId = ab2str(res.rawId)
       payload.response.authenticatorData = ab2str(
@@ -249,7 +252,7 @@ class Login extends Component {
         `,
         variables: {
           challengeResponse: JSON.stringify(payload),
-          jwtChallenge: this.props.jwtChallenge,
+          jwtChallenge: jwtChallenge,
         },
       })
 
@@ -257,6 +260,8 @@ class Login extends Component {
         loginMutation.data.logInWithWebauthn.token,
         loginMutation.data.logInWithWebauthn.user
       )
+
+      this.props.changePassword("")
     }
 
     navigator.credentials
@@ -290,9 +295,13 @@ class Login extends Component {
   }
 
   render() {
+    if (this.props.mobile && this.state.counter === 7) {
+      this.setState({ counter: 0 })
+      this.props.openChangeServer()
+    }
+
     return (
       <MuiThemeProvider theme={this.props.mobile ? mobileTheme : desktopTheme}>
-        {" "}
         <div
           className="rightSide notSelectable"
           style={
@@ -332,9 +341,7 @@ class Login extends Component {
                     }
               }
               onClick={() =>
-                this.setState(oldState => ({
-                  tapCounter: oldState.tapCounter + 1,
-                }))
+                this.setState(oldState => ({ counter: oldState.counter + 1 }))
               }
             />
           )}
@@ -547,7 +554,29 @@ class Login extends Component {
               }
             >
               Log in
-              {this.state.showLoading && <CenteredSpinner isInButton />}
+              {this.state.showLoading && (
+                <MuiThemeProvider
+                  theme={createMuiTheme(
+                    this.props.mobile
+                      ? {
+                          overrides: {
+                            MuiCircularProgress: {
+                              colorPrimary: { color: "#fff" },
+                            },
+                          },
+                        }
+                      : {
+                          overrides: {
+                            MuiCircularProgress: {
+                              colorPrimary: { color: "#0083ff" },
+                            },
+                          },
+                        }
+                  )}
+                >
+                  <CenteredSpinner isInButton />
+                </MuiThemeProvider>
+              )}
             </Button>
             {querystringify.parse("?" + window.location.href.split("?")[1])
               .from === "accounts" &&

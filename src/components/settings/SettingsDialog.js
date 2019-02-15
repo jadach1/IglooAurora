@@ -1482,7 +1482,7 @@ class SettingsDialog extends React.Component {
           open={this.props.isOpen && this.state.mailingOpen}
           close={() => this.setState({ mailingOpen: false })}
         />
-        <AuthenticationOptions open={this.state.authenticationOpen} close={()=>this.setState({authenticationOpen:false})} client={this.props.client} />
+        <AuthenticationOptions open={this.state.authenticationOpen} close={()=>this.setState({authenticationOpen:false})} client={this.props.client}  email={user && user.email}/>
       </React.Fragment>
     )
   }
