@@ -20,7 +20,6 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import ChangeNameDialog from "./ChangeName"
 import DeleteAccountDialog from "./DeleteAccount"
-import ChangePasswordDialog from "./ChangePassword"
 import TimeFormatDialog from "./TimeFormat"
 import UnitOfMeasumentDialog from "./UnitOfMeasurement"
 import ManageAuthorizations from "./ManageAuthorizations"
@@ -707,25 +706,6 @@ class SettingsDialog extends React.Component {
               </ListItem>
               <ListItem
                 button
-                onClick={() => this.setState({ passwordDialogOpen: true })}
-              >
-                <ListItemText
-                  primary={
-                    <font
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                    >
-                      Change password
-                    </font>
-                  }
-                />
-              </ListItem>
-              <ListItem
-                button
                 onClick={() => this.setState({ authenticationOpen: true })}
               >
                 <ListItemText
@@ -738,7 +718,7 @@ class SettingsDialog extends React.Component {
                           : { color: "black" }
                       }
                     >
-                      Passwordless authentication
+                      Authentication methods
                     </font>
                   }
                 />
@@ -1380,12 +1360,6 @@ class SettingsDialog extends React.Component {
           forceUpdate={() => this.props.forceUpdate()}
           logOut={this.props.logOut}
         />
-        <ChangePasswordDialog
-          open={this.props.isOpen && this.state.passwordDialogOpen}
-          close={this.handlePasswordDialogClose}
-          userData={this.props.userData}
-          client={this.props.client}
-        />
         <ManageAuthorizations
           confirmationDialogOpen={
             this.props.isOpen && this.state.authDialogOpen
@@ -1482,7 +1456,7 @@ class SettingsDialog extends React.Component {
           open={this.props.isOpen && this.state.mailingOpen}
           close={() => this.setState({ mailingOpen: false })}
         />
-        <AuthenticationOptions open={this.state.authenticationOpen} close={()=>this.setState({authenticationOpen:false})} client={this.props.client}  email={user && user.email}/>
+        <AuthenticationOptions open={this.state.authenticationOpen} close={()=>this.setState({authenticationOpen:false})} client={this.props.client}  user={user}/>
       </React.Fragment>
     )
   }
