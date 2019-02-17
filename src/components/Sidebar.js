@@ -266,12 +266,11 @@ class Sidebar extends Component {
                             : { color: "#7a7a7a" }
                         }
                       >
-                        {/*device.lastUnreadNotification || (device.lastNotification
-                          ? "No unread notifications"
-                        : "No notifications")*/}
-                        {device.getLastNotification
-                          ? "No unread notifications"
-                        : "No notifications"}
+                        {(device.lastUnreadNotification &&
+                          device.lastUnreadNotification.content) ||
+                          (device.lastReadNotification
+                            ? "No unread notifications"
+                            : "No notifications")}
                       </span>
                     }
                   />

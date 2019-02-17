@@ -172,11 +172,14 @@ class Main extends Component {
           updatedAt
           starred
           notificationCount
-                getLastNotification {
-                  id
-                  content
-                  read
-                }
+          lastReadNotification: lastNotification(filter: { read: true }) {
+            id
+          }
+          lastUnreadNotification: lastNotification(filter: { read: false }) {
+            id
+            content
+            read
+          }
         }
       }
     `
@@ -230,11 +233,14 @@ class Main extends Component {
           updatedAt
           starred
           notificationCount
-          getLastNotification {
-                  id
-                  content
-                  read
-                }
+          lastReadNotification: lastNotification(filter: { read: true }) {
+            id
+          }
+          lastUnreadNotification: lastNotification(filter: { read: false }) {
+            id
+            content
+            read
+          }
         }
       }
     `
@@ -330,11 +336,14 @@ class Main extends Component {
           environment {
             id
           }
-                getLastNotification {
-                  id
-                  content
-                  read
-                }
+          lastReadNotification: lastNotification(filter: { read: true }) {
+            id
+          }
+          lastUnreadNotification: lastNotification(filter: { read: false }) {
+            id
+            content
+            read
+          }
         }
       }
     `
@@ -711,7 +720,12 @@ export default graphql(
                 updatedAt
                 starred
                 notificationCount
-                getLastNotification {
+                lastReadNotification: lastNotification(filter: { read: true }) {
+                  id
+                }
+                lastUnreadNotification: lastNotification(
+                  filter: { read: false }
+                ) {
                   id
                   content
                   read
@@ -735,7 +749,12 @@ export default graphql(
                 updatedAt
                 starred
                 notificationCount
-                getLastNotification {
+                lastReadNotification: lastNotification(filter: { read: true }) {
+                  id
+                }
+                lastUnreadNotification: lastNotification(
+                  filter: { read: false }
+                ) {
                   id
                   content
                   read
@@ -767,7 +786,12 @@ export default graphql(
                 updatedAt
                 starred
                 notificationCount
-                getLastNotification {
+                lastReadNotification: lastNotification(filter: { read: true }) {
+                  id
+                }
+                lastUnreadNotification: lastNotification(
+                  filter: { read: false }
+                ) {
                   id
                   content
                   read
@@ -791,7 +815,12 @@ export default graphql(
                 updatedAt
                 starred
                 notificationCount
-                getLastNotification {
+                lastReadNotification: lastNotification(filter: { read: true }) {
+                  id
+                }
+                lastUnreadNotification: lastNotification(
+                  filter: { read: false }
+                ) {
                   id
                   content
                   read
@@ -819,7 +848,12 @@ export default graphql(
               updatedAt
               starred
               notificationCount
-              getLastNotification {
+              lastReadNotification: lastNotification(filter: { read: true }) {
+                id
+              }
+              lastUnreadNotification: lastNotification(
+                filter: { read: false }
+              ) {
                 id
                 content
                 read

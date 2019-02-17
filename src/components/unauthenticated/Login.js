@@ -236,7 +236,7 @@ class Login extends Component {
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($jwtChallenge: String!, $challengeResponse: String!) {
-            logInWithWebauthn(
+            logInWithWebAuthn(
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
             ) {
@@ -257,8 +257,8 @@ class Login extends Component {
       })
 
       this.props.signIn(
-        loginMutation.data.logInWithWebauthn.token,
-        loginMutation.data.logInWithWebauthn.user
+        loginMutation.data.logInWithWebAuthn.token,
+        loginMutation.data.logInWithWebAuthn.user
       )
 
       this.props.changePassword("")
