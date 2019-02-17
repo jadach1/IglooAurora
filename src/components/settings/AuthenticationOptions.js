@@ -57,59 +57,6 @@ function SlideTransition(props) {
 class AuthenticationOptions extends React.Component {
   state = { selectAuthTypeOpen: false }
 
-  enableddWebAuthn = async () => {
-    const {
-      data: { getWebauthnSubscribeChallenge },
-    } = await this.props.client.query({
-      query: gql`
-        query getWebauthnSignUpChallenge($email: String!) {
-          getWebauthnSubscribeChallenge(email: $email) {
-            publicKeyOptions
-            jwtChallenge
-          }
-        }
-      `,
-      variables: {
-        email: this.props.user.email,
-      },
-    })
-
-    const publicKeyOptions = JSON.parse(
-      getWebauthnSubscribeChallenge.publicKeyOptions
-    )
-
-    publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
-    publicKeyOptions.user.id = str2ab(publicKeyOptions.user.id)
-
-    let sendResponse = async res => {
-      let payload = { response: {} }
-      payload.rawId = ab2str(res.rawId)
-      payload.response.attestationObject = ab2str(
-        res.response.attestationObject
-      )
-      payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
-
-      await this.props.client.mutate({
-        mutation: gql`
-          mutation($jwtChallenge: String!, $challengeResponse: String!) {
-            enableWebauthn(
-              jwtChallenge: $jwtChallenge
-              challengeResponse: $challengeResponse
-            )
-          }
-        `,
-        variables: {
-          challengeResponse: JSON.stringify(payload),
-          jwtChallenge: getWebauthnSubscribeChallenge.jwtChallenge,
-        },
-      })
-    }
-
-    navigator.credentials
-      .create({ publicKey: publicKeyOptions })
-      .then(sendResponse)
-  }
-
   createToken = async () => {
     try {
       this.setState({ showLoading: true })
@@ -121,7 +68,7 @@ class AuthenticationOptions extends React.Component {
           }
         `,
         variables: {
-          tokenType: "CHANGE_PASSWORD",
+          tokenType: "CHANGE_AUTHENTICATION",
           password: this.state.password,
         },
       })
@@ -236,11 +183,113 @@ class AuthenticationOptions extends React.Component {
     }
   }
 
+  enableWebAuthn = async () => {
+    const wsLink = new WebSocketLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "ws://"
+              : "wss://") +
+            localStorage.getItem("server") +
+            "/subscriptions"
+          : `wss://bering.igloo.ooo/subscriptions`,
+      options: {
+        reconnect: true,
+        connectionParams: {
+          Authorization: "Bearer " + this.state.token,
+        },
+      },
+    })
+
+    const httpLink = new HttpLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "http://"
+              : "https://") +
+            localStorage.getItem("server") +
+            "/graphql"
+          : `https://bering.igloo.ooo/graphql`,
+      headers: {
+        Authorization: "Bearer " + this.state.token,
+      },
+    })
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === "OperationDefinition" && operation === "subscription"
+      },
+      wsLink,
+      httpLink
+    )
+
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache({ fragmentMatcher }),
+    })
+
+    const {
+      data: { getWebAuthnEnableChallenge },
+    } = await this.client.query({
+      query: gql`
+        query getWebauthnSignUpChallenge($email: String!) {
+          getWebAuthnEnableChallenge(email: $email) {
+            publicKeyOptions
+            jwtChallenge
+          }
+        }
+      `,
+      variables: {
+        email: this.props.user.email,
+      },
+    })
+
+    const publicKeyOptions = JSON.parse(
+      getWebAuthnEnableChallenge.publicKeyOptions
+    )
+
+    publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
+    publicKeyOptions.user.id = str2ab(publicKeyOptions.user.id)
+
+    let sendResponse = async res => {
+      let payload = { response: {} }
+      payload.rawId = ab2str(res.rawId)
+      payload.response.attestationObject = ab2str(
+        res.response.attestationObject
+      )
+      payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
+
+      await this.client.mutate({
+        mutation: gql`
+          mutation($jwtChallenge: String!, $challengeResponse: String!) {
+            enableWebauthn(
+              jwtChallenge: $jwtChallenge
+              challengeResponse: $challengeResponse
+            )
+          }
+        `,
+        variables: {
+          challengeResponse: JSON.stringify(payload),
+          jwtChallenge: getWebAuthnEnableChallenge.jwtChallenge,
+        },
+      })
+    }
+
+    navigator.credentials
+      .create({ publicKey: publicKeyOptions })
+      .then(sendResponse)
+  }
+
   componentWillReceiveProps(nextProps) {
-    if (
-      this.props.open !== nextProps.open &&
-      nextProps.open
-    ) {
+    if (this.props.open !== nextProps.open && nextProps.open) {
       this.setState({
         isPasswordEmpty: false,
         passwordError: false,
@@ -445,8 +494,10 @@ class AuthenticationOptions extends React.Component {
           open={
             this.state.selectAuthTypeOpen && !this.state.newPasswordDialogOpen
           }
-          onClose={() => {this.setState({ selectAuthTypeOpen: false })
-       this.props.close() }}
+          onClose={() => {
+            this.setState({ selectAuthTypeOpen: false })
+            this.props.close()
+          }}
           className="notSelectable"
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition
@@ -682,7 +733,7 @@ class AuthenticationOptions extends React.Component {
                       showPassword: false,
                     })
                 : () => {
-                    this.enableddWebAuthn()
+                    this.enableWebAuthn()
                     this.setState({
                       anchorEl: false,
                     })

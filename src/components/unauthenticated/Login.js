@@ -195,11 +195,11 @@ class Login extends Component {
 
   async signInWebauthn() {
     const {
-      data: { getWebauthnLoginChallenge },
+      data: { getWebAuthnLogInChallenge },
     } = await this.props.client.query({
       query: gql`
-        query getWebauthnLoginChallenge($email: String!) {
-          getWebauthnLoginChallenge(email: $email) {
+        query getWebAuthnLogInChallenge($email: String!) {
+          getWebAuthnLogInChallenge(email: $email) {
             publicKeyOptions
             jwtChallenge
           }
@@ -211,10 +211,10 @@ class Login extends Component {
     })
 
     const publicKeyOptions = JSON.parse(
-      getWebauthnLoginChallenge.publicKeyOptions
+      getWebAuthnLogInChallenge.publicKeyOptions
     )
 
-    const jwtChallenge = getWebauthnLoginChallenge.jwtChallenge
+    const jwtChallenge = getWebAuthnLogInChallenge.jwtChallenge
 
     publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
     publicKeyOptions.allowCredentials = publicKeyOptions.allowCredentials.map(

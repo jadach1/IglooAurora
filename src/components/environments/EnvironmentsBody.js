@@ -87,19 +87,21 @@ export default class EnvironmentsBody extends Component {
             margin: "0",
           }}
         >
-          {user.environments.map(environment => (
-            <Grid key={environment.id} item style={{ margin: 8 }}>
-              <EnvironmentCard
-                userData={this.props.userData}
-                environment={environment}
-                nightMode={nightMode}
-                devMode={devMode}
-                showMessage={() => this.setState({ copyMessageOpen: true })}
-                lastEnvironment={!user.environments[1]}
-                client={this.props.client}
-              />
-            </Grid>
-          ))}
+          {user.environments
+            .filter(environment => environment.myRole === "OWNER")
+            .map(environment => (
+              <Grid key={environment.id} item style={{ margin: 8 }}>
+                <EnvironmentCard
+                  userData={this.props.userData}
+                  environment={environment}
+                  nightMode={nightMode}
+                  devMode={devMode}
+                  showMessage={() => this.setState({ copyMessageOpen: true })}
+                  lastEnvironment={!user.environments[1]}
+                  client={this.props.client}
+                />
+              </Grid>
+            ))}
           {!!user.pendingOwnerChangeCount && (
             <Grid key="pendingEnvironmentShares" item style={{ margin: 8 }}>
               <ButtonBase
@@ -277,19 +279,21 @@ export default class EnvironmentsBody extends Component {
             margin: "0",
           }}
         >
-          {user.environments.map(environment => (
-            <Grid key={environment.id} item style={{ margin: 8 }}>
-              <EnvironmentCard
-                userData={this.props.userData}
-                environment={environment}
-                nightMode={nightMode}
-                devMode={devMode}
-                showMessage={() => this.setState({ copyMessageOpen: true })}
-                lastEnvironment={!user.environments[1]}
-                client={this.props.client}
-              />
-            </Grid>
-          ))}
+          {user.environments
+            .filter(environment => environment.myRole !== "OWNER")
+            .map(environment => (
+              <Grid key={environment.id} item style={{ margin: 8 }}>
+                <EnvironmentCard
+                  userData={this.props.userData}
+                  environment={environment}
+                  nightMode={nightMode}
+                  devMode={devMode}
+                  showMessage={() => this.setState({ copyMessageOpen: true })}
+                  lastEnvironment={!user.environments[1]}
+                  client={this.props.client}
+                />
+              </Grid>
+            ))}
           {!!user.pendingEnvironmentShareCount && (
             <Grid key="pendingEnvironmentShares" item style={{ margin: 8 }}>
               <ButtonBase
@@ -475,7 +479,7 @@ export default class EnvironmentsBody extends Component {
                 user.environments.filter(
                   environment => environment.myRole !== "OWNER"
                 )[0]) ||
-              (user && user.pendingEnvironmentShareCount) ? (
+              (user && !!user.pendingEnvironmentShareCount) ? (
                 <SwipeableViews
                   index={this.state.slideIndex}
                   onChangeIndex={slideIndex => this.setState({ slideIndex })}
@@ -573,7 +577,7 @@ export default class EnvironmentsBody extends Component {
                   user.environments.filter(
                     environment => environment.myRole !== "OWNER"
                   )[0]) ||
-                (user && user.pendingEnvironmentShareCount)
+                (user && !!user.pendingEnvironmentShareCount)
               ) && (
                 <AppBar
                   position="static"
@@ -772,7 +776,7 @@ export default class EnvironmentsBody extends Component {
                     user.environments.filter(
                       environment => environment.myRole !== "OWNER"
                     )[0]) ||
-                    (user && user.pendingEnvironmentShareCount)) && (
+                    (user && !!user.pendingEnvironmentShareCount)) && (
                     <li key="yourEnvironments">
                       <ul style={{ padding: "0" }}>
                         <ListSubheader
