@@ -47,14 +47,14 @@ function MySnackbarContent(props) {
       aria-describedby="client-snackbar"
       style={{ paddingTop: "8px", paddingBottom: "8px" }}
       message={
-        <span
+        <font
           id="client-snackbar"
           className={classes.message}
           style={{ marginLeft: "-4px" }}
         >
           <Warning style={{ fontSize: 24, marginRight: "16px" }} />
           Your account isn't verified!
-        </span>
+        </font>
       }
       action={[
         <IconButton

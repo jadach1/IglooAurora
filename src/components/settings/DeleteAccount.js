@@ -6,9 +6,7 @@ import Button from "@material-ui/core/Button"
 import gql from "graphql-tag"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import FormControl from "@material-ui/core/FormControl"
-import FormHelperText from "@material-ui/core/FormHelperText"
-import Input from "@material-ui/core/Input"
+import TextField from "@material-ui/core/TextField"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
 import ToggleIcon from "material-ui-toggle-icon"
@@ -207,8 +205,7 @@ class DeleteAccountDialog extends React.Component {
               height: "100%",
             }}
           >
-            <FormControl style={{ width: "100%" }}>
-              <Input
+              <TextField variant="outlined" style={{ width: "100%" }}
                 id="adornment-password-login"
                 type={this.state.showPassword ? "text" : "password"}
                 value={this.state.password}
@@ -230,6 +227,18 @@ class DeleteAccountDialog extends React.Component {
                     this.createToken()
                   }
                 }}
+                helperText={
+                  <font
+                    style={
+                      this.state.passwordError || this.state.isPasswordEmpty
+                        ? { color: "#f44336" }
+                        : {}
+                    }
+                  >
+                    {this.state.isPasswordEmpty
+                      ? "This field is required"
+                      : this.state.passwordError}
+                  </font>}
                 endAdornment={
                   this.state.password ? (
                     <InputAdornment position="end">
@@ -264,18 +273,6 @@ class DeleteAccountDialog extends React.Component {
                   ) : null
                 }
               />
-              <FormHelperText
-                style={
-                  this.state.passwordError || this.state.isPasswordEmpty
-                    ? { color: "#f44336" }
-                    : {}
-                }
-              >
-                {this.state.isPasswordEmpty
-                  ? "This field is required"
-                  : this.state.passwordError}
-              </FormHelperText>
-            </FormControl>
           </div>
           <DialogActions>
             <Button

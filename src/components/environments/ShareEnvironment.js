@@ -1091,7 +1091,7 @@ class ShareEnvironment extends React.Component {
                 <RemoveCircle style={{ color: "#f44336" }} />
               </ListItemIcon>
               <ListItemText inset>
-                <span style={{ color: "#f44336" }}>Stop sharing</span>
+                <font style={{ color: "#f44336" }}>Stop sharing</font>
               </ListItemText>
             </MenuItem>
           </Menu>
@@ -1145,7 +1145,7 @@ class ShareEnvironment extends React.Component {
                 <RemoveCircle style={{ color: "#f44336" }} />
               </ListItemIcon>
               <ListItemText inset>
-                <span style={{ color: "#f44336" }}>Revoke invite</span>
+                <font style={{ color: "#f44336" }}>Revoke invite</font>
               </ListItemText>
             </MenuItem>
           </Menu>

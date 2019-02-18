@@ -582,7 +582,10 @@ class AuthenticationOptions extends React.Component {
             </List>
           </div>
           <DialogActions>
-            <Button onClick={this.props.close}>
+            <Button onClick={() => {
+            this.setState({ selectAuthTypeOpen: false })
+            this.props.close()
+          }}>
               <font
                 style={
                   typeof Storage !== "undefined" &&
@@ -746,7 +749,7 @@ class AuthenticationOptions extends React.Component {
             <ListItemText
               inset
               primary={
-                <span
+                <font
                   style={
                     !this.props.unauthenticated &&
                     typeof Storage !== "undefined" &&
@@ -756,7 +759,7 @@ class AuthenticationOptions extends React.Component {
                   }
                 >
                   Change
-                </span>
+                </font>
               }
             />
           </MenuItem>
@@ -769,7 +772,7 @@ class AuthenticationOptions extends React.Component {
               <RemoveCircle style={{ color: "#f44336" }} />
             </ListItemIcon>
             <ListItemText inset>
-              <span style={{ color: "#f44336" }}>Remove</span>
+              <font style={{ color: "#f44336" }}>Remove</font>
             </ListItemText>
           </MenuItem>
         </Menu>

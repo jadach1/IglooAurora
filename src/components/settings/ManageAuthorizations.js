@@ -860,7 +860,7 @@ class AuthDialog extends React.Component {
             <ListItemText
               inset
               primary={
-                <span
+                <font
                   style={
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
@@ -869,7 +869,7 @@ class AuthDialog extends React.Component {
                   }
                 >
                   Copy
-                </span>
+                </font>
               }
             />
           </MenuItem>
@@ -882,7 +882,7 @@ class AuthDialog extends React.Component {
               <Delete style={{ color: "#f44336" }} />
             </ListItemIcon>
             <ListItemText inset>
-              <span style={{ color: "#f44336" }}>Delete</span>
+              <font style={{ color: "#f44336" }}>Delete</font>
             </ListItemText>
           </MenuItem>
         </Menu>

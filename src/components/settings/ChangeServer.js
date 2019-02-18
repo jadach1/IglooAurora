@@ -880,7 +880,7 @@ class ChangeServer extends React.Component {
             <ListItemText
               inset
               primary={
-                <span
+                <font
                   style={
                     !this.props.unauthenticated &&
                     typeof Storage !== "undefined" &&
@@ -890,7 +890,7 @@ class ChangeServer extends React.Component {
                   }
                 >
                   Edit
-                </span>
+                </font>
               }
             />
           </MenuItem>
@@ -904,7 +904,7 @@ class ChangeServer extends React.Component {
               <Delete style={{ color: "#f44336" }} />
             </ListItemIcon>
             <ListItemText inset>
-              <span style={{ color: "#f44336" }}>Delete</span>
+              <font style={{ color: "#f44336" }}>Delete</font>
             </ListItemText>
           </MenuItem>
         </Menu>

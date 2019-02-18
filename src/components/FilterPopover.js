@@ -344,7 +344,7 @@ export default class FilterPopover extends Component {
                 </ListItemIcon>
                 <ListItemText
                   primary={
-                    <span
+                    <font
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
@@ -353,7 +353,7 @@ export default class FilterPopover extends Component {
                       }
                     >
                       Alphabetical
-                    </span>
+                    </font>
                   }
                 />
               </ListItem>
@@ -388,7 +388,7 @@ export default class FilterPopover extends Component {
                 </ListItemIcon>
                 <ListItemText
                   primary={
-                    <span
+                    <font
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
@@ -397,7 +397,7 @@ export default class FilterPopover extends Component {
                       }
                     >
                       Custom
-                    </span>
+                    </font>
                   }
                 />
               </ListItem>
@@ -475,7 +475,7 @@ export default class FilterPopover extends Component {
                     />
                     <ListItemText
                       primary={
-                        <span
+                        <font
                           style={
                             typeof Storage !== "undefined" &&
                             localStorage.getItem("nightMode") === "true"
@@ -484,10 +484,10 @@ export default class FilterPopover extends Component {
                           }
                         >
                           {deviceType}
-                        </span>
+                        </font>
                       }
                       secondary={
-                        <span
+                        <font
                           style={
                             typeof Storage !== "undefined" &&
                             localStorage.getItem("nightMode") === "true"
@@ -499,7 +499,7 @@ export default class FilterPopover extends Component {
                             (occurrences[deviceType] === 1
                               ? " device"
                               : " devices")}
-                        </span>
+                        </font>
                       }
                       style={{
                         whiteSpace: "nowrap",
@@ -600,7 +600,7 @@ export default class FilterPopover extends Component {
                                 />
                                 <ListItemText
                                   primary={
-                                    <span
+                                    <font
                                       style={
                                         typeof Storage !== "undefined" &&
                                         localStorage.getItem("nightMode") ===
@@ -612,10 +612,10 @@ export default class FilterPopover extends Component {
                                       {firmware.name
                                         ? firmware.name
                                         : "No firmware"}
-                                    </span>
+                                    </font>
                                   }
                                   secondary={
-                                    <span
+                                    <font
                                       style={
                                         typeof Storage !== "undefined" &&
                                         localStorage.getItem("nightMode") ===
@@ -630,7 +630,7 @@ export default class FilterPopover extends Component {
                                           .length === 1
                                           ? " device"
                                           : " devices")}
-                                    </span>
+                                    </font>
                                   }
                                   style={{
                                     whiteSpace: "nowrap",

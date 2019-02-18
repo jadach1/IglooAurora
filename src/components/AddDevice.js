@@ -107,7 +107,20 @@ class AddDevice extends Component {
                     </svg>
                   </SvgIcon>
                 </ListItemIcon>
-                <ListItemText primary="Scan QR code" />
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      Scan QR code
+                    </font>
+                  }
+                />
               </ListItem>
               <ListItem
                 button
@@ -126,7 +139,20 @@ class AddDevice extends Component {
                     </svg>
                   </SvgIcon>
                 </ListItemIcon>
-                <ListItemText primary="Insert code manually" />
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                    >
+                      Insert code manually
+                    </font>
+                  }
+                />
               </ListItem>
             </List>
           </div>

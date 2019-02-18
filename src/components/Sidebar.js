@@ -246,7 +246,7 @@ class Sidebar extends Component {
                           }
                     }
                     primary={
-                      <span
+                      <font
                         style={
                           typeof Storage !== "undefined" &&
                           localStorage.getItem("nightMode") === "true"
@@ -255,10 +255,10 @@ class Sidebar extends Component {
                         }
                       >
                         {device.name}
-                      </span>
+                      </font>
                     }
                     secondary={
-                      <span
+                      <font
                         style={
                           typeof Storage !== "undefined" &&
                           localStorage.getItem("nightMode") === "true"
@@ -271,7 +271,7 @@ class Sidebar extends Component {
                           (device.lastReadNotification
                             ? "No unread notifications"
                             : "No notifications")}
-                      </span>
+                      </font>
                     }
                   />
                   <ListItemSecondaryAction>

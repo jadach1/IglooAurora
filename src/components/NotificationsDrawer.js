@@ -358,7 +358,7 @@ class NotificationsDrawer extends React.Component {
                     : { backgroundColor: "white" }
                 }
               >
-                <span
+                <font
                   style={
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
@@ -367,7 +367,7 @@ class NotificationsDrawer extends React.Component {
                   }
                 >
                   {section}
-                </span>
+                </font>
               </ListSubheader>
               {device.notifications &&
                 device.notifications
@@ -383,7 +383,7 @@ class NotificationsDrawer extends React.Component {
                     >
                       <ListItemText
                         primary={
-                          <span
+                          <font
                             style={
                               typeof Storage !== "undefined" &&
                               localStorage.getItem("nightMode") === "true"
@@ -392,10 +392,10 @@ class NotificationsDrawer extends React.Component {
                             }
                           >
                             {notification.content}
-                          </span>
+                          </font>
                         }
                         secondary={
-                          <span
+                          <font
                             style={
                               typeof Storage !== "undefined" &&
                               localStorage.getItem("nightMode") === "true"
@@ -409,7 +409,7 @@ class NotificationsDrawer extends React.Component {
                                 "YYYY-MM-DDTh:mm:ss"
                               )}
                             </Moment>
-                          </span>
+                          </font>
                         }
                       />
                       <ListItemSecondaryAction>
@@ -460,7 +460,7 @@ class NotificationsDrawer extends React.Component {
                     : { backgroundColor: "white" }
                 }
               >
-                <span
+                <font
                   style={
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
@@ -469,7 +469,7 @@ class NotificationsDrawer extends React.Component {
                   }
                 >
                   {section}
-                </span>
+                </font>
               </ListSubheader>
               {device.notifications &&
                 device.notifications
@@ -485,7 +485,7 @@ class NotificationsDrawer extends React.Component {
                     >
                       <ListItemText
                         primary={
-                          <span
+                          <font
                             style={
                               typeof Storage !== "undefined" &&
                               localStorage.getItem("nightMode") === "true"
@@ -494,10 +494,10 @@ class NotificationsDrawer extends React.Component {
                             }
                           >
                             {notification.content}
-                          </span>
+                          </font>
                         }
                         secondary={
-                          <span
+                          <font
                             style={
                               typeof Storage !== "undefined" &&
                               localStorage.getItem("nightMode") === "true"
@@ -511,7 +511,7 @@ class NotificationsDrawer extends React.Component {
                                 "YYYY-MM-DDTh:mm:ss"
                               )}
                             </Moment>
-                          </span>
+                          </font>
                         }
                       />
                       <ListItemSecondaryAction>

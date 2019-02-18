@@ -307,7 +307,7 @@ export default class AccountSwitcher extends Component {
                 </ListItemAvatar>
                 <ListItemText
                   primary={
-                    <span
+                    <font
                       style={
                         this.props.mobile
                           ? { color: "white" }
@@ -315,7 +315,7 @@ export default class AccountSwitcher extends Component {
                       }
                     >
                       Use existing account
-                    </span>
+                    </font>
                   }
                   style={{ cursor: "pointer" }}
                 />
@@ -336,7 +336,7 @@ export default class AccountSwitcher extends Component {
                 </ListItemAvatar>
                 <ListItemText
                   primary={
-                    <span
+                    <font
                       style={
                         this.props.mobile
                           ? { color: "white" }
@@ -344,7 +344,7 @@ export default class AccountSwitcher extends Component {
                       }
                     >
                       Create new account
-                    </span>
+                    </font>
                   }
                   style={{ cursor: "pointer" }}
                 />

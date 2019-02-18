@@ -855,9 +855,9 @@ class SettingsDialog extends React.Component {
               <ListItem button onClick={this.handleDeleteDialogOpen}>
                 <ListItemText
                   primary={
-                    <span style={{ color: "#f44336" }}>
+                    <font style={{ color: "#f44336" }}>
                       Delete your account
-                    </span>
+                    </font>
                   }
                 />
               </ListItem>

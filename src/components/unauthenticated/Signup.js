@@ -213,7 +213,7 @@ export default class Signup extends Component {
         this.props.changeEmailError("This email is already taken")
         this.props.changeLoginEmail(this.props.email)
       } else {
-        this.props.changeEmailError("Unexpected error")
+        this.setState({ passwordError: "Unexpected error" })
       }
     }
   }
@@ -401,8 +401,16 @@ export default class Signup extends Component {
                         this.state.isEmailValid &&
                         this.state.passwordScore >= 2
                       ) {
-                        this.setState({ showLoading: true })
-                        this.signUp()
+                        if (
+                          this.props.password === this.state.confirmPassword
+                        ) {
+                          this.setState({ showLoading: true })
+                          this.signUp()
+                        } else {
+                          this.setState({
+                            passwordError: "Passwords don't match",
+                          })
+                        }
                       }
                     }}
                     helperText={
@@ -437,7 +445,6 @@ export default class Signup extends Component {
                     error={
                       !this.props.mobile &&
                       ((!this.state.isEmailValid && this.props.email) ||
-                      this.props.emailError ||
                       this.state.isMailEmpty
                         ? true
                         : false)
@@ -463,17 +470,24 @@ export default class Signup extends Component {
                         this.state.isEmailValid &&
                         this.state.passwordScore >= 2
                       ) {
-                        this.setState({ showLoading: true })
-                        this.signUp()
+                        if (
+                          this.props.password === this.state.confirmPassword
+                        ) {
+                          this.setState({ showLoading: true })
+                          this.signUp()
+                        } else {
+                          this.setState({
+                            passwordError: "Passwords don't match",
+                          })
+                        }
                       }
                     }}
                     helperText={
-                      this.props.emailError ||
-                      (!this.state.isEmailValid && this.props.email
+                      !this.state.isEmailValid && this.props.email
                         ? "Enter a valid email"
                         : this.state.isMailEmpty
                         ? "This field is required"
-                        : " ")
+                        : " "
                     }
                     endAdornment={
                       this.props.email ? (
@@ -870,23 +884,26 @@ export default class Signup extends Component {
                       type={this.state.showPassword ? "text" : "password"}
                       value={this.props.password}
                       error={
-                        !this.props.mobile && this.state.isPasswordEmpty
+                        this.state.passwordError ||
+                        (!this.props.mobile && this.state.isPasswordEmpty)
                           ? true
                           : false
                       }
                       helperText={
                         <font
                           style={
+                            this.state.passwordError ||
                             this.state.isPasswordEmpty
                               ? { color: "#f44336" }
                               : { color: passwordColor }
                           }
                         >
-                          {this.props.password
-                            ? this.state.isPasswordEmpty
-                              ? "This field is required"
-                              : scoreText
-                            : " "}
+                          {this.state.passwordError ||
+                            (this.props.password
+                              ? this.state.isPasswordEmpty
+                                ? "This field is required"
+                                : scoreText
+                              : " ")}
                         </font>
                       }
                       onChange={event => {
@@ -906,8 +923,16 @@ export default class Signup extends Component {
                           this.state.isEmailValid &&
                           this.state.passwordScore >= 2
                         ) {
-                          this.setState({ showLoading: true })
-                          this.signUp()
+                          if (
+                            this.props.password === this.state.confirmPassword
+                          ) {
+                            this.setState({ showLoading: true })
+                            this.signUp()
+                          } else {
+                            this.setState({
+                              passwordError: "Passwords don't match",
+                            })
+                          }
                         }
                       }}
                       endAdornment={
@@ -954,8 +979,7 @@ export default class Signup extends Component {
                     value={this.state.confirmPassword}
                     error={
                       !this.props.mobile &&
-                      (this.state.isConfirmPasswordEmpty ||
-                      this.state.passwordError
+                      (this.state.isConfirmPasswordEmpty
                         ? true
                         : false)
                     }
@@ -970,7 +994,7 @@ export default class Signup extends Component {
                       >
                         {this.state.isConfirmPasswordEmpty
                           ? "This field is required"
-                          : this.state.passwordError || " "}
+                          : " "}
                       </font>
                     }
                     onChange={event => {
@@ -986,8 +1010,16 @@ export default class Signup extends Component {
                         this.state.isEmailValid &&
                         this.state.passwordScore >= 2
                       ) {
-                        this.setState({ showLoading: true })
-                        this.signUp()
+                        if (
+                          this.props.password === this.state.confirmPassword
+                        ) {
+                          this.setState({ showLoading: true })
+                          this.signUp()
+                        } else {
+                          this.setState({
+                            passwordError: "Passwords don't match",
+                          })
+                        }
                       }
                     }}
                     endAdornment={
@@ -1027,7 +1059,7 @@ export default class Signup extends Component {
                     fullWidth={true}
                     primary={true}
                     onClick={() => {
-                      if (this.state.password === this.state.confirmPassword) {
+                      if (this.props.password === this.state.confirmPassword) {
                         this.setState({ showLoading: true })
                         this.signUp()
                       } else {
@@ -1088,7 +1120,7 @@ export default class Signup extends Component {
                   >
                     <Button
                       fullWidth
-                      color="default"
+                      color="primary"
                       disabled={this.state.showLoading}
                       onClick={() =>
                         this.setState({

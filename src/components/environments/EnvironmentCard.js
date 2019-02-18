@@ -474,7 +474,7 @@ class EnvironmentCard extends Component {
                 <Delete style={{ color: "#f44336" }} />
               </ListItemIcon>
               <ListItemText inset>
-                <span style={{ color: "#f44336" }}>Delete</span>
+                <font style={{ color: "#f44336" }}>Delete</font>
               </ListItemText>
             </MenuItem>
           )}
