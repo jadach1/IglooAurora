@@ -205,74 +205,78 @@ class DeleteAccountDialog extends React.Component {
               height: "100%",
             }}
           >
-              <TextField variant="outlined" style={{ width: "100%" }}
-                id="adornment-password-login"
-                type={this.state.showPassword ? "text" : "password"}
-                value={this.state.password}
-                placeholder="Password"
-                onChange={event =>
-                  this.setState({
-                    password: event.target.value,
-                    passwordError: "",
-                    isPasswordEmpty: event.target.value === "",
-                  })
+            <TextField
+              variant="outlined"
+              style={{ width: "100%" }}
+              id="adornment-password-login"
+              type={this.state.showPassword ? "text" : "password"}
+              value={this.state.password}
+              placeholder="Password"
+              onChange={event =>
+                this.setState({
+                  password: event.target.value,
+                  passwordError: "",
+                  isPasswordEmpty: event.target.value === "",
+                })
+              }
+              error={
+                this.state.passwordError || this.state.isPasswordEmpty
+                  ? true
+                  : false
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter") {
+                  this.createToken()
                 }
-                error={
-                  this.state.passwordError || this.state.isPasswordEmpty
-                    ? true
-                    : false
-                }
-                onKeyPress={event => {
-                  if (event.key === "Enter") {
-                    this.createToken()
+              }}
+              helperText={
+                <font
+                  style={
+                    this.state.passwordError || this.state.isPasswordEmpty
+                      ? { color: "#f44336" }
+                      : {}
                   }
-                }}
-                helperText={
-                  <font
-                    style={
-                      this.state.passwordError || this.state.isPasswordEmpty
-                        ? { color: "#f44336" }
-                        : {}
-                    }
-                  >
-                    {this.state.isPasswordEmpty
-                      ? "This field is required"
-                      : this.state.passwordError}
-                  </font>}
-                endAdornment={
-                  this.state.password ? (
-                    <InputAdornment position="end">
-                      <IconButton
-                        style={
-                          typeof Storage !== "undefined" &&
-                          localStorage.getItem("nightMode") === "true"
-                            ? { color: "white" }
-                            : { color: "black" }
-                        }
-                        onClick={() => this.setState({ showPassword: true })}
-                        onMouseDown={this.handleMouseDownPassword}
-                        tabIndex="-1"
-                      >
-                        {/* fix for ToggleIcon glitch on Edge */}
-                        {document.documentMode ||
-                        /Edge/.test(navigator.userAgent) ? (
-                          this.state.showPassword ? (
-                            <VisibilityOff />
-                          ) : (
-                            <Visibility />
-                          )
+                >
+                  {this.state.isPasswordEmpty
+                    ? "This field is required"
+                    : this.state.passwordError}
+                </font>
+              }
+              InputLabelProps={this.state.password && { shrink: true }}
+              InputProps={{
+                endAdornment: this.state.password ? (
+                  <InputAdornment position="end">
+                    <IconButton
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : { color: "black" }
+                      }
+                      onClick={() => this.setState({ showPassword: true })}
+                      onMouseDown={this.handleMouseDownPassword}
+                      tabIndex="-1"
+                    >
+                      {/* fix for ToggleIcon glitch on Edge */}
+                      {document.documentMode ||
+                      /Edge/.test(navigator.userAgent) ? (
+                        this.state.showPassword ? (
+                          <VisibilityOff />
                         ) : (
-                          <ToggleIcon
-                            on={this.state.showPassword || false}
-                            onIcon={<VisibilityOff />}
-                            offIcon={<Visibility />}
-                          />
-                        )}
-                      </IconButton>
-                    </InputAdornment>
-                  ) : null
-                }
-              />
+                          <Visibility />
+                        )
+                      ) : (
+                        <ToggleIcon
+                          on={this.state.showPassword || false}
+                          onIcon={<VisibilityOff />}
+                          offIcon={<Visibility />}
+                        />
+                      )}
+                    </IconButton>
+                  </InputAdornment>
+                ) : null,
+              }}
+            />
           </div>
           <DialogActions>
             <Button

@@ -185,7 +185,8 @@ class CreateNotification extends React.Component {
                         })
                       }
                       InputLabelProps={this.state.content && { shrink: true }}
-                      endAdornment={
+              InputProps={{
+                endAdornment:
                         this.state.content && (
                           <InputAdornment position="end">
                             <IconButton
@@ -202,7 +203,7 @@ class CreateNotification extends React.Component {
                             </IconButton>
                           </InputAdornment>
                         )
-                      }
+                      }}
                     />
                   </React.Fragment>
                 )

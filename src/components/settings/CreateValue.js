@@ -535,8 +535,9 @@ class CreateValue extends React.Component {
                               this.props.close()
                             }
                           }}
-                          InputLabelProps={this.state.name && { shrink: true }}
-                          endAdornment={
+                      InputLabelProps={this.state.name && { shrink: true }}
+                      InputProps={{
+                        endAdornment:
                             this.state.name && (
                               <InputAdornment position="end">
                                 <IconButton
@@ -553,7 +554,7 @@ class CreateValue extends React.Component {
                                 </IconButton>
                               </InputAdornment>
                             )
-                          }
+                          }}
                         />
                         <TextField
                           value={this.state.device}
@@ -778,7 +779,8 @@ class CreateValue extends React.Component {
                             InputLabelProps={
                               this.state.unit && { shrink: true }
                             }
-                            endAdornment={
+                            InputProps={{
+                              endAdornment:
                               this.state.unit && (
                                 <InputAdornment position="end">
                                   <IconButton
@@ -796,7 +798,7 @@ class CreateValue extends React.Component {
                                   </IconButton>
                                 </InputAdornment>
                               )
-                            }
+                            }}
                           />
                         </ExpansionPanelDetails>
                       </ExpansionPanel>

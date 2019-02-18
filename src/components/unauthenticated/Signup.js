@@ -417,7 +417,9 @@ export default class Signup extends Component {
                       !this.state.isNameValid ? "This field is required" : " "
                     }
                     error={!this.props.mobile && !this.state.isNameValid}
-                    endAdornment={
+                                  InputLabelProps={this.props.name && { shrink: true }}
+              InputProps={{
+                endAdornment:
                       this.props.name ? (
                         <InputAdornment position="end">
                           <IconButton
@@ -434,7 +436,7 @@ export default class Signup extends Component {
                           </IconButton>
                         </InputAdornment>
                       ) : null
-                    }
+                    }}
                   />
                   <br />
                   <TextField
@@ -489,7 +491,9 @@ export default class Signup extends Component {
                         ? "This field is required"
                         : " "
                     }
-                    endAdornment={
+                    InputLabelProps={this.state.name && { shrink: true }}
+              InputProps={{
+                endAdornment:
                       this.props.email ? (
                         <InputAdornment position="end">
                           <IconButton
@@ -501,7 +505,7 @@ export default class Signup extends Component {
                           </IconButton>
                         </InputAdornment>
                       ) : null
-                    }
+                    }}
                   />
                   <FormControlLabel
                     control={
@@ -935,7 +939,9 @@ export default class Signup extends Component {
                           }
                         }
                       }}
-                      endAdornment={
+                      InputLabelProps={this.state.name && { shrink: true }}
+              InputProps={{
+                endAdornment:
                         this.props.password ? (
                           <InputAdornment position="end">
                             <IconButton
@@ -962,7 +968,7 @@ export default class Signup extends Component {
                             </IconButton>
                           </InputAdornment>
                         ) : null
-                      }
+                      }}
                     />
                   </MuiThemeProvider>
                   <br />
@@ -1022,7 +1028,9 @@ export default class Signup extends Component {
                         }
                       }
                     }}
-                    endAdornment={
+                    InputLabelProps={this.state.name && { shrink: true }}
+                    InputProps={{
+                      endAdornment:
                       this.state.confirmPassword ? (
                         <InputAdornment position="end">
                           <IconButton
@@ -1049,7 +1057,7 @@ export default class Signup extends Component {
                           </IconButton>
                         </InputAdornment>
                       ) : null
-                    }
+                    }}
                   />
                 </div>
                 <div style={this.props.mobile ? {} : { marginTop: "207px" }}>

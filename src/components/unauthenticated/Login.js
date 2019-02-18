@@ -406,8 +406,9 @@ class Login extends Component {
               error={
                 this.props.emailError || this.state.isMailEmpty ? true : false
               }
-              endAdornment={
-                this.props.email ? (
+              InputLabelProps={this.props.email && { shrink: true }}
+              InputProps={{
+                endAdornment: this.props.email ? (
                   <InputAdornment position="end">
                     <IconButton
                       onClick={() => {
@@ -420,8 +421,8 @@ class Login extends Component {
                       <Clear />
                     </IconButton>
                   </InputAdornment>
-                ) : null
-              }
+                ) : null,
+              }}
             />
             <br />
             <TextField
@@ -459,8 +460,9 @@ class Login extends Component {
                   ? "This field is required"
                   : this.props.passwordError) || " "
               }
-              endAdornment={
-                this.props.password ? (
+              InputLabelProps={this.state.name && { shrink: true }}
+              InputProps={{
+                endAdornment: this.props.password ? (
                   <InputAdornment position="end">
                     <IconButton
                       onClick={() =>
@@ -489,8 +491,8 @@ class Login extends Component {
                       )}
                     </IconButton>
                   </InputAdornment>
-                ) : null
-              }
+                ) : null,
+              }}
             />
             <IconButton
               onClick={this.signInWebauthn}
