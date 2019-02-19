@@ -58,4 +58,4 @@ TBD
 
 ## License
 
-See the [LICENSE](https://github.com/igloocloud/iglooAurora/blob/master/LICENSE) file for license rights and limitations (MIT).
+See the [license](https://github.com/igloocloud/iglooAurora/blob/master/LICENSE) file for license rights and limitations (MIT).
