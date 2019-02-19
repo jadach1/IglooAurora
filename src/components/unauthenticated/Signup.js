@@ -27,6 +27,24 @@ import TextField from "@material-ui/core/TextField"
 import MUILink from "@material-ui/core/Link"
 import Checkbox from "@material-ui/core/Checkbox"
 import FormControlLabel from "@material-ui/core/FormControlLabel"
+import { ApolloClient } from "apollo-client"
+import { HttpLink } from "apollo-link-http"
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from "apollo-cache-inmemory"
+import { WebSocketLink } from "apollo-link-ws"
+import { split } from "apollo-link"
+import { getMainDefinition } from "apollo-utilities"
+import introspectionQueryResultData from "../../fragmentTypes.json"
+
+function str2ab(str) {
+  return Uint8Array.from(str, c => c.charCodeAt(0))
+}
+
+function ab2str(ab) {
+  return Array.from(new Int8Array(ab))
+}
 
 const sharedStyles = {
   MuiButton: {
@@ -159,6 +177,7 @@ export default class Signup extends Component {
       confirmPassword: "",
       coppaCheckbox: false,
       counter: 0,
+      token: "",
     }
 
     this.signUp = this.signUp.bind(this)
@@ -173,13 +192,18 @@ export default class Signup extends Component {
     this.setState({ height: window.innerHeight })
   }
 
-  async signUp() {
+  signUp = async () => {
     try {
+      this.setState({ showSignUpLoading: true })
       this.props.changeEmailError("")
-      const loginMutation = await this.props.client.mutate({
+      const {
+        data: {
+          signUp: { token, user },
+        },
+      } = await this.props.client.mutate({
         mutation: gql`
-          mutation($email: String!, $password: String!, $name: String!) {
-            signUp(email: $email, password: $password, name: $name) {
+          mutation($email: String!, $name: String!) {
+            signUp(email: $email, name: $name) {
               token
               user {
                 id
@@ -192,19 +216,14 @@ export default class Signup extends Component {
         `,
         variables: {
           email: this.props.email,
-          password: this.props.password,
           name: this.props.name,
         },
       })
 
-      this.props.signIn(
-        loginMutation.data.signUp.token,
-        loginMutation.data.signUp.user
-      )
-
       this.props.changeName("")
       this.props.changeEmail("")
-      this.props.changePassword("")
+
+      this.setState({ showPasswordLess: true, token, user })
     } catch (e) {
       this.setState({ showLoading: false })
       if (
@@ -215,11 +234,203 @@ export default class Signup extends Component {
       } else {
         this.setState({ passwordError: "Unexpected error" })
       }
+    } finally {
+      this.setState({ showSignUpLoading: false })
     }
   }
 
-  handleClickShowPassword = () => {
-    this.setState({ showPassword: !this.state.showPassword })
+  enablePassword = async () => {
+    const wsLink = new WebSocketLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "ws://"
+              : "wss://") +
+            localStorage.getItem("server") +
+            "/subscriptions"
+          : `wss://bering.igloo.ooo/subscriptions`,
+      options: {
+        reconnect: true,
+        connectionParams: {
+          Authorization: "Bearer " + this.state.token,
+        },
+      },
+    })
+
+    const httpLink = new HttpLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "http://"
+              : "https://") +
+            localStorage.getItem("server") +
+            "/graphql"
+          : `https://bering.igloo.ooo/graphql`,
+      headers: {
+        Authorization: "Bearer " + this.state.token,
+      },
+    })
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === "OperationDefinition" && operation === "subscription"
+      },
+      wsLink,
+      httpLink
+    )
+
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache({ fragmentMatcher }),
+    })
+
+    this.setState({ showPasswordLoading: true })
+
+    try {
+      await this.client.mutate({
+        mutation: gql`
+          mutation($password: String!) {
+            enablePassword(password: $password)
+          }
+        `,
+        variables: {
+          password: this.props.password,
+        },
+      })
+
+      this.props.signIn(this.state.token, this.state.user)
+
+      this.setState({
+        password: "",
+      })
+    } catch (e) {
+      if (e.message === "GraphQL error: Wrong password") {
+        this.setState({ passwordError: "Wrong password" })
+      } else if (
+        e.message === "GraphQL error: A user with this email already exists"
+      ) {
+        this.setState({ passwordError: "Email already taken" })
+      } else {
+        this.setState({
+          passwordError: "Unexpected error",
+        })
+      }
+
+      this.setState({ showPasswordLoading: false })
+    }
+  }
+
+  enableWebAuthn = async () => {
+    const wsLink = new WebSocketLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "ws://"
+              : "wss://") +
+            localStorage.getItem("server") +
+            "/subscriptions"
+          : `wss://bering.igloo.ooo/subscriptions`,
+      options: {
+        reconnect: true,
+        connectionParams: {
+          Authorization: "Bearer " + this.state.token,
+        },
+      },
+    })
+
+    const httpLink = new HttpLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "http://"
+              : "https://") +
+            localStorage.getItem("server") +
+            "/graphql"
+          : `https://bering.igloo.ooo/graphql`,
+      headers: {
+        Authorization: "Bearer " + this.state.token,
+      },
+    })
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === "OperationDefinition" && operation === "subscription"
+      },
+      wsLink,
+      httpLink
+    )
+
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache({ fragmentMatcher }),
+    })
+
+    const {
+      data: { getWebAuthnEnableChallenge },
+    } = await this.client.query({
+      query: gql`
+        query getWebAuthnEnableChallenge($email: String!) {
+          getWebAuthnEnableChallenge(email: $email) {
+            publicKeyOptions
+            jwtChallenge
+          }
+        }
+      `,
+      variables: {
+        email: this.props.user.email,
+      },
+    })
+
+    const publicKeyOptions = JSON.parse(
+      getWebAuthnEnableChallenge.publicKeyOptions
+    )
+
+    publicKeyOptions.challenge = str2ab(publicKeyOptions.challenge)
+    publicKeyOptions.user.id = str2ab(publicKeyOptions.user.id)
+
+    let sendResponse = async res => {
+      let payload = { response: {} }
+      payload.rawId = ab2str(res.rawId)
+      payload.response.attestationObject = ab2str(
+        res.response.attestationObject
+      )
+      payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
+
+      await this.client.mutate({
+        mutation: gql`
+          mutation($jwtChallenge: String!, $challengeResponse: String!) {
+            enableWebauthn(
+              jwtChallenge: $jwtChallenge
+              challengeResponse: $challengeResponse
+            )
+          }
+        `,
+        variables: {
+          challengeResponse: JSON.stringify(payload),
+          jwtChallenge: getWebAuthnEnableChallenge.jwtChallenge,
+        },
+      })
+    }
+
+    navigator.credentials
+      .create({ publicKey: publicKeyOptions })
+      .then(sendResponse)
   }
 
   handleClickCancelEmail = () => {
@@ -398,8 +609,7 @@ export default class Signup extends Component {
                       if (
                         event.key === "Enter" &&
                         this.props.name &&
-                        this.state.isEmailValid &&
-                        this.state.passwordScore >= 2
+                        this.state.isEmailValid && !this.state.coppaCheckbox
                       ) {
                         if (
                           this.props.password === this.state.confirmPassword
@@ -417,10 +627,9 @@ export default class Signup extends Component {
                       !this.state.isNameValid ? "This field is required" : " "
                     }
                     error={!this.props.mobile && !this.state.isNameValid}
-                                  InputLabelProps={this.props.name && { shrink: true }}
-              InputProps={{
-                endAdornment:
-                      this.props.name ? (
+                    InputLabelProps={this.props.name && { shrink: true }}
+                    InputProps={{
+                      endAdornment: this.props.name ? (
                         <InputAdornment position="end">
                           <IconButton
                             tabIndex="-1"
@@ -435,7 +644,7 @@ export default class Signup extends Component {
                             <Clear />
                           </IconButton>
                         </InputAdornment>
-                      ) : null
+                      ) : null,
                     }}
                   />
                   <br />
@@ -469,8 +678,7 @@ export default class Signup extends Component {
                       if (
                         event.key === "Enter" &&
                         this.props.name &&
-                        this.state.isEmailValid &&
-                        this.state.passwordScore >= 2
+                        this.state.isEmailValid && !this.state.coppaCheckbox
                       ) {
                         if (
                           this.props.password === this.state.confirmPassword
@@ -492,9 +700,8 @@ export default class Signup extends Component {
                         : " "
                     }
                     InputLabelProps={this.state.name && { shrink: true }}
-              InputProps={{
-                endAdornment:
-                      this.props.email ? (
+                    InputProps={{
+                      endAdornment: this.props.email ? (
                         <InputAdornment position="end">
                           <IconButton
                             tabIndex="-1"
@@ -504,7 +711,7 @@ export default class Signup extends Component {
                             <Clear />
                           </IconButton>
                         </InputAdornment>
-                      ) : null
+                      ) : null,
                     }}
                   />
                   <FormControlLabel
@@ -582,18 +789,38 @@ export default class Signup extends Component {
                       variant="contained"
                       color="primary"
                       fullWidth={true}
-                      onClick={() => {
-                        this.setState({ showPasswordLess: true })
-                      }}
+                      onClick={this.signUp}
                       style={{ marginBottom: "8px" }}
                       buttonStyle={{ backgroundColor: "#0083ff" }}
                       disabled={
+                        this.state.showSignUpLoading ||
                         !(this.props.name && this.state.isEmailValid) ||
                         this.state.showLoading ||
                         !this.state.coppaCheckbox
                       }
                     >
-                      Next
+                      Sign up
+                      {this.state.showSignUpLoading && (
+                      <MuiThemeProvider
+                      theme={createMuiTheme(
+                        this.props.mobile
+                          ? {
+                              overrides: {
+                                MuiCircularProgress: {
+                                  colorPrimary: { color: "#fff" },
+                                },
+                              },
+                            }
+                          : {
+                              overrides: {
+                                MuiCircularProgress: {
+                                  colorPrimary: { color: "#0083ff" },
+                                },
+                              },
+                            }
+                      )}
+                    >  <CenteredSpinner isInButton /></MuiThemeProvider>
+                      )}
                     </Button>
                     {querystringify.parse(
                       "?" + window.location.href.split("?")[1]
@@ -685,11 +912,11 @@ export default class Signup extends Component {
                     Sign up
                   </Typography>
                   <List>
-                    {window.PublicKeyCredential && (
+                    {navigator.credentials && (
                       <ListItem
                         button
                         style={{ paddingLeft: "24px" }}
-                        onClick={this.signInWebauthn}
+                        onClick={this.enableWebAuthn}
                       >
                         <ListItemIcon>
                           <Fingerprint />
@@ -826,7 +1053,7 @@ export default class Signup extends Component {
                         style={
                           this.props.mobile
                             ? {}
-                            : window.PublicKeyCredential
+                            : navigator.credentials
                             ? {
                                 marginTop: "221px",
                               }
@@ -924,14 +1151,12 @@ export default class Signup extends Component {
                         if (
                           event.key === "Enter" &&
                           this.props.name &&
-                          this.state.isEmailValid &&
-                          this.state.passwordScore >= 2
+                          this.state.isEmailValid
                         ) {
                           if (
                             this.props.password === this.state.confirmPassword
                           ) {
-                            this.setState({ showLoading: true })
-                            this.signUp()
+                            this.enablePassword()
                           } else {
                             this.setState({
                               passwordError: "Passwords don't match",
@@ -940,14 +1165,16 @@ export default class Signup extends Component {
                         }
                       }}
                       InputLabelProps={this.state.name && { shrink: true }}
-              InputProps={{
-                endAdornment:
-                        this.props.password ? (
+                      InputProps={{
+                        endAdornment: this.props.password ? (
                           <InputAdornment position="end">
                             <IconButton
                               tabIndex="-1"
-                              onClick={this.handleClickShowPassword}
-                              onMouseDown={this.handleMouseDownPassword}
+                              onClick={() =>
+                                this.setState({
+                                  showPassword: !this.state.showPassword,
+                                })
+                              }
                               style={{ color: "black" }}
                             >
                               {/* fix for ToggleIcon glitch on Edge */}
@@ -967,7 +1194,7 @@ export default class Signup extends Component {
                               )}
                             </IconButton>
                           </InputAdornment>
-                        ) : null
+                        ) : null,
                       }}
                     />
                   </MuiThemeProvider>
@@ -981,13 +1208,11 @@ export default class Signup extends Component {
                       width: "100%",
                       marginBottom: "16px",
                     }}
-                    type={this.state.showPassword ? "text" : "password"}
+                    type={this.state.showConfirmPassword ? "text" : "password"}
                     value={this.state.confirmPassword}
                     error={
                       !this.props.mobile &&
-                      (this.state.isConfirmPasswordEmpty
-                        ? true
-                        : false)
+                      (this.state.isConfirmPasswordEmpty ? true : false)
                     }
                     helperText={
                       <font
@@ -1013,14 +1238,12 @@ export default class Signup extends Component {
                       if (
                         event.key === "Enter" &&
                         this.props.name &&
-                        this.state.isEmailValid &&
-                        this.state.passwordScore >= 2
+                        this.state.isEmailValid
                       ) {
                         if (
                           this.props.password === this.state.confirmPassword
                         ) {
-                          this.setState({ showLoading: true })
-                          this.signUp()
+                          this.enablePassword()
                         } else {
                           this.setState({
                             passwordError: "Passwords don't match",
@@ -1030,33 +1253,36 @@ export default class Signup extends Component {
                     }}
                     InputLabelProps={this.state.name && { shrink: true }}
                     InputProps={{
-                      endAdornment:
-                      this.state.confirmPassword ? (
+                      endAdornment: this.state.confirmPassword ? (
                         <InputAdornment position="end">
                           <IconButton
                             tabIndex="-1"
-                            onClick={this.handleClickShowPassword}
-                            onMouseDown={this.handleMouseDownPassword}
+                            onClick={() =>
+                              this.setState({
+                                showConfirmPassword: !this.state
+                                  .showConfirmPassword,
+                              })
+                            }
                             style={{ color: "black" }}
                           >
                             {/* fix for ToggleIcon glitch on Edge */}
                             {document.documentMode ||
                             /Edge/.test(navigator.userAgent) ? (
-                              this.state.showPassword ? (
+                              this.state.showConfirmPassword ? (
                                 <VisibilityOff />
                               ) : (
                                 <Visibility />
                               )
                             ) : (
                               <ToggleIcon
-                                on={this.state.showPassword || false}
+                                on={this.state.showConfirmPassword || false}
                                 onIcon={<VisibilityOff />}
                                 offIcon={<Visibility />}
                               />
                             )}
                           </IconButton>
                         </InputAdornment>
-                      ) : null
+                      ) : null,
                     }}
                   />
                 </div>
@@ -1068,8 +1294,7 @@ export default class Signup extends Component {
                     primary={true}
                     onClick={() => {
                       if (this.props.password === this.state.confirmPassword) {
-                        this.setState({ showLoading: true })
-                        this.signUp()
+                        this.enablePassword()
                       } else {
                         this.setState({
                           passwordError: "Passwords don't match",
@@ -1079,15 +1304,13 @@ export default class Signup extends Component {
                     style={{ marginBottom: "8px" }}
                     buttonStyle={{ backgroundColor: "#0083ff" }}
                     disabled={
-                      !(
-                        this.props.name &&
-                        this.state.isEmailValid &&
-                        this.state.passwordScore >= 2
-                      ) || this.state.showLoading
+                      this.state.passwordScore <= 2 ||
+                      this.state.showPasswordLoading ||
+                      !this.state.confirmPassword
                     }
                   >
-                    Sign up
-                    {this.state.showLoading && (
+                    Add password
+                    {this.state.showPasswordLoading && (
                       <MuiThemeProvider
                         theme={createMuiTheme(
                           this.props.mobile

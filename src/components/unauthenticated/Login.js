@@ -498,27 +498,29 @@ class Login extends Component {
               onClick={this.signInWebauthn}
               disabled={!this.props.email}
             >
-              <Fingerprint
-                style={
-                  this.props.email
-                    ? this.props.mobile
-                      ? { height: "48px", width: "48px", color: "white" }
-                      : { height: "48px", width: "48px", color: "black" }
-                    : this.props.mobile
-                    ? {
-                        height: "48px",
-                        width: "48px",
-                        color: "white",
-                        opacity: 0.54,
-                      }
-                    : {
-                        height: "48px",
-                        width: "48px",
-                        color: "black",
-                        opacity: 0.54,
-                      }
-                }
-              />
+              {navigator.credentials && (
+                <Fingerprint
+                  style={
+                    this.props.email
+                      ? this.props.mobile
+                        ? { height: "48px", width: "48px", color: "white" }
+                        : { height: "48px", width: "48px", color: "black" }
+                      : this.props.mobile
+                      ? {
+                          height: "48px",
+                          width: "48px",
+                          color: "white",
+                          opacity: 0.54,
+                        }
+                      : {
+                          height: "48px",
+                          width: "48px",
+                          color: "black",
+                          opacity: 0.54,
+                        }
+                  }
+                />
+              )}
             </IconButton>
           </div>
           <div style={{ textAlign: "right" }}>
