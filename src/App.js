@@ -9,7 +9,7 @@ import { Online, Offline } from "react-detect-offline"
 import OfflineScreen from "./OfflineScreen"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-
+import PasswordVerification from "./PasswordVerification"
 // Material-UI customizations that do not change between light mode and night mode
 const sharedStyles = {
   MuiDialogActions: {
@@ -791,6 +791,7 @@ class App extends Component {
               path="/recovery"
               render={() => <RecoveryFetcher mobile={this.state.isMobile} />}
             />
+            <Route path="/verify" render={() => <PasswordVerification />} />
             <Route render={() => <Error404 isMobile={this.state.isMobile} />} />
           </Switch>
         </Online>

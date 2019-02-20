@@ -1,14 +1,12 @@
 import React, { Component } from "react"
 import { Redirect } from "react-router-dom"
 import Button from "@material-ui/core/Button"
-import polarBearWithBucket from "./styles/assets/polarBearWithBucket.svg"
 import Typography from "@material-ui/core/Typography"
 import Helmet from "react-helmet"
-import { Link } from "react-router-dom"
-import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 
-export default class Error404 extends Component {
+export default class PasswordVerification extends Component {
   state = { redirect: false, isMobile: false }
 
   updateDimensions() {
@@ -39,7 +37,7 @@ export default class Error404 extends Component {
     return (
       <React.Fragment>
         <Helmet>
-          <title>Igloo Aurora - Page not found</title>
+          <title>Igloo Aurora - Verify your email</title>
         </Helmet>
         <div
           style={{
@@ -61,21 +59,7 @@ export default class Error404 extends Component {
             variant={this.state.isMobile ? "h5" : "h4"}
             style={{ color: "white", marginTop: "16px", marginBottom: "32px" }}
           >
-            You seem to be lost
-          </Typography>
-          <img
-            alt="Sleeping Polar Bear"
-            src={polarBearWithBucket}
-            className="notSelectable nonDraggable"
-            draggable="false"
-            style={{ maxHeight: "300px" }}
-          />
-          <Typography
-            variant={this.state.isMobile ? "h6" : "h5"}
-            gutterBottom
-            style={{ color: "white", margin: "32px 0" }}
-          >
-            Click on the button below and we'll take you to a safe place
+            You should find a verification email in your inbox
           </Typography>
           <MuiThemeProvider
             theme={createMuiTheme({
@@ -88,11 +72,15 @@ export default class Error404 extends Component {
               variant="outlined"
               onClick={() => this.setState({ redirect: true })}
               color="primary"
-              component={Link}
-              to="/"
-              style={{ marginBottom: "16px" }}
             >
-              Take me away!
+              Resend email
+            </Button>
+            <Button
+              onClick={() => this.setState({ redirect: true })}
+              color="primary"
+              style={{ marginLeft: "4px" }}
+            >
+              Go back
             </Button>
           </MuiThemeProvider>
         </div>

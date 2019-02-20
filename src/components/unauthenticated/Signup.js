@@ -609,18 +609,10 @@ export default class Signup extends Component {
                       if (
                         event.key === "Enter" &&
                         this.props.name &&
-                        this.state.isEmailValid && !this.state.coppaCheckbox
+                        this.state.isEmailValid &&
+                        !this.state.coppaCheckbox
                       ) {
-                        if (
-                          this.props.password === this.state.confirmPassword
-                        ) {
-                          this.setState({ showLoading: true })
-                          this.signUp()
-                        } else {
-                          this.setState({
-                            passwordError: "Passwords don't match",
-                          })
-                        }
+                        this.signUp()
                       }
                     }}
                     helperText={
@@ -654,11 +646,11 @@ export default class Signup extends Component {
                     label="Email"
                     value={this.props.email}
                     error={
-                      !this.props.mobile &&
-                      ((!this.state.isEmailValid && this.props.email) ||
+                      !this.props.mobile && (
+                      this.props.emailError || ( ((!this.state.isEmailValid && this.props.email) ||
                       this.state.isMailEmpty
                         ? true
-                        : false)
+                        : false)))
                     }
                     style={{
                       color: "black",
@@ -678,26 +670,19 @@ export default class Signup extends Component {
                       if (
                         event.key === "Enter" &&
                         this.props.name &&
-                        this.state.isEmailValid && !this.state.coppaCheckbox
+                        this.state.isEmailValid &&
+                        !this.state.coppaCheckbox
                       ) {
-                        if (
-                          this.props.password === this.state.confirmPassword
-                        ) {
-                          this.setState({ showLoading: true })
-                          this.signUp()
-                        } else {
-                          this.setState({
-                            passwordError: "Passwords don't match",
-                          })
-                        }
+                        this.signUp()
                       }
                     }}
                     helperText={
-                      !this.state.isEmailValid && this.props.email
+                      this.props.emailError || (
+                      (!this.state.isEmailValid && this.props.email)
                         ? "Enter a valid email"
                         : this.state.isMailEmpty
                         ? "This field is required"
-                        : " "
+                        : " ")
                     }
                     InputLabelProps={this.state.name && { shrink: true }}
                     InputProps={{
@@ -785,8 +770,19 @@ export default class Signup extends Component {
                         privacy statement
                       </MUILink>
                     </Typography>
-                    <Button
-                      variant="contained"
+            <MuiThemeProvider
+              theme={
+                this.props.mobile
+                  ? createMuiTheme({
+                      palette: {
+                        primary: { main: "#fff" },
+                      },
+                    })
+                  : ""
+              }
+            >
+              <Button
+                variant={this.props.mobile ? "outlined" : "contained"}
                       color="primary"
                       fullWidth={true}
                       onClick={this.signUp}
@@ -801,27 +797,29 @@ export default class Signup extends Component {
                     >
                       Sign up
                       {this.state.showSignUpLoading && (
-                      <MuiThemeProvider
-                      theme={createMuiTheme(
-                        this.props.mobile
-                          ? {
-                              overrides: {
-                                MuiCircularProgress: {
-                                  colorPrimary: { color: "#fff" },
-                                },
-                              },
-                            }
-                          : {
-                              overrides: {
-                                MuiCircularProgress: {
-                                  colorPrimary: { color: "#0083ff" },
-                                },
-                              },
-                            }
+                        <MuiThemeProvider
+                          theme={createMuiTheme(
+                            this.props.mobile
+                              ? {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#fff" },
+                                    },
+                                  },
+                                }
+                              : {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#0083ff" },
+                                    },
+                                  },
+                                }
+                          )}
+                        >
+                          <CenteredSpinner isInButton />
+                        </MuiThemeProvider>
                       )}
-                    >  <CenteredSpinner isInButton /></MuiThemeProvider>
-                      )}
-                    </Button>
+                    </Button></MuiThemeProvider>
                     {querystringify.parse(
                       "?" + window.location.href.split("?")[1]
                     ).from === "accounts" &&
@@ -990,9 +988,8 @@ export default class Signup extends Component {
                     <ListItem
                       button
                       style={{ paddingLeft: "24px" }}
-                      onClick={() => {
-                        this.setState({ manualCodeOpen: true, qrErrpr: false })
-                      }}
+                      component={Link}
+                      to="/verify"
                     >
                       <ListItemIcon>
                         <MailOutline />
@@ -1150,8 +1147,9 @@ export default class Signup extends Component {
                       onKeyPress={event => {
                         if (
                           event.key === "Enter" &&
-                          this.props.name &&
-                          this.state.isEmailValid
+                          this.state.passwordScore > 2 &&
+                          !this.state.showPasswordLoading &&
+                          this.state.confirmPassword
                         ) {
                           if (
                             this.props.password === this.state.confirmPassword
@@ -1237,8 +1235,9 @@ export default class Signup extends Component {
                     onKeyPress={event => {
                       if (
                         event.key === "Enter" &&
-                        this.props.name &&
-                        this.state.isEmailValid
+                        this.state.passwordScore > 2 &&
+                        !this.state.showPasswordLoading &&
+                        this.state.confirmPassword
                       ) {
                         if (
                           this.props.password === this.state.confirmPassword
@@ -1287,8 +1286,19 @@ export default class Signup extends Component {
                   />
                 </div>
                 <div style={this.props.mobile ? {} : { marginTop: "207px" }}>
-                  <Button
-                    variant="contained"
+                             <MuiThemeProvider
+              theme={
+                this.props.mobile
+                  ? createMuiTheme({
+                      palette: {
+                        primary: { main: "#fff" },
+                      },
+                    })
+                  : ""
+              }
+            >
+              <Button
+                variant={this.props.mobile ? "outlined" : "contained"}
                     color="primary"
                     fullWidth={true}
                     primary={true}
@@ -1333,7 +1343,7 @@ export default class Signup extends Component {
                         <CenteredSpinner isInButton />
                       </MuiThemeProvider>
                     )}
-                  </Button>
+                  </Button></MuiThemeProvider>
                   <MuiThemeProvider
                     theme={createMuiTheme(
                       this.props.mobile

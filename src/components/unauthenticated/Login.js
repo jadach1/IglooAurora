@@ -540,48 +540,60 @@ class Login extends Component {
             >
               Forgot password?
             </MUILink>
-            <Button
-              variant="contained"
-              primary={true}
-              fullWidth={true}
-              onClick={() => {
-                this.setState({ showLoading: true })
-                this.signIn()
-              }}
-              style={{ margin: "8px 0" }}
-              color="primary"
-              disabled={
-                !(
-                  EmailValidator.validate(this.props.email) &&
-                  this.props.password
-                ) || this.state.showLoading
+            <MuiThemeProvider
+              theme={
+                this.props.mobile
+                  ? createMuiTheme({
+                      palette: {
+                        primary: { main: "#fff" },
+                      },
+                    })
+                  : ""
               }
             >
-              Log in
-              {this.state.showLoading && (
-                <MuiThemeProvider
-                  theme={createMuiTheme(
-                    this.props.mobile
-                      ? {
-                          overrides: {
-                            MuiCircularProgress: {
-                              colorPrimary: { color: "#fff" },
+              <Button
+                variant={this.props.mobile ? "outlined" : "contained"}
+                primary={true}
+                fullWidth={true}
+                onClick={() => {
+                  this.setState({ showLoading: true })
+                  this.signIn()
+                }}
+                style={{ margin: "8px 0" }}
+                color="primary"
+                disabled={
+                  !(
+                    EmailValidator.validate(this.props.email) &&
+                    this.props.password
+                  ) || this.state.showLoading
+                }
+              >
+                Log in
+                {this.state.showLoading && (
+                  <MuiThemeProvider
+                    theme={createMuiTheme(
+                      this.props.mobile
+                        ? {
+                            overrides: {
+                              MuiCircularProgress: {
+                                colorPrimary: { color: "#fff" },
+                              },
                             },
-                          },
-                        }
-                      : {
-                          overrides: {
-                            MuiCircularProgress: {
-                              colorPrimary: { color: "#0083ff" },
+                          }
+                        : {
+                            overrides: {
+                              MuiCircularProgress: {
+                                colorPrimary: { color: "#0083ff" },
+                              },
                             },
-                          },
-                        }
-                  )}
-                >
-                  <CenteredSpinner isInButton />
-                </MuiThemeProvider>
-              )}
-            </Button>
+                          }
+                    )}
+                  >
+                    <CenteredSpinner isInButton />
+                  </MuiThemeProvider>
+                )}
+              </Button>
+            </MuiThemeProvider>
             {querystringify.parse("?" + window.location.href.split("?")[1])
               .from === "accounts" &&
             JSON.parse(localStorage.getItem("accountList"))[0] ? (
@@ -627,7 +639,7 @@ class Login extends Component {
                 )}
               >
                 <Button
-                  fullWidth={true}
+                  fullWidth
                   color="primary"
                   disabled={this.state.showLoading}
                   component={Link}

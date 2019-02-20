@@ -112,7 +112,7 @@ class CustomizedSnackbars extends React.Component {
               : {
                   bottom: "64px",
                   right: "16px",
-                  width: "351px",
+                  width: "356px",
                   left: "auto",
                   zIndex: 30,
                 }

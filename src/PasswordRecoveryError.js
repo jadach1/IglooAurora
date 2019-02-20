@@ -2,10 +2,12 @@ import React from "react"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import polarBear from "./styles/assets/polarBearWithBucket.svg"
-import { Redirect } from "react-router-dom"
+import {  Link } from "react-router-dom"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 export default class PasswordRecoveryError extends React.Component {
-  state = { redirect: false, isMobile: false }
+  state = { isMobile: false }
 
   updateDimensions() {
     if (window.innerWidth < 400) {
@@ -54,8 +56,8 @@ export default class PasswordRecoveryError extends React.Component {
           alt="Sleeping Polar Bear"
           src={polarBear}
           className="notSelectable nonDraggable"
-                  draggable="false"
-                  style={{ maxWidth: "300px" }}
+          draggable="false"
+          style={{ maxWidth: "300px" }}
         />
         <Typography
           variant={this.state.isMobile ? "h6" : "h5"}
@@ -63,15 +65,17 @@ export default class PasswordRecoveryError extends React.Component {
         >
           {this.props.error}
         </Typography>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => this.setState({ redirect: true })}
-          style={{ marginBottom: "16px" }}
+        <MuiThemeProvider
+          theme={createMuiTheme({
+            palette: {
+              primary: { main: "#fff" },
+            },
+          })}
         >
-          Take me away!
-        </Button>
-        {this.state.redirect && <Redirect push to="/" />}
+          <Button variant="outlined" color="primary" component={Link} to="/">
+            Take me away!
+          </Button>
+        </MuiThemeProvider>
       </div>
     )
   }

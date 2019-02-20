@@ -317,20 +317,33 @@ export default class PasswordRecovery extends Component {
             }
           />
         </MuiThemeProvider>
-        <Button
-          variant="contained"
-          color="primary"
-          disabled={!user || !(this.state.passwordScore >= 2)}
-          onClick={() => {
-            this.updatePassword(this.props.password)
-          }}
-          fullWidth
-          style={{ marginBottom: "8px" }}
+        <MuiThemeProvider
+          theme={createMuiTheme({
+            palette: {
+              primary: { main: "#fff" },
+            },
+          })}
         >
-          Change password
-          {this.state.showLoading && <CenteredSpinner isInButton noDelay />}
-        </Button>
-        <Button style={{ marginRight: "4px" }} fullWidth component={Link} to="/">
+          <Button
+            variant="outlined"
+            color="primary"
+            disabled={!user || !(this.state.passwordScore >= 2)}
+            onClick={() => {
+              this.updatePassword(this.props.password)
+            }}
+            fullWidth
+            style={{ marginBottom: "8px" }}
+          >
+            Change password
+            {this.state.showLoading && <CenteredSpinner isInButton noDelay />}
+          </Button>
+        </MuiThemeProvider>
+        <Button
+          style={{ marginRight: "4px" }}
+          fullWidth
+          component={Link}
+          to="/"
+        >
           Never mind
         </Button>
       </div>
