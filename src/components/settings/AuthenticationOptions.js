@@ -240,16 +240,13 @@ class AuthenticationOptions extends React.Component {
       data: { getWebAuthnEnableChallenge },
     } = await this.client.query({
       query: gql`
-        query getWebauthnSignUpChallenge($email: String!) {
-          getWebAuthnEnableChallenge(email: $email) {
+        query getWebauthnSignUpChallenge {
+          getWebAuthnEnableChallenge {
             publicKeyOptions
             jwtChallenge
           }
         }
       `,
-      variables: {
-        email: this.props.user.email,
-      },
     })
 
     const publicKeyOptions = JSON.parse(
@@ -273,7 +270,16 @@ class AuthenticationOptions extends React.Component {
             enableWebauthn(
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
-            )
+            ) {
+token
+              user {
+                id
+                email
+                name
+                profileIconColor
+              }
+
+            }
           }
         `,
         variables: {

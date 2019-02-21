@@ -177,7 +177,7 @@ export default class Signup extends Component {
       confirmPassword: "",
       coppaCheckbox: false,
       counter: 0,
-      token: "",
+      changeAuthenticationToken: "",
     }
 
     this.signUp = this.signUp.bind(this)
@@ -198,20 +198,14 @@ export default class Signup extends Component {
       this.props.changeEmailError("")
       const {
         data: {
-          signUp: { token, user },
+          signUp: { changeAuthenticationToken, user },
         },
       } = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $name: String!) {
             signUp(email: $email, name: $name) {
-              token
-              user {
-                id
-                email
-                name
-                profileIconColor
-              }
-            }
+             changeAuthenticationToken
+            } 
           }
         `,
         variables: {
@@ -223,7 +217,7 @@ export default class Signup extends Component {
       this.props.changeName("")
       this.props.changeEmail("")
 
-      this.setState({ showPasswordLess: true, token, user })
+      this.setState({ showPasswordLess: true, changeAuthenticationToken, user })
     } catch (e) {
       this.setState({ showLoading: false })
       if (
@@ -252,7 +246,7 @@ export default class Signup extends Component {
       options: {
         reconnect: true,
         connectionParams: {
-          Authorization: "Bearer " + this.state.token,
+          Authorization: "Bearer " + this.state.changeAuthenticationToken,
         },
       },
     })
@@ -267,7 +261,7 @@ export default class Signup extends Component {
             "/graphql"
           : `https://bering.igloo.ooo/graphql`,
       headers: {
-        Authorization: "Bearer " + this.state.token,
+        Authorization: "Bearer " + this.state.changeAuthenticationToken,
       },
     })
 
@@ -295,10 +289,22 @@ export default class Signup extends Component {
     this.setState({ showPasswordLoading: true })
 
     try {
-      await this.client.mutate({
+ const {
+        data: {
+          enablePassword: { token, user },
+        },
+      } =    await this.client.mutate({
         mutation: gql`
           mutation($password: String!) {
-            enablePassword(password: $password)
+            enablePassword(password: $password) {
+token
+              user {
+                id
+                email
+                name
+                profileIconColor
+              }
+            }
           }
         `,
         variables: {
@@ -306,11 +312,11 @@ export default class Signup extends Component {
         },
       })
 
-      this.props.signIn(this.state.token, this.state.user)
+      this.props.signIn(token, user)
 
       this.setState({
         password: "",
-      })
+              })
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
@@ -341,7 +347,7 @@ export default class Signup extends Component {
       options: {
         reconnect: true,
         connectionParams: {
-          Authorization: "Bearer " + this.state.token,
+          Authorization: "Bearer " + this.state.changeAuthenticationToken,
         },
       },
     })
@@ -356,7 +362,7 @@ export default class Signup extends Component {
             "/graphql"
           : `https://bering.igloo.ooo/graphql`,
       headers: {
-        Authorization: "Bearer " + this.state.token,
+        Authorization: "Bearer " + this.state.changeAuthenticationToken,
       },
     })
 
@@ -385,16 +391,13 @@ export default class Signup extends Component {
       data: { getWebAuthnEnableChallenge },
     } = await this.client.query({
       query: gql`
-        query getWebAuthnEnableChallenge($email: String!) {
-          getWebAuthnEnableChallenge(email: $email) {
+        query getWebAuthnEnableChallenge {
+          getWebAuthnEnableChallenge {
             publicKeyOptions
             jwtChallenge
           }
         }
       `,
-      variables: {
-        email: this.props.user.email,
-      },
     })
 
     const publicKeyOptions = JSON.parse(
@@ -412,13 +415,25 @@ export default class Signup extends Component {
       )
       payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
 
-      await this.client.mutate({
+ 
+ const {
+        data: {
+          enableWebauthn: { token, user },
+        },
+      } = await this.client.mutate({
         mutation: gql`
           mutation($jwtChallenge: String!, $challengeResponse: String!) {
             enableWebauthn(
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
-            )
+            ){
+token
+              user {
+                id
+                email
+                name
+                profileIconColor
+              }}
           }
         `,
         variables: {
@@ -426,7 +441,10 @@ export default class Signup extends Component {
           jwtChallenge: getWebAuthnEnableChallenge.jwtChallenge,
         },
       })
+
+            this.props.signIn(token, user)
     }
+
 
     navigator.credentials
       .create({ publicKey: publicKeyOptions })

@@ -10,6 +10,7 @@ import logo from "./styles/assets/logo.svg"
 import iglooTitle from "./styles/assets/iglooTitle.svg"
 import Helmet from "react-helmet"
 import ChangeServer from "./components/settings/ChangeServer"
+import EmailVerification from "./EmailVerification"
 
 export default class UnAuthenticatedMain extends Component {
   state = {
@@ -50,7 +51,9 @@ export default class UnAuthenticatedMain extends Component {
               ? "Igloo Aurora - Log in"
               : this.props.isAccountSwitcher
               ? "Igloo Aurora - Accounts"
-              : "Igloo Aurora - Sign up"}
+              : this.props.isSignup
+              ? "Igloo Aurora - Sign up"
+              : "Igloo Aurora - Verify your email"}
           </title>
         </Helmet>
         {this.props.mobile ? (
@@ -92,7 +95,7 @@ export default class UnAuthenticatedMain extends Component {
                     this.setState({ changeServerOpen: true })
                   }
                 />
-              ) : (
+              ) : this.props.isSignup ? (
                 <Signup
                   mobile
                   client={this.client}
@@ -111,6 +114,8 @@ export default class UnAuthenticatedMain extends Component {
                     this.setState({ changeServerOpen: true })
                   }
                 />
+              ) : (
+                <EmailVerification />
               )}
             </div>
           </div>
@@ -173,7 +178,7 @@ export default class UnAuthenticatedMain extends Component {
                   changeEmail={this.props.changeEmail}
                   forceUpdate={() => this.props.forceUpdate()}
                 />
-              ) : (
+              ) : this.props.isSignup ? (
                 <Signup
                   client={this.client}
                   isDialog={false}
@@ -189,6 +194,8 @@ export default class UnAuthenticatedMain extends Component {
                   changeEmailError={this.props.changeEmailError}
                   changeLoginEmail={this.props.changeLoginEmail}
                 />
+              ) : (
+                <EmailVerification client={this.client} />
               )}
             </Paper>
           </div>
