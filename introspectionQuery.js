@@ -8,7 +8,7 @@ const serverUrl =
         : "https://") +
       localStorage.getItem("server") +
       "/graphql"
-    : `https://bering.igloo.ooo/graphql`
+    : `https://iglooql.herokuapp.com/graphql`
 
 fetch(serverUrl, {
   method: "POST",

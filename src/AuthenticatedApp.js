@@ -25,7 +25,7 @@ class AuthenticatedApp extends Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://bering.igloo.ooo/subscriptions`,
+          : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -42,7 +42,7 @@ class AuthenticatedApp extends Component {
             : "https://") +
           localStorage.getItem("server") +
           "/graphql"
-        : `https://bering.igloo.ooo/graphql`,
+        : `https://iglooql.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + bearer,
       },
@@ -82,7 +82,7 @@ class AuthenticatedApp extends Component {
                 : "wss://") +
               localStorage.getItem("server") +
               "/subscriptions"
-            : `wss://bering.igloo.ooo/subscriptions`,
+            : `wss://iglooql.herokuapp.com/subscriptions`,
         options: {
           reconnect: true,
           connectionParams: {
@@ -99,7 +99,7 @@ class AuthenticatedApp extends Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://bering.igloo.ooo/graphql`,
+          : `https://iglooql.herokuapp.com/graphql`,
         headers: {
           Authorization: "Bearer " + bearer,
         },

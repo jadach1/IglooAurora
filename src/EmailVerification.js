@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import Helmet from "react-helmet"
@@ -7,13 +7,78 @@ import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import logo from "./styles/assets/logo.svg"
 import gql from "graphql-tag"
+import { ApolloClient } from "apollo-client"
+import { HttpLink } from "apollo-link-http"
+import {
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from "apollo-cache-inmemory"
+import { WebSocketLink } from "apollo-link-ws"
+import { split } from "apollo-link"
+import { getMainDefinition } from "apollo-utilities"
+import introspectionQueryResultData from "./fragmentTypes.json"
 
 export default class PasswordVerification extends Component {
   state = { redirect: false, isMobile: false }
 
   resendEmail = async () => {
     try {
-      await this.props.client.mutate({
+      const bearer = this.props.token
+      const wsLink = new WebSocketLink({
+        uri:
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("server") !== ""
+            ? (localStorage.getItem("serverUnsecure") === "true"
+                ? "ws://"
+                : "wss://") +
+              localStorage.getItem("server") +
+              "/subscriptions"
+            : `wss://iglooql.herokuapp.com/subscriptions`,
+        options: {
+          reconnect: true,
+          connectionParams: {
+            Authorization: "Bearer " + bearer,
+          },
+        },
+      })
+
+      const httpLink = new HttpLink({
+        uri:
+          typeof Storage !== "undefined" &&
+          localStorage.getItem("server") !== ""
+            ? (localStorage.getItem("serverUnsecure") === "true"
+                ? "http://"
+                : "https://") +
+              localStorage.getItem("server") +
+              "/graphql"
+            : `https://iglooql.herokuapp.com/graphql`,
+        headers: {
+          Authorization: "Bearer " + bearer,
+        },
+      })
+
+      const link = split(
+        // split based on operation type
+        ({ query }) => {
+          const { kind, operation } = getMainDefinition(query)
+          return kind === "OperationDefinition" && operation === "subscription"
+        },
+        wsLink,
+        httpLink
+      )
+
+      const fragmentMatcher = new IntrospectionFragmentMatcher({
+        introspectionQueryResultData,
+      })
+
+      this.client = new ApolloClient({
+        // By default, this client will send queries to the
+        //  `/graphql` endpoint on the same host
+        link,
+        cache: new InMemoryCache({ fragmentMatcher }),
+      })
+
+      await this.client.mutate({
         mutation: gql`
           mutation ResendVerificationEmail {
             resendVerificationEmail
@@ -21,6 +86,7 @@ export default class PasswordVerification extends Component {
         `,
       })
     } catch (e) {
+      console.log(e, this.props.token)
       this.setState({
         error: "Unexpected error",
       })
@@ -45,6 +111,8 @@ export default class PasswordVerification extends Component {
   }
 
   render() {
+    if (!this.props.token) return <Redirect to="/" />
+
     return (
       <React.Fragment>
         <Helmet>
@@ -101,7 +169,7 @@ export default class PasswordVerification extends Component {
               Resend email
             </Button>
             <br />
-            <Button color="primary" component={Link} to="/" fullWidth>
+            <Button color="primary" component={Link} to="/accounts" fullWidth>
               Go back
             </Button>
           </MuiThemeProvider>

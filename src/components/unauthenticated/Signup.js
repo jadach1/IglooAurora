@@ -205,7 +205,7 @@ export default class Signup extends Component {
           mutation($email: String!, $name: String!) {
             signUp(email: $email, name: $name) {
              changeAuthenticationToken
-            } 
+            }
           }
         `,
         variables: {
@@ -216,6 +216,8 @@ export default class Signup extends Component {
 
       this.props.changeName("")
       this.props.changeEmail("")
+
+      this.props.setToken(changeAuthenticationToken)
 
       this.setState({ showPasswordLess: true, changeAuthenticationToken, user })
     } catch (e) {
@@ -242,7 +244,7 @@ export default class Signup extends Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://bering.igloo.ooo/subscriptions`,
+          : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -259,7 +261,7 @@ export default class Signup extends Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://bering.igloo.ooo/graphql`,
+          : `https://iglooql.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.changeAuthenticationToken,
       },
@@ -343,7 +345,7 @@ token
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://bering.igloo.ooo/subscriptions`,
+          : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -360,7 +362,7 @@ token
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://bering.igloo.ooo/graphql`,
+          : `https://iglooql.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.changeAuthenticationToken,
       },
@@ -415,7 +417,7 @@ token
       )
       payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
 
- 
+
  const {
         data: {
           enableWebauthn: { token, user },

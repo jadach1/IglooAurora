@@ -497,20 +497,34 @@ class Login extends Component {
             <IconButton
               onClick={this.signInWebauthn}
               disabled={!this.props.email}
+              style={
+                EmailValidator.validate(this.props.email) &&
+                !this.state.showLoading
+                  ? this.props.mobile
+                    ? { color: "white" }
+                    : { color: "black" }
+                  : this.props.mobile
+                  ? {
+                      color: "white",
+                      opacity: 0.54,
+                    }
+                  : {
+                      color: "black",
+                      opacity: 0.54,
+                    }
+              }
             >
               {navigator.credentials && (
                 <Fingerprint
                   style={
                     this.props.email
                       ? this.props.mobile
-                        ? { height: "48px", width: "48px", color: "white" }
-                        : { height: "48px", width: "48px", color: "black" }
+                        ? { height: "48px", width: "48px" }
+                        : { height: "48px", width: "48px" }
                       : this.props.mobile
                       ? {
                           height: "48px",
                           width: "48px",
-                          color: "white",
-                          opacity: 0.54,
                         }
                       : {
                           height: "48px",

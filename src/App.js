@@ -302,7 +302,7 @@ function setupWebPush(token) {
             : "https://") +
           localStorage.getItem("server") +
           "/webPushSubscribe"
-        : `https://bering.igloo.ooo/webPushSubscribe`
+        : `https://iglooql.herokuapp.com/webPushSubscribe`
 
     fetch(serverUrl, {
       body: JSON.stringify(subscription),
@@ -629,7 +629,7 @@ class App extends Component {
 
     if (typeof Storage !== "undefined") {
       if (localStorage.getItem("server") === null) {
-        localStorage.setItem("server", "bering.igloo.ooo")
+        localStorage.setItem("server", "iglooql.herokuapp.com")
       }
 
       if (localStorage.getItem("serverUnsecure") === null) {
@@ -791,6 +791,9 @@ class App extends Component {
             <Route
               path="/verify"
               render={() => (
+                this.state.bearer ? (
+                  <Redirect to="/" />
+                ):
                 <UnauthenticatedMain
                   signIn={signIn}
                   mobile={this.state.isMobile}

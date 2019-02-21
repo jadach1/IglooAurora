@@ -241,16 +241,16 @@ class GraphQLFetcher extends Component {
           pendingEnvironmentShareCount
           pendingOwnerChangeCount
           settings {
-          timeFormat
-          dateFormat
-          lengthAndMass
-          temperature
-          passwordChangeEmail
-                    pendingOwnerChangeReceivedEmail
-                    pendingEnvironmentShareReceivedEmail
-                    pendingOwnerChangeAcceptedEmail
-                    pendingEnvironmentShareAcceptedEmail
-                    permanentTokenCreatedEmail
+            timeFormat
+            dateFormat
+            lengthAndMass
+            temperature
+            passwordChangeEmail
+            pendingOwnerChangeReceivedEmail
+            pendingEnvironmentShareReceivedEmail
+            pendingOwnerChangeAcceptedEmail
+            pendingEnvironmentShareAcceptedEmail
+            permanentTokenCreatedEmail
           }
         }
       }
@@ -669,11 +669,11 @@ export default graphql(
           lengthAndMass
           temperature
           passwordChangeEmail
-                    pendingOwnerChangeReceivedEmail
-                    pendingEnvironmentShareReceivedEmail
-                    pendingOwnerChangeAcceptedEmail
-                    pendingEnvironmentShareAcceptedEmail
-                    permanentTokenCreatedEmail
+          pendingOwnerChangeReceivedEmail
+          pendingEnvironmentShareReceivedEmail
+          pendingOwnerChangeAcceptedEmail
+          pendingEnvironmentShareAcceptedEmail
+          permanentTokenCreatedEmail
         }
         environments(sortBy: name, sortDirection: ASCENDING) {
           id

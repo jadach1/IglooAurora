@@ -139,10 +139,10 @@ class ChangeServer extends React.Component {
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("server") !== "bering.igloo.ooo" &&
+      localStorage.getItem("server") !== "iglooql.herokuapp.com" &&
       localStorage.getItem("server") === url
     )
-      this.selectUrl("bering.igloo.ooo", false)
+      this.selectUrl("iglooql.herokuapp.com", false)
 
     this.forceUpdate()
   }
@@ -272,12 +272,12 @@ class ChangeServer extends React.Component {
                 button
                 selected={
                   typeof Storage !== "undefined" &&
-                  localStorage.getItem("server") === "bering.igloo.ooo"
+                  localStorage.getItem("server") === "iglooql.herokuapp.com"
                 }
                 onClick={() =>
                   typeof Storage !== "undefined" &&
-                  localStorage.getItem("server") !== "bering.igloo.ooo" &&
-                  this.selectUrl("bering.igloo.ooo", false)
+                  localStorage.getItem("server") !== "iglooql.herokuapp.com" &&
+                  this.selectUrl("iglooql.herokuapp.com", false)
                 }
               >
                 <ListItemIcon>
@@ -307,7 +307,7 @@ class ChangeServer extends React.Component {
                           : { color: "#7a7a7a" }
                       }
                     >
-                      bering.igloo.ooo
+                      iglooql.herokuapp.com
                     </font>
                   }
                 />
@@ -398,12 +398,12 @@ class ChangeServer extends React.Component {
                   typeof Storage !== "undefined" &&
                   !this.serverListContainsItem() &&
                   this.isUrl(this.state.url) &&
-                  this.state.url !== "https://bering.igloo.ooo" &&
-                  this.state.url !== "bering.igloo.ooo" &&
-                  this.state.url !== "http://bering.igloo.ooo" &&
-                  this.state.url !== "http://bering.igloo.ooo/" &&
-                  this.state.url !== "bering.igloo.ooo/" &&
-                  this.state.url !== "https://bering.igloo.ooo/"
+                  this.state.url !== "https://iglooql.herokuapp.com" &&
+                  this.state.url !== "iglooql.herokuapp.com" &&
+                  this.state.url !== "http://iglooql.herokuapp.com" &&
+                  this.state.url !== "http://iglooql.herokuapp.com/" &&
+                  this.state.url !== "iglooql.herokuapp.com/" &&
+                  this.state.url !== "https://iglooql.herokuapp.com/"
                 ) {
                   this.addServer()
                   this.setState({
@@ -471,9 +471,9 @@ class ChangeServer extends React.Component {
                   typeof Storage !== "undefined" &&
                   !this.serverListContainsItem() &&
                   this.isUrl(this.state.url) &&
-                  this.state.url !== "https://bering.igloo.ooo" &&
-                  this.state.url !== "bering.igloo.ooo" &&
-                  this.state.url !== "http://bering.igloo.ooo"
+                  this.state.url !== "https://iglooql.herokuapp.com" &&
+                  this.state.url !== "iglooql.herokuapp.com" &&
+                  this.state.url !== "http://iglooql.herokuapp.com"
                 ) {
                   this.addServer()
                   this.setState({
@@ -591,9 +591,9 @@ class ChangeServer extends React.Component {
                 typeof Storage === "undefined" ||
                 this.serverListContainsItem() ||
                 !this.isUrl(this.state.url) ||
-                this.state.url === "https://bering.igloo.ooo" ||
-                this.state.url === "bering.igloo.ooo" ||
-                this.state.url === "http://bering.igloo.ooo"
+                this.state.url === "https://iglooql.herokuapp.com" ||
+                this.state.url === "iglooql.herokuapp.com" ||
+                this.state.url === "http://iglooql.herokuapp.com"
               }
             >
               Add
@@ -649,12 +649,12 @@ class ChangeServer extends React.Component {
                   this.state.editUrl &&
                   typeof Storage !== "undefined" &&
                   this.isUrl(this.state.editUrl) &&
-                  this.state.editUrl !== "https://bering.igloo.ooo" &&
-                  this.state.editUrl !== "bering.igloo.ooo" &&
-                  this.state.editUrl !== "http://bering.igloo.ooo" &&
-                  this.state.editUrl !== "http://bering.igloo.ooo/" &&
-                  this.state.editUrl !== "bering.igloo.ooo/" &&
-                  this.state.editUrl !== "https://bering.igloo.ooo/"
+                  this.state.editUrl !== "https://iglooql.herokuapp.com" &&
+                  this.state.editUrl !== "iglooql.herokuapp.com" &&
+                  this.state.editUrl !== "http://iglooql.herokuapp.com" &&
+                  this.state.editUrl !== "http://iglooql.herokuapp.com/" &&
+                  this.state.editUrl !== "iglooql.herokuapp.com/" &&
+                  this.state.editUrl !== "https://iglooql.herokuapp.com/"
                 ) {
                   this.editServer()
                   this.setState({
@@ -721,9 +721,9 @@ class ChangeServer extends React.Component {
                   this.state.editUrl &&
                   typeof Storage !== "undefined" &&
                   this.isUrl(this.state.editUrl) &&
-                  this.state.editUrl !== "https://bering.igloo.ooo" &&
-                  this.state.editUrl !== "bering.igloo.ooo" &&
-                  this.state.editUrl !== "http://bering.igloo.ooo"
+                  this.state.editUrl !== "https://iglooql.herokuapp.com" &&
+                  this.state.editUrl !== "iglooql.herokuapp.com" &&
+                  this.state.editUrl !== "http://iglooql.herokuapp.com"
                 ) {
                   this.editServer()
                   this.setState({
@@ -840,9 +840,9 @@ class ChangeServer extends React.Component {
                 !this.state.editUrl ||
                 typeof Storage === "undefined" ||
                 !this.isUrl(this.state.editUrl) ||
-                this.state.editUrl === "https://bering.igloo.ooo" ||
-                this.state.editUrl === "bering.igloo.ooo" ||
-                this.state.editUrl === "http://bering.igloo.ooo"
+                this.state.editUrl === "https://iglooql.herokuapp.com" ||
+                this.state.editUrl === "iglooql.herokuapp.com" ||
+                this.state.editUrl === "http://iglooql.herokuapp.com"
               }
             >
               Edit

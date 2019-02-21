@@ -18,6 +18,7 @@ export default class UnAuthenticatedMain extends Component {
     tapCounter: 0,
     changeServerOpen: false,
     showAccountSwitcher: true,
+    token: "",
   }
 
   render() {
@@ -33,7 +34,7 @@ export default class UnAuthenticatedMain extends Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://bering.igloo.ooo/graphql`,
+          : `https://iglooql.herokuapp.com/graphql`,
     })
 
     this.client = new ApolloClient({
@@ -113,9 +114,10 @@ export default class UnAuthenticatedMain extends Component {
                   openChangeServer={() =>
                     this.setState({ changeServerOpen: true })
                   }
+                  setToken={token => this.setState({ token })}
                 />
               ) : (
-                <EmailVerification />
+                <EmailVerification token={this.state.token}/>
               )}
             </div>
           </div>
@@ -193,9 +195,12 @@ export default class UnAuthenticatedMain extends Component {
                   changeName={this.props.changeName}
                   changeEmailError={this.props.changeEmailError}
                   changeLoginEmail={this.props.changeLoginEmail}
+                  setToken={token => this.setState({ token })}
                 />
               ) : (
-                <EmailVerification client={this.client} />
+                <EmailVerification
+                  token={this.state.token}
+                />
               )}
             </Paper>
           </div>

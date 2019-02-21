@@ -101,7 +101,7 @@ class DeleteAccountDialog extends React.Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://bering.igloo.ooo/subscriptions`,
+          : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -118,7 +118,7 @@ class DeleteAccountDialog extends React.Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://bering.igloo.ooo/graphql`,
+          : `https://iglooql.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
