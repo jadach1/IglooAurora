@@ -583,12 +583,6 @@ class App extends Component {
     }
 
     const logOut = deleted => {
-      this.setState({
-        bearer: "",
-        loggedOut: true,
-        loginEmail: "",
-        signupEmail: "",
-      })
       if (typeof Storage !== "undefined") {
         let currentAccountList = JSON.parse(localStorage.getItem("accountList"))
 
@@ -606,6 +600,13 @@ class App extends Component {
 
         localStorage.setItem("userId", "")
       }
+
+      this.setState({
+        bearer: "",
+        loggedOut: true,
+        loginEmail: "",
+        signupEmail: "",
+      })
     }
 
     const changeAccount = (loginEmail, redirect) => {
@@ -646,7 +647,7 @@ class App extends Component {
             : lightTheme
         }
       >
-        {/* this.forceUpdate makes sure that the application reacts to the changes of the variables stored  */}
+        {/* this.forceUpdate makes sure that the application reacts to the changes of the stored variables */}
         <Online onChange={() => this.forceUpdate()}>
           <Switch>
             <Route
@@ -790,33 +791,36 @@ class App extends Component {
             />
             <Route
               path="/verify"
-              render={() => (
+              render={() =>
                 this.state.bearer ? (
                   <Redirect to="/" />
-                ):
-                <UnauthenticatedMain
-                  signIn={signIn}
-                  mobile={this.state.isMobile}
-                  name={this.state.name}
-                  changeName={name => this.setState({ name })}
-                  password={this.state.signupPassword}
-                  changePassword={signupPassword =>
-                    this.setState({ signupPassword })
-                  }
-                  passwordError={this.state.loginPasswordError}
-                  changePasswordError={loginPasswordError =>
-                    this.setState({ loginPasswordError })
-                  }
-                  email={this.state.signupEmail}
-                  changeEmail={signupEmail => this.setState({ signupEmail })}
-                  emailError={this.state.signupEmailError}
-                  changeEmailError={signupEmailError =>
-                    this.setState({ signupEmailError })
-                  }
-                  changeLoginEmail={loginEmail => this.setState({ loginEmail })}
-                  forceUpdate={() => this.forceUpdate()}
-                />
-              )}
+                ) : (
+                  <UnauthenticatedMain
+                    signIn={signIn}
+                    mobile={this.state.isMobile}
+                    name={this.state.name}
+                    changeName={name => this.setState({ name })}
+                    password={this.state.signupPassword}
+                    changePassword={signupPassword =>
+                      this.setState({ signupPassword })
+                    }
+                    passwordError={this.state.loginPasswordError}
+                    changePasswordError={loginPasswordError =>
+                      this.setState({ loginPasswordError })
+                    }
+                    email={this.state.signupEmail}
+                    changeEmail={signupEmail => this.setState({ signupEmail })}
+                    emailError={this.state.signupEmailError}
+                    changeEmailError={signupEmailError =>
+                      this.setState({ signupEmailError })
+                    }
+                    changeLoginEmail={loginEmail =>
+                      this.setState({ loginEmail })
+                    }
+                    forceUpdate={() => this.forceUpdate()}
+                  />
+                )
+              }
             />
             <Route
               path="/recovery"

@@ -171,11 +171,11 @@ class Login extends Component {
       })
 
       if (querystringify.parse("?" + window.location.href.split("?")[1]).to) {
-        window.location =
+        window.location.href =
           querystringify.parse("?" + window.location.href.split("?")[1]).to +
-            "?token=" +
-            loginMutation.data.logIn.token
-              } else {
+          "?token=" +
+          loginMutation.data.logIn.token
+      } else {
         this.props.signIn(
           loginMutation.data.logIn.token,
           loginMutation.data.logIn.user

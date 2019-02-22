@@ -49,6 +49,7 @@ class ChangeServer extends React.Component {
   selectUrl = (url, unsecure) => {
     if (typeof Storage !== "undefined") {
       localStorage.setItem("server", url)
+      localStorage.setItem("accountList", "")
       localStorage.setItem("serverUnsecure", unsecure)
       localStorage.setItem("accountList", "[]")
       this.props.forceUpdate()

@@ -26,7 +26,7 @@ import MoreVert from "@material-ui/icons/MoreVert"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import Create from "@material-ui/icons/Create"
-import RemoveCircle from "@material-ui/icons/RemoveCircle"
+import Close from "@material-ui/icons/Close"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import {
@@ -37,6 +37,7 @@ import { WebSocketLink } from "apollo-link-ws"
 import { split } from "apollo-link"
 import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
+import ArrowDownward from "@material-ui/icons/ArrowDownward"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -271,14 +272,13 @@ class AuthenticationOptions extends React.Component {
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
             ) {
-token
+              token
               user {
                 id
                 email
                 name
                 profileIconColor
               }
-
             }
           }
         `,
@@ -324,6 +324,52 @@ token
               }
             >
               Fingerprint, face or security key
+            </font>
+          }
+        />
+        <ListItemSecondaryAction>
+          <IconButton
+            onClick={event =>
+              this.setState({
+                menuTarget: "webauthn",
+                anchorEl: event.currentTarget,
+              })
+            }
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    color: "white",
+                  }
+                : { color: "black" }
+            }
+          >
+            <MoreVert />
+          </IconButton>
+        </ListItemSecondaryAction>
+      </ListItem>
+    )
+
+    let totpListItem = (
+      <ListItem>
+        <ListItemIcon>
+          <SvgIcon>
+            <svg style={{ width: "24px", height: "24px" }} viewBox="0 0 24 24">
+              <path d="M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3C19,1.89 18.1,1 17,1Z" />
+            </svg>
+          </SvgIcon>
+        </ListItemIcon>
+        <ListItemText
+          primary={
+            <font
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "white" }
+                  : {}
+              }
+            >
+              SMS code
             </font>
           }
         />
@@ -551,7 +597,7 @@ token
             }
           >
             <List>
-              <li key="yourEnvironments">
+              <li key="primaryAuth">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader
                     style={
@@ -563,13 +609,30 @@ token
                         : { color: "black" }
                     }
                   >
-                    Enabled
+                    Primary methods
                   </ListSubheader>
                   {webAuthnListItem}
                   {passwordListItem}
                 </ul>
               </li>
-              <li key="yourEnvironments">
+              <li key="secondaryAuth">
+                <ul style={{ padding: "0" }}>
+                  <ListSubheader
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? {
+                            color: "white",
+                          }
+                        : { color: "black" }
+                    }
+                  >
+                    Secondary methods
+                  </ListSubheader>
+                  {totpListItem}
+                </ul>
+              </li>
+              <li key="disabledAuth">
                 <ul style={{ padding: "0" }}>
                   <ListSubheader
                     style={
@@ -583,15 +646,18 @@ token
                   >
                     Disabled
                   </ListSubheader>
+                  {totpListItem}
                 </ul>
               </li>
             </List>
           </div>
           <DialogActions>
-            <Button onClick={() => {
-            this.setState({ selectAuthTypeOpen: false })
-            this.props.close()
-          }}>
+            <Button
+              onClick={() => {
+                this.setState({ selectAuthTypeOpen: false })
+                this.props.close()
+              }}
+            >
               <font
                 style={
                   typeof Storage !== "undefined" &&
@@ -775,10 +841,42 @@ token
             }}
           >
             <ListItemIcon>
-              <RemoveCircle style={{ color: "#f44336" }} />
+              <ArrowDownward />
             </ListItemIcon>
             <ListItemText inset>
-              <font style={{ color: "#f44336" }}>Remove</font>
+              <font
+                style={
+                  !this.props.unauthenticated &&
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }
+              >
+                Set as secondary
+              </font>
+            </ListItemText>
+          </MenuItem>
+          <MenuItem
+            onClick={() => {
+              this.setState({ anchorEl: false })
+            }}
+          >
+            <ListItemIcon>
+              <Close />
+            </ListItemIcon>
+            <ListItemText inset>
+              <font
+                style={
+                  !this.props.unauthenticated &&
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? { color: "white" }
+                    : { color: "black" }
+                }
+              >
+                Disable
+              </font>
             </ListItemText>
           </MenuItem>
         </Menu>

@@ -90,7 +90,7 @@ class UnitOfMeasumentDialog extends React.Component {
         <div
           style={{ paddingLeft: "24px", paddingRight: "24px", height: "100%" }}
         >
-          Length and mass
+          <font className="notSelectable defaultCursor">Length and mass</font>
           <RadioGroup
             onChange={event => {
               this.setState({ lengthMass: event.target.value })
@@ -112,7 +112,7 @@ class UnitOfMeasumentDialog extends React.Component {
               className="notSelectable"
             />
           </RadioGroup>
-          Temperature
+          <font className="notSelectable defaultCursor">Temperature</font>
           <RadioGroup
             onChange={event => {
               this.setState({ temperature: event.target.value })
