@@ -217,12 +217,14 @@ export default class AccountSwitcher extends Component {
                         ? () => {
                             this.props.signIn(account.token, account)
                           }
-                        : () => {
-                            this.props.changeEmail(account.email)
-                          }
+                        : null
                     }
                     component={Link}
-                    to={account.token ? "/" : "/login?from=accounts&user="+ account.id}
+                    to={
+                      account.token
+                        ? "/"
+                        : "/login?from=accounts&user=" + account.id
+                    }
                   >
                     <Avatar
                       style={{ backgroundColor: account.profileIconColor }}

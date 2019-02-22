@@ -8,7 +8,7 @@ import ForgotPassword from "./ForgotPassword"
 import * as EmailValidator from "email-validator"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
-import { Link } from "react-router-dom"
+import { Link, Redirect } from "react-router-dom"
 import MUILink from "@material-ui/core/Link"
 import Clear from "@material-ui/icons/Clear"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
@@ -170,12 +170,19 @@ class Login extends Component {
         },
       })
 
-      this.props.signIn(
-        loginMutation.data.logIn.token,
-        loginMutation.data.logIn.user
-      )
+      if (querystringify.parse("?" + window.location.href.split("?")[1]).to) {
+        window.location =
+          querystringify.parse("?" + window.location.href.split("?")[1]).to +
+            "?token=" +
+            loginMutation.data.logIn.token
+              } else {
+        this.props.signIn(
+          loginMutation.data.logIn.token,
+          loginMutation.data.logIn.user
+        )
 
-      this.props.changePassword("")
+        this.props.changePassword("")
+      }
     } catch (e) {
       this.setState({ showLoading: false })
 
@@ -294,10 +301,47 @@ class Login extends Component {
     }
   }
 
+  componentWillMount() {
+    //gets the user field from the query parameters
+    if (
+      querystringify.parse("?" + window.location.href.split("?")[1]).user &&
+      localStorage.getItem("accountList")
+    ) {
+      if (
+        JSON.parse(localStorage.getItem("accountList")).some(
+          account =>
+            account.id ===
+            querystringify.parse("?" + window.location.href.split("?")[1]).user
+        )
+      ) {
+        this.props.changeEmail(
+          JSON.parse(localStorage.getItem("accountList")).filter(
+            account =>
+              account.id ===
+              querystringify.parse("?" + window.location.href.split("?")[1])
+                .user
+          )[0].email
+        )
+      } else {
+        this.setState({ redirect: true })
+      }
+    }
+  }
+
   render() {
     if (this.props.mobile && this.state.counter === 7) {
       this.setState({ counter: 0 })
       this.props.openChangeServer()
+    }
+
+    if (this.state.redirect) {
+      this.setState({ redirect: false })
+      return querystringify.parse("?" + window.location.href.split("?")[1])
+        .from ? (
+        <Redirect to="/login?from=accounts" />
+      ) : (
+        <Redirect to="/login" />
+      )
     }
 
     return (
@@ -496,7 +540,10 @@ class Login extends Component {
             />
             <IconButton
               onClick={this.signInWebauthn}
-              disabled={!this.props.email}
+              disabled={
+                !EmailValidator.validate(this.props.email) ||
+                this.state.showLoading
+              }
               style={
                 EmailValidator.validate(this.props.email) &&
                 !this.state.showLoading
