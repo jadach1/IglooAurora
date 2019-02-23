@@ -2,7 +2,6 @@ import React, { Component } from "react"
 import { Link, Redirect } from "react-router-dom"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
-import Helmet from "react-helmet"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import logo from "./styles/assets/logo.svg"
@@ -86,7 +85,6 @@ export default class PasswordVerification extends Component {
         `,
       })
     } catch (e) {
-      console.log(e, this.props.token)
       this.setState({
         error: "Unexpected error",
       })
@@ -111,70 +109,67 @@ export default class PasswordVerification extends Component {
   }
 
   render() {
+    document.body.style.backgroundColor = "#0057cb"
+
     if (!this.props.token) return <Redirect to="/" />
 
     return (
-      <React.Fragment>
-        <Helmet>
-          <title>Igloo Aurora - Verify your email</title>
-        </Helmet>
-        <div
+      <div
+        style={{
+          position: "absolute",
+          margin: "auto",
+          top: 0,
+          right: 0,
+          bottom: 0,
+          left: 0,
+          maxWidth: "332px",
+          maxHeight: "395px",
+          textAlign: "center",
+          padding: "0 32px",
+          backgroundColor: "#0057cb",
+        }}
+        className="notSelectable defaultCursor"
+      >
+        <img
+          src={logo}
+          alt="Igloo logo"
+          className="notSelectable nonDraggable"
+          draggable="false"
           style={{
-            position: "absolute",
-            margin: "auto",
-            top: 0,
-            right: 0,
-            bottom: 0,
-            left: 0,
-            maxWidth: "332px",
-            maxHeight: "395px",
-            textAlign: "center",
-            padding: "0 32px",
-            backgroundColor: "#0057cb",
+            maxWidth: "192px",
+            marginBottom: "72px",
+            marginLeft: "auto",
+            marginRight: "auto",
           }}
-          className="notSelectable defaultCursor"
+        />
+        <Typography
+          variant={this.state.isMobile ? "h5" : "h4"}
+          style={{ color: "white", marginTop: "16px", marginBottom: "32px" }}
         >
-          <img
-            src={logo}
-            alt="Igloo logo"
-            className="notSelectable nonDraggable"
-            draggable="false"
-            style={{
-              maxWidth: "192px",
-              marginBottom: "72px",
-              marginLeft: "auto",
-              marginRight: "auto",
-            }}
-          />
-          <Typography
-            variant={this.state.isMobile ? "h5" : "h4"}
-            style={{ color: "white", marginTop: "16px", marginBottom: "32px" }}
+          Look for a log in link in your inbox
+        </Typography>
+        <MuiThemeProvider
+          theme={createMuiTheme({
+            palette: {
+              primary: { main: "#fff" },
+            },
+          })}
+        >
+          <Button
+            variant="outlined"
+            color="primary"
+            style={{ marginBottom: "8px" }}
+            fullWidth
+            onClick={this.resendEmail}
           >
-            Look for a log in link in your inbox
-          </Typography>
-          <MuiThemeProvider
-            theme={createMuiTheme({
-              palette: {
-                primary: { main: "#fff" },
-              },
-            })}
-          >
-            <Button
-              variant="outlined"
-              color="primary"
-              style={{ marginBottom: "8px" }}
-              fullWidth
-              onClick={this.resendEmail}
-            >
-              Resend email
-            </Button>
-            <br />
-            <Button color="primary" component={Link} to="/accounts" fullWidth>
-              Go back
-            </Button>
-          </MuiThemeProvider>
-        </div>
-      </React.Fragment>
+            Resend email
+          </Button>
+          <br />
+          <Button color="primary" component={Link} to="/accounts" fullWidth>
+            Go back
+          </Button>
+        </MuiThemeProvider>
+      </div>
     )
   }
 }

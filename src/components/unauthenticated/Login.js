@@ -389,16 +389,7 @@ class Login extends Component {
               }
             />
           )}
-          <div
-            style={
-              this.props.mobile
-                ? { textAlign: "center" }
-                : {
-                    textAlign: "center",
-                    height: "436px",
-                  }
-            }
-          >
+          <div style={{ textAlign: "center" }}>
             <Typography
               variant="h3"
               gutterBottom
@@ -419,296 +410,392 @@ class Login extends Component {
             >
               Log in
             </Typography>
-            <TextField
-              variant="outlined"
-              id="desktop-login-email"
-              label="Email"
-              value={this.props.email}
-              helperText={
-                (this.state.isMailEmpty
-                  ? "This field is required"
-                  : this.props.emailError) || " "
-              }
-              style={{ color: "black", width: "100%", marginBottom: "16px" }}
-              onChange={event => {
-                this.props.changeEmail(event.target.value)
-                this.setState({
-                  isMailEmpty: event.target.value === "",
-                })
-              }}
-              onKeyPress={event => {
-                if (event.key === "Enter") {
-                  if (
-                    EmailValidator.validate(this.props.email) &&
-                    this.props.password
-                  ) {
-                    this.signIn()
-                    this.setState({ showLoading: true })
+            {!this.state.showPasswordScreen ? (
+              <React.Fragment>
+                <TextField
+                  variant="outlined"
+                  id="desktop-login-email"
+                  label="Email"
+                  value={this.props.email}
+                  helperText={
+                    (this.state.isMailEmpty
+                      ? "This field is required"
+                      : this.props.emailError) || " "
                   }
-                }
-              }}
-              error={
-                this.props.emailError || this.state.isMailEmpty ? true : false
-              }
-              InputLabelProps={this.props.email && { shrink: true }}
-              InputProps={{
-                endAdornment: this.props.email ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() => {
-                        this.props.changeEmail("")
-                        this.setState({ isMailEmpty: true })
-                      }}
-                      tabIndex="-1"
-                      style={{ color: "black" }}
-                    >
-                      <Clear />
-                    </IconButton>
-                  </InputAdornment>
-                ) : null,
-              }}
-            />
-            <br />
-            <TextField
-              variant="outlined"
-              id="desktop-password-login"
-              type={this.state.showPassword ? "text" : "password"}
-              value={this.props.password}
-              label="Password"
-              style={{ color: "black", width: "100%", marginBottom: "16px" }}
-              onChange={event => {
-                this.props.changePassword(event.target.value)
-                this.props.changePasswordError("")
-                this.setState({
-                  isPasswordEmpty: event.target.value === "",
-                })
-              }}
-              error={
-                this.props.passwordError || this.state.isPasswordEmpty
-                  ? true
-                  : false
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter") {
-                  if (
-                    EmailValidator.validate(this.props.email) &&
-                    this.props.password
-                  ) {
-                    this.signIn()
-                    this.setState({ showLoading: true })
-                  }
-                }
-              }}
-              helperText={
-                (this.state.isPasswordEmpty
-                  ? "This field is required"
-                  : this.props.passwordError) || " "
-              }
-              InputLabelProps={this.state.name && { shrink: true }}
-              InputProps={{
-                endAdornment: this.props.password ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        this.setState({
-                          showPassword: !this.state.showPassword,
-                        })
-                      }
-                      onMouseDown={this.handleMouseDownPassword}
-                      tabIndex="-1"
-                      style={{ color: "black" }}
-                    >
-                      {/* fix for ToggleIcon glitch on Edge */}
-                      {document.documentMode ||
-                      /Edge/.test(navigator.userAgent) ? (
-                        this.state.showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )
-                      ) : (
-                        <ToggleIcon
-                          on={this.state.showPassword || false}
-                          onIcon={<VisibilityOff />}
-                          offIcon={<Visibility />}
-                        />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ) : null,
-              }}
-            />
-            <IconButton
-              onClick={this.signInWebauthn}
-              disabled={
-                !EmailValidator.validate(this.props.email) ||
-                this.state.showLoading
-              }
-              style={
-                EmailValidator.validate(this.props.email) &&
-                !this.state.showLoading
-                  ? this.props.mobile
-                    ? { color: "white" }
-                    : { color: "black" }
-                  : this.props.mobile
-                  ? {
-                      color: "white",
-                      opacity: 0.54,
-                    }
-                  : {
-                      color: "black",
-                      opacity: 0.54,
-                    }
-              }
-            >
-              {navigator.credentials && (
-                <Fingerprint
-                  style={
-                    this.props.email
-                      ? this.props.mobile
-                        ? { height: "48px", width: "48px" }
-                        : { height: "48px", width: "48px" }
-                      : this.props.mobile
-                      ? {
-                          height: "48px",
-                          width: "48px",
-                        }
-                      : {
-                          height: "48px",
-                          width: "48px",
-                          color: "black",
-                          opacity: 0.54,
-                        }
-                  }
-                />
-              )}
-            </IconButton>
-          </div>
-          <div style={{ textAlign: "right" }}>
-            <MUILink
-              component="button"
-              variant="subtitle1"
-              style={
-                this.props.mobile
-                  ? { color: "white" }
-                  : {
-                      color: "#0083ff",
-                    }
-              }
-              onClick={() => {
-                this.setState({ forgotPasswordOpen: true })
-              }}
-            >
-              Forgot password?
-            </MUILink>
-            <MuiThemeProvider
-              theme={
-                this.props.mobile
-                  ? createMuiTheme({
-                      palette: {
-                        primary: { main: "#fff" },
-                      },
+                  style={{
+                    color: "black",
+                    width: "100%",
+                    marginBottom: "257px",
+                  }}
+                  onChange={event => {
+                    this.props.changeEmail(event.target.value)
+                    this.setState({
+                      isMailEmpty: event.target.value === "",
                     })
-                  : ""
-              }
-            >
-              <Button
-                variant={this.props.mobile ? "outlined" : "contained"}
-                primary={true}
-                fullWidth={true}
-                onClick={() => {
-                  this.setState({ showLoading: true })
-                  this.signIn()
-                }}
-                style={{ margin: "8px 0" }}
-                color="primary"
-                disabled={
-                  !(
-                    EmailValidator.validate(this.props.email) &&
-                    this.props.password
-                  ) || this.state.showLoading
-                }
-              >
-                Log in
-                {this.state.showLoading && (
+                  }}
+                  onKeyPress={event => {
+                    if (event.key === "Enter") {
+                      if (
+                        EmailValidator.validate(this.props.email) &&
+                        this.props.password
+                      ) {
+                        this.signIn()
+                        this.setState({ showLoading: true })
+                      }
+                    }
+                  }}
+                  error={
+                    this.props.emailError || this.state.isMailEmpty
+                      ? true
+                      : false
+                  }
+                  InputLabelProps={this.props.email && { shrink: true }}
+                  InputProps={{
+                    endAdornment: this.props.email ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() => {
+                            this.props.changeEmail("")
+                            this.setState({ isMailEmpty: true })
+                          }}
+                          tabIndex="-1"
+                          style={{ color: "black" }}
+                        >
+                          <Clear />
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null,
+                  }}
+                />
+                <div style={{ textAlign: "right" }}>
+                  <MuiThemeProvider
+                    theme={
+                      this.props.mobile
+                        ? createMuiTheme({
+                            palette: {
+                              primary: { main: "#fff" },
+                            },
+                          })
+                        : ""
+                    }
+                  >
+                    <Button
+                      variant={this.props.mobile ? "outlined" : "contained"}
+                      primary={true}
+                      fullWidth={true}
+                      onClick={() =>
+                        this.setState({ showPasswordScreen: true })
+                      }
+                      style={{ margin: "8px 0" }}
+                      color="primary"
+                      disabled={
+                        !EmailValidator.validate(this.props.email) ||
+                        this.state.showLoading
+                      }
+                    >
+                      Next
+                      {this.state.showLoading && (
+                        <MuiThemeProvider
+                          theme={createMuiTheme(
+                            this.props.mobile
+                              ? {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#fff" },
+                                    },
+                                  },
+                                }
+                              : {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#0083ff" },
+                                    },
+                                  },
+                                }
+                          )}
+                        >
+                          <CenteredSpinner isInButton />
+                        </MuiThemeProvider>
+                      )}
+                    </Button>
+                  </MuiThemeProvider>
+                  {querystringify.parse(
+                    "?" + window.location.href.split("?")[1]
+                  ).from === "accounts" &&
+                  JSON.parse(localStorage.getItem("accountList"))[0] ? (
+                    <MuiThemeProvider
+                      theme={createMuiTheme(
+                        this.props.mobile
+                          ? {
+                              palette: {
+                                primary: { main: "#fff" },
+                              },
+                            }
+                          : {
+                              palette: {
+                                primary: { main: "#0083ff" },
+                              },
+                            }
+                      )}
+                    >
+                      <Button
+                        fullWidth={true}
+                        color="primary"
+                        disabled={this.state.showLoading}
+                        component={Link}
+                        to="/accounts"
+                      >
+                        Go back
+                      </Button>
+                    </MuiThemeProvider>
+                  ) : (
+                    <MuiThemeProvider
+                      theme={createMuiTheme(
+                        this.props.mobile
+                          ? {
+                              palette: {
+                                primary: { main: "#fff" },
+                              },
+                            }
+                          : {
+                              palette: {
+                                primary: { main: "#0083ff" },
+                              },
+                            }
+                      )}
+                    >
+                      <Button
+                        fullWidth
+                        color="primary"
+                        disabled={this.state.showLoading}
+                        component={Link}
+                        to="/signup"
+                      >
+                        Sign up instead
+                      </Button>
+                    </MuiThemeProvider>
+                  )}
+                </div>
+              </React.Fragment>
+            ) : (
+              <div>
+                <TextField
+                  variant="outlined"
+                  id="desktop-password-login"
+                  type={this.state.showPassword ? "text" : "password"}
+                  value={this.props.password}
+                  label="Password"
+                  style={{
+                    color: "black",
+                    width: "100%",
+                    marginBottom: "16px",
+                  }}
+                  onChange={event => {
+                    this.props.changePassword(event.target.value)
+                    this.props.changePasswordError("")
+                    this.setState({
+                      isPasswordEmpty: event.target.value === "",
+                    })
+                  }}
+                  error={
+                    this.props.passwordError || this.state.isPasswordEmpty
+                      ? true
+                      : false
+                  }
+                  onKeyPress={event => {
+                    if (event.key === "Enter") {
+                      if (
+                        EmailValidator.validate(this.props.email) &&
+                        this.props.password
+                      ) {
+                        this.signIn()
+                        this.setState({ showLoading: true })
+                      }
+                    }
+                  }}
+                  helperText={
+                    (this.state.isPasswordEmpty
+                      ? "This field is required"
+                      : this.props.passwordError) || " "
+                  }
+                  InputLabelProps={this.state.name && { shrink: true }}
+                  InputProps={{
+                    endAdornment: this.props.password ? (
+                      <InputAdornment position="end">
+                        <IconButton
+                          onClick={() =>
+                            this.setState({
+                              showPassword: !this.state.showPassword,
+                            })
+                          }
+                          onMouseDown={this.handleMouseDownPassword}
+                          tabIndex="-1"
+                          style={{ color: "black" }}
+                        >
+                          {/* fix for ToggleIcon glitch on Edge */}
+                          {document.documentMode ||
+                          /Edge/.test(navigator.userAgent) ? (
+                            this.state.showPassword ? (
+                              <VisibilityOff />
+                            ) : (
+                              <Visibility />
+                            )
+                          ) : (
+                            <ToggleIcon
+                              on={this.state.showPassword || false}
+                              onIcon={<VisibilityOff />}
+                              offIcon={<Visibility />}
+                            />
+                          )}
+                        </IconButton>
+                      </InputAdornment>
+                    ) : null,
+                  }}
+                />
+                {navigator.credentials && (
+                  <IconButton
+                    onClick={this.signInWebauthn}
+                    disabled={
+                      !EmailValidator.validate(this.props.email) ||
+                      this.state.showLoading
+                    }
+                    style={
+                      EmailValidator.validate(this.props.email) &&
+                      !this.state.showLoading
+                        ? this.props.mobile
+                          ? { color: "white" }
+                          : { color: "black" }
+                        : this.props.mobile
+                        ? {
+                            color: "white",
+                            opacity: 0.54,
+                          }
+                        : {
+                            color: "black",
+                            opacity: 0.54,
+                          }
+                    }
+                  >
+                    <Fingerprint
+                      style={
+                        this.props.email
+                          ? this.props.mobile
+                            ? { height: "48px", width: "48px" }
+                            : { height: "48px", width: "48px" }
+                          : this.props.mobile
+                          ? {
+                              height: "48px",
+                              width: "48px",
+                            }
+                          : {
+                              height: "48px",
+                              width: "48px",
+                              color: "black",
+                              opacity: 0.54,
+                            }
+                      }
+                    />
+                  </IconButton>
+                )}
+                <div style={{ textAlign: "right" }}>
+                  <MUILink
+                    component="button"
+                    variant="subtitle1"
+                    style={
+                      this.props.mobile
+                        ? { color: "white" }
+                        : {
+                            color: "#0083ff",
+                          }
+                    }
+                    onClick={() => {
+                      this.setState({ forgotPasswordOpen: true })
+                    }}
+                  >
+                    Forgot password?
+                  </MUILink>
+                  <MuiThemeProvider
+                    theme={
+                      this.props.mobile
+                        ? createMuiTheme({
+                            palette: {
+                              primary: { main: "#fff" },
+                            },
+                          })
+                        : ""
+                    }
+                  >
+                    <Button
+                      variant={this.props.mobile ? "outlined" : "contained"}
+                      primary={true}
+                      fullWidth={true}
+                      onClick={() => {
+                        this.setState({ showLoading: true })
+                        this.signIn()
+                      }}
+                      style={{ margin: "8px 0" }}
+                      color="primary"
+                      disabled={
+                        !(
+                          EmailValidator.validate(this.props.email) &&
+                          this.props.password
+                        ) || this.state.showLoading
+                      }
+                    >
+                      Log in
+                      {this.state.showLoading && (
+                        <MuiThemeProvider
+                          theme={createMuiTheme(
+                            this.props.mobile
+                              ? {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#fff" },
+                                    },
+                                  },
+                                }
+                              : {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#0083ff" },
+                                    },
+                                  },
+                                }
+                          )}
+                        >
+                          <CenteredSpinner isInButton />
+                        </MuiThemeProvider>
+                      )}
+                    </Button>
+                  </MuiThemeProvider>
                   <MuiThemeProvider
                     theme={createMuiTheme(
                       this.props.mobile
                         ? {
-                            overrides: {
-                              MuiCircularProgress: {
-                                colorPrimary: { color: "#fff" },
-                              },
+                            palette: {
+                              primary: { main: "#fff" },
                             },
                           }
                         : {
-                            overrides: {
-                              MuiCircularProgress: {
-                                colorPrimary: { color: "#0083ff" },
-                              },
+                            palette: {
+                              primary: { main: "#0083ff" },
                             },
                           }
                     )}
                   >
-                    <CenteredSpinner isInButton />
+                    <Button
+                      fullWidth={true}
+                      color="primary"
+                      disabled={this.state.showLoading}
+                      onClick={() =>
+                        this.setState({ showPasswordScreen: false })
+                      }
+                    >
+                      Go back
+                    </Button>
                   </MuiThemeProvider>
-                )}
-              </Button>
-            </MuiThemeProvider>
-            {querystringify.parse("?" + window.location.href.split("?")[1])
-              .from === "accounts" &&
-            JSON.parse(localStorage.getItem("accountList"))[0] ? (
-              <MuiThemeProvider
-                theme={createMuiTheme(
-                  this.props.mobile
-                    ? {
-                        palette: {
-                          primary: { main: "#fff" },
-                        },
-                      }
-                    : {
-                        palette: {
-                          primary: { main: "#0083ff" },
-                        },
-                      }
-                )}
-              >
-                <Button
-                  fullWidth={true}
-                  color="primary"
-                  disabled={this.state.showLoading}
-                  component={Link}
-                  to="/accounts"
-                >
-                  Go back
-                </Button>
-              </MuiThemeProvider>
-            ) : (
-              <MuiThemeProvider
-                theme={createMuiTheme(
-                  this.props.mobile
-                    ? {
-                        palette: {
-                          primary: { main: "#fff" },
-                        },
-                      }
-                    : {
-                        palette: {
-                          primary: { main: "#0083ff" },
-                        },
-                      }
-                )}
-              >
-                <Button
-                  fullWidth
-                  color="primary"
-                  disabled={this.state.showLoading}
-                  component={Link}
-                  to="/signup"
-                >
-                  Sign up instead
-                </Button>
-              </MuiThemeProvider>
+                </div>
+              </div>
             )}
           </div>
         </div>

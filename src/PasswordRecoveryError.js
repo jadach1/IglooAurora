@@ -2,7 +2,7 @@ import React from "react"
 import Typography from "@material-ui/core/Typography"
 import Button from "@material-ui/core/Button"
 import polarBear from "./styles/assets/polarBearWithBucket.svg"
-import {  Link } from "react-router-dom"
+import { Link } from "react-router-dom"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
@@ -72,7 +72,13 @@ export default class PasswordRecoveryError extends React.Component {
             },
           })}
         >
-          <Button variant="outlined" color="primary" component={Link} to="/">
+          <Button
+            variant="outlined"
+            color="primary"
+            component={Link}
+            to="/"
+            style={{ marginBottom: "16px" }}
+          >
             Take me away!
           </Button>
         </MuiThemeProvider>

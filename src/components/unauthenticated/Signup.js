@@ -204,7 +204,7 @@ export default class Signup extends Component {
         mutation: gql`
           mutation($email: String!, $name: String!) {
             signUp(email: $email, name: $name) {
-             changeAuthenticationToken
+              changeAuthenticationToken
             }
           }
         `,
@@ -291,15 +291,15 @@ export default class Signup extends Component {
     this.setState({ showPasswordLoading: true })
 
     try {
- const {
+      const {
         data: {
           enablePassword: { token, user },
         },
-      } =    await this.client.mutate({
+      } = await this.client.mutate({
         mutation: gql`
           mutation($password: String!) {
             enablePassword(password: $password) {
-token
+              token
               user {
                 id
                 email
@@ -318,7 +318,7 @@ token
 
       this.setState({
         password: "",
-              })
+      })
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ passwordError: "Wrong password" })
@@ -417,8 +417,7 @@ token
       )
       payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
 
-
- const {
+      const {
         data: {
           enableWebauthn: { token, user },
         },
@@ -428,14 +427,15 @@ token
             enableWebauthn(
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
-            ){
-token
+            ) {
+              token
               user {
                 id
                 email
                 name
                 profileIconColor
-              }}
+              }
+            }
           }
         `,
         variables: {
@@ -444,9 +444,8 @@ token
         },
       })
 
-            this.props.signIn(token, user)
+      this.props.signIn(token, user)
     }
-
 
     navigator.credentials
       .create({ publicKey: publicKeyOptions })
@@ -630,7 +629,7 @@ token
                         event.key === "Enter" &&
                         this.props.name &&
                         this.state.isEmailValid &&
-                        !this.state.coppaCheckbox
+                        this.state.coppaCheckbox
                       ) {
                         this.signUp()
                       }
@@ -666,11 +665,12 @@ token
                     label="Email"
                     value={this.props.email}
                     error={
-                      !this.props.mobile && (
-                      this.props.emailError || ( ((!this.state.isEmailValid && this.props.email) ||
-                      this.state.isMailEmpty
-                        ? true
-                        : false)))
+                      !this.props.mobile &&
+                      (this.props.emailError ||
+                        ((!this.state.isEmailValid && this.props.email) ||
+                        this.state.isMailEmpty
+                          ? true
+                          : false))
                     }
                     style={{
                       color: "black",
@@ -691,14 +691,14 @@ token
                         event.key === "Enter" &&
                         this.props.name &&
                         this.state.isEmailValid &&
-                        !this.state.coppaCheckbox
+                        this.state.coppaCheckbox
                       ) {
                         this.signUp()
                       }
                     }}
                     helperText={
-                      this.props.emailError || (
-                      (!this.state.isEmailValid && this.props.email)
+                      this.props.emailError ||
+                      (!this.state.isEmailValid && this.props.email
                         ? "Enter a valid email"
                         : this.state.isMailEmpty
                         ? "This field is required"
@@ -737,7 +737,7 @@ token
                     style={
                       this.props.mobile
                         ? { textAlign: "center" }
-                        : { marginTop: "124px", textAlign: "center" }
+                        : { marginTop: "74px", textAlign: "center" }
                     }
                   >
                     <Typography
@@ -790,56 +790,57 @@ token
                         privacy statement
                       </MUILink>
                     </Typography>
-            <MuiThemeProvider
-              theme={
-                this.props.mobile
-                  ? createMuiTheme({
-                      palette: {
-                        primary: { main: "#fff" },
-                      },
-                    })
-                  : ""
-              }
-            >
-              <Button
-                variant={this.props.mobile ? "outlined" : "contained"}
-                      color="primary"
-                      fullWidth={true}
-                      onClick={this.signUp}
-                      style={{ marginBottom: "8px" }}
-                      buttonStyle={{ backgroundColor: "#0083ff" }}
-                      disabled={
-                        this.state.showSignUpLoading ||
-                        !(this.props.name && this.state.isEmailValid) ||
-                        this.state.showLoading ||
-                        !this.state.coppaCheckbox
+                    <MuiThemeProvider
+                      theme={
+                        this.props.mobile
+                          ? createMuiTheme({
+                              palette: {
+                                primary: { main: "#fff" },
+                              },
+                            })
+                          : ""
                       }
                     >
-                      Sign up
-                      {this.state.showSignUpLoading && (
-                        <MuiThemeProvider
-                          theme={createMuiTheme(
-                            this.props.mobile
-                              ? {
-                                  overrides: {
-                                    MuiCircularProgress: {
-                                      colorPrimary: { color: "#fff" },
+                      <Button
+                        variant={this.props.mobile ? "outlined" : "contained"}
+                        color="primary"
+                        fullWidth={true}
+                        onClick={this.signUp}
+                        style={{ marginBottom: "8px" }}
+                        buttonStyle={{ backgroundColor: "#0083ff" }}
+                        disabled={
+                          this.state.showSignUpLoading ||
+                          !(this.props.name && this.state.isEmailValid) ||
+                          this.state.showLoading ||
+                          !this.state.coppaCheckbox
+                        }
+                      >
+                        Sign up
+                        {this.state.showSignUpLoading && (
+                          <MuiThemeProvider
+                            theme={createMuiTheme(
+                              this.props.mobile
+                                ? {
+                                    overrides: {
+                                      MuiCircularProgress: {
+                                        colorPrimary: { color: "#fff" },
+                                      },
                                     },
-                                  },
-                                }
-                              : {
-                                  overrides: {
-                                    MuiCircularProgress: {
-                                      colorPrimary: { color: "#0083ff" },
+                                  }
+                                : {
+                                    overrides: {
+                                      MuiCircularProgress: {
+                                        colorPrimary: { color: "#0083ff" },
+                                      },
                                     },
-                                  },
-                                }
-                          )}
-                        >
-                          <CenteredSpinner isInButton />
-                        </MuiThemeProvider>
-                      )}
-                    </Button></MuiThemeProvider>
+                                  }
+                            )}
+                          >
+                            <CenteredSpinner isInButton />
+                          </MuiThemeProvider>
+                        )}
+                      </Button>
+                    </MuiThemeProvider>
                     {querystringify.parse(
                       "?" + window.location.href.split("?")[1]
                     ).from === "accounts" &&
@@ -1072,10 +1073,10 @@ token
                             ? {}
                             : navigator.credentials
                             ? {
-                                marginTop: "221px",
+                                marginTop: "171px",
                               }
                             : {
-                                marginTop: "285px",
+                                marginTop: "235px",
                               }
                         }
                       >
@@ -1305,65 +1306,68 @@ token
                     }}
                   />
                 </div>
-                <div style={this.props.mobile ? {} : { marginTop: "207px" }}>
-                             <MuiThemeProvider
-              theme={
-                this.props.mobile
-                  ? createMuiTheme({
-                      palette: {
-                        primary: { main: "#fff" },
-                      },
-                    })
-                  : ""
-              }
-            >
-              <Button
-                variant={this.props.mobile ? "outlined" : "contained"}
-                    color="primary"
-                    fullWidth={true}
-                    primary={true}
-                    onClick={() => {
-                      if (this.props.password === this.state.confirmPassword) {
-                        this.enablePassword()
-                      } else {
-                        this.setState({
-                          passwordError: "Passwords don't match",
-                        })
-                      }
-                    }}
-                    style={{ marginBottom: "8px" }}
-                    buttonStyle={{ backgroundColor: "#0083ff" }}
-                    disabled={
-                      this.state.passwordScore <= 2 ||
-                      this.state.showPasswordLoading ||
-                      !this.state.confirmPassword
+                <div style={this.props.mobile ? {} : { marginTop: "157px" }}>
+                  <MuiThemeProvider
+                    theme={
+                      this.props.mobile
+                        ? createMuiTheme({
+                            palette: {
+                              primary: { main: "#fff" },
+                            },
+                          })
+                        : ""
                     }
                   >
-                    Add password
-                    {this.state.showPasswordLoading && (
-                      <MuiThemeProvider
-                        theme={createMuiTheme(
-                          this.props.mobile
-                            ? {
-                                overrides: {
-                                  MuiCircularProgress: {
-                                    root: { color: "#fff" },
+                    <Button
+                      variant={this.props.mobile ? "outlined" : "contained"}
+                      color="primary"
+                      fullWidth={true}
+                      primary={true}
+                      onClick={() => {
+                        if (
+                          this.props.password === this.state.confirmPassword
+                        ) {
+                          this.enablePassword()
+                        } else {
+                          this.setState({
+                            passwordError: "Passwords don't match",
+                          })
+                        }
+                      }}
+                      style={{ marginBottom: "8px" }}
+                      buttonStyle={{ backgroundColor: "#0083ff" }}
+                      disabled={
+                        this.state.passwordScore <= 2 ||
+                        this.state.showPasswordLoading ||
+                        !this.state.confirmPassword
+                      }
+                    >
+                      Add password
+                      {this.state.showPasswordLoading && (
+                        <MuiThemeProvider
+                          theme={createMuiTheme(
+                            this.props.mobile
+                              ? {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      root: { color: "#fff" },
+                                    },
                                   },
-                                },
-                              }
-                            : {
-                                overrides: {
-                                  MuiCircularProgress: {
-                                    root: { color: "#0083ff" },
+                                }
+                              : {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      root: { color: "#0083ff" },
+                                    },
                                   },
-                                },
-                              }
-                        )}
-                      >
-                        <CenteredSpinner isInButton />
-                      </MuiThemeProvider>
-                    )}
-                  </Button></MuiThemeProvider>
+                                }
+                          )}
+                        >
+                          <CenteredSpinner isInButton />
+                        </MuiThemeProvider>
+                      )}
+                    </Button>
+                  </MuiThemeProvider>
                   <MuiThemeProvider
                     theme={createMuiTheme(
                       this.props.mobile

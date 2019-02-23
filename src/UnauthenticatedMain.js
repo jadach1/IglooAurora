@@ -57,153 +57,155 @@ export default class UnAuthenticatedMain extends Component {
               : "Igloo Aurora - Verify your email"}
           </title>
         </Helmet>
-        {this.props.mobile ? (
-          <div
-            style={{
-              width: "100vw",
-              height: "100vh",
-              backgroundColor: "#0057cb",
-              overflowX: "hidden",
-            }}
-          >
-            <div>
-              {this.props.isLogin ? (
-                <Login
-                  mobile
-                  client={this.client}
-                  signIn={this.props.signIn}
-                  goToSignup={() => this.setState({ slideIndex: 0 })}
-                  password={this.props.password}
-                  changePassword={this.props.changePassword}
-                  passwordError={this.props.passwordError}
-                  changePasswordError={this.props.changePasswordError}
-                  email={this.props.email}
-                  changeEmail={this.props.changeEmail}
-                  emailError={this.props.emailError}
-                  changeEmailError={this.props.changeEmailError}
-                  changeSignupEmail={this.props.changeSignupEmail}
-                  openChangeServer={() =>
-                    this.setState({ changeServerOpen: true })
-                  }
-                />
-              ) : this.props.isAccountSwitcher ? (
-                <AccountSwitcher
-                  mobile
-                  signIn={this.props.signIn}
-                  changeEmail={this.props.changeEmail}
-                  forceUpdate={() => this.props.forceUpdate()}
-                  openChangeServer={() =>
-                    this.setState({ changeServerOpen: true })
-                  }
-                />
-              ) : this.props.isSignup ? (
-                <Signup
-                  mobile
-                  client={this.client}
-                  signup={this.props.signup}
-                  signIn={this.props.signIn}
-                  email={this.props.email}
-                  password={this.props.password}
-                  name={this.props.name}
-                  emailError={this.props.emailError}
-                  changeEmail={this.props.changeEmail}
-                  changePassword={this.props.changePassword}
-                  changeName={this.props.changeName}
-                  changeEmailError={this.props.changeEmailError}
-                  changeLoginEmail={this.props.changeLoginEmail}
-                  openChangeServer={() =>
-                    this.setState({ changeServerOpen: true })
-                  }
-                  setToken={token => this.setState({ token })}
-                />
-              ) : (
-                <EmailVerification token={this.state.token}/>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="auroraLoginBackground">
-            <Paper
-              className="loginForm"
-              style={{ margin: "32px 0", borderRadius: "8px" }}
+        {this.props.isLogin ||
+        this.props.isSignup ||
+        this.props.isAccountSwitcher ? (
+          this.props.mobile ? (
+            <div
+              style={{
+                width: "100vw",
+                height: "100vh",
+                backgroundColor: "#0057cb",
+                overflowX: "hidden",
+              }}
             >
-              <div
-                className="leftSide notSelectable"
-                style={{
-                  borderTopLeftRadius: "8px",
-                  borderBottomLeftRadius: "8px",
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                <div>
-                  <img
-                    src={logo}
-                    alt="Igloo logo"
-                    className="notSelectable nonDraggable"
-                    draggable="false"
-                    style={{ width: "300px", marginBottom: "77px" }}
-                    onClick={() =>
-                      this.setState(oldState => ({
-                        tapCounter: oldState.tapCounter + 1,
-                      }))
+              <div>
+                {this.props.isLogin ? (
+                  <Login
+                    mobile
+                    client={this.client}
+                    signIn={this.props.signIn}
+                    goToSignup={() => this.setState({ slideIndex: 0 })}
+                    password={this.props.password}
+                    changePassword={this.props.changePassword}
+                    passwordError={this.props.passwordError}
+                    changePasswordError={this.props.changePasswordError}
+                    email={this.props.email}
+                    changeEmail={this.props.changeEmail}
+                    emailError={this.props.emailError}
+                    changeEmailError={this.props.changeEmailError}
+                    changeSignupEmail={this.props.changeSignupEmail}
+                    openChangeServer={() =>
+                      this.setState({ changeServerOpen: true })
                     }
                   />
-                  <img
-                    src={iglooTitle}
-                    alt="Igloo Aurora"
-                    className="notSelectable nonDraggable"
-                    draggable="false"
-                    style={{ width: "300px" }}
+                ) : this.props.isAccountSwitcher ? (
+                  <AccountSwitcher
+                    mobile
+                    signIn={this.props.signIn}
+                    changeEmail={this.props.changeEmail}
+                    forceUpdate={() => this.props.forceUpdate()}
+                    openChangeServer={() =>
+                      this.setState({ changeServerOpen: true })
+                    }
                   />
-                </div>
+                ) : this.props.isSignup ? (
+                  <Signup
+                    mobile
+                    client={this.client}
+                    signup={this.props.signup}
+                    signIn={this.props.signIn}
+                    email={this.props.email}
+                    password={this.props.password}
+                    name={this.props.name}
+                    emailError={this.props.emailError}
+                    changeEmail={this.props.changeEmail}
+                    changePassword={this.props.changePassword}
+                    changeName={this.props.changeName}
+                    changeEmailError={this.props.changeEmailError}
+                    changeLoginEmail={this.props.changeLoginEmail}
+                    openChangeServer={() =>
+                      this.setState({ changeServerOpen: true })
+                    }
+                    setToken={token => this.setState({ token })}
+                  />
+                ) : (
+                  <EmailVerification token={this.state.token} />
+                )}
               </div>
-              {this.props.isLogin ? (
-                <Login
-                  client={this.client}
-                  isDialog={false}
-                  signIn={this.props.signIn}
-                  password={this.props.password}
-                  changePassword={this.props.changePassword}
-                  passwordError={this.props.passwordError}
-                  changePasswordError={this.props.changePasswordError}
-                  email={this.props.email}
-                  changeEmail={this.props.changeEmail}
-                  emailError={this.props.emailError}
-                  changeEmailError={this.props.changeEmailError}
-                  changeSignupEmail={this.props.changeSignupEmail}
-                />
-              ) : this.props.isAccountSwitcher ? (
-                <AccountSwitcher
-                  signIn={this.props.signIn}
-                  changeEmail={this.props.changeEmail}
-                  forceUpdate={() => this.props.forceUpdate()}
-                />
-              ) : this.props.isSignup ? (
-                <Signup
-                  client={this.client}
-                  isDialog={false}
-                  signIn={this.props.signIn}
-                  goToLogin={() => this.setState({ slideIndex: 1 })}
-                  email={this.props.email}
-                  password={this.props.password}
-                  name={this.props.name}
-                  emailError={this.props.emailError}
-                  changeEmail={this.props.changeEmail}
-                  changePassword={this.props.changePassword}
-                  changeName={this.props.changeName}
-                  changeEmailError={this.props.changeEmailError}
-                  changeLoginEmail={this.props.changeLoginEmail}
-                  setToken={token => this.setState({ token })}
-                />
-              ) : (
-                <EmailVerification
-                  token={this.state.token}
-                />
-              )}
-            </Paper>
-          </div>
+            </div>
+          ) : (
+            <div className="auroraLoginBackground">
+              <Paper
+                className="loginForm"
+                style={{ margin: "32px 0", borderRadius: "8px" }}
+              >
+                <div
+                  className="leftSide notSelectable"
+                  style={{
+                    borderTopLeftRadius: "8px",
+                    borderBottomLeftRadius: "8px",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    <img
+                      src={logo}
+                      alt="Igloo logo"
+                      className="notSelectable nonDraggable"
+                      draggable="false"
+                      style={{ width: "300px", marginBottom: "50px" }}
+                      onClick={() =>
+                        this.setState(oldState => ({
+                          tapCounter: oldState.tapCounter + 1,
+                        }))
+                      }
+                    />
+                    <img
+                      src={iglooTitle}
+                      alt="Igloo Aurora"
+                      className="notSelectable nonDraggable"
+                      draggable="false"
+                      style={{ width: "300px" }}
+                    />
+                  </div>
+                </div>
+                {this.props.isLogin ? (
+                  <Login
+                    client={this.client}
+                    isDialog={false}
+                    signIn={this.props.signIn}
+                    password={this.props.password}
+                    changePassword={this.props.changePassword}
+                    passwordError={this.props.passwordError}
+                    changePasswordError={this.props.changePasswordError}
+                    email={this.props.email}
+                    changeEmail={this.props.changeEmail}
+                    emailError={this.props.emailError}
+                    changeEmailError={this.props.changeEmailError}
+                    changeSignupEmail={this.props.changeSignupEmail}
+                  />
+                ) : this.props.isAccountSwitcher ? (
+                  <AccountSwitcher
+                    signIn={this.props.signIn}
+                    changeEmail={this.props.changeEmail}
+                    forceUpdate={() => this.props.forceUpdate()}
+                  />
+                ) : (
+                  <Signup
+                    client={this.client}
+                    isDialog={false}
+                    signIn={this.props.signIn}
+                    goToLogin={() => this.setState({ slideIndex: 1 })}
+                    email={this.props.email}
+                    password={this.props.password}
+                    name={this.props.name}
+                    emailError={this.props.emailError}
+                    changeEmail={this.props.changeEmail}
+                    changePassword={this.props.changePassword}
+                    changeName={this.props.changeName}
+                    changeEmailError={this.props.changeEmailError}
+                    changeLoginEmail={this.props.changeLoginEmail}
+                    setToken={token => this.setState({ token })}
+                  />
+                )}
+              </Paper>
+            </div>
+          )
+        ) : (
+          <EmailVerification token={this.state.token} />
         )}
         <ChangeServer
           open={this.state.changeServerOpen}
