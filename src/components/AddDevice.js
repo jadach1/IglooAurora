@@ -19,7 +19,6 @@ import Clear from "@material-ui/icons/Clear"
 import isUUID from "is-uuid"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
-import MenuItem from "@material-ui/core/MenuItem"
 import SwitchCamera from "@material-ui/icons/SwitchCamera"
 
 function GrowTransition(props) {
@@ -52,14 +51,6 @@ class AddDevice extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      !this.state.environment &&
-      nextProps.userData.user &&
-      nextProps.userData.user.environments.length
-    ) {
-      this.setState({ environment: nextProps.userData.user.environments[0].id })
-    }
-
     if (this.props.open !== nextProps.open && nextProps.open === true) {
       this.setState({
         name: "",
@@ -415,7 +406,7 @@ class AddDevice extends Component {
                   this.claimDevice(
                     this.state.unclaimedDeviceId,
                     this.state.name,
-                    this.state.environment
+                    this.props.environment
                   )
                   this.setState({ deviceDetailsOpen: false })
                 }
@@ -446,41 +437,6 @@ class AddDevice extends Component {
                 ),
               }}
             />
-            <TextField
-              value={this.state.environment}
-              onChange={event => {
-                this.setState({
-                  environment: event.target.value,
-                })
-              }}
-              label="Environment"
-              variant="outlined"
-              select
-              required
-              style={{
-                width: "calc(100% - 48px)",
-                margin: "0 24px",
-                marginBottom: "16px",
-              }}
-              InputLabelProps={this.state.environment && { shrink: true }}
-              disabled={
-                this.props.userData.user &&
-                this.props.userData.user.environments.length < 2
-              }
-            >
-              {this.props.userData.user &&
-                this.props.userData.user.environments
-                  .filter(
-                    environment =>
-                      environment.myRole === "ADMIN" ||
-                      environment.myRole === "OWNER"
-                  )
-                  .map(environment => (
-                    <MenuItem value={environment.id}>
-                      {environment.name}
-                    </MenuItem>
-                  ))}
-            </TextField>
           </div>
           <DialogActions>
             <Button onClick={() => this.setState({ deviceDetailsOpen: false })}>
@@ -492,12 +448,12 @@ class AddDevice extends Component {
                 this.claimDevice(
                   this.state.unclaimedDeviceId,
                   this.state.name,
-                  this.state.environment
+                  this.props.environment
                 )
                 this.setState({ deviceDetailsOpen: false })
               }}
               color="primary"
-              disabled={!this.state.name || !this.state.environment}
+              disabled={!this.state.name}
             >
               Proceed
             </Button>

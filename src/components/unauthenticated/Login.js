@@ -19,6 +19,9 @@ import querystringify from "querystringify"
 import logo from "../../styles/assets/logo.svg"
 import TextField from "@material-ui/core/TextField"
 import Fingerprint from "@material-ui/icons/Fingerprint"
+import Avatar from "@material-ui/core/Avatar"
+import ListItem from "@material-ui/core/ListItem"
+import ListItemText from "@material-ui/core/ListItemText"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -125,6 +128,9 @@ class Login extends Component {
       showLoading: false,
       redirect: false,
       counter: 0,
+      showPasswordScreen: !!querystringify.parse(
+        "?" + window.location.href.split("?")[1]
+      ).user,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -144,6 +150,38 @@ class Login extends Component {
 
   updateWindowDimensions() {
     this.setState({ height: window.innerHeight })
+  }
+
+  goToPassword = async () => {
+    try {
+      this.props.client.query({
+        query: gql`
+          query getUser($email: String) {
+            user(email: $email) {
+              id
+              email
+              profileIconColor
+              name
+            }
+          }
+        `,
+        variables: {
+          email: this.props.email,
+        },
+      })
+
+      this.setState({ showPasswordScreen: true })
+    } catch (e) {
+      console.log(e)
+      if (
+        e.message ===
+        "GraphQL error: User doesn't exist. Use `signUp` to create one"
+      ) {
+        this.props.changeEmailError("This account doesn't exist")
+      } else {
+        this.props.changeEmailError("Unexpected error")
+      }
+    }
   }
 
   async signIn() {
@@ -483,9 +521,7 @@ class Login extends Component {
                       variant={this.props.mobile ? "outlined" : "contained"}
                       primary={true}
                       fullWidth={true}
-                      onClick={() =>
-                        this.setState({ showPasswordScreen: true })
-                      }
+                      onClick={this.goToPassword}
                       style={{ margin: "8px 0" }}
                       color="primary"
                       disabled={
@@ -579,6 +615,33 @@ class Login extends Component {
               </React.Fragment>
             ) : (
               <div>
+                <ListItem style={{ padding: "0", marginBottom: "24px" }}>
+                  <Avatar
+                    style={
+                      querystringify.parse(
+                        "?" + window.location.href.split("?")[1]
+                      ).user
+                        ? {
+                            background: JSON.parse(
+                              localStorage.getItem("accountList")
+                            ).find(
+                              user =>
+                                user.id ===
+                                querystringify.parse(
+                                  "?" + window.location.href.split("?")[1]
+                                ).user
+                            ).profileIconColor,
+                          }
+                        : { background: "#0057cb" }
+                    }
+                  >
+                    SD
+                  </Avatar>
+                  <ListItemText
+                    primary="Samuele Dassatti"
+                    secondary="samuele@igloo.ooo"
+                  />
+                </ListItem>
                 <TextField
                   variant="outlined"
                   id="desktop-password-login"
