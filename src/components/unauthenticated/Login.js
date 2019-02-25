@@ -170,9 +170,8 @@ class Login extends Component {
         },
       })
 
-      this.setState({ showPasswordScreen: true })
+      this.setState({ redirectToPassword: true })
     } catch (e) {
-      console.log(e)
       if (
         e.message ===
         "GraphQL error: User doesn't exist. Use `signUp` to create one"
@@ -238,7 +237,7 @@ class Login extends Component {
     }
   }
 
-  async signInWebauthn() {
+  signInWebauthn = async () => {
     const {
       data: { getWebAuthnLogInChallenge },
     } = await this.props.client.query({
@@ -314,7 +313,7 @@ class Login extends Component {
       .then(sendResponse)
   }
 
-  async recover(recoveryEmail) {
+  recover = async recoveryEmail => {
     try {
       this.setState({ recoveryError: "" })
       await this.props.client.mutate({
@@ -363,6 +362,18 @@ class Login extends Component {
       } else {
         this.setState({ redirect: true })
       }
+    }
+  }
+
+  getInitials = string => {
+    if (string) {
+      var names = string.trim().split(" "),
+        initials = names[0].substring(0, 1).toUpperCase()
+
+      if (names.length > 1) {
+        initials += names[names.length - 1].substring(0, 1).toUpperCase()
+      }
+      return initials
     }
   }
 
@@ -448,7 +459,8 @@ class Login extends Component {
             >
               Log in
             </Typography>
-            {!this.state.showPasswordScreen ? (
+            {!querystringify.parse("?" + window.location.href.split("?")[1])
+              .user ? (
               <React.Fragment>
                 <TextField
                   variant="outlined"
@@ -617,29 +629,67 @@ class Login extends Component {
               <div>
                 <ListItem style={{ padding: "0", marginBottom: "24px" }}>
                   <Avatar
-                    style={
-                      querystringify.parse(
-                        "?" + window.location.href.split("?")[1]
-                      ).user
-                        ? {
-                            background: JSON.parse(
-                              localStorage.getItem("accountList")
-                            ).find(
-                              user =>
-                                user.id ===
-                                querystringify.parse(
-                                  "?" + window.location.href.split("?")[1]
-                                ).user
-                            ).profileIconColor,
-                          }
-                        : { background: "#0057cb" }
-                    }
+                    style={{
+                      background: JSON.parse(
+                        localStorage.getItem("accountList")
+                      ).find(
+                        user =>
+                          user.id ===
+                          querystringify.parse(
+                            "?" + window.location.href.split("?")[1]
+                          ).user
+                      ).profileIconColor,
+                    }}
                   >
-                    SD
+                    {this.getInitials(
+                      JSON.parse(localStorage.getItem("accountList")).find(
+                        user =>
+                          user.id ===
+                          querystringify.parse(
+                            "?" + window.location.href.split("?")[1]
+                          ).user
+                      ).name
+                    )}
                   </Avatar>
                   <ListItemText
-                    primary="Samuele Dassatti"
-                    secondary="samuele@igloo.ooo"
+                    primary={
+                      <font
+                        style={
+                          this.props.mobile
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        {
+                          JSON.parse(localStorage.getItem("accountList")).find(
+                            user =>
+                              user.id ===
+                              querystringify.parse(
+                                "?" + window.location.href.split("?")[1]
+                              ).user
+                          ).name
+                        }
+                      </font>
+                    }
+                    secondary={
+                      <font
+                        style={
+                          this.props.mobile
+                            ? { color: "white", opacity: 0.72 }
+                            : { color: "black", opacity: 0.72 }
+                        }
+                      >
+                        {
+                          JSON.parse(localStorage.getItem("accountList")).find(
+                            user =>
+                              user.id ===
+                              querystringify.parse(
+                                "?" + window.location.href.split("?")[1]
+                              ).user
+                          ).email
+                        }
+                      </font>
+                    }
                   />
                 </ListItem>
                 <TextField
@@ -850,9 +900,10 @@ class Login extends Component {
                       fullWidth={true}
                       color="primary"
                       disabled={this.state.showLoading}
-                      onClick={() =>
-                        this.setState({ showPasswordScreen: false })
-                      }
+                      component={Link}
+                      to={querystringify.parse(
+                        "?" + window.location.href.split("?")[1]
+                      ).from?"/login?from=accounts":"/login"}
                     >
                       Go back
                     </Button>

@@ -79,11 +79,11 @@ class ChangeServer extends React.Component {
     let url = normalizeUrl(this.state.url, {
       forceHttps: true,
       removeTrailingSlash: false,
-    }).substr(8)
+    }).substr(7)
     let unsecure = this.state.unsecure
 
     if (typeof Storage !== "undefined") {
-      localStorage.setItem("server", url)
+      this.props.unauthenticated && localStorage.setItem("server", url)
       localStorage.setItem("serverUnsecure", unsecure)
 
       this.isUrl(url) &&
@@ -841,6 +841,7 @@ class ChangeServer extends React.Component {
                 !this.state.editUrl ||
                 typeof Storage === "undefined" ||
                 !this.isUrl(this.state.editUrl) ||
+                this.serverListContainsItem() ||
                 this.state.editUrl === "https://iglooql.herokuapp.com" ||
                 this.state.editUrl === "iglooql.herokuapp.com" ||
                 this.state.editUrl === "http://iglooql.herokuapp.com"
