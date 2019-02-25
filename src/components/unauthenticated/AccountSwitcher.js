@@ -212,17 +212,10 @@ export default class AccountSwitcher extends Component {
                 JSON.parse(localStorage.getItem("accountList")).map(account => (
                   <ListItem
                     button
-                    onClick={
-                      account.token
-                        ? () => {
-                            this.props.signIn(account.token, account)
-                          }
-                        : null
-                    }
                     component={Link}
                     to={
                       account.token
-                        ? "/"
+                        ? "/?user=" + account.id
                         : "/login?from=accounts&user=" + account.id
                     }
                   >

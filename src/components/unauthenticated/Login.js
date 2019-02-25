@@ -486,7 +486,9 @@ class Login extends Component {
                   onKeyPress={event => {
                     if (event.key === "Enter") {
                       if (
-                        isemail.validate(this.props.email,{errorLevel:true}) ===0 &&
+                        isemail.validate(this.props.email, {
+                          errorLevel: true,
+                        }) === 0 &&
                         this.props.password
                       ) {
                         this.signIn()
@@ -537,8 +539,9 @@ class Login extends Component {
                       style={{ margin: "8px 0" }}
                       color="primary"
                       disabled={
-                        !isemail.validate(this.props.email,{errorLevel:true}) ||
-                        this.state.showLoading
+                        isemail.validate(this.props.email, {
+                          errorLevel: true,
+                        }) !== 0 || this.state.showLoading
                       }
                     >
                       Next
@@ -718,7 +721,9 @@ class Login extends Component {
                   onKeyPress={event => {
                     if (event.key === "Enter") {
                       if (
-                        isemail.validate(this.props.email,{errorLevel:true}) ===0 &&
+                        isemail.validate(this.props.email, {
+                          errorLevel: true,
+                        }) === 0 &&
                         this.props.password
                       ) {
                         this.signIn()
@@ -769,12 +774,14 @@ class Login extends Component {
                   <IconButton
                     onClick={this.signInWebauthn}
                     disabled={
-                      isemail.validate(this.props.email,{errorLevel:true}) !==0 ||
-                      this.state.showLoading
+                      isemail.validate(this.props.email, {
+                        errorLevel: true,
+                      }) !== 0 || this.state.showLoading
                     }
                     style={
-                      isemail.validate(this.props.email,{errorLevel:true}) ===0 &&
-                      !this.state.showLoading
+                      isemail.validate(this.props.email, {
+                        errorLevel: true,
+                      }) === 0 && !this.state.showLoading
                         ? this.props.mobile
                           ? { color: "white" }
                           : { color: "black" }
@@ -850,8 +857,9 @@ class Login extends Component {
                       color="primary"
                       disabled={
                         !(
-                          isemail.validate(this.props.email,{errorLevel:true}) ===0 &&
-                          this.props.password
+                          isemail.validate(this.props.email, {
+                            errorLevel: true,
+                          }) === 0 && this.props.password
                         ) || this.state.showLoading
                       }
                     >
@@ -901,9 +909,13 @@ class Login extends Component {
                       color="primary"
                       disabled={this.state.showLoading}
                       component={Link}
-                      to={querystringify.parse(
-                        "?" + window.location.href.split("?")[1]
-                      ).from?"/login?from=accounts":"/login"}
+                      to={
+                        querystringify.parse(
+                          "?" + window.location.href.split("?")[1]
+                        ).from
+                          ? "/login?from=accounts"
+                          : "/login"
+                      }
                     >
                       Go back
                     </Button>

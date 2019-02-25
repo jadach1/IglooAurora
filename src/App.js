@@ -9,6 +9,7 @@ import { Online, Offline } from "react-detect-offline"
 import OfflineScreen from "./OfflineScreen"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
+import querystringify from "querystringify"
 
 // Material-UI customizations that do not change between light mode and night mode
 const sharedStyles = {
@@ -636,6 +637,24 @@ class App extends Component {
       if (localStorage.getItem("serverUnsecure") === null) {
         localStorage.setItem("serverUnsecure", false)
       }
+    }
+
+    if (querystringify.parse("?" + window.location.href.split("?")[1]).user && localStorage.getItem("accountList") && JSON.parse(localStorage.getItem("accountList")).find(
+      account =>
+        account.id ===
+        querystringify.parse("?" + window.location.href.split("?")[1]).user
+    )) {
+      localStorage.setItem(
+        "userId",
+        querystringify.parse("?" + window.location.href.split("?")[1]).user
+      )
+      this.setState({
+        bearer: JSON.parse(localStorage.getItem("accountList")).find(
+          account =>
+            account.id ===
+            querystringify.parse("?" + window.location.href.split("?")[1]).user
+        ).token,
+      })
     }
 
     return (
