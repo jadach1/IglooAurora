@@ -639,11 +639,16 @@ class App extends Component {
       }
     }
 
-    if (querystringify.parse("?" + window.location.href.split("?")[1]).user && localStorage.getItem("accountList") && JSON.parse(localStorage.getItem("accountList")).find(
-      account =>
-        account.id ===
-        querystringify.parse("?" + window.location.href.split("?")[1]).user
-    )) {
+    if (
+      querystringify.parse("?" + window.location.href.split("?")[1]).user &&
+      localStorage.getItem("accountList") &&
+      JSON.parse(localStorage.getItem("accountList")).find(
+        account =>
+          account.id ===
+          querystringify.parse("?" + window.location.href.split("?")[1]).user
+      ) &&
+      window.location.pathname === "/"
+    ) {
       localStorage.setItem(
         "userId",
         querystringify.parse("?" + window.location.href.split("?")[1]).user
