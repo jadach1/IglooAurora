@@ -5,7 +5,6 @@ import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
 import ForgotPassword from "./ForgotPassword"
-import * as EmailValidator from "email-validator"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
 import { Link, Redirect } from "react-router-dom"
@@ -22,6 +21,7 @@ import Fingerprint from "@material-ui/icons/Fingerprint"
 import Avatar from "@material-ui/core/Avatar"
 import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
+import isemail from "isemail"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -486,7 +486,7 @@ class Login extends Component {
                   onKeyPress={event => {
                     if (event.key === "Enter") {
                       if (
-                        EmailValidator.validate(this.props.email) &&
+                        isemail.validate(this.props.email,{errorLevel:true}) ===0 &&
                         this.props.password
                       ) {
                         this.signIn()
@@ -537,7 +537,7 @@ class Login extends Component {
                       style={{ margin: "8px 0" }}
                       color="primary"
                       disabled={
-                        !EmailValidator.validate(this.props.email) ||
+                        !isemail.validate(this.props.email,{errorLevel:true}) ||
                         this.state.showLoading
                       }
                     >
@@ -718,7 +718,7 @@ class Login extends Component {
                   onKeyPress={event => {
                     if (event.key === "Enter") {
                       if (
-                        EmailValidator.validate(this.props.email) &&
+                        isemail.validate(this.props.email,{errorLevel:true}) ===0 &&
                         this.props.password
                       ) {
                         this.signIn()
@@ -769,11 +769,11 @@ class Login extends Component {
                   <IconButton
                     onClick={this.signInWebauthn}
                     disabled={
-                      !EmailValidator.validate(this.props.email) ||
+                      isemail.validate(this.props.email,{errorLevel:true}) !==0 ||
                       this.state.showLoading
                     }
                     style={
-                      EmailValidator.validate(this.props.email) &&
+                      isemail.validate(this.props.email,{errorLevel:true}) ===0 &&
                       !this.state.showLoading
                         ? this.props.mobile
                           ? { color: "white" }
@@ -850,7 +850,7 @@ class Login extends Component {
                       color="primary"
                       disabled={
                         !(
-                          EmailValidator.validate(this.props.email) &&
+                          isemail.validate(this.props.email,{errorLevel:true}) ===0 &&
                           this.props.password
                         ) || this.state.showLoading
                       }

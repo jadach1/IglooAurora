@@ -1,5 +1,4 @@
 import React from "react"
-import * as EmailValidator from "email-validator"
 import Dialog from "@material-ui/core/Dialog"
 import Button from "@material-ui/core/Button"
 import InputAdornment from "@material-ui/core/InputAdornment"
@@ -13,6 +12,7 @@ import TextField from "@material-ui/core/TextField"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 import Clear from "@material-ui/icons/Clear"
+import isemail from "isemail"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -142,7 +142,9 @@ class ForgotPassword extends React.Component {
             <Button
               variant="contained"
               color="primary"
-              disabled={!EmailValidator.validate(this.state.email)}
+              disabled={
+                isemail.validate(this.state.email, { errorLevel: true }) !== 0
+              }
               onClick={() => {
                 this.props.recover(this.state.email)
                 this.props.close()

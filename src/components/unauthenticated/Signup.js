@@ -1,7 +1,6 @@
 import React, { Component } from "react"
 import gql from "graphql-tag"
 import zxcvbn from "zxcvbn"
-import * as EmailValidator from "email-validator"
 import Button from "@material-ui/core/Button"
 import InputAdornment from "@material-ui/core/InputAdornment"
 import IconButton from "@material-ui/core/IconButton"
@@ -37,6 +36,7 @@ import { WebSocketLink } from "apollo-link-ws"
 import { split } from "apollo-link"
 import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
+import isemail from "isemail"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -471,7 +471,8 @@ export default class Signup extends Component {
 
     if (this.props.email)
       this.setState({
-        isEmailValid: EmailValidator.validate(this.props.email),
+        isEmailValid:
+          isemail.validate(this.props.email, { errorLevel: true }) === 0,
         isMailEmpty: this.props.email === "",
       })
 
@@ -680,9 +681,10 @@ export default class Signup extends Component {
                       this.props.changeEmail(event.target.value)
                       this.props.changeEmailError("")
                       this.setState({
-                        isEmailValid: EmailValidator.validate(
-                          event.target.value
-                        ),
+                        isEmailValid:
+                          isemail.validate(event.target.value, {
+                            errorLevel: true,
+                          }) === 0,
                         isMailEmpty: event.target.value === "",
                       })
                     }}

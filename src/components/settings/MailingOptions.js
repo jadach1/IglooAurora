@@ -66,16 +66,14 @@ class MailingOptions extends React.Component {
     })
   }
 
-  pendingOwnerChangeAcceptedEmailMutation = pendingOwnerChangeAcceptedEmail => {
-    this.props.PendingOwnerChangeAcceptedEmail({
+  changePendingOwnerChangeAcceptedEmail = pendingOwnerChangeAcceptedEmail => {
+    this.props.ChangePendingOwnerChangeAcceptedEmail({
       variables: {
         pendingOwnerChangeAcceptedEmail,
       },
       optimisticResponse: {
         __typename: "Mutation",
-        settings: {
-          pendingOwnerChangeAcceptedEmail,
-        },
+        settings: { pendingOwnerChangeAcceptedEmail },
       },
     })
   }
@@ -222,7 +220,7 @@ class MailingOptions extends React.Component {
                       <Checkbox
                         checked={settings.pendingOwnerChangeAcceptedEmail}
                         onChange={event =>
-                          this.pendingOwnerChangeAcceptedEmailMutation(
+                          this.changePendingOwnerChangeAcceptedEmail(
                             event.target.checked
                           )
                         }
@@ -279,60 +277,75 @@ class MailingOptions extends React.Component {
 
 export default graphql(
   gql`
-    mutation settings($pendingOwnerChangeAcceptedEmail: Boolean) {
-      settings(pendingOwnerChangeAcceptedEmail: $pendingOwnerChangeAcceptedEmail) {
+    mutation ChangePendingOwnerChangeAcceptedEmail(
+      $pendingOwnerChangeAcceptedEmail: Boolean
+    ) {
+      settings(
+        pendingOwnerChangeAcceptedEmail: $pendingOwnerChangeAcceptedEmail
+      ) {
         pendingOwnerChangeAcceptedEmail
       }
     }
   `,
   {
-    name: "PendingOwnerChangeAcceptedEmail",
-  }
-)(graphql(
-  gql`
-    mutation settings($pendingEnvironmentShareReceivedEmail: Boolean) {
-      settings(pendingEnvironmentShareReceivedEmail: $pendingEnvironmentShareReceivedEmail) {
-        pendingEnvironmentShareReceivedEmail
-      }
-    }
-  `,
-  {
-    name: "PendingEnvironmentShareReceivedEmail",
-  }
-)(graphql(
-  gql`
-    mutation settings($pendingOwnerChangeReceivedEmail: Boolean) {
-      settings(pendingOwnerChangeReceivedEmail: $pendingOwnerChangeReceivedEmail) {
-        pendingOwnerChangeReceivedEmail
-      }
-    }
-  `,
-  {
-    name: "PendingOwnerChangeReceivedEmail",
-  }
-)(graphql(
-  gql`
-    mutation settings($passwordChangeEmail: Boolean) {
-      settings(passwordChangeEmail: $passwordChangeEmail) {
-        passwordChangeEmail
-      }
-    }
-  `,
-  {
-    name: "PasswordChangeEmail",
+    name: "ChangePendingOwnerChangeAcceptedEmail",
   }
 )(
   graphql(
     gql`
-      mutation settings($permanentTokenCreatedEmail: Boolean) {
-        settings(permanentTokenCreatedEmail: $permanentTokenCreatedEmail) {
-          permanentTokenCreatedEmail
+      mutation settings($pendingEnvironmentShareReceivedEmail: Boolean) {
+        settings(
+          pendingEnvironmentShareReceivedEmail: $pendingEnvironmentShareReceivedEmail
+        ) {
+          pendingEnvironmentShareReceivedEmail
         }
       }
     `,
     {
-      name: "PermanentTokenCreatedEmail",
+      name: "PendingEnvironmentShareReceivedEmail",
     }
-  )(withMobileDialog({ breakpoint: "xs" })(MailingOptions))
-))
-))
+  )(
+    graphql(
+      gql`
+        mutation settings($pendingOwnerChangeReceivedEmail: Boolean) {
+          settings(
+            pendingOwnerChangeReceivedEmail: $pendingOwnerChangeReceivedEmail
+          ) {
+            pendingOwnerChangeReceivedEmail
+          }
+        }
+      `,
+      {
+        name: "PendingOwnerChangeReceivedEmail",
+      }
+    )(
+      graphql(
+        gql`
+          mutation settings($passwordChangeEmail: Boolean) {
+            settings(passwordChangeEmail: $passwordChangeEmail) {
+              passwordChangeEmail
+            }
+          }
+        `,
+        {
+          name: "PasswordChangeEmail",
+        }
+      )(
+        graphql(
+          gql`
+            mutation settings($permanentTokenCreatedEmail: Boolean) {
+              settings(
+                permanentTokenCreatedEmail: $permanentTokenCreatedEmail
+              ) {
+                permanentTokenCreatedEmail
+              }
+            }
+          `,
+          {
+            name: "PermanentTokenCreatedEmail",
+          }
+        )(withMobileDialog({ breakpoint: "xs" })(MailingOptions))
+      )
+    )
+  )
+)
