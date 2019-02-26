@@ -39,7 +39,10 @@ let readNotifications
 
 let unreadNotifications
 
+let markedAsUnreadNotifications = []
+
 let readNotificationsList = ""
+
 let unreadNotificationsList = ""
 
 class NotificationsDrawer extends React.Component {
@@ -130,8 +133,14 @@ class NotificationsDrawer extends React.Component {
           return prev
         }
 
-        unreadNotifications=unreadNotifications.filter(notification=>notification.id!==subscriptionData.data.notificationDeleted)
-readNotifications=        readNotifications.filter(notification=>notification.id!==subscriptionData.data.notificationDeleted)
+        unreadNotifications = unreadNotifications.filter(
+          notification =>
+            notification.id !== subscriptionData.data.notificationDeleted
+        )
+        readNotifications = readNotifications.filter(
+          notification =>
+            notification.id !== subscriptionData.data.notificationDeleted
+        )
       },
     })
   }
@@ -163,10 +172,18 @@ readNotifications=        readNotifications.filter(notification=>notification.id
       device = nextProps.notificationData.device
     }
 
-    if (this.props.drawer!==nextProps.drawer && !nextProps.drawer) {
-     unreadNotifications.forEach(notification=> readNotifications.push(notification))
+    if (this.props.drawer !== nextProps.drawer && !nextProps.drawer) {
+      unreadNotifications
+        .filter(
+          notification => !markedAsUnreadNotifications.includes(notification.id)
+        )
+        .forEach(notification => readNotifications.push(notification))
 
-     unreadNotifications = []
+        unreadNotifications=unreadNotifications.filter(notification =>
+        markedAsUnreadNotifications.includes(notification.id)
+      )
+
+      markedAsUnreadNotifications = []
     }
 
     if (
@@ -198,8 +215,15 @@ readNotifications=        readNotifications.filter(notification=>notification.id
 
   render() {
     let markAsUnread = id => {
-        unreadNotifications.push(readNotifications.find(notification=>notification.id===id))
-readNotifications=        readNotifications.filter(notification=>notification.id!==id)
+      unreadNotifications.push(
+        readNotifications.find(notification => notification.id === id)
+      )
+
+      readNotifications = readNotifications.filter(
+        notification => notification.id !== id
+      )
+
+      markedAsUnreadNotifications.push(id)
 
       this.props.MarkAsUnread({
         variables: {
@@ -217,9 +241,12 @@ readNotifications=        readNotifications.filter(notification=>notification.id
     }
 
     let deleteNotification = id => {
-        unreadNotifications=unreadNotifications.filter(notification=>notification.id!==id)
-readNotifications=        readNotifications.filter(notification=>notification.id!==id)
-   
+      unreadNotifications = unreadNotifications.filter(
+        notification => notification.id !== id
+      )
+      readNotifications = readNotifications.filter(
+        notification => notification.id !== id
+      )
 
       this.props.DeleteNotification({
         variables: {
@@ -672,11 +699,22 @@ readNotifications=        readNotifications.filter(notification=>notification.id
             }
           >
             <Badge
-              badgeContent={(unreadNotifications && unreadNotifications.length) || this.props.notificationCount}
+              badgeContent={
+                (unreadNotifications && unreadNotifications.length) ||
+                this.props.notificationCount
+              }
               color="primary"
-              invisible={!(unreadNotifications && unreadNotifications.length) && !this.props.notificationCount}
+              invisible={
+                !(unreadNotifications && unreadNotifications.length) &&
+                !this.props.notificationCount
+              }
             >
-              {((unreadNotifications && unreadNotifications.length) ||this.props.notificationCount) ? <Notifications /> : <NotificationsNone />}
+              {(unreadNotifications && unreadNotifications.length) ||
+              this.props.notificationCount ? (
+                <Notifications />
+              ) : (
+                <NotificationsNone />
+              )}
             </Badge>
           </IconButton>
         </Tooltip>
