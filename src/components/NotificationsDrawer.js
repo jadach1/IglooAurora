@@ -35,9 +35,12 @@ let loading
 
 let error
 
-let unreadNotifications = []
+let readNotifications
 
-let notificationsToFlush = []
+let unreadNotifications
+
+let readNotificationsList = ""
+let unreadNotificationsList = ""
 
 class NotificationsDrawer extends React.Component {
   state = { showread: false }
@@ -51,7 +54,7 @@ class NotificationsDrawer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.notifications.refetch()
+    this.props.notificationData.refetch()
 
     const subscriptionQuery = gql`
       subscription {
@@ -67,22 +70,17 @@ class NotificationsDrawer extends React.Component {
       }
     `
 
-    this.props.notifications.subscribeToMore({
+    this.props.notificationData.subscribeToMore({
       document: subscriptionQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
-        const newNotifications = [
-          ...prev.device.notifications,
-          subscriptionData.data.notificationCreated,
-        ]
-        return {
-          device: {
-            ...prev.device,
-            notifications: newNotifications,
-          },
-        }
+
+        unreadNotifications.push(subscriptionData.data.notificationCreated)
+        unreadNotifications.sort((a, b) =>
+          +a.date > +b.date ? 1 : +a.date === +b.date ? 0 : -1
+        )
       },
     })
 
@@ -92,7 +90,6 @@ class NotificationsDrawer extends React.Component {
           id
           content
           date
-          read
           device {
             id
           }
@@ -100,7 +97,7 @@ class NotificationsDrawer extends React.Component {
       }
     `
 
-    this.props.notifications.subscribeToMore({
+    this.props.notificationData.subscribeToMore({
       document: updateQuery,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
@@ -126,24 +123,15 @@ class NotificationsDrawer extends React.Component {
       }
     `
 
-    this.props.notifications.subscribeToMore({
+    this.props.notificationData.subscribeToMore({
       document: subscribeToNotificationsDeletes,
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) {
           return prev
         }
 
-        const newNotifications = prev.device.notifications.filter(
-          notification =>
-            notification.id !== subscriptionData.data.notificationDeleted
-        )
-
-        return {
-          device: {
-            ...prev.device,
-            notifications: newNotifications,
-          },
-        }
+        unreadNotifications=unreadNotifications.filter(notification=>notification.id!==subscriptionData.data.notificationDeleted)
+readNotifications=        readNotifications.filter(notification=>notification.id!==subscriptionData.data.notificationDeleted)
       },
     })
   }
@@ -156,58 +144,63 @@ class NotificationsDrawer extends React.Component {
     })
   }
 
-  clearAllNotifications = () => {
-    if (device) {
-      notificationsToFlush = device.notifications
-        .filter(
-          notification =>
-            notification.read === false &&
-            unreadNotifications.indexOf(notification.id) === -1
-        )
-        .map(notification => notification.id)
-
-      for (let i = 0; i < notificationsToFlush.length; i++) {
-        this.clearNotification(notificationsToFlush[i])
-      }
-    }
-  }
-
-  showNotificationsAsRead = () => {
-    if (device) {
-      device.notifications
-        .filter(notification => !unreadNotifications.includes(notification.id))
-        .forEach(notification =>
-          Object.defineProperty(notification, "read", {
-            value: true,
-            writable: true,
-            configurable: true,
-          })
-        )
-    }
-  }
-
   componentWillReceiveProps(nextProps) {
-    if (this.props.drawer !== nextProps.drawer && nextProps.drawer) {
-      unreadNotifications = []
-
-      this.clearAllNotifications()
+    if (
+      this.props.notificationData.error !== nextProps.notificationData.error
+    ) {
+      error = nextProps.notificationData.error
     }
 
-    if (this.props.notifications.error !== nextProps.notifications.error) {
-      error = nextProps.notifications.error
+    if (
+      this.props.notificationData.loading !== nextProps.notificationData.loading
+    ) {
+      loading = nextProps.notificationData.loading
     }
 
-    if (this.props.notifications.loading !== nextProps.notifications.loading) {
-      loading = nextProps.notifications.loading
+    if (
+      this.props.notificationData.device !== nextProps.notificationData.device
+    ) {
+      device = nextProps.notificationData.device
     }
 
-    if (this.props.notifications.device !== nextProps.notifications.device) {
-      device = nextProps.notifications.device
+    if (this.props.drawer!==nextProps.drawer && !nextProps.drawer) {
+     unreadNotifications.forEach(notification=> readNotifications.push(notification))
+
+     unreadNotifications = []
+    }
+
+    if (
+      (this.props.drawer !== nextProps.drawer && nextProps.drawer) ||
+      (this.props.notificationData.device !==
+        nextProps.notificationData.device &&
+        nextProps.notificationData.device)
+    ) {
+      if (
+        nextProps.drawer &&
+        nextProps.notificationData.device &&
+        readNotifications === undefined &&
+        unreadNotifications === undefined
+      ) {
+        readNotifications = device.notifications.filter(
+          notification => notification.read
+        )
+
+        unreadNotifications = device.notifications.filter(
+          notification => !notification.read
+        )
+
+        device.notifications
+          .filter(notification => !notification.read)
+          .forEach(notification => this.clearNotification(notification.id))
+      }
     }
   }
 
   render() {
     let markAsUnread = id => {
+        unreadNotifications.push(readNotifications.find(notification=>notification.id===id))
+readNotifications=        readNotifications.filter(notification=>notification.id!==id)
+
       this.props.MarkAsUnread({
         variables: {
           id: id,
@@ -224,6 +217,10 @@ class NotificationsDrawer extends React.Component {
     }
 
     let deleteNotification = id => {
+        unreadNotifications=unreadNotifications.filter(notification=>notification.id!==id)
+readNotifications=        readNotifications.filter(notification=>notification.id!==id)
+   
+
       this.props.DeleteNotification({
         variables: {
           id: id,
@@ -238,24 +235,21 @@ class NotificationsDrawer extends React.Component {
       })
     }
 
-    let notifications = ""
-    let readNotifications = ""
-
     let notificationCount = ""
 
     let noNotificationsUI = ""
     let readNotificationsUI = ""
 
     if (error) {
-      notifications = "Unexpected error"
+      unreadNotificationsList = "Unexpected error"
 
       if (error.message === "GraphQL error: This user doesn't exist anymore") {
         this.props.logOut(true)
       }
     }
 
-    if (loading || !this.props.completeDevice)
-      notifications = (
+    if (loading)
+      unreadNotificationsList = (
         <CenteredSpinner
           style={{
             paddingTop: "32px",
@@ -263,7 +257,7 @@ class NotificationsDrawer extends React.Component {
         />
       )
 
-    if (device && this.props.completeDevice) {
+    if (device) {
       let determineDiff = notification =>
         moment().isSame(
           moment.utc(notification.date.split(".")[0], "YYYY-MM-DDTh:mm:ss"),
@@ -335,221 +329,222 @@ class NotificationsDrawer extends React.Component {
         return returnArray
       }
 
-      let notificationsSections = device.notifications
-        .filter(notification => !notification.read)
-        .map(notification => determineDiff(notification))
-        .reverse()
+      if (unreadNotifications) {
+        let notificationsSections = unreadNotifications
+          .map(notification => determineDiff(notification))
+          .reverse()
 
-      let cleanedNotificationsSections = removeDuplicates(notificationsSections)
+        let cleanedNotificationsSections = removeDuplicates(
+          notificationsSections
+        )
 
-      notifications = (
-        <List
-          style={{
-            padding: "0",
-          }}
-        >
-          {cleanedNotificationsSections.map(section => (
-            <li>
-              <ListSubheader
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { backgroundColor: "#2f333d" }
-                    : { backgroundColor: "white" }
-                }
-              >
-                <font
+        unreadNotificationsList = (
+          <List
+            style={{
+              padding: "0",
+            }}
+          >
+            {cleanedNotificationsSections.map(section => (
+              <li>
+                <ListSubheader
                   style={
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
-                      ? { color: "#c1c2c5" }
-                      : { color: "#7a7a7a" }
+                      ? { backgroundColor: "#2f333d" }
+                      : { backgroundColor: "white" }
                   }
                 >
-                  {section}
-                </font>
-              </ListSubheader>
-              {device.notifications &&
-                device.notifications
-                  .filter(
-                    notification => determineDiff(notification) === section
-                  )
-                  .filter(notification => !notification.read)
-                  .map(notification => (
-                    <ListItem
-                      className="notSelectable"
-                      key={notification.id}
-                      id={notification.id}
-                    >
-                      <ListItemText
-                        primary={
-                          <font
-                            style={
-                              typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                                ? { color: "white" }
-                                : { color: "black" }
-                            }
-                          >
-                            {notification.content}
-                          </font>
-                        }
-                        secondary={
-                          <font
-                            style={
-                              typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                                ? { color: "#c1c2c5" }
-                                : { color: "#7a7a7a" }
-                            }
-                          >
-                            <Moment fromNow>
-                              {moment.utc(
-                                notification.date.split(".")[0],
-                                "YYYY-MM-DDTh:mm:ss"
-                              )}
-                            </Moment>
-                          </font>
-                        }
-                      />
-                      <ListItemSecondaryAction>
-                        <Tooltip title="Delete" placement="bottom">
-                          <IconButton
-                            onClick={() => deleteNotification(notification.id)}
-                            style={
-                              typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                                ? { color: "white" }
-                                : { color: "black" }
-                            }
-                          >
-                            <Delete />
-                          </IconButton>
-                        </Tooltip>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ))
-                  .reverse()}
-            </li>
-          ))}
-        </List>
-      )
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "#c1c2c5" }
+                        : { color: "#7a7a7a" }
+                    }
+                  >
+                    {section}
+                  </font>
+                </ListSubheader>
+                {unreadNotifications &&
+                  unreadNotifications
+                    .filter(
+                      notification => determineDiff(notification) === section
+                    )
+                    .map(notification => (
+                      <ListItem
+                        className="notSelectable"
+                        key={notification.id}
+                        id={notification.id}
+                      >
+                        <ListItemText
+                          primary={
+                            <font
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
+                            >
+                              {notification.content}
+                            </font>
+                          }
+                          secondary={
+                            <font
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "#c1c2c5" }
+                                  : { color: "#7a7a7a" }
+                              }
+                            >
+                              <Moment fromNow>
+                                {moment.utc(
+                                  notification.date.split(".")[0],
+                                  "YYYY-MM-DDTh:mm:ss"
+                                )}
+                              </Moment>
+                            </font>
+                          }
+                        />
+                        <ListItemSecondaryAction>
+                          <Tooltip title="Delete" placement="bottom">
+                            <IconButton
+                              onClick={() =>
+                                deleteNotification(notification.id)
+                              }
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
+                            >
+                              <Delete />
+                            </IconButton>
+                          </Tooltip>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))
+                    .reverse()}
+              </li>
+            ))}
+          </List>
+        )
+      }
 
-      let readNotificationsSections = device.notifications
-        .filter(notification => notification.read)
-        .map(notification => determineDiff(notification))
-        .reverse()
+      if (readNotifications) {
+        let readNotificationsSections = readNotifications
+          .map(notification => determineDiff(notification))
+          .reverse()
 
-      let cleanedReadNotificationsSections = removeDuplicates(
-        readNotificationsSections
-      )
+        let cleanedReadNotificationsSections = removeDuplicates(
+          readNotificationsSections
+        )
 
-      readNotifications = (
-        <List
-          style={{
-            padding: "0",
-          }}
-        >
-          {cleanedReadNotificationsSections.map(section => (
-            <li>
-              <ListSubheader
-                style={
-                  typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                    ? { backgroundColor: "#2f333d" }
-                    : { backgroundColor: "white" }
-                }
-              >
-                <font
+        readNotificationsList = (
+          <List
+            style={{
+              padding: "0",
+            }}
+          >
+            {cleanedReadNotificationsSections.map(section => (
+              <li>
+                <ListSubheader
                   style={
                     typeof Storage !== "undefined" &&
                     localStorage.getItem("nightMode") === "true"
-                      ? { color: "#c1c2c5" }
-                      : { color: "#7a7a7a" }
+                      ? { backgroundColor: "#2f333d" }
+                      : { backgroundColor: "white" }
                   }
                 >
-                  {section}
-                </font>
-              </ListSubheader>
-              {device.notifications &&
-                device.notifications
-                  .filter(
-                    notification => determineDiff(notification) === section
-                  )
-                  .filter(notification => notification.read)
-                  .map(notification => (
-                    <ListItem
-                      key={notification.id}
-                      className="notSelectable"
-                      id={notification.id}
-                    >
-                      <ListItemText
-                        primary={
-                          <font
-                            style={
-                              typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                                ? { color: "white" }
-                                : { color: "black" }
-                            }
-                          >
-                            {notification.content}
-                          </font>
-                        }
-                        secondary={
-                          <font
-                            style={
-                              typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                                ? { color: "#c1c2c5" }
-                                : { color: "#7a7a7a" }
-                            }
-                          >
-                            <Moment fromNow>
-                              {moment.utc(
-                                notification.date.split(".")[0],
-                                "YYYY-MM-DDTh:mm:ss"
-                              )}
-                            </Moment>
-                          </font>
-                        }
-                      />
-                      <ListItemSecondaryAction>
-                        <Tooltip title="More" placement="bottom">
-                          <IconButton
-                            onClick={event =>
-                              this.setState({
-                                anchorEl: event.currentTarget,
-                                targetNotification: notification,
-                              })
-                            }
-                            style={
-                              typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                                ? { color: "white" }
-                                : { color: "black" }
-                            }
-                          >
-                            <MoreVert />
-                          </IconButton>
-                        </Tooltip>
-                      </ListItemSecondaryAction>
-                    </ListItem>
-                  ))
-                  .reverse()}
-            </li>
-          ))}
-        </List>
-      )
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "#c1c2c5" }
+                        : { color: "#7a7a7a" }
+                    }
+                  >
+                    {section}
+                  </font>
+                </ListSubheader>
+                {readNotifications &&
+                  readNotifications
+                    .filter(
+                      notification => determineDiff(notification) === section
+                    )
+                    .map(notification => (
+                      <ListItem
+                        key={notification.id}
+                        className="notSelectable"
+                        id={notification.id}
+                      >
+                        <ListItemText
+                          primary={
+                            <font
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
+                            >
+                              {notification.content}
+                            </font>
+                          }
+                          secondary={
+                            <font
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "#c1c2c5" }
+                                  : { color: "#7a7a7a" }
+                              }
+                            >
+                              <Moment fromNow>
+                                {moment.utc(
+                                  notification.date.split(".")[0],
+                                  "YYYY-MM-DDTh:mm:ss"
+                                )}
+                              </Moment>
+                            </font>
+                          }
+                        />
+                        <ListItemSecondaryAction>
+                          <Tooltip title="More" placement="bottom">
+                            <IconButton
+                              onClick={event =>
+                                this.setState({
+                                  anchorEl: event.currentTarget,
+                                  targetNotification: notification,
+                                })
+                              }
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "white" }
+                                  : { color: "black" }
+                              }
+                            >
+                              <MoreVert />
+                            </IconButton>
+                          </Tooltip>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                    ))
+                    .reverse()}
+              </li>
+            ))}
+          </List>
+        )
+      }
 
-      notificationCount =
-        device.notifications &&
-        device.notifications.filter(notification => notification.read === false)
-          .length
+      notificationCount = unreadNotifications && unreadNotifications.length
 
       const readNotificationCount =
-        device.notifications &&
-        device.notifications.filter(notification => notification.read === true)
+        readNotifications &&
+        readNotifications.filter(notification => notification.read === true)
           .length
 
       if (!notificationCount) {
@@ -630,7 +625,6 @@ class NotificationsDrawer extends React.Component {
             onClick={() => {
               markAsUnread(this.state.targetNotification.id)
               this.setState({ anchorEl: null })
-              unreadNotifications.push(this.state.targetNotification.id)
             }}
           >
             <ListItemIcon>
@@ -678,11 +672,11 @@ class NotificationsDrawer extends React.Component {
             }
           >
             <Badge
-              badgeContent={notificationCount}
+              badgeContent={(unreadNotifications && unreadNotifications.length) || this.props.notificationCount}
               color="primary"
-              invisible={!notificationCount}
+              invisible={!(unreadNotifications && unreadNotifications.length) && !this.props.notificationCount}
             >
-              {notificationCount ? <Notifications /> : <NotificationsNone />}
+              {((unreadNotifications && unreadNotifications.length) ||this.props.notificationCount) ? <Notifications /> : <NotificationsNone />}
             </Badge>
           </IconButton>
         </Tooltip>
@@ -691,9 +685,7 @@ class NotificationsDrawer extends React.Component {
           anchor="right"
           open={this.props.drawer}
           onClose={() => {
-            notificationsToFlush = []
             this.props.changeDrawerState()
-            this.showNotificationsAsRead()
           }}
           swipeAreaWidth={0}
           disableBackdropTransition={false}
@@ -765,11 +757,11 @@ class NotificationsDrawer extends React.Component {
                 }
               >
                 {noNotificationsUI}
-                {notifications}
+                {unreadNotificationsList}
                 {readNotificationsUI}
                 {readNotificationsUI
                   ? this.props.hiddenNotifications
-                    ? readNotifications
+                    ? readNotificationsList
                     : ""
                   : ""}
               </div>
@@ -799,7 +791,7 @@ export default graphql(
     }
   `,
   {
-    name: "notifications",
+    name: "notificationData",
     options: ({ deviceId }) => ({ variables: { id: deviceId } }),
   }
 )(

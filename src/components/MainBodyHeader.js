@@ -294,18 +294,12 @@ class MainBodyHeader extends Component {
             }}
           >
             <NotificationsDrawer
-              completeDevice={
-                (this.props.environmentData.environment &&
-                  this.props.environmentData.environment.devices.filter(
-                    device => device.id === this.props.deviceId
-                  )[0]) ||
-                device
-              }
               deviceId={this.props.deviceId}
               drawer={this.props.drawer}
               changeDrawerState={this.props.changeDrawerState}
               hiddenNotifications={this.props.hiddenNotifications}
               showHiddenNotifications={this.props.showHiddenNotifications}
+              notificationCount={device && device.notificationCount}
               nightMode={
                 typeof Storage !== "undefined" &&
                 localStorage.getItem("nightMode") === "true"
