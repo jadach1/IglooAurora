@@ -154,9 +154,13 @@ class Login extends Component {
 
   goToPassword = async () => {
     try {
-      this.props.client.query({
+      this.setState({ showEmailScreenLoading: true })
+
+      const {
+        data: { user },
+      } = await this.props.client.query({
         query: gql`
-          query getUser($email: String) {
+          query($email: String) {
             user(email: $email) {
               id
               email
@@ -170,16 +174,46 @@ class Login extends Component {
         },
       })
 
-      this.setState({ redirectToPassword: true })
-    } catch (e) {
       if (
-        e.message ===
-        "GraphQL error: User doesn't exist. Use `signUp` to create one"
+        JSON.parse(localStorage.getItem("accountList")).find(
+          account => account.id === user.id
+        )
       ) {
+        let localStorageAccounts = JSON.parse(
+          localStorage.getItem("accountList")
+        )
+
+        if (localStorageAccounts.name !== user.name) {
+          localStorageAccounts.find(account => account.id === user.id).name =
+            user.name
+        }
+
+        if (localStorageAccounts.email !== user.email) {
+          localStorageAccounts.find(account => account.id === user.id).email =
+            user.email
+        }
+
+        if (localStorageAccounts.profileIconColor !== user.profileIconColor) {
+          localStorageAccounts.find(
+            account => account.id === user.id
+          ).profileIconColor = user.profileIconColor
+        }
+
+        localStorage.setItem(
+          "accountList",
+          JSON.stringify(localStorageAccounts)
+        )
+      }
+
+      this.setState({ redirectToPassword: true, user })
+    } catch (e) {
+      if (e.message === "GraphQL error: User not found") {
         this.props.changeEmailError("This account doesn't exist")
       } else {
         this.props.changeEmailError("Unexpected error")
       }
+    } finally {
+      this.setState({ showEmailScreenLoading: false })
     }
   }
 
@@ -393,6 +427,20 @@ class Login extends Component {
       )
     }
 
+    if (this.state.redirectToPassword) {
+      this.setState({ redirectToPassword: null })
+
+      return (
+        <Redirect
+          to={
+            querystringify.parse("?" + window.location.href.split("?")[1]).from
+              ? "/login?from=accounts&user=" + this.state.user.id
+              : "/login?user=" + this.state.user.id
+          }
+        />
+      )
+    }
+
     return (
       <MuiThemeProvider theme={this.props.mobile ? mobileTheme : desktopTheme}>
         <div
@@ -488,11 +536,9 @@ class Login extends Component {
                       if (
                         isemail.validate(this.props.email, {
                           errorLevel: true,
-                        }) === 0 &&
-                        this.props.password
+                        }) === 0
                       ) {
-                        this.signIn()
-                        this.setState({ showLoading: true })
+                        this.goToPassword()
                       }
                     }
                   }}
@@ -541,11 +587,11 @@ class Login extends Component {
                       disabled={
                         isemail.validate(this.props.email, {
                           errorLevel: true,
-                        }) !== 0 || this.state.showLoading
+                        }) !== 0 || this.state.showEmailScreenLoading
                       }
                     >
                       Next
-                      {this.state.showLoading && (
+                      {this.state.showEmailScreenLoading && (
                         <MuiThemeProvider
                           theme={createMuiTheme(
                             this.props.mobile
@@ -633,25 +679,40 @@ class Login extends Component {
                 <ListItem style={{ padding: "0", marginBottom: "24px" }}>
                   <Avatar
                     style={{
-                      background: JSON.parse(
-                        localStorage.getItem("accountList")
-                      ).find(
-                        user =>
-                          user.id ===
-                          querystringify.parse(
-                            "?" + window.location.href.split("?")[1]
-                          ).user
-                      ).profileIconColor,
+                      background:
+                        (JSON.parse(localStorage.getItem("accountList")).find(
+                          user =>
+                            user.id ===
+                            querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).user
+                        ) &&
+                          JSON.parse(localStorage.getItem("accountList")).find(
+                            user =>
+                              user.id ===
+                              querystringify.parse(
+                                "?" + window.location.href.split("?")[1]
+                              ).user
+                          ).profileIconColor) ||
+                        this.state.user.profileIconColor,
                     }}
                   >
                     {this.getInitials(
-                      JSON.parse(localStorage.getItem("accountList")).find(
+                      (JSON.parse(localStorage.getItem("accountList")).find(
                         user =>
                           user.id ===
                           querystringify.parse(
                             "?" + window.location.href.split("?")[1]
                           ).user
-                      ).name
+                      ) &&
+                        JSON.parse(localStorage.getItem("accountList")).find(
+                          user =>
+                            user.id ===
+                            querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).user
+                        ).name) ||
+                        this.state.user.name
                     )}
                   </Avatar>
                   <ListItemText
@@ -663,15 +724,21 @@ class Login extends Component {
                             : { color: "black" }
                         }
                       >
-                        {
+                        {(JSON.parse(localStorage.getItem("accountList")).find(
+                          user =>
+                            user.id ===
+                            querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).user
+                        ) &&
                           JSON.parse(localStorage.getItem("accountList")).find(
                             user =>
                               user.id ===
                               querystringify.parse(
                                 "?" + window.location.href.split("?")[1]
                               ).user
-                          ).name
-                        }
+                          ).name) ||
+                          this.state.user.name}
                       </font>
                     }
                     secondary={
@@ -682,15 +749,21 @@ class Login extends Component {
                             : { color: "black", opacity: 0.72 }
                         }
                       >
-                        {
+                        {(JSON.parse(localStorage.getItem("accountList")).find(
+                          user =>
+                            user.id ===
+                            querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).user
+                        ) &&
                           JSON.parse(localStorage.getItem("accountList")).find(
                             user =>
                               user.id ===
                               querystringify.parse(
                                 "?" + window.location.href.split("?")[1]
                               ).user
-                          ).email
-                        }
+                          ).email) ||
+                          this.state.user.email}
                       </font>
                     }
                   />

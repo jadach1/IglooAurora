@@ -6,6 +6,8 @@ import Button from "@material-ui/core/Button"
 import Slide from "@material-ui/core/Slide"
 import Grow from "@material-ui/core/Grow"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
+import { graphql } from "react-apollo"
+import gql from "graphql-tag"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -69,4 +71,15 @@ class VerifyEmail extends React.Component {
   }
 }
 
-export default withMobileDialog({ breakpoint: "xs" })(VerifyEmail)
+export default withMobileDialog({ breakpoint: "xs" })(
+  graphql(
+    gql`
+      mutation ResendVerificationEmail {
+        resendVerificationEmail
+      }
+    `,
+    {
+      name: "ResendVerificationEmail",
+    }
+  )(VerifyEmail)
+)

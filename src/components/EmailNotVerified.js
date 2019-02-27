@@ -9,8 +9,6 @@ import Notes from "@material-ui/icons/Notes"
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
 import ChevronRight from "@material-ui/icons/ChevronRight"
 import Slide from "@material-ui/core/Slide"
-import { graphql } from "react-apollo"
-import gql from "graphql-tag"
 import VerifyEmailDialog from "./VerifyEmailDialog"
 
 const styles1 = theme => ({
@@ -139,13 +137,4 @@ class CustomizedSnackbars extends React.Component {
   }
 }
 
-export default graphql(
-  gql`
-    mutation ResendVerificationEmail {
-      resendVerificationEmail
-    }
-  `,
-  {
-    name: "ResendVerificationEmail",
-  }
-)(withStyles(styles2)(CustomizedSnackbars))
+export default withStyles(styles2)(CustomizedSnackbars)
