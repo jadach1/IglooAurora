@@ -983,9 +983,13 @@ class Login extends Component {
                       disabled={this.state.showLoading}
                       component={Link}
                       to={
-                        querystringify.parse(
-                          "?" + window.location.href.split("?")[1]
-                        ).from
+                        JSON.parse(localStorage.getItem("accountList")).find(
+                          account => account.email === this.props.email
+                        )
+                          ? "/accounts"
+                          : querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).from
                           ? "/login?from=accounts"
                           : "/login"
                       }

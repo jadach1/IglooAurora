@@ -33,7 +33,7 @@ import Notifications from "@material-ui/icons/Notifications"
 import NotificationsOff from "@material-ui/icons/NotificationsOff"
 import SvgIcon from "@material-ui/core/SvgIcon"
 import Create from "@material-ui/icons/Create"
-import AcUnit from "@material-ui/icons/AcUnit"
+//import AcUnit from "@material-ui/icons/AcUnit"
 import Delete from "@material-ui/icons/Delete"
 
 class EnvironmentCard extends Component {
@@ -449,7 +449,7 @@ class EnvironmentCard extends Component {
               </MenuItem>
             </React.Fragment>
           )}
-          {this.props.environment.myRole === "OWNER" && (
+          {/* {this.props.environment.myRole === "OWNER" && (
             <MenuItem
               onClick={() => {
                 this.setState({ hibernateOpen: true })
@@ -461,7 +461,7 @@ class EnvironmentCard extends Component {
               </ListItemIcon>
               <ListItemText inset primary="Hibernate" disableTypography />
             </MenuItem>
-          )}
+          )} */}
           {(this.props.environment.myRole === "OWNER" ||
             this.props.environment.myRole === "ADMIN") && (
             <MenuItem
