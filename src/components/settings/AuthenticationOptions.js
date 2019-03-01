@@ -38,6 +38,8 @@ import { split } from "apollo-link"
 import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
 import Query from "react-apollo/Query"
+import Link from "@material-ui/core/Link"
+import Clear from "@material-ui/icons/Clear"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -437,7 +439,8 @@ class AuthenticationOptions extends React.Component {
         <ListItemIcon>
           <SvgIcon>
             <svg style={{ width: "24px", height: "24px" }} viewBox="0 0 24 24">
-            <path  d="M7,1A2,2 0 0,0 5,3V7H7V4H17V20H7V17H5V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3A2,2 0 0,0 17,1H7M6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C7.31,15 8.42,14.17 8.83,13H11V15H13V13H14V11H8.83C8.42,9.83 7.31,9 6,9M6,11A1,1 0 0,1 7,12A1,1 0 0,1 6,13A1,1 0 0,1 5,12A1,1 0 0,1 6,11Z" />    </svg>
+              <path d="M7,1A2,2 0 0,0 5,3V7H7V4H17V20H7V17H5V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3A2,2 0 0,0 17,1H7M6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C7.31,15 8.42,14.17 8.83,13H11V15H13V13H14V11H8.83C8.42,9.83 7.31,9 6,9M6,11A1,1 0 0,1 7,12A1,1 0 0,1 6,13A1,1 0 0,1 5,12A1,1 0 0,1 6,11Z" />{" "}
+            </svg>
           </SvgIcon>
         </ListItemIcon>
         <ListItemText
@@ -625,7 +628,9 @@ class AuthenticationOptions extends React.Component {
         </Dialog>
         <Dialog
           open={
-            this.state.selectAuthTypeOpen && !this.state.newPasswordDialogOpen
+            this.state.selectAuthTypeOpen &&
+            !this.state.newPasswordDialogOpen &&
+            !this.state.configureTotpOpen
           }
           onClose={() => {
             this.setState({ selectAuthTypeOpen: false })
@@ -932,6 +937,98 @@ class AuthenticationOptions extends React.Component {
             </Button>
           </DialogActions>
         </Dialog>
+        <Dialog
+          open={this.state.configureTotpOpen}
+          onClose={() => this.props.close()}
+          className="notSelectable"
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle>Configure one-time password</DialogTitle>
+          <div
+            style={{
+              paddingLeft: "24px",
+              paddingRight: "24px",
+              height: "100%",
+            }}
+          >
+            <div style={{ marginBottom: "24px" }}>
+              Scan this QR code with an application such as{" "}
+              <Link style={{ cursor: "pointer" }}>1Password</Link>,{" "}
+              <Link style={{ cursor: "pointer" }}>Authy</Link>, or{" "}
+              <Link style={{ cursor: "pointer" }}>LastPass Authenticator</Link>
+            </div>
+            <div style={{ marginBottom: "24px" }}>
+              Unable to scan this code? Use this one instead:{" "}
+              <b>aaaa-bbbb-cccc-dddd</b>
+            </div>
+            <TextField
+              id="totp-code"
+              label="Six-digit code"
+              value={this.state.code}
+              variant="outlined"
+              error={this.state.codeEmpty || this.state.codeError}
+              helperText={
+                this.state.codeEmpty
+                  ? "This field is required"
+                  : this.state.codeError
+                  ? this.state.codeError
+                  : " "
+              }
+              onChange={event =>
+                this.setState({
+                  code: event.target.value,
+                  codeEmpty: event.target.value === "",
+                })
+              }
+              onKeyPress={event => {
+                if (event.key === "Enter" && !this.state.codeEmpty)
+                  this.setState({ manualCodeOpen: false })
+              }}
+              style={{
+                width: "100%",
+              }}
+              InputLabelProps={this.state.cpde && { shrink: true }}
+              InputProps={{
+                endAdornment: this.state.code && (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() =>
+                        this.setState({ code: "", codeEmpty: true })
+                      }
+                      tabIndex="-1"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "rgba(0, 0, 0, 0.46)" }
+                          : { color: "rgba(0, 0, 0, 0.46)" }
+                      }
+                    >
+                      <Clear />
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </div>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                this.setState({ configureTotpOpen: false })
+              }}
+            >
+              Never mind
+            </Button>
+            <Button variant="contained" color="primary">
+              Confirm code
+            </Button>
+          </DialogActions>
+        </Dialog>
         <Menu
           id="authentication-menu-target"
           anchorEl={this.state.anchorEl}
@@ -958,9 +1055,16 @@ class AuthenticationOptions extends React.Component {
                       password: "",
                       showPassword: false,
                     })
-                : () => {
+                : this.state.menuTarget === "WEBAUTHN"
+                ? () => {
                     this.enableWebAuthn()
                     this.setState({
+                      anchorEl: false,
+                    })
+                  }
+                : () => {
+                    this.setState({
+                      configureTotpOpen: true,
                       anchorEl: false,
                     })
                   }

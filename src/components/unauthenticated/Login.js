@@ -1605,7 +1605,7 @@ class Login extends Component {
                   style={
                     this.props.mobile
                       ? {}
-                      : this.state.user && JSON.stringify(this.state.user.primaryAuthenticationMethods) !== '["WEBAUTHN"]'
+                      : this.state.user && JSON.stringify(this.state.user.secondaryAuthenticationMethods) !== '["WEBAUTHN"]'
                       ? { height: "237px" }
                       : { height: "289px" }
                   }
