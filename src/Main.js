@@ -171,7 +171,7 @@ class Main extends Component {
           createdAt
           updatedAt
           starred
-          notificationCount
+          notificationCount(filter:{read:false})
           lastReadNotification: lastNotification(filter: { read: true }) {
             id
           }
@@ -232,7 +232,7 @@ class Main extends Component {
           createdAt
           updatedAt
           starred
-          notificationCount
+          notificationCount(filter:{read:false})
           lastReadNotification: lastNotification(filter: { read: true }) {
             id
           }
@@ -332,7 +332,7 @@ class Main extends Component {
           deviceType
           createdAt
           updatedAt
-          notificationCount
+          notificationCount(filter:{read:false})
           environment {
             id
           }
@@ -719,7 +719,7 @@ export default graphql(
                 createdAt
                 updatedAt
                 starred
-                notificationCount
+                notificationCount(filter:{read:false})
                 lastReadNotification: lastNotification(filter: { read: true }) {
                   id
                 }
@@ -748,7 +748,7 @@ export default graphql(
                 createdAt
                 updatedAt
                 starred
-                notificationCount
+                notificationCount(filter:{read:false})
                 lastReadNotification: lastNotification(filter: { read: true }) {
                   id
                 }
@@ -785,7 +785,7 @@ export default graphql(
                 createdAt
                 updatedAt
                 starred
-                notificationCount
+                notificationCount(filter:{read:false})
                 lastReadNotification: lastNotification(filter: { read: true }) {
                   id
                 }
@@ -814,7 +814,7 @@ export default graphql(
                 createdAt
                 updatedAt
                 starred
-                notificationCount
+                notificationCount(filter:{read:false})
                 lastReadNotification: lastNotification(filter: { read: true }) {
                   id
                 }
@@ -847,7 +847,7 @@ export default graphql(
               createdAt
               updatedAt
               starred
-              notificationCount
+              notificationCount(filter:{read:false})
               lastReadNotification: lastNotification(filter: { read: true }) {
                 id
               }

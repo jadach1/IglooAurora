@@ -437,8 +437,7 @@ class AuthenticationOptions extends React.Component {
         <ListItemIcon>
           <SvgIcon>
             <svg style={{ width: "24px", height: "24px" }} viewBox="0 0 24 24">
-              <path d="M17,19H7V5H17M17,1H7C5.89,1 5,1.89 5,3V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3C19,1.89 18.1,1 17,1Z" />
-            </svg>
+            <path  d="M7,1A2,2 0 0,0 5,3V7H7V4H17V20H7V17H5V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3A2,2 0 0,0 17,1H7M6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C7.31,15 8.42,14.17 8.83,13H11V15H13V13H14V11H8.83C8.42,9.83 7.31,9 6,9M6,11A1,1 0 0,1 7,12A1,1 0 0,1 6,13A1,1 0 0,1 5,12A1,1 0 0,1 6,11Z" />    </svg>
           </SvgIcon>
         </ListItemIcon>
         <ListItemText
@@ -451,7 +450,7 @@ class AuthenticationOptions extends React.Component {
                   : {}
               }
             >
-              SMS code
+              One-time password
             </font>
           }
         />
@@ -626,8 +625,7 @@ class AuthenticationOptions extends React.Component {
         </Dialog>
         <Dialog
           open={
-            (this.state.selectAuthTypeOpen &&
-              !this.state.newPasswordDialogOpen)
+            this.state.selectAuthTypeOpen && !this.state.newPasswordDialogOpen
           }
           onClose={() => {
             this.setState({ selectAuthTypeOpen: false })
@@ -1083,6 +1081,11 @@ class AuthenticationOptions extends React.Component {
                   secondaryAuthenticationMethods
                 )
               }}
+              disabled={
+                !user.emailIsVerified &&
+                !primaryAuthenticationMethods[1] &&
+                primaryAuthenticationMethods.includes(this.state.menuTarget)
+              }
             >
               <ListItemIcon>
                 <Close />

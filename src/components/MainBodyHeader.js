@@ -133,24 +133,24 @@ class MainBodyHeader extends Component {
     const deviceUpdatedSubscription = gql`
       subscription {
         deviceUpdated {
-           id
-              index
-              name
-              online
-              batteryStatus
-              batteryCharging
-              signalStatus
-              deviceType
-              firmware
-              createdAt
-              updatedAt
-              starred
-              notificationCount
-              notifications {
-                id
-                content
-                read
-              }
+          id
+          index
+          name
+          online
+          batteryStatus
+          batteryCharging
+          signalStatus
+          deviceType
+          firmware
+          createdAt
+          updatedAt
+          starred
+          notificationCount(filter: { read: false })
+          notifications {
+            id
+            content
+            read
+          }
         }
       }
     `
@@ -684,7 +684,7 @@ export default graphql(
             deviceType
             firmware
             starred
-            notificationCount
+            notificationCount(filter: { read: false })
             environment {
               id
             }

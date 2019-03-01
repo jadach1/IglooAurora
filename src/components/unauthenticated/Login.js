@@ -128,9 +128,6 @@ class Login extends Component {
       showLoading: false,
       redirect: false,
       counter: 0,
-      showPasswordScreen: !!querystringify.parse(
-        "?" + window.location.href.split("?")[1]
-      ).user,
     }
 
     this.signIn = this.signIn.bind(this)
@@ -153,78 +150,147 @@ class Login extends Component {
   }
 
   goToPassword = async () => {
-    try {
-      this.setState({ showEmailScreenLoading: true })
+    if (
+      JSON.parse(localStorage.getItem("accountList")).find(
+        account => account.email === this.props.email
+      ) &&
+      JSON.parse(localStorage.getItem("accountList")).find(
+        account => account.email === this.props.email
+      ).token
+    ) {
+      localStorage.setItem(
+        "userId",
+        JSON.parse(localStorage.getItem("accountList")).find(
+          account => account.email === this.props.email
+        ).id
+      )
+      this.props.changeBearer(
+        JSON.parse(localStorage.getItem("accountList")).find(
+          account => account.email === this.props.email
+        ).token)
+    } else
+      try {
+        this.setState({ showEmailScreenLoading: true })
 
-      const {
-        data: { user },
-      } = await this.props.client.query({
-        query: gql`
-          query($email: String) {
-            user(email: $email) {
-              id
-              email
-              profileIconColor
-              name
+        const {
+          data: { user },
+        } = await this.props.client.query({
+          query: gql`
+            query($email: String) {
+              user(email: $email) {
+                id
+                email
+                profileIconColor
+                name
+                primaryAuthenticationMethods
+                secondaryAuthenticationMethods
+              }
             }
+          `,
+          variables: {
+            email: this.props.email,
+          },
+        })
+
+        if (
+          JSON.parse(localStorage.getItem("accountList")).find(
+            account => account.id === user.id
+          )
+        ) {
+          let localStorageAccounts = JSON.parse(
+            localStorage.getItem("accountList")
+          )
+
+          if (localStorageAccounts.name !== user.name) {
+            localStorageAccounts.find(account => account.id === user.id).name =
+              user.name
+          }
+
+          if (localStorageAccounts.email !== user.email) {
+            localStorageAccounts.find(account => account.id === user.id).email =
+              user.email
+          }
+
+          if (localStorageAccounts.profileIconColor !== user.profileIconColor) {
+            localStorageAccounts.find(
+              account => account.id === user.id
+            ).profileIconColor = user.profileIconColor
+          }
+
+          localStorage.setItem(
+            "accountList",
+            JSON.stringify(localStorageAccounts)
+          )
+        }
+
+        this.setState({ redirectToPassword: true, user })
+      } catch (e) {
+        if (e.message === "GraphQL error: User not found") {
+          this.props.changeEmailError("This account doesn't exist")
+        } else {
+          this.props.changeEmailError("Unexpected error")
+        }
+      } finally {
+        this.setState({ showEmailScreenLoading: false })
+      }
+  }
+
+  async verifyPassword() {
+    try {
+      this.props.changePasswordError("")
+      this.props.changeEmailError("")
+      const verifyPasswordMutation = await this.props.client.mutate({
+        mutation: gql`
+          mutation($email: String!, $password: String!) {
+            verifyPassword(email: $email, password: $password)
           }
         `,
         variables: {
           email: this.props.email,
+          password: this.props.password,
         },
       })
 
+      this.setState({
+        passwordCertificate: verifyPasswordMutation.data.verifyPassword,
+      })
+
       if (
-        JSON.parse(localStorage.getItem("accountList")).find(
-          account => account.id === user.id
-        )
+        !this.state.user.secondaryAuthenticationMethods[0] ||
+        this.state.showSecondFactor
       ) {
-        let localStorageAccounts = JSON.parse(
-          localStorage.getItem("accountList")
-        )
-
-        if (localStorageAccounts.name !== user.name) {
-          localStorageAccounts.find(account => account.id === user.id).name =
-            user.name
-        }
-
-        if (localStorageAccounts.email !== user.email) {
-          localStorageAccounts.find(account => account.id === user.id).email =
-            user.email
-        }
-
-        if (localStorageAccounts.profileIconColor !== user.profileIconColor) {
-          localStorageAccounts.find(
-            account => account.id === user.id
-          ).profileIconColor = user.profileIconColor
-        }
-
-        localStorage.setItem(
-          "accountList",
-          JSON.stringify(localStorageAccounts)
-        )
+        this.signIn()
+      } else {
+        this.setState({ showSecondFactor: true, showLoading: false })
       }
-
-      this.setState({ redirectToPassword: true, user })
     } catch (e) {
-      if (e.message === "GraphQL error: User not found") {
+      this.setState({ showLoading: false })
+
+      if (e.message === "GraphQL error: Wrong password") {
+        this.props.changePasswordError("Wrong password")
+      } else if (
+        e.message ===
+        "GraphQL error: User doesn't exist. Use `signUp` to create one"
+      ) {
         this.props.changeEmailError("This account doesn't exist")
+        this.props.changeSignupEmail(this.props.email)
       } else {
         this.props.changeEmailError("Unexpected error")
       }
-    } finally {
-      this.setState({ showEmailScreenLoading: false })
     }
   }
 
-  async signIn() {
+  signIn = async () => {
     try {
       this.props.changePasswordError("")
       this.props.changeEmailError("")
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
-          mutation($email: String!, $password: String!) {
-            logIn(email: $email, password: $password) {
+          mutation($passwordCertificate: String, $webAuthnCertificate: String) {
+            logIn(
+              passwordCertificate: $passwordCertificate
+              webAuthnCertificate: $webAuthnCertificate
+            ) {
               token
               user {
                 id
@@ -236,8 +302,8 @@ class Login extends Component {
           }
         `,
         variables: {
-          email: this.props.email,
-          password: this.props.password,
+          passwordCertificate: this.state.passwordCertificate,
+          webAuthnCertificate: this.state.webAuthnCertificate,
         },
       })
 
@@ -311,21 +377,13 @@ class Login extends Component {
       payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
       payload.response.signature = ab2str(res.response.signature)
 
-      const loginMutation = await this.props.client.mutate({
+      const verifyWebAuthnMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($jwtChallenge: String!, $challengeResponse: String!) {
-            logInWithWebAuthn(
+            verifyWebAuthn(
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
-            ) {
-              token
-              user {
-                id
-                email
-                name
-                profileIconColor
-              }
-            }
+            )
           }
         `,
         variables: {
@@ -334,12 +392,18 @@ class Login extends Component {
         },
       })
 
-      this.props.signIn(
-        loginMutation.data.logInWithWebAuthn.token,
-        loginMutation.data.logInWithWebAuthn.user
-      )
+      this.setState({
+        webAuthnCertificate: verifyWebAuthnMutation.data.verifyWebAuthn,
+      })
 
-      this.props.changePassword("")
+      if (
+        !this.state.user.secondaryAuthenticationMethods[0] ||
+        this.state.showSecondFactor
+      ) {
+        this.signIn()
+      } else {
+        this.setState({ showSecondFactor: true, showLoading: false })
+      }
     }
 
     navigator.credentials
@@ -674,6 +738,359 @@ class Login extends Component {
                   )}
                 </div>
               </React.Fragment>
+            ) : !this.state.showSecondFactor ? (
+              <div>
+                <ListItem style={{ padding: "0", marginBottom: "24px" }}>
+                  <Avatar
+                    style={{
+                      background:
+                        (JSON.parse(localStorage.getItem("accountList")).find(
+                          user =>
+                            user.id ===
+                            querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).user
+                        ) &&
+                          JSON.parse(localStorage.getItem("accountList")).find(
+                            user =>
+                              user.id ===
+                              querystringify.parse(
+                                "?" + window.location.href.split("?")[1]
+                              ).user
+                          ).profileIconColor) ||
+                        this.state.user.profileIconColor,
+                    }}
+                  >
+                    {this.getInitials(
+                      (JSON.parse(localStorage.getItem("accountList")).find(
+                        user =>
+                          user.id ===
+                          querystringify.parse(
+                            "?" + window.location.href.split("?")[1]
+                          ).user
+                      ) &&
+                        JSON.parse(localStorage.getItem("accountList")).find(
+                          user =>
+                            user.id ===
+                            querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).user
+                        ).name) ||
+                        this.state.user.name
+                    )}
+                  </Avatar>
+                  <ListItemText
+                    primary={
+                      <font
+                        style={
+                          this.props.mobile
+                            ? { color: "white" }
+                            : { color: "black" }
+                        }
+                      >
+                        {(JSON.parse(localStorage.getItem("accountList")).find(
+                          user =>
+                            user.id ===
+                            querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).user
+                        ) &&
+                          JSON.parse(localStorage.getItem("accountList")).find(
+                            user =>
+                              user.id ===
+                              querystringify.parse(
+                                "?" + window.location.href.split("?")[1]
+                              ).user
+                          ).name) ||
+                          this.state.user.name}
+                      </font>
+                    }
+                    secondary={
+                      <font
+                        style={
+                          this.props.mobile
+                            ? { color: "white", opacity: 0.72 }
+                            : { color: "black", opacity: 0.72 }
+                        }
+                      >
+                        {(JSON.parse(localStorage.getItem("accountList")).find(
+                          user =>
+                            user.id ===
+                            querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).user
+                        ) &&
+                          JSON.parse(localStorage.getItem("accountList")).find(
+                            user =>
+                              user.id ===
+                              querystringify.parse(
+                                "?" + window.location.href.split("?")[1]
+                              ).user
+                          ).email) ||
+                          this.state.user.email}
+                      </font>
+                    }
+                  />
+                </ListItem>
+                <div
+                  style={
+                    this.props.mobile
+                      ? {}
+                      : this.state.user &&
+                        (this.state.user.primaryAuthenticationMethods.includes(
+                          "PASSWORD"
+                        ) ||
+                          this.state.user.primaryAuthenticationMethods.includes(
+                            "TOTP"
+                          ))
+                      ? { height: "237px" }
+                      : { height: "289px" }
+                  }
+                >
+                  {this.state.user &&
+                    this.state.user.primaryAuthenticationMethods.includes(
+                      "PASSWORD"
+                    ) && (
+                      <TextField
+                        variant="outlined"
+                        id="desktop-password-login"
+                        type={this.state.showPassword ? "text" : "password"}
+                        value={this.props.password}
+                        label="Password"
+                        style={{
+                          color: "black",
+                          width: "100%",
+                          marginBottom: "16px",
+                        }}
+                        onChange={event => {
+                          this.props.changePassword(event.target.value)
+                          this.props.changePasswordError("")
+                          this.setState({
+                            isPasswordEmpty: event.target.value === "",
+                          })
+                        }}
+                        error={
+                          this.props.passwordError || this.state.isPasswordEmpty
+                            ? true
+                            : false
+                        }
+                        onKeyPress={event => {
+                          if (event.key === "Enter") {
+                            if (
+                              isemail.validate(this.props.email, {
+                                errorLevel: true,
+                              }) === 0 &&
+                              this.props.password
+                            ) {
+                              this.verifyPassword()
+                              this.setState({ showLoading: true })
+                            }
+                          }
+                        }}
+                        helperText={
+                          (this.state.isPasswordEmpty
+                            ? "This field is required"
+                            : this.props.passwordError) || " "
+                        }
+                        InputLabelProps={this.state.name && { shrink: true }}
+                        InputProps={{
+                          endAdornment: this.props.password ? (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() =>
+                                  this.setState({
+                                    showPassword: !this.state.showPassword,
+                                  })
+                                }
+                                onMouseDown={this.handleMouseDownPassword}
+                                tabIndex="-1"
+                                style={{ color: "black" }}
+                              >
+                                {/* fix for ToggleIcon glitch on Edge */}
+                                {document.documentMode ||
+                                /Edge/.test(navigator.userAgent) ? (
+                                  this.state.showPassword ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )
+                                ) : (
+                                  <ToggleIcon
+                                    on={this.state.showPassword || false}
+                                    onIcon={<VisibilityOff />}
+                                    offIcon={<Visibility />}
+                                  />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ) : null,
+                        }}
+                      />
+                    )}
+                  {this.state.user &&
+                    this.state.user.primaryAuthenticationMethods.includes(
+                      "WEBAUTHN"
+                    ) &&
+                    navigator.credentials && (
+                      <IconButton
+                        onClick={this.signInWebauthn}
+                        disabled={
+                          isemail.validate(this.props.email, {
+                            errorLevel: true,
+                          }) !== 0 || this.state.showLoading
+                        }
+                        style={
+                          isemail.validate(this.props.email, {
+                            errorLevel: true,
+                          }) === 0 && !this.state.showLoading
+                            ? this.props.mobile
+                              ? { color: "white" }
+                              : { color: "black" }
+                            : this.props.mobile
+                            ? {
+                                color: "white",
+                                opacity: 0.54,
+                              }
+                            : {
+                                color: "black",
+                                opacity: 0.54,
+                              }
+                        }
+                      >
+                        <Fingerprint
+                          style={
+                            this.props.email
+                              ? this.props.mobile
+                                ? { height: "48px", width: "48px" }
+                                : { height: "48px", width: "48px" }
+                              : this.props.mobile
+                              ? {
+                                  height: "48px",
+                                  width: "48px",
+                                }
+                              : {
+                                  height: "48px",
+                                  width: "48px",
+                                  color: "black",
+                                  opacity: 0.54,
+                                }
+                          }
+                        />
+                      </IconButton>
+                    )}
+                </div>
+                <div style={{ textAlign: "right" }}>
+                  <MUILink
+                    component="button"
+                    variant="subtitle1"
+                    style={
+                      this.props.mobile
+                        ? { color: "white" }
+                        : {
+                            color: "#0083ff",
+                          }
+                    }
+                    onClick={() => {
+                      this.setState({ forgotPasswordOpen: true })
+                    }}
+                  >
+                    Forgot password?
+                  </MUILink>
+                  <MuiThemeProvider
+                    theme={
+                      this.props.mobile
+                        ? createMuiTheme({
+                            palette: {
+                              primary: { main: "#fff" },
+                            },
+                          })
+                        : ""
+                    }
+                  >
+                    <Button
+                      variant={this.props.mobile ? "outlined" : "contained"}
+                      primary={true}
+                      fullWidth={true}
+                      onClick={() => {
+                        this.setState({ showLoading: true })
+                        this.verifyPassword()
+                      }}
+                      style={{ margin: "8px 0" }}
+                      color="primary"
+                      disabled={
+                        !(
+                          isemail.validate(this.props.email, {
+                            errorLevel: true,
+                          }) === 0 && this.props.password
+                        ) || this.state.showLoading
+                      }
+                    >
+                      {this.state.user &&
+                      this.state.user.secondaryAuthenticationMethods[0]
+                        ? "Next"
+                        : "Log in"}
+                      {this.state.showLoading && (
+                        <MuiThemeProvider
+                          theme={createMuiTheme(
+                            this.props.mobile
+                              ? {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#fff" },
+                                    },
+                                  },
+                                }
+                              : {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#0083ff" },
+                                    },
+                                  },
+                                }
+                          )}
+                        >
+                          <CenteredSpinner isInButton />
+                        </MuiThemeProvider>
+                      )}
+                    </Button>
+                  </MuiThemeProvider>
+                  <MuiThemeProvider
+                    theme={createMuiTheme(
+                      this.props.mobile
+                        ? {
+                            palette: {
+                              primary: { main: "#fff" },
+                            },
+                          }
+                        : {
+                            palette: {
+                              primary: { main: "#0083ff" },
+                            },
+                          }
+                    )}
+                  >
+                    <Button
+                      fullWidth={true}
+                      color="primary"
+                      disabled={this.state.showLoading}
+                      component={Link}
+                      to={
+                        querystringify.parse(
+                          "?" + window.location.href.split("?")[1]
+                        ).from === "accountList"
+                          ? "/accounts"
+                          : querystringify.parse(
+                              "?" + window.location.href.split("?")[1]
+                            ).from === "accounts"
+                          ? "/login?from=accounts"
+                          : "/login"
+                      }
+                    >
+                      Go back
+                    </Button>
+                  </MuiThemeProvider>
+                </div>
+              </div>
             ) : (
               <div>
                 <ListItem style={{ padding: "0", marginBottom: "24px" }}>
@@ -768,128 +1185,153 @@ class Login extends Component {
                     }
                   />
                 </ListItem>
-                <TextField
-                  variant="outlined"
-                  id="desktop-password-login"
-                  type={this.state.showPassword ? "text" : "password"}
-                  value={this.props.password}
-                  label="Password"
-                  style={{
-                    color: "black",
-                    width: "100%",
-                    marginBottom: "16px",
-                  }}
-                  onChange={event => {
-                    this.props.changePassword(event.target.value)
-                    this.props.changePasswordError("")
-                    this.setState({
-                      isPasswordEmpty: event.target.value === "",
-                    })
-                  }}
-                  error={
-                    this.props.passwordError || this.state.isPasswordEmpty
-                      ? true
-                      : false
+                <div
+                  style={
+                    this.props.mobile
+                      ? {}
+                      : this.state.user &&
+                        (this.state.user.secondaryAuthenticationMethods.includes(
+                          "PASSWORD"
+                        ) ||
+                          this.state.user.secondaryAuthenticationMethods.includes(
+                            "TOTP"
+                          ))
+                      ? { height: "237px" }
+                      : { height: "289px" }
                   }
-                  onKeyPress={event => {
-                    if (event.key === "Enter") {
-                      if (
-                        isemail.validate(this.props.email, {
-                          errorLevel: true,
-                        }) === 0 &&
-                        this.props.password
-                      ) {
-                        this.signIn()
-                        this.setState({ showLoading: true })
-                      }
-                    }
-                  }}
-                  helperText={
-                    (this.state.isPasswordEmpty
-                      ? "This field is required"
-                      : this.props.passwordError) || " "
-                  }
-                  InputLabelProps={this.state.name && { shrink: true }}
-                  InputProps={{
-                    endAdornment: this.props.password ? (
-                      <InputAdornment position="end">
-                        <IconButton
-                          onClick={() =>
-                            this.setState({
-                              showPassword: !this.state.showPassword,
-                            })
-                          }
-                          onMouseDown={this.handleMouseDownPassword}
-                          tabIndex="-1"
-                          style={{ color: "black" }}
-                        >
-                          {/* fix for ToggleIcon glitch on Edge */}
-                          {document.documentMode ||
-                          /Edge/.test(navigator.userAgent) ? (
-                            this.state.showPassword ? (
-                              <VisibilityOff />
-                            ) : (
-                              <Visibility />
-                            )
-                          ) : (
-                            <ToggleIcon
-                              on={this.state.showPassword || false}
-                              onIcon={<VisibilityOff />}
-                              offIcon={<Visibility />}
-                            />
-                          )}
-                        </IconButton>
-                      </InputAdornment>
-                    ) : null,
-                  }}
-                />
-                {navigator.credentials && (
-                  <IconButton
-                    onClick={this.signInWebauthn}
-                    disabled={
-                      isemail.validate(this.props.email, {
-                        errorLevel: true,
-                      }) !== 0 || this.state.showLoading
-                    }
-                    style={
-                      isemail.validate(this.props.email, {
-                        errorLevel: true,
-                      }) === 0 && !this.state.showLoading
-                        ? this.props.mobile
-                          ? { color: "white" }
-                          : { color: "black" }
-                        : this.props.mobile
-                        ? {
-                            color: "white",
-                            opacity: 0.54,
-                          }
-                        : {
-                            color: "black",
-                            opacity: 0.54,
-                          }
-                    }
-                  >
-                    <Fingerprint
-                      style={
-                        this.props.email
-                          ? this.props.mobile
-                            ? { height: "48px", width: "48px" }
-                            : { height: "48px", width: "48px" }
-                          : this.props.mobile
-                          ? {
-                              height: "48px",
-                              width: "48px",
+                >
+                  {this.state.user &&
+                    this.state.user.secondaryAuthenticationMethods.includes(
+                      "PASSWORD"
+                    ) && (
+                      <TextField
+                        variant="outlined"
+                        id="desktop-password-login"
+                        type={this.state.showPassword ? "text" : "password"}
+                        value={this.props.password}
+                        label="Password"
+                        style={{
+                          color: "black",
+                          width: "100%",
+                          marginBottom: "16px",
+                        }}
+                        onChange={event => {
+                          this.props.changePassword(event.target.value)
+                          this.props.changePasswordError("")
+                          this.setState({
+                            isPasswordEmpty: event.target.value === "",
+                          })
+                        }}
+                        error={
+                          this.props.passwordError || this.state.isPasswordEmpty
+                            ? true
+                            : false
+                        }
+                        onKeyPress={event => {
+                          if (event.key === "Enter") {
+                            if (
+                              isemail.validate(this.props.email, {
+                                errorLevel: true,
+                              }) === 0 &&
+                              this.props.password
+                            ) {
+                              this.verifyPassword()
+                              this.setState({ showSecondFactorLoading: true })
                             }
-                          : {
-                              height: "48px",
-                              width: "48px",
-                              color: "black",
-                              opacity: 0.54,
-                            }
-                      }
-                    />
-                  </IconButton>
-                )}
+                          }
+                        }}
+                        helperText={
+                          (this.state.isPasswordEmpty
+                            ? "This field is required"
+                            : this.props.passwordError) || " "
+                        }
+                        InputLabelProps={this.state.name && { shrink: true }}
+                        InputProps={{
+                          endAdornment: this.props.password ? (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() =>
+                                  this.setState({
+                                    showPassword: !this.state.showPassword,
+                                  })
+                                }
+                                onMouseDown={this.handleMouseDownPassword}
+                                tabIndex="-1"
+                                style={{ color: "black" }}
+                              >
+                                {/* fix for ToggleIcon glitch on Edge */}
+                                {document.documentMode ||
+                                /Edge/.test(navigator.userAgent) ? (
+                                  this.state.showPassword ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                    <Visibility />
+                                  )
+                                ) : (
+                                  <ToggleIcon
+                                    on={this.state.showPassword || false}
+                                    onIcon={<VisibilityOff />}
+                                    offIcon={<Visibility />}
+                                  />
+                                )}
+                              </IconButton>
+                            </InputAdornment>
+                          ) : null,
+                        }}
+                      />
+                    )}
+                  {this.state.user &&
+                    this.state.user.secondaryAuthenticationMethods.includes(
+                      "WEBAUTHN"
+                    ) &&
+                    navigator.credentials && (
+                      <IconButton
+                        onClick={this.signInWebauthn}
+                        disabled={
+                          isemail.validate(this.props.email, {
+                            errorLevel: true,
+                          }) !== 0 || this.state.showSecondFactorLoading
+                        }
+                        style={
+                          isemail.validate(this.props.email, {
+                            errorLevel: true,
+                          }) === 0 && !this.state.showSecondFactorLoading
+                            ? this.props.mobile
+                              ? { color: "white" }
+                              : { color: "black" }
+                            : this.props.mobile
+                            ? {
+                                color: "white",
+                                opacity: 0.54,
+                              }
+                            : {
+                                color: "black",
+                                opacity: 0.54,
+                              }
+                        }
+                      >
+                        <Fingerprint
+                          style={
+                            this.props.email
+                              ? this.props.mobile
+                                ? { height: "48px", width: "48px" }
+                                : { height: "48px", width: "48px" }
+                              : this.props.mobile
+                              ? {
+                                  height: "48px",
+                                  width: "48px",
+                                }
+                              : {
+                                  height: "48px",
+                                  width: "48px",
+                                  color: "black",
+                                  opacity: 0.54,
+                                }
+                          }
+                        />
+                      </IconButton>
+                    )}
+                </div>
                 <div style={{ textAlign: "right" }}>
                   <MUILink
                     component="button"
@@ -907,61 +1349,69 @@ class Login extends Component {
                   >
                     Forgot password?
                   </MUILink>
-                  <MuiThemeProvider
-                    theme={
-                      this.props.mobile
-                        ? createMuiTheme({
-                            palette: {
-                              primary: { main: "#fff" },
-                            },
-                          })
-                        : ""
-                    }
-                  >
-                    <Button
-                      variant={this.props.mobile ? "outlined" : "contained"}
-                      primary={true}
-                      fullWidth={true}
-                      onClick={() => {
-                        this.setState({ showLoading: true })
-                        this.signIn()
-                      }}
-                      style={{ margin: "8px 0" }}
-                      color="primary"
-                      disabled={
-                        !(
-                          isemail.validate(this.props.email, {
-                            errorLevel: true,
-                          }) === 0 && this.props.password
-                        ) || this.state.showLoading
-                      }
-                    >
-                      Log in
-                      {this.state.showLoading && (
-                        <MuiThemeProvider
-                          theme={createMuiTheme(
-                            this.props.mobile
-                              ? {
-                                  overrides: {
-                                    MuiCircularProgress: {
-                                      colorPrimary: { color: "#fff" },
-                                    },
-                                  },
-                                }
-                              : {
-                                  overrides: {
-                                    MuiCircularProgress: {
-                                      colorPrimary: { color: "#0083ff" },
-                                    },
-                                  },
-                                }
-                          )}
+                  {this.state.user &&
+                    (this.state.user.secondaryAuthenticationMethods.includes(
+                      "PASSWORD"
+                    ) ||
+                      this.state.user.secondaryAuthenticationMethods.includes(
+                        "TOTP"
+                      )) && (
+                      <MuiThemeProvider
+                        theme={
+                          this.props.mobile
+                            ? createMuiTheme({
+                                palette: {
+                                  primary: { main: "#fff" },
+                                },
+                              })
+                            : ""
+                        }
+                      >
+                        <Button
+                          variant={this.props.mobile ? "outlined" : "contained"}
+                          primary={true}
+                          fullWidth={true}
+                          onClick={() => {
+                            this.setState({ showSecondFactorLoading: true })
+                            this.verifyPassword()
+                          }}
+                          style={{ margin: "8px 0" }}
+                          color="primary"
+                          disabled={
+                            !(
+                              isemail.validate(this.props.email, {
+                                errorLevel: true,
+                              }) === 0 && this.props.password
+                            ) || this.state.showSecondFactorLoading
+                          }
                         >
-                          <CenteredSpinner isInButton />
-                        </MuiThemeProvider>
-                      )}
-                    </Button>
-                  </MuiThemeProvider>
+                          Log in
+                          {this.state.showSecondFactorLoading && (
+                            <MuiThemeProvider
+                              theme={createMuiTheme(
+                                this.props.mobile
+                                  ? {
+                                      overrides: {
+                                        MuiCircularProgress: {
+                                          colorPrimary: { color: "#fff" },
+                                        },
+                                      },
+                                    }
+                                  : {
+                                      overrides: {
+                                        MuiCircularProgress: {
+                                          colorPrimary: { color: "#0083ff" },
+                                        },
+                                      },
+                                    }
+                              )}
+                            >
+                              <CenteredSpinner isInButton />
+                            </MuiThemeProvider>
+                          )}
+                        </Button>
+                      </MuiThemeProvider>
+                    )}
                   <MuiThemeProvider
                     theme={createMuiTheme(
                       this.props.mobile
@@ -980,19 +1430,8 @@ class Login extends Component {
                     <Button
                       fullWidth={true}
                       color="primary"
-                      disabled={this.state.showLoading}
-                      component={Link}
-                      to={
-                        JSON.parse(localStorage.getItem("accountList")).find(
-                          account => account.email === this.props.email
-                        )
-                          ? "/accounts"
-                          : querystringify.parse(
-                              "?" + window.location.href.split("?")[1]
-                            ).from
-                          ? "/login?from=accounts"
-                          : "/login"
-                      }
+                      disabled={this.state.showSecondFactorLoading}
+                      onClick={() => this.setState({ showSecondFactor: false })}
                     >
                       Go back
                     </Button>

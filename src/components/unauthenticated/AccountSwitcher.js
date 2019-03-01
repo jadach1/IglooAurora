@@ -216,7 +216,7 @@ export default class AccountSwitcher extends Component {
                     to={
                       account.token
                         ? "/?user=" + account.id
-                        : "/login?from=accounts&user=" + account.id
+                        : "/login?from=accountList&user=" + account.id
                     }
                   >
                     <Avatar

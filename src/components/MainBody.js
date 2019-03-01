@@ -32,7 +32,7 @@ class MainBody extends Component {
           createdAt
           updatedAt
           starred
-          notificationCount
+          notificationCount(filter: { read: false })
           notifications {
             id
             content
@@ -207,9 +207,7 @@ class MainBody extends Component {
     let content = ""
 
     if (loading) {
-      content = (
-            <CenteredSpinner large style={{paddingTop:"96px"}}/>
-      )
+      content = <CenteredSpinner large style={{ paddingTop: "96px" }} />
     }
 
     if (error) {

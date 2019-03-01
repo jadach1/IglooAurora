@@ -88,6 +88,8 @@ export default class UnAuthenticatedMain extends Component {
                     openChangeServer={() =>
                       this.setState({ changeServerOpen: true })
                     }
+                    forceUpdate={() => this.props.forceUpdate()}
+                    changeBearer={this.props.changeBearer}
                   />
                 ) : this.props.isAccountSwitcher ? (
                   <AccountSwitcher
@@ -176,6 +178,7 @@ export default class UnAuthenticatedMain extends Component {
                     emailError={this.props.emailError}
                     changeEmailError={this.props.changeEmailError}
                     changeSignupEmail={this.props.changeSignupEmail}
+                    changeBearer={this.props.changeBearer}
                   />
                 ) : this.props.isAccountSwitcher ? (
                   <AccountSwitcher

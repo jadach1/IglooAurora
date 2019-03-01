@@ -87,7 +87,7 @@ export default class AccountPopover extends React.Component {
                           this.props.changeBearer(account.token)
                         }
                       : () => {
-                          this.props.changeAccount(account.email, true)
+                          this.props.changeAccount(account.id, true)
                           localStorage.setItem("userId", "")
                         })
                   }

@@ -610,11 +610,11 @@ class App extends Component {
       })
     }
 
-    const changeAccount = (loginEmail, redirect) => {
+    const changeAccount = (userId, redirect) => {
       this.setState({
         bearer: "",
         loggedOut: true,
-        loginEmail,
+        userId,
         redirect,
         signupEmail: "",
       })
@@ -743,6 +743,7 @@ class App extends Component {
                       this.setState({ signupEmail })
                     }
                     forceUpdate={() => this.forceUpdate()}
+                    changeBearer={bearer => this.setState({ bearer })}
                   />
                 )
               }
@@ -775,6 +776,7 @@ class App extends Component {
                       this.setState({ signupEmail })
                     }
                     forceUpdate={() => this.forceUpdate()}
+                    changeBearer={bearer => this.setState({ bearer })}
                   />
                 )
               }
@@ -809,6 +811,7 @@ class App extends Component {
                       this.setState({ loginEmail })
                     }
                     forceUpdate={() => this.forceUpdate()}
+                    changeBearer={bearer => this.setState({ bearer })}
                   />
                 )
               }
@@ -842,6 +845,7 @@ class App extends Component {
                       this.setState({ loginEmail })
                     }
                     forceUpdate={() => this.forceUpdate()}
+                    changeBearer={bearer => this.setState({ bearer })}
                   />
                 )
               }
@@ -856,7 +860,7 @@ class App extends Component {
         <Offline>
           <OfflineScreen isMobile={this.state.isMobile} />
         </Offline>
-        {this.state.redirect && <Redirect push to="/login?from=accounts" />}
+        {this.state.redirect && <Redirect push to={"/login?from=accounts&user="+this.state.userId} />}
       </MuiThemeProvider>
     )
   }
