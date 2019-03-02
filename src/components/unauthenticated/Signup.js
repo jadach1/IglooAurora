@@ -162,8 +162,13 @@ const veryStrong = createMuiTheme({
 })
 
 export default class Signup extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    
+    super(props)
+
+    // reset the email and password signup fields whenever the page loads
+    this.props.changeEmail("")
+    this.props.changeName("")
 
     this.state = {
       passwordScore: null,

@@ -525,6 +525,7 @@ class App extends Component {
     console.log(
       "Hello! If you're reading this, you've probably got some experience with web development, so why don't you contribute to our open source repository?\nhttps://github.com/IglooCloud/IglooAurora"
     )
+    console.log("hey jacob you arfe inside app")
   }
 
   componentWillUnmount() {
@@ -752,8 +753,10 @@ class App extends Component {
               render={() =>
                 this.state.bearer ? (
                   <Redirect to="/" />
-                ) : (
+                ) :  (
+                 
                   <UnauthenticatedMain
+                   
                     isLogin
                     mobile={this.state.isMobile}
                     signIn={signIn}
