@@ -1117,7 +1117,26 @@ class Login extends Component {
                   variables={{ email: this.props.email }}
                 >
                   {({ loading, error, data }) => {
-                    if (loading) return <CenteredSpinner />
+                    if (loading) return                       <MuiThemeProvider
+                        theme={createMuiTheme(
+                          this.props.mobile
+                            ? {
+                                overrides: {
+                                  MuiCircularProgress: {
+                                    colorPrimary: { color: "#fff" },
+                                  },
+                                },
+                              }
+                            : {
+                                overrides: {
+                                  MuiCircularProgress: {
+                                    colorPrimary: { color: "#0083ff" },
+                                  },
+                                },
+                              }
+                        )}
+                      ><CenteredSpinner /></MuiThemeProvider>
+
                     if (error) return "Unexpected error"
 
                     if (data) {
@@ -1690,6 +1709,59 @@ class Login extends Component {
                         }}
                       />
                     )}
+                    {this.state.user &&
+                   this.state.user.secondaryAuthenticationMethods.includes(
+                     "TOTP"
+                   ) &&
+         <TextField
+         id="totp-code"
+         label="Authentication code"
+         value={this.state.code}
+         variant="outlined"
+         error={this.state.codeEmpty || this.state.codeError}
+         helperText={
+           this.state.codeEmpty
+             ? "This field is required"
+             : this.state.codeError
+             ? this.state.codeError
+             : " "
+         }
+         onChange={event =>
+           this.setState({
+             code: event.target.value,
+             codeEmpty: event.target.value === "",
+           })
+         }
+         onKeyPress={event => {
+           if (event.key === "Enter" && !this.state.codeEmpty)
+             this.setState({ manualCodeOpen: false })
+         }}
+         style={{
+           width: "100%",
+         }}
+         InputLabelProps={this.state.cpde && { shrink: true }}
+         InputProps={{
+           endAdornment: this.state.code && (
+             <InputAdornment position="end">
+               <IconButton
+                 onClick={() =>
+                   this.setState({ code: "", codeEmpty: true })
+                 }
+                 tabIndex="-1"
+                 style={
+                   typeof Storage !== "undefined" &&
+                   localStorage.getItem("nightMode") === "true"
+                     ? { color: "rgba(0, 0, 0, 0.46)" }
+                     : { color: "rgba(0, 0, 0, 0.46)" }
+                 }
+               >
+                 <Clear />
+               </IconButton>
+             </InputAdornment>
+           ),
+         }}
+       />
+                    }
                   {this.state.user &&
                     this.state.user.secondaryAuthenticationMethods.includes(
                       "WEBAUTHN"

@@ -949,7 +949,30 @@ class AuthenticationOptions extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle>Configure one-time password</DialogTitle>
+          <DialogTitle
+            style={
+              this.props.fullScreen
+                ? typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
+                  : { width: "calc(100% - 48px)", background: "#fff" }
+                : typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                ? { background: "#2f333d" }
+                : { background: "#fff" }
+            }
+          >
+            <font
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "#fff" }
+                  : {}
+              }
+            >
+              Configure one-time password
+            </font>
+          </DialogTitle>
           <div
             style={{
               paddingLeft: "24px",
@@ -1024,8 +1047,13 @@ class AuthenticationOptions extends React.Component {
             >
               Never mind
             </Button>
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              color="primary"
+              disabled={!this.state.code || this.state.showTotpLoading}
+            >
               Confirm code
+              {this.state.showTotpLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>
         </Dialog>
