@@ -4,7 +4,6 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import Button from "@material-ui/core/Button"
 import Typography from "@material-ui/core/Typography"
 import IconButton from "@material-ui/core/IconButton"
-import ForgotPassword from "./ForgotPassword"
 import ToggleIcon from "material-ui-toggle-icon"
 import CenteredSpinner from "../CenteredSpinner"
 import { Link, Redirect } from "react-router-dom"
@@ -123,7 +122,6 @@ class Login extends Component {
 
     this.state = {
       recoveryError: "",
-      forgotPasswordOpen: false,
       isMailEmpty: false,
       isPasswordEmpty: false,
       showLoading: false,
@@ -485,26 +483,13 @@ class Login extends Component {
 
     if (this.state.redirect) {
       this.setState({ redirect: false })
-      return querystringify.parse("?" + window.location.href.split("?")[1])
-        .from ? (
-        <Redirect to="/login?from=accounts" />
-      ) : (
-        <Redirect to="/login" />
-      )
+      return <Redirect to="/login" />
     }
 
     if (this.state.redirectToPassword) {
       this.setState({ redirectToPassword: null })
 
-      return (
-        <Redirect
-          to={
-            querystringify.parse("?" + window.location.href.split("?")[1]).from
-              ? "/login?from=accounts&user=" + this.state.user.id
-              : "/login?user=" + this.state.user.id
-          }
-        />
-      )
+      return <Redirect to={"/login?user=" + this.state.user.id} />
     }
 
     return (
@@ -682,10 +667,7 @@ class Login extends Component {
                       )}
                     </Button>
                   </MuiThemeProvider>
-                  {querystringify.parse(
-                    "?" + window.location.href.split("?")[1]
-                  ).from === "accounts" &&
-                  JSON.parse(localStorage.getItem("accountList"))[0] ? (
+                  {JSON.parse(localStorage.getItem("accountList"))[0] ? (
                     <MuiThemeProvider
                       theme={createMuiTheme(
                         this.props.mobile
@@ -846,13 +828,16 @@ class Login extends Component {
                     />
                   </ListItem>
                   <div
-                  style={
-                    this.props.mobile
-                      ? {}
-                      : this.state.user && JSON.stringify(this.state.user.primaryAuthenticationMethods) !== '["WEBAUTHN"]'
-                      ? { height: "237px" }
-                      : { height: "289px" }
-                  }
+                    style={
+                      this.props.mobile
+                        ? {}
+                        : this.state.user &&
+                          JSON.stringify(
+                            this.state.user.primaryAuthenticationMethods
+                          ) !== '["WEBAUTHN"]'
+                        ? { height: "237px" }
+                        : { height: "289px" }
+                    }
                   >
                     {this.state.user &&
                       this.state.user.primaryAuthenticationMethods.includes(
@@ -988,23 +973,20 @@ class Login extends Component {
                       )}
                   </div>
                   <div style={{ textAlign: "right" }}>
-                    <MUILink
-                      component="button"
-                      variant="subtitle1"
-                      style={
-                        this.props.mobile
-                          ? { color: "white" }
-                          : {
-                              color: "#0083ff",
-                            }
-                      }
-                      onClick={() => {
-                        this.setState({ forgotPasswordOpen: true })
-                      }}
-                    >
-                      Forgot password?
-                    </MUILink>
-                    <MuiThemeProvider
+                      <MUILink
+                        component="button"
+                        variant="subtitle1"
+                        style={
+                          this.props.mobile
+                            ? { color: "white" }
+                            : {
+                                color: "#0083ff",
+                              }
+                        }
+                      >
+                        Can't log in?
+                      </MUILink>
+                                        <MuiThemeProvider
                       theme={
                         this.props.mobile
                           ? createMuiTheme({
@@ -1083,14 +1065,11 @@ class Login extends Component {
                         disabled={this.state.showLoading}
                         component={Link}
                         to={
-                          querystringify.parse(
-                            "?" + window.location.href.split("?")[1]
-                          ).from === "accountList"
+                          this.state.user &&
+                          JSON.parse(localStorage.getItem("accountList"))
+                            .map(account => account.id)
+                            .includes(this.state.user.id)
                             ? "/accounts"
-                            : querystringify.parse(
-                                "?" + window.location.href.split("?")[1]
-                              ).from === "accounts"
-                            ? "/login?from=accounts"
                             : "/login"
                         }
                       >
@@ -1117,25 +1096,30 @@ class Login extends Component {
                   variables={{ email: this.props.email }}
                 >
                   {({ loading, error, data }) => {
-                    if (loading) return                       <MuiThemeProvider
-                        theme={createMuiTheme(
-                          this.props.mobile
-                            ? {
-                                overrides: {
-                                  MuiCircularProgress: {
-                                    colorPrimary: { color: "#fff" },
+                    if (loading)
+                      return (
+                        <MuiThemeProvider
+                          theme={createMuiTheme(
+                            this.props.mobile
+                              ? {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#fff" },
+                                    },
                                   },
-                                },
-                              }
-                            : {
-                                overrides: {
-                                  MuiCircularProgress: {
-                                    colorPrimary: { color: "#0083ff" },
+                                }
+                              : {
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#0083ff" },
+                                    },
                                   },
-                                },
-                              }
-                        )}
-                      ><CenteredSpinner /></MuiThemeProvider>
+                                }
+                          )}
+                        >
+                          <CenteredSpinner />
+                        </MuiThemeProvider>
+                      )
 
                     if (error) return "Unexpected error"
 
@@ -1256,13 +1240,16 @@ class Login extends Component {
                           />
                         </ListItem>
                         <div
-                  style={
-                    this.props.mobile
-                      ? {}
-                      : this.state.user && JSON.stringify(this.state.user.primaryAuthenticationMethods) !== '["WEBAUTHN"]'
-                      ? { height: "237px" }
-                      : { height: "289px" }
-                  }
+                          style={
+                            this.props.mobile
+                              ? {}
+                              : this.state.user &&
+                                (JSON.stringify(
+                                  this.state.user.primaryAuthenticationMethods
+                                ) !== '["WEBAUTHN"]')
+                              ? { height: "237px" }
+                              : { height: "289px" }
+                          }
                         >
                           {this.state.user &&
                             this.state.user.primaryAuthenticationMethods.includes(
@@ -1407,22 +1394,19 @@ class Login extends Component {
                             )}
                         </div>
                         <div style={{ textAlign: "right" }}>
-                          <MUILink
-                            component="button"
-                            variant="subtitle1"
-                            style={
-                              this.props.mobile
-                                ? { color: "white" }
-                                : {
-                                    color: "#0083ff",
-                                  }
-                            }
-                            onClick={() => {
-                              this.setState({ forgotPasswordOpen: true })
-                            }}
-                          >
-                            Forgot password?
-                          </MUILink>
+                      <MUILink
+                        component="button"
+                        variant="subtitle1"
+                        style={
+                          this.props.mobile
+                            ? { color: "white" }
+                            : {
+                                color: "#0083ff",
+                              }
+                        }
+                      >
+                        Can't log in?
+                      </MUILink>
                           <MuiThemeProvider
                             theme={
                               this.props.mobile
@@ -1506,14 +1490,11 @@ class Login extends Component {
                               disabled={this.state.showLoading}
                               component={Link}
                               to={
-                                querystringify.parse(
-                                  "?" + window.location.href.split("?")[1]
-                                ).from === "accountList"
+                                this.state.user &&
+                                JSON.parse(localStorage.getItem("accountList"))
+                                  .map(account => account.id)
+                                  .includes(this.state.user.id)
                                   ? "/accounts"
-                                  : querystringify.parse(
-                                      "?" + window.location.href.split("?")[1]
-                                    ).from === "accounts"
-                                  ? "/login?from=accounts"
                                   : "/login"
                               }
                             >
@@ -1621,13 +1602,16 @@ class Login extends Component {
                   />
                 </ListItem>
                 <div
-                  style={
-                    this.props.mobile
-                      ? {}
-                      : this.state.user && JSON.stringify(this.state.user.secondaryAuthenticationMethods) !== '["WEBAUTHN"]'
-                      ? { height: "237px" }
-                      : { height: "289px" }
-                  }
+                          style={
+                            this.props.mobile
+                              ? {}
+                              : this.state.user &&
+                                (JSON.stringify(
+                                  this.state.user.primaryAuthenticationMethods
+                                ) !== '["WEBAUTHN"]')
+                              ? { height: "237px" }
+                              : { height: "289px" }
+                          }
                 >
                   {this.state.user &&
                     this.state.user.secondaryAuthenticationMethods.includes(
@@ -1709,59 +1693,59 @@ class Login extends Component {
                         }}
                       />
                     )}
-                    {this.state.user &&
-                   this.state.user.secondaryAuthenticationMethods.includes(
-                     "TOTP"
-                   ) &&
-         <TextField
-         id="totp-code"
-         label="Authentication code"
-         value={this.state.code}
-         variant="outlined"
-         error={this.state.codeEmpty || this.state.codeError}
-         helperText={
-           this.state.codeEmpty
-             ? "This field is required"
-             : this.state.codeError
-             ? this.state.codeError
-             : " "
-         }
-         onChange={event =>
-           this.setState({
-             code: event.target.value,
-             codeEmpty: event.target.value === "",
-           })
-         }
-         onKeyPress={event => {
-           if (event.key === "Enter" && !this.state.codeEmpty)
-             this.setState({ manualCodeOpen: false })
-         }}
-         style={{
-           width: "100%",
-         }}
-         InputLabelProps={this.state.cpde && { shrink: true }}
-         InputProps={{
-           endAdornment: this.state.code && (
-             <InputAdornment position="end">
-               <IconButton
-                 onClick={() =>
-                   this.setState({ code: "", codeEmpty: true })
-                 }
-                 tabIndex="-1"
-                 style={
-                   typeof Storage !== "undefined" &&
-                   localStorage.getItem("nightMode") === "true"
-                     ? { color: "rgba(0, 0, 0, 0.46)" }
-                     : { color: "rgba(0, 0, 0, 0.46)" }
-                 }
-               >
-                 <Clear />
-               </IconButton>
-             </InputAdornment>
-           ),
-         }}
-       />
-                    }
+                  {this.state.user &&
+                    this.state.user.secondaryAuthenticationMethods.includes(
+                      "TOTP"
+                    ) && (
+                      <TextField
+                        id="totp-code"
+                        label="Authentication code"
+                        value={this.state.code}
+                        variant="outlined"
+                        error={this.state.codeEmpty || this.state.codeError}
+                        helperText={
+                          this.state.codeEmpty
+                            ? "This field is required"
+                            : this.state.codeError
+                            ? this.state.codeError
+                            : " "
+                        }
+                        onChange={event =>
+                          this.setState({
+                            code: event.target.value,
+                            codeEmpty: event.target.value === "",
+                          })
+                        }
+                        onKeyPress={event => {
+                          if (event.key === "Enter" && !this.state.codeEmpty)
+                            this.setState({ manualCodeOpen: false })
+                        }}
+                        style={{
+                          width: "100%",
+                        }}
+                        InputLabelProps={this.state.cpde && { shrink: true }}
+                        InputProps={{
+                          endAdornment: this.state.code && (
+                            <InputAdornment position="end">
+                              <IconButton
+                                onClick={() =>
+                                  this.setState({ code: "", codeEmpty: true })
+                                }
+                                tabIndex="-1"
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? { color: "rgba(0, 0, 0, 0.46)" }
+                                    : { color: "rgba(0, 0, 0, 0.46)" }
+                                }
+                              >
+                                <Clear />
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                      />
+                    )}
                   {this.state.user &&
                     this.state.user.secondaryAuthenticationMethods.includes(
                       "WEBAUTHN"
@@ -1815,22 +1799,19 @@ class Login extends Component {
                     )}
                 </div>
                 <div style={{ textAlign: "right" }}>
-                  <MUILink
-                    component="button"
-                    variant="subtitle1"
-                    style={
-                      this.props.mobile
-                        ? { color: "white" }
-                        : {
-                            color: "#0083ff",
-                          }
-                    }
-                    onClick={() => {
-                      this.setState({ forgotPasswordOpen: true })
-                    }}
-                  >
-                    Forgot password?
-                  </MUILink>
+                      <MUILink
+                        component="button"
+                        variant="subtitle1"
+                        style={
+                          this.props.mobile
+                            ? { color: "white" }
+                            : {
+                                color: "#0083ff",
+                              }
+                        }
+                      >
+                        Can't log in?
+                      </MUILink>
                   {this.state.user &&
                     (this.state.user.secondaryAuthenticationMethods.includes(
                       "PASSWORD"
@@ -1923,12 +1904,6 @@ class Login extends Component {
             )}
           </div>
         </div>
-        <ForgotPassword
-          recover={email => this.recover(email)}
-          open={this.state.forgotPasswordOpen}
-          close={() => this.setState({ forgotPasswordOpen: false })}
-          email={this.props.email}
-        />
       </MuiThemeProvider>
     )
   }
