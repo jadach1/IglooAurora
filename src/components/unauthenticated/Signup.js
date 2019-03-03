@@ -162,8 +162,12 @@ const veryStrong = createMuiTheme({
 })
 
 export default class Signup extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+
+    // reset the email and password signup fields whenever the page loads
+    this.props.changeEmail("")
+    this.props.changeName("")
 
     this.state = {
       passwordScore: null,
@@ -240,10 +244,10 @@ export default class Signup extends Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? (localStorage.getItem("serverUnsecure") === "true"
-              ? "ws://"
-              : "wss://") +
-            localStorage.getItem("server") +
-            "/subscriptions"
+            ? "ws://"
+            : "wss://") +
+          localStorage.getItem("server") +
+          "/subscriptions"
           : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
@@ -257,10 +261,10 @@ export default class Signup extends Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? (localStorage.getItem("serverUnsecure") === "true"
-              ? "http://"
-              : "https://") +
-            localStorage.getItem("server") +
-            "/graphql"
+            ? "http://"
+            : "https://") +
+          localStorage.getItem("server") +
+          "/graphql"
           : `https://iglooql.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.changeAuthenticationToken,
@@ -341,10 +345,10 @@ export default class Signup extends Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? (localStorage.getItem("serverUnsecure") === "true"
-              ? "ws://"
-              : "wss://") +
-            localStorage.getItem("server") +
-            "/subscriptions"
+            ? "ws://"
+            : "wss://") +
+          localStorage.getItem("server") +
+          "/subscriptions"
           : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
@@ -358,10 +362,10 @@ export default class Signup extends Component {
       uri:
         typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
           ? (localStorage.getItem("serverUnsecure") === "true"
-              ? "http://"
-              : "https://") +
-            localStorage.getItem("server") +
-            "/graphql"
+            ? "http://"
+            : "https://") +
+          localStorage.getItem("server") +
+          "/graphql"
           : `https://iglooql.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.changeAuthenticationToken,
@@ -545,10 +549,10 @@ export default class Signup extends Component {
           style={
             this.props.mobile
               ? {
-                  maxWidth: "400px",
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                }
+                maxWidth: "400px",
+                marginLeft: "auto",
+                marginRight: "auto",
+              }
               : {}
           }
         >
@@ -561,21 +565,21 @@ export default class Signup extends Component {
               style={
                 this.state.height >= 690
                   ? {
-                      width: "192px",
-                      paddingTop: "72px",
-                      marginBottom: "72px",
-                      display: "block",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }
+                    width: "192px",
+                    paddingTop: "72px",
+                    marginBottom: "72px",
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }
                   : {
-                      width: "144px",
-                      paddingTop: "48px",
-                      marginBottom: "48px",
-                      display: "block",
-                      marginLeft: "auto",
-                      marginRight: "auto",
-                    }
+                    width: "144px",
+                    paddingTop: "48px",
+                    marginBottom: "48px",
+                    display: "block",
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                  }
               }
               onClick={() =>
                 this.setState(oldState => ({
@@ -594,17 +598,17 @@ export default class Signup extends Component {
                   style={
                     this.props.mobile
                       ? {
-                          color: "white",
-                          textAlign: "center",
-                          marginBottom: "32px",
-                          marginTop: "32px",
-                        }
+                        color: "white",
+                        textAlign: "center",
+                        marginBottom: "32px",
+                        marginTop: "32px",
+                      }
                       : {
-                          color: "#0083ff",
-                          textAlign: "center",
-                          marginBottom: "32px",
-                          marginTop: "32px",
-                        }
+                        color: "#0083ff",
+                        textAlign: "center",
+                        marginBottom: "32px",
+                        marginTop: "32px",
+                      }
                   }
                 >
                   Sign up
@@ -669,7 +673,7 @@ export default class Signup extends Component {
                       !this.props.mobile &&
                       (this.props.emailError ||
                         ((!this.state.isEmailValid && this.props.email) ||
-                        this.state.isMailEmpty
+                          this.state.isMailEmpty
                           ? true
                           : false))
                     }
@@ -703,8 +707,8 @@ export default class Signup extends Component {
                       (!this.state.isEmailValid && this.props.email
                         ? "Enter a valid email"
                         : this.state.isMailEmpty
-                        ? "This field is required"
-                        : " ")
+                          ? "This field is required"
+                          : " ")
                     }
                     InputLabelProps={this.state.name && { shrink: true }}
                     InputProps={{
@@ -747,12 +751,12 @@ export default class Signup extends Component {
                       style={
                         this.props.mobile
                           ? {
-                              color: "white",
-                              marginBottom: "8px",
-                            }
+                            color: "white",
+                            marginBottom: "8px",
+                          }
                           : {
-                              marginBottom: "8px",
-                            }
+                            marginBottom: "8px",
+                          }
                       }
                     >
                       By proceeding, you agree to our{" "}
@@ -761,14 +765,14 @@ export default class Signup extends Component {
                         style={
                           this.props.mobile
                             ? {
-                                color: "white",
-                                cursor: "pointer",
-                                textDecoration: "underline",
-                              }
+                              color: "white",
+                              cursor: "pointer",
+                              textDecoration: "underline",
+                            }
                             : {
-                                color: "#0083ff",
-                                cursor: "pointer",
-                              }
+                              color: "#0083ff",
+                              cursor: "pointer",
+                            }
                         }
                       >
                         terms of service
@@ -779,14 +783,14 @@ export default class Signup extends Component {
                         style={
                           this.props.mobile
                             ? {
-                                color: "white",
-                                cursor: "pointer",
-                                textDecoration: "underline",
-                              }
+                              color: "white",
+                              cursor: "pointer",
+                              textDecoration: "underline",
+                            }
                             : {
-                                color: "#0083ff",
-                                cursor: "pointer",
-                              }
+                              color: "#0083ff",
+                              cursor: "pointer",
+                            }
                         }
                       >
                         privacy statement
@@ -796,10 +800,10 @@ export default class Signup extends Component {
                       theme={
                         this.props.mobile
                           ? createMuiTheme({
-                              palette: {
-                                primary: { main: "#fff" },
-                              },
-                            })
+                            palette: {
+                              primary: { main: "#fff" },
+                            },
+                          })
                           : ""
                       }
                     >
@@ -823,19 +827,19 @@ export default class Signup extends Component {
                             theme={createMuiTheme(
                               this.props.mobile
                                 ? {
-                                    overrides: {
-                                      MuiCircularProgress: {
-                                        colorPrimary: { color: "#fff" },
-                                      },
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#fff" },
                                     },
-                                  }
+                                  },
+                                }
                                 : {
-                                    overrides: {
-                                      MuiCircularProgress: {
-                                        colorPrimary: { color: "#0083ff" },
-                                      },
+                                  overrides: {
+                                    MuiCircularProgress: {
+                                      colorPrimary: { color: "#0083ff" },
                                     },
-                                  }
+                                  },
+                                }
                             )}
                           >
                             <CenteredSpinner isInButton />
@@ -846,111 +850,154 @@ export default class Signup extends Component {
                     {querystringify.parse(
                       "?" + window.location.href.split("?")[1]
                     ).from === "accounts" &&
-                    JSON.parse(localStorage.getItem("accountList"))[0] ? (
-                      <MuiThemeProvider
-                        theme={createMuiTheme(
-                          this.props.mobile
-                            ? {
+                      JSON.parse(localStorage.getItem("accountList"))[0] ? (
+                        <MuiThemeProvider
+                          theme={createMuiTheme(
+                            this.props.mobile
+                              ? {
                                 palette: {
                                   primary: { main: "#fff" },
                                 },
                               }
-                            : {
+                              : {
                                 palette: {
                                   primary: { main: "#0083ff" },
                                 },
                               }
-                        )}
-                      >
-                        <Button
-                          fullWidth={true}
-                          color="primary"
-                          disabled={this.state.showLoading}
-                          component={Link}
-                          to="/accounts"
+                          )}
                         >
-                          Go back
+                          <Button
+                            fullWidth={true}
+                            color="primary"
+                            disabled={this.state.showLoading}
+                            component={Link}
+                            to="/accounts"
+                          >
+                            Go back
                         </Button>
-                      </MuiThemeProvider>
-                    ) : (
-                      <MuiThemeProvider
-                        theme={
-                          this.props.mobile
-                            ? createMuiTheme({
+                        </MuiThemeProvider>
+                      ) : (
+                        <MuiThemeProvider
+                          theme={
+                            this.props.mobile
+                              ? createMuiTheme({
                                 palette: {
                                   primary: { main: "#fff" },
                                 },
                               })
-                            : createMuiTheme({
+                              : createMuiTheme({
                                 palette: {
                                   primary: { main: "#0083ff" },
                                 },
                               })
-                        }
-                      >
-                        <Button
-                          fullWidth
-                          color="primary"
-                          disabled={this.state.showLoading}
-                          component={Link}
-                          to="/login"
+                          }
                         >
-                          Log in instead
+                          <Button
+                            fullWidth
+                            color="primary"
+                            disabled={this.state.showLoading}
+                            component={Link}
+                            to="/login"
+                          >
+                            Log in instead
                         </Button>
-                      </MuiThemeProvider>
-                    )}
+                        </MuiThemeProvider>
+                      )}
                   </div>
                 </div>
               </React.Fragment>
             ) : (
-              <React.Fragment>
-                <div
-                  className="rightSide notSelectable"
-                  style={{
-                    overflowY: "hidden",
-                  }}
-                >
-                  <Typography
-                    variant="h3"
-                    gutterBottom
-                    className="defaultCursor"
-                    style={
-                      this.props.mobile
-                        ? {
+                <React.Fragment>
+                  <div
+                    className="rightSide notSelectable"
+                    style={{
+                      overflowY: "hidden",
+                    }}
+                  >
+                    <Typography
+                      variant="h3"
+                      gutterBottom
+                      className="defaultCursor"
+                      style={
+                        this.props.mobile
+                          ? {
                             color: "white",
                             textAlign: "center",
                             marginBottom: "32px",
                             marginTop: "32px",
                           }
-                        : {
+                          : {
                             color: "#0083ff",
                             textAlign: "center",
                             marginBottom: "32px",
                             marginTop: "32px",
                           }
-                    }
-                  >
-                    Sign up
+                      }
+                    >
+                      Sign up
                   </Typography>
-                  <List>
-                    {navigator.credentials && (
+                    <List>
+                      {navigator.credentials && (
+                        <ListItem
+                          button
+                          style={{ paddingLeft: "24px" }}
+                          onClick={this.enableWebAuthn}
+                        >
+                          <ListItemIcon>
+                            <Fingerprint />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <font
+                                style={
+                                  this.props.mobile ? { color: "white" } : {}
+                                }
+                              >
+                                Let's go passwordless!
+                            </font>
+                            }
+                            secondary={
+                              <font
+                                style={
+                                  this.props.mobile
+                                    ? { color: "white", opacity: 0.7 }
+                                    : {}
+                                }
+                              >
+                                Fingerprint, face or security key
+                            </font>
+                            }
+                          />
+                        </ListItem>
+                      )}
                       <ListItem
                         button
                         style={{ paddingLeft: "24px" }}
-                        onClick={this.enableWebAuthn}
+                        onClick={() => {
+                          this.setState({
+                            manualCodeOpen: true,
+                            qrErrpr: false,
+                            showSignupPassword: true,
+                          })
+                        }}
                       >
                         <ListItemIcon>
-                          <Fingerprint />
+                          <SvgIcon>
+                            <svg
+                              style={{ width: "24px", height: "24px" }}
+                              viewBox="0 0 24 24"
+                            >
+                              <path d="M17,7H22V17H17V19A1,1 0 0,0 18,20H20V22H17.5C16.95,22 16,21.55 16,21C16,21.55 15.05,22 14.5,22H12V20H14A1,1 0 0,0 15,19V5A1,1 0 0,0 14,4H12V2H14.5C15.05,2 16,2.45 16,3C16,2.45 16.95,2 17.5,2H20V4H18A1,1 0 0,0 17,5V7M2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20M8.5,12A1.5,1.5 0 0,0 7,10.5A1.5,1.5 0 0,0 5.5,12A1.5,1.5 0 0,0 7,13.5A1.5,1.5 0 0,0 8.5,12M13,10.89C12.39,10.33 11.44,10.38 10.88,11C10.32,11.6 10.37,12.55 11,13.11C11.55,13.63 12.43,13.63 13,13.11V10.89Z" />
+                            </svg>
+                          </SvgIcon>
                         </ListItemIcon>
                         <ListItemText
                           primary={
                             <font
-                              style={
-                                this.props.mobile ? { color: "white" } : {}
-                              }
+                              style={this.props.mobile ? { color: "white" } : {}}
                             >
-                              Let's go passwordless!
-                            </font>
+                              Use password
+                          </font>
                           }
                           secondary={
                             <font
@@ -960,211 +1007,256 @@ export default class Signup extends Component {
                                   : {}
                               }
                             >
-                              Fingerprint, face or security key
-                            </font>
+                              The old-fashioned way
+                          </font>
                           }
                         />
                       </ListItem>
-                    )}
-                    <ListItem
-                      button
-                      style={{ paddingLeft: "24px" }}
-                      onClick={() => {
-                        this.setState({
-                          manualCodeOpen: true,
-                          qrErrpr: false,
-                          showSignupPassword: true,
-                        })
-                      }}
-                    >
-                      <ListItemIcon>
-                        <SvgIcon>
-                          <svg
-                            style={{ width: "24px", height: "24px" }}
-                            viewBox="0 0 24 24"
-                          >
-                            <path d="M17,7H22V17H17V19A1,1 0 0,0 18,20H20V22H17.5C16.95,22 16,21.55 16,21C16,21.55 15.05,22 14.5,22H12V20H14A1,1 0 0,0 15,19V5A1,1 0 0,0 14,4H12V2H14.5C15.05,2 16,2.45 16,3C16,2.45 16.95,2 17.5,2H20V4H18A1,1 0 0,0 17,5V7M2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20M8.5,12A1.5,1.5 0 0,0 7,10.5A1.5,1.5 0 0,0 5.5,12A1.5,1.5 0 0,0 7,13.5A1.5,1.5 0 0,0 8.5,12M13,10.89C12.39,10.33 11.44,10.38 10.88,11C10.32,11.6 10.37,12.55 11,13.11C11.55,13.63 12.43,13.63 13,13.11V10.89Z" />
-                          </svg>
-                        </SvgIcon>
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={
-                          <font
-                            style={this.props.mobile ? { color: "white" } : {}}
-                          >
-                            Use password
+                      <ListItem
+                        button
+                        style={{ paddingLeft: "24px" }}
+                        component={Link}
+                        to="/verify"
+                      >
+                        <ListItemIcon>
+                          <MailOutline />
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <font
+                              style={this.props.mobile ? { color: "white" } : {}}
+                            >
+                              Send me an email
                           </font>
-                        }
-                        secondary={
-                          <font
-                            style={
-                              this.props.mobile
-                                ? { color: "white", opacity: 0.7 }
-                                : {}
-                            }
-                          >
-                            The old-fashioned way
+                          }
+                          secondary={
+                            <font
+                              style={
+                                this.props.mobile
+                                  ? { color: "white", opacity: 0.7 }
+                                  : {}
+                              }
+                            >
+                              Get a log in link via email
                           </font>
-                        }
-                      />
-                    </ListItem>
-                    <ListItem
-                      button
-                      style={{ paddingLeft: "24px" }}
-                      component={Link}
-                      to="/verify"
-                    >
-                      <ListItemIcon>
-                        <MailOutline />
-                      </ListItemIcon>
-                      <ListItemText
-                        primary={
-                          <font
-                            style={this.props.mobile ? { color: "white" } : {}}
-                          >
-                            Send me an email
-                          </font>
-                        }
-                        secondary={
-                          <font
-                            style={
-                              this.props.mobile
-                                ? { color: "white", opacity: 0.7 }
-                                : {}
-                            }
-                          >
-                            Get a log in link via email
-                          </font>
-                        }
-                      />
-                    </ListItem>
-                  </List>
-                  <MuiThemeProvider
-                    theme={createMuiTheme(
-                      this.props.mobile
-                        ? {
+                          }
+                        />
+                      </ListItem>
+                    </List>
+                    <MuiThemeProvider
+                      theme={createMuiTheme(
+                        this.props.mobile
+                          ? {
                             palette: {
                               primary: { main: "#fff" },
                             },
                           }
-                        : {
+                          : {
                             palette: {
                               primary: { main: "#0083ff" },
                             },
                           }
-                    )}
-                  >
-                    <div
-                      style={{
-                        marginLeft: "32px",
-                        marginRight: "32px",
-                      }}
+                      )}
                     >
-                      <Button
-                        color="primary"
-                        disabled={this.state.showLoading}
-                        onClick={() =>
-                          this.setState({
-                            showSignupPassword: false,
-                            showPasswordLess: false,
-                          })
-                        }
-                        fullWidth
-                        style={
-                          this.props.mobile
-                            ? {}
-                            : navigator.credentials
-                            ? {
-                                marginTop: "171px",
-                              }
-                            : {
-                                marginTop: "235px",
-                              }
-                        }
+                      <div
+                        style={{
+                          marginLeft: "32px",
+                          marginRight: "32px",
+                        }}
                       >
-                        Go back
+                        <Button
+                          color="primary"
+                          disabled={this.state.showLoading}
+                          onClick={() =>
+                            this.setState({
+                              showSignupPassword: false,
+                              showPasswordLess: false,
+                            })
+                          }
+                          fullWidth
+                          style={
+                            this.props.mobile
+                              ? {}
+                              : navigator.credentials
+                                ? {
+                                  marginTop: "171px",
+                                }
+                                : {
+                                  marginTop: "235px",
+                                }
+                          }
+                        >
+                          Go back
                       </Button>
-                    </div>
-                  </MuiThemeProvider>
-                </div>
-              </React.Fragment>
-            )
+                      </div>
+                    </MuiThemeProvider>
+                  </div>
+                </React.Fragment>
+              )
           ) : (
-            <React.Fragment>
-              <div
-                className="rightSide notSelectable"
-                style={{
-                  overflowY: "hidden",
-                  marginLeft: "32px",
-                  marginRight: "32px",
-                }}
-              >
-                <div>
-                  <Typography
-                    variant="h3"
-                    gutterBottom
-                    className="defaultCursor"
-                    style={
-                      this.props.mobile
-                        ? {
+              <React.Fragment>
+                <div
+                  className="rightSide notSelectable"
+                  style={{
+                    overflowY: "hidden",
+                    marginLeft: "32px",
+                    marginRight: "32px",
+                  }}
+                >
+                  <div>
+                    <Typography
+                      variant="h3"
+                      gutterBottom
+                      className="defaultCursor"
+                      style={
+                        this.props.mobile
+                          ? {
                             color: "white",
                             textAlign: "center",
                             marginBottom: "32px",
                             marginTop: "32px",
                           }
-                        : {
+                          : {
                             color: "#0083ff",
                             textAlign: "center",
                             marginBottom: "32px",
                             marginTop: "32px",
                           }
-                    }
-                  >
-                    Sign up
+                      }
+                    >
+                      Sign up
                   </Typography>
-                  <MuiThemeProvider theme={passwordTheme}>
+                    <MuiThemeProvider theme={passwordTheme}>
+                      <TextField
+                        variant="outlined"
+                        id="desktop-password-signup"
+                        label="Password"
+                        color="secondary"
+                        style={{
+                          width: "100%",
+                          marginBottom: "16px",
+                        }}
+                        type={this.state.showPassword ? "text" : "password"}
+                        value={this.props.password}
+                        error={
+                          this.state.passwordError ||
+                            (!this.props.mobile && this.state.isPasswordEmpty)
+                            ? true
+                            : false
+                        }
+                        helperText={
+                          <font
+                            style={
+                              this.state.passwordError ||
+                                this.state.isPasswordEmpty
+                                ? { color: "#f44336" }
+                                : { color: passwordColor }
+                            }
+                          >
+                            {this.state.passwordError ||
+                              (this.props.password
+                                ? this.state.isPasswordEmpty
+                                  ? "This field is required"
+                                  : scoreText
+                                : " ")}
+                          </font>
+                        }
+                        onChange={event => {
+                          this.props.changePassword(event.target.value)
+                          this.setState({
+                            passwordScore: zxcvbn(
+                              event.target.value,
+                              customDictionary
+                            ).score,
+                            isPasswordEmpty: event.target.value === "",
+                          })
+                        }}
+                        onKeyPress={event => {
+                          if (
+                            event.key === "Enter" &&
+                            this.state.passwordScore > 2 &&
+                            !this.state.showPasswordLoading &&
+                            this.state.confirmPassword
+                          ) {
+                            if (
+                              this.props.password === this.state.confirmPassword
+                            ) {
+                              this.enablePassword()
+                            } else {
+                              this.setState({
+                                passwordError: "Passwords don't match",
+                              })
+                            }
+                          }
+                        }}
+                        InputLabelProps={this.state.name && { shrink: true }}
+                        InputProps={{
+                          endAdornment: this.props.password ? (
+                            <InputAdornment position="end">
+                              <IconButton
+                                tabIndex="-1"
+                                onClick={() =>
+                                  this.setState({
+                                    showPassword: !this.state.showPassword,
+                                  })
+                                }
+                                style={{ color: "black" }}
+                              >
+                                {/* fix for ToggleIcon glitch on Edge */}
+                                {document.documentMode ||
+                                  /Edge/.test(navigator.userAgent) ? (
+                                    this.state.showPassword ? (
+                                      <VisibilityOff />
+                                    ) : (
+                                        <Visibility />
+                                      )
+                                  ) : (
+                                    <ToggleIcon
+                                      on={this.state.showPassword || false}
+                                      onIcon={<VisibilityOff />}
+                                      offIcon={<Visibility />}
+                                    />
+                                  )}
+                              </IconButton>
+                            </InputAdornment>
+                          ) : null,
+                        }}
+                      />
+                    </MuiThemeProvider>
+                    <br />
                     <TextField
                       variant="outlined"
-                      id="desktop-password-signup"
-                      label="Password"
+                      id="desktop-confirm-password-signup"
+                      label="Confirm password"
                       color="secondary"
                       style={{
                         width: "100%",
                         marginBottom: "16px",
                       }}
-                      type={this.state.showPassword ? "text" : "password"}
-                      value={this.props.password}
+                      type={this.state.showConfirmPassword ? "text" : "password"}
+                      value={this.state.confirmPassword}
                       error={
-                        this.state.passwordError ||
-                        (!this.props.mobile && this.state.isPasswordEmpty)
-                          ? true
-                          : false
+                        !this.props.mobile &&
+                        (this.state.isConfirmPasswordEmpty ? true : false)
                       }
                       helperText={
                         <font
                           style={
-                            this.state.passwordError ||
-                            this.state.isPasswordEmpty
+                            this.state.isConfirmPasswordEmpty ||
+                              this.state.passwordError
                               ? { color: "#f44336" }
-                              : { color: passwordColor }
+                              : {}
                           }
                         >
-                          {this.state.passwordError ||
-                            (this.props.password
-                              ? this.state.isPasswordEmpty
-                                ? "This field is required"
-                                : scoreText
-                              : " ")}
+                          {this.state.isConfirmPasswordEmpty
+                            ? "This field is required"
+                            : " "}
                         </font>
                       }
                       onChange={event => {
-                        this.props.changePassword(event.target.value)
                         this.setState({
-                          passwordScore: zxcvbn(
-                            event.target.value,
-                            customDictionary
-                          ).score,
-                          isPasswordEmpty: event.target.value === "",
+                          confirmPassword: event.target.value,
+                          isConfirmPasswordEmpty: event.target.value === "",
                         })
                       }}
                       onKeyPress={event => {
@@ -1187,222 +1279,134 @@ export default class Signup extends Component {
                       }}
                       InputLabelProps={this.state.name && { shrink: true }}
                       InputProps={{
-                        endAdornment: this.props.password ? (
+                        endAdornment: this.state.confirmPassword ? (
                           <InputAdornment position="end">
                             <IconButton
                               tabIndex="-1"
                               onClick={() =>
                                 this.setState({
-                                  showPassword: !this.state.showPassword,
+                                  showConfirmPassword: !this.state
+                                    .showConfirmPassword,
                                 })
                               }
                               style={{ color: "black" }}
                             >
                               {/* fix for ToggleIcon glitch on Edge */}
                               {document.documentMode ||
-                              /Edge/.test(navigator.userAgent) ? (
-                                this.state.showPassword ? (
-                                  <VisibilityOff />
+                                /Edge/.test(navigator.userAgent) ? (
+                                  this.state.showConfirmPassword ? (
+                                    <VisibilityOff />
+                                  ) : (
+                                      <Visibility />
+                                    )
                                 ) : (
-                                  <Visibility />
-                                )
-                              ) : (
-                                <ToggleIcon
-                                  on={this.state.showPassword || false}
-                                  onIcon={<VisibilityOff />}
-                                  offIcon={<Visibility />}
-                                />
-                              )}
+                                  <ToggleIcon
+                                    on={this.state.showConfirmPassword || false}
+                                    onIcon={<VisibilityOff />}
+                                    offIcon={<Visibility />}
+                                  />
+                                )}
                             </IconButton>
                           </InputAdornment>
                         ) : null,
                       }}
                     />
-                  </MuiThemeProvider>
-                  <br />
-                  <TextField
-                    variant="outlined"
-                    id="desktop-confirm-password-signup"
-                    label="Confirm password"
-                    color="secondary"
-                    style={{
-                      width: "100%",
-                      marginBottom: "16px",
-                    }}
-                    type={this.state.showConfirmPassword ? "text" : "password"}
-                    value={this.state.confirmPassword}
-                    error={
-                      !this.props.mobile &&
-                      (this.state.isConfirmPasswordEmpty ? true : false)
-                    }
-                    helperText={
-                      <font
-                        style={
-                          this.state.isConfirmPasswordEmpty ||
-                          this.state.passwordError
-                            ? { color: "#f44336" }
-                            : {}
-                        }
-                      >
-                        {this.state.isConfirmPasswordEmpty
-                          ? "This field is required"
-                          : " "}
-                      </font>
-                    }
-                    onChange={event => {
-                      this.setState({
-                        confirmPassword: event.target.value,
-                        isConfirmPasswordEmpty: event.target.value === "",
-                      })
-                    }}
-                    onKeyPress={event => {
-                      if (
-                        event.key === "Enter" &&
-                        this.state.passwordScore > 2 &&
-                        !this.state.showPasswordLoading &&
-                        this.state.confirmPassword
-                      ) {
-                        if (
-                          this.props.password === this.state.confirmPassword
-                        ) {
-                          this.enablePassword()
-                        } else {
-                          this.setState({
-                            passwordError: "Passwords don't match",
-                          })
-                        }
-                      }
-                    }}
-                    InputLabelProps={this.state.name && { shrink: true }}
-                    InputProps={{
-                      endAdornment: this.state.confirmPassword ? (
-                        <InputAdornment position="end">
-                          <IconButton
-                            tabIndex="-1"
-                            onClick={() =>
-                              this.setState({
-                                showConfirmPassword: !this.state
-                                  .showConfirmPassword,
-                              })
-                            }
-                            style={{ color: "black" }}
-                          >
-                            {/* fix for ToggleIcon glitch on Edge */}
-                            {document.documentMode ||
-                            /Edge/.test(navigator.userAgent) ? (
-                              this.state.showConfirmPassword ? (
-                                <VisibilityOff />
-                              ) : (
-                                <Visibility />
-                              )
-                            ) : (
-                              <ToggleIcon
-                                on={this.state.showConfirmPassword || false}
-                                onIcon={<VisibilityOff />}
-                                offIcon={<Visibility />}
-                              />
-                            )}
-                          </IconButton>
-                        </InputAdornment>
-                      ) : null,
-                    }}
-                  />
-                </div>
-                <div style={this.props.mobile ? {} : { marginTop: "157px" }}>
-                  <MuiThemeProvider
-                    theme={
-                      this.props.mobile
-                        ? createMuiTheme({
+                  </div>
+                  <div style={this.props.mobile ? {} : { marginTop: "157px" }}>
+                    <MuiThemeProvider
+                      theme={
+                        this.props.mobile
+                          ? createMuiTheme({
                             palette: {
                               primary: { main: "#fff" },
                             },
                           })
-                        : ""
-                    }
-                  >
-                    <Button
-                      variant={this.props.mobile ? "outlined" : "contained"}
-                      color="primary"
-                      fullWidth={true}
-                      primary={true}
-                      onClick={() => {
-                        if (
-                          this.props.password === this.state.confirmPassword
-                        ) {
-                          this.enablePassword()
-                        } else {
-                          this.setState({
-                            passwordError: "Passwords don't match",
-                          })
-                        }
-                      }}
-                      style={{ marginBottom: "8px" }}
-                      buttonStyle={{ backgroundColor: "#0083ff" }}
-                      disabled={
-                        this.state.passwordScore <= 2 ||
-                        this.state.showPasswordLoading ||
-                        !this.state.confirmPassword
+                          : ""
                       }
                     >
-                      Add password
+                      <Button
+                        variant={this.props.mobile ? "outlined" : "contained"}
+                        color="primary"
+                        fullWidth={true}
+                        primary={true}
+                        onClick={() => {
+                          if (
+                            this.props.password === this.state.confirmPassword
+                          ) {
+                            this.enablePassword()
+                          } else {
+                            this.setState({
+                              passwordError: "Passwords don't match",
+                            })
+                          }
+                        }}
+                        style={{ marginBottom: "8px" }}
+                        buttonStyle={{ backgroundColor: "#0083ff" }}
+                        disabled={
+                          this.state.passwordScore <= 2 ||
+                          this.state.showPasswordLoading ||
+                          !this.state.confirmPassword
+                        }
+                      >
+                        Add password
                       {this.state.showPasswordLoading && (
-                        <MuiThemeProvider
-                          theme={createMuiTheme(
-                            this.props.mobile
-                              ? {
+                          <MuiThemeProvider
+                            theme={createMuiTheme(
+                              this.props.mobile
+                                ? {
                                   overrides: {
                                     MuiCircularProgress: {
                                       root: { color: "#fff" },
                                     },
                                   },
                                 }
-                              : {
+                                : {
                                   overrides: {
                                     MuiCircularProgress: {
                                       root: { color: "#0083ff" },
                                     },
                                   },
                                 }
-                          )}
-                        >
-                          <CenteredSpinner isInButton />
-                        </MuiThemeProvider>
-                      )}
-                    </Button>
-                  </MuiThemeProvider>
-                  <MuiThemeProvider
-                    theme={createMuiTheme(
-                      this.props.mobile
-                        ? {
+                            )}
+                          >
+                            <CenteredSpinner isInButton />
+                          </MuiThemeProvider>
+                        )}
+                      </Button>
+                    </MuiThemeProvider>
+                    <MuiThemeProvider
+                      theme={createMuiTheme(
+                        this.props.mobile
+                          ? {
                             palette: {
                               primary: { main: "#fff" },
                             },
                           }
-                        : {
+                          : {
                             palette: {
                               primary: { main: "#0083ff" },
                             },
                           }
-                    )}
-                  >
-                    <Button
-                      fullWidth
-                      color="primary"
-                      disabled={this.state.showLoading}
-                      onClick={() =>
-                        this.setState({
-                          showSignupPassword: false,
-                          showPasswordLess: true,
-                        })
-                      }
+                      )}
                     >
-                      Go back
+                      <Button
+                        fullWidth
+                        color="primary"
+                        disabled={this.state.showLoading}
+                        onClick={() =>
+                          this.setState({
+                            showSignupPassword: false,
+                            showPasswordLess: true,
+                          })
+                        }
+                      >
+                        Go back
                     </Button>
-                  </MuiThemeProvider>
+                    </MuiThemeProvider>
+                  </div>
                 </div>
-              </div>
-            </React.Fragment>
-          )}
+              </React.Fragment>
+            )}
         </div>
       </MuiThemeProvider>
     )
