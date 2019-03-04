@@ -59,9 +59,11 @@ function SlideTransition(props) {
 
 let primaryAuthenticationMethods = []
 let secondaryAuthenticationMethods = []
+let secret = []
+let qrCode = []
 
 class AuthenticationOptions extends React.Component {
-  state = { selectAuthTypeOpen: false }
+  state = { selectAuthTypeOpen: false, code: "" }
 
   createToken = async () => {
     try {
@@ -297,6 +299,88 @@ class AuthenticationOptions extends React.Component {
     navigator.credentials
       .create({ publicKey: publicKeyOptions })
       .then(sendResponse)
+  }
+
+  setTotp = async () => {
+    const wsLink = new WebSocketLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "ws://"
+              : "wss://") +
+            localStorage.getItem("server") +
+            "/subscriptions"
+          : `wss://iglooql.herokuapp.com/subscriptions`,
+      options: {
+        reconnect: true,
+        connectionParams: {
+          Authorization: "Bearer " + this.state.token,
+        },
+      },
+    })
+
+    const httpLink = new HttpLink({
+      uri:
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "http://"
+              : "https://") +
+            localStorage.getItem("server") +
+            "/graphql"
+          : `https://iglooql.herokuapp.com/graphql`,
+      headers: {
+        Authorization: "Bearer " + this.state.token,
+      },
+    })
+
+    const link = split(
+      // split based on operation type
+      ({ query }) => {
+        const { kind, operation } = getMainDefinition(query)
+        return kind === "OperationDefinition" && operation === "subscription"
+      },
+      wsLink,
+      httpLink
+    )
+
+    const fragmentMatcher = new IntrospectionFragmentMatcher({
+      introspectionQueryResultData,
+    })
+
+    this.client = new ApolloClient({
+      // By default, this client will send queries to the
+      //  `/graphql` endpoint on the same host
+      link,
+      cache: new InMemoryCache({ fragmentMatcher }),
+    })
+
+    try {
+      this.setState({ showTotpLoading: true })
+      this.client.mutate({
+        mutation: gql`
+          mutation($code: String!, $secret: String!) {
+            setTotp(code: $code, secret: $secret)
+          }
+        `,
+        variables: {
+          code: this.state.code,
+          secret,
+        },
+      })
+      this.setState({
+        configureTotpOpen: false,
+      })
+    } catch (e) {
+      if (e.message === "GraphQL error: Code and secret do not match") {
+        this.setState({ codeError: "Wrong code" })
+      } else {
+        this.setState({
+          codeError: "Unexpected error",
+        })
+      }
+    } finally {
+      this.setState({ showTotpLoading: false })
+    }
   }
 
   componentWillReceiveProps(nextProps) {
@@ -621,7 +705,7 @@ class AuthenticationOptions extends React.Component {
               onClick={this.createToken}
               disabled={!this.state.password || this.state.showLoading}
             >
-              Proceed
+              Next
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>
@@ -940,7 +1024,6 @@ class AuthenticationOptions extends React.Component {
         <Dialog
           open={this.state.configureTotpOpen}
           onClose={() => this.props.close()}
-          className="notSelectable"
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition
           }
@@ -980,64 +1063,104 @@ class AuthenticationOptions extends React.Component {
               height: "100%",
             }}
           >
-            <div style={{ marginBottom: "24px" }}>
-              Scan this QR code with an application such as{" "}
-              <Link style={{ cursor: "pointer" }}>1Password</Link>,{" "}
-              <Link style={{ cursor: "pointer" }}>Authy</Link>, or{" "}
-              <Link style={{ cursor: "pointer" }}>LastPass Authenticator</Link>
-            </div>
-            <div style={{ marginBottom: "24px" }}>
-              Unable to scan this code? Use this one instead:{" "}
-              <b>aaaa-bbbb-cccc-dddd</b>
-            </div>
-            <TextField
-              id="totp-code"
-              label="Six-digit code"
-              value={this.state.code}
-              variant="outlined"
-              error={this.state.codeEmpty || this.state.codeError}
-              helperText={
-                this.state.codeEmpty
-                  ? "This field is required"
-                  : this.state.codeError
-                  ? this.state.codeError
-                  : " "
-              }
-              onChange={event =>
-                this.setState({
-                  code: event.target.value,
-                  codeEmpty: event.target.value === "",
-                })
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter" && !this.state.codeEmpty)
-                  this.setState({ manualCodeOpen: false })
-              }}
-              style={{
-                width: "100%",
-              }}
-              InputLabelProps={this.state.cpde && { shrink: true }}
-              InputProps={{
-                endAdornment: this.state.code && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        this.setState({ code: "", codeEmpty: true })
+            <Query
+              query={gql`
+                query {
+                  getNewTotpSecret {
+                    secret
+                    qrCode
+                  }
+                }
+              `}
+              skip={!this.state.configureTotpOpen}
+            >
+              {({ loading, error, data }) => {
+                if (loading) return <CenteredSpinner />
+                if (error) return "Unexpected error"
+
+                if (data) {
+                  secret = data.getNewTotpSecret.secret
+                  qrCode = data.getNewTotpSecret.qrCode
+                }
+
+                return (
+                  <React.Fragment>
+                    <div className="notSelectable">
+                      Scan this QR code with an application such as{" "}
+                                              <Link style={{ cursor: "pointer" }} href="https://1password.com/downloads/">1Password</Link>
+                  ,{" "}
+                        <Link style={{ cursor: "pointer" }} href="https://authy.com/download/">Authy</Link>
+                      , or{" "}
+                        <Link style={{ cursor: "pointer" }} href="https://lastpass.com/auth/">
+                          LastPass Authenticator
+                        </Link>
+                      .
+                    </div>
+                    <div
+                      dangerouslySetInnerHTML={{ __html: qrCode }}
+                      style={{ margin: "8px 0" }}
+                    />
+                    <div style={{ marginBottom: "24px" }}>
+                      <font className="notSelectable">
+                        Unable to scan this code? Use this one instead:{" "}
+                      </font>
+                      <b>{secret}</b>
+                    </div>
+                    <TextField
+                      id="totp-code"
+                      label="Six-digit code"
+                      value={this.state.code}
+                      variant="outlined"
+                      error={this.state.codeEmpty || this.state.codeError}
+                      helperText={
+                        this.state.codeEmpty
+                          ? "This field is required"
+                          : this.state.codeError
+                          ? this.state.codeError
+                          : " "
                       }
-                      tabIndex="-1"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "rgba(0, 0, 0, 0.46)" }
-                          : { color: "rgba(0, 0, 0, 0.46)" }
+                      onChange={event =>
+                        this.setState({
+                          code: event.target.value,
+                          codeEmpty: event.target.value === "",
+                        })
                       }
-                    >
-                      <Clear />
-                    </IconButton>
-                  </InputAdornment>
-                ),
+                      onKeyPress={event => {
+                        if (
+                          event.key === "Enter" &&
+                          this.state.code.length === 6
+                        )
+                          this.setTotp()
+                      }}
+                      style={{
+                        width: "100%",
+                      }}
+                      InputLabelProps={this.state.cpde && { shrink: true }}
+                      InputProps={{
+                        endAdornment: this.state.code && (
+                          <InputAdornment position="end">
+                            <IconButton
+                              onClick={() =>
+                                this.setState({ code: "", codeEmpty: true })
+                              }
+                              tabIndex="-1"
+                              style={
+                                typeof Storage !== "undefined" &&
+                                localStorage.getItem("nightMode") === "true"
+                                  ? { color: "rgba(0, 0, 0, 0.46)" }
+                                  : { color: "rgba(0, 0, 0, 0.46)" }
+                              }
+                            >
+                              <Clear />
+                            </IconButton>
+                          </InputAdornment>
+                        ),
+                      }}
+                    />
+                  </React.Fragment>
+                )
               }}
-            />
+            </Query>
           </div>
           <DialogActions>
             <Button
@@ -1050,7 +1173,10 @@ class AuthenticationOptions extends React.Component {
             <Button
               variant="contained"
               color="primary"
-              disabled={!this.state.code || this.state.showTotpLoading}
+              disabled={
+                this.state.code.length !== 6 || this.state.showTotpLoading
+              }
+              onClick={this.setTotp}
             >
               Confirm code
               {this.state.showTotpLoading && <CenteredSpinner isInButton />}

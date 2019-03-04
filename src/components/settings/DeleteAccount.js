@@ -211,7 +211,7 @@ class DeleteAccountDialog extends React.Component {
               id="adornment-password-login"
               type={this.state.showPassword ? "text" : "password"}
               value={this.state.password}
-              placeholder="Password"
+              label="Password"
               onChange={event =>
                 this.setState({
                   password: event.target.value,
@@ -295,7 +295,7 @@ class DeleteAccountDialog extends React.Component {
                 this.setState({ showLoading: true })
               }}
             >
-              Proceed
+              Next
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>

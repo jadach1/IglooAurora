@@ -82,13 +82,13 @@ class ChangeMailDialog extends React.Component {
   async changeEmail() {
     const wsLink = new WebSocketLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-        ? (localStorage.getItem("serverUnsecure") === "true"
-            ? "ws://"
-            : "wss://") +
-          localStorage.getItem("server") +
-          "/subscriptions"
-        : `wss://iglooql.herokuapp.com/subscriptions`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "ws://"
+              : "wss://") +
+            localStorage.getItem("server") +
+            "/subscriptions"
+          : `wss://iglooql.herokuapp.com/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -99,13 +99,13 @@ class ChangeMailDialog extends React.Component {
 
     const httpLink = new HttpLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-        ? (localStorage.getItem("serverUnsecure") === "true"
-            ? "http://"
-            : "https://") +
-          localStorage.getItem("server") +
-          "/graphql"
-        : `https://iglooql.herokuapp.com/graphql`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "http://"
+              : "https://") +
+            localStorage.getItem("server") +
+            "/graphql"
+          : `https://iglooql.herokuapp.com/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -151,7 +151,6 @@ class ChangeMailDialog extends React.Component {
       this.props.close()
 
       this.closeMailDialog()
-
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ emailError: "Wrong password" })
@@ -284,7 +283,7 @@ class ChangeMailDialog extends React.Component {
               onClick={() => this.createToken()}
               disabled={!this.state.password || this.state.showLoading}
             >
-              Proceed
+              Next
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>

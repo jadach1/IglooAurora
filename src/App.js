@@ -860,7 +860,7 @@ class App extends Component {
         <Offline>
           <OfflineScreen isMobile={this.state.isMobile} />
         </Offline>
-        {this.state.redirect && <Redirect push to={"/login?from=accounts&user="+this.state.userId} />}
+        {this.state.redirect && <Redirect push to={"/login?fuser="+this.state.userId} />}
       </MuiThemeProvider>
     )
   }

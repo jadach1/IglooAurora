@@ -165,7 +165,16 @@ export default class PasswordVerification extends Component {
             Resend email
           </Button>
           <br />
-          <Button color="primary" component={Link} to="/accounts" fullWidth>
+          <Button
+            color="primary"
+            component={Link}
+            to={
+              !JSON.parse(localStorage.getItem("accountList"))[0]
+                ? "/signup"
+                : "/signup?from=accounts"
+            }
+            fullWidth
+          >
             Go back
           </Button>
         </MuiThemeProvider>

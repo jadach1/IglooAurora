@@ -13,7 +13,6 @@ import CenteredSpinner from "../CenteredSpinner"
 import Clear from "@material-ui/icons/Clear"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
-import querystringify from "querystringify"
 import logo from "../../styles/assets/logo.svg"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
@@ -855,6 +854,11 @@ export default class Signup extends Component {
                           theme={createMuiTheme(
                             this.props.mobile
                               ? {
+                    {JSON.parse(localStorage.getItem("accountList"))[0] ? (
+                      <MuiThemeProvider
+                        theme={createMuiTheme(
+                          this.props.mobile
+                            ? {
                                 palette: {
                                   primary: { main: "#fff" },
                                 },
