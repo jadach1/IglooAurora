@@ -846,14 +846,6 @@ export default class Signup extends Component {
                         )}
                       </Button>
                     </MuiThemeProvider>
-                    {querystringify.parse(
-                      "?" + window.location.href.split("?")[1]
-                    ).from === "accounts" &&
-                      JSON.parse(localStorage.getItem("accountList"))[0] ? (
-                        <MuiThemeProvider
-                          theme={createMuiTheme(
-                            this.props.mobile
-                              ? {
                     {JSON.parse(localStorage.getItem("accountList"))[0] ? (
                       <MuiThemeProvider
                         theme={createMuiTheme(
