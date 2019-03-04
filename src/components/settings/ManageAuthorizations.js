@@ -637,7 +637,7 @@ class AuthDialog extends React.Component {
               onClick={() => this.createToken()}
               disabled={!this.state.password || this.state.showLoading}
             >
-              Proceed
+              Next
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>

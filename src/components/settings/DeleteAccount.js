@@ -295,7 +295,7 @@ class DeleteAccountDialog extends React.Component {
                 this.setState({ showLoading: true })
               }}
             >
-              Proceed
+              Next
               {this.state.showLoading && <CenteredSpinner isInButton />}
             </Button>
           </DialogActions>

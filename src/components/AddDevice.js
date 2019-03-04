@@ -309,7 +309,7 @@ class AddDevice extends Component {
               color="primary"
               disabled={!this.state.code}
             >
-              Proceed
+              Next
             </Button>
           </DialogActions>
         </Dialog>
@@ -455,7 +455,7 @@ class AddDevice extends Component {
               color="primary"
               disabled={!this.state.name}
             >
-              Proceed
+              Next
             </Button>
           </DialogActions>
         </Dialog>

@@ -127,6 +127,7 @@ class Login extends Component {
       showLoading: false,
       redirect: false,
       counter: 0,
+      code:""
     }
 
     this.signIn = this.signIn.bind(this)
@@ -280,16 +281,52 @@ class Login extends Component {
     }
   }
 
+    async verifyTotp() {
+    try {
+      this.setState({codeError: "",showSecondFactorLoading:true})
+      const verifyTotpMutation = await this.props.client.mutate({
+        mutation: gql`
+          mutation($email: String!, $code: String!) {
+            verifyTotp(email: $email, code: $code)
+          }
+        `,
+        variables: {
+          email: this.props.email,
+          code: this.state.code,
+        },
+      })
+
+      this.setState({
+        totpCertificate: verifyTotpMutation.data.verifyTotp,
+      })
+
+        this.signIn()
+    } catch (e) {
+      this.setState({ showLoading: false })
+
+      if (e.message === "GraphQL error: Code and secret do not match") {
+        this.setState({codeError:"Wrong code"})
+            } else {
+        this.setState({codeError:"Unexpected error"})
+      }
+    }finally{
+      this.setState({
+        showSecondFactorLoading:false
+      })
+    }
+  }
+
   signIn = async () => {
     try {
       this.props.changePasswordError("")
       this.props.changeEmailError("")
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
-          mutation($passwordCertificate: String, $webAuthnCertificate: String) {
+          mutation($passwordCertificate: String, $webAuthnCertificate: String,$totpCertificate:String) {
             logIn(
               passwordCertificate: $passwordCertificate
               webAuthnCertificate: $webAuthnCertificate
+              totpCertificate: $totpCertificate
             ) {
               token
               user {
@@ -304,6 +341,7 @@ class Login extends Component {
         variables: {
           passwordCertificate: this.state.passwordCertificate,
           webAuthnCertificate: this.state.webAuthnCertificate,
+          totpCertificate: this.state.totpCertificate
         },
       })
 
@@ -1718,7 +1756,7 @@ class Login extends Component {
                         }
                         onKeyPress={event => {
                           if (event.key === "Enter" && !this.state.codeEmpty)
-                            this.setState({ manualCodeOpen: false })
+this.verifyTotp()
                         }}
                         style={{
                           width: "100%",
@@ -1836,16 +1874,15 @@ class Login extends Component {
                           fullWidth={true}
                           onClick={() => {
                             this.setState({ showSecondFactorLoading: true })
+                            if (this.state.user && this.state.user.secondaryAuthenticationMethods.includes("PASSWORD") && this.props.password)
                             this.verifyPassword()
+                            if (this.state.user && this.state.user.secondaryAuthenticationMethods.includes("TOTP") && this.state.code)
+                            this.verifyTotp()
                           }}
                           style={{ margin: "8px 0" }}
                           color="primary"
-                          disabled={
-                            !(
-                              isemail.validate(this.props.email, {
-                                errorLevel: true,
-                              }) === 0 && this.props.password
-                            ) || this.state.showSecondFactorLoading
+                          disabled={(this.state.user && (this.state.user.secondaryAuthenticationMethods.includes("PASSWORD") && this.state.user.secondaryAuthenticationMethods.includes("TOTP") ? (!this.props.password && this.state.code.length!==6):this.state.user.secondaryAuthenticationMethods.includes("TOTP") ? this.state.code.length!==6 : !this.props.password)
+                               )     || this.state.showSecondFactorLoading
                           }
                         >
                           Log in
