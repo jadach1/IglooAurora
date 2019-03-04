@@ -117,8 +117,12 @@ const mobileTheme = createMuiTheme({
 })
 
 class Login extends Component {
-  constructor() {
-    super()
+  constructor(props) {
+    super(props)
+
+    // reset the email and password signup fields whenever the page loads
+    this.props.changeEmail("")
+    this.props.changePassword("")
 
     this.state = {
       recoveryError: "",
