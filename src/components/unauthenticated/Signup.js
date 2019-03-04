@@ -292,12 +292,12 @@ export default class Signup extends Component {
     try {
       const {
         data: {
-          enablePassword: { token, user },
+          setPassword: { token, user },
         },
       } = await this.client.mutate({
         mutation: gql`
           mutation($password: String!) {
-            enablePassword(password: $password) {
+            setPassword(password: $password) {
               token
               user {
                 id

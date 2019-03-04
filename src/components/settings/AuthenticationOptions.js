@@ -160,14 +160,14 @@ class AuthenticationOptions extends React.Component {
     try {
       this.client.mutate({
         mutation: gql`
-          mutation($newPassword: String!) {
-            changePassword(newPassword: $newPassword) {
+          mutation($password: String!) {
+            setPassword(password: $password) {
               token
             }
           }
         `,
         variables: {
-          newPassword: this.state.newPassword,
+          password: this.state.newPassword,
         },
       })
 
@@ -959,7 +959,7 @@ class AuthenticationOptions extends React.Component {
                   this.state.newPassword !== "" &&
                   user
                 )
-                  this.createToken()
+       this.changePassword(this.state.newPassword)
               }}
               style={{
                 width: "100%",
@@ -1207,7 +1207,7 @@ class AuthenticationOptions extends React.Component {
                       isPasswordEmpty: false,
                       passwordError: false,
                       password: "",
-                      showPassword: false,
+                      showNewPassword: false,
                     })
                 : this.state.menuTarget === "WEBAUTHN"
                 ? () => {
