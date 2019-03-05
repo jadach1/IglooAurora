@@ -180,14 +180,11 @@ class ChangeMailDialog extends React.Component {
         emailEmpty: false,
         email: this.props.email,
         showPassword: false,
+        showLoading: false,
       })
   }
 
   render() {
-    const {
-      userData: { user },
-    } = this.props
-
     return (
       <React.Fragment>
         <Dialog
@@ -230,7 +227,7 @@ class ChangeMailDialog extends React.Component {
                 })
               }
               onKeyPress={event => {
-                if (event.key === "Enter" && this.state.password !== "" && user)
+                if (event.key === "Enter" && this.state.password !== "")
                   this.createToken()
               }}
               style={{
@@ -361,7 +358,6 @@ class ChangeMailDialog extends React.Component {
           <DialogActions>
             <Button
               onClick={() => {
-                this.closeMailDialog()
                 this.props.close()
               }}
             >

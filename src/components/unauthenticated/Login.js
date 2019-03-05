@@ -1759,8 +1759,8 @@ class Login extends Component {
                           })
                         }
                         onKeyPress={event => {
-                          if (event.key === "Enter" && !this.state.codeEmpty)
-this.verifyTotp()
+                          if (event.key === "Enter" && !this.state.codeEmpty){
+this.verifyTotp()}
                         }}
                         style={{
                           width: "100%",

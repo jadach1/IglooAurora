@@ -214,7 +214,6 @@ export default class UnAuthenticatedMain extends Component {
           open={this.state.changeServerOpen}
           close={() => this.setState({ changeServerOpen: false })}
           forceUpdate={() => this.props.forceUpdate()}
-          isUnauthenticated
           unauthenticated
         />
       </React.Fragment>

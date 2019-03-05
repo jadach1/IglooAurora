@@ -11,6 +11,7 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import ListItemIcon from "@material-ui/core/ListItemIcon"
 import Fingerprint from "@material-ui/icons/Fingerprint"
+import Add from "@material-ui/icons/Add"
 import TextField from "@material-ui/core/TextField"
 import IconButton from "@material-ui/core/IconButton"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
@@ -171,8 +172,22 @@ class AuthenticationOptions extends React.Component {
         },
       })
 
+      if (this.state.isFirstFactor) {
+        if (!primaryAuthenticationMethods.includes("PASSWORD"))
+          primaryAuthenticationMethods.push("PASSWORD")
+      } else {
+        if (!secondaryAuthenticationMethods.includes("PASSWORD"))
+          secondaryAuthenticationMethods.push("PASSWORD")
+      }
+
+      this.changeAuthenticationMethods(
+        primaryAuthenticationMethods,
+        secondaryAuthenticationMethods
+      )
+
       this.setState({
         newPasswordDialogOpen: false,
+        addFactorOpen: false,
       })
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
@@ -275,7 +290,7 @@ class AuthenticationOptions extends React.Component {
       await this.client.mutate({
         mutation: gql`
           mutation($jwtChallenge: String!, $challengeResponse: String!) {
-            enableWebauthn(
+            setWebauthn(
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
             ) {
@@ -294,6 +309,21 @@ class AuthenticationOptions extends React.Component {
           jwtChallenge: getWebAuthnEnableChallenge.jwtChallenge,
         },
       })
+
+      if (this.state.isFirstFactor) {
+        if (!primaryAuthenticationMethods.includes("WEBAUTHN"))
+          primaryAuthenticationMethods.push("WEBAUTHN")
+      } else {
+        if (!secondaryAuthenticationMethods.includes("WEBAUTHN"))
+          secondaryAuthenticationMethods.push("WEBAUTHN")
+      }
+
+      this.changeAuthenticationMethods(
+        primaryAuthenticationMethods,
+        secondaryAuthenticationMethods
+      )
+
+      this.setState({ addFactorOpen: false })
     }
 
     navigator.credentials
@@ -367,8 +397,18 @@ class AuthenticationOptions extends React.Component {
           secret,
         },
       })
+
+      if (!secondaryAuthenticationMethods.includes("TOTP"))
+        secondaryAuthenticationMethods.push("TOTP")
+
+      this.changeAuthenticationMethods(
+        primaryAuthenticationMethods,
+        secondaryAuthenticationMethods
+      )
+
       this.setState({
         configureTotpOpen: false,
+        addFactorOpen: false,
       })
     } catch (e) {
       if (e.message === "GraphQL error: Code and secret do not match") {
@@ -380,17 +420,6 @@ class AuthenticationOptions extends React.Component {
       }
     } finally {
       this.setState({ showTotpLoading: false })
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (this.props.open !== nextProps.open && nextProps.open) {
-      this.setState({
-        isPasswordEmpty: false,
-        passwordError: false,
-        password: "",
-        showPassword: false,
-      })
     }
   }
 
@@ -471,6 +500,17 @@ class AuthenticationOptions extends React.Component {
         secondaryAuthenticationMethods,
       },
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (this.props.open !== nextProps.open && nextProps.open) {
+      this.setState({
+        isPasswordEmpty: false,
+        passwordError: false,
+        password: "",
+        showPassword: false,
+      })
+    }
   }
 
   render() {
@@ -714,7 +754,8 @@ class AuthenticationOptions extends React.Component {
           open={
             this.state.selectAuthTypeOpen &&
             !this.state.newPasswordDialogOpen &&
-            !this.state.configureTotpOpen
+            !this.state.configureTotpOpen &&
+            !this.state.addFactorOpen
           }
           onClose={() => {
             this.setState({ selectAuthTypeOpen: false })
@@ -791,101 +832,105 @@ class AuthenticationOptions extends React.Component {
                   }
                 >
                   <List>
-                    {(primaryAuthenticationMethods.includes("WEBAUTHN") ||
-                      primaryAuthenticationMethods.includes("PASSWORD")) && (
-                      <li key="primaryAuth">
-                        <ul style={{ padding: "0" }}>
-                          <ListSubheader
-                            style={
-                              typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                                ? {
-                                    color: "white",
-                                    backgroundColor: "#2f333d",
-                                  }
-                                : { color: "black", backgroundColor: "white" }
+                    <li key="primaryAuth">
+                      <ul style={{ padding: "0" }}>
+                        <ListSubheader
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? {
+                                  color: "white",
+                                  backgroundColor: "#2f333d",
+                                }
+                              : { color: "black", backgroundColor: "white" }
+                          }
+                        >
+                          Primary methods
+                        </ListSubheader>
+                        {primaryAuthenticationMethods.includes("WEBAUTHN") &&
+                          webAuthnListItem}
+                        {primaryAuthenticationMethods.includes("PASSWORD") &&
+                          passwordListItem}
+                        <ListItem
+                          button
+                          onClick={() =>
+                            this.setState({
+                              addFactorOpen: true,
+                              isFirstFactor: true,
+                            })
+                          }
+                        >
+                          <ListItemIcon>
+                            <Add />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <font
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? { color: "white" }
+                                    : {}
+                                }
+                              >
+                                Add primary factor
+                              </font>
                             }
-                          >
-                            Primary methods
-                          </ListSubheader>
-                          {primaryAuthenticationMethods.includes("WEBAUTHN") &&
-                            webAuthnListItem}
-                          {primaryAuthenticationMethods.includes("PASSWORD") &&
-                            passwordListItem}
-                        </ul>
-                      </li>
-                    )}
-                    {(secondaryAuthenticationMethods.includes("WEBAUTHN") ||
-                      secondaryAuthenticationMethods.includes("PASSWORD") ||
-                      secondaryAuthenticationMethods.includes("TOTP")) && (
-                      <li key="secondaryAuth">
-                        <ul style={{ padding: "0" }}>
-                          <ListSubheader
-                            style={
-                              typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                                ? {
-                                    color: "white",
-                                    backgroundColor: "#2f333d",
-                                  }
-                                : { color: "black", backgroundColor: "white" }
+                          />
+                        </ListItem>
+                      </ul>
+                    </li>
+                    <li key="secondaryAuth">
+                      <ul style={{ padding: "0" }}>
+                        <ListSubheader
+                          style={
+                            typeof Storage !== "undefined" &&
+                            localStorage.getItem("nightMode") === "true"
+                              ? {
+                                  color: "white",
+                                  backgroundColor: "#2f333d",
+                                }
+                              : { color: "black", backgroundColor: "white" }
+                          }
+                        >
+                          Secondary methods
+                        </ListSubheader>
+                        {secondaryAuthenticationMethods.includes("WEBAUTHN") &&
+                          webAuthnListItem}
+                        {secondaryAuthenticationMethods.includes("PASSWORD") &&
+                          passwordListItem}
+                        {secondaryAuthenticationMethods.includes("TOTP") &&
+                          totpListItem}
+                        <ListItem
+                          button
+                          onClick={() =>
+                            this.setState({
+                              addFactorOpen: true,
+                              isFirstFactor: false,
+                            })
+                          }
+                          disabled={!primaryAuthenticationMethods[0]}
+                        >
+                          <ListItemIcon>
+                            <Add />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <font
+                                style={
+                                  typeof Storage !== "undefined" &&
+                                  localStorage.getItem("nightMode") === "true"
+                                    ? { color: "white" }
+                                    : {}
+                                }
+                              >
+                                Add secondary factor
+                              </font>
                             }
-                          >
-                            Secondary methods
-                          </ListSubheader>
-                          {secondaryAuthenticationMethods.includes(
-                            "WEBAUTHN"
-                          ) && webAuthnListItem}
-                          {secondaryAuthenticationMethods.includes(
-                            "PASSWORD"
-                          ) && passwordListItem}
-                          {secondaryAuthenticationMethods.includes("TOTP") &&
-                            totpListItem}
-                        </ul>
-                      </li>
-                    )}
-                    {!(
-                      (secondaryAuthenticationMethods.includes("WEBAUTHN") ||
-                        primaryAuthenticationMethods.includes("WEBAUTHN")) &&
-                      (secondaryAuthenticationMethods.includes("PASSWORD") ||
-                        primaryAuthenticationMethods.includes("PASSWORD")) &&
-                      secondaryAuthenticationMethods.includes("TOTP")
-                    ) && (
-                      <li key="disabledAuth">
-                        <ul style={{ padding: "0" }}>
-                          <ListSubheader
-                            style={
-                              typeof Storage !== "undefined" &&
-                              localStorage.getItem("nightMode") === "true"
-                                ? {
-                                    color: "white",
-                                    backgroundColor: "#2f333d",
-                                  }
-                                : { color: "black", backgroundColor: "white" }
-                            }
-                          >
-                            Disabled
-                          </ListSubheader>
-                          {!secondaryAuthenticationMethods.includes(
-                            "WEBAUTHN"
-                          ) &&
-                            !primaryAuthenticationMethods.includes(
-                              "WEBAUTHN"
-                            ) &&
-                            webAuthnListItem}
-                          {!secondaryAuthenticationMethods.includes(
-                            "PASSWORD"
-                          ) &&
-                            !primaryAuthenticationMethods.includes(
-                              "PASSWORD"
-                            ) &&
-                            passwordListItem}
-                          {!secondaryAuthenticationMethods.includes("TOTP") &&
-                            !primaryAuthenticationMethods.includes("TOTP") &&
-                            totpListItem}
-                        </ul>
-                      </li>
-                    )}
+                          />
+                        </ListItem>
+                      </ul>
+                    </li>
                   </List>
                 </div>
               )
@@ -959,7 +1004,7 @@ class AuthenticationOptions extends React.Component {
                   this.state.newPassword !== "" &&
                   user
                 )
-       this.changePassword(this.state.newPassword)
+                  this.changePassword(this.state.newPassword)
               }}
               style={{
                 width: "100%",
@@ -1023,7 +1068,7 @@ class AuthenticationOptions extends React.Component {
         </Dialog>
         <Dialog
           open={this.state.configureTotpOpen}
-          onClose={() => this.props.close()}
+          onClose={() => this.setState({ configureTotpOpen: false })}
           TransitionComponent={
             this.props.fullScreen ? SlideTransition : GrowTransition
           }
@@ -1087,18 +1132,35 @@ class AuthenticationOptions extends React.Component {
                   <React.Fragment>
                     <div className="notSelectable">
                       Scan this QR code with an application such as{" "}
-                                              <Link style={{ cursor: "pointer" }} href="https://1password.com/downloads/">1Password</Link>
-                  ,{" "}
-                        <Link style={{ cursor: "pointer" }} href="https://authy.com/download/">Authy</Link>
+                      <Link
+                        style={{ cursor: "pointer" }}
+                        href="https://1password.com/downloads/"
+                      >
+                        1Password
+                      </Link>
+                      ,{" "}
+                      <Link
+                        style={{ cursor: "pointer" }}
+                        href="https://authy.com/download/"
+                      >
+                        Authy
+                      </Link>
                       , or{" "}
-                        <Link style={{ cursor: "pointer" }} href="https://lastpass.com/auth/">
-                          LastPass Authenticator
-                        </Link>
+                      <Link
+                        style={{ cursor: "pointer" }}
+                        href="https://lastpass.com/auth/"
+                      >
+                        LastPass Authenticator
+                      </Link>
                       .
                     </div>
                     <div
                       dangerouslySetInnerHTML={{ __html: qrCode }}
-                      style={{ margin: "8px 0" }}
+                      style={{
+                        margin: "8px auto",
+                        width: "195px",
+                        height: "195px",
+                      }}
                     />
                     <div style={{ marginBottom: "24px" }}>
                       <font className="notSelectable">
@@ -1180,6 +1242,147 @@ class AuthenticationOptions extends React.Component {
             >
               Confirm code
               {this.state.showTotpLoading && <CenteredSpinner isInButton />}
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog
+          open={
+            this.state.addFactorOpen &&
+            !this.state.configureTotpOpen &&
+            !this.state.newPasswordDialogOpen
+          }
+          onClose={() => this.setState({ addFactorOpen: false })}
+          TransitionComponent={
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
+          fullScreen={this.props.fullScreen}
+          disableBackdropClick={this.props.fullScreen}
+          fullWidth
+          maxWidth="xs"
+        >
+          <DialogTitle
+            style={
+              this.props.fullScreen
+                ? typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
+                  : { width: "calc(100% - 48px)", background: "#fff" }
+                : typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                ? { background: "#2f333d" }
+                : { background: "#fff" }
+            }
+          >
+            <font
+              style={
+                typeof Storage !== "undefined" &&
+                localStorage.getItem("nightMode") === "true"
+                  ? { color: "#fff" }
+                  : {}
+              }
+            >
+              {this.state.isFirstFactor
+                ? "Add primary factor"
+                : "Add secondary factor"}
+            </font>
+          </DialogTitle>
+          <div
+            style={{
+              height: "100%",
+            }}
+          >
+            <ListItem
+              button
+              disabled={
+                primaryAuthenticationMethods.includes("PASSWORD") ||
+                secondaryAuthenticationMethods.includes("PASSWORD")
+              }
+              onClick={() => this.setState({ newPasswordDialogOpen: true })}
+            >
+              <ListItemIcon>
+                <SvgIcon>
+                  <svg
+                    style={{ width: "24px", height: "24px" }}
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M17,7H22V17H17V19A1,1 0 0,0 18,20H20V22H17.5C16.95,22 16,21.55 16,21C16,21.55 15.05,22 14.5,22H12V20H14A1,1 0 0,0 15,19V5A1,1 0 0,0 14,4H12V2H14.5C15.05,2 16,2.45 16,3C16,2.45 16.95,2 17.5,2H20V4H18A1,1 0 0,0 17,5V7M2,7H13V9H4V15H13V17H2V7M20,15V9H17V15H20M8.5,12A1.5,1.5 0 0,0 7,10.5A1.5,1.5 0 0,0 5.5,12A1.5,1.5 0 0,0 7,13.5A1.5,1.5 0 0,0 8.5,12M13,10.89C12.39,10.33 11.44,10.38 10.88,11C10.32,11.6 10.37,12.55 11,13.11C11.55,13.63 12.43,13.63 13,13.11V10.89Z" />
+                  </svg>
+                </SvgIcon>
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    Password
+                  </font>
+                }
+              />
+            </ListItem>
+            <ListItem button onClick={() => this.enableWebAuthn()}>
+              <ListItemIcon>
+                <Fingerprint />
+              </ListItemIcon>
+              <ListItemText
+                primary={
+                  <font
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? { color: "white" }
+                        : {}
+                    }
+                  >
+                    Fingerprint, face or security key
+                  </font>
+                }
+              />
+            </ListItem>
+            {!this.state.isFirstFactor &&
+              !secondaryAuthenticationMethods.includes("TOTP") && (
+                <ListItem
+                  button
+                  onClick={() => this.setState({ configureTotpOpen: true })}
+                >
+                  <ListItemIcon>
+                    <SvgIcon>
+                      <svg
+                        style={{ width: "24px", height: "24px" }}
+                        viewBox="0 0 24 24"
+                      >
+                        <path d="M7,1A2,2 0 0,0 5,3V7H7V4H17V20H7V17H5V21A2,2 0 0,0 7,23H17A2,2 0 0,0 19,21V3A2,2 0 0,0 17,1H7M6,9A3,3 0 0,0 3,12A3,3 0 0,0 6,15C7.31,15 8.42,14.17 8.83,13H11V15H13V13H14V11H8.83C8.42,9.83 7.31,9 6,9M6,11A1,1 0 0,1 7,12A1,1 0 0,1 6,13A1,1 0 0,1 5,12A1,1 0 0,1 6,11Z" />{" "}
+                      </svg>
+                    </SvgIcon>
+                  </ListItemIcon>
+                  <ListItemText
+                    primary={
+                      <font
+                        style={
+                          typeof Storage !== "undefined" &&
+                          localStorage.getItem("nightMode") === "true"
+                            ? { color: "white" }
+                            : {}
+                        }
+                      >
+                        One-time password
+                      </font>
+                    }
+                  />
+                </ListItem>
+              )}
+          </div>
+          <DialogActions>
+            <Button
+              onClick={() => {
+                this.setState({ addFactorOpen: false })
+              }}
+            >
+              Close
             </Button>
           </DialogActions>
         </Dialog>

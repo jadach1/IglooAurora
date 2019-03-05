@@ -707,6 +707,7 @@ class SettingsDialog extends React.Component {
               <ListItem
                 button
                 onClick={() => this.setState({ authenticationOpen: true })}
+                disabled={!user}
               >
                 <ListItemText
                   primary={
@@ -1434,6 +1435,7 @@ class SettingsDialog extends React.Component {
         <GDPRDataDownload
           open={this.props.isOpen && this.state.gdprOpen}
           close={() => this.setState({ gdprOpen: false })}
+          logOut={this.props.logOut}
         />
         <ChangeEmail
           open={this.props.isOpen && this.state.emailDialogOpen}

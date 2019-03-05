@@ -29,6 +29,7 @@ import Switch from "@material-ui/core/Switch"
 import SvgIcon from "@material-ui/core/SvgIcon"
 import normalizeUrl from "normalize-url"
 import compareUrls from "compare-urls"
+import {Redirect} from "react-router"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -55,7 +56,10 @@ class ChangeServer extends React.Component {
       this.props.forceUpdate()
     }
 
-    !this.props.isUnauthenticated && this.props.logOut(false)
+    if (!this.props.unauthenticated) {
+      this.props.logOut(false)
+    }else{
+this.setState({redirectToAccounts:true})}
   }
 
   isUrl = url => {
@@ -910,6 +914,9 @@ class ChangeServer extends React.Component {
             </ListItemText>
           </MenuItem>
         </Menu>
+        {
+          this.state.redirectToAccounts && <Redirect to="/accounts" />
+        }
       </React.Fragment>
     )
 

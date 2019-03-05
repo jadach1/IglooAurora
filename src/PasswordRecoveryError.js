@@ -79,7 +79,7 @@ export default class PasswordRecoveryError extends React.Component {
             to="/"
             style={{ marginBottom: "16px" }}
           >
-            Take me away!
+            Save me!
           </Button>
         </MuiThemeProvider>
       </div>
