@@ -43,6 +43,7 @@ import Delete from "@material-ui/icons/Delete"
 import Add from "@material-ui/icons/Add"
 import MoreVert from "@material-ui/icons/MoreVert"
 import VpnKey from "@material-ui/icons/VpnKey"
+import Typography from "@material-ui/core/Typography"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -415,7 +416,29 @@ class AuthDialog extends React.Component {
     let tokenList = ""
 
     if (this.props.tokenData.error) {
-      tokenList = "Unexpected error"
+      tokenList = (
+        <Typography
+          variant="h5"
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                  color: "white",
+                }
+              : {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                }
+          }
+          className="notSelectable defaultCursor"
+        >
+          Unexpected error
+        </Typography>
+      )
 
       if (
         this.props.tokenData.error.message ===

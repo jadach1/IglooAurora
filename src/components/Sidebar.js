@@ -24,6 +24,7 @@ import Clear from "@material-ui/icons/Clear"
 import Avatar from "@material-ui/core/Avatar"
 import ListItemAvatar from "@material-ui/core/ListItemAvatar"
 import Star from "@material-ui/icons/Star"
+import Typography from "@material-ui/core/Typography"
 
 class Sidebar extends Component {
   state = {
@@ -96,7 +97,29 @@ class Sidebar extends Component {
     }
 
     if (error) {
-      sidebarContent = "Unexpected error"
+      sidebarContent = (
+        <Typography
+          variant="h5"
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                  color: "white",
+                }
+              : {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                }
+          }
+          className="notSelectable defaultCursor"
+        >
+          Unexpected error
+        </Typography>
+      )
 
       if (
         error.message === "GraphQL error: This id is not valid" ||
@@ -269,8 +292,8 @@ class Sidebar extends Component {
                         {(device.lastUnreadNotification &&
                           device.lastUnreadNotification.content) ||
                           (device.lastReadNotification
-                            ? "No unread notifications"
-                            : "No notifications")}
+                            ? "No unread notification"
+                            : "No notification")}
                       </font>
                     }
                   />

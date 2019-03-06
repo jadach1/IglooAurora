@@ -41,6 +41,7 @@ import introspectionQueryResultData from "../../fragmentTypes.json"
 import Query from "react-apollo/Query"
 import Link from "@material-ui/core/Link"
 import Clear from "@material-ui/icons/Clear"
+import Typography from "@material-ui/core/Typography"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -770,9 +771,7 @@ class AuthenticationOptions extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle disableTypography>
-              Authentication methods
-          </DialogTitle>
+          <DialogTitle disableTypography>Authentication methods</DialogTitle>
           <div
             style={
               typeof Storage !== "undefined" &&
@@ -800,7 +799,30 @@ class AuthenticationOptions extends React.Component {
             >
               {({ loading, error, data }) => {
                 if (loading) return <CenteredSpinner />
-                if (error) return "Unexpected error"
+                if (error)
+                  return (
+                    <Typography
+                      variant="h5"
+                className="notSelectable defaultCursor"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              textAlign: "center",
+                              marginTop: "32px",
+                              marginBottom: "32px",
+                              color: "white",
+                            }
+                          : {
+                              textAlign: "center",
+                              marginTop: "32px",
+                              marginBottom: "32px",
+                            }
+                      }
+                    >
+                      Unexpected error
+                    </Typography>
+                  )
 
                 if (data) {
                   primaryAuthenticationMethods =
@@ -826,7 +848,11 @@ class AuthenticationOptions extends React.Component {
                         >
                           Primary methods
                         </ListSubheader>
-                        {primaryAuthenticationMethods.map(method=>method==="WEBAUTHN"?webAuthnListItem:passwordListItem)}
+                        {primaryAuthenticationMethods.map(method =>
+                          method === "WEBAUTHN"
+                            ? webAuthnListItem
+                            : passwordListItem
+                        )}
                         <ListItem
                           button
                           onClick={() =>
@@ -871,8 +897,14 @@ class AuthenticationOptions extends React.Component {
                         >
                           Secondary methods
                         </ListSubheader>
-                        {secondaryAuthenticationMethods.map(method=>method==="WEBAUTHN"?webAuthnListItem:method==="TOTP"?totpListItem:passwordListItem)}
-                                               <ListItem
+                        {secondaryAuthenticationMethods.map(method =>
+                          method === "WEBAUTHN"
+                            ? webAuthnListItem
+                            : method === "TOTP"
+                            ? totpListItem
+                            : passwordListItem
+                        )}
+                        <ListItem
                           button
                           onClick={() =>
                             this.setState({
@@ -1049,7 +1081,7 @@ class AuthenticationOptions extends React.Component {
           maxWidth="xs"
         >
           <DialogTitle disableTypography>
-              Configure one-time password
+            Configure one-time password
           </DialogTitle>
           <div
             style={{
@@ -1071,7 +1103,30 @@ class AuthenticationOptions extends React.Component {
             >
               {({ loading, error, data }) => {
                 if (loading) return <CenteredSpinner />
-                if (error) return "Unexpected error"
+                if (error)
+                  return (
+                    <Typography
+                      variant="h5"
+                className="notSelectable defaultCursor"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              textAlign: "center",
+                              marginTop: "32px",
+                              marginBottom: "32px",
+                              color: "white",
+                            }
+                          : {
+                              textAlign: "center",
+                              marginTop: "32px",
+                              marginBottom: "32px",
+                            }
+                      }
+                    >
+                      Unexpected error
+                    </Typography>
+                  )
 
                 if (data) {
                   secret = data.getNewTotpSecret.secret
@@ -1211,9 +1266,9 @@ class AuthenticationOptions extends React.Component {
           maxWidth="xs"
         >
           <DialogTitle disableTypography>
-              {this.state.isFirstFactor
-                ? "Add primary factor"
-                : "Add secondary factor"}
+            {this.state.isFirstFactor
+              ? "Add primary factor"
+              : "Add secondary factor"}
           </DialogTitle>
           <div
             style={{

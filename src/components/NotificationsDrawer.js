@@ -268,7 +268,27 @@ class NotificationsDrawer extends React.Component {
     let readNotificationsUI = ""
 
     if (error) {
-      unreadNotificationsList = "Unexpected error"
+      unreadNotificationsList = <Typography
+        variant="h5"
+        className="notSelectable defaultCursor"
+        style={
+          typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+            ? {
+              textAlign: "center",
+              marginTop: "32px",
+              marginBottom: "32px",
+              color: "white",
+            }
+            : {
+              textAlign: "center",
+              marginTop: "32px",
+              marginBottom: "32px",
+            }
+        }
+      >
+        Unexpected error
+          </Typography>
 
       if (error.message === "GraphQL error: This user doesn't exist anymore") {
         this.props.logOut(true)
@@ -594,7 +614,7 @@ class NotificationsDrawer extends React.Component {
                   }
             }
           >
-            No new notifications
+            No new notification
           </Typography>
         )
       }

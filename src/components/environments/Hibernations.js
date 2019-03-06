@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 import CenteredSpinner from "../CenteredSpinner"
 import Replay from "@material-ui/icons/Replay"
+import Typography from "@material-ui/core/Typography"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -42,7 +43,30 @@ class Hibernations extends Component {
   render() {
     let content = ""
 
-    if (this.props.ownerChangesData.error) content = "Unexpected error"
+    if (this.props.ownerChangesData.error)
+      content = (
+        <Typography
+          variant="h5"
+          className="notSelectable defaultCursor"
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                  color: "white",
+                }
+              : {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                }
+          }
+        >
+          Unexpected error
+        </Typography>
+      )
 
     if (this.props.ownerChangesData.loading) content = <CenteredSpinner />
 

@@ -20,6 +20,7 @@ import isUUID from "is-uuid"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import SwitchCamera from "@material-ui/icons/SwitchCamera"
+import Typography from "@material-ui/core/Typography"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -194,7 +195,29 @@ class AddDevice extends Component {
             <SwitchCamera />
           </IconButton>
           <div style={{ height: "100%" }}>
-            {this.state.qrErrpr && "Unexpected error"}
+            {this.state.qrError && (
+              <Typography
+                variant="h5"
+                className="notSelectable defaultCursor"
+                style={
+                  typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                    ? {
+                        textAlign: "center",
+                        marginTop: "32px",
+                        marginBottom: "32px",
+                        color: "white",
+                      }
+                    : {
+                        textAlign: "center",
+                        marginTop: "32px",
+                        marginBottom: "32px",
+                      }
+                }
+              >
+                Unexpected error
+              </Typography>
+            )}
             <QrReader
               delay={1000}
               showViewFinder={false}

@@ -1143,7 +1143,27 @@ class Login extends Component {
                         </MuiThemeProvider>
                       )
 
-                    if (error) return "Unexpected error"
+                    if (error) return <Typography
+                variant="h5"
+                style={
+                  typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                    ? {
+                      textAlign: "center",
+                      marginTop: "32px",
+                      marginBottom: "32px",
+                      color: "white",
+                    }
+                    : {
+                      textAlign: "center",
+                      marginTop: "32px",
+                      marginBottom: "32px",
+                    }
+                }
+          className="notSelectable defaultCursor"
+              >
+                Unexpected error
+          </Typography>
 
                     if (data) {
                       this.setState({ user: data.user })
