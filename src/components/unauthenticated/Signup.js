@@ -247,7 +247,7 @@ export default class Signup extends Component {
             : "wss://") +
           localStorage.getItem("server") +
           "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -264,7 +264,7 @@ export default class Signup extends Component {
             : "https://") +
           localStorage.getItem("server") +
           "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.changeAuthenticationToken,
       },
@@ -348,7 +348,7 @@ export default class Signup extends Component {
             : "wss://") +
           localStorage.getItem("server") +
           "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -365,7 +365,7 @@ export default class Signup extends Component {
             : "https://") +
           localStorage.getItem("server") +
           "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.changeAuthenticationToken,
       },

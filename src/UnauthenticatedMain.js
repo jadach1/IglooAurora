@@ -34,7 +34,7 @@ export default class UnAuthenticatedMain extends Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
     })
 
     this.client = new ApolloClient({

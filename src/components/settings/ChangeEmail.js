@@ -88,7 +88,7 @@ class ChangeMailDialog extends React.Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -105,7 +105,7 @@ class ChangeMailDialog extends React.Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },

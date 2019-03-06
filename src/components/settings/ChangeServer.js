@@ -144,10 +144,10 @@ this.setState({redirectToAccounts:true})}
 
     if (
       typeof Storage !== "undefined" &&
-      localStorage.getItem("server") !== "iglooql.herokuapp.com" &&
+      localStorage.getItem("server") !== "bering.igloo.ooo" &&
       localStorage.getItem("server") === url
     )
-      this.selectUrl("iglooql.herokuapp.com", false)
+      this.selectUrl("bering.igloo.ooo", false)
 
     this.forceUpdate()
   }
@@ -277,12 +277,12 @@ this.setState({redirectToAccounts:true})}
                 button
                 selected={
                   typeof Storage !== "undefined" &&
-                  localStorage.getItem("server") === "iglooql.herokuapp.com"
+                  localStorage.getItem("server") === "bering.igloo.ooo"
                 }
                 onClick={() =>
                   typeof Storage !== "undefined" &&
-                  localStorage.getItem("server") !== "iglooql.herokuapp.com" &&
-                  this.selectUrl("iglooql.herokuapp.com", false)
+                  localStorage.getItem("server") !== "bering.igloo.ooo" &&
+                  this.selectUrl("bering.igloo.ooo", false)
                 }
               >
                 <ListItemIcon>
@@ -312,7 +312,7 @@ this.setState({redirectToAccounts:true})}
                           : { color: "#7a7a7a" }
                       }
                     >
-                      iglooql.herokuapp.com
+                      bering.igloo.ooo
                     </font>
                   }
                 />
@@ -403,12 +403,12 @@ this.setState({redirectToAccounts:true})}
                   typeof Storage !== "undefined" &&
                   !this.serverListContainsItem() &&
                   this.isUrl(this.state.url) &&
-                  this.state.url !== "https://iglooql.herokuapp.com" &&
-                  this.state.url !== "iglooql.herokuapp.com" &&
-                  this.state.url !== "http://iglooql.herokuapp.com" &&
-                  this.state.url !== "http://iglooql.herokuapp.com/" &&
-                  this.state.url !== "iglooql.herokuapp.com/" &&
-                  this.state.url !== "https://iglooql.herokuapp.com/"
+                  this.state.url !== "https://bering.igloo.ooo" &&
+                  this.state.url !== "bering.igloo.ooo" &&
+                  this.state.url !== "http://bering.igloo.ooo" &&
+                  this.state.url !== "http://bering.igloo.ooo/" &&
+                  this.state.url !== "bering.igloo.ooo/" &&
+                  this.state.url !== "https://bering.igloo.ooo/"
                 ) {
                   this.addServer()
                   this.setState({
@@ -476,9 +476,9 @@ this.setState({redirectToAccounts:true})}
                   typeof Storage !== "undefined" &&
                   !this.serverListContainsItem() &&
                   this.isUrl(this.state.url) &&
-                  this.state.url !== "https://iglooql.herokuapp.com" &&
-                  this.state.url !== "iglooql.herokuapp.com" &&
-                  this.state.url !== "http://iglooql.herokuapp.com"
+                  this.state.url !== "https://bering.igloo.ooo" &&
+                  this.state.url !== "bering.igloo.ooo" &&
+                  this.state.url !== "http://bering.igloo.ooo"
                 ) {
                   this.addServer()
                   this.setState({
@@ -596,9 +596,9 @@ this.setState({redirectToAccounts:true})}
                 typeof Storage === "undefined" ||
                 this.serverListContainsItem() ||
                 !this.isUrl(this.state.url) ||
-                this.state.url === "https://iglooql.herokuapp.com" ||
-                this.state.url === "iglooql.herokuapp.com" ||
-                this.state.url === "http://iglooql.herokuapp.com"
+                this.state.url === "https://bering.igloo.ooo" ||
+                this.state.url === "bering.igloo.ooo" ||
+                this.state.url === "http://bering.igloo.ooo"
               }
             >
               Add
@@ -654,12 +654,12 @@ this.setState({redirectToAccounts:true})}
                   this.state.editUrl &&
                   typeof Storage !== "undefined" &&
                   this.isUrl(this.state.editUrl) &&
-                  this.state.editUrl !== "https://iglooql.herokuapp.com" &&
-                  this.state.editUrl !== "iglooql.herokuapp.com" &&
-                  this.state.editUrl !== "http://iglooql.herokuapp.com" &&
-                  this.state.editUrl !== "http://iglooql.herokuapp.com/" &&
-                  this.state.editUrl !== "iglooql.herokuapp.com/" &&
-                  this.state.editUrl !== "https://iglooql.herokuapp.com/"
+                  this.state.editUrl !== "https://bering.igloo.ooo" &&
+                  this.state.editUrl !== "bering.igloo.ooo" &&
+                  this.state.editUrl !== "http://bering.igloo.ooo" &&
+                  this.state.editUrl !== "http://bering.igloo.ooo/" &&
+                  this.state.editUrl !== "bering.igloo.ooo/" &&
+                  this.state.editUrl !== "https://bering.igloo.ooo/"
                 ) {
                   this.editServer()
                   this.setState({
@@ -726,9 +726,9 @@ this.setState({redirectToAccounts:true})}
                   this.state.editUrl &&
                   typeof Storage !== "undefined" &&
                   this.isUrl(this.state.editUrl) &&
-                  this.state.editUrl !== "https://iglooql.herokuapp.com" &&
-                  this.state.editUrl !== "iglooql.herokuapp.com" &&
-                  this.state.editUrl !== "http://iglooql.herokuapp.com"
+                  this.state.editUrl !== "https://bering.igloo.ooo" &&
+                  this.state.editUrl !== "bering.igloo.ooo" &&
+                  this.state.editUrl !== "http://bering.igloo.ooo"
                 ) {
                   this.editServer()
                   this.setState({
@@ -846,9 +846,9 @@ this.setState({redirectToAccounts:true})}
                 typeof Storage === "undefined" ||
                 !this.isUrl(this.state.editUrl) ||
                 this.serverListContainsItem() ||
-                this.state.editUrl === "https://iglooql.herokuapp.com" ||
-                this.state.editUrl === "iglooql.herokuapp.com" ||
-                this.state.editUrl === "http://iglooql.herokuapp.com"
+                this.state.editUrl === "https://bering.igloo.ooo" ||
+                this.state.editUrl === "bering.igloo.ooo" ||
+                this.state.editUrl === "http://bering.igloo.ooo"
               }
             >
               Edit

@@ -114,7 +114,7 @@ class AuthenticationOptions extends React.Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -131,7 +131,7 @@ class AuthenticationOptions extends React.Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -215,7 +215,7 @@ class AuthenticationOptions extends React.Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -232,7 +232,7 @@ class AuthenticationOptions extends React.Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -340,7 +340,7 @@ class AuthenticationOptions extends React.Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -357,7 +357,7 @@ class AuthenticationOptions extends React.Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -435,7 +435,7 @@ class AuthenticationOptions extends React.Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -452,7 +452,7 @@ class AuthenticationOptions extends React.Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -794,43 +794,43 @@ class AuthenticationOptions extends React.Component {
               Authentication methods
             </font>
           </DialogTitle>
-          <Query
-            query={gql`
-              query {
-                user {
-                  id
-                  primaryAuthenticationMethods
-                  secondaryAuthenticationMethods
-                }
-              }
-            `}
-            skip={!this.props.open}
-          >
-            {({ loading, error, data }) => {
-              if (loading) return <CenteredSpinner />
-              if (error) return "Unexpected error"
-
-              if (data) {
-                primaryAuthenticationMethods =
-                  data.user.primaryAuthenticationMethods
-                secondaryAuthenticationMethods =
-                  data.user.secondaryAuthenticationMethods
-              }
-
-              return (
-                <div
-                  style={
-                    typeof Storage !== "undefined" &&
-                    localStorage.getItem("nightMode") === "true"
-                      ? {
-                          height: "100%",
-                          background: "#2f333d",
-                        }
-                      : {
-                          height: "100%",
-                        }
+          <div
+            style={
+              typeof Storage !== "undefined" &&
+              localStorage.getItem("nightMode") === "true"
+                ? {
+                    height: "100%",
+                    background: "#2f333d",
                   }
-                >
+                : {
+                    height: "100%",
+                  }
+            }
+          >
+            <Query
+              query={gql`
+                query {
+                  user {
+                    id
+                    primaryAuthenticationMethods
+                    secondaryAuthenticationMethods
+                  }
+                }
+              `}
+              skip={!this.props.open}
+            >
+              {({ loading, error, data }) => {
+                if (loading) return <CenteredSpinner />
+                if (error) return "Unexpected error"
+
+                if (data) {
+                  primaryAuthenticationMethods =
+                    data.user.primaryAuthenticationMethods
+                  secondaryAuthenticationMethods =
+                    data.user.secondaryAuthenticationMethods
+                }
+
+                return (
                   <List>
                     <li key="primaryAuth">
                       <ul style={{ padding: "0" }}>
@@ -847,10 +847,7 @@ class AuthenticationOptions extends React.Component {
                         >
                           Primary methods
                         </ListSubheader>
-                        {primaryAuthenticationMethods.includes("WEBAUTHN") &&
-                          webAuthnListItem}
-                        {primaryAuthenticationMethods.includes("PASSWORD") &&
-                          passwordListItem}
+                        {primaryAuthenticationMethods.map(method=>method==="WEBAUTHN"?webAuthnListItem:passwordListItem)}
                         <ListItem
                           button
                           onClick={() =>
@@ -895,13 +892,8 @@ class AuthenticationOptions extends React.Component {
                         >
                           Secondary methods
                         </ListSubheader>
-                        {secondaryAuthenticationMethods.includes("WEBAUTHN") &&
-                          webAuthnListItem}
-                        {secondaryAuthenticationMethods.includes("PASSWORD") &&
-                          passwordListItem}
-                        {secondaryAuthenticationMethods.includes("TOTP") &&
-                          totpListItem}
-                        <ListItem
+                        {secondaryAuthenticationMethods.map(method=>method==="WEBAUTHN"?webAuthnListItem:method==="TOTP"?totpListItem:passwordListItem)}
+                                               <ListItem
                           button
                           onClick={() =>
                             this.setState({
@@ -932,10 +924,10 @@ class AuthenticationOptions extends React.Component {
                       </ul>
                     </li>
                   </List>
-                </div>
-              )
-            }}
-          </Query>
+                )
+              }}
+            </Query>
+          </div>
           <DialogActions>
             <Button
               onClick={() => {
