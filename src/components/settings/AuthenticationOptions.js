@@ -770,29 +770,8 @@ class AuthenticationOptions extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle
-            style={
-              this.props.fullScreen
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { background: "#2f333d" }
-                : { background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
+          <DialogTitle disableTypography>
               Authentication methods
-            </font>
           </DialogTitle>
           <div
             style={
@@ -1069,29 +1048,8 @@ class AuthenticationOptions extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle
-            style={
-              this.props.fullScreen
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { background: "#2f333d" }
-                : { background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
+          <DialogTitle disableTypography>
               Configure one-time password
-            </font>
           </DialogTitle>
           <div
             style={{
@@ -1252,31 +1210,10 @@ class AuthenticationOptions extends React.Component {
           fullWidth
           maxWidth="xs"
         >
-          <DialogTitle
-            style={
-              this.props.fullScreen
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { background: "#2f333d" }
-                : { background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
+          <DialogTitle disableTypography>
               {this.state.isFirstFactor
                 ? "Add primary factor"
                 : "Add secondary factor"}
-            </font>
           </DialogTitle>
           <div
             style={{

@@ -22,6 +22,7 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import isemail from "isemail"
 import { Query } from "react-apollo"
+import LogInEmailDialog from "./LogInEmailDialog"
 
 function str2ab(str) {
   return Uint8Array.from(str, c => c.charCodeAt(0))
@@ -131,12 +132,11 @@ class Login extends Component {
       showLoading: false,
       redirect: false,
       counter: 0,
-      code:""
+      code: "",
     }
 
     this.signIn = this.signIn.bind(this)
     this.signInWebauthn = this.signInWebauthn.bind(this)
-    this.recover = this.recover.bind(this)
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this)
   }
 
@@ -285,9 +285,9 @@ class Login extends Component {
     }
   }
 
-    async verifyTotp() {
+  async verifyTotp() {
     try {
-      this.setState({codeError: "",showSecondFactorLoading:true})
+      this.setState({ codeError: "", showSecondFactorLoading: true })
       const verifyTotpMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($email: String!, $code: String!) {
@@ -304,18 +304,18 @@ class Login extends Component {
         totpCertificate: verifyTotpMutation.data.verifyTotp,
       })
 
-        this.signIn()
+      this.signIn()
     } catch (e) {
       this.setState({ showLoading: false })
 
       if (e.message === "GraphQL error: Code and secret do not match") {
-        this.setState({codeError:"Wrong code"})
-            } else {
-        this.setState({codeError:"Unexpected error"})
+        this.setState({ codeError: "Wrong code" })
+      } else {
+        this.setState({ codeError: "Unexpected error" })
       }
-    }finally{
+    } finally {
       this.setState({
-        showSecondFactorLoading:false
+        showSecondFactorLoading: false,
       })
     }
   }
@@ -326,7 +326,11 @@ class Login extends Component {
       this.props.changeEmailError("")
       const loginMutation = await this.props.client.mutate({
         mutation: gql`
-          mutation($passwordCertificate: String, $webAuthnCertificate: String,$totpCertificate:String) {
+          mutation(
+            $passwordCertificate: String
+            $webAuthnCertificate: String
+            $totpCertificate: String
+          ) {
             logIn(
               passwordCertificate: $passwordCertificate
               webAuthnCertificate: $webAuthnCertificate
@@ -345,7 +349,7 @@ class Login extends Component {
         variables: {
           passwordCertificate: this.state.passwordCertificate,
           webAuthnCertificate: this.state.webAuthnCertificate,
-          totpCertificate: this.state.totpCertificate
+          totpCertificate: this.state.totpCertificate,
         },
       })
 
@@ -451,31 +455,6 @@ class Login extends Component {
     navigator.credentials
       .get({ publicKey: publicKeyOptions })
       .then(sendResponse)
-  }
-
-  recover = async recoveryEmail => {
-    try {
-      this.setState({ recoveryError: "" })
-      await this.props.client.mutate({
-        mutation: gql`
-          mutation($email: String!) {
-            sendPasswordRecoveryEmail(email: $email)
-          }
-        `,
-        variables: {
-          email: recoveryEmail,
-        },
-      })
-    } catch (e) {
-      if (
-        e.message ===
-        "GraphQL error: User doesn't exist. Use `signUp` to create one"
-      ) {
-        this.setState({
-          recoveryError: "This account does not exist",
-        })
-      }
-    }
   }
 
   componentWillMount() {
@@ -1015,20 +994,21 @@ class Login extends Component {
                       )}
                   </div>
                   <div style={{ textAlign: "right" }}>
-                      <MUILink
-                        component="button"
-                        variant="subtitle1"
-                        style={
-                          this.props.mobile
-                            ? { color: "white" }
-                            : {
-                                color: "#0083ff",
-                              }
-                        }
-                      >
-                        Can't log in?
-                      </MUILink>
-                                        <MuiThemeProvider
+                    <MUILink
+                      component="button"
+                      variant="subtitle1"
+                      style={
+                        this.props.mobile
+                          ? { color: "white" }
+                          : {
+                              color: "#0083ff",
+                            }
+                      }
+                      onClick={() => this.setState({ logInEmailOpen: true })}
+                    >
+                      Can't log in?
+                    </MUILink>
+                    <MuiThemeProvider
                       theme={
                         this.props.mobile
                           ? createMuiTheme({
@@ -1286,9 +1266,9 @@ class Login extends Component {
                             this.props.mobile
                               ? {}
                               : this.state.user &&
-                                (JSON.stringify(
+                                JSON.stringify(
                                   this.state.user.primaryAuthenticationMethods
-                                ) !== '["WEBAUTHN"]')
+                                ) !== '["WEBAUTHN"]'
                               ? { height: "237px" }
                               : { height: "289px" }
                           }
@@ -1436,19 +1416,22 @@ class Login extends Component {
                             )}
                         </div>
                         <div style={{ textAlign: "right" }}>
-                      <MUILink
-                        component="button"
-                        variant="subtitle1"
-                        style={
-                          this.props.mobile
-                            ? { color: "white" }
-                            : {
-                                color: "#0083ff",
-                              }
-                        }
-                      >
-                        Can't log in?
-                      </MUILink>
+                          <MUILink
+                            component="button"
+                            variant="subtitle1"
+                            style={
+                              this.props.mobile
+                                ? { color: "white" }
+                                : {
+                                    color: "#0083ff",
+                                  }
+                            }
+                            onClick={() =>
+                              this.setState({ logInEmailOpen: true })
+                            }
+                          >
+                            Can't log in?
+                          </MUILink>
                           <MuiThemeProvider
                             theme={
                               this.props.mobile
@@ -1644,16 +1627,16 @@ class Login extends Component {
                   />
                 </ListItem>
                 <div
-                          style={
-                            this.props.mobile
-                              ? {}
-                              : this.state.user &&
-                                (JSON.stringify(
-                                  this.state.user.primaryAuthenticationMethods
-                                ) !== '["WEBAUTHN"]')
-                              ? { height: "237px" }
-                              : { height: "289px" }
-                          }
+                  style={
+                    this.props.mobile
+                      ? {}
+                      : this.state.user &&
+                        JSON.stringify(
+                          this.state.user.primaryAuthenticationMethods
+                        ) !== '["WEBAUTHN"]'
+                      ? { height: "237px" }
+                      : { height: "289px" }
+                  }
                 >
                   {this.state.user &&
                     this.state.user.secondaryAuthenticationMethods.includes(
@@ -1759,8 +1742,9 @@ class Login extends Component {
                           })
                         }
                         onKeyPress={event => {
-                          if (event.key === "Enter" && !this.state.codeEmpty){
-this.verifyTotp()}
+                          if (event.key === "Enter" && !this.state.codeEmpty) {
+                            this.verifyTotp()
+                          }
                         }}
                         style={{
                           width: "100%",
@@ -1841,19 +1825,19 @@ this.verifyTotp()}
                     )}
                 </div>
                 <div style={{ textAlign: "right" }}>
-                      <MUILink
-                        component="button"
-                        variant="subtitle1"
-                        style={
-                          this.props.mobile
-                            ? { color: "white" }
-                            : {
-                                color: "#0083ff",
-                              }
-                        }
-                      >
-                        Can't log in?
-                      </MUILink>
+                  <MUILink
+                    component="button"
+                    variant="subtitle1"
+                    style={
+                      this.props.mobile
+                        ? { color: "white" }
+                        : {
+                            color: "#0083ff",
+                          }
+                    }
+                  >
+                    Can't log in?
+                  </MUILink>
                   {this.state.user &&
                     (this.state.user.secondaryAuthenticationMethods.includes(
                       "PASSWORD"
@@ -1878,15 +1862,41 @@ this.verifyTotp()}
                           fullWidth={true}
                           onClick={() => {
                             this.setState({ showSecondFactorLoading: true })
-                            if (this.state.user && this.state.user.secondaryAuthenticationMethods.includes("PASSWORD") && this.props.password)
-                            this.verifyPassword()
-                            if (this.state.user && this.state.user.secondaryAuthenticationMethods.includes("TOTP") && this.state.code)
-                            this.verifyTotp()
+                            if (
+                              this.state.user &&
+                              this.state.user.secondaryAuthenticationMethods.includes(
+                                "PASSWORD"
+                              ) &&
+                              this.props.password
+                            )
+                              this.verifyPassword()
+                            if (
+                              this.state.user &&
+                              this.state.user.secondaryAuthenticationMethods.includes(
+                                "TOTP"
+                              ) &&
+                              this.state.code
+                            )
+                              this.verifyTotp()
                           }}
                           style={{ margin: "8px 0" }}
                           color="primary"
-                          disabled={(this.state.user && (this.state.user.secondaryAuthenticationMethods.includes("PASSWORD") && this.state.user.secondaryAuthenticationMethods.includes("TOTP") ? (!this.props.password && this.state.code.length!==6):this.state.user.secondaryAuthenticationMethods.includes("TOTP") ? this.state.code.length!==6 : !this.props.password)
-                               )     || this.state.showSecondFactorLoading
+                          disabled={
+                            (this.state.user &&
+                              (this.state.user.secondaryAuthenticationMethods.includes(
+                                "PASSWORD"
+                              ) &&
+                              this.state.user.secondaryAuthenticationMethods.includes(
+                                "TOTP"
+                              )
+                                ? !this.props.password &&
+                                  this.state.code.length !== 6
+                                : this.state.user.secondaryAuthenticationMethods.includes(
+                                    "TOTP"
+                                  )
+                                ? this.state.code.length !== 6
+                                : !this.props.password)) ||
+                            this.state.showSecondFactorLoading
                           }
                         >
                           Log in
@@ -1945,6 +1955,10 @@ this.verifyTotp()}
             )}
           </div>
         </div>
+        <LogInEmailDialog
+          open={this.state.logInEmailOpen}
+          close={() => this.setState({ logInEmailOpen: false })}
+        />
       </MuiThemeProvider>
     )
   }
