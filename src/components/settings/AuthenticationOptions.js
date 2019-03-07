@@ -291,7 +291,7 @@ class AuthenticationOptions extends React.Component {
       await this.client.mutate({
         mutation: gql`
           mutation($jwtChallenge: String!, $challengeResponse: String!) {
-            setWebauthn(
+            setWebAuthn(
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
             ) {
@@ -803,7 +803,7 @@ class AuthenticationOptions extends React.Component {
                   return (
                     <Typography
                       variant="h5"
-                className="notSelectable defaultCursor"
+                      className="notSelectable defaultCursor"
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
@@ -1107,7 +1107,7 @@ class AuthenticationOptions extends React.Component {
                   return (
                     <Typography
                       variant="h5"
-                className="notSelectable defaultCursor"
+                      className="notSelectable defaultCursor"
                       style={
                         typeof Storage !== "undefined" &&
                         localStorage.getItem("nightMode") === "true"
@@ -1275,6 +1275,27 @@ class AuthenticationOptions extends React.Component {
               height: "100%",
             }}
           >
+            {navigator.credentials && (
+              <ListItem button onClick={() => this.enableWebAuthn()}>
+                <ListItemIcon>
+                  <Fingerprint />
+                </ListItemIcon>
+                <ListItemText
+                  primary={
+                    <font
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? { color: "white" }
+                          : {}
+                      }
+                    >
+                      Fingerprint, face or security key
+                    </font>
+                  }
+                />
+              </ListItem>
+            )}
             <ListItem
               button
               disabled={
@@ -1304,25 +1325,6 @@ class AuthenticationOptions extends React.Component {
                     }
                   >
                     Password
-                  </font>
-                }
-              />
-            </ListItem>
-            <ListItem button onClick={() => this.enableWebAuthn()}>
-              <ListItemIcon>
-                <Fingerprint />
-              </ListItemIcon>
-              <ListItemText
-                primary={
-                  <font
-                    style={
-                      typeof Storage !== "undefined" &&
-                      localStorage.getItem("nightMode") === "true"
-                        ? { color: "white" }
-                        : {}
-                    }
-                  >
-                    Fingerprint, face or security key
                   </font>
                 }
               />

@@ -444,12 +444,12 @@ export default class Signup extends Component {
 
       const {
         data: {
-          setWebauthn: { token, user },
+          setWebAuthn: { token, user },
         },
       } = await this.client.mutate({
         mutation: gql`
           mutation($jwtChallenge: String!, $challengeResponse: String!) {
-            setWebauthn(
+            setWebAuthn(
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
             ) {
