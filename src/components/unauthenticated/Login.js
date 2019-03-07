@@ -121,9 +121,7 @@ class Login extends Component {
   constructor(props) {
     super(props)
 
-    // reset the email and password signup fields whenever the page loads
-    this.props.changeEmail("")
-    this.props.changePassword("")
+   
 
     this.state = {
       recoveryError: "",
@@ -148,6 +146,9 @@ class Login extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateWindowDimensions)
+     // reset the email and password signup fields whenever the page loads
+    this.props.changeEmail("")
+    this.props.changePassword("")
   }
 
   updateWindowDimensions() {
