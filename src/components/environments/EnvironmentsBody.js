@@ -831,7 +831,7 @@ export default class EnvironmentsBody extends Component {
                             Shared with you
                           </Typography>
                         </ListSubheader>
-                        }{sharedEnvironmentsList}
+                        {sharedEnvironmentsList}
                       </ul>
                     </li>
                   )}

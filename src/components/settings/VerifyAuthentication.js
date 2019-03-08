@@ -23,30 +23,38 @@ let SlideTransition = props => {
   return <Slide direction="up" {...props} />
 }
 
-let createToken = async (props, password, setLoading, setPasswordError) => {
+let createToken = async (
+  props,
+  passwordCertificate,
+  webAuthnCertificate,
+  setLoading
+) => {
   try {
     setLoading(true)
 
     let createTokenMutation = await props.client.mutate({
       mutation: gql`
-        mutation($tokenType: TokenType!, $password: String!) {
-          createToken(tokenType: $tokenType, password: $password)
+        mutation(
+          $tokenType: TokenType!
+          $passwordCertificate: String!
+          $webAuthnCertificate: String!
+        ) {
+          createToken(
+            tokenType: $tokenType
+            passwordCertificate: $passwordCertificate
+            webAuthnCertificate: $webAuthnCertificate
+          )
         }
       `,
       variables: {
         tokenType: "CHANGE_EMAIL",
-        password,
+        passwordCertificate,
+        webAuthnCertificate,
       },
     })
 
     props.setToken(createTokenMutation.data.createToken)
     props.openOtherDialog()
-  } catch (e) {
-    if (e.message === "GraphQL error: Wrong password") {
-      setPasswordError("Wrong password")
-    } else {
-      setPasswordError("Unexpected error")
-    }
   } finally {
     setLoading(false)
   }
@@ -113,14 +121,47 @@ let verifyWebAuthn = async (props, setLoading) => {
       },
     })
 
-    this.setState({
-      webAuthnCertificate: verifyWebAuthnMutation.data.verifyWebAuthn,
-    })
+    const webAuthnCertificate = verifyWebAuthnMutation.data.verifyWebAuthn
 
-    setLoading(false)
+    createToken(props, "", webAuthnCertificate, setLoading)
   }
 
   navigator.credentials.get({ publicKey: publicKeyOptions }).then(sendResponse)
+}
+
+let verifyPassword = async (props, setPasswordError, password, setLoading) => {
+  try {
+    setPasswordError("")
+    const verifyPasswordMutation = await props.client.mutate({
+      mutation: gql`
+        mutation($email: String!, $password: String!) {
+          verifyPassword(email: $email, password: $password)
+        }
+      `,
+      variables: {
+        email: props.user.email,
+        password,
+      },
+    })
+
+    let passwordCertificate = verifyPasswordMutation.data.verifyPassword
+
+    createToken(props, passwordCertificate, "", setLoading)
+  } catch (e) {
+    if (e.message === "GraphQL error: Wrong password") {
+      this.props.changePasswordError("Wrong password")
+    } else if (
+      e.message ===
+      "GraphQL error: User doesn't exist. Use `signUp` to create one"
+    ) {
+      this.props.changeEmailError("This account doesn't exist")
+      this.props.changeSignupEmail(this.props.email)
+    } else {
+      this.props.changeEmailError("Unexpected error")
+    }
+  } finally {
+    setLoading(false)
+  }
 }
 
 export default function VerifyAuthentication(props) {
@@ -243,7 +284,7 @@ export default function VerifyAuthentication(props) {
           variant="contained"
           color="primary"
           onClick={() =>
-            createToken(props, password, setLoading, setPasswordError)
+            verifyPassword(props, setPasswordError, password, setLoading)
           }
           disabled={!password || loading}
         >

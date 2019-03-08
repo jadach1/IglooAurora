@@ -232,6 +232,7 @@ class ChangeMailDialog extends React.Component {
           <DialogActions>
             <Button
               onClick={() => {
+                this.setState({ mailDialogOpen: false })
                 this.props.close()
               }}
             >
