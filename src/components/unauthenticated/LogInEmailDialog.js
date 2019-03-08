@@ -65,7 +65,7 @@ let LogInEmailDialog = props => {
         disableBackdropClick={props.fullScreen}
         maxWidth="xs"
       >
-        <DialogTitle disableTypography>Card information</DialogTitle>
+        <DialogTitle disableTypography>Can't log in?</DialogTitle>
         <div style={{ height: "100%", padding: "0 24px" }}>
           Check your inbox, you should have received an email with a log in
           link.

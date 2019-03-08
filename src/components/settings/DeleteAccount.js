@@ -6,10 +6,6 @@ import Button from "@material-ui/core/Button"
 import gql from "graphql-tag"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import TextField from "@material-ui/core/TextField"
-import InputAdornment from "@material-ui/core/InputAdornment"
-import IconButton from "@material-ui/core/IconButton"
-import ToggleIcon from "material-ui-toggle-icon"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
 import {
@@ -22,10 +18,8 @@ import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import CenteredSpinner from "../CenteredSpinner"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
-import Visibility from "@material-ui/icons/Visibility"
-import VisibilityOff from "@material-ui/icons/VisibilityOff"
+import VerifyAuthentication from "./VerifyAuthentication"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -182,124 +176,16 @@ class DeleteAccountDialog extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <Dialog
+        <VerifyAuthentication
           open={this.props.open && !this.state.deleteOpen}
-          onClose={() => {
-            this.props.close()
-            this.setState({ password: "" })
-          }}
-          className="notSelectable defaultCursor"
-          TransitionComponent={
-            this.props.fullScreen ? SlideTransition : GrowTransition
-          }
+          close={this.props.close}
           fullScreen={this.props.fullScreen}
-          disableBackdropClick={this.props.fullScreen}
-          fullWidth
-          maxWidth="xs"
-        >
-          <DialogTitle disableTypography>Type your password</DialogTitle>
-          <div
-            style={{
-              paddingLeft: "24px",
-              paddingRight: "24px",
-              height: "100%",
-            }}
-          >
-            <TextField
-              variant="outlined"
-              style={{ width: "100%" }}
-              id="adornment-password-login"
-              type={this.state.showPassword ? "text" : "password"}
-              value={this.state.password}
-              label="Password"
-              onChange={event =>
-                this.setState({
-                  password: event.target.value,
-                  passwordError: "",
-                  isPasswordEmpty: event.target.value === "",
-                })
-              }
-              error={
-                this.state.passwordError || this.state.isPasswordEmpty
-                  ? true
-                  : false
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter") {
-                  this.createToken()
-                }
-              }}
-              helperText={
-                <font
-                  style={
-                    this.state.passwordError || this.state.isPasswordEmpty
-                      ? { color: "#f44336" }
-                      : {}
-                  }
-                >
-                  {this.state.isPasswordEmpty
-                    ? "This field is required"
-                    : this.state.passwordError}
-                </font>
-              }
-              InputLabelProps={this.state.password && { shrink: true }}
-              InputProps={{
-                endAdornment: this.state.password ? (
-                  <InputAdornment position="end">
-                    <IconButton
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "white" }
-                          : { color: "black" }
-                      }
-                      onClick={() => this.setState({ showPassword: true })}
-                      onMouseDown={this.handleMouseDownPassword}
-                      tabIndex="-1"
-                    >
-                      {/* fix for ToggleIcon glitch on Edge */}
-                      {document.documentMode ||
-                      /Edge/.test(navigator.userAgent) ? (
-                        this.state.showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )
-                      ) : (
-                        <ToggleIcon
-                          on={this.state.showPassword || false}
-                          onIcon={<VisibilityOff />}
-                          offIcon={<Visibility />}
-                        />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ) : null,
-              }}
-            />
-          </div>
-          <DialogActions>
-            <Button
-              onClick={() => {
-                this.props.close()
-              }}
-            >
-              Never mind
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              disabled={!this.state.password || this.state.showLoading}
-              onClick={() => {
-                this.createToken()
-                this.setState({ showLoading: true })
-              }}
-            >
-              Next
-              {this.state.showLoading && <CenteredSpinner isInButton />}
-            </Button>
-          </DialogActions>
-        </Dialog>
+          setToken={token => this.setState({ token })}
+          openOtherDialog={() => this.setState({ deleteOpen: true })}
+          otherDialogOpen={this.state.deleteOpen}
+          client={this.props.client}
+          user={this.props.user}
+        />
         <Dialog
           open={this.state.deleteOpen}
           onClose={() => {

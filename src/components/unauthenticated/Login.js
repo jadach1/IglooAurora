@@ -423,6 +423,7 @@ class Login extends Component {
       payload.response.clientDataJSON = ab2str(res.response.clientDataJSON)
       payload.response.signature = ab2str(res.response.signature)
 
+      try{
       const verifyWebAuthnMutation = await this.props.client.mutate({
         mutation: gql`
           mutation($jwtChallenge: String!, $challengeResponse: String!) {
@@ -448,8 +449,8 @@ class Login extends Component {
       ) {
         this.signIn()
       } else {
-        this.setState({ showSecondFactor: true, showLoading: false })
-      }
+        this.setState({ showSecondFactor: true, })
+      }}finally{ this.setState({showLoading: false })}
     }
 
     navigator.credentials
@@ -945,7 +946,7 @@ class Login extends Component {
                       this.state.user.primaryAuthenticationMethods.includes(
                         "WEBAUTHN"
                       ) &&
-                      navigator.credentials && (
+                      navigator.credentials  && window.location.host ==="aurora.igloo.ooo" && (
                         <IconButton
                           onClick={this.signInWebauthn}
                           disabled={
@@ -1387,7 +1388,7 @@ class Login extends Component {
                             this.state.user.primaryAuthenticationMethods.includes(
                               "WEBAUTHN"
                             ) &&
-                            navigator.credentials && (
+                            navigator.credentials && window.location.host ==="aurora.igloo.ooo" && (
                               <IconButton
                                 onClick={this.signInWebauthn}
                                 disabled={
@@ -1796,7 +1797,7 @@ class Login extends Component {
                     this.state.user.secondaryAuthenticationMethods.includes(
                       "WEBAUTHN"
                     ) &&
-                    navigator.credentials && (
+                    navigator.credentials && window.location.host ==="aurora.igloo.ooo" && (
                       <IconButton
                         onClick={this.signInWebauthn}
                         disabled={

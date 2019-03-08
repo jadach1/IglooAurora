@@ -859,7 +859,7 @@ export default class Signup extends Component {
                         buttonStyle={{ backgroundColor: "#0083ff" }}
                         disabled={
                           this.state.showSignUpLoading ||
-                          !(this.props.name && this.state.isEmailValid) ||
+                          !this.props.name || !this.state.isEmailValid ||
                           this.state.showLoading ||
                           !this.state.coppaCheckbox
                         }
@@ -977,39 +977,40 @@ export default class Signup extends Component {
                     Sign up
                   </Typography>
                   <List>
-                    {navigator.credentials && (
-                      <ListItem
-                        button
-                        style={{ paddingLeft: "24px" }}
-                        onClick={this.enableWebAuthn}
-                      >
-                        <ListItemIcon>
-                          <Fingerprint />
-                        </ListItemIcon>
-                        <ListItemText
-                          primary={
-                            <font
-                              style={
-                                this.props.mobile ? { color: "white" } : {}
-                              }
-                            >
-                              Let's go passwordless!
-                            </font>
-                          }
-                          secondary={
-                            <font
-                              style={
-                                this.props.mobile
-                                  ? { color: "white", opacity: 0.7 }
-                                  : {}
-                              }
-                            >
-                              Fingerprint, face or security key
-                            </font>
-                          }
-                        />
-                      </ListItem>
-                    )}
+                    {navigator.credentials &&
+                      window.location.host === "aurora.igloo.ooo" && (
+                        <ListItem
+                          button
+                          style={{ paddingLeft: "24px" }}
+                          onClick={this.enableWebAuthn}
+                        >
+                          <ListItemIcon>
+                            <Fingerprint />
+                          </ListItemIcon>
+                          <ListItemText
+                            primary={
+                              <font
+                                style={
+                                  this.props.mobile ? { color: "white" } : {}
+                                }
+                              >
+                                Let's go passwordless!
+                              </font>
+                            }
+                            secondary={
+                              <font
+                                style={
+                                  this.props.mobile
+                                    ? { color: "white", opacity: 0.7 }
+                                    : {}
+                                }
+                              >
+                                Fingerprint, face or security key
+                              </font>
+                            }
+                          />
+                        </ListItem>
+                      )}
                     <ListItem
                       button
                       style={{ paddingLeft: "24px" }}
@@ -1117,7 +1118,8 @@ export default class Signup extends Component {
                         style={
                           this.props.mobile
                             ? {}
-                            : navigator.credentials
+                            : navigator.credentials &&
+                              window.location.host === "aurora.igloo.ooo"
                             ? {
                                 marginTop: "171px",
                               }
