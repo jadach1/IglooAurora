@@ -186,9 +186,9 @@ export default class Signup extends Component {
 
   componentWillUnmount() {
     window.removeEventListener("resize", this.updateWindowDimensions)
-     // reset the email and password signup fields whenever the page loads
-     this.props.changeEmail("")
-     this.props.changeName("") 
+    // reset the email and password signup fields whenever the page loads
+    this.props.changeEmail("")
+    this.props.changeName("")
   }
 
   updateWindowDimensions() {
@@ -619,8 +619,12 @@ export default class Signup extends Component {
                     label="Name"
                     value={this.props.name}
                     style={{
+                      color: "black",
                       width: "100%",
+                      height: "55px",
+                      borderRadius: "5px",
                       marginBottom: "16px",
+                      boxShadow: "0 0 0 0.2rem skyblue",
                     }}
                     onChange={event => {
                       this.props.changeName(event.target.value)
@@ -679,6 +683,9 @@ export default class Signup extends Component {
                     style={{
                       color: "black",
                       width: "100%",
+                      height: "55px",
+                      borderRadius: "5px",
+                      boxShadow: "0 0 0 0.2rem skyblue",
                     }}
                     onChange={event => {
                       this.props.changeEmail(event.target.value)
@@ -811,8 +818,15 @@ export default class Signup extends Component {
                         color="primary"
                         fullWidth={true}
                         onClick={this.signUp}
-                        style={{ marginBottom: "8px" }}
-                        buttonStyle={{ backgroundColor: "#0083ff" }}
+                        style={{
+                          marginBottom: "8px",
+                          width: "100%",
+                          border: "3px solid lightblue",
+                          borderRadius: "5px",
+                        }}
+                        buttonStyle={{
+                          backgroundColor: "#0083ff",
+                        }}
                         disabled={
                           this.state.showSignUpLoading ||
                           !(this.props.name && this.state.isEmailValid) ||
@@ -897,6 +911,12 @@ export default class Signup extends Component {
                             disabled={this.state.showLoading}
                             component={Link}
                             to="/login"
+                            style={{
+                              width: "100%",
+                              //height: "55px",
+                              border: "3px solid lightblue",
+                              borderRadius: "5px",
+                            }}
                           >
                             Log in instead
                         </Button>

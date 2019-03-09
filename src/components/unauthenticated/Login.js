@@ -594,6 +594,9 @@ class Login extends Component {
                   style={{
                     color: "black",
                     width: "100%",
+                    height: "55px",
+                    borderRadius: "5px",
+                    boxShadow: "0 0 0 0.2rem skyblue",
                     marginBottom: "257px",
                   }}
                   onChange={event => {
@@ -653,7 +656,12 @@ class Login extends Component {
                       primary={true}
                       fullWidth={true}
                       onClick={this.goToPassword}
-                      style={{ margin: "8px 0" }}
+                      style={{ 
+                        margin: "8px 0",
+                        width: "100%",
+                        border: "3px solid lightblue",
+                        borderRadius: "5px",
+                        }}
                       color="primary"
                       disabled={
                         isemail.validate(this.props.email, {
@@ -737,6 +745,11 @@ class Login extends Component {
                         color="primary"
                         disabled={this.state.showLoading}
                         component={Link}
+                        style = {{
+                          width: "100%",
+                          border: "3px solid lightblue",
+                          borderRadius: "5px",
+                        }}
                         to="/signup"
                       >
                         Sign up instead
@@ -872,6 +885,9 @@ class Login extends Component {
                           style={{
                             color: "black",
                             width: "100%",
+                            height: "55px",
+                            borderRadius: "5px",
+                            boxShadow: "0 0 0 0.2rem skyblue",
                             marginBottom: "16px",
                           }}
                           onChange={event => {
