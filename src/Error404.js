@@ -92,7 +92,7 @@ export default class Error404 extends Component {
               to="/"
               style={{ marginBottom: "16px" }}
             >
-              Take me away!
+              Save me!
             </Button>
           </MuiThemeProvider>
         </div>

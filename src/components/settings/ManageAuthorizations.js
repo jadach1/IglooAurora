@@ -28,21 +28,20 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
 import InputAdornment from "@material-ui/core/InputAdornment"
-import ToggleIcon from "material-ui-toggle-icon"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 import Menu from "@material-ui/core/Menu"
 import MenuItem from "@material-ui/core/MenuItem"
 import clipboardCopy from "clipboard-copy"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
 import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
-import Visibility from "@material-ui/icons/Visibility"
-import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import Clear from "@material-ui/icons/Clear"
 import SvgIcon from "@material-ui/core/SvgIcon"
 import Delete from "@material-ui/icons/Delete"
 import Add from "@material-ui/icons/Add"
 import MoreVert from "@material-ui/icons/MoreVert"
 import VpnKey from "@material-ui/icons/VpnKey"
+import Typography from "@material-ui/core/Typography"
+import VerifyAuthentication from "./VerifyAuthentication"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -68,12 +67,12 @@ class AuthDialog extends React.Component {
 
   openAuthDialog = () => {
     this.setState({ authDialogOpen: true })
-    this.props.handleAuthDialogClose()
+    this.props.close()
   }
 
   closeAuthDialog = () => {
     this.setState({ authDialogOpen: false })
-    this.props.handleAuthDialogClose()
+    this.props.close()
   }
 
   async createToken() {
@@ -126,7 +125,7 @@ class AuthDialog extends React.Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -143,7 +142,7 @@ class AuthDialog extends React.Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -208,7 +207,7 @@ class AuthDialog extends React.Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -225,7 +224,7 @@ class AuthDialog extends React.Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -273,7 +272,7 @@ class AuthDialog extends React.Component {
               : "wss://") +
             localStorage.getItem("server") +
             "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -290,7 +289,7 @@ class AuthDialog extends React.Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -338,8 +337,8 @@ class AuthDialog extends React.Component {
 
   componentWillReceiveProps(nextProps) {
     if (
-      this.props.confirmationDialogOpen !== nextProps.confirmationDialogOpen &&
-      nextProps.confirmationDialogOpen
+      this.props.open !== nextProps.open &&
+      nextProps.open
     ) {
       this.setState({
         isPasswordEmpty: false,
@@ -415,7 +414,29 @@ class AuthDialog extends React.Component {
     let tokenList = ""
 
     if (this.props.tokenData.error) {
-      tokenList = "Unexpected error"
+      tokenList = (
+        <Typography
+          variant="h5"
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                  color: "white",
+                }
+              : {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                }
+          }
+          className="notSelectable defaultCursor"
+        >
+          Unexpected error
+        </Typography>
+      )
 
       if (
         this.props.tokenData.error.message ===
@@ -534,114 +555,18 @@ class AuthDialog extends React.Component {
 
     return (
       <React.Fragment>
-        <Dialog
+        <VerifyAuthentication
           open={
-            this.props.confirmationDialogOpen &&
-            !this.state.authDialogOpen &&
-            !this.state.nameOpen &&
-            !this.state.deleteOpen
+            this.props.open && !this.state.authDialogOpen
           }
-          onClose={this.props.handleAuthDialogClose}
-          className="notSelectable"
-          TransitionComponent={
-            this.props.fullScreen ? SlideTransition : GrowTransition
-          }
+          close={this.props.close}
           fullScreen={this.props.fullScreen}
-          disableBackdropClick={this.props.fullScreen}
-          fullWidth
-          maxWidth="xs"
-        >
-          <DialogTitle disableTypography>Type your password</DialogTitle>
-          <div
-            style={{
-              paddingRight: "24px",
-              paddingLeft: "24px",
-              height: "100%",
-            }}
-          >
-            <TextField
-              id="auth-password"
-              label="Password"
-              type={this.state.showPassword ? "text" : "password"}
-              value={this.state.password}
-              variant="outlined"
-              error={this.state.passwordEmpty || this.state.passwordError}
-              helperText={
-                this.state.passwordEmpty
-                  ? "This field is required"
-                  : this.state.passwordError || " "
-              }
-              onChange={event =>
-                this.setState({
-                  password: event.target.value,
-                  passwordEmpty: event.target.value === "",
-                  passwordError: "",
-                })
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter" && this.state.password !== "")
-                  this.createToken()
-              }}
-              style={{
-                width: "100%",
-              }}
-              InputLabelProps={this.state.password && { shrink: true }}
-              InputProps={{
-                endAdornment: this.state.password && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        this.setState(oldState => ({
-                          showPassword: !oldState.showPassword,
-                        }))
-                      }
-                      tabIndex="-1"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "rgba(0, 0, 0, 0.46)" }
-                          : { color: "rgba(0, 0, 0, 0.46)" }
-                      }
-                    >
-                      {/* fix for ToggleIcon glitch on Edge */}
-                      {document.documentMode ||
-                      /Edge/.test(navigator.userAgent) ? (
-                        this.state.showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )
-                      ) : (
-                        <ToggleIcon
-                          on={this.state.showPassword || false}
-                          onIcon={<VisibilityOff />}
-                          offIcon={<Visibility />}
-                        />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-          <DialogActions>
-            <Button
-              onClick={this.props.handleAuthDialogClose}
-              style={{ marginRight: "4px" }}
-            >
-              Never mind
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => this.createToken()}
-              disabled={!this.state.password || this.state.showLoading}
-            >
-              Proceed
-              {this.state.showLoading && <CenteredSpinner isInButton />}
-            </Button>
-          </DialogActions>
-        </Dialog>
+          setToken={token => this.setState({ token })}
+          openOtherDialog={() => this.setState({ authDialogOpen: true })}
+          otherDialogOpen={this.state.authDialogOpen}
+          client={this.props.client}
+          user={this.props.user}
+        />
         <Dialog
           open={
             this.state.authDialogOpen &&

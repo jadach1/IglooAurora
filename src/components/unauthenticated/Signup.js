@@ -13,7 +13,6 @@ import CenteredSpinner from "../CenteredSpinner"
 import Clear from "@material-ui/icons/Clear"
 import Visibility from "@material-ui/icons/Visibility"
 import VisibilityOff from "@material-ui/icons/VisibilityOff"
-import querystringify from "querystringify"
 import logo from "../../styles/assets/logo.svg"
 import List from "@material-ui/core/List"
 import ListItem from "@material-ui/core/ListItem"
@@ -247,7 +246,7 @@ export default class Signup extends Component {
             : "wss://") +
           localStorage.getItem("server") +
           "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -264,7 +263,7 @@ export default class Signup extends Component {
             : "https://") +
           localStorage.getItem("server") +
           "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.changeAuthenticationToken,
       },
@@ -296,12 +295,12 @@ export default class Signup extends Component {
     try {
       const {
         data: {
-          enablePassword: { token, user },
+          setPassword: { token, user },
         },
       } = await this.client.mutate({
         mutation: gql`
           mutation($password: String!) {
-            enablePassword(password: $password) {
+            setPassword(password: $password) {
               token
               user {
                 id
@@ -314,6 +313,28 @@ export default class Signup extends Component {
         `,
         variables: {
           password: this.props.password,
+        },
+      })
+
+      this.client.mutate({
+        mutation: gql`
+          mutation changeAuthenticationSettings(
+            $primaryAuthenticationMethods: [PrimaryAuthenticationMethod!]!
+            $secondaryAuthenticationMethods: [SecondaryAuthenticationMethod!]!
+          ) {
+            changeAuthenticationSettings(
+              primaryAuthenticationMethods: $primaryAuthenticationMethods
+              secondaryAuthenticationMethods: $secondaryAuthenticationMethods
+            ) {
+              id
+              primaryAuthenticationMethods
+              secondaryAuthenticationMethods
+            }
+          }
+        `,
+        variables: {
+          primaryAuthenticationMethods: ["PASSWORD"],
+          secondaryAuthenticationMethods: [],
         },
       })
 
@@ -348,7 +369,7 @@ export default class Signup extends Component {
             : "wss://") +
           localStorage.getItem("server") +
           "/subscriptions"
-          : `wss://iglooql.herokuapp.com/subscriptions`,
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -365,7 +386,7 @@ export default class Signup extends Component {
             : "https://") +
           localStorage.getItem("server") +
           "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.changeAuthenticationToken,
       },
@@ -422,12 +443,12 @@ export default class Signup extends Component {
 
       const {
         data: {
-          enableWebauthn: { token, user },
+          setWebAuthn: { token, user },
         },
       } = await this.client.mutate({
         mutation: gql`
           mutation($jwtChallenge: String!, $challengeResponse: String!) {
-            enableWebauthn(
+            setWebAuthn(
               jwtChallenge: $jwtChallenge
               challengeResponse: $challengeResponse
             ) {
@@ -444,6 +465,28 @@ export default class Signup extends Component {
         variables: {
           challengeResponse: JSON.stringify(payload),
           jwtChallenge: getWebAuthnEnableChallenge.jwtChallenge,
+        },
+      })
+
+      this.client.mutate({
+        mutation: gql`
+          mutation changeAuthenticationSettings(
+            $primaryAuthenticationMethods: [PrimaryAuthenticationMethod!]!
+            $secondaryAuthenticationMethods: [SecondaryAuthenticationMethod!]!
+          ) {
+            changeAuthenticationSettings(
+              primaryAuthenticationMethods: $primaryAuthenticationMethods
+              secondaryAuthenticationMethods: $secondaryAuthenticationMethods
+            ) {
+              id
+              primaryAuthenticationMethods
+              secondaryAuthenticationMethods
+            }
+          }
+        `,
+        variables: {
+          primaryAuthenticationMethods: ["WEBAUTHN"],
+          secondaryAuthenticationMethods: [],
         },
       })
 
@@ -829,7 +872,7 @@ export default class Signup extends Component {
                         }}
                         disabled={
                           this.state.showSignUpLoading ||
-                          !(this.props.name && this.state.isEmailValid) ||
+                          !this.props.name || !this.state.isEmailValid ||
                           this.state.showLoading ||
                           !this.state.coppaCheckbox
                         }
@@ -860,36 +903,33 @@ export default class Signup extends Component {
                         )}
                       </Button>
                     </MuiThemeProvider>
-                    {querystringify.parse(
-                      "?" + window.location.href.split("?")[1]
-                    ).from === "accounts" &&
-                      JSON.parse(localStorage.getItem("accountList"))[0] ? (
-                        <MuiThemeProvider
-                          theme={createMuiTheme(
-                            this.props.mobile
-                              ? {
-                                palette: {
-                                  primary: { main: "#fff" },
-                                },
-                              }
-                              : {
-                                palette: {
-                                  primary: { main: "#0083ff" },
-                                },
-                              }
-                          )}
+                    {JSON.parse(localStorage.getItem("accountList"))[0] ? (
+                      <MuiThemeProvider
+                        theme={createMuiTheme(
+                          this.props.mobile
+                            ? {
+                              palette: {
+                                primary: { main: "#fff" },
+                              },
+                            }
+                            : {
+                              palette: {
+                                primary: { main: "#0083ff" },
+                              },
+                            }
+                        )}
+                      >
+                        <Button
+                          fullWidth={true}
+                          color="primary"
+                          disabled={this.state.showLoading}
+                          component={Link}
+                          to="/accounts"
                         >
-                          <Button
-                            fullWidth={true}
-                            color="primary"
-                            disabled={this.state.showLoading}
-                            component={Link}
-                            to="/accounts"
-                          >
-                            Go back
+                          Go back
                         </Button>
-                        </MuiThemeProvider>
-                      ) : (
+                      </MuiThemeProvider>
+                    ) : (
                         <MuiThemeProvider
                           theme={
                             this.props.mobile
@@ -913,7 +953,6 @@ export default class Signup extends Component {
                             to="/login"
                             style={{
                               width: "100%",
-                              //height: "55px",
                               border: "3px solid lightblue",
                               borderRadius: "5px",
                             }}
@@ -956,39 +995,40 @@ export default class Signup extends Component {
                       Sign up
                   </Typography>
                     <List>
-                      {navigator.credentials && (
-                        <ListItem
-                          button
-                          style={{ paddingLeft: "24px" }}
-                          onClick={this.enableWebAuthn}
-                        >
-                          <ListItemIcon>
-                            <Fingerprint />
-                          </ListItemIcon>
-                          <ListItemText
-                            primary={
-                              <font
-                                style={
-                                  this.props.mobile ? { color: "white" } : {}
-                                }
-                              >
-                                Let's go passwordless!
-                            </font>
-                            }
-                            secondary={
-                              <font
-                                style={
-                                  this.props.mobile
-                                    ? { color: "white", opacity: 0.7 }
-                                    : {}
-                                }
-                              >
-                                Fingerprint, face or security key
-                            </font>
-                            }
-                          />
-                        </ListItem>
-                      )}
+                      {navigator.credentials &&
+                        window.location.host === "aurora.igloo.ooo" && (
+                          <ListItem
+                            button
+                            style={{ paddingLeft: "24px" }}
+                            onClick={this.enableWebAuthn}
+                          >
+                            <ListItemIcon>
+                              <Fingerprint />
+                            </ListItemIcon>
+                            <ListItemText
+                              primary={
+                                <font
+                                  style={
+                                    this.props.mobile ? { color: "white" } : {}
+                                  }
+                                >
+                                  Let's go passwordless!
+                              </font>
+                              }
+                              secondary={
+                                <font
+                                  style={
+                                    this.props.mobile
+                                      ? { color: "white", opacity: 0.7 }
+                                      : {}
+                                  }
+                                >
+                                  Fingerprint, face or security key
+                              </font>
+                              }
+                            />
+                          </ListItem>
+                        )}
                       <ListItem
                         button
                         style={{ paddingLeft: "24px" }}
@@ -1096,7 +1136,8 @@ export default class Signup extends Component {
                           style={
                             this.props.mobile
                               ? {}
-                              : navigator.credentials
+                              : navigator.credentials &&
+                                window.location.host === "aurora.igloo.ooo"
                                 ? {
                                   marginTop: "171px",
                                 }

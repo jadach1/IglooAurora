@@ -4,7 +4,6 @@ import UnauthenticatedMain from "./UnauthenticatedMain"
 import jwt from "jsonwebtoken"
 import { Route, Switch, Redirect } from "react-router-dom"
 import Error404 from "./Error404"
-import RecoveryFetcher from "./RecoveryFetcher"
 import { Online, Offline } from "react-detect-offline"
 import OfflineScreen from "./OfflineScreen"
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
@@ -303,7 +302,7 @@ function setupWebPush(token) {
             : "https://") +
           localStorage.getItem("server") +
           "/webPushSubscribe"
-        : `https://iglooql.herokuapp.com/webPushSubscribe`
+        : `https://bering.igloo.ooo/webPushSubscribe`
 
     fetch(serverUrl, {
       body: JSON.stringify(subscription),
@@ -631,7 +630,7 @@ class App extends Component {
 
     if (typeof Storage !== "undefined") {
       if (localStorage.getItem("server") === null) {
-        localStorage.setItem("server", "iglooql.herokuapp.com")
+        localStorage.setItem("server", "bering.igloo.ooo")
       }
 
       if (localStorage.getItem("serverUnsecure") === null) {
@@ -850,17 +849,13 @@ class App extends Component {
                 )
               }
             />
-            <Route
-              path="/recovery"
-              render={() => <RecoveryFetcher mobile={this.state.isMobile} />}
-            />
             <Route render={() => <Error404 isMobile={this.state.isMobile} />} />
           </Switch>
         </Online>
         <Offline>
           <OfflineScreen isMobile={this.state.isMobile} />
         </Offline>
-        {this.state.redirect && <Redirect push to={"/login?from=accounts&user="+this.state.userId} />}
+        {this.state.redirect && <Redirect push to={"/login?user="+this.state.userId} />}
       </MuiThemeProvider>
     )
   }

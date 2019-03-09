@@ -51,6 +51,12 @@ class InviteUser extends Component {
     } catch (e) {
       if (
         e.message ===
+        "GraphQL error: This user already has a role on this environment"
+      ) {
+         this.setState({ emailError: "This user already has a role" })
+      }
+        else      if (
+        e.message ===
         "GraphQL error: This account doesn't exist, check the email passed"
       ) {
         this.setState({ emailError: "This account doesn't exist" })

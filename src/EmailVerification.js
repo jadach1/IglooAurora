@@ -32,7 +32,7 @@ export default class PasswordVerification extends Component {
                 : "wss://") +
               localStorage.getItem("server") +
               "/subscriptions"
-            : `wss://iglooql.herokuapp.com/subscriptions`,
+            : `wss://bering.igloo.ooo/subscriptions`,
         options: {
           reconnect: true,
           connectionParams: {
@@ -50,7 +50,7 @@ export default class PasswordVerification extends Component {
                 : "https://") +
               localStorage.getItem("server") +
               "/graphql"
-            : `https://iglooql.herokuapp.com/graphql`,
+            : `https://bering.igloo.ooo/graphql`,
         headers: {
           Authorization: "Bearer " + bearer,
         },
@@ -165,7 +165,16 @@ export default class PasswordVerification extends Component {
             Resend email
           </Button>
           <br />
-          <Button color="primary" component={Link} to="/accounts" fullWidth>
+          <Button
+            color="primary"
+            component={Link}
+            to={
+              !JSON.parse(localStorage.getItem("accountList"))[0]
+                ? "/signup"
+                : "/signup?from=accounts"
+            }
+            fullWidth
+          >
             Go back
           </Button>
         </MuiThemeProvider>

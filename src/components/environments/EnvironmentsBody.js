@@ -463,7 +463,27 @@ export default class EnvironmentsBody extends Component {
                 />
               </FormControl>
             </div>
-            {error && "Unexpected error"}
+            {error && <Typography
+              variant="h5"
+              className="notSelectable defaultCursor"
+              style={
+                typeof Storage !== "undefined" &&
+                  localStorage.getItem("nightMode") === "true"
+                  ? {
+                    textAlign: "center",
+                    marginTop: "32px",
+                    marginBottom: "32px",
+                    color: "white",
+                  }
+                  : {
+                    textAlign: "center",
+                    marginTop: "32px",
+                    marginBottom: "32px",
+                  }
+              }
+            >
+              Unexpected error
+          </Typography>}
             {loading && (
               <div
                 style={{
@@ -811,7 +831,7 @@ export default class EnvironmentsBody extends Component {
                             Shared with you
                           </Typography>
                         </ListSubheader>
-                        }{sharedEnvironmentsList}
+                        {sharedEnvironmentsList}
                       </ul>
                     </li>
                   )}

@@ -38,30 +38,7 @@ class ShortcutDialog extends React.Component {
           fullWidth
           maxWidth="sm"
         >
-          <DialogTitle
-            style={
-              this.props.fullScreen
-                ? typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                  ? { width: "calc(100% - 48px)", background: "#2f333d" }
-                  : { width: "calc(100% - 48px)", background: "#fff" }
-                : typeof Storage !== "undefined" &&
-                  localStorage.getItem("nightMode") === "true"
-                ? { background: "#2f333d" }
-                : { background: "#fff" }
-            }
-          >
-            <font
-              style={
-                typeof Storage !== "undefined" &&
-                localStorage.getItem("nightMode") === "true"
-                  ? { color: "#fff" }
-                  : {}
-              }
-            >
-              Keyboard shortcuts
-            </font>
-          </DialogTitle>
+          <DialogTitle disableTypography>Keyboard shortcuts</DialogTitle>
           <div
             style={
               typeof Storage !== "undefined" &&

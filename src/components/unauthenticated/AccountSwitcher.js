@@ -216,7 +216,7 @@ export default class AccountSwitcher extends Component {
                     to={
                       account.token
                         ? "/?user=" + account.id
-                        : "/login?from=accountList&user=" + account.id
+                        : "/login?user=" + account.id
                     }
                   >
                     <Avatar
@@ -286,7 +286,7 @@ export default class AccountSwitcher extends Component {
                     </ListItemSecondaryAction>
                   </ListItem>
                 ))}
-              <ListItem button component={Link} to="/login?from=accounts">
+              <ListItem button component={Link} to="/login">
                 <ListItemAvatar>
                   <Avatar
                     style={{ backgroundColor: "transparent", color: "black" }}
@@ -315,7 +315,7 @@ export default class AccountSwitcher extends Component {
                   style={{ cursor: "pointer" }}
                 />
               </ListItem>
-              <ListItem button component={Link} to="/signup?from=accounts">
+              <ListItem button component={Link} to="/signup">
                 <ListItemAvatar>
                   <Avatar
                     style={{ backgroundColor: "transparent", color: "black" }}

@@ -8,6 +8,7 @@ import { Redirect } from "react-router-dom"
 import querystringify from "querystringify"
 import KeyboardArrowUp from "@material-ui/icons/KeyboardArrowUp"
 import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
+import Typography from "@material-ui/core/Typography"
 
 class MainBody extends Component {
   state = {
@@ -230,7 +231,29 @@ class MainBody extends Component {
         )
       }
 
-      content = "An unexpected error occurred"
+      content = (
+        <Typography
+          variant="h5"
+          className="notSelectable defaultCursor"
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                  color: "white",
+                }
+              : {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                }
+          }
+        >
+          Unexpected error
+        </Typography>
+      )
     }
 
     if (device) {
@@ -297,23 +320,6 @@ class MainBody extends Component {
         ]
       }
 
-      let noItemsUI = ""
-      if (hiddenCards.length + visibleCards.length === 0) {
-        noItemsUI = (
-          <div
-            style={{
-              width: "100%",
-              textAlign: "center",
-              marginTop: "32px",
-            }}
-            key="noCardsUI"
-            className="notSelectable"
-          >
-            This device has no values
-          </div>
-        )
-      }
-
       //changes the environment id in the url so that it is the correct one for the device
       if (
         device.environment.id !==
@@ -331,7 +337,6 @@ class MainBody extends Component {
 
       content = (
         <React.Fragment>
-          {noItemsUI}
           <div className="itemsList" key="visibleCardsContainer">
             {visibleCards}
           </div>

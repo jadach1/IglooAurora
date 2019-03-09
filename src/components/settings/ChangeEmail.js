@@ -8,7 +8,6 @@ import InputAdornment from "@material-ui/core/InputAdornment"
 import TextField from "@material-ui/core/TextField"
 import Grow from "@material-ui/core/Grow"
 import Slide from "@material-ui/core/Slide"
-import ToggleIcon from "material-ui-toggle-icon"
 import gql from "graphql-tag"
 import { ApolloClient } from "apollo-client"
 import { HttpLink } from "apollo-link-http"
@@ -20,11 +19,9 @@ import { WebSocketLink } from "apollo-link-ws"
 import { split } from "apollo-link"
 import { getMainDefinition } from "apollo-utilities"
 import introspectionQueryResultData from "../../fragmentTypes.json"
-import CenteredSpinner from "../CenteredSpinner"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
-import Visibility from "@material-ui/icons/Visibility"
-import VisibilityOff from "@material-ui/icons/VisibilityOff"
 import Clear from "@material-ui/icons/Clear"
+import VerifyAuthentication from "./VerifyAuthentication"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -45,50 +42,16 @@ class ChangeMailDialog extends React.Component {
     emailEmpty: false,
   }
 
-  async createToken() {
-    try {
-      this.setState({ showLoading: true })
-
-      let createTokenMutation = await this.props.client.mutate({
-        mutation: gql`
-          mutation($tokenType: TokenType!, $password: String!) {
-            createToken(tokenType: $tokenType, password: $password)
-          }
-        `,
-        variables: {
-          tokenType: "CHANGE_EMAIL",
-          password: this.state.password,
-        },
-      })
-
-      this.setState({
-        token: createTokenMutation.data.createToken,
-        mailDialogOpen: true,
-        showDeleteLoading: false,
-      })
-    } catch (e) {
-      if (e.message === "GraphQL error: Wrong password") {
-        this.setState({ passwordError: "Wrong password" })
-      } else {
-        this.setState({
-          passwordError: "Unexpected error",
-        })
-      }
-    }
-
-    this.setState({ showLoading: false })
-  }
-
   async changeEmail() {
     const wsLink = new WebSocketLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-        ? (localStorage.getItem("serverUnsecure") === "true"
-            ? "ws://"
-            : "wss://") +
-          localStorage.getItem("server") +
-          "/subscriptions"
-        : `wss://iglooql.herokuapp.com/subscriptions`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "ws://"
+              : "wss://") +
+            localStorage.getItem("server") +
+            "/subscriptions"
+          : `wss://bering.igloo.ooo/subscriptions`,
       options: {
         reconnect: true,
         connectionParams: {
@@ -99,13 +62,13 @@ class ChangeMailDialog extends React.Component {
 
     const httpLink = new HttpLink({
       uri:
-      typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
-        ? (localStorage.getItem("serverUnsecure") === "true"
-            ? "http://"
-            : "https://") +
-          localStorage.getItem("server") +
-          "/graphql"
-        : `https://iglooql.herokuapp.com/graphql`,
+        typeof Storage !== "undefined" && localStorage.getItem("server") !== ""
+          ? (localStorage.getItem("serverUnsecure") === "true"
+              ? "http://"
+              : "https://") +
+            localStorage.getItem("server") +
+            "/graphql"
+          : `https://bering.igloo.ooo/graphql`,
       headers: {
         Authorization: "Bearer " + this.state.token,
       },
@@ -146,12 +109,10 @@ class ChangeMailDialog extends React.Component {
 
       this.setState({
         token: changeEmailMutation.data.changeEmail,
+        mailDialogOpen: false,
       })
 
       this.props.close()
-
-      this.closeMailDialog()
-
     } catch (e) {
       if (e.message === "GraphQL error: Wrong password") {
         this.setState({ emailError: "Wrong password" })
@@ -181,114 +142,23 @@ class ChangeMailDialog extends React.Component {
         emailEmpty: false,
         email: this.props.email,
         showPassword: false,
+        showLoading: false,
       })
   }
 
   render() {
-    const {
-      userData: { user },
-    } = this.props
-
     return (
       <React.Fragment>
-        <Dialog
+        <VerifyAuthentication
           open={this.props.open && !this.state.mailDialogOpen}
-          onClose={this.props.close}
-          className="notSelectable"
-          TransitionComponent={
-            this.props.fullScreen ? SlideTransition : GrowTransition
-          }
+          close={this.props.close}
           fullScreen={this.props.fullScreen}
-          disableBackdropClick={this.props.fullScreen}
-          fullWidth
-          maxWidth="xs"
-        >
-          <DialogTitle disableTypography>Type your password</DialogTitle>
-          <div
-            style={{
-              height: "100%",
-              paddingRight: "24px",
-              paddingLeft: "24px",
-            }}
-          >
-            <TextField
-              id="change-email-password"
-              label="Password"
-              type={this.state.showPassword ? "text" : "password"}
-              value={this.state.password}
-              variant="outlined"
-              error={this.state.passwordEmpty || this.state.passwordError}
-              helperText={
-                this.state.passwordEmpty
-                  ? "This field is required"
-                  : this.state.passwordError || " "
-              }
-              onChange={event =>
-                this.setState({
-                  password: event.target.value,
-                  passwordEmpty: event.target.value === "",
-                  passwordError: "",
-                })
-              }
-              onKeyPress={event => {
-                if (event.key === "Enter" && this.state.password !== "" && user)
-                  this.createToken()
-              }}
-              style={{
-                width: "100%",
-              }}
-              InputLabelProps={this.state.password && { shrink: true }}
-              InputProps={{
-                endAdornment: this.state.password && (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={() =>
-                        this.setState(oldState => ({
-                          showPassword: !oldState.showPassword,
-                        }))
-                      }
-                      tabIndex="-1"
-                      style={
-                        typeof Storage !== "undefined" &&
-                        localStorage.getItem("nightMode") === "true"
-                          ? { color: "rgba(0, 0, 0, 0.46)" }
-                          : { color: "rgba(0, 0, 0, 0.46)" }
-                      }
-                    >
-                      {/* fix for ToggleIcon glitch on Edge */}
-                      {document.documentMode ||
-                      /Edge/.test(navigator.userAgent) ? (
-                        this.state.showPassword ? (
-                          <VisibilityOff />
-                        ) : (
-                          <Visibility />
-                        )
-                      ) : (
-                        <ToggleIcon
-                          on={this.state.showPassword || false}
-                          onIcon={<VisibilityOff />}
-                          offIcon={<Visibility />}
-                        />
-                      )}
-                    </IconButton>
-                  </InputAdornment>
-                ),
-              }}
-            />
-          </div>
-          <DialogActions>
-            <Button onClick={this.props.close}>Never mind</Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => this.createToken()}
-              disabled={!this.state.password || this.state.showLoading}
-            >
-              Proceed
-              {this.state.showLoading && <CenteredSpinner isInButton />}
-            </Button>
-          </DialogActions>
-        </Dialog>
+          setToken={token => this.setState({ token })}
+          openOtherDialog={() => this.setState({ mailDialogOpen: true })}
+          otherDialogOpen={this.state.mailDialogOpen}
+          client={this.props.client}
+          user={this.props.user}
+        />
         <Dialog
           open={this.state.mailDialogOpen}
           onClose={() => {
@@ -362,7 +232,7 @@ class ChangeMailDialog extends React.Component {
           <DialogActions>
             <Button
               onClick={() => {
-                this.closeMailDialog()
+                this.setState({ mailDialogOpen: false })
                 this.props.close()
               }}
             >

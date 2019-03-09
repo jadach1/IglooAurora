@@ -71,7 +71,30 @@ class CreateDevice extends React.Component {
 
     let environments = ""
 
-    if (error) environments = "Unexpected error"
+    if (error)
+      environments = (
+        <Typography
+          variant="h5"
+          className="notSelectable defaultCursor"
+          style={
+            typeof Storage !== "undefined" &&
+            localStorage.getItem("nightMode") === "true"
+              ? {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                  color: "white",
+                }
+              : {
+                  textAlign: "center",
+                  marginTop: "32px",
+                  marginBottom: "32px",
+                }
+          }
+        >
+          Unexpected error
+        </Typography>
+      )
 
     if (loading) environments = <CenteredSpinner />
 

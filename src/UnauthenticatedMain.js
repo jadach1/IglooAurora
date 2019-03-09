@@ -34,7 +34,7 @@ export default class UnAuthenticatedMain extends Component {
               : "https://") +
             localStorage.getItem("server") +
             "/graphql"
-          : `https://iglooql.herokuapp.com/graphql`,
+          : `https://bering.igloo.ooo/graphql`,
     })
 
     this.client = new ApolloClient({
@@ -214,7 +214,6 @@ export default class UnAuthenticatedMain extends Component {
           open={this.state.changeServerOpen}
           close={() => this.setState({ changeServerOpen: false })}
           forceUpdate={() => this.props.forceUpdate()}
-          isUnauthenticated
           unauthenticated
         />
       </React.Fragment>

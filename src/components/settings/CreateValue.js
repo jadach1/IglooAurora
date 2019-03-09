@@ -462,11 +462,33 @@ class CreateValue extends React.Component {
             >
               {({ loading, error, data }) => {
                 if (loading) return <CenteredSpinner />
-                if (error) return "Unexpected error"
+                if (error)
+                  return (
+                    <Typography
+                      variant="h5"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              textAlign: "center",
+                              marginTop: "32px",
+                              marginBottom: "32px",
+                              color: "white",
+                            }
+                          : {
+                              textAlign: "center",
+                              marginTop: "32px",
+                              marginBottom: "32px",
+                            }
+                      }
+                    >
+                      Unexpected error
+                    </Typography>
+                  )
 
                 if (data.user) {
                   data.user.environments.forEach(environment =>
-                    environment.devices.forEach(device =>{
+                    environment.devices.forEach(device => {
                       if (
                         !allDevices.map(device => device.id).includes(device.id)
                       ) {
@@ -482,8 +504,7 @@ class CreateValue extends React.Component {
                         }
                         return 0
                       })
-                    }
-                    )
+                    })
                   )
                   if (!this.state.device)
                     this.setState({ device: allDevices[0].id })
@@ -535,10 +556,9 @@ class CreateValue extends React.Component {
                               this.props.close()
                             }
                           }}
-                      InputLabelProps={this.state.name && { shrink: true }}
-                      InputProps={{
-                        endAdornment:
-                            this.state.name && (
+                          InputLabelProps={this.state.name && { shrink: true }}
+                          InputProps={{
+                            endAdornment: this.state.name && (
                               <InputAdornment position="end">
                                 <IconButton
                                   style={
@@ -553,7 +573,7 @@ class CreateValue extends React.Component {
                                   <Clear />
                                 </IconButton>
                               </InputAdornment>
-                            )
+                            ),
                           }}
                         />
                         <TextField
@@ -780,8 +800,7 @@ class CreateValue extends React.Component {
                               this.state.unit && { shrink: true }
                             }
                             InputProps={{
-                              endAdornment:
-                              this.state.unit && (
+                              endAdornment: this.state.unit && (
                                 <InputAdornment position="end">
                                   <IconButton
                                     style={
@@ -797,7 +816,7 @@ class CreateValue extends React.Component {
                                     <Clear />
                                   </IconButton>
                                 </InputAdornment>
-                              )
+                              ),
                             }}
                           />
                         </ExpansionPanelDetails>

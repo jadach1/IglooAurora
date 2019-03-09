@@ -17,6 +17,7 @@ import CenteredSpinner from "../CenteredSpinner"
 import Done from "@material-ui/icons/Done"
 import Close from "@material-ui/icons/Close"
 import { Query } from "react-apollo"
+import Typography from "@material-ui/core/Typography"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -257,7 +258,30 @@ class PendingOwnerChanges extends Component {
         >
           {({ loading, error, data }) => {
             if (loading) return <CenteredSpinner />
-            if (error) return "Unexpected error"
+            if (error)
+              return (
+                <Typography
+                  variant="h5"
+                  className="notSelectable defaultCursor"
+                  style={
+                    typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                      ? {
+                          textAlign: "center",
+                          marginTop: "32px",
+                          marginBottom: "32px",
+                          color: "white",
+                        }
+                      : {
+                          textAlign: "center",
+                          marginTop: "32px",
+                          marginBottom: "32px",
+                        }
+                  }
+                >
+                  Unexpected error
+                </Typography>
+              )
 
             if (data) {
               ownerChanges = data.user.pendingOwnerChanges

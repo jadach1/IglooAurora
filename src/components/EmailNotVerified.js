@@ -10,6 +10,8 @@ import KeyboardArrowDown from "@material-ui/icons/KeyboardArrowDown"
 import ChevronRight from "@material-ui/icons/ChevronRight"
 import Slide from "@material-ui/core/Slide"
 import VerifyEmailDialog from "./VerifyEmailDialog"
+import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider"
+import createMuiTheme from "@material-ui/core/styles/createMuiTheme"
 
 const styles1 = theme => ({
   warning: {
@@ -40,41 +42,56 @@ function MySnackbarContent(props) {
   } = props
 
   return (
-    <SnackbarContent
-      className={classNames(classes[variant], className)}
-      aria-describedby="client-snackbar"
-      style={{ paddingTop: "8px", paddingBottom: "8px" }}
-      message={
-        <font
-          id="client-snackbar"
-          className={classes.message}
-          style={{ marginLeft: "-4px" }}
-        >
-          <Warning style={{ fontSize: 24, marginRight: "16px" }} />
-          Your account isn't verified!
-        </font>
-      }
-      action={[
-        <IconButton
-          style={{ color: "white" }}
-          onClick={() => {
-            openDialog()
-          }}
-          color="primary"
-        >
-          <Notes />
-        </IconButton>,
-        <IconButton
-          style={{ marginRight: "-8px", color: "white" }}
-          onClick={() => {
-            closeSnackbar()
-          }}
-          color="primary"
-        >
-          {mobile ? <KeyboardArrowDown /> : <ChevronRight />}
-        </IconButton>,
-      ]}
-    />
+    <MuiThemeProvider
+      theme={createMuiTheme({
+        overrides: {
+          MuiSnackbarContent: {
+            message: {
+              maxWidth: "calc(100% - 104px)",
+            },
+          },
+        },
+      })}
+    >
+      <SnackbarContent
+        className={classNames(classes[variant], className)}
+        aria-describedby="client-snackbar"
+        style={{
+          paddingTop: "8px",
+          paddingBottom: "8px",
+        }}
+        message={
+          <font
+            id="client-snackbar"
+            className={classes.message}
+            style={{ marginLeft: "-4px" }}
+          >
+            <Warning style={{ fontSize: 24, marginRight: "16px" }} />
+            Your account isn't verified!
+          </font>
+        }
+        action={[
+          <IconButton
+            style={{ color: "white" }}
+            onClick={() => {
+              openDialog()
+            }}
+            color="primary"
+          >
+            <Notes />
+          </IconButton>,
+          <IconButton
+            style={{ marginRight: "-8px", color: "white" }}
+            onClick={() => {
+              closeSnackbar()
+            }}
+            color="primary"
+          >
+            {mobile ? <KeyboardArrowDown /> : <ChevronRight />}
+          </IconButton>,
+        ]}
+      />
+    </MuiThemeProvider>
   )
 }
 

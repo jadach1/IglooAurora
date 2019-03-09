@@ -663,6 +663,8 @@ export default graphql(
         email
         pendingEnvironmentShareCount
         pendingOwnerChangeCount
+        primaryAuthenticationMethods
+        secondaryAuthenticationMethods
         settings {
           timeFormat
           dateFormat

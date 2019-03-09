@@ -15,6 +15,7 @@ import IconButton from "@material-ui/core/IconButton"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 import Clear from "@material-ui/icons/Clear"
 import { Query } from "react-apollo"
+import Typography from "@material-ui/core/Typography"
 
 let allDevices = []
 
@@ -102,7 +103,30 @@ class CreateNotification extends React.Component {
             >
               {({ loading, error, data }) => {
                 if (loading) return <CenteredSpinner />
-                if (error) return "Unexpected error"
+                if (error)
+                  return (
+                    <Typography
+                      variant="h5"
+                      style={
+                        typeof Storage !== "undefined" &&
+                        localStorage.getItem("nightMode") === "true"
+                          ? {
+                              textAlign: "center",
+                              marginTop: "32px",
+                              marginBottom: "32px",
+                              color: "white",
+                            }
+                          : {
+                              textAlign: "center",
+                              marginTop: "32px",
+                              marginBottom: "32px",
+                            }
+                      }
+                      className="notSelectable defaultCursor"
+                    >
+                      Unexpected error
+                    </Typography>
+                  )
 
                 if (data && data.user) {
                   data.user.environments.forEach(environment =>
@@ -185,9 +209,8 @@ class CreateNotification extends React.Component {
                         })
                       }
                       InputLabelProps={this.state.content && { shrink: true }}
-              InputProps={{
-                endAdornment:
-                        this.state.content && (
+                      InputProps={{
+                        endAdornment: this.state.content && (
                           <InputAdornment position="end">
                             <IconButton
                               onClick={() => this.setState({ content: "" })}
@@ -202,7 +225,7 @@ class CreateNotification extends React.Component {
                               <Clear />
                             </IconButton>
                           </InputAdornment>
-                        )
+                        ),
                       }}
                     />
                   </React.Fragment>

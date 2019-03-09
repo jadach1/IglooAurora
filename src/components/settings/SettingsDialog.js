@@ -707,6 +707,7 @@ class SettingsDialog extends React.Component {
               <ListItem
                 button
                 onClick={() => this.setState({ authenticationOpen: true })}
+                disabled={!user}
               >
                 <ListItemText
                   primary={
@@ -1361,10 +1362,10 @@ class SettingsDialog extends React.Component {
           logOut={this.props.logOut}
         />
         <ManageAuthorizations
-          confirmationDialogOpen={
+          open={
             this.props.isOpen && this.state.authDialogOpen
           }
-          handleAuthDialogClose={this.handleAuthDialogClose}
+          close={()=>this.setState({authDialogOpen:false})}
           userData={this.props.userData}
           client={this.props.client}
           logOut={this.props.logOut}
@@ -1434,6 +1435,7 @@ class SettingsDialog extends React.Component {
         <GDPRDataDownload
           open={this.props.isOpen && this.state.gdprOpen}
           close={() => this.setState({ gdprOpen: false })}
+          logOut={this.props.logOut}
         />
         <ChangeEmail
           open={this.props.isOpen && this.state.emailDialogOpen}
@@ -1441,6 +1443,7 @@ class SettingsDialog extends React.Component {
           userData={this.props.userData}
           client={this.props.client}
           email={user && user.email}
+          user={user}
         />
         <ChangeServer
           open={this.props.isOpen && this.state.serverOpen}

@@ -7,6 +7,7 @@ import DialogTitle from "@material-ui/core/DialogTitle"
 import DialogActions from "@material-ui/core/DialogActions"
 import withMobileDialog from "@material-ui/core/withMobileDialog"
 //import CenteredSpinner from "../CenteredSpinner"
+//import Typography from "@material-ui/core/Typography"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -33,7 +34,26 @@ class CreatePlotNode extends React.Component {
     let deviceList = ""
     let plotList = ""
 
-    if (error) deviceList = "Unexpected error bear"
+    if (error) deviceList = <Typography
+                variant="h5"
+                style={
+                  typeof Storage !== "undefined" &&
+                    localStorage.getItem("nightMode") === "true"
+                    ? {
+                      textAlign: "center",
+                      marginTop: "32px",
+                      marginBottom: "32px",
+                      color: "white",
+                    }
+                    : {
+                      textAlign: "center",
+                      marginTop: "32px",
+                      marginBottom: "32px",
+                    }
+                }
+              >
+                Unexpected error
+          </Typography>
 
     if (loading) deviceList = <CenteredSpinner />
 
@@ -49,8 +69,8 @@ class CreatePlotNode extends React.Component {
           open={this.props.open}
           onClose={this.props.close}
           TransitionComponent={
-          this.props.fullScreen ? SlideTransition : GrowTransition
-        }
+            this.props.fullScreen ? SlideTransition : GrowTransition
+          }
           fullScreen={this.props.fullScreen}
           disableBackdropClick={this.props.fullScreen}
           fullWidth

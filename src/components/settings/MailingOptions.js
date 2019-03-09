@@ -12,6 +12,7 @@ import { Query } from "react-apollo"
 import gql from "graphql-tag"
 import CenteredSpinner from "../CenteredSpinner"
 import { graphql } from "react-apollo"
+import Typography from "@material-ui/core/Typography"
 
 function GrowTransition(props) {
   return <Grow {...props} />
@@ -152,7 +153,29 @@ class MailingOptions extends React.Component {
                   </div>
                 )
 
-              if (error) return "Unexpected error"
+              if (error)
+                return (
+                  <Typography
+                    variant="h5"
+                    style={
+                      typeof Storage !== "undefined" &&
+                      localStorage.getItem("nightMode") === "true"
+                        ? {
+                            textAlign: "center",
+                            marginTop: "32px",
+                            marginBottom: "32px",
+                            color: "white",
+                          }
+                        : {
+                            textAlign: "center",
+                            marginTop: "32px",
+                            marginBottom: "32px",
+                          }
+                    }
+                  > className="notSelectable defaultCursor"
+                     Unexpected error
+                  </Typography>
+                )
 
               if (data) {
                 settings = data.user.settings
